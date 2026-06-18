@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>データ構造 — Stack / Queue / Tree(木構造)| Yasashii Ch.3 Lesson 03-01</title>
+<style>
+:root{
+  --bg:#0f1115; --panel:#161a22; --panel2:#1d2230; --line:#2a3142;
+  --txt:#e6e8ee; --mute:#9aa3b2; --accent:#f59e0b; --accent2:#22d3ee;
+  --jp:#fb7185; --vi:#facc15; --en:#34d399; --ok:#22c55e; --bad:#ef4444;
+  --card:#1a1f2a;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:24px;background:var(--bg);color:var(--txt);
+  font-family:system-ui,"Noto Sans JP",sans-serif;line-height:1.6;max-width:1100px;margin:0 auto}
+h1{font-family:Syne,system-ui,sans-serif;font-size:28px;margin:0 0 6px;color:var(--accent)}
+h2{font-family:Syne,system-ui,sans-serif;color:var(--accent2);border-bottom:2px solid var(--line);padding-bottom:8px;margin-top:36px}
+h3{color:var(--accent);margin-top:24px}
+h4{color:var(--accent2);margin:14px 0 6px}
+.sub{color:var(--mute);font-size:14px;margin-bottom:24px}
+.lang{padding:10px 14px;border-left:4px solid var(--line);margin:8px 0;background:var(--panel);border-radius:6px}
+.jp{border-color:var(--jp)} .vi{border-color:var(--vi)} .en{border-color:var(--en)}
+.lang .tag{font-family:"Space Mono",monospace;font-size:12px;color:var(--mute);display:block;margin-bottom:4px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;margin:14px 0}
+.callout{background:var(--panel2);border-left:4px solid var(--accent);padding:12px 16px;border-radius:6px;margin:12px 0}
+.callout b{color:var(--accent)}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;background:var(--panel)}
+th,td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);color:var(--accent2)}
+code,.mono{font-family:"Space Mono",monospace;background:#0a0d12;padding:1px 6px;border-radius:4px;color:var(--accent)}
+.ascii{font-family:"Space Mono",monospace;background:#0a0d12;padding:14px;border-radius:8px;
+  white-space:pre;overflow-x:auto;font-size:13px;color:var(--accent2);border:1px solid var(--line)}
+.flash{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin:14px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;min-height:120px;
+  display:flex;align-items:center;justify-content:center;text-align:center;transition:border-color .2s;user-select:none}
+.card:hover{border-color:var(--accent)}
+.card .front{font-weight:700;color:var(--accent2);font-size:15px}
+.card .back{display:none;color:var(--txt);font-size:14px}
+.card.flip .front{display:none}
+.card.flip .back{display:block}
+.quiz-q{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;margin:10px 0}
+.quiz-q .opts label{display:block;padding:8px 10px;margin:4px 0;background:var(--card);border:1px solid var(--line);border-radius:6px;cursor:pointer}
+.quiz-q .opts label:hover{border-color:var(--accent)}
+.quiz-q .opts input{margin-right:8px}
+.quiz-q .ans{display:none;margin-top:10px;padding:10px;background:#0a1a12;border-left:3px solid var(--ok);border-radius:4px;color:var(--ok);font-size:14px}
+.quiz-q.show .ans{display:block}
+button{background:var(--accent);color:#0a0d12;border:none;padding:8px 16px;border-radius:6px;font-weight:700;cursor:pointer;font-family:inherit}
+button:hover{background:#fbbf24}
+.tags span{display:inline-block;background:var(--panel2);color:var(--accent2);padding:2px 8px;border-radius:4px;font-size:12px;margin-right:6px;font-family:"Space Mono",monospace}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}}
+.stack-vis,.queue-vis{font-family:"Space Mono",monospace;background:#0a0d12;border:1px solid var(--line);border-radius:8px;padding:14px;text-align:center}
+.box{display:inline-block;border:1px solid var(--accent);background:var(--panel2);padding:8px 14px;margin:2px;border-radius:4px;min-width:60px}
+.arrow{color:var(--accent);font-weight:700;margin:0 6px}
+</style>
+</head>
+<body>
+
+<h1>データ構造 — Stack / Queue / Tree(木構造)</h1>
+<div class="sub">📘 Yasashii Ch.3 Lesson 03-01 · データ構造の種類 (スタック・キュー・木構造)
+<div class="tags" style="margin-top:6px"><span>FE</span><span>基礎理論</span><span>データ構造</span><span>頻出</span></div>
+</div>
+
+<div class="callout">
+<b>📌 試験のポイント:</b> Yasashii Ch.3 ghi rõ <b>「基本情報技術者試験では、スタックが最頻出です」</b>. 5 loại データ構造 trong sách là: (1) スタック (2) キュー (3) 配列 (4) 連結リスト (5) 木構造. Bài này tập trung vào <b>Stack, Queue, Tree</b>.
+</div>
+
+<!-- ============ PHẦN 1 ============ -->
+<h2>📚 Phần 1 — Tóm tắt lý thuyết</h2>
+
+<h3>0. データ構造 là gì?</h3>
+<div class="lang jp"><span class="tag">🇯🇵 日本語</span>
+コンピュータが扱う情報を「データ」といい、主記憶装置に保存される。データの並べ方によって処理効率が大きく変わるため、状況に応じてさまざまな方式で並べる。この<b>主記憶装置上のデータの並べ方</b>を「データ構造」という。
+</div>
+<div class="lang vi"><span class="tag">🇻🇳 Tiếng Việt</span>
+Máy tính xử lý thông tin gọi là "dữ liệu", được lưu trong <b>主記憶装置</b> (bộ nhớ chính). Cách <b>sắp xếp dữ liệu</b> trong bộ nhớ chính ảnh hưởng lớn đến hiệu suất xử lý — gọi là <b>データ構造</b> (cấu trúc dữ liệu).
+</div>
+<div class="lang en"><span class="tag">🇬🇧 English</span>
+The way data is arranged in main memory is called a <b>data structure</b>. Different structures suit different processing needs.
+</div>
+
+<h3>1. スタック (Stack) — 後入れ先出し / LIFO</h3>
+<div class="lang jp"><span class="tag">🇯🇵 日本語</span>
+スタックとは、データを1列に並べて、<b>最後に格納したデータを最初に取り出す</b>データ構造。イメージは「積み上げられた本」。途中の本を取り出すことはできない。格納=<code>push</code>、取り出し=<code>pop</code>。<b>後入れ先出し(LIFO: Last In First Out)</b>。
+</div>
+<div class="lang vi"><span class="tag">🇻🇳 Tiếng Việt</span>
+Stack là cấu trúc xếp dữ liệu thành 1 hàng, <b>vào sau ra trước</b> — phần tử nhập sau cùng sẽ được lấy ra đầu tiên. Hình dung: <b>chồng sách</b> — chỉ lấy được cuốn trên cùng, không rút giữa được.
+<ul>
+<li><code>push X</code> — đẩy dữ liệu X vào đỉnh stack</li>
+<li><code>pop</code> — lấy phần tử ở đỉnh ra (không cần ghi tên vì chỉ có 1 lựa chọn)</li>
+<li>Ứng dụng: lưu lịch sử thao tác → máy tính luôn quay về trạng thái cũ được</li>
+</ul>
+</div>
+<div class="lang en"><span class="tag">🇬🇧 English</span>
+A <b>stack</b> stores data in LIFO order (Last In, First Out). <code>push</code> adds to the top; <code>pop</code> removes from the top. Like a stack of books — only the top is accessible.
+</div>
+
+<div class="panel">
+<h4>🔁 Stack — thao tác push / pop</h4>
+<div class="ascii">push A  push B  push C  pop      pop      push D
+                                                       
+  [ ]      [ ]      [C]      [B]      [A]      [D]      
+  [ ]      [B]      [B]      [A]      [ ]      [A]
+  [A]      [A]      [A]      [ ]      [ ]      [ ]
+   ↑        ↑        ↑        ↑        ↑        ↑
+  bottom            TOP=C    TOP=B    TOP=A    TOP=D
+
+Pop 2 lần liên tiếp → trả về C, rồi B (theo thứ tự ngược chiều push)</div>
+</div>
+
+<h3>2. キュー (Queue) — 先入れ先出し / FIFO</h3>
+<div class="lang jp"><span class="tag">🇯🇵 日本語</span>
+キュー(待ち行列)とは、<b>最初に格納したデータを最初に取り出す</b>データ構造。イメージは「レジ待ちの列」。最初に並んだ人が最初に会計をすませる。格納=<code>enqueue</code>、取り出し=<code>dequeue</code>。<b>先入れ先出し(FIFO: First In First Out)</b>。
+</div>
+<div class="lang vi"><span class="tag">🇻🇳 Tiếng Việt</span>
+Queue (hàng đợi / 待ち行列) là cấu trúc <b>vào trước ra trước</b>. Hình dung: <b>hàng người xếp ở quầy thu ngân</b> — ai vào trước được phục vụ trước, không chen ngang.
+<ul>
+<li><code>enqueue X</code> — thêm X vào <b>cuối</b> hàng</li>
+<li><code>dequeue</code> — lấy phần tử ở <b>đầu</b> hàng ra</li>
+<li>Ưu điểm: xử lý lệnh theo đúng thứ tự nhập vào</li>
+</ul>
+</div>
+<div class="lang en"><span class="tag">🇬🇧 English</span>
+A <b>queue</b> uses FIFO order. <code>enqueue</code> adds to the rear; <code>dequeue</code> removes from the front. Like a checkout line — first in, first served.
+</div>
+
+<div class="panel">
+<h4>➡️ Queue — thao tác enqueue / dequeue</h4>
+<div class="ascii">enqueue A → enqueue B → enqueue C → dequeue → dequeue → enqueue D
+
+   front                                                  front
+   [A]            [A][B]         [A][B][C]      [B][C]      [C]         [C][D]
+                                                                         rear
+
+dequeue 2 lần liên tiếp → trả về A, rồi B (theo đúng thứ tự enqueue)</div>
+</div>
+
+<h3>3. Stack vs Queue — Bảng so sánh</h3>
+<table>
+<tr><th>Tiêu chí</th><th>スタック (Stack)</th><th>キュー (Queue)</th></tr>
+<tr><td>Nguyên tắc</td><td><b>LIFO</b> — 後入れ先出し</td><td><b>FIFO</b> — 先入れ先出し</td></tr>
+<tr><td>Thao tác thêm</td><td><code>push X</code></td><td><code>enqueue X</code></td></tr>
+<tr><td>Thao tác lấy</td><td><code>pop</code> (lấy ở đỉnh)</td><td><code>dequeue</code> (lấy ở đầu)</td></tr>
+<tr><td>Hình dung đời thực</td><td>Chồng sách 📚</td><td>Hàng xếp ở quầy 🛒</td></tr>
+<tr><td>Tên khác</td><td>—</td><td>待ち行列 (machi-gyōretsu)</td></tr>
+<tr><td>Ứng dụng tiêu biểu</td><td>Lưu lịch sử thao tác, undo, gọi hàm đệ quy</td><td>Hàng đợi tác vụ, in ấn, lịch CPU</td></tr>
+</table>
+
+<h3>4. 木構造 (Tree) — Hierarchical structure</h3>
+<div class="lang jp"><span class="tag">🇯🇵 日本語</span>
+木構造とは、<b>階層構造を持つデータ構造</b>。植物の木を逆さにしたような形をしている。枝分かれする箇所(○)を<b>節(せつ)</b>といい、節がデータを保持する。最上位の節を<b>根(ね)</b>、末端の節を<b>葉(は)</b>と呼ぶ。
+</div>
+<div class="lang vi"><span class="tag">🇻🇳 Tiếng Việt</span>
+Tree (木構造) là cấu trúc dữ liệu có <b>thứ bậc</b> (階層構造). Hình dạng giống cây cối úp ngược. Các thành phần:
+<ul>
+<li><b>節 (node, nút)</b>: điểm phân nhánh, nơi chứa dữ liệu</li>
+<li><b>根 (root, gốc)</b>: nút trên cùng (chỉ có 1)</li>
+<li><b>葉 (leaf, lá)</b>: nút tận cùng, không có nhánh con</li>
+<li><b>親 (parent) — 子 (child)</b>: nút phân nhánh là cha, nút bị phân nhánh đến là con</li>
+</ul>
+</div>
+<div class="lang en"><span class="tag">🇬🇧 English</span>
+A <b>tree</b> is a hierarchical data structure. The topmost node is the <b>root</b>; terminal nodes are <b>leaves</b>; intermediate ones are simply <b>nodes</b>. Each node may have parent/child relationships.
+</div>
+
+<h4>n分木 (n-ary tree)</h4>
+<div class="lang vi"><span class="tag">🇻🇳 Tiếng Việt</span>
+Theo Yasashii: nếu mỗi nút cha có tối đa <b>n con</b>, gọi là <b>n分木</b>.
+<ul>
+<li><b>2分木</b> (nhị phân): mỗi cha có 0~2 con</li>
+<li><b>3分木</b>: mỗi cha có 0~3 con</li>
+<li><b>n分木</b>: tổng quát hóa</li>
+</ul>
+"分木" thể hiện <b>số lượng con tối đa mà một nút có thể phân nhánh</b>.
+</div>
+
+<h4>2分探索木 (Binary Search Tree, BST)</h4>
+<div class="callout">
+<b>⭐ Điều kiện 2分探索木 (theo Yasashii):</b><br>
+<code style="font-size:15px">左の子孫 &lt; 親 &lt; 右の子孫</code><br>
+<span style="color:var(--mute);font-size:13px">(Tất cả con cháu bên trái nhỏ hơn nút cha; tất cả con cháu bên phải lớn hơn nút cha)</span>
+</div>
+<div class="lang jp"><span class="tag">🇯🇵 日本語</span>
+2分木の中でも、親子の値が「<b>左の子孫 &lt; 親 &lt; 右の子孫</b>」の関係になっているものを「2分探索木」という。注意点: 値の制約は「子」ではなく「<b>子孫</b>」である(孫・ひ孫など、さらに下のデータも含む)。
+</div>
+<div class="lang vi"><span class="tag">🇻🇳 Tiếng Việt</span>
+<b>Lưu ý quan trọng:</b> ràng buộc áp dụng cho <b>"子孫" (con cháu)</b>, không chỉ cho "子" (con trực tiếp). Tức là cháu, chắt, chút, chít ở phía bên trái cũng phải nhỏ hơn cha; bên phải phải lớn hơn cha.
+<br><br><b>Lợi ích:</b> Tìm dữ liệu rất nhanh — chỉ cần kiểm tra <b>階層の数</b> (số tầng) lần là tìm thấy. Cây thường (không có ràng buộc) phải duyệt từng nút một.
+</div>
+
+<div class="panel">
+<h4>🌳 So sánh: 良い例 vs ダメな例 (theo hình trong Yasashii)</h4>
+<div class="grid2">
+<div>
+<div class="ascii">○ 良い例 (BST hợp lệ)
+
+         (7) ← root
+        /   \
+      (5)   (9)
+      / \
+    (3) (6)
+
+Kiểm tra:
+- 7: trái={5,3,6} đều <7 ✓
+     phải={9} >7 ✓
+- 5: trái={3} <5 ✓, phải={6} >5 ✓
+→ LIFO: tất cả "子孫" thỏa
+   左 < 親 < 右</div>
+</div>
+<div>
+<div class="ascii">✗ ダメな例 (KHÔNG phải BST)
+
+         (7)
+        /   \
+      (5)   (6) ✗ 右の子孫が
+      / \         親より小さい
+    (3) (8) ✗ 左の子孫が
+              親より大きい
+
+Sai vì:
+- 6 ở phải của 7 nhưng 6<7
+- 8 ở phải-trái-cháu của 7
+  nhưng nằm dưới (5), so với
+  ông (7): 8>7 ✗ với BST</div>
+</div>
+</div>
+</div>
+
+<h3>5. Tổng kết — 5 loại データ構造 (theo Yasashii)</h3>
+<table>
+<tr><th>#</th><th>Tên</th><th>Đặc điểm 1 dòng</th><th>Từ khóa</th></tr>
+<tr><td>1</td><td>スタック</td><td>LIFO — chồng sách</td><td>push / pop</td></tr>
+<tr><td>2</td><td>キュー</td><td>FIFO — hàng chờ</td><td>enqueue / dequeue</td></tr>
+<tr><td>3</td><td>配列 (Array)</td><td>Bảng — truy cập trực tiếp bằng 要素番号</td><td>A[3]</td></tr>
+<tr><td>4</td><td>連結リスト (Linked List)</td><td>Nối nhau qua pointer, chèn/xóa nhanh</td><td>単方向/双方向, 線形/環状</td></tr>
+<tr><td>5</td><td>木構造 (Tree)</td><td>Phân tầng, có cha-con</td><td>根 / 節 / 葉, 2分探索木</td></tr>
+</table>
+
+<!-- ============ PHẦN 2 ============ -->
+<h2>💡 Phần 2 — Ví dụ minh hoạ</h2>
+
+<h3>Ví dụ 1 — Stack: dãy thao tác push/pop</h3>
+<div class="panel">
+<b>Bài:</b> Thực hiện theo thứ tự: <code>push 1, push 2, push 3, pop, push 4, pop, pop</code>. Hỏi giá trị các lần pop là gì? Sau cùng stack chứa gì?
+<div class="ascii">Bước 1: push 1   → stack: [1]              TOP=1
+Bước 2: push 2   → stack: [1,2]            TOP=2
+Bước 3: push 3   → stack: [1,2,3]          TOP=3
+Bước 4: pop      → lấy 3, stack: [1,2]     TOP=2   ← pop ra 3
+Bước 5: push 4   → stack: [1,2,4]          TOP=4
+Bước 6: pop      → lấy 4, stack: [1,2]     TOP=2   ← pop ra 4
+Bước 7: pop      → lấy 2, stack: [1]       TOP=1   ← pop ra 2
+
+Đáp án: pop trả về theo thứ tự = 3, 4, 2.  Stack cuối còn: [1]</div>
+</div>
+
+<h3>Ví dụ 2 — Queue: dãy enqueue/dequeue</h3>
+<div class="panel">
+<b>Bài:</b> Thực hiện: <code>enqueue A, enqueue B, dequeue, enqueue C, enqueue D, dequeue</code>. Hỏi dequeue trả về gì? Cuối cùng queue còn gì?
+<div class="ascii">Bước 1: enqueue A → [A]
+Bước 2: enqueue B → [A, B]            front=A, rear=B
+Bước 3: dequeue   → [B]               ← lấy A (vào trước → ra trước)
+Bước 4: enqueue C → [B, C]
+Bước 5: enqueue D → [B, C, D]
+Bước 6: dequeue   → [C, D]            ← lấy B
+
+Đáp án: dequeue trả về = A, rồi B.  Queue cuối còn: [C, D]</div>
+</div>
+
+<h3>Ví dụ 3 — Tree: xác định BST hay không</h3>
+<div class="panel">
+<b>Bài:</b> Cây dưới đây có phải 2分探索木 không?
+<div class="ascii">         (10)
+        /    \
+      (5)   (15)
+      / \    / \
+    (3) (7)(12)(20)</div>
+<b>Kiểm tra điều kiện 「左の子孫 &lt; 親 &lt; 右の子孫」:</b>
+<ul>
+<li>Nút 10: trái = {5, 3, 7} đều &lt; 10 ✓ ; phải = {15, 12, 20} đều &gt; 10 ✓</li>
+<li>Nút 5: trái = {3} &lt; 5 ✓ ; phải = {7} &gt; 5 ✓</li>
+<li>Nút 15: trái = {12} &lt; 15 ✓ ; phải = {20} &gt; 15 ✓</li>
+</ul>
+<b>Kết luận:</b> ✅ Đây là 2分探索木 hợp lệ.
+</div>
+
+<h3>Ví dụ 4 — Ứng dụng đời thực</h3>
+<table>
+<tr><th>Tình huống</th><th>Cấu trúc phù hợp</th><th>Lý do</th></tr>
+<tr><td>Undo trong Word (Ctrl+Z)</td><td>Stack</td><td>Thao tác cuối cùng cần undo trước → LIFO</td></tr>
+<tr><td>Hàng đợi máy in</td><td>Queue</td><td>File gửi trước in trước → FIFO</td></tr>
+<tr><td>Cây thư mục Windows / Mac</td><td>Tree</td><td>Có cha-con phân tầng (folder/subfolder)</td></tr>
+<tr><td>Danh bạ điện thoại đã sắp xếp</td><td>2分探索木</td><td>Tra cứu nhanh theo thứ tự</td></tr>
+</table>
+
+<!-- ============ PHẦN 3 FLASHCARD ============ -->
+<h2>🎴 Phần 3 — Flashcard (bấm để lật)</h2>
+<p style="color:var(--mute);font-size:14px">Click vào thẻ để xem mặt sau. Click lần nữa để quay lại.</p>
+<div class="flash" id="flash"></div>
+
+<!-- ============ PHẦN 4 QUIZ ============ -->
+<h2>📝 Phần 4 — Câu hỏi ôn tập (10 câu)</h2>
+<p style="color:var(--mute);font-size:14px">Chọn đáp án rồi bấm "Hiện đáp án" cuối trang.</p>
+<div id="quiz"></div>
+<div style="margin:16px 0"><button onclick="showAllAns()">✅ Hiện toàn bộ đáp án</button></div>
+
+<!-- ============ PHẦN 5 MIND MAP SVG ============ -->
+<h2>🗺️ Phần 5 — Mind Map (SVG)</h2>
+<div class="panel" style="background:#fff;padding:8px">
+<svg viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:system-ui,'Noto Sans JP',sans-serif">
+  <!-- center -->
+  <ellipse cx="550" cy="360" rx="120" ry="55" fill="#f59e0b" stroke="#92400e" stroke-width="2"/>
+  <text x="550" y="355" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1a1a">データ構造</text>
+  <text x="550" y="378" text-anchor="middle" font-size="13" fill="#1a1a1a">Stack/Queue/Tree</text>
+
+  <!-- branch 1 STACK (red) -->
+  <path d="M 480 330 Q 320 220 200 150" stroke="#ef4444" stroke-width="3" fill="none"/>
+  <rect x="80" y="120" width="200" height="60" rx="12" fill="#ef4444" stroke="#991b1b" stroke-width="2"/>
+  <text x="180" y="145" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">スタック (Stack)</text>
+  <text x="180" y="165" text-anchor="middle" font-size="13" fill="#fff">LIFO / 後入れ先出し</text>
+  <!-- stack children -->
+  <path d="M 180 180 Q 100 200 60 240" stroke="#ef4444" stroke-width="2" fill="none"/>
+  <rect x="10" y="240" width="120" height="36" rx="8" fill="#fca5a5" stroke="#ef4444"/>
+  <text x="70" y="263" text-anchor="middle" font-size="12" fill="#7f1d1d">push / pop</text>
+  <path d="M 180 180 Q 200 220 220 250" stroke="#ef4444" stroke-width="2" fill="none"/>
+  <rect x="150" y="250" width="140" height="36" rx="8" fill="#fca5a5" stroke="#ef4444"/>
+  <text x="220" y="273" text-anchor="middle" font-size="12" fill="#7f1d1d">chồng sách 📚</text>
+
+  <!-- branch 2 QUEUE (green) -->
+  <path d="M 480 390 Q 320 500 200 580" stroke="#22c55e" stroke-width="3" fill="none"/>
+  <rect x="80" y="560" width="200" height="60" rx="12" fill="#22c55e" stroke="#166534" stroke-width="2"/>
+  <text x="180" y="585" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">キュー (Queue)</text>
+  <text x="180" y="605" text-anchor="middle" font-size="13" fill="#fff">FIFO / 先入れ先出し</text>
+  <path d="M 180 620 Q 100 640 60 670" stroke="#22c55e" stroke-width="2" fill="none"/>
+  <rect x="10" y="670" width="150" height="36" rx="8" fill="#86efac" stroke="#22c55e"/>
+  <text x="85" y="693" text-anchor="middle" font-size="12" fill="#14532d">enqueue / dequeue</text>
+  <path d="M 180 620 Q 230 650 260 680" stroke="#22c55e" stroke-width="2" fill="none"/>
+  <rect x="190" y="680" width="140" height="36" rx="8" fill="#86efac" stroke="#22c55e"/>
+  <text x="260" y="703" text-anchor="middle" font-size="12" fill="#14532d">hàng chờ 🛒</text>
+
+  <!-- branch 3 TREE (blue) -->
+  <path d="M 620 330 Q 780 220 900 150" stroke="#3b82f6" stroke-width="3" fill="none"/>
+  <rect x="820" y="120" width="200" height="60" rx="12" fill="#3b82f6" stroke="#1e3a8a" stroke-width="2"/>
+  <text x="920" y="145" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">木構造 (Tree)</text>
+  <text x="920" y="165" text-anchor="middle" font-size="13" fill="#fff">階層構造</text>
+  <!-- tree children -->
+  <path d="M 920 180 Q 970 220 990 260" stroke="#3b82f6" stroke-width="2" fill="none"/>
+  <rect x="930" y="260" width="160" height="36" rx="8" fill="#93c5fd" stroke="#3b82f6"/>
+  <text x="1010" y="283" text-anchor="middle" font-size="12" fill="#1e3a8a">根 / 節 / 葉</text>
+  <path d="M 920 180 Q 870 220 850 260" stroke="#3b82f6" stroke-width="2" fill="none"/>
+  <rect x="770" y="260" width="160" height="36" rx="8" fill="#93c5fd" stroke="#3b82f6"/>
+  <text x="850" y="283" text-anchor="middle" font-size="12" fill="#1e3a8a">親 / 子 / 子孫</text>
+  <path d="M 920 180 Q 940 240 960 300" stroke="#3b82f6" stroke-width="2" fill="none"/>
+  <rect x="880" y="300" width="120" height="36" rx="8" fill="#93c5fd" stroke="#3b82f6"/>
+  <text x="940" y="323" text-anchor="middle" font-size="12" fill="#1e3a8a">n分木</text>
+
+  <!-- branch 4 BST (purple) -->
+  <path d="M 620 390 Q 780 500 900 580" stroke="#a855f7" stroke-width="3" fill="none"/>
+  <rect x="820" y="560" width="220" height="60" rx="12" fill="#a855f7" stroke="#581c87" stroke-width="2"/>
+  <text x="930" y="585" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">2分探索木 (BST)</text>
+  <text x="930" y="605" text-anchor="middle" font-size="12" fill="#fff">左子孫 &lt; 親 &lt; 右子孫</text>
+  <path d="M 930 620 Q 870 650 850 680" stroke="#a855f7" stroke-width="2" fill="none"/>
+  <rect x="770" y="680" width="160" height="36" rx="8" fill="#d8b4fe" stroke="#a855f7"/>
+  <text x="850" y="703" text-anchor="middle" font-size="12" fill="#581c87">tìm kiếm nhanh</text>
+  <path d="M 930 620 Q 990 650 1010 680" stroke="#a855f7" stroke-width="2" fill="none"/>
+  <rect x="930" y="680" width="160" height="36" rx="8" fill="#d8b4fe" stroke="#a855f7"/>
+  <text x="1010" y="703" text-anchor="middle" font-size="12" fill="#581c87">子孫 (not just 子)</text>
+</svg>
+</div>
+
+<div style="margin-top:30px;padding:14px;background:var(--panel2);border-radius:8px;color:var(--mute);font-size:13px">
+📖 Nguồn: 「いちばんやさしい基本情報技術者」(Yasashii) — 第3章 アルゴリズムとプログラミング, Lesson 03-01「データ構造」(pp.80–88).
+</div>
+
+<script>
+// =============== FLASHCARDS ===============
+const flashData = [
+ ["スタック (Stack) とは?","Cấu trúc dữ liệu LIFO — 後入れ先出し. Phần tử nhập sau lấy ra trước. Hình ảnh: chồng sách."],
+ ["LIFO 是什么 / là gì?","Last In First Out — 最後に格納したデータを最初に取り出す. Đặc trưng của Stack."],
+ ["push / pop là gì?","push X = đẩy X vào đỉnh stack. pop = lấy phần tử đỉnh ra (không cần tên vì chỉ có 1)."],
+ ["キュー (Queue) tên khác?","待ち行列 (machi-gyōretsu) — hàng chờ. FIFO: First In First Out."],
+ ["enqueue / dequeue?","enqueue X = thêm X vào cuối hàng. dequeue = lấy phần tử ở đầu hàng ra."],
+ ["FIFO là viết tắt của?","First In First Out — 先入れ先出し. Phần tử vào trước thì ra trước."],
+ ["5 loại データ構造 trong Yasashii?","(1) スタック (2) キュー (3) 配列 (4) 連結リスト (5) 木構造"],
+ ["根・節・葉 là gì?","根 (root) = nút trên cùng. 節 (node) = điểm phân nhánh, chứa dữ liệu. 葉 (leaf) = nút tận cùng."],
+ ["親・子 trong tree?","親 = nút phân nhánh ra (cha). 子 = nút bị phân nhánh đến (con). Cha có thể có nhiều con."],
+ ["2分木 là gì?","Tree mà mỗi nút có 0~2 con. Tổng quát: n分木 = mỗi nút có 0~n con."],
+ ["Điều kiện 2分探索木?","左の子孫 < 親 < 右の子孫. CHÚ Ý: ràng buộc là 子孫 (cháu chắt) chứ không chỉ 子 (con)."],
+ ["Lợi ích của 2分探索木?","Tìm dữ liệu nhanh — chỉ cần kiểm tra số tầng (階層の数) lần là ra, không phải duyệt từng nút."],
+ ["FE試験 — loại nào hay ra nhất?","スタック (Stack) — Yasashii nói 「スタックが最頻出」."],
+ ["Pop 2 lần sau push 1,2,3 trả về?","3 rồi 2 (LIFO — lấy ngược chiều push)."],
+ ["Dequeue 2 lần sau enqueue A,B,C?","A rồi B (FIFO — lấy theo đúng chiều enqueue)."]
+];
+const flashEl = document.getElementById('flash');
+flashData.forEach(([f,b])=>{
+  const d=document.createElement('div');
+  d.className='card';
+  d.innerHTML=`<div><div class="front">${f}</div><div class="back">${b}</div></div>`;
+  d.onclick=()=>d.classList.toggle('flip');
+  flashEl.appendChild(d);
+});
+
+// =============== QUIZ ===============
+const quizData = [
+ {q:"Stack hoạt động theo nguyên tắc nào?",
+  opts:["FIFO","LIFO","Random Access","Hash"],ans:1,
+  ex:"Stack = LIFO (Last In First Out / 後入れ先出し). Phần tử push sau cùng được pop ra trước."},
+ {q:"Phép thêm dữ liệu vào stack tên là gì?",
+  opts:["enqueue","insert","push","add"],ans:2,
+  ex:"push thêm vào đỉnh stack. pop là lấy ra. Yasashii: 「データを格納することをpushという」."},
+ {q:"Sau dãy push 1, push 2, push 3, pop, pop — giá trị 2 lần pop là?",
+  opts:["1, 2","2, 3","3, 2","3, 1"],ans:2,
+  ex:"Stack [1,2,3]. Pop lấy TOP=3 trước, rồi TOP=2. Đáp án 3, 2 (LIFO)."},
+ {q:"Queue (キュー) còn được gọi là gì trong Yasashii?",
+  opts:["待ち時間","待ち行列","行列式","数列"],ans:1,
+  ex:"待ち行列 (machi-gyōretsu) = hàng đợi. Hoạt động theo FIFO."},
+ {q:"Sau enqueue A, enqueue B, enqueue C, dequeue — dequeue trả về?",
+  opts:["A","B","C","Tất cả"],ans:0,
+  ex:"FIFO — A vào trước → A ra trước. Sau dequeue, queue còn [B, C]."},
+ {q:"Trong cây, nút trên cùng được gọi là?",
+  opts:["葉 (leaf)","節 (node)","根 (root)","親 (parent)"],ans:2,
+  ex:"根 = root, nút trên cùng (chỉ 1 nút). 葉 là nút tận cùng. 節 là điểm phân nhánh tổng quát."},
+ {q:"n分木 nghĩa là gì?",
+  opts:["Cây có n tầng","Cây có n nút","Mỗi nút có tối đa n con","Cây có n lá"],ans:2,
+  ex:"Yasashii: 「分木とは、節が最大でいくつの子に分かれるのかを表しています」. 2分木 = max 2 con, 3分木 = max 3 con."},
+ {q:"Điều kiện của 2分探索木 là gì?",
+  opts:["左の子 < 親 < 右の子","左の子孫 < 親 < 右の子孫","親 < 左の子孫 < 右の子孫","左の子孫 > 親 > 右の子孫"],ans:1,
+  ex:"Yasashii nhấn mạnh: ràng buộc là 子孫 (con cháu) chứ không chỉ 子 (con). 左の子孫 < 親 < 右の子孫."},
+ {q:"Trường hợp nào nên dùng Stack?",
+  opts:["Hàng đợi máy in","Chức năng Undo (Ctrl+Z)","Danh bạ sắp xếp","Cây thư mục"],ans:1,
+  ex:"Undo cần lấy thao tác gần nhất ra trước → LIFO → Stack. Máy in dùng Queue (FIFO)."},
+ {q:"Lợi ích chính của 2分探索木 là gì?",
+  opts:["Tiết kiệm bộ nhớ","Sắp xếp tự động","Tìm kiếm nhanh theo số tầng","Cho phép trùng giá trị"],ans:2,
+  ex:"Yasashii: 「根から葉までの階層の数だけ値を調べれば、目的のデータを見つけ出せる」 — chỉ cần kiểm tra theo số tầng (logarit) lần."}
+];
+const quizEl=document.getElementById('quiz');
+quizData.forEach((it,i)=>{
+  const d=document.createElement('div');
+  d.className='quiz-q';
+  d.innerHTML=`<b>Câu ${i+1}.</b> ${it.q}
+    <div class="opts">${it.opts.map((o,j)=>`<label><input type="radio" name="q${i}" value="${j}"> ${String.fromCharCode(65+j)}. ${o}</label>`).join('')}</div>
+    <div class="ans"><b>✅ Đáp án: ${String.fromCharCode(65+it.ans)}.</b> ${it.ex}</div>`;
+  quizEl.appendChild(d);
+});
+function showAllAns(){document.querySelectorAll('.quiz-q').forEach(q=>q.classList.add('show'));}
+</script>
+
+</body>
+</html>

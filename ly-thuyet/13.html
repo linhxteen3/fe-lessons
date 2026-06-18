@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE 03-04 · 基本アルゴリズム · ソート (Sắp xếp)</title>
+<style>
+:root{
+  --bg:#0f1419; --bg2:#161b22; --bg3:#1c232c;
+  --fg:#e6edf3; --fg2:#9ba9b8; --muted:#6e7681;
+  --accent:#ff7b54; --accent2:#ffb26b; --accent3:#76c7c0;
+  --c-jp:#ff9aa2; --c-vn:#a8e6cf; --c-en:#b5cdfb;
+  --line:rgba(255,255,255,0.08);
+  --ok:#4ade80; --ng:#f87171;
+  --b-bub:#76c7c0; --b-sel:#ffb26b; --b-ins:#c084fc; --b-quick:#f87171; --b-other:#9ba9b8;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP","Helvetica Neue",sans-serif;
+  --mono:"Space Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.65}
+.wrap{max-width:1100px;margin:0 auto;padding:32px 22px 80px}
+header.hero{background:linear-gradient(135deg,#1a2128 0%,#0f1419 100%);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:28px}
+header.hero .tag{display:inline-block;background:var(--accent);color:#0f1419;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:.5px}
+header.hero h1{margin:10px 0 6px;font-size:28px;line-height:1.3}
+header.hero p.sub{margin:0;color:var(--fg2);font-size:14px}
+h2.section{font-size:22px;margin:40px 0 18px;padding-left:14px;border-left:5px solid var(--accent)}
+h3{font-size:18px;margin:24px 0 10px;color:var(--accent2)}
+h4{font-size:15px;margin:16px 0 8px;color:var(--accent3)}
+.lang{margin:10px 0;padding:12px 14px;border-radius:10px;border-left:4px solid;background:var(--bg2);font-size:14.5px}
+.lang.jp{border-color:var(--c-jp)}
+.lang.vn{border-color:var(--c-vn)}
+.lang.en{border-color:var(--c-en)}
+.lang .flag{font-weight:700;font-size:13px;letter-spacing:.5px;margin-bottom:4px;display:block;opacity:.9}
+.lang.jp .flag{color:var(--c-jp)}
+.lang.vn .flag{color:var(--c-vn)}
+.lang.en .flag{color:var(--c-en)}
+.box{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:18px;margin:14px 0}
+.box.bub{border-left:4px solid var(--b-bub)}
+.box.sel{border-left:4px solid var(--b-sel)}
+.box.ins{border-left:4px solid var(--b-ins)}
+.box.quick{border-left:4px solid var(--b-quick)}
+.box.other{border-left:4px solid var(--b-other)}
+pre,code.block{background:#0a0e13;border:1px solid var(--line);border-radius:8px;padding:14px;font-family:var(--mono);font-size:13px;color:#cfe;overflow-x:auto;white-space:pre}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{padding:10px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:#1f262e;color:var(--accent2);font-weight:600}
+tr:nth-child(even) td{background:rgba(255,255,255,0.02)}
+.badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:12px;font-weight:600}
+.b-jp{background:#3a1f24;color:var(--c-jp)}
+.b-vn{background:#1f3a2c;color:var(--c-vn)}
+.b-en{background:#1f2a3a;color:var(--c-en)}
+.fc-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:14px 0}
+.fc{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:18px;min-height:130px;cursor:pointer;position:relative;transition:transform .15s}
+.fc:hover{transform:translateY(-2px);border-color:var(--accent)}
+.fc .back{display:none;color:var(--fg2);font-size:14px;margin-top:8px;border-top:1px dashed var(--line);padding-top:10px}
+.fc.flipped .back{display:block}
+.fc .cat{position:absolute;top:8px;right:10px;font-size:11px;padding:2px 7px;border-radius:4px;background:#2a323b;color:var(--fg2)}
+.fc .q{font-weight:700;font-size:15px;color:var(--accent2);margin-bottom:6px}
+.fc-filters{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.fc-filters button{background:var(--bg3);border:1px solid var(--line);color:var(--fg);padding:6px 12px;border-radius:20px;cursor:pointer;font-size:13px}
+.fc-filters button.active{background:var(--accent);color:#0f1419;border-color:var(--accent)}
+.quiz-q{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:18px;margin:14px 0}
+.quiz-q .stem{font-weight:600;margin-bottom:10px}
+.quiz-q .opts label{display:block;padding:8px 12px;margin:6px 0;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-size:14px;transition:background .15s}
+.quiz-q .opts label:hover{background:var(--bg3)}
+.quiz-q.locked .opts label{cursor:default;pointer-events:none}
+.quiz-q .opts label.correct{background:rgba(74,222,128,0.15);border-color:var(--ok)}
+.quiz-q .opts label.incorrect{background:rgba(248,113,113,0.15);border-color:var(--ng)}
+.quiz-q .exp{display:none;margin-top:12px;padding:12px;background:#0a0e13;border-radius:8px;font-size:13.5px;color:var(--fg2)}
+.quiz-q.locked .exp{display:block}
+.quiz-result{margin-top:16px;padding:16px;background:linear-gradient(135deg,#1a2a3a,#1a3a2a);border-radius:12px;text-align:center;font-size:18px;font-weight:700;display:none}
+.btn{background:var(--accent);color:#0f1419;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px}
+.btn:hover{background:var(--accent2)}
+.ascii{font-family:var(--mono);font-size:12.5px;line-height:1.5;color:#bce}
+.note{background:#241f1a;border:1px solid #4a3a2a;border-radius:8px;padding:12px;font-size:13.5px;color:#fdc}
+.note b{color:var(--accent2)}
+.mindmap{background:#0a0e13;border:1px solid var(--line);border-radius:12px;padding:14px;overflow-x:auto;margin:18px 0}
+.mindmap svg{display:block;margin:0 auto;max-width:100%;height:auto}
+ul.clean{margin:6px 0 6px 22px;padding:0}
+ul.clean li{margin:4px 0}
+.complexity{display:inline-block;background:#1a1f25;border:1px solid var(--line);padding:2px 8px;border-radius:5px;font-family:var(--mono);color:var(--accent3);font-size:12.5px}
+@media(max-width:600px){header.hero h1{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <span class="tag">FE試験 · Yasashii Ch.3 Lesson 03-04 + Slide 第3回</span>
+  <h1>基本アルゴリズム · ソート (Sắp xếp)</h1>
+  <p class="sub">基本交換法 · 基本選択法 · 基本挿入法 · クイックソート + シェル/ヒープ/マージ</p>
+</header>
+
+<!-- =============== PHẦN 1 =============== -->
+<h2 class="section">📖 Phần 1 — Tóm tắt lý thuyết</h2>
+
+<h3>1.1 ソート (整列) là gì?</h3>
+<div class="lang jp"><span class="flag">🇯🇵 日本語</span>
+<b>ソート (整列)</b>とは、データを<b>一定の規則に従って並べ替える</b>処理です。「<b>昇順 (小→大)</b>」と「<b>降順 (大→小)</b>」の2種類があります。FE試験では「アルゴリズム名」と「処理方法」の対応を問う問題が頻繁に出題されます。
+</div>
+<div class="lang vn"><span class="flag">🇻🇳 Tiếng Việt</span>
+<b>Sort (整列 / sắp xếp)</b> là thao tác <b>sắp xếp dữ liệu theo một quy tắc nhất định</b>. Có 2 loại: <b>昇順</b> (tăng dần, nhỏ→lớn) và <b>降順</b> (giảm dần, lớn→nhỏ). Trong FE試験, dạng câu hỏi phổ biến nhất là <b>nối tên thuật toán với mô tả cách hoạt động</b> (xem 過去問 3-11 平成30年度).
+</div>
+<div class="lang en"><span class="flag">🇬🇧 English</span>
+<b>Sorting (整列)</b> rearranges data according to a rule — ascending (昇順) or descending (降順). FE exams most often ask you to match algorithm names with their behaviour.
+</div>
+
+<h4>🃏 Ví von dễ hiểu — như xếp bài tây</h4>
+<ul class="clean">
+<li><span class="badge b-vn">交換</span> <b>Bubble (基本交換法):</b> nhìn 2 quân kề nhau, sai thứ tự thì <b>đổi chỗ</b> — lặp lại đến hết.</li>
+<li><span class="badge b-vn">選択</span> <b>Selection (基本選択法):</b> lướt qua cả mảng, <b>chọn quân lớn/nhỏ nhất</b> rồi đặt sang một bên.</li>
+<li><span class="badge b-vn">挿入</span> <b>Insertion (基本挿入法):</b> cầm từng quân mới, <b>chèn</b> vào đúng vị trí trong nhóm đã sắp xếp.</li>
+<li><span class="badge b-vn">Quick</span> <b>クイックソート:</b> chọn 1 "quân chuẩn", chia bài thành <b>nhóm nhỏ hơn / lớn hơn</b>, lặp lại.</li>
+</ul>
+
+<h3>1.2 Bảng tổng hợp 7 thuật toán Sort (slide 第3回)</h3>
+<table>
+<thead><tr><th>Tên (JP)</th><th>Loại</th><th>Mô tả cốt lõi</th><th>Tốc độ TB</th></tr></thead>
+<tbody>
+<tr><td><b>基本交換法</b><br>(バブルソート)</td><td>Cơ bản</td><td>So sánh 2 phần tử <b>liền kề</b>, đổi chỗ nếu sai thứ tự.</td><td><span class="complexity">O(n²)</span></td></tr>
+<tr><td><b>基本選択法</b><br>(セレクションソート)</td><td>Cơ bản</td><td><b>Chọn</b> giá trị max/min từ phần chưa sắp, đưa sang phần đã sắp.</td><td><span class="complexity">O(n²)</span></td></tr>
+<tr><td><b>基本挿入法</b><br>(インサーションソート)</td><td>Cơ bản</td><td>Lấy từng phần tử, <b>chèn</b> vào vị trí đúng trong phần đã sắp.</td><td><span class="complexity">O(n²)</span></td></tr>
+<tr><td><b>シェルソート</b></td><td>Cải tiến của 挿入</td><td>Lấy dữ liệu theo <b>khoảng cách</b> nhất định, sắp xếp, rồi <b>thu hẹp khoảng cách</b> dần (cuối cùng = 1).</td><td>≈ O(n log² n)</td></tr>
+<tr><td><b>クイックソート</b><br>★Yasashii nhấn mạnh</td><td>Chia để trị</td><td>Chọn <b>基準値 (pivot)</b>, chia thành nhóm "nhỏ hơn pivot" và "lớn hơn pivot", lặp lại.</td><td>O(n log n)<br>(nhanh nhất)</td></tr>
+<tr><td><b>ヒープソート</b></td><td>Dùng cây heap</td><td>Dùng <b>ヒープ木</b> (cha ≥ con hoặc cha ≤ con) để lấy max/min liên tiếp.</td><td>O(n log n)</td></tr>
+<tr><td><b>マージソート</b></td><td>Chia để trị</td><td>Chia mảng đôi, sắp xếp từng nửa, rồi <b>gộp (merge)</b> lại theo thứ tự.</td><td>O(n log n)</td></tr>
+</tbody>
+</table>
+
+<div class="note">
+<b>💡 試験に出るポイント (Yasashii nhấn mạnh):</b><br>
+<b>クイックソート</b>は、最初に<b>基準値</b>を選び、それよりも<b>小さな値のグループ</b>と<b>大きな値のグループ</b>にデータを分割する。<br>
+→ FE試験 (平成30年度 問題3-11) — chính xác là câu hỏi định nghĩa quicksort.
+</div>
+
+<h3>1.3 ① 基本交換法 (Bubble Sort)</h3>
+<div class="box bub">
+<div class="lang jp"><span class="flag">🇯🇵 日本語</span>
+<b>隣り合う2つのデータ</b>の大きさを比較し、必要に応じて<b>入れ替える</b>ことを繰り返す方法。隣接データを<b>交換して</b>整列するので「<b>基本交換法</b>」と呼ばれる。
+</div>
+<div class="lang vn"><span class="flag">🇻🇳 Tiếng Việt</span>
+So sánh <b>2 phần tử liền kề</b>, nếu sai thứ tự thì <b>đổi chỗ</b>. Lặp đi lặp lại cho đến khi mảng đã sắp xếp. Vì "đổi chỗ" (交換) nên gọi là <b>基本交換法</b>.
+</div>
+<div class="lang en"><span class="flag">🇬🇧 English</span>
+Repeatedly compare <b>adjacent pairs</b> and swap them if in the wrong order. Largest (or smallest) values "bubble" toward one end of the array.
+</div>
+
+<h4>📊 Ví dụ slide — sắp xếp giảm dần [12, 3, 17, 5, 8]</h4>
+<pre class="ascii">Pass 1 (từ trái sang phải, đưa số nhỏ nhất về phải):
+[<b>12 3</b> 17 5 8]  → 12>3 OK, không đổi
+[12 <b>3 17</b> 5 8]  → 3<17 SAI (giảm dần), đổi → [12 17 3 5 8]
+[12 17 <b>3 5</b> 8]  → 3<5 SAI, đổi      → [12 17 5 3 8]
+[12 17 5 <b>3 8</b>]  → 3<8 SAI, đổi      → [12 17 5 8 3]   ← "3" về cuối ✅
+
+Pass 2 (chỉ xét 4 phần tử đầu):
+[<b>12 17</b> 5 8 | 3]  → 12<17 SAI, đổi   → [17 12 5 8 | 3]
+[17 <b>12 5</b> 8 | 3]  → OK
+[17 12 <b>5 8</b> | 3]  → 5<8 SAI, đổi    → [17 12 8 5 | 3]
+
+Pass 3-4: tương tự → kết quả [17 12 8 5 3] ✅
+</pre>
+</div>
+
+<h3>1.4 ② 基本選択法 (Selection Sort)</h3>
+<div class="box sel">
+<div class="lang jp"><span class="flag">🇯🇵 日本語</span>
+データの中から<b>最大値 (または最小値) を選択</b>し、整列済みのグループに移す。これを繰り返す方法。最大/最小値を<b>選択して</b>整列するので「<b>基本選択法</b>」。
+</div>
+<div class="lang vn"><span class="flag">🇻🇳 Tiếng Việt</span>
+Tìm ra <b>giá trị lớn nhất (hoặc nhỏ nhất)</b> trong phần chưa sắp xếp → <b>chuyển</b> sang phần đã sắp xếp → lặp lại với phần còn lại. Vì "chọn" (選択) max/min nên gọi là <b>基本選択法</b>.
+</div>
+<div class="lang en"><span class="flag">🇬🇧 English</span>
+Repeatedly <b>select</b> the maximum (or minimum) from the unsorted portion and move it to the sorted portion.
+</div>
+
+<h4>📊 Ví dụ slide — sắp xếp giảm dần [12, 3, 17, 5, 8]</h4>
+<pre class="ascii">Bước 1: chưa sắp = [12,3,17,5,8] → max = 17 → đưa ra ngoài
+        整列済 = [17]                 残り = [12,3,5,8]
+
+Bước 2: chưa sắp = [12,3,5,8]   → max = 12 → đưa ra ngoài
+        整列済 = [17,12]              残り = [3,5,8]
+
+Bước 3: chưa sắp = [3,5,8]      → max = 8  → đưa ra ngoài
+        整列済 = [17,12,8]            残り = [3,5]
+
+Bước 4: chưa sắp = [3,5]        → max = 5  → đưa ra ngoài
+        整列済 = [17,12,8,5]          残り = [3]
+
+Kết quả: [17, 12, 8, 5, 3] ✅
+</pre>
+</div>
+
+<h3>1.5 ③ 基本挿入法 (Insertion Sort)</h3>
+<div class="box ins">
+<div class="lang jp"><span class="flag">🇯🇵 日本語</span>
+既に整列済みのデータ列の<b>正しい位置に、データを追加 (挿入) する</b>操作を繰り返す方法。整列済配列へデータを<b>挿入して</b>整列させるので「<b>基本挿入法</b>」。
+</div>
+<div class="lang vn"><span class="flag">🇻🇳 Tiếng Việt</span>
+Coi phần tử đầu là "đã sắp xếp". Sau đó lấy từng phần tử mới, <b>chèn nó vào đúng vị trí</b> trong dãy đã sắp xếp. Vì "chèn" (挿入) nên gọi là <b>基本挿入法</b>.
+</div>
+<div class="lang en"><span class="flag">🇬🇧 English</span>
+Build the sorted array one element at a time by <b>inserting</b> each new element into its correct position among the already-sorted elements.
+</div>
+
+<h4>📊 Ví dụ — sắp xếp giảm dần [12, 3, 17, 5, 8]</h4>
+<pre class="ascii">Khởi tạo: 整列済 = [12]              残り = [3,17,5,8]
+
+Bước 1: lấy 3 → chèn vào [12]
+        12 > 3 → đặt sau 12 → [12, 3]      残り = [17,5,8]
+
+Bước 2: lấy 17 → chèn vào [12, 3]
+        17 > 12 → đặt trước 12 → [17, 12, 3]   残り = [5,8]
+
+Bước 3: lấy 5 → chèn vào [17, 12, 3]
+        5 < 12, 5 > 3 → chèn giữa → [17, 12, 5, 3]   残り = [8]
+
+Bước 4: lấy 8 → chèn vào [17, 12, 5, 3]
+        8 < 12, 8 > 5 → chèn giữa → [17, 12, 8, 5, 3] ✅
+</pre>
+</div>
+
+<h3>1.6 ④ クイックソート (Quick Sort) — ★ Yasashii nhấn mạnh</h3>
+<div class="box quick">
+<div class="lang jp"><span class="flag">🇯🇵 日本語</span>
+<b>クイックソート</b>とは、データ全体を「<b>基準値よりも小さいグループ</b>」と「<b>基準値よりも大きいグループ</b>」の<b>2つに分ける</b>という作業を繰り返すことで、データの並べ替えを行うアルゴリズム。基準値はどこでもよい。<b>もっとも高速な整列アルゴリズム</b>であり、出題頻度が高い。
+</div>
+<div class="lang vn"><span class="flag">🇻🇳 Tiếng Việt</span>
+<b>クイックソート</b>: chọn 1 <b>基準値 (pivot)</b> bất kỳ → chia mảng thành 2 nhóm: <b>nhỏ hơn pivot</b> đưa sang trái, <b>lớn hơn pivot</b> đưa sang phải → đệ quy lặp lại trên từng nhóm cho đến khi không chia được nữa. Đây là thuật toán <b>nhanh nhất</b> trong các sort thông dụng. Yasashii viết: "出題者としても、遅いアルゴリズムよりも、高速なアルゴリズムのほうを学んでもらいたい" — vì vậy clip này hay xuất hiện trong đề thi.
+</div>
+<div class="lang en"><span class="flag">🇬🇧 English</span>
+<b>Quick sort</b>: pick any value as <b>pivot (基準値)</b>, partition data into <b>"smaller than pivot"</b> and <b>"larger than pivot"</b> groups, then recursively apply the same step to each group. Generally the fastest practical sorting algorithm.
+</div>
+
+<h4>📊 Ví dụ Yasashii p.105 — sắp xếp tăng dần [3,5,8,7,6,4,2,1,9]</h4>
+<pre class="ascii">①基準値を選ぶ (chọn số giữa = 6 làm pivot)
+
+        基準値
+[3 5 8 7 <b>6</b> 4 2 1 9]
+
+②6 より小さいものを左へ、大きいものを右へ:
+
+[3 5 4 2 1] | <b>6</b> | [8 7 9]
+   ↑左            ↑右
+
+③それぞれのグループで再度 pivot を選び、分割:
+
+左[3 5 <b>4</b> 2 1]:           右[8 <b>7</b> 9]:
+   pivot=4                      pivot=7
+   [3 2 1] | 4 | [5]            [] | 7 | [8 9]
+
+④さらに分割:
+   [<b>2</b>]:[3,2,1] → [1] | 2 | [3]   [<b>8</b>]:[8,9] → [] | 8 | [9]
+
+⑤これ以上分割できない → 統合:
+   [1, 2, 3, 4, 5, 6, 7, 8, 9] ✅ 昇順完成!
+</pre>
+</div>
+
+<h3>1.7 ⑤ Các thuật toán nâng cao (slide bổ sung)</h3>
+<div class="box other">
+<table>
+<thead><tr><th>Tên</th><th>Ý tưởng cốt lõi</th></tr></thead>
+<tbody>
+<tr><td><b>シェルソート</b></td><td>Cải tiến 挿入. Lấy dữ liệu cách nhau <b>một khoảng (gap)</b>, sắp xếp nhóm con, rồi <b>thu hẹp gap</b> dần (4 → 2 → 1). Khi gap = 1 thì mảng đã gần sắp, insertion sort cuối rất nhanh.</td></tr>
+<tr><td><b>ヒープソート</b></td><td>Dùng <b>ヒープ木 (heap)</b> — cây thoả 親≥子 (max-heap) hoặc 親≤子 (min-heap). Lấy gốc (max/min) liên tiếp đến hết.</td></tr>
+<tr><td><b>マージソート</b></td><td>Chia mảng <b>đôi</b> đệ quy đến khi mỗi phần chỉ 1 phần tử, rồi <b>gộp (merge)</b> các phần đã sắp xếp lại.</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- =============== PHẦN 2 =============== -->
+<h2 class="section">💡 Phần 2 — Ví dụ minh hoạ tổng hợp</h2>
+
+<h3>VD1 · So sánh 4 thuật toán trên cùng input [5, 2, 8, 1, 4]</h3>
+<table>
+<thead><tr><th>Thuật toán</th><th>Bước 1</th><th>Bước cuối</th></tr></thead>
+<tbody>
+<tr><td>基本交換法</td><td>So sánh (5,2)→đổi → [2,5,8,1,4]</td><td>[1,2,4,5,8]</td></tr>
+<tr><td>基本選択法</td><td>Tìm min=1 → đưa lên đầu: [<b>1</b>,2,8,5,4]</td><td>[1,2,4,5,8]</td></tr>
+<tr><td>基本挿入法</td><td>[<b>5</b>] giữ. Chèn 2 trước 5 → [2,5,8,1,4]</td><td>[1,2,4,5,8]</td></tr>
+<tr><td>クイックソート</td><td>Pivot=8 (cuối): nhóm trái [5,2,1,4], phải []</td><td>[1,2,4,5,8]</td></tr>
+</tbody>
+</table>
+
+<h3>VD2 · Mẹo nhớ tên ↔ thao tác (FE thi 100%)</h3>
+<table>
+<thead><tr><th>Mô tả thao tác chính (đề thi)</th><th>→ Thuật toán</th></tr></thead>
+<tbody>
+<tr><td>「隣り合ったデータの<b>比較と入替</b>を繰り返す」</td><td><b>基本交換法</b> (bubble)</td></tr>
+<tr><td>「データ中の<b>最小値を求め</b>、次にそれを除いた中から最小値を求める」</td><td><b>基本選択法</b> (selection)</td></tr>
+<tr><td>「既に整列済みのデータ列の<b>正しい位置に追加</b>する操作を繰り返す」</td><td><b>基本挿入法</b> (insertion)</td></tr>
+<tr><td>「<b>基準値</b>を選び、<b>小さなグループと大きなグループに分割</b>する」</td><td><b>クイックソート</b></td></tr>
+</tbody>
+</table>
+<p style="font-size:13px;color:var(--muted)">(Tất cả 4 mô tả này lấy nguyên văn từ 過去問 3-11 平成30年度 — Yasashii p.116)</p>
+
+<h3>VD3 · Phân tích độ phức tạp</h3>
+<pre class="ascii">┌─────────────────────────┬──────────┬──────────┬──────────┐
+│ Thuật toán              │ Best     │ Average  │ Worst    │
+├─────────────────────────┼──────────┼──────────┼──────────┤
+│ 基本交換法 (Bubble)     │ O(n)     │ O(n²)    │ O(n²)    │
+│ 基本選択法 (Selection)  │ O(n²)    │ O(n²)    │ O(n²)    │
+│ 基本挿入法 (Insertion)  │ O(n)     │ O(n²)    │ O(n²)    │
+│ クイックソート          │ O(n log n)│ O(n log n)│ O(n²)*  │
+│ マージソート            │ O(n log n)│ O(n log n)│ O(n log n)│
+│ ヒープソート            │ O(n log n)│ O(n log n)│ O(n log n)│
+└─────────────────────────┴──────────┴──────────┴──────────┘
+* Quick sort xấu nhất khi pivot luôn là min/max của nhóm.
+</pre>
+
+<!-- =============== PHẦN 3 =============== -->
+<h2 class="section">🃏 Phần 3 — Flashcards (click để lật)</h2>
+<div class="fc-filters">
+  <button class="active" data-cat="all">Tất cả</button>
+  <button data-cat="basic">3 thuật toán cơ bản</button>
+  <button data-cat="quick">クイックソート</button>
+  <button data-cat="other">Nâng cao</button>
+  <button data-cat="term">Thuật ngữ</button>
+</div>
+<div class="fc-wrap" id="flashcards"></div>
+
+<!-- =============== PHẦN 4 =============== -->
+<h2 class="section">📝 Phần 4 — Quiz ôn tập (10 câu)</h2>
+<div id="quiz"></div>
+<button class="btn" onclick="gradeQuiz()">🎯 Chấm điểm</button>
+<div class="quiz-result" id="quiz-result"></div>
+
+<!-- =============== PHẦN 5 =============== -->
+<h2 class="section">🧠 Phần 5 — Mind Map</h2>
+<div class="mindmap">
+<svg viewBox="0 0 1150 760" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
+  <defs>
+    <style>
+      .center{fill:#ff7b54;stroke:#0f1419;stroke-width:2}
+      .ctext{fill:#0f1419;font-weight:700;font-size:18px;text-anchor:middle}
+      .btext{fill:#0f1419;font-weight:600;font-size:13px;text-anchor:middle}
+      .stext{fill:#e6edf3;font-size:12px;text-anchor:middle}
+      .l-bub{stroke:#76c7c0;stroke-width:2.5;fill:none}
+      .l-sel{stroke:#ffb26b;stroke-width:2.5;fill:none}
+      .l-ins{stroke:#c084fc;stroke-width:2.5;fill:none}
+      .l-q{stroke:#f87171;stroke-width:2.5;fill:none}
+      .l-o{stroke:#9ba9b8;stroke-width:2.5;fill:none}
+      .b-bub{fill:#76c7c0}
+      .b-sel{fill:#ffb26b}
+      .b-ins{fill:#c084fc}
+      .b-q{fill:#f87171}
+      .b-o{fill:#9ba9b8}
+      .s-bub{fill:#2d4a48}
+      .s-sel{fill:#4a3a2a}
+      .s-ins{fill:#3a2d4a}
+      .s-q{fill:#4a2a2a}
+      .s-o{fill:#2a323b}
+    </style>
+  </defs>
+
+  <!-- Center -->
+  <ellipse class="center" cx="575" cy="380" rx="120" ry="55"/>
+  <text class="ctext" x="575" y="375">ソート</text>
+  <text class="ctext" x="575" y="398" style="font-size:13px">Sap xep</text>
+
+  <!-- Bubble (top-left) -->
+  <path class="l-bub" d="M 490 340 C 380 270, 300 230, 220 180"/>
+  <rect class="b-bub" x="80" y="140" width="200" height="55" rx="14"/>
+  <text class="btext" x="180" y="165">Bubble (交換法)</text>
+  <text class="btext" x="180" y="183" style="font-size:11px">So sanh 2 lien ke</text>
+
+  <rect class="s-bub" x="20" y="60" width="180" height="40" rx="8"/>
+  <text class="stext" x="110" y="85">Doi cho neu sai thu tu</text>
+  <path class="l-bub" d="M 150 140 C 130 110, 120 100, 110 100"/>
+
+  <rect class="s-bub" x="210" y="60" width="180" height="40" rx="8"/>
+  <text class="stext" x="300" y="85">O(n²) - cham</text>
+  <path class="l-bub" d="M 230 140 C 260 110, 280 100, 300 100"/>
+
+  <!-- Selection (top) -->
+  <path class="l-sel" d="M 575 325 C 575 240, 575 200, 575 160"/>
+  <rect class="b-sel" x="475" y="100" width="200" height="55" rx="14"/>
+  <text class="btext" x="575" y="125">Selection (選択法)</text>
+  <text class="btext" x="575" y="143" style="font-size:11px">Chon max/min</text>
+
+  <rect class="s-sel" x="475" y="20" width="200" height="40" rx="8"/>
+  <text class="stext" x="575" y="45">Day vao day "da sap"</text>
+  <path class="l-sel" d="M 575 100 C 575 80, 575 70, 575 60"/>
+
+  <!-- Insertion (top-right) -->
+  <path class="l-ins" d="M 660 340 C 770 270, 850 230, 930 180"/>
+  <rect class="b-ins" x="870" y="140" width="200" height="55" rx="14"/>
+  <text class="btext" x="970" y="165">Insertion (挿入法)</text>
+  <text class="btext" x="970" y="183" style="font-size:11px">Chen vao vi tri dung</text>
+
+  <rect class="s-ins" x="870" y="60" width="180" height="40" rx="8"/>
+  <text class="stext" x="960" y="85">Phai du lieu da sap</text>
+  <path class="l-ins" d="M 940 140 C 950 110, 955 100, 960 100"/>
+
+  <rect class="s-ins" x="1060" y="60" width="80" height="40" rx="8"/>
+  <text class="stext" x="1100" y="85">→ Shell</text>
+  <path class="l-ins" d="M 1000 140 C 1050 110, 1090 100, 1100 100"/>
+
+  <!-- Quick (bottom-left, STAR) -->
+  <path class="l-q" d="M 490 420 C 380 490, 300 530, 220 580"/>
+  <rect class="b-q" x="80" y="565" width="220" height="60" rx="14"/>
+  <text class="btext" x="190" y="588">★ クイックソート</text>
+  <text class="btext" x="190" y="608" style="font-size:11px">Pivot + Chia doi</text>
+
+  <rect class="s-q" x="20" y="660" width="200" height="40" rx="8"/>
+  <text class="stext" x="120" y="685">基準値 (pivot)</text>
+  <path class="l-q" d="M 150 625 C 130 650, 120 660, 120 660"/>
+
+  <rect class="s-q" x="240" y="660" width="200" height="40" rx="8"/>
+  <text class="stext" x="340" y="685">O(n log n) - nhanh nhat</text>
+  <path class="l-q" d="M 240 625 C 280 650, 320 660, 340 660"/>
+
+  <!-- Quick rationale extra -->
+  <rect class="s-q" x="20" y="710" width="420" height="40" rx="8"/>
+  <text class="stext" x="230" y="735">Yasashii nhan manh - hoi nhieu trong FE</text>
+
+  <!-- Other (bottom-right) -->
+  <path class="l-o" d="M 660 420 C 770 490, 850 530, 930 580"/>
+  <rect class="b-o" x="860" y="565" width="220" height="60" rx="14"/>
+  <text class="btext" x="970" y="588">Nang cao</text>
+  <text class="btext" x="970" y="608" style="font-size:11px">Heap / Merge / Shell</text>
+
+  <rect class="s-o" x="800" y="660" width="160" height="40" rx="8"/>
+  <text class="stext" x="880" y="685">ヒープソート (heap)</text>
+  <path class="l-o" d="M 940 625 C 920 650, 900 660, 880 660"/>
+
+  <rect class="s-o" x="980" y="660" width="160" height="40" rx="8"/>
+  <text class="stext" x="1060" y="685">マージソート</text>
+  <path class="l-o" d="M 1000 625 C 1020 650, 1040 660, 1060 660"/>
+
+  <rect class="s-o" x="890" y="710" width="160" height="40" rx="8"/>
+  <text class="stext" x="970" y="735">All ≈ O(n log n)</text>
+  <path class="l-o" d="M 970 625 C 970 650, 970 670, 970 710"/>
+</svg>
+</div>
+
+<p style="text-align:center;color:var(--muted);font-size:13px;margin-top:50px">
+📚 Nguồn: Yasashii「いちばんやさしい基本情報技術者」Ch.3 Lesson 03-03/04 (p.105-106, p.116) + Slide 基本アルゴリズム 第3回 (整列方法)
+</p>
+
+</div>
+
+<script>
+const flashcards = [
+  {q:"ソート (整列)", a:"Thao tác sắp xếp dữ liệu theo quy tắc: 昇順 (tăng) hoặc 降順 (giảm).", cat:"term"},
+  {q:"基本交換法 (Bubble Sort)", a:"So sánh 2 phần tử LIỀN KỀ, đổi chỗ nếu sai thứ tự. Đặt tên 「交換 = đổi chỗ」.", cat:"basic"},
+  {q:"基本選択法 (Selection Sort)", a:"CHỌN giá trị max (hoặc min) từ phần chưa sắp, chuyển sang phần đã sắp. Đặt tên 「選択 = chọn」.", cat:"basic"},
+  {q:"基本挿入法 (Insertion Sort)", a:"Lấy từng phần tử mới, CHÈN vào đúng vị trí trong phần đã sắp xếp. Đặt tên 「挿入 = chèn」.", cat:"basic"},
+  {q:"Cả 3 thuật toán cơ bản có độ phức tạp?", a:"O(n²) — chậm khi n lớn. Dùng để học nguyên lý, ít dùng thực tế.", cat:"basic"},
+  {q:"クイックソート là gì?", a:"Chọn 基準値 (pivot), chia dữ liệu thành 2 nhóm: nhỏ hơn pivot / lớn hơn pivot. Lặp đệ quy.", cat:"quick"},
+  {q:"基準値 (Pivot)", a:"Giá trị chuẩn để phân chia trong Quick Sort. Yasashii nói: 「基準値はどこでもよい」 — chọn ở đâu cũng được (đầu, giữa, cuối).", cat:"quick"},
+  {q:"Tại sao クイックソート hay xuất hiện trong đề thi?", a:"Vì là thuật toán sort NHANH NHẤT (O(n log n) trung bình). Yasashii viết: 「出題者としても、高速なアルゴリズムのほうを学んでもらいたい」.", cat:"quick"},
+  {q:"クイックソート worst case?", a:"O(n²) khi pivot luôn là min/max của nhóm. Trung bình thì O(n log n).", cat:"quick"},
+  {q:"シェルソート", a:"Cải tiến của Insertion. Lấy phần tử cách nhau một KHOẢNG (gap), sắp xếp, rồi thu hẹp gap dần (4→2→1).", cat:"other"},
+  {q:"ヒープソート", a:"Dùng ヒープ木 (heap tree — cha ≥ con hoặc cha ≤ con) để liên tục lấy max/min. O(n log n).", cat:"other"},
+  {q:"マージソート", a:"Chia mảng đôi đệ quy đến 1 phần tử, rồi GỘP (merge) các phần đã sắp lại. O(n log n).", cat:"other"},
+  {q:"昇順 vs 降順", a:"昇順 (jōjun) = tăng dần (nhỏ→lớn). 降順 (kōjun) = giảm dần (lớn→nhỏ). Y như leo núi xuống núi.", cat:"term"},
+  {q:"Thuật toán nào dùng 2 phần tử LIỀN KỀ?", a:"Chỉ 基本交換法 (Bubble). Selection thì lướt cả mảng, Insertion thì so với phần đã sắp.", cat:"term"},
+  {q:"Mô tả 「正しい位置にデータを追加する操作を繰り返す」 là?", a:"基本挿入法 (Insertion Sort). Đây là nguyên văn 過去問 3-11 平成30年度 đáp án ア.", cat:"term"},
+];
+
+function renderFlashcards(filter='all'){
+  const wrap = document.getElementById('flashcards');
+  wrap.innerHTML = '';
+  flashcards.filter(c => filter==='all' || c.cat===filter).forEach(c=>{
+    const div = document.createElement('div');
+    div.className = 'fc';
+    div.innerHTML = `<span class="cat">${c.cat}</span><div class="q">${c.q}</div><span class="back">${c.a}</span>`;
+    div.onclick = ()=> div.classList.toggle('flipped');
+    wrap.appendChild(div);
+  });
+}
+document.querySelectorAll('.fc-filters button').forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll('.fc-filters button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    renderFlashcards(b.dataset.cat);
+  };
+});
+renderFlashcards();
+
+const quiz = [
+  {q:"「クイックソートの処理方法を説明したものはどれか」 (平成30年度 問題3-11)", opts:[
+    "既に整列済みのデータ列の正しい位置に、データを追加する操作を繰り返していく方法",
+    "データ中の最小値を求め、次にそれを除いた部分の中から最小値を求める。この操作を繰り返していく方法",
+    "適当な基準値を選び、それよりも小さな値のグループと大きな値のグループにデータを分割する。同様にして、グループの中で基準値を選び、それぞれのグループを分割する。この操作を繰り返していく方法",
+    "隣り合ったデータの比較と入替えを繰り返すことによって、小さな値のデータを次第に端の方に移していく方法"
+   ], ans:2,
+   exp:"ア = 基本挿入法, イ = 基本選択法, ウ = クイックソート ✓, エ = 基本交換法. Đáp án Yasashii: ウ (p.117)."},
+  {q:"「隣り合ったデータの比較と入替えを繰り返す」là mô tả của?", opts:["基本交換法","基本選択法","基本挿入法","クイックソート"], ans:0,
+   exp:"「隣り合った」(liền kề) = đặc trưng riêng của 基本交換法 (Bubble)."},
+  {q:"「最小値を求め、それを除いた部分から最小値を求める」là mô tả của?", opts:["基本交換法","基本選択法","基本挿入法","ヒープソート"], ans:1,
+   exp:"「最小値を求める = chọn min」 → 基本選択法 (Selection). Selection chính là 「選 = chọn」."},
+  {q:"「既に整列済みのデータ列の正しい位置に、データを追加する」là?", opts:["基本交換法","基本選択法","基本挿入法","マージソート"], ans:2,
+   exp:"「正しい位置に追加 (挿入) する」→ 基本挿入法 (Insertion). 挿入 = chèn."},
+  {q:"Thuật toán sort nhanh nhất trong các thuật toán phổ biến (TB)?", opts:["基本交換法","基本選択法","クイックソート","基本挿入法"], ans:2,
+   exp:"クイックソート O(n log n) trung bình. 3 cái cơ bản đều O(n²). Yasashii: 「もっとも高速な整列アルゴリズム」."},
+  {q:"Sắp xếp tăng dần [5,2,8,1,4] bằng 基本選択法, sau bước 1 mảng thành?", opts:["[2,5,8,1,4]","[1,2,8,5,4]","[1,5,8,2,4]","[2,5,8,4,1]"], ans:1,
+   exp:"Selection bước 1: tìm min = 1, đổi chỗ với phần tử đầu → [1, 2, 8, 5, 4]."},
+  {q:"Yasashii nhấn mạnh: クイックソート bắt đầu bằng việc?", opts:[
+    "Chọn 基準値 và chia thành nhóm nhỏ/lớn hơn",
+    "Sắp xếp 2 phần tử liền kề",
+    "Tìm max của toàn bộ mảng",
+    "Chia đôi mảng theo chỉ số"
+   ], ans:0,
+   exp:"Yasashii「試験にはコレが出る」: 「最初に基準値を選び、それよりも小さな値のグループと大きな値のグループにデータを分割する」."},
+  {q:"シェルソート là cải tiến của thuật toán nào?", opts:["基本交換法","基本選択法","基本挿入法","クイックソート"], ans:2,
+   exp:"シェルソート là phiên bản nâng cao của 基本挿入法 — bằng cách sắp xếp các phần tử cách nhau một khoảng rồi thu hẹp khoảng dần."},
+  {q:"Thứ tự diễn biến của クイックソート là?", opts:[
+    "Sắp xếp → Tìm pivot → Lặp",
+    "Chọn pivot → Chia 2 nhóm (nhỏ/lớn hơn pivot) → Lặp đệ quy trên mỗi nhóm",
+    "Tìm min → Chuyển sang nhóm đã sắp → Lặp",
+    "Chia đôi → Sắp xếp → Gộp lại"
+   ], ans:1,
+   exp:"B = Quick Sort (pivot + partition + recursion). D = Merge Sort. C = Selection. Yasashii p.105-106."},
+  {q:"Để tìm khách hàng bằng 2分探索, dữ liệu cần như nào? (平成29年度 関連問題)", opts:[
+    "ランダムに配置されているデータ構造",
+    "ハッシュ値が指し示す位置に配置されているデータ構造",
+    "顧客番号の昇順に配置されているデータ構造",
+    "アドレス順に格納されているデータ構造"
+   ], ans:2,
+   exp:"2分探索 cần dữ liệu ĐÃ SẮP XẾP (昇順/降順). Đây là lý do tại sao sort + search luôn đi đôi trong FE. Đáp án ウ (Yasashii p.117 問題3-10)."},
+];
+
+function renderQuiz(){
+  const wrap = document.getElementById('quiz');
+  quiz.forEach((q,i)=>{
+    const div = document.createElement('div');
+    div.className = 'quiz-q';
+    div.id = 'q'+i;
+    let opts = q.opts.map((o,j)=>`<label data-i="${j}"><input type="radio" name="q${i}" value="${j}" style="margin-right:8px">${o}</label>`).join('');
+    div.innerHTML = `<div class="stem">Câu ${i+1}. ${q.q}</div><div class="opts">${opts}</div><div class="exp"><b>Giải thích:</b> ${q.exp}</div>`;
+    wrap.appendChild(div);
+  });
+}
+renderQuiz();
+
+function gradeQuiz(){
+  let correct = 0;
+  quiz.forEach((q,i)=>{
+    const div = document.getElementById('q'+i);
+    const picked = div.querySelector('input[name="q'+i+'"]:checked');
+    div.classList.add('locked');
+    div.querySelectorAll('label').forEach(lb=>{
+      const idx = +lb.dataset.i;
+      if(idx === q.ans) lb.classList.add('correct');
+      else if(picked && +picked.value === idx) lb.classList.add('incorrect');
+    });
+    if(picked && +picked.value === q.ans) correct++;
+  });
+  const res = document.getElementById('quiz-result');
+  res.style.display = 'block';
+  const pct = Math.round(correct/quiz.length*100);
+  let msg = '';
+  if(pct>=80) msg = '🎉 Xuất sắc! Bạn đã nắm chắc ソートアルゴリズム.';
+  else if(pct>=60) msg = '👍 Đạt mức 合格! Ôn lại các câu sai.';
+  else msg = '📚 Cần ôn lại — đọc kỹ slide 第3回 và Yasashii p.105-106, p.116.';
+  res.innerHTML = `Kết quả: <span style="color:var(--accent)">${correct}/${quiz.length}</span> (${pct}%)<br><span style="font-size:14px;font-weight:400;color:var(--fg2)">${msg}</span>`;
+  res.scrollIntoView({behavior:'smooth'});
+}
+</script>
+</body>
+</html>

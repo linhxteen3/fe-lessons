@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI + 確率 (Xác suất) — Tài liệu học FE</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Be+Vietnam+Pro:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0d0f1a;
+    --surface: #141728;
+    --surface2: #1c2035;
+    --border: #2a2e4a;
+    --accent1: #7c6ff7;   /* purple */
+    --accent2: #00d4aa;   /* teal */
+    --accent3: #ff6b6b;   /* red */
+    --accent4: #ffd93d;   /* yellow */
+    --accent5: #6bcb77;   /* green */
+    --text: #e8eaf6;
+    --text-dim: #7a7f9a;
+    --jp: #a5b4fc;
+    --vi: #6ee7b7;
+    --en: #fde68a;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Be Vietnam Pro', 'Noto Sans JP', sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ---- HEADER ---- */
+  header {
+    background: linear-gradient(135deg, #1a1040 0%, #0d2040 50%, #0d1a30 100%);
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(124,111,247,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(0,212,170,0.1) 0%, transparent 60%);
+  }
+  header h1 {
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--accent1), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+  }
+  header p {
+    color: var(--text-dim);
+    margin-top: .5rem;
+    font-size: .95rem;
+    position: relative;
+  }
+  .badge-row {
+    display: flex; flex-wrap: wrap; gap: .5rem;
+    justify-content: center; margin-top: 1rem; position: relative;
+  }
+  .badge {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: .25rem .75rem;
+    font-size: .78rem;
+    color: var(--text-dim);
+  }
+
+  /* ---- NAV TABS ---- */
+  nav {
+    position: sticky;
+    top: 0; z-index: 100;
+    background: rgba(13,15,26,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; flex-wrap: wrap;
+    overflow-x: auto;
+    padding: 0 1rem;
+  }
+  nav button {
+    background: none; border: none; cursor: pointer;
+    color: var(--text-dim);
+    padding: .9rem 1.1rem;
+    font-size: .85rem;
+    font-family: inherit;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color .2s, border-color .2s;
+  }
+  nav button:hover { color: var(--text); }
+  nav button.active { color: var(--accent1); border-bottom-color: var(--accent1); }
+
+  /* ---- MAIN ---- */
+  main { max-width: 980px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  section { display: none; }
+  section.active { display: block; }
+
+  /* ---- TYPOGRAPHY ---- */
+  h2 {
+    font-size: 1.5rem; font-weight: 700;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: .6rem;
+  }
+  h2 .icon {
+    width: 2rem; height: 2rem; border-radius: .4rem;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0;
+  }
+  h3 { font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 .6rem; color: var(--accent2); }
+
+  /* ---- CARDS ---- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: .75rem;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .card-title {
+    font-size: 1rem; font-weight: 700;
+    margin-bottom: 1rem;
+    padding-bottom: .6rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ---- LANG BLOCKS ---- */
+  .lang-block { margin-bottom: 1rem; }
+  .lang-label {
+    display: inline-flex; align-items: center; gap: .35rem;
+    font-size: .72rem; font-weight: 700;
+    border-radius: 4px; padding: .15rem .5rem;
+    margin-bottom: .4rem;
+    letter-spacing: .05em;
+  }
+  .lang-jp { background: rgba(165,180,252,0.15); color: var(--jp); border: 1px solid rgba(165,180,252,0.3); }
+  .lang-vi { background: rgba(110,231,183,0.15); color: var(--vi); border: 1px solid rgba(110,231,183,0.3); }
+  .lang-en { background: rgba(253,230,138,0.15); color: var(--en); border: 1px solid rgba(253,230,138,0.3); }
+  .lang-content { font-size: .92rem; color: var(--text); padding-left: .5rem; }
+
+  /* ---- DEFINITION BOX ---- */
+  .def-box {
+    background: var(--surface2);
+    border-left: 3px solid var(--accent1);
+    border-radius: 0 .5rem .5rem 0;
+    padding: .9rem 1rem;
+    margin: .75rem 0;
+    font-size: .9rem;
+  }
+  .def-box.teal { border-left-color: var(--accent2); }
+  .def-box.red { border-left-color: var(--accent3); }
+  .def-box.yellow { border-left-color: var(--accent4); }
+  .def-box.green { border-left-color: var(--accent5); }
+
+  /* ---- FORMULA ---- */
+  .formula {
+    background: #0a0f20;
+    border: 1px solid var(--accent1);
+    border-radius: .5rem;
+    padding: 1rem 1.25rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: var(--accent4);
+    margin: .75rem 0;
+    text-align: center;
+    letter-spacing: .03em;
+  }
+
+  /* ---- TABLE ---- */
+  .tbl-wrap { overflow-x: auto; margin: .75rem 0; }
+  table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+  th {
+    background: rgba(124,111,247,0.2);
+    color: var(--accent1);
+    padding: .6rem .9rem;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid var(--accent1);
+  }
+  td {
+    padding: .55rem .9rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+  tr:hover td { background: rgba(124,111,247,0.05); }
+
+  /* ---- DIAGRAM ---- */
+  .diagram {
+    background: #080c18;
+    border: 1px solid var(--border);
+    border-radius: .6rem;
+    padding: 1.25rem;
+    margin: .75rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .82rem;
+    color: var(--accent2);
+    line-height: 1.9;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  /* ---- FLASHCARD ---- */
+  .flashcard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+  .flashcard {
+    perspective: 600px;
+    height: 160px;
+    cursor: pointer;
+  }
+  .flashcard-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform .55s cubic-bezier(.4,0,.2,1);
+  }
+  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+  .fc-front, .fc-back {
+    position: absolute; inset: 0;
+    border-radius: .65rem;
+    backface-visibility: hidden;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    padding: 1rem;
+  }
+  .fc-front {
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .fc-back {
+    background: linear-gradient(135deg, #1a1040, #0d2040);
+    border: 1px solid var(--accent1);
+    transform: rotateY(180deg);
+    font-size: .85rem;
+    color: var(--text);
+  }
+  .fc-term {
+    font-size: 1rem; font-weight: 700;
+    color: var(--accent1);
+  }
+  .fc-sub {
+    font-size: .75rem; color: var(--text-dim); margin-top: .25rem;
+  }
+  .fc-hint {
+    font-size: .7rem; color: var(--text-dim);
+    margin-top: auto; padding-top: .5rem;
+  }
+
+  /* ---- QUIZ ---- */
+  .quiz-item { margin-bottom: 2rem; }
+  .quiz-q {
+    font-weight: 600; margin-bottom: .75rem;
+    padding: .9rem 1rem;
+    background: var(--surface);
+    border-radius: .5rem;
+    border-left: 3px solid var(--accent4);
+  }
+  .quiz-options { display: flex; flex-direction: column; gap: .45rem; }
+  .quiz-opt {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: .4rem;
+    padding: .55rem .9rem;
+    cursor: pointer;
+    font-size: .9rem;
+    transition: border-color .2s, background .2s;
+  }
+  .quiz-opt:hover { border-color: var(--accent1); background: rgba(124,111,247,0.08); }
+  .quiz-opt.correct { border-color: var(--accent5); background: rgba(107,203,119,0.15); }
+  .quiz-opt.wrong { border-color: var(--accent3); background: rgba(255,107,107,0.1); }
+  .quiz-explain {
+    display: none; margin-top: .75rem;
+    padding: .8rem 1rem;
+    background: rgba(0,212,170,0.08);
+    border: 1px solid rgba(0,212,170,0.25);
+    border-radius: .4rem;
+    font-size: .85rem;
+    color: var(--vi);
+  }
+  .quiz-explain.show { display: block; }
+
+  /* ---- AI TREE ---- */
+  .ai-tree {
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .tree-node {
+    border-radius: .6rem;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .tree-head {
+    padding: .75rem 1rem;
+    font-weight: 700;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .tree-body {
+    padding: .75rem 1rem;
+    font-size: .88rem;
+    background: var(--surface2);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: .5rem;
+  }
+  @media (max-width: 600px) { .tree-body { grid-template-columns: 1fr; } }
+  .tree-child {
+    background: rgba(255,255,255,0.04);
+    border-radius: .4rem;
+    padding: .5rem .75rem;
+    border-left: 3px solid;
+  }
+  .tree-child-title { font-weight: 600; font-size: .88rem; }
+  .tree-child-desc { font-size: .8rem; color: var(--text-dim); margin-top: .2rem; }
+
+  /* ---- HIGHLIGHT ---- */
+  .hl { color: var(--accent4); font-weight: 700; }
+  .hl-teal { color: var(--accent2); font-weight: 600; }
+  .hl-purple { color: var(--accent1); font-weight: 600; }
+  .tag {
+    display: inline-block;
+    background: rgba(124,111,247,0.15);
+    border: 1px solid rgba(124,111,247,0.3);
+    color: var(--accent1);
+    border-radius: 4px;
+    padding: .05rem .4rem;
+    font-size: .75rem;
+    margin-right: .25rem;
+  }
+  .tag.exam { background: rgba(255,107,107,0.15); border-color: rgba(255,107,107,.3); color: var(--accent3); }
+
+  /* ---- EXAMPLE CALC ---- */
+  .calc-box {
+    background: #080c18;
+    border: 1px solid var(--accent2);
+    border-radius: .6rem;
+    padding: 1.1rem 1.25rem;
+    margin: .75rem 0;
+    font-size: .88rem;
+  }
+  .calc-step {
+    display: flex; gap: .75rem; margin-bottom: .5rem;
+    align-items: baseline;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 1.4rem; height: 1.4rem;
+    border-radius: 50%;
+    background: var(--accent2);
+    color: #0a0f1a;
+    font-weight: 700; font-size: .7rem;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-text { font-size: .86rem; }
+
+  /* ---- MINDMAP placeholder ---- */
+  .mindmap-container { width: 100%; overflow-x: auto; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🤖 AI + 確率 (Xác suất)</h1>
+  <p>Tài liệu học tập toàn diện — Kỳ thi FE / IT Passport</p>
+  <div class="badge-row">
+    <span class="badge">📚 Yasashii Ch.2 Lesson 02-05</span>
+    <span class="badge">📚 Yasashii Ch.20 Lesson 20-03</span>
+    <span class="badge">📘 Slide 第10回 基礎理論</span>
+    <span class="badge">🇯🇵 日本語 | 🇻🇳 Tiếng Việt | 🇬🇧 English</span>
+  </div>
+</header>
+
+<nav id="mainnav">
+  <button class="active" onclick="switchTab('theory')">📖 Lý thuyết</button>
+  <button onclick="switchTab('example')">💡 Ví dụ</button>
+  <button onclick="switchTab('flash')">🃏 Flashcard</button>
+  <button onclick="switchTab('quiz')">✏️ Câu hỏi</button>
+  <button onclick="switchTab('mindmap')">🗺️ Mind Map</button>
+</nav>
+
+<main>
+
+<!-- ==============================
+     PHẦN 1: LÝ THUYẾT
+=============================== -->
+<section id="theory" class="active">
+  <h2><span class="icon" style="background:rgba(124,111,247,0.2);color:var(--accent1)">📖</span> Phần 1 — Tóm tắt Lý thuyết</h2>
+
+  <!-- AI -->
+  <div class="card">
+    <div class="card-title">🤖 AI (人工知能 / Trí tuệ nhân tạo)</div>
+
+    <div class="lang-block">
+      <div class="lang-label lang-jp">🇯🇵 日本語</div>
+      <div class="lang-content">
+        AIとは、人間の知的なふるまいをコンピュータ上に再現する技術。機械学習・ニューラルネットワーク・ディープラーニングの3層で構成される。
+      </div>
+    </div>
+    <div class="lang-block">
+      <div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
+      <div class="lang-content">
+        AI là công nghệ tái tạo hành vi thông minh của con người trên máy tính. Gồm 3 tầng lớp liên kết nhau: Máy học → Mạng nơ-ron → Học sâu.
+      </div>
+    </div>
+    <div class="lang-block">
+      <div class="lang-label lang-en">🇬🇧 English</div>
+      <div class="lang-content">
+        AI is technology that replicates human-like intelligent behavior on computers, encompassing Machine Learning, Neural Networks, and Deep Learning.
+      </div>
+    </div>
+
+    <div class="diagram">  [AI (人工知能)]
+      ↓
+  [機械学習 Machine Learning]
+      ↓
+  [ニューラルネットワーク Neural Network]
+      ↓
+  [ディープラーニング Deep Learning]</div>
+
+    <div class="ai-tree">
+      <div class="tree-node">
+        <div class="tree-head" style="background:rgba(124,111,247,0.2);color:var(--accent1)">
+          🧠 機械学習 / Máy học (Machine Learning)
+        </div>
+        <div class="tree-body">
+          <div class="tree-child" style="border-color:var(--accent2)">
+            <div class="tree-child-title" style="color:var(--accent2)">教師あり学習</div>
+            <div class="tree-child-desc">Học có giám sát — cung cấp INPUT + ĐÁNH NHÃN đúng/sai. Ví dụ: phân loại email spam.</div>
+          </div>
+          <div class="tree-child" style="border-color:var(--accent4)">
+            <div class="tree-child-title" style="color:var(--accent4)">教師なし学習</div>
+            <div class="tree-child-desc">Học không giám sát — chỉ cung cấp INPUT, không có nhãn. Máy tự phân nhóm.</div>
+          </div>
+          <div class="tree-child" style="border-color:var(--accent3)">
+            <div class="tree-child-title" style="color:var(--accent3)">強化学習</div>
+            <div class="tree-child-desc">Học tăng cường — học từ phần thưởng/hình phạt (thi không yêu cầu sâu).</div>
+          </div>
+          <div class="tree-child" style="border-color:var(--accent5)">
+            <div class="tree-child-title" style="color:var(--accent5)">ニューラルネットワーク</div>
+            <div class="tree-child-desc">Mô phỏng mạng nơ-ron thần kinh trong não người.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>⚡ Điểm thi quan trọng</h3>
+    <div class="def-box">
+      <span class="tag exam">出る!</span> <strong>機械学習</strong> = 人間の「学習能力」をコンピュータで再現<br>
+      <span class="tag exam">出る!</span> <strong>教師あり学習</strong> = 入力データ + 正解データ（両方必要）<br>
+      <span class="tag exam">出る!</span> <strong>教師なし学習</strong> = 入力データのみ（正解なし、自分でグループ分け）<br>
+      <span class="tag exam">出る!</span> <strong>ディープラーニング</strong> = ニューラルネットワークを何重にも重ねた機械学習
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Thuật ngữ</th><th>Định nghĩa (Tiếng Việt)</th><th>Ví dụ thực tế</th></tr></thead>
+        <tbody>
+          <tr><td><strong>AI</strong></td><td>Tái hiện hành vi thông minh con người trên máy tính</td><td>Xe tự lái, chatbot</td></tr>
+          <tr><td><strong>機械学習</strong></td><td>Tái hiện năng lực học của con người</td><td>Lọc spam email</td></tr>
+          <tr><td><strong>教師あり学習</strong></td><td>Học với dữ liệu đầu vào + nhãn đúng sai</td><td>Phân loại ảnh mèo/chó</td></tr>
+          <tr><td><strong>教師なし学習</strong></td><td>Học chỉ với dữ liệu, máy tự phân nhóm</td><td>Gom nhóm khách hàng</td></tr>
+          <tr><td><strong>ニューラルネットワーク</strong></td><td>Mô phỏng mạng nơ-ron thần kinh não người</td><td>Nhận dạng giọng nói</td></tr>
+          <tr><td><strong>ディープラーニング</strong></td><td>Nhiều lớp neural network chồng lên nhau</td><td>ChatGPT, dịch tự động</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 確率 / XÁC SUẤT -->
+  <div class="card">
+    <div class="card-title">🎲 確率 / Xác suất (Probability)</div>
+
+    <div class="lang-block">
+      <div class="lang-label lang-jp">🇯🇵 日本語</div>
+      <div class="lang-content">
+        確率とは、ある事象が起きる可能性の度合いを0～1の数値で表したもの。すべての事象の確率の和は1になる。
+      </div>
+    </div>
+    <div class="lang-block">
+      <div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
+      <div class="lang-content">
+        Xác suất là mức độ khả năng xảy ra của một sự kiện, biểu thị bằng số từ 0 đến 1. Tổng xác suất của tất cả các sự kiện = 1.
+      </div>
+    </div>
+    <div class="lang-block">
+      <div class="lang-label lang-en">🇬🇧 English</div>
+      <div class="lang-content">
+        Probability is the measure of likelihood of an event occurring, expressed as a value between 0 and 1. Sum of all probabilities = 1.
+      </div>
+    </div>
+
+    <div class="formula">P(A) = số trường hợp thuận lợi / tổng số trường hợp có thể</div>
+    <div class="formula">P(A) = 0 (không thể xảy ra) ～ P(A) = 1 (chắc chắn xảy ra)</div>
+
+    <h3>🎲 Ví dụ: Xúc xắc (サイコロ)</h3>
+    <div class="def-box teal">
+      Xúc xắc có 6 mặt (1~6), mỗi mặt có xác suất = <strong>1/6</strong><br>
+      Tổng: 1/6 × 6 = <span class="hl">1 ✓</span>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Mặt xúc xắc</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Xác suất</strong></td>
+            <td>1/6</td><td>1/6</td><td>1/6</td><td>1/6</td><td>1/6</td><td>1/6</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 期待値 -->
+  <div class="card">
+    <div class="card-title">📊 期待値 / Kỳ vọng (Expected Value)</div>
+
+    <div class="lang-block">
+      <div class="lang-label lang-jp">🇯🇵 日本語</div>
+      <div class="lang-content">
+        期待値とは「確率的に決まる平均値」。各値に確率を掛けて、すべてを合計する。<br>
+        公式：E = Σ(値 × 確率)
+      </div>
+    </div>
+    <div class="lang-block">
+      <div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
+      <div class="lang-content">
+        Kỳ vọng là <strong>"giá trị trung bình theo xác suất"</strong>. Giống như bạn chơi xổ số nhiều lần — kỳ vọng là số tiền trung bình bạn thắng mỗi lần chơi.<br>
+        Cách tính: nhân từng giá trị với xác suất của nó, rồi cộng tất cả lại.
+      </div>
+    </div>
+    <div class="lang-block">
+      <div class="lang-label lang-en">🇬🇧 English</div>
+      <div class="lang-content">
+        Expected Value = the probability-weighted average. Multiply each outcome by its probability and sum them all.
+      </div>
+    </div>
+
+    <div class="formula">E = (Giá trị₁ × P₁) + (Giá trị₂ × P₂) + ... + (Giá trịₙ × Pₙ)</div>
+
+    <h3>Ví von dễ nhớ 🌟</h3>
+    <div class="def-box yellow">
+      Hãy tưởng tượng bạn chơi xúc xắc và được thưởng tiền bằng số mặt xúc xắc (1 mặt = 1 điểm). Nếu chơi 600 lần, bạn kỳ vọng mỗi lần trung bình được <strong>3.5 điểm</strong>. Đó chính là kỳ vọng!
+    </div>
+
+    <div class="calc-box">
+      <strong style="color:var(--accent2)">Tính kỳ vọng xúc xắc:</strong><br><br>
+      <div class="calc-step">
+        <div class="step-num">1</div>
+        <div class="step-text">Liệt kê tất cả giá trị và xác suất: mặt 1,2,3,4,5,6 — mỗi mặt P = 1/6</div>
+      </div>
+      <div class="calc-step">
+        <div class="step-num">2</div>
+        <div class="step-text">Nhân mỗi giá trị × xác suất:<br>1×(1/6) + 2×(1/6) + 3×(1/6) + 4×(1/6) + 5×(1/6) + 6×(1/6)</div>
+      </div>
+      <div class="calc-step">
+        <div class="step-num">3</div>
+        <div class="step-text">= (1+2+3+4+5+6) / 6 = <span class="hl">21/6 = 3.5</span></div>
+      </div>
+    </div>
+
+    <h3>📦 Ứng dụng thực tế: Bài toán nhập hàng và lợi nhuận</h3>
+    <div class="def-box teal">
+      <strong>Bối cảnh bài thi (問題20-12):</strong> Cửa hàng nhập hàng X sản phẩm/ngày. Nếu bán hết → lãi 1000円/sản phẩm. Nếu ế → lỗ 300円/sản phẩm. Hỏi nhập bao nhiêu để kỳ vọng lợi nhuận tối đa?
+    </div>
+
+    <div class="diagram">  Hàng ngày bán được:
+  [4 sp | P=30%] [5 sp | P=70%]  ← Ví dụ: nhập 5 sp
+       ↓
+  Kỳ vọng bán = 4×30% + 5×70% = 1.2 + 3.5 = 4.7 (sp)
+  Kỳ vọng ế   = 5 - 4.7 = 0.3 (sp)
+  Lợi nhuận kỳ vọng = 4.7×1000 - 0.3×300 = 4700 - 90 = 4,610 円</div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Số nhập (sp)</th>
+            <th>KV bán ra</th>
+            <th>KV hàng ế</th>
+            <th>KV lợi nhuận (円)</th>
+            <th>Kết quả</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>4</td><td>4.0</td><td>0.0</td><td>4,000</td><td></td></tr>
+          <tr><td>5</td><td>4.7</td><td>0.3</td><td>4,610</td><td></td></tr>
+          <tr style="background:rgba(107,203,119,0.08)"><td><strong>6</strong></td><td>5.1</td><td>0.9</td><td><strong style="color:var(--accent5)">4,830 ← MAX</strong></td><td><span class="tag">Đáp án: 6</span></td></tr>
+          <tr><td>7</td><td>5.2</td><td>1.8</td><td>4,660</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- AI + XÁC SUẤT TRONG ML -->
+  <div class="card">
+    <div class="card-title">🔗 AI + Xác suất — Mối liên hệ</div>
+
+    <div class="lang-block">
+      <div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
+      <div class="lang-content">
+        Xác suất là nền tảng của AI và Machine Learning:
+        <ul style="margin-top:.5rem;padding-left:1.2rem">
+          <li>Máy học dự đoán kết quả dựa trên <strong>xác suất</strong> từ dữ liệu học</li>
+          <li>Kỳ vọng được dùng để tối ưu hóa quyết định (ví dụ: bài toán nhập hàng)</li>
+          <li>AI trong sản xuất học cách tối ưu để giảm hàng lỗi — dựa trên thống kê và xác suất</li>
+        </ul>
+      </div>
+    </div>
+    <div class="lang-block">
+      <div class="lang-label lang-jp">🇯🇵 日本語</div>
+      <div class="lang-content">
+        確率は機械学習の基盤。モデルは確率的に予測を行い、期待値最大化で最適な判断をする。AIの工場活用例：ロボット自らが学習して作業効率を高める（強化学習）。
+      </div>
+    </div>
+
+    <div class="diagram">  [AIの工場活用例（問題2-14）]
+
+  ✗ 間違い: アナリストが統計分析 → これはAIではなく人間の分析
+  ✗ 間違い: ホストコンピュータがリアルタイム制御 → これはMtoM
+  ✓ 正解:  ロボット自らが学んで作業の効率を高める → 機械学習
+  ✗ 間違い: 累積生産量倍増で単位コスト減少 → 経験曲線</div>
+  </div>
+
+</section>
+
+<!-- ==============================
+     PHẦN 2: VÍ DỤ MINH HỌA
+=============================== -->
+<section id="example">
+  <h2><span class="icon" style="background:rgba(0,212,170,0.2);color:var(--accent2)">💡</span> Phần 2 — Ví dụ Minh họa</h2>
+
+  <!-- AI Examples -->
+  <div class="card">
+    <div class="card-title">🤖 Ví dụ: AI & Máy học</div>
+
+    <h3>📧 Ví dụ 1: Lọc Spam Email</h3>
+    <div class="lang-block">
+      <div class="lang-label lang-vi">🇻🇳</div>
+      <div class="lang-content">
+        <strong>教師あり学習 (Học có giám sát):</strong><br>
+        → Dữ liệu học: 1000 email (đã đánh nhãn: spam/không spam)<br>
+        → Máy học quy luật, sau đó tự phân loại email mới<br><br>
+        <strong>教師なし学習 (Học không giám sát):</strong><br>
+        → Dữ liệu học: 1000 email (không đánh nhãn)<br>
+        → Máy tự phân nhóm theo đặc điểm giống nhau
+      </div>
+    </div>
+    <div class="diagram">  教師あり学習:                   教師なし学習:
+  [Email A] + [label: SPAM]      [Email A] (không nhãn)
+  [Email B] + [label: OK]    →   [Email B] (không nhãn)
+  [Email C] + [label: SPAM]      [Email C] (không nhãn)
+       ↓ học                          ↓ học
+  Model → dự đoán email mới     Model → tự phân nhóm</div>
+
+    <h3>🏭 Ví dụ 2: Robot nhà máy (bài thi)</h3>
+    <div class="def-box teal">
+      <strong>Câu hỏi (問題2-14):</strong> Ứng dụng máy học trong nhà máy sản xuất là gì?<br>
+      → <span class="hl">Robot tự học để nâng cao hiệu quả làm việc</span> (không cần lập trình thủ công)
+    </div>
+
+    <h3>🧠 Ví dụ 3: Deep Learning</h3>
+    <div class="lang-block">
+      <div class="lang-label lang-vi">🇻🇳</div>
+      <div class="lang-content">
+        Ví von: Nếu mạng nơ-ron đơn giản giống như một tờ giấy lọc → Deep Learning giống như chồng hàng chục tờ giấy lọc lên nhau, mỗi lớp lọc ra một đặc điểm khác nhau (cạnh → hình dạng → mặt người → tên người).
+      </div>
+    </div>
+    <div class="diagram">  Input (ảnh) → [Layer 1: phát hiện cạnh]
+              → [Layer 2: phát hiện hình dạng]
+              → [Layer 3: phát hiện bộ phận khuôn mặt]
+              → [Layer N: nhận diện khuôn mặt]
+              → Output (tên người)</div>
+  </div>
+
+  <!-- Probability Examples -->
+  <div class="card">
+    <div class="card-title">🎲 Ví dụ: Xác suất & Kỳ vọng</div>
+
+    <h3>🎯 Ví dụ 4: Kỳ vọng xúc xắc — tính từng bước</h3>
+    <div class="calc-box">
+      <strong style="color:var(--accent4)">Bài toán:</strong> Tung xúc xắc 1 lần. Kỳ vọng số điểm là bao nhiêu?<br><br>
+      <div class="calc-step"><div class="step-num">1</div>
+        <div class="step-text">Liệt kê: (1, 1/6), (2, 1/6), (3, 1/6), (4, 1/6), (5, 1/6), (6, 1/6)</div>
+      </div>
+      <div class="calc-step"><div class="step-num">2</div>
+        <div class="step-text">E = 1×(1/6) + 2×(1/6) + 3×(1/6) + 4×(1/6) + 5×(1/6) + 6×(1/6)</div>
+      </div>
+      <div class="calc-step"><div class="step-num">3</div>
+        <div class="step-text">E = (1+2+3+4+5+6) ÷ 6 = 21 ÷ 6 = <span class="hl">3.5</span></div>
+      </div>
+    </div>
+
+    <h3>🛒 Ví dụ 5: Tối ưu nhập hàng (Bài thi thực tế)</h3>
+    <div class="calc-box">
+      <strong style="color:var(--accent4)">Điều kiện:</strong><br>
+      • Lãi/sp bán được: 1,000円 | Lỗ/sp ế: 300円<br>
+      • Phân phối bán ra:<br>
+      &nbsp;&nbsp;4sp: 30% | 5sp: 30% | 6sp: 40% | 7sp: 10%<br><br>
+      <strong style="color:var(--accent2)">Tính với nhập 6 sản phẩm:</strong><br><br>
+      <div class="calc-step"><div class="step-num">1</div>
+        <div class="step-text">KV bán ra: 4×30% + 5×30% + 6×40% = 1.2 + 1.5 + 2.4 = 5.1 sp</div>
+      </div>
+      <div class="calc-step"><div class="step-num">2</div>
+        <div class="step-text">KV hàng ế: 6 - 5.1 = 0.9 sp</div>
+      </div>
+      <div class="calc-step"><div class="step-num">3</div>
+        <div class="step-text">KV lợi nhuận: 5.1 × 1000 - 0.9 × 300 = 5100 - 270 = <span class="hl">4,830円</span></div>
+      </div>
+    </div>
+
+    <h3>🔗 Ví dụ 6: Xác suất trong AI — Khi nào dùng?</h3>
+    <div class="def-box green">
+      <strong>AI dự đoán thời tiết (ví dụ):</strong><br>
+      Dữ liệu lịch sử: 100 ngày có mây → 70 ngày mưa<br>
+      → P(mưa | có mây) = 70/100 = <strong>0.7</strong><br>
+      → AI dự báo: "Xác suất mưa hôm nay: 70%"<br>
+      <br>
+      <span class="hl-teal">Kỳ vọng thiệt hại</span> nếu không mang ô: 0.7 × (-1000円) + 0.3 × 0 = -700円
+    </div>
+  </div>
+</section>
+
+<!-- ==============================
+     PHẦN 3: FLASHCARD
+=============================== -->
+<section id="flash">
+  <h2><span class="icon" style="background:rgba(255,107,107,0.2);color:var(--accent3)">🃏</span> Phần 3 — Flashcard</h2>
+  <p style="color:var(--text-dim);margin-bottom:1.5rem;font-size:.88rem">👆 Nhấn vào thẻ để lật xem đáp án</p>
+
+  <div class="flashcard-grid">
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="fc-front">
+          <div class="fc-term">機械学習</div>
+          <div class="fc-sub">Machine Learning</div>
+          <div class="fc-hint">Nhấn để xem định nghĩa →</div>
+        </div>
+        <div class="fc-back">
+          人間の「学習能力」をコンピュータで再現する技術。データを与えることで自ら学習し予測できる。<br><br>
+          <span style="color:var(--vi)">Tái hiện năng lực học của con người trên máy tính. Máy tự học từ dữ liệu.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="fc-front">
+          <div class="fc-term">教師あり学習</div>
+          <div class="fc-sub">Supervised Learning</div>
+          <div class="fc-hint">Nhấn để xem định nghĩa →</div>
+        </div>
+        <div class="fc-back">
+          入力データ＋正解データの両方を与える学習。<br>例：メールと「スパム/非スパム」のラベルを一緒に学習。<br><br>
+          <span style="color:var(--vi)">Cung cấp cả dữ liệu đầu vào + nhãn đúng sai</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="fc-front">
+          <div class="fc-term">教師なし学習</div>
+          <div class="fc-sub">Unsupervised Learning</div>
+          <div class="fc-hint">Nhấn để xem định nghĩa →</div>
+        </div>
+        <div class="fc-back">
+          入力データのみ（正解なし）で学習。機械が独自にグループ分けを行う。<br><br>
+          <span style="color:var(--vi)">Chỉ cung cấp dữ liệu đầu vào, máy tự phân nhóm</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="fc-front">
+          <div class="fc-term">ディープラーニング</div>
+          <div class="fc-sub">Deep Learning</div>
+          <div class="fc-hint">Nhấn để xem định nghĩa →</div>
+        </div>
+        <div class="fc-back">
+          ニューラルネットワークを何重にも重ねた構造の機械学習。<br>人間の脳神経回路を模倣。<br><br>
+          <span style="color:var(--vi)">Nhiều tầng neural network chồng lên nhau = học sâu</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="fc-front">
+          <div class="fc-term">期待値</div>
+          <div class="fc-sub">Expected Value</div>
+          <div class="fc-hint">Nhấn để xem định nghĩa →</div>
+        </div>
+        <div class="fc-back">
+          確率的に決まる平均値。<br>E = Σ(値 × 確率)<br><br>
+          <span style="color:var(--vi)">Giá trị trung bình theo xác suất: E = Σ(giá trị × xác suất)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="fc-front">
+          <div class="fc-term">確率</div>
+          <div class="fc-sub">Probability</div>
+          <div class="fc-hint">Nhấn để xem định nghĩa →</div>
+        </div>
+        <div class="fc-back">
+          事象が起きる可能性を0～1で表した値。全事象の確率の和=1。<br><br>
+          <span style="color:var(--vi)">Xác suất xảy ra của sự kiện, từ 0 đến 1. Tổng tất cả = 1</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="fc-front">
+          <div class="fc-term">ニューラルネットワーク</div>
+          <div class="fc-sub">Neural Network</div>
+          <div class="fc-hint">Nhấn để xem định nghĩa →</div>
+        </div>
+        <div class="fc-back">
+          人間の脳の「ニューロン（神経細胞）」の仕組みをコンピュータで再現した技術。<br><br>
+          <span style="color:var(--vi)">Mô phỏng tế bào thần kinh (nơ-ron) não người trên máy tính</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="fc-front">
+          <div class="fc-term">サイコロの期待値</div>
+          <div class="fc-sub">Kỳ vọng xúc xắc</div>
+          <div class="fc-hint">Kết quả là bao nhiêu?</div>
+        </div>
+        <div class="fc-back">
+          (1+2+3+4+5+6) ÷ 6 = <strong style="color:var(--accent4);font-size:1.2rem">3.5</strong><br><br>
+          <span style="color:var(--vi)">Mỗi mặt P=1/6, kỳ vọng = 3.5</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="fc-front">
+          <div class="fc-term">強化学習</div>
+          <div class="fc-sub">Reinforcement Learning</div>
+          <div class="fc-hint">Nhấn để xem định nghĩa →</div>
+        </div>
+        <div class="fc-back">
+          行動に対して報酬/罰を与えることで最適な行動を学習する手法。<br><br>
+          <span style="color:var(--vi)">Học từ phần thưởng / hình phạt để tối ưu hành động</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="flashcard-inner">
+        <div class="fc-front">
+          <div class="fc-term">エキスパートシステム</div>
+          <div class="fc-sub">Expert System</div>
+          <div class="fc-hint">Khác gì Machine Learning?</div>
+        </div>
+        <div class="fc-back">
+          専門知識をルールとして入力し、そのルールで推論する。<br>（機械学習とは異なる）<br><br>
+          <span style="color:var(--vi)">Hệ thống chuyên gia: nhập kiến thức thủ công dưới dạng quy tắc, rồi suy luận</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==============================
+     PHẦN 4: CÂU HỎI ÔN TẬP
+=============================== -->
+<section id="quiz">
+  <h2><span class="icon" style="background:rgba(255,217,61,0.2);color:var(--accent4)">✏️</span> Phần 4 — Câu hỏi Ôn tập</h2>
+
+  <div class="quiz-item">
+    <div class="quiz-q">Q1. AIにおける機械学習の説明として、最も適切なものはどれか。<br><span style="color:var(--text-dim);font-size:.82rem">(Mô tả đúng nhất về Machine Learning trong AI là gì?)</span></div>
+    <div class="quiz-options">
+      <div class="quiz-opt" onclick="answer(this,'wrong')">ア. コンピュータが自然言語を処理して会話する技術</div>
+      <div class="quiz-opt" onclick="answer(this,'correct')">イ. 記憶したデータから特定のパターンを見つけ出すなどの、人が自然に行っている学習能力をコンピュータにもたせるための技術</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">ウ. 特定の分野の専門知識をコンピュータに入力し、推論する技術（エキスパートシステム）</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">エ. 生命現象や進化のプロセスを再現するための技術（人工生命）</div>
+    </div>
+    <div class="quiz-explain">✅ <strong>答え: イ</strong><br>機械学習は「人間の学習能力をコンピュータで再現」する技術。ウはエキスパートシステム、エは人工生命の説明。<br><span style="color:var(--vi)">🇻🇳 Máy học = tái hiện khả năng học của con người. Không phải hệ thống chuyên gia, không phải AI sinh học.</span></div>
+  </div>
+
+  <div class="quiz-item">
+    <div class="quiz-q">Q2. 機械学習における教師あり学習の説明として、最も適切なものはどれか。<br><span style="color:var(--text-dim);font-size:.82rem">(Mô tả đúng về Supervised Learning là gì?)</span></div>
+    <div class="quiz-options">
+      <div class="quiz-opt" onclick="answer(this,'wrong')">ア. 入力データのみをコンピュータに与え、コンピュータが独自にグループ分けを行う</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">イ. 行動に対しての善し悪しを得点として与え、得点が最も多く得られるような方策を学習する</div>
+      <div class="quiz-opt" onclick="answer(this,'correct')">ウ. 正解のデータを提示することによって、未知のデータに対して正誤を得ることを助ける</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">エ. ルールをあらかじめ設定して、そのルールに基づいて推論する</div>
+    </div>
+    <div class="quiz-explain">✅ <strong>答え: ウ</strong><br>教師あり = 正解データ（ラベル）を提示して学習。ア=教師なし学習、イ=強化学習。<br><span style="color:var(--vi)">🇻🇳 Học có giám sát = cung cấp cả nhãn đúng/sai cho máy học. ア là không giám sát, イ là học tăng cường.</span></div>
+  </div>
+
+  <div class="quiz-item">
+    <div class="quiz-q">Q3. サイコロを振ったとき、出た目の期待値はいくらか。<br><span style="color:var(--text-dim);font-size:.82rem">(Kỳ vọng của mặt xúc xắc khi tung là bao nhiêu?)</span></div>
+    <div class="quiz-options">
+      <div class="quiz-opt" onclick="answer(this,'wrong')">ア. 3</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">イ. 3.0</div>
+      <div class="quiz-opt" onclick="answer(this,'correct')">ウ. 3.5</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">エ. 4</div>
+    </div>
+    <div class="quiz-explain">✅ <strong>答え: ウ (3.5)</strong><br>E = (1+2+3+4+5+6)/6 = 21/6 = 3.5<br><span style="color:var(--vi)">🇻🇳 E = (1×1/6)+(2×1/6)+...+(6×1/6) = 21/6 = 3.5</span></div>
+  </div>
+
+  <div class="quiz-item">
+    <div class="quiz-q">Q4. AIにおけるディープラーニングの特徴はどれか。<br><span style="color:var(--text-dim);font-size:.82rem">(Đặc điểm của Deep Learning là gì?)</span></div>
+    <div class="quiz-options">
+      <div class="quiz-opt" onclick="answer(this,'wrong')">ア. "AならばBである"というルールを人間があらかじめ設定し、推論する</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">イ. 確率的に高い判断ができる医療診断に限定された技術</div>
+      <div class="quiz-opt" onclick="answer(this,'correct')">ウ. 人間の脳神経回路を模倣し、ニューラルネットワークを用いて、人間と同じような認識ができるようにするもの</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">エ. 厳密な解でなくてもなるべく正解に近い解を得る汎用的な問題解決手法</div>
+    </div>
+    <div class="quiz-explain">✅ <strong>答え: ウ</strong><br>ディープラーニング = ニューラルネットワークを多層に重ねた構造。「人間の脳神経回路を模倣」がキーワード。<br><span style="color:var(--vi)">🇻🇳 Deep Learning = neural network nhiều tầng, mô phỏng nơ-ron não. Từ khóa: "模倣"</span></div>
+  </div>
+
+  <div class="quiz-item">
+    <div class="quiz-q">Q5. 商品の1日当たりの販売個数の予想確率が以下のとおりであるとき、仕入個数6個のときの利益の期待値を求めよ。（利益1,000円/個、廃棄300円/個）<br>
+    <span style="font-size:.83rem;color:var(--text-dim)">4個:30%, 5個:30%, 6個:40%</span></div>
+    <div class="quiz-options">
+      <div class="quiz-opt" onclick="answer(this,'wrong')">ア. 4,000円</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">イ. 4,610円</div>
+      <div class="quiz-opt" onclick="answer(this,'correct')">ウ. 4,830円</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">エ. 5,100円</div>
+    </div>
+    <div class="quiz-explain">✅ <strong>答え: ウ (4,830円)</strong><br>販売KV = 4×30%+5×30%+6×40% = 1.2+1.5+2.4 = 5.1個<br>廃棄KV = 6-5.1 = 0.9個<br>利益KV = 5.1×1000 - 0.9×300 = 5100-270 = <strong>4,830円</strong><br><span style="color:var(--vi)">🇻🇳 KV bán = 5.1sp, KV ế = 0.9sp → lợi nhuận = 4,830円</span></div>
+  </div>
+
+  <div class="quiz-item">
+    <div class="quiz-q">Q6. 生産現場における機械学習の活用事例として、適切なものはどれか。<br><span style="color:var(--text-dim);font-size:.82rem">(Ví dụ ứng dụng Machine Learning trong nhà máy sản xuất là gì?)</span></div>
+    <div class="quiz-options">
+      <div class="quiz-opt" onclick="answer(this,'wrong')">ア. 工場における不良品の発生原因をツリー状に分解して整理し、アナリストが統計的に原因を探る</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">イ. 工場の生産設備を高速通信で接続し、ホストコンピュータがリアルタイム制御する</div>
+      <div class="quiz-opt" onclick="answer(this,'correct')">ウ. 工場の生産ロボットに対して作業方法をプログラミングするのではなく、ロボット自らが学んで作業の効率を高める</div>
+      <div class="quiz-opt" onclick="answer(this,'wrong')">エ. 累積生産量が倍増するたびに工場従業員の生産性が向上し、単位コストが減少する</div>
+    </div>
+    <div class="quiz-explain">✅ <strong>答え: ウ</strong><br>機械学習 = コンピュータ（ロボット）が「自ら学ぶ」こと。ア=特性要因図、イ=MtoM、エ=経験曲線。<br><span style="color:var(--vi)">🇻🇳 Robot "tự học" = Machine Learning. ア = phân tích nguyên nhân thủ công, không phải ML.</span></div>
+  </div>
+
+</section>
+
+<!-- ==============================
+     PHẦN 5: MIND MAP
+=============================== -->
+<section id="mindmap">
+  <h2><span class="icon" style="background:rgba(107,203,119,0.2);color:var(--accent5)">🗺️</span> Phần 5 — Mind Map</h2>
+
+  <div class="mindmap-container">
+    <svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:'Be Vietnam Pro',sans-serif;">
+      <defs>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- Background -->
+      <rect width="960" height="600" fill="#0d0f1a" rx="12"/>
+
+      <!-- ===== CENTER NODE ===== -->
+      <ellipse cx="480" cy="300" rx="90" ry="50" fill="#3730a3" stroke="#7c6ff7" stroke-width="2.5" filter="url(#glow)"/>
+      <text x="480" y="294" text-anchor="middle" fill="white" font-size="13" font-weight="700">AI + 確率</text>
+      <text x="480" y="312" text-anchor="middle" fill="#c7d2fe" font-size="10">Xác suất trong AI</text>
+
+      <!-- ===== BRANCH 1: 機械学習 (left-up) ===== -->
+      <!-- Bezier curve -->
+      <path d="M 395 275 C 320 240, 260 200, 195 185" stroke="#00d4aa" stroke-width="2" fill="none"/>
+      <!-- Box -->
+      <rect x="80" y="158" width="115" height="54" rx="10" fill="#0f2a24" stroke="#00d4aa" stroke-width="1.8"/>
+      <text x="137" y="181" text-anchor="middle" fill="#00d4aa" font-size="12" font-weight="700">機械学習</text>
+      <text x="137" y="197" text-anchor="middle" fill="#6ee7b7" font-size="9.5">Machine Learning</text>
+      <!-- children -->
+      <path d="M 80 175 C 50 155, 20 130, 15 115" stroke="#00d4aa" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="-45" y="95" width="60" height="40" rx="6" fill="#0f2a24" stroke="#00d4aa" stroke-width="1"/>
+      <text x="-15" y="111" text-anchor="middle" fill="#6ee7b7" font-size="9">教師あり</text>
+      <text x="-15" y="124" text-anchor="middle" fill="#4ade80" font-size="8">有ラベル</text>
+
+      <path d="M 80 195 C 50 200, 20 205, 15 205" stroke="#00d4aa" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="-45" y="185" width="60" height="40" rx="6" fill="#0f2a24" stroke="#00d4aa" stroke-width="1"/>
+      <text x="-15" y="201" text-anchor="middle" fill="#6ee7b7" font-size="9">教師なし</text>
+      <text x="-15" y="214" text-anchor="middle" fill="#4ade80" font-size="8">無ラベル</text>
+
+      <!-- ===== BRANCH 2: ディープラーニング (left-down) ===== -->
+      <path d="M 395 320 C 320 350, 260 380, 195 390" stroke="#a855f7" stroke-width="2" fill="none"/>
+      <rect x="80" y="363" width="115" height="54" rx="10" fill="#1a0d2e" stroke="#a855f7" stroke-width="1.8"/>
+      <text x="137" y="386" text-anchor="middle" fill="#a855f7" font-size="11.5" font-weight="700">ディープ</text>
+      <text x="137" y="400" text-anchor="middle" fill="#a855f7" font-size="11.5" font-weight="700">ラーニング</text>
+
+      <path d="M 80 375 C 50 365, 20 350, 10 340" stroke="#a855f7" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="-55" y="318" width="65" height="40" rx="6" fill="#1a0d2e" stroke="#a855f7" stroke-width="1"/>
+      <text x="-22" y="334" text-anchor="middle" fill="#d8b4fe" font-size="9">多層NN</text>
+      <text x="-22" y="347" text-anchor="middle" fill="#d8b4fe" font-size="8">脳を模倣</text>
+
+      <path d="M 80 400 C 50 410, 20 420, 10 425" stroke="#a855f7" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="-55" y="405" width="65" height="40" rx="6" fill="#1a0d2e" stroke="#a855f7" stroke-width="1"/>
+      <text x="-22" y="421" text-anchor="middle" fill="#d8b4fe" font-size="9">画像認識</text>
+      <text x="-22" y="434" text-anchor="middle" fill="#d8b4fe" font-size="8">音声認識</text>
+
+      <!-- ===== BRANCH 3: 確率 (right-up) ===== -->
+      <path d="M 565 275 C 640 240, 705 200, 770 185" stroke="#ffd93d" stroke-width="2" fill="none"/>
+      <rect x="770" y="158" width="110" height="54" rx="10" fill="#2a2000" stroke="#ffd93d" stroke-width="1.8"/>
+      <text x="825" y="181" text-anchor="middle" fill="#ffd93d" font-size="13" font-weight="700">確率</text>
+      <text x="825" y="197" text-anchor="middle" fill="#fde68a" font-size="9.5">Probability</text>
+
+      <path d="M 880 175 C 905 155, 930 130, 945 115" stroke="#ffd93d" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="945" y="95" width="60" height="40" rx="6" fill="#2a2000" stroke="#ffd93d" stroke-width="1"/>
+      <text x="975" y="111" text-anchor="middle" fill="#fde68a" font-size="9">0～1の値</text>
+      <text x="975" y="124" text-anchor="middle" fill="#fde68a" font-size="8">合計=1</text>
+
+      <path d="M 880 195 C 905 200, 930 205, 945 205" stroke="#ffd93d" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="945" y="185" width="60" height="40" rx="6" fill="#2a2000" stroke="#ffd93d" stroke-width="1"/>
+      <text x="975" y="201" text-anchor="middle" fill="#fde68a" font-size="9">サイコロ</text>
+      <text x="975" y="214" text-anchor="middle" fill="#fde68a" font-size="8">各1/6</text>
+
+      <!-- ===== BRANCH 4: 期待値 (right-down) ===== -->
+      <path d="M 565 320 C 640 355, 705 380, 770 390" stroke="#ff6b6b" stroke-width="2" fill="none"/>
+      <rect x="770" y="363" width="110" height="54" rx="10" fill="#2a0d0d" stroke="#ff6b6b" stroke-width="1.8"/>
+      <text x="825" y="386" text-anchor="middle" fill="#ff6b6b" font-size="13" font-weight="700">期待値</text>
+      <text x="825" y="402" text-anchor="middle" fill="#fca5a5" font-size="9.5">Expected Value</text>
+
+      <path d="M 880 375 C 905 365, 930 350, 945 340" stroke="#ff6b6b" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="945" y="318" width="60" height="40" rx="6" fill="#2a0d0d" stroke="#ff6b6b" stroke-width="1"/>
+      <text x="975" y="334" text-anchor="middle" fill="#fca5a5" font-size="9">Σ(値×P)</text>
+      <text x="975" y="347" text-anchor="middle" fill="#fca5a5" font-size="8">平均値</text>
+
+      <path d="M 880 400 C 905 410, 930 420, 945 425" stroke="#ff6b6b" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="945" y="405" width="60" height="40" rx="6" fill="#2a0d0d" stroke="#ff6b6b" stroke-width="1"/>
+      <text x="975" y="421" text-anchor="middle" fill="#fca5a5" font-size="9">利益最大化</text>
+      <text x="975" y="434" text-anchor="middle" fill="#fca5a5" font-size="8">仕入最適化</text>
+
+      <!-- ===== BRANCH 5: AI活用例 (top) ===== -->
+      <path d="M 480 252 C 480 210, 480 175, 480 150" stroke="#6bcb77" stroke-width="2" fill="none"/>
+      <rect x="410" y="100" width="140" height="50" rx="10" fill="#0d2014" stroke="#6bcb77" stroke-width="1.8"/>
+      <text x="480" y="122" text-anchor="middle" fill="#6bcb77" font-size="12" font-weight="700">AI活用例</text>
+      <text x="480" y="139" text-anchor="middle" fill="#86efac" font-size="9">スパム/画像/音声</text>
+
+      <path d="M 420 100 C 380 80, 340 65, 310 55" stroke="#6bcb77" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="230" y="33" width="80" height="34" rx="6" fill="#0d2014" stroke="#6bcb77" stroke-width="1"/>
+      <text x="270" y="48" text-anchor="middle" fill="#86efac" font-size="8.5">工場ロボット</text>
+      <text x="270" y="60" text-anchor="middle" fill="#86efac" font-size="8">自己学習</text>
+
+      <path d="M 540 100 C 580 80, 620 65, 650 55" stroke="#6bcb77" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="650" y="33" width="80" height="34" rx="6" fill="#0d2014" stroke="#6bcb77" stroke-width="1"/>
+      <text x="690" y="48" text-anchor="middle" fill="#86efac" font-size="8.5">医療診断</text>
+      <text x="690" y="60" text-anchor="middle" fill="#86efac" font-size="8">Deep Learning</text>
+
+      <!-- ===== BRANCH 6: NN (bottom) ===== -->
+      <path d="M 480 348 C 480 390, 480 425, 480 450" stroke="#f97316" stroke-width="2" fill="none"/>
+      <rect x="400" y="450" width="160" height="54" rx="10" fill="#2a1500" stroke="#f97316" stroke-width="1.8"/>
+      <text x="480" y="473" text-anchor="middle" fill="#f97316" font-size="11.5" font-weight="700">ニューラル</text>
+      <text x="480" y="490" text-anchor="middle" fill="#f97316" font-size="11.5" font-weight="700">ネットワーク</text>
+
+      <path d="M 420 500 C 370 520, 330 530, 290 535" stroke="#f97316" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="215" y="519" width="75" height="32" rx="6" fill="#2a1500" stroke="#f97316" stroke-width="1"/>
+      <text x="252" y="533" text-anchor="middle" fill="#fdba74" font-size="9">脳を模倣</text>
+      <text x="252" y="545" text-anchor="middle" fill="#fdba74" font-size="8">ニューロン</text>
+
+      <path d="M 540 500 C 590 520, 630 530, 670 535" stroke="#f97316" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="670" y="519" width="75" height="32" rx="6" fill="#2a1500" stroke="#f97316" stroke-width="1"/>
+      <text x="707" y="533" text-anchor="middle" fill="#fdba74" font-size="9">多層構造</text>
+      <text x="707" y="545" text-anchor="middle" fill="#fdba74" font-size="8">→Deep学習</text>
+
+    </svg>
+  </div>
+
+  <div class="card" style="margin-top:1.5rem">
+    <div class="card-title">📝 Chú thích Mind Map</div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Nhánh</th><th>Màu</th><th>Nội dung</th></tr></thead>
+        <tbody>
+          <tr><td>機械学習</td><td style="color:#00d4aa">■ Teal</td><td>Machine Learning: Học có/không giám sát</td></tr>
+          <tr><td>ディープラーニング</td><td style="color:#a855f7">■ Purple</td><td>Deep Learning: NN nhiều lớp, mô phỏng não</td></tr>
+          <tr><td>確率</td><td style="color:#ffd93d">■ Yellow</td><td>Xác suất: 0~1, tổng = 1</td></tr>
+          <tr><td>期待値</td><td style="color:#ff6b6b">■ Red</td><td>Kỳ vọng: Σ(giá trị × P)</td></tr>
+          <tr><td>AI活用例</td><td style="color:#6bcb77">■ Green</td><td>Ứng dụng AI thực tế</td></tr>
+          <tr><td>ニューラルネットワーク</td><td style="color:#f97316">■ Orange</td><td>Mạng nơ-ron, nền tảng Deep Learning</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx = ['theory','example','flash','quiz','mindmap'].indexOf(id);
+  document.querySelectorAll('nav button')[idx].classList.add('active');
+  window.scrollTo({top: 0, behavior:'smooth'});
+}
+
+function answer(el, result) {
+  const parent = el.closest('.quiz-item');
+  // Reset if already answered
+  parent.querySelectorAll('.quiz-opt').forEach(o => {
+    o.classList.remove('correct','wrong');
+    o.onclick = null;
+  });
+  el.classList.add(result);
+  // Show explanation
+  const explain = parent.querySelector('.quiz-explain');
+  explain.classList.add('show');
+  // Disable all options
+  parent.querySelectorAll('.quiz-opt').forEach(o => {
+    o.style.cursor = 'default';
+  });
+}
+</script>
+</body>
+</html>

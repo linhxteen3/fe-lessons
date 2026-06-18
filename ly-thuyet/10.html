@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>プログラムの基本 + フローチャート — Tài liệu FE</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Be+Vietnam+Pro:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+  :root {
+    --bg: #0b0d16;
+    --surface: #121520;
+    --surface2: #181c2c;
+    --border: #252840;
+    --a1: #60a5fa;   /* blue */
+    --a2: #34d399;   /* green */
+    --a3: #f472b6;   /* pink */
+    --a4: #fbbf24;   /* yellow */
+    --a5: #a78bfa;   /* purple */
+    --a6: #fb923c;   /* orange */
+    --text: #e2e8f0;
+    --dim: #64748b;
+    --jp: #93c5fd;
+    --vi: #6ee7b7;
+    --en: #fde68a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Be Vietnam Pro','Noto Sans JP',sans-serif; line-height: 1.7; }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg,#0d1a3a 0%,#0b1628 50%,#0d1520 100%);
+    padding: 2.5rem 2rem 2rem; text-align:center;
+    border-bottom:1px solid var(--border); position:relative; overflow:hidden;
+  }
+  header::before {
+    content:''; position:absolute; inset:0;
+    background: radial-gradient(ellipse at 25% 50%,rgba(96,165,250,.12) 0%,transparent 55%),
+                radial-gradient(ellipse at 75% 50%,rgba(52,211,153,.08) 0%,transparent 55%);
+  }
+  header h1 {
+    font-size:clamp(1.7rem,4vw,2.8rem); font-weight:700;
+    background:linear-gradient(90deg,var(--a1),var(--a2));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    position:relative;
+  }
+  header p { color:var(--dim); margin-top:.4rem; font-size:.9rem; position:relative; }
+  .badge-row { display:flex; flex-wrap:wrap; gap:.4rem; justify-content:center; margin-top:.9rem; position:relative; }
+  .badge { background:rgba(255,255,255,.05); border:1px solid var(--border); border-radius:999px; padding:.2rem .65rem; font-size:.75rem; color:var(--dim); }
+
+  /* NAV */
+  nav {
+    position:sticky; top:0; z-index:100;
+    background:rgba(11,13,22,.96); backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border);
+    display:flex; flex-wrap:wrap; overflow-x:auto; padding:0 1rem;
+  }
+  nav button {
+    background:none; border:none; cursor:pointer; color:var(--dim);
+    padding:.85rem 1rem; font-size:.84rem; font-family:inherit;
+    border-bottom:2px solid transparent; white-space:nowrap;
+    transition:color .2s,border-color .2s;
+  }
+  nav button:hover { color:var(--text); }
+  nav button.active { color:var(--a1); border-bottom-color:var(--a1); }
+
+  main { max-width:980px; margin:0 auto; padding:2rem 1.5rem 4rem; }
+  section { display:none; }
+  section.active { display:block; }
+
+  /* TYPOGRAPHY */
+  h2 { font-size:1.45rem; font-weight:700; margin-bottom:1.4rem; display:flex; align-items:center; gap:.55rem; }
+  h2 .ic { width:2rem; height:2rem; border-radius:.4rem; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+  h3 { font-size:1.05rem; font-weight:700; margin:1.4rem 0 .55rem; color:var(--a2); }
+  h4 { font-size:.95rem; font-weight:600; margin:.9rem 0 .35rem; color:var(--a4); }
+
+  /* CARD */
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:.75rem; padding:1.4rem; margin-bottom:1.2rem; }
+  .card-title { font-size:1rem; font-weight:700; margin-bottom:.9rem; padding-bottom:.55rem; border-bottom:1px solid var(--border); }
+
+  /* LANG */
+  .lang-block { margin-bottom:.85rem; }
+  .lang-label { display:inline-flex; align-items:center; gap:.3rem; font-size:.7rem; font-weight:700; border-radius:4px; padding:.12rem .45rem; margin-bottom:.35rem; letter-spacing:.05em; }
+  .lang-jp { background:rgba(147,197,253,.12); color:var(--jp); border:1px solid rgba(147,197,253,.25); }
+  .lang-vi { background:rgba(110,231,183,.12); color:var(--vi); border:1px solid rgba(110,231,183,.25); }
+  .lang-en { background:rgba(253,230,138,.12); color:var(--en); border:1px solid rgba(253,230,138,.25); }
+  .lang-content { font-size:.9rem; padding-left:.4rem; }
+
+  /* DEF BOX */
+  .def { background:var(--surface2); border-left:3px solid var(--a1); border-radius:0 .5rem .5rem 0; padding:.8rem 1rem; margin:.65rem 0; font-size:.88rem; }
+  .def.gr { border-left-color:var(--a2); }
+  .def.pk { border-left-color:var(--a3); }
+  .def.yw { border-left-color:var(--a4); }
+  .def.pu { border-left-color:var(--a5); }
+  .def.or { border-left-color:var(--a6); }
+
+  /* FORMULA */
+  .formula { background:#060912; border:1px solid var(--a1); border-radius:.5rem; padding:.85rem 1.1rem; font-family:'JetBrains Mono',monospace; font-size:.95rem; color:var(--a4); margin:.65rem 0; text-align:center; }
+
+  /* TABLE */
+  .tw { overflow-x:auto; margin:.65rem 0; }
+  table { width:100%; border-collapse:collapse; font-size:.85rem; }
+  th { background:rgba(96,165,250,.18); color:var(--a1); padding:.55rem .85rem; text-align:left; font-weight:600; border-bottom:2px solid var(--a1); }
+  td { padding:.5rem .85rem; border-bottom:1px solid var(--border); vertical-align:top; }
+  tr:nth-child(even) td { background:rgba(255,255,255,.02); }
+  tr:hover td { background:rgba(96,165,250,.04); }
+
+  /* DIAGRAM / CODE */
+  .diagram { background:#060912; border:1px solid var(--border); border-radius:.55rem; padding:1.1rem; margin:.65rem 0; font-family:'JetBrains Mono',monospace; font-size:.8rem; color:var(--a2); line-height:2; overflow-x:auto; white-space:pre; }
+  .code { font-family:'JetBrains Mono',monospace; font-size:.82rem; background:#060912; border:1px solid var(--border); border-radius:.5rem; padding:1rem; margin:.65rem 0; overflow-x:auto; color:var(--text); line-height:1.8; }
+  .kw { color:var(--a1); } .cmt { color:var(--dim); font-style:italic; }
+  .str { color:var(--a4); } .fn { color:var(--a3); }
+
+  /* FLOWCHART SVG container */
+  .fc-wrap { background:#060912; border:1px solid var(--border); border-radius:.6rem; padding:1.2rem; margin:.8rem 0; overflow-x:auto; display:flex; justify-content:center; }
+
+  /* HIGHLIGHT */
+  .hl { color:var(--a4); font-weight:700; }
+  .ht { color:var(--a2); font-weight:600; }
+  .hp { color:var(--a5); font-weight:600; }
+  .tag { display:inline-block; background:rgba(96,165,250,.13); border:1px solid rgba(96,165,250,.28); color:var(--a1); border-radius:4px; padding:.03rem .38rem; font-size:.73rem; margin-right:.2rem; }
+  .tag.ex { background:rgba(244,114,182,.13); border-color:rgba(244,114,182,.28); color:var(--a3); }
+
+  /* STEP BOX */
+  .steps { display:flex; flex-direction:column; gap:.5rem; margin:.65rem 0; }
+  .step { display:flex; gap:.7rem; align-items:flex-start; }
+  .step-n { flex-shrink:0; width:1.5rem; height:1.5rem; border-radius:50%; background:var(--a1); color:#060912; font-weight:700; font-size:.7rem; display:flex; align-items:center; justify-content:center; margin-top:.15rem; }
+  .step-t { font-size:.88rem; }
+
+  /* GRID 2 COL */
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  @media(max-width:600px){ .grid2{ grid-template-columns:1fr; } }
+
+  /* COMPARE CARD */
+  .cmp-card { border:1px solid var(--border); border-radius:.6rem; overflow:hidden; }
+  .cmp-head { padding:.6rem .9rem; font-weight:700; font-size:.9rem; }
+  .cmp-body { padding:.7rem .9rem; font-size:.84rem; background:var(--surface2); }
+
+  /* FLASHCARD */
+  .fc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr)); gap:.9rem; }
+  .flashcard { perspective:600px; height:155px; cursor:pointer; }
+  .fc-inner { position:relative; width:100%; height:100%; transform-style:preserve-3d; transition:transform .5s cubic-bezier(.4,0,.2,1); }
+  .flashcard.flipped .fc-inner { transform:rotateY(180deg); }
+  .fc-f,.fc-b { position:absolute; inset:0; border-radius:.6rem; backface-visibility:hidden; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:.9rem; }
+  .fc-f { background:var(--surface); border:1px solid var(--border); }
+  .fc-b { background:linear-gradient(135deg,#0d1a3a,#0b1526); border:1px solid var(--a1); transform:rotateY(180deg); font-size:.83rem; color:var(--text); }
+  .fc-term { font-size:.97rem; font-weight:700; color:var(--a1); }
+  .fc-sub { font-size:.72rem; color:var(--dim); margin-top:.2rem; }
+  .fc-hint { font-size:.68rem; color:var(--dim); margin-top:auto; padding-top:.4rem; }
+
+  /* QUIZ */
+  .qi { margin-bottom:1.9rem; }
+  .qq { font-weight:600; margin-bottom:.7rem; padding:.85rem .95rem; background:var(--surface); border-radius:.5rem; border-left:3px solid var(--a4); font-size:.92rem; }
+  .qopts { display:flex; flex-direction:column; gap:.4rem; }
+  .qopt { background:var(--surface2); border:1px solid var(--border); border-radius:.4rem; padding:.5rem .85rem; cursor:pointer; font-size:.88rem; transition:border-color .2s,background .2s; }
+  .qopt:hover { border-color:var(--a1); background:rgba(96,165,250,.07); }
+  .qopt.correct { border-color:var(--a2); background:rgba(52,211,153,.12); }
+  .qopt.wrong { border-color:var(--a3); background:rgba(244,114,182,.1); }
+  .qex { display:none; margin-top:.7rem; padding:.75rem .95rem; background:rgba(52,211,153,.07); border:1px solid rgba(52,211,153,.22); border-radius:.4rem; font-size:.84rem; color:var(--vi); }
+  .qex.show { display:block; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📋 プログラムの基本 + フローチャート</h1>
+  <p>Tài liệu học tập toàn diện — Kỳ thi FE / IT Passport</p>
+  <div class="badge-row">
+    <span class="badge">📚 Yasashii Ch.3 Lesson 03-01 データ構造</span>
+    <span class="badge">📚 Yasashii Ch.3 Lesson 03-02 アルゴリズムの基本</span>
+    <span class="badge">📘 Slide アルゴリズム 第1回</span>
+    <span class="badge">🇯🇵 日本語 | 🇻🇳 Tiếng Việt | 🇬🇧 English</span>
+  </div>
+</header>
+
+<nav id="nav">
+  <button class="active" onclick="sw('theory')">📖 Lý thuyết</button>
+  <button onclick="sw('flowchart')">🔀 Flowchart</button>
+  <button onclick="sw('example')">💡 Ví dụ</button>
+  <button onclick="sw('flash')">🃏 Flashcard</button>
+  <button onclick="sw('quiz')">✏️ Câu hỏi</button>
+  <button onclick="sw('mindmap')">🗺️ Mind Map</button>
+</nav>
+
+<main>
+
+<!-- ===================== PHẦN 1: LÝ THUYẾT ===================== -->
+<section id="theory" class="active">
+  <h2><span class="ic" style="background:rgba(96,165,250,.18);color:var(--a1)">📖</span>Phần 1 — Tóm tắt Lý thuyết</h2>
+
+  <!-- ALGORITHM & PROGRAM -->
+  <div class="card">
+    <div class="card-title">🔧 アルゴリズム & プログラム</div>
+    <div class="lang-block">
+      <div class="lang-label lang-jp">🇯🇵 日本語</div>
+      <div class="lang-content">
+        アルゴリズムとは、問題を解いたり課題を解決するための<strong>手順</strong>。プログラムは、そのアルゴリズムをコンピュータが理解できる特定の言語で記述したもの。
+      </div>
+    </div>
+    <div class="lang-block">
+      <div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
+      <div class="lang-content">
+        <strong>Thuật toán (アルゴリズム)</strong> = trình tự các bước để giải quyết vấn đề.<br>
+        <strong>Chương trình (プログラム)</strong> = thuật toán được viết bằng ngôn ngữ mà máy tính hiểu được.
+        <br>Ví von: Thuật toán = công thức nấu cà-ri, Chương trình = công thức đó được viết bằng tiếng Nhật.
+      </div>
+    </div>
+    <div class="lang-block">
+      <div class="lang-label lang-en">🇬🇧 English</div>
+      <div class="lang-content">
+        An <strong>algorithm</strong> is a step-by-step procedure to solve a problem. A <strong>program</strong> is that algorithm written in a language a computer understands.
+      </div>
+    </div>
+    <div class="diagram">  [アルゴリズム例: カレーを作る]
+  開始
+   ↓ 食材を購入する
+   ↓ 食材の下処理をする
+   ↓ 食材を煮込む
+   ↓ 盛り付ける
+  終了         ← これがアルゴリズム
+
+  [プログラム] = アルゴリズムをコンピュータ言語で記述</div>
+  </div>
+
+  <!-- DATA STRUCTURE -->
+  <div class="card">
+    <div class="card-title">📦 データ構造 — 5つの種類</div>
+    <div class="lang-block">
+      <div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
+      <div class="lang-content">Cấu trúc dữ liệu là <strong>cách sắp xếp dữ liệu trong bộ nhớ</strong>. Có 5 loại quan trọng trong thi FE:</div>
+    </div>
+
+    <div class="grid2">
+      <!-- STACK -->
+      <div class="cmp-card">
+        <div class="cmp-head" style="background:rgba(96,165,250,.15);color:var(--a1)">📚 スタック (Stack)</div>
+        <div class="cmp-body">
+          <div class="lang-label lang-vi">🇻🇳</div> <strong>LIFO</strong> — Vào sau ra trước<br>
+          <em>Như chồng sách: lấy sách trên cùng trước</em><br><br>
+          <div class="lang-label lang-jp">🇯🇵</div> 後入れ先出し (Last In First Out)<br>
+          <span class="hl">push</span> = 格納 | <span class="hl">pop</span> = 取り出し<br><br>
+          <span class="tag ex">最頻出!</span>
+        </div>
+      </div>
+      <!-- QUEUE -->
+      <div class="cmp-card">
+        <div class="cmp-head" style="background:rgba(52,211,153,.15);color:var(--a2)">🚶 キュー (Queue)</div>
+        <div class="cmp-body">
+          <div class="lang-label lang-vi">🇻🇳</div> <strong>FIFO</strong> — Vào trước ra trước<br>
+          <em>Như xếp hàng tính tiền: người xếp hàng trước thanh toán trước</em><br><br>
+          <div class="lang-label lang-jp">🇯🇵</div> 先入れ先出し (First In First Out)<br>
+          <span class="hl">enqueue</span> = 追加 | <span class="hl">dequeue</span> = 取り出し
+        </div>
+      </div>
+      <!-- ARRAY -->
+      <div class="cmp-card">
+        <div class="cmp-head" style="background:rgba(251,191,36,.15);color:var(--a4)">🔢 配列 (Array)</div>
+        <div class="cmp-body">
+          <div class="lang-label lang-vi">🇻🇳</div> Mảng — các ô dữ liệu có đánh số thứ tự (요素番号)<br>
+          <em>A[3] = lấy phần tử thứ 3 của mảng A</em><br>
+          1次元 (1D) / 2次元: A[行,列]<br><br>
+          <span class="ht">●</span> Truy cập nhanh theo chỉ số (số thứ tự)
+        </div>
+      </div>
+      <!-- LINKED LIST -->
+      <div class="cmp-card">
+        <div class="cmp-head" style="background:rgba(167,139,250,.15);color:var(--a5)">🔗 連結リスト (Linked List)</div>
+        <div class="cmp-body">
+          <div class="lang-label lang-vi">🇻🇳</div> Danh sách liên kết — mỗi phần tử chứa <strong>con trỏ (ポインタ)</strong> trỏ đến phần tử tiếp theo<br><br>
+          <span class="ht">●</span> Chèn/Xóa nhanh (chỉ đổi pointer)<br>
+          <span class="a3">●</span> Truy cập chậm (phải duyệt từ đầu)
+        </div>
+      </div>
+    </div>
+
+    <!-- TREE -->
+    <div class="def pu" style="margin-top:.8rem">
+      <strong style="color:var(--a5)">🌳 木構造 (Tree)</strong> — Cấu trúc phân cấp (階層構造). Gốc = <span class="hl">根 (root)</span>, Nút = <span class="hl">節 (node)</span>, Lá = <span class="hl">葉 (leaf)</span><br>
+      <strong>2分探索木の条件:</strong> <span class="hl">左の子孫 &lt; 親 &lt; 右の子孫</span>
+    </div>
+
+    <h3>⚡ Bảng so sánh 配列 vs 連結リスト</h3>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Thao tác</th><th>配列 (Array)</th><th>連結リスト (Linked List)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>参照・更新</strong> (Đọc/Sửa)</td><td><span class="ht">✅ Nhanh</span> — dùng index</td><td><span style="color:var(--a3)">🐢 Chậm</span> — phải duyệt từ đầu</td></tr>
+          <tr><td><strong>挿入・削除</strong> (Chèn/Xóa)</td><td><span style="color:var(--a3)">🐢 Chậm</span> — dời tất cả phần tử sau</td><td><span class="ht">✅ Nhanh</span> — chỉ đổi pointer</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="def yw"><span class="tag ex">出る!</span> <strong>配列 = 参照・更新が速い | 連結リスト = 挿入・削除が速い</strong></div>
+  </div>
+
+  <!-- ALGORITHM STRUCTURE -->
+  <div class="card">
+    <div class="card-title">🔁 アルゴリズムの基本構造 — 3つ</div>
+    <div class="lang-block">
+      <div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
+      <div class="lang-content">Mọi thuật toán đều được tạo từ <strong>3 cấu trúc cơ bản</strong>:</div>
+    </div>
+    <div class="grid2">
+      <div class="cmp-card">
+        <div class="cmp-head" style="background:rgba(96,165,250,.15);color:var(--a1)">① 順次構造 (Tuần tự)</div>
+        <div class="cmp-body">Thực hiện lần lượt từng bước một, từ trên xuống.<br><em>処理1 → 処理2 → 処理3</em></div>
+      </div>
+      <div class="cmp-card">
+        <div class="cmp-head" style="background:rgba(244,114,182,.15);color:var(--a3)">② 選択構造 (Rẽ nhánh)</div>
+        <div class="cmp-body">Kiểm tra điều kiện (True/False), thực hiện nhánh tương ứng.<br><em>if 条件 then 処理A else 処理B</em></div>
+      </div>
+      <div class="cmp-card" style="grid-column:1/-1">
+        <div class="cmp-head" style="background:rgba(251,191,36,.15);color:var(--a4)">③ 繰返構造 (Lặp)</div>
+        <div class="cmp-body">Lặp lại thực hiện cho đến khi thỏa điều kiện kết thúc.<br><em>ループ → 処理 → 条件チェック → ループ (繰り返し)</em></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROGRAM PROPERTIES -->
+  <div class="card">
+    <div class="card-title">⚙️ プログラムの4つの性質</div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>性質名</th><th>カタカナ</th><th>Tiếng Việt</th><th>Ý nghĩa</th></tr></thead>
+        <tbody>
+          <tr><td><strong>再帰</strong></td><td>リカーシブ</td><td>Đệ quy</td><td>Chương trình tự gọi chính nó trong quá trình chạy</td></tr>
+          <tr><td><strong>再入可能</strong></td><td>リエントラント</td><td>Tái nhập được</td><td>Nhiều chương trình cùng gọi đồng thời, vẫn chạy đúng</td></tr>
+          <tr><td><strong>再配置可能</strong></td><td>リロケータブル</td><td>Tái định vị được</td><td>Đặt ở bất kỳ vị trí nào trong RAM đều chạy được</td></tr>
+          <tr><td><strong>再使用可能</strong></td><td>リユーザブル</td><td>Tái sử dụng được</td><td>Load 1 lần, dùng nhiều lần, không cần load lại</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="def yw"><span class="tag ex">出る!</span> <strong>再帰</strong>と<strong>再入可能</strong>の2つが最頻出。<br>
+    再帰 = 自分自身を呼び出す | 再入可能 = 複数タスクから同時に呼び出されても正しく動作
+    </div>
+  </div>
+
+  <!-- SORT / SEARCH ALGORITHMS -->
+  <div class="card">
+    <div class="card-title">🔍 整列・探索アルゴリズム & オーダー</div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>アルゴリズム</th><th>説明</th><th>オーダー</th></tr></thead>
+        <tbody>
+          <tr><td><strong>ハッシュ法</strong></td><td>ハッシュ値で格納場所を決定、1回で到達</td><td><span class="hl">O(1)</span></td></tr>
+          <tr><td><strong>2分探索法</strong></td><td>ソート済みデータを半分に割りながら探索 ※要整列</td><td><span class="hl">O(log₂n)</span></td></tr>
+          <tr><td><strong>線形探索法</strong></td><td>先頭から順番に1つずつ照合</td><td><span class="hl">O(n)</span></td></tr>
+          <tr><td><strong>クイックソート</strong></td><td>基準値で小グループ/大グループに分割を繰り返す</td><td><span class="hl">O(n log n)</span></td></tr>
+          <tr><td><strong>バブルソート</strong></td><td>隣り合う要素を比較・交換を繰り返す</td><td>O(n²)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="def gr">
+      <strong>ハッシュ法のデメリット:</strong> 異なる入力が同じハッシュ値になる「<span class="hl">衝突 (Collision)</span>」が起こる可能性がある
+    </div>
+    <div class="def">
+      <strong>2分探索法の2大条件:</strong><br>
+      ① データを<span class="hl">あらかじめ整列</span>させておく必要がある<br>
+      ② データを<span class="hl">2つに分けながら</span>探索する
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PHẦN FLOWCHART ===================== -->
+<section id="flowchart">
+  <h2><span class="ic" style="background:rgba(52,211,153,.18);color:var(--a2)">🔀</span>Flowchart — Ký hiệu & Cách đọc</h2>
+
+  <div class="card">
+    <div class="card-title">📐 Bảng ký hiệu Flowchart (流れ図の記号)</div>
+    <div class="lang-block">
+      <div class="lang-label lang-vi">🇻🇳</div>
+      <div class="lang-content">Ký hiệu flowchart được chuẩn hóa theo JIS. Thi FE thường dùng 5 ký hiệu sau:</div>
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Ký hiệu (hình dạng)</th><th>Tên (記号名)</th><th>Tiếng Việt</th><th>Ví dụ sử dụng</th></tr></thead>
+        <tbody>
+          <tr><td>⬭ <em>hình bầu dục</em></td><td><strong>端子 (Terminator)</strong></td><td>Điểm bắt đầu / kết thúc</td><td>「開始」「終了」</td></tr>
+          <tr><td>▭ <em>hình chữ nhật</em></td><td><strong>処理 (Process)</strong></td><td>Xử lý, tính toán, gán biến</td><td>「x ← x + 1」</td></tr>
+          <tr><td>◇ <em>hình thoi</em></td><td><strong>判断 (Decision)</strong></td><td>Điều kiện rẽ nhánh (Yes/No)</td><td>「x &lt; 0？」</td></tr>
+          <tr><td>→ <em>mũi tên</em></td><td><strong>線 (Arrow)</strong></td><td>Hướng luồng xử lý</td><td>nối các ký hiệu lại</td></tr>
+          <tr><td>⌈⌋ <em>ký hiệu đặc biệt</em></td><td><strong>ループ端 (Loop)</strong></td><td>Vòng lặp — bắt đầu và kết thúc</td><td>「i:1,1,100」</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>🔧 Quy tắc đọc Flowchart</h3>
+    <div class="steps">
+      <div class="step"><div class="step-n">1</div><div class="step-t">Luồng đi từ <span class="hl">trên xuống dưới</span> (nguyên tắc)</div></div>
+      <div class="step"><div class="step-n">2</div><div class="step-t">Gặp <strong>◇ hình thoi</strong> → kiểm tra điều kiện, đi theo nhánh <span class="ht">Yes</span> hoặc <span style="color:var(--a3)">No</span></div></div>
+      <div class="step"><div class="step-n">3</div><div class="step-t">Gặp <strong>ループ端</strong> → lặp lại cho đến khi điều kiện kết thúc</div></div>
+      <div class="step"><div class="step-n">4</div><div class="step-t">Dùng <strong>Trace Table (トレース表)</strong> để theo dõi giá trị biến qua từng bước</div></div>
+    </div>
+  </div>
+
+  <!-- FLOWCHART EXAMPLES SVG -->
+  <div class="card">
+    <div class="card-title">📊 Flowchart minh họa — 3 ví dụ từ tài liệu</div>
+
+    <h3>① 絶対値を求めるアルゴリズム (Tính giá trị tuyệt đối)</h3>
+    <div class="lang-block">
+      <div class="lang-label lang-vi">🇻🇳</div>
+      <div class="lang-content">Nếu x &lt; 0 → đổi dấu (x = −x). Nếu x ≥ 0 → giữ nguyên. Trả về x.</div>
+    </div>
+    <div class="fc-wrap">
+      <svg viewBox="0 0 260 320" width="260" height="320" xmlns="http://www.w3.org/2000/svg" font-family="Be Vietnam Pro,sans-serif">
+        <!-- 開始 -->
+        <ellipse cx="130" cy="30" rx="55" ry="20" fill="#1a2a4a" stroke="#60a5fa" stroke-width="1.8"/>
+        <text x="130" y="35" text-anchor="middle" fill="#60a5fa" font-size="12" font-weight="700">開始</text>
+        <!-- Arrow -->
+        <line x1="130" y1="50" x2="130" y2="78" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- Decision -->
+        <polygon points="130,80 195,115 130,150 65,115" fill="#1a1a2e" stroke="#f472b6" stroke-width="1.8"/>
+        <text x="130" y="110" text-anchor="middle" fill="#f472b6" font-size="11">x &lt; 0 ?</text>
+        <text x="130" y="125" text-anchor="middle" fill="#f472b6" font-size="10">条件判定</text>
+        <!-- YES arrow (left) -->
+        <line x1="65" y1="115" x2="30" y2="115" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <text x="47" y="107" text-anchor="middle" fill="#34d399" font-size="10">Yes</text>
+        <!-- NO arrow (right) -->
+        <line x1="195" y1="115" x2="225" y2="115" stroke="#f87171" stroke-width="1.5" marker-end="url(#arr3)"/>
+        <text x="210" y="107" text-anchor="middle" fill="#f87171" font-size="10">No</text>
+        <!-- YES: Process x = -x -->
+        <line x1="30" y1="115" x2="30" y2="185" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <rect x="5" y="185" width="50" height="35" rx="4" fill="#0d2e1e" stroke="#34d399" stroke-width="1.5"/>
+        <text x="30" y="205" text-anchor="middle" fill="#34d399" font-size="10">x ← -x</text>
+        <!-- NO: continues down on right -->
+        <line x1="225" y1="115" x2="225" y2="220" stroke="#f87171" stroke-width="1.5"/>
+        <!-- merge -->
+        <line x1="30" y1="220" x2="130" y2="220" stroke="#64748b" stroke-width="1.5"/>
+        <line x1="225" y1="220" x2="130" y2="220" stroke="#64748b" stroke-width="1.5"/>
+        <line x1="130" y1="220" x2="130" y2="248" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- 処理: return x -->
+        <rect x="80" y="248" width="100" height="32" rx="4" fill="#1a2a1a" stroke="#34d399" stroke-width="1.5"/>
+        <text x="130" y="268" text-anchor="middle" fill="#34d399" font-size="11">x を返す</text>
+        <!-- Arrow to 終了 -->
+        <line x1="130" y1="280" x2="130" y2="295" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+        <!-- 終了 -->
+        <ellipse cx="130" cy="308" rx="55" ry="18" fill="#1a2a4a" stroke="#60a5fa" stroke-width="1.8"/>
+        <text x="130" y="313" text-anchor="middle" fill="#60a5fa" font-size="12" font-weight="700">終了</text>
+        <!-- Arrows defs -->
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
+          </marker>
+          <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#34d399"/>
+          </marker>
+          <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="#f87171"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+
+    <h3>② 1から5までの累計 (Tính tổng 1+2+3+4+5)</h3>
+    <div class="lang-block">
+      <div class="lang-label lang-vi">🇻🇳</div>
+      <div class="lang-content">Khởi tạo X=1, Y=0. Vòng lặp: cộng X vào Y, tăng X lên 1, đến khi X=5.</div>
+    </div>
+    <div class="fc-wrap">
+      <svg viewBox="0 0 300 380" width="300" height="380" xmlns="http://www.w3.org/2000/svg" font-family="Be Vietnam Pro,sans-serif">
+        <defs>
+          <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
+          <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
+        </defs>
+        <!-- 開始 -->
+        <ellipse cx="150" cy="25" rx="55" ry="18" fill="#1a2a4a" stroke="#60a5fa" stroke-width="1.8"/>
+        <text x="150" y="30" text-anchor="middle" fill="#60a5fa" font-size="12" font-weight="700">開始</text>
+        <line x1="150" y1="43" x2="150" y2="63" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
+        <!-- 初期化 -->
+        <rect x="80" y="63" width="140" height="38" rx="5" fill="#1a2a1a" stroke="#34d399" stroke-width="1.5"/>
+        <text x="150" y="79" text-anchor="middle" fill="#34d399" font-size="10">X ← 1</text>
+        <text x="150" y="93" text-anchor="middle" fill="#34d399" font-size="10">Y ← 0</text>
+        <line x1="150" y1="101" x2="150" y2="118" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
+        <!-- ループ開始 -->
+        <rect x="60" y="118" width="180" height="32" rx="0" fill="#1a1a30" stroke="#a78bfa" stroke-width="1.5"
+              style="clip-path:polygon(15px 0,100% 0,100% 100%,0 100%)"/>
+        <polygon points="60,118 85,118 85,150 60,150 75,134" fill="#1a1a30" stroke="#a78bfa" stroke-width="1.5"/>
+        <polygon points="215,118 240,118 225,134 240,150 215,150" fill="#1a1a30" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="150" y="139" text-anchor="middle" fill="#a78bfa" font-size="10">X が 5 になるまで</text>
+        <line x1="150" y1="150" x2="150" y2="168" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
+        <!-- 処理 Y=X+Y -->
+        <rect x="80" y="168" width="140" height="32" rx="5" fill="#1a2a1a" stroke="#34d399" stroke-width="1.5"/>
+        <text x="150" y="184" text-anchor="middle" fill="#34d399" font-size="10">Y ← X + Y</text>
+        <text x="150" y="196" text-anchor="middle" fill="#34d399" font-size="10">Cộng X vào Y</text>
+        <line x1="150" y1="200" x2="150" y2="218" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
+        <!-- X = X+1 -->
+        <rect x="80" y="218" width="140" height="28" rx="5" fill="#1a2a1a" stroke="#34d399" stroke-width="1.5"/>
+        <text x="150" y="235" text-anchor="middle" fill="#34d399" font-size="10">X ← X + 1</text>
+        <line x1="150" y1="246" x2="150" y2="263" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
+        <!-- ループ終了 -->
+        <polygon points="60,263 85,263 75,279 85,295 60,295" fill="#1a1a30" stroke="#a78bfa" stroke-width="1.5"/>
+        <polygon points="240,263 215,263 225,279 215,295 240,295" fill="#1a1a30" stroke="#a78bfa" stroke-width="1.5"/>
+        <rect x="85" y="263" width="130" height="32" fill="#1a1a30" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="150" y="283" text-anchor="middle" fill="#a78bfa" font-size="10">ループ端 (繰り返し終了)</text>
+        <line x1="150" y1="295" x2="150" y2="313" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
+        <!-- 終了 -->
+        <ellipse cx="150" cy="328" rx="55" ry="18" fill="#1a2a4a" stroke="#60a5fa" stroke-width="1.8"/>
+        <text x="150" y="333" text-anchor="middle" fill="#60a5fa" font-size="12" font-weight="700">終了</text>
+        <!-- Result label -->
+        <text x="255" y="185" text-anchor="start" fill="#fbbf24" font-size="9">結果:</text>
+        <text x="255" y="197" text-anchor="start" fill="#fbbf24" font-size="9">Y=15</text>
+      </svg>
+    </div>
+
+    <h3>③ Trace Table (トレース表) の使い方</h3>
+    <div class="lang-block">
+      <div class="lang-label lang-vi">🇻🇳</div>
+      <div class="lang-content">Trace Table = bảng theo dõi giá trị biến qua từng bước. Đây là kỹ năng <strong>cực kỳ quan trọng</strong> trong thi FE để giải flowchart đúng.</div>
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Bước</th><th>Xử lý</th><th>X</th><th>Y</th><th>Ghi chú</th></tr></thead>
+        <tbody>
+          <tr><td>①</td><td>X←1, Y←0</td><td>1</td><td>0</td><td>Khởi tạo</td></tr>
+          <tr><td>②</td><td>Y←X+Y (=0+1)</td><td>1</td><td>1</td><td>Vòng 1</td></tr>
+          <tr><td>③</td><td>X←X+1</td><td>2</td><td>1</td><td></td></tr>
+          <tr><td>④</td><td>Y←X+Y (=1+2)</td><td>2</td><td>3</td><td>Vòng 2</td></tr>
+          <tr><td>⑤</td><td>X←X+1</td><td>3</td><td>3</td><td></td></tr>
+          <tr><td>...</td><td>...</td><td>...</td><td>...</td><td></td></tr>
+          <tr style="background:rgba(52,211,153,.07)"><td>⑩</td><td>X=5 → ループ終了</td><td>5</td><td><strong style="color:var(--a2)">15</strong></td><td>1+2+3+4+5=15 ✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FLOWCHART SYMBOLS REFERENCE -->
+  <div class="card">
+    <div class="card-title">📌 Ký hiệu quan trọng trong Flowchart</div>
+    <div class="def yw">
+      <strong>代入記号:</strong> 「←」または「→」は代入を表す。<br>
+      例: <span class="hl">x ← 5</span> = 変数xに5を代入する (gán giá trị 5 cho biến x)<br>
+      例: <span class="hl">5 → x</span> = 同じ意味
+    </div>
+    <div class="def gr">
+      <strong>mod (余り):</strong> 割り算の余り。<br>
+      例: <span class="hl">7 mod 3 = 1</span> (7÷3 = 2 余り 1)
+    </div>
+    <div class="def">
+      <strong>プログラム言語キーワード:</strong><br>
+      <span class="hl">if</span> 〈条件〉 <span class="hl">then</span> 〈正しい処理〉 <span class="hl">else</span> 〈正しくない処理〉<br>
+      <span class="hl">return</span> 〈戻り値〉
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PHẦN 3: VÍ DỤ ===================== -->
+<section id="example">
+  <h2><span class="ic" style="background:rgba(251,191,36,.18);color:var(--a4)">💡</span>Phần 2 — Ví dụ Minh họa</h2>
+
+  <!-- Stack/Queue example -->
+  <div class="card">
+    <div class="card-title">📚 Ví dụ 1: Stack (スタック) — Bài thi thực tế</div>
+    <div class="def yw"><span class="tag ex">問題3-1</span> A,B,C,D theo thứ tự đến. Dùng 1 Stack. Dãy đầu ra nào khả thi?<br>
+    <strong>Đáp án: C, B, D, A</strong>
+    </div>
+    <div class="diagram">  Thứ tự vào: A → B → C → D
+  
+  Push A: [A]
+  Push B: [A, B]  
+  Push C: [A, B, C]
+  Pop → C         ← lấy C ra trước (LIFO)
+  Pop → B         ← lấy B
+  Push D: [A, D]
+  Pop → D         ← lấy D  
+  Pop → A         ← lấy A cuối cùng
+
+  Kết quả: C, B, D, A ✓</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🚶 Ví dụ 2: Queue (キュー) — Bài thi thực tế</div>
+    <div class="def yw"><span class="tag ex">問題3-2</span> ENQ1, ENQ2, ENQ3, DEQ, ENQ4, ENQ5, DEQ, ENQ6, DEQ, DEQ, DEQ → lấy ra cuối là số nào?</div>
+    <div class="diagram">  ENQ1: [1]          → Queue: 1
+  ENQ2: [1,2]        → Queue: 1,2
+  ENQ3: [1,2,3]      → Queue: 1,2,3
+  DEQ → lấy 1       → Queue: 2,3
+  ENQ4: [2,3,4]
+  ENQ5: [2,3,4,5]
+  DEQ → lấy 2       → Queue: 3,4,5
+  ENQ6: [3,4,5,6]
+  DEQ → lấy 3       → Queue: 4,5,6
+  DEQ → lấy 4       → Queue: 5,6
+  DEQ cuối → lấy 5  ← Đáp án: 5 ✓</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔍 Ví dụ 3: 2分探索法 (Binary Search)</div>
+    <div class="lang-block">
+      <div class="lang-label lang-vi">🇻🇳</div>
+      <div class="lang-content">Tìm số "6" trong mảng đã sắp xếp: [1, 2, 3, 4, 5, 6, 7, 8, 9]</div>
+    </div>
+    <div class="diagram">  Mảng: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  
+  Bước 1: Phần tử giữa = (1+9)/2 = 5 → giá trị = 5
+           6 > 5 → Tìm ở nửa phải [6,7,8,9]
+  
+  Bước 2: Phần tử giữa = (6+9)/2 = 7 → giá trị = 7
+           6 < 7 → Tìm ở nửa trái [6]
+  
+  Bước 3: Phần tử giữa = 6 → TÌM THẤY! ✓
+
+  Chỉ cần 3 bước cho 9 phần tử!
+  O(log₂9) ≈ 3.17 ≈ 3 bước</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔁 Ví dụ 4: 再帰的アルゴリズム — 総和 (Tổng đệ quy)</div>
+    <div class="lang-block">
+      <div class="lang-label lang-vi">🇻🇳</div>
+      <div class="lang-content">Tính 1+2+3+4+5 = 15 bằng đệ quy: f(5) → f(5) tự gọi f(4) → f(4) gọi f(3)... </div>
+    </div>
+    <div class="code">
+<span class="cmt">// Định nghĩa hàm đệ quy (Recursive Function)</span>
+f(x): <span class="kw">if</span> x ≤ 1 <span class="kw">then return</span> 1 
+      <span class="kw">else return</span> x + <span class="fn">f</span>(x - 1)
+
+<span class="cmt">// Tính f(5):</span>
+<span class="fn">f</span>(5) = 5 + <span class="fn">f</span>(4)
+      = 5 + 4 + <span class="fn">f</span>(3)
+      = 5 + 4 + 3 + <span class="fn">f</span>(2)
+      = 5 + 4 + 3 + 2 + <span class="fn">f</span>(1)
+      = 5 + 4 + 3 + 2 + 1
+      = <span class="str">15</span> ✓</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚡ Ví dụ 5: Sửa lỗi Flowchart (Bài thi thực tế)</div>
+    <div class="def yw"><span class="tag ex">問題3-6</span> Tính tổng 1 đến 100. Flowchart bắt đầu với ① <code>1→x</code>. Kết quả là 5051 (sai, phải là 5050). Sửa như thế nào?</div>
+    <div class="lang-block">
+      <div class="lang-label lang-vi">🇻🇳</div>
+      <div class="lang-content">
+        Lỗi: Khởi tạo x=1 thay vì x=0, nên đã cộng thêm 1 lần 1 dư.<br>
+        <strong>Sửa:</strong> Đổi ① thành <span class="hl">0 → x</span> (khởi tạo x=0)<br>
+        → 0 + 1 + 2 + ... + 100 = 5050 ✓
+      </div>
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Bước</th><th>Flowchart sai (x bắt đầu=1)</th><th>Flowchart đúng (x bắt đầu=0)</th></tr></thead>
+        <tbody>
+          <tr><td>①</td><td><span style="color:var(--a3)">1 → x (SAI)</span></td><td><span class="ht">0 → x (ĐÚNG)</span></td></tr>
+          <tr><td>Kết quả</td><td>1+1+2+...+100 = 5051 ✗</td><td>0+1+2+...+100 = 5050 ✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PHẦN 4: FLASHCARD ===================== -->
+<section id="flash">
+  <h2><span class="ic" style="background:rgba(244,114,182,.18);color:var(--a3)">🃏</span>Phần 3 — Flashcard</h2>
+  <p style="color:var(--dim);margin-bottom:1.3rem;font-size:.87rem">👆 Nhấn thẻ để lật xem đáp án</p>
+  <div class="fc-grid">
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-f"><div class="fc-term">スタック</div><div class="fc-sub">Stack / データ構造</div><div class="fc-hint">LIFO hay FIFO? →</div></div>
+        <div class="fc-b">後入れ先出し (<span style="color:var(--a4)">LIFO</span>)<br>Last In First Out<br><br><span style="color:var(--vi)">🇻🇳 Vào sau ra trước<br>push = thêm vào, pop = lấy ra</span></div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-f"><div class="fc-term">キュー</div><div class="fc-sub">Queue / 待ち行列</div><div class="fc-hint">LIFO hay FIFO? →</div></div>
+        <div class="fc-b">先入れ先出し (<span style="color:var(--a4)">FIFO</span>)<br>First In First Out<br><br><span style="color:var(--vi)">🇻🇳 Vào trước ra trước<br>enqueue = thêm, dequeue = lấy</span></div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-f"><div class="fc-term">配列 vs 連結リスト</div><div class="fc-sub">Điểm khác biệt chính?</div><div class="fc-hint">Nhấn để so sánh →</div></div>
+        <div class="fc-b" style="font-size:.78rem">配列 → 参照・更新 <span style="color:var(--a2)">速い</span><br>連結リスト → 挿入・削除 <span style="color:var(--a2)">速い</span><br><br><span style="color:var(--vi)">🇻🇳 Mảng: đọc/sửa nhanh<br>Danh sách: chèn/xóa nhanh</span></div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-f"><div class="fc-term">2分探索木の条件</div><div class="fc-sub">Binary Search Tree</div><div class="fc-hint">Điều kiện là gì? →</div></div>
+        <div class="fc-b"><span style="color:var(--a4)">左の子孫 &lt; 親 &lt; 右の子孫</span><br><br><span style="color:var(--vi)">🇻🇳 Con cháu bên trái &lt; Nút cha &lt; Con cháu bên phải</span></div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-f"><div class="fc-term">流れ図 ◇</div><div class="fc-sub">Hình thoi trong flowchart</div><div class="fc-hint">Ý nghĩa? →</div></div>
+        <div class="fc-b">判断 (Decision)<br>条件分岐 — Yes/No で処理を分ける<br><br><span style="color:var(--vi)">🇻🇳 Rẽ nhánh điều kiện (Yes/No)</span></div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-f"><div class="fc-term">端子 ⬭</div><div class="fc-sub">Hình bầu dục trong flowchart</div><div class="fc-hint">Ý nghĩa? →</div></div>
+        <div class="fc-b">流れ図の開始と終了を表す<br>「開始」または「終了」と書く<br><br><span style="color:var(--vi)">🇻🇳 Điểm Bắt đầu / Kết thúc</span></div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-f"><div class="fc-term">再帰 (リカーシブ)</div><div class="fc-sub">Recursive</div><div class="fc-hint">Định nghĩa? →</div></div>
+        <div class="fc-b">プログラム実行中に<span style="color:var(--a4)">自分自身を呼び出す</span>性質<br><br><span style="color:var(--vi)">🇻🇳 Hàm tự gọi chính nó<br>Dùng để: tổng, giai thừa, chia dư</span></div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-f"><div class="fc-term">再入可能 (リエントラント)</div><div class="fc-sub">Reentrant</div><div class="fc-hint">Định nghĩa? →</div></div>
+        <div class="fc-b"><span style="color:var(--a4)">複数タスクから同時</span>に呼び出されても正しく動作する性質<br><br><span style="color:var(--vi)">🇻🇳 Nhiều chương trình gọi đồng thời vẫn chạy đúng</span></div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-f"><div class="fc-term">ハッシュ法のオーダー</div><div class="fc-sub">Hash Method Order</div><div class="fc-hint">O(?) →</div></div>
+        <div class="fc-b" style="font-size:1.5rem;color:var(--a4)">O(1)<br><span style="font-size:.8rem;color:var(--text)">1回の探索でアクセス可能</span><br><br><span style="font-size:.78rem;color:var(--vi)">🇻🇳 1 lần tra cứu là xong!</span></div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-f"><div class="fc-term">2分探索法のオーダー</div><div class="fc-sub">Binary Search Order</div><div class="fc-hint">O(?) →</div></div>
+        <div class="fc-b" style="font-size:1.3rem;color:var(--a4)">O(log₂n)<br><span style="font-size:.8rem;color:var(--text)">データを半分ずつ絞る</span><br><br><span style="font-size:.78rem;color:var(--vi)">🇻🇳 Mỗi lần loại bỏ nửa còn lại</span></div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-f"><div class="fc-term">クイックソート</div><div class="fc-sub">Quick Sort</div><div class="fc-hint">Nguyên lý? →</div></div>
+        <div class="fc-b" style="font-size:.82rem">基準値を選び、それより<span style="color:var(--a2)">小さい</span>グループと<span style="color:var(--a3)">大きい</span>グループに分割を繰り返す<br>オーダー: <span style="color:var(--a4)">O(n log n)</span><br><br><span style="color:var(--vi)">🇻🇳 Chọn pivot, chia 2 nhóm, lặp lại</span></div>
+      </div>
+    </div>
+
+    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+      <div class="fc-inner">
+        <div class="fc-f"><div class="fc-term">Ajax</div><div class="fc-sub">非同期通信</div><div class="fc-hint">Đặc điểm chính? →</div></div>
+        <div class="fc-b" style="font-size:.82rem">JavaScriptの<span style="color:var(--a4)">非同期通信</span>で画面遷移なく動的UIを実現<br>Asynchronous JS + XML<br><br><span style="color:var(--vi)">🇻🇳 Cập nhật nội dung không cần tải lại trang</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== PHẦN 5: CÂU HỎI ===================== -->
+<section id="quiz">
+  <h2><span class="ic" style="background:rgba(251,191,36,.18);color:var(--a4)">✏️</span>Phần 4 — Câu hỏi Ôn tập</h2>
+
+  <div class="qi">
+    <div class="qq">Q1. スタックの説明として正しいものはどれか。<br><span style="color:var(--dim);font-size:.81rem">(Mô tả đúng về Stack là gì?)</span></div>
+    <div class="qopts">
+      <div class="qopt" onclick="ans(this,'wrong')">ア. 最初に格納したデータを最初に取り出すデータ構造（先入れ先出し）</div>
+      <div class="qopt" onclick="ans(this,'correct')">イ. 最後に格納したデータを最初に取り出すデータ構造（後入れ先出し）</div>
+      <div class="qopt" onclick="ans(this,'wrong')">ウ. データをポインタで数珠つなぎにしたデータ構造</div>
+      <div class="qopt" onclick="ans(this,'wrong')">エ. データを階層構造で保持するデータ構造</div>
+    </div>
+    <div class="qex">✅ <strong>答え: イ (LIFO — 後入れ先出し)</strong><br>スタック = 積み上げた本のイメージ。最後に置いた本から取り出す。<br><span style="color:var(--vi)">🇻🇳 Stack = LIFO. ア はキュー (FIFO)。ウ は連結リスト。エ は木構造。</span></div>
+  </div>
+
+  <div class="qi">
+    <div class="qq">Q2. 配列と比較した連結リストの特徴として適切なものはどれか。<br><span style="color:var(--dim);font-size:.81rem">(Đặc điểm của Linked List so với Array?)</span></div>
+    <div class="qopts">
+      <div class="qopt" onclick="ans(this,'wrong')">ア. 要素を参照する場合、ランダムにアクセスできるので処理時間は短い</div>
+      <div class="qopt" onclick="ans(this,'wrong')">イ. 要素を更新する場合、ポインタをたどるだけなので処理時間は短い</div>
+      <div class="qopt" onclick="ans(this,'wrong')">ウ. 要素を削除する場合、削除した要素から後ろにある全要素を前に移動するので処理時間は長い</div>
+      <div class="qopt" onclick="ans(this,'correct')">エ. 要素を挿入する場合、数個のポインタを書き換えるだけなので処理時間は短い</div>
+    </div>
+    <div class="qex">✅ <strong>答え: エ</strong><br>連結リストは挿入・削除が速い（ポインタを変更するだけ）。ア・イ・ウはすべて配列の特徴または誤り。<br><span style="color:var(--vi)">🇻🇳 Danh sách liên kết: chèn/xóa nhanh vì chỉ đổi pointer. Mảng: đọc nhanh vì dùng index.</span></div>
+  </div>
+
+  <div class="qi">
+    <div class="qq">Q3. クイックソートの処理方法の説明として正しいものはどれか。<br><span style="color:var(--dim);font-size:.81rem">(Mô tả đúng về Quick Sort?)</span></div>
+    <div class="qopts">
+      <div class="qopt" onclick="ans(this,'wrong')">ア. 隣り合ったデータの比較と入替えを繰り返して整列する（バブルソート）</div>
+      <div class="qopt" onclick="ans(this,'wrong')">イ. 最小値を選び、先頭と交換する操作を繰り返す（選択ソート）</div>
+      <div class="qopt" onclick="ans(this,'correct')">ウ. 適当な基準値を選び、それより小さなグループと大きなグループに分割し、繰り返す</div>
+      <div class="qopt" onclick="ans(this,'wrong')">エ. 整列済みデータの正しい位置に未整列データを挿入する（挿入ソート）</div>
+    </div>
+    <div class="qex">✅ <strong>答え: ウ</strong><br>クイックソートのキーワード: 「基準値」「2つのグループに分割」「繰り返し」<br><span style="color:var(--vi)">🇻🇳 Quick Sort: chọn pivot → chia 2 nhóm → lặp lại cho mỗi nhóm. O(n log n)</span></div>
+  </div>
+
+  <div class="qi">
+    <div class="qq">Q4. 再入可能プログラムの特徴はどれか。<br><span style="color:var(--dim);font-size:.81rem">(Đặc điểm của Reentrant Program?)</span></div>
+    <div class="qopts">
+      <div class="qopt" onclick="ans(this,'wrong')">ア. 主記憶上のどこのアドレスに配置しても実行できる（リロケータブル）</div>
+      <div class="qopt" onclick="ans(this,'wrong')">イ. 手続の内部から自分自身を呼び出すことができる（リカーシブ）</div>
+      <div class="qopt" onclick="ans(this,'wrong')">ウ. 主記憶に読み込まれたら再ロードなしに繰り返し利用できる（リユーザブル）</div>
+      <div class="qopt" onclick="ans(this,'correct')">エ. 複数のタスクからの呼び出しに対して、並行して実行されても正しい結果を返す</div>
+    </div>
+    <div class="qex">✅ <strong>答え: エ</strong><br>再入可能（リエントラント）= 複数タスクから同時に呼ばれても正しく動作。<br><span style="color:var(--vi)">🇻🇳 Reentrant = nhiều task gọi đồng thời vẫn đúng. ア=Relocatable, イ=Recursive, ウ=Reusable.</span></div>
+  </div>
+
+  <div class="qi">
+    <div class="qq">Q5. 流れ図記号で ◇（菱形）は何を表すか。<br><span style="color:var(--dim);font-size:.81rem">(Hình thoi ◇ trong flowchart biểu thị điều gì?)</span></div>
+    <div class="qopts">
+      <div class="qopt" onclick="ans(this,'wrong')">ア. 端子（流れ図の開始と終了）</div>
+      <div class="qopt" onclick="ans(this,'wrong')">イ. 処理（計算や代入）</div>
+      <div class="qopt" onclick="ans(this,'correct')">ウ. 判断（条件分岐 — Yes/No で処理を分ける）</div>
+      <div class="qopt" onclick="ans(this,'wrong')">エ. ループ端（繰り返し処理の開始と終了）</div>
+    </div>
+    <div class="qex">✅ <strong>答え: ウ</strong><br>◇ = 判断（Decision）。出口に Yes/No を書く。ア=⬭ 端子、イ=▭ 処理。<br><span style="color:var(--vi)">🇻🇳 Hình thoi = Điều kiện rẽ nhánh (Yes/No). Hình bầu dục = Bắt đầu/Kết thúc.</span></div>
+  </div>
+
+  <div class="qi">
+    <div class="qq">Q6. Ajax の説明として正しいものはどれか。<br><span style="color:var(--dim);font-size:.81rem">(Mô tả đúng về Ajax?)</span></div>
+    <div class="qopts">
+      <div class="qopt" onclick="ans(this,'correct')">ア. JavaScriptの非同期通信を使い、画面全体の遷移を伴わずに動的なUIを実現する技術</div>
+      <div class="qopt" onclick="ans(this,'wrong')">イ. HTML文書の文字サイズや色などのデザインを指定する言語（CSS）</div>
+      <div class="qopt" onclick="ans(this,'wrong')">ウ. Webページの更新情報を配信するための文書フォーマット（RSS）</div>
+      <div class="qopt" onclick="ans(this,'wrong')">エ. 利用者が任意のタグを定義できるマークアップ言語（XML）</div>
+    </div>
+    <div class="qex">✅ <strong>答え: ア</strong><br>Ajaxキーワード:「非同期通信」「画面遷移なし」「動的UI」<br><span style="color:var(--vi)">🇻🇳 Ajax = 非同期 (Asynchronous) JS + XML. Cập nhật trang không reload. Google Maps là ví dụ điển hình.</span></div>
+  </div>
+
+  <div class="qi">
+    <div class="qq">Q7. XMLの特徴として最も適切なものはどれか。<br><span style="color:var(--dim);font-size:.81rem">(Đặc điểm đúng nhất của XML?)</span></div>
+    <div class="qopts">
+      <div class="qopt" onclick="ans(this,'wrong')">ア. HTMLと同様にタグの使い方が固定されており、独自タグは定義できない</div>
+      <div class="qopt" onclick="ans(this,'correct')">イ. ネットワーク経由のデータ交換を容易にするため、任意のタグを定義することができる</div>
+      <div class="qopt" onclick="ans(this,'wrong')">ウ. Webページのデザイン（文字色・大きさ）を指定するための言語</div>
+      <div class="qopt" onclick="ans(this,'wrong')">エ. サーバ上で動作し、動的なWebページを生成するプログラム（サーブレット）</div>
+    </div>
+    <div class="qex">✅ <strong>答え: イ</strong><br>XML = 任意のタグを<strong>自分で定義</strong>できる。用途はデータ交換。HTMLはタグ固定でWebページ作成用。<br><span style="color:var(--vi)">🇻🇳 XML cho phép tự định nghĩa tag → dùng để trao đổi dữ liệu. HTML tag cố định → tạo trang web.</span></div>
+  </div>
+
+</section>
+
+<!-- ===================== PHẦN 6: MIND MAP ===================== -->
+<section id="mindmap">
+  <h2><span class="ic" style="background:rgba(52,211,153,.18);color:var(--a2)">🗺️</span>Phần 5 — Mind Map</h2>
+
+  <div style="overflow-x:auto">
+    <svg viewBox="0 0 980 620" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;min-width:700px" font-family="Be Vietnam Pro,Noto Sans JP,sans-serif">
+      <defs>
+        <filter id="gl"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <rect width="980" height="620" fill="#0b0d16" rx="12"/>
+
+      <!-- CENTER -->
+      <ellipse cx="490" cy="310" rx="100" ry="52" fill="#1a2a4a" stroke="#60a5fa" stroke-width="2.5" filter="url(#gl)"/>
+      <text x="490" y="304" text-anchor="middle" fill="white" font-size="13" font-weight="700">プログラムの基本</text>
+      <text x="490" y="322" text-anchor="middle" fill="#93c5fd" font-size="10">フローチャート</text>
+
+      <!-- BRANCH 1: データ構造 (left-top) -->
+      <path d="M395 285 C330 250,270 215,200 200" stroke="#60a5fa" stroke-width="2" fill="none"/>
+      <rect x="85" y="175" width="115" height="50" rx="10" fill="#0d1a3a" stroke="#60a5fa" stroke-width="1.8"/>
+      <text x="143" y="197" text-anchor="middle" fill="#60a5fa" font-size="12" font-weight="700">データ構造</text>
+      <text x="143" y="212" text-anchor="middle" fill="#93c5fd" font-size="9.5">5種類</text>
+
+      <!-- sub: stack -->
+      <path d="M85 195 C55 185,28 172,12 165" stroke="#60a5fa" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="-55" y="150" width="68" height="32" rx="6" fill="#0d1a3a" stroke="#60a5fa" stroke-width="1"/>
+      <text x="-21" y="165" text-anchor="middle" fill="#93c5fd" font-size="9">スタック</text>
+      <text x="-21" y="177" text-anchor="middle" fill="#93c5fd" font-size="8">LIFO/push/pop</text>
+
+      <!-- sub: queue -->
+      <path d="M85 210 C55 220,28 228,12 233" stroke="#60a5fa" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="-55" y="219" width="68" height="32" rx="6" fill="#0d1a3a" stroke="#60a5fa" stroke-width="1"/>
+      <text x="-21" y="234" text-anchor="middle" fill="#93c5fd" font-size="9">キュー</text>
+      <text x="-21" y="246" text-anchor="middle" fill="#93c5fd" font-size="8">FIFO/enq/deq</text>
+
+      <!-- BRANCH 2: フローチャート (left-bottom) -->
+      <path d="M395 335 C330 365,270 390,200 400" stroke="#34d399" stroke-width="2" fill="none"/>
+      <rect x="85" y="376" width="115" height="50" rx="10" fill="#0d2e1e" stroke="#34d399" stroke-width="1.8"/>
+      <text x="143" y="399" text-anchor="middle" fill="#34d399" font-size="12" font-weight="700">フローチャート</text>
+      <text x="143" y="414" text-anchor="middle" fill="#6ee7b7" font-size="9.5">流れ図</text>
+
+      <path d="M85 390 C55 390,25 390,10 390" stroke="#34d399" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="-60" y="374" width="70" height="32" rx="6" fill="#0d2e1e" stroke="#34d399" stroke-width="1"/>
+      <text x="-25" y="389" text-anchor="middle" fill="#6ee7b7" font-size="9">5種の記号</text>
+      <text x="-25" y="401" text-anchor="middle" fill="#6ee7b7" font-size="8">端子/処理/判断</text>
+
+      <path d="M85 415 C55 425,25 435,10 440" stroke="#34d399" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="-60" y="424" width="70" height="32" rx="6" fill="#0d2e1e" stroke="#34d399" stroke-width="1"/>
+      <text x="-25" y="439" text-anchor="middle" fill="#6ee7b7" font-size="9">トレース表</text>
+      <text x="-25" y="451" text-anchor="middle" fill="#6ee7b7" font-size="8">変数を追跡</text>
+
+      <!-- BRANCH 3: アルゴリズム構造 (top) -->
+      <path d="M490 260 C490 220,490 185,490 165" stroke="#fbbf24" stroke-width="2" fill="none"/>
+      <rect x="415" y="110" width="150" height="55" rx="10" fill="#2a2000" stroke="#fbbf24" stroke-width="1.8"/>
+      <text x="490" y="133" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="700">3つの基本構造</text>
+      <text x="490" y="150" text-anchor="middle" fill="#fde68a" font-size="9.5">順次・選択・繰返</text>
+
+      <path d="M440 110 C400 90,360 75,325 65" stroke="#fbbf24" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="250" y="48" width="75" height="32" rx="6" fill="#2a2000" stroke="#fbbf24" stroke-width="1"/>
+      <text x="288" y="62" text-anchor="middle" fill="#fde68a" font-size="9">①順次構造</text>
+      <text x="288" y="74" text-anchor="middle" fill="#fde68a" font-size="8">上から順に</text>
+
+      <path d="M540 110 C575 90,610 75,640 65" stroke="#fbbf24" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="640" y="48" width="75" height="32" rx="6" fill="#2a2000" stroke="#fbbf24" stroke-width="1"/>
+      <text x="678" y="62" text-anchor="middle" fill="#fde68a" font-size="9">②選択構造</text>
+      <text x="678" y="74" text-anchor="middle" fill="#fde68a" font-size="8">if/else 分岐</text>
+
+      <path d="M490 110 C490 90,490 75,490 62" stroke="#fbbf24" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="450" y="40" width="80" height="22" rx="6" fill="#2a2000" stroke="#fbbf24" stroke-width="1"/>
+      <text x="490" y="55" text-anchor="middle" fill="#fde68a" font-size="9">③繰返構造</text>
+
+      <!-- BRANCH 4: 探索・整列 (right-top) -->
+      <path d="M585 285 C650 250,710 215,780 200" stroke="#a78bfa" stroke-width="2" fill="none"/>
+      <rect x="780" y="175" width="120" height="50" rx="10" fill="#1a0d2e" stroke="#a78bfa" stroke-width="1.8"/>
+      <text x="840" y="197" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="700">探索・整列</text>
+      <text x="840" y="212" text-anchor="middle" fill="#c4b5fd" font-size="9.5">アルゴリズム</text>
+
+      <path d="M900 190 C930 175,955 160,965 150" stroke="#a78bfa" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="963" y="133" width="70" height="32" rx="6" fill="#1a0d2e" stroke="#a78bfa" stroke-width="1"/>
+      <text x="998" y="148" text-anchor="middle" fill="#c4b5fd" font-size="9">O(1) ハッシュ</text>
+      <text x="998" y="160" text-anchor="middle" fill="#c4b5fd" font-size="8">衝突に注意</text>
+
+      <path d="M900 205 C930 215,955 225,965 232" stroke="#a78bfa" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="963" y="218" width="70" height="32" rx="6" fill="#1a0d2e" stroke="#a78bfa" stroke-width="1"/>
+      <text x="998" y="233" text-anchor="middle" fill="#c4b5fd" font-size="9">O(log n)</text>
+      <text x="998" y="245" text-anchor="middle" fill="#c4b5fd" font-size="8">2分探索</text>
+
+      <!-- BRANCH 5: プログラムの性質 (right-bottom) -->
+      <path d="M585 335 C650 365,710 390,780 400" stroke="#f472b6" stroke-width="2" fill="none"/>
+      <rect x="780" y="376" width="120" height="50" rx="10" fill="#2a0d1e" stroke="#f472b6" stroke-width="1.8"/>
+      <text x="840" y="399" text-anchor="middle" fill="#f472b6" font-size="12" font-weight="700">プログラムの</text>
+      <text x="840" y="414" text-anchor="middle" fill="#f472b6" font-size="12" font-weight="700">4つの性質</text>
+
+      <path d="M900 390 C930 380,955 368,965 360" stroke="#f472b6" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="963" y="344" width="70" height="32" rx="6" fill="#2a0d1e" stroke="#f472b6" stroke-width="1"/>
+      <text x="998" y="359" text-anchor="middle" fill="#fda4af" font-size="9">再帰</text>
+      <text x="998" y="371" text-anchor="middle" fill="#fda4af" font-size="8">自己呼出し</text>
+
+      <path d="M900 415 C930 425,955 437,965 445" stroke="#f472b6" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="963" y="430" width="70" height="32" rx="6" fill="#2a0d1e" stroke="#f472b6" stroke-width="1"/>
+      <text x="998" y="445" text-anchor="middle" fill="#fda4af" font-size="9">再入可能</text>
+      <text x="998" y="457" text-anchor="middle" fill="#fda4af" font-size="8">並行動作OK</text>
+
+      <!-- BRANCH 6: プログラム言語 (bottom) -->
+      <path d="M490 362 C490 400,490 435,490 455" stroke="#fb923c" stroke-width="2" fill="none"/>
+      <rect x="415" y="455" width="150" height="55" rx="10" fill="#2a1500" stroke="#fb923c" stroke-width="1.8"/>
+      <text x="490" y="478" text-anchor="middle" fill="#fb923c" font-size="12" font-weight="700">プログラム言語</text>
+      <text x="490" y="494" text-anchor="middle" fill="#fdba74" font-size="9.5">Java / HTML / XML</text>
+
+      <path d="M435 510 C395 530,360 545,330 552" stroke="#fb923c" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="255" y="538" width="75" height="32" rx="6" fill="#2a1500" stroke="#fb923c" stroke-width="1"/>
+      <text x="293" y="553" text-anchor="middle" fill="#fdba74" font-size="9">HTML/CSS</text>
+      <text x="293" y="565" text-anchor="middle" fill="#fdba74" font-size="8">Webページ</text>
+
+      <path d="M545 510 C575 530,610 545,640 552" stroke="#fb923c" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="640" y="538" width="75" height="32" rx="6" fill="#2a1500" stroke="#fb923c" stroke-width="1"/>
+      <text x="678" y="553" text-anchor="middle" fill="#fdba74" font-size="9">Ajax/XML</text>
+      <text x="678" y="565" text-anchor="middle" fill="#fdba74" font-size="8">非同期通信</text>
+
+      <path d="M490 510 C490 530,490 545,490 552" stroke="#fb923c" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
+      <rect x="447" y="545" width="86" height="22" rx="6" fill="#2a1500" stroke="#fb923c" stroke-width="1"/>
+      <text x="490" y="560" text-anchor="middle" fill="#fdba74" font-size="9">Java系/再帰</text>
+    </svg>
+  </div>
+
+  <div class="card" style="margin-top:1.3rem">
+    <div class="card-title">📝 Chú thích Mind Map</div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Nhánh</th><th>Màu</th><th>Nội dung chính</th></tr></thead>
+        <tbody>
+          <tr><td>データ構造</td><td style="color:var(--a1)">■ Xanh dương</td><td>Stack(LIFO), Queue(FIFO), 配列, 連結リスト, 木構造</td></tr>
+          <tr><td>フローチャート</td><td style="color:var(--a2)">■ Xanh lá</td><td>5 ký hiệu, Trace Table, 3 cấu trúc cơ bản</td></tr>
+          <tr><td>3つの基本構造</td><td style="color:var(--a4)">■ Vàng</td><td>順次・選択・繰返</td></tr>
+          <tr><td>探索・整列</td><td style="color:var(--a5)">■ Tím</td><td>Hash O(1), 2分探索 O(log n), クイックソート O(n log n)</td></tr>
+          <tr><td>プログラムの性質</td><td style="color:var(--a3)">■ Hồng</td><td>再帰, 再入可能, 再配置可能, 再使用可能</td></tr>
+          <tr><td>プログラム言語</td><td style="color:var(--a6)">■ Cam</td><td>Java, HTML, CSS, XML, Ajax</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+function sw(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const idx=['theory','flowchart','example','flash','quiz','mindmap'].indexOf(id);
+  document.querySelectorAll('nav button')[idx].classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function ans(el,res){
+  const p=el.closest('.qi');
+  p.querySelectorAll('.qopt').forEach(o=>{o.classList.remove('correct','wrong');o.onclick=null;o.style.cursor='default';});
+  el.classList.add(res);
+  p.querySelector('.qex').classList.add('show');
+}
+</script>
+</body>
+</html>
