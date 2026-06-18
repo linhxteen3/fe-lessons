@@ -1,10 +1,6 @@
 {
   "title": "FE — Tài liệu học",
   "lessons": [
-    { "stt": 1,  "topic": "n進数の概念 · Khái niệm hệ cơ số n", "theory": "ly-thuyet/1.html",  "test": "kiem-tra/1.html",  "status": "done"  },
-    { "stt": 2,  "topic": "基数変換 · Chuyển đổi cơ số",        "theory": "ly-thuyet/2.html",  "test": "kiem-tra/2.html",  "status": "done"  },
-    { "stt": 6,  "topic": "論理回路 · Mạch logic",              "theory": "ly-thuyet/6.html",  "test": "kiem-tra/6.html",  "status": "done"  },
-    { "stt": 13, "topic": "ソート · Sắp xếp",                   "theory": "ly-thuyet/13.html", "test": "kiem-tra/13.html", "status": "doing" },
-    { "stt": 14, "topic": "OOP+UML + 過去問 Ch.3",              "theory": null,                "test": null,               "status": "todo"  }
+    { "stt": 6, "topic": "集合と論理演算", "theory": "ly-thuyet/6.html", "test": "kiem-tra/6.html", "status": "done" }
   ]
 }
