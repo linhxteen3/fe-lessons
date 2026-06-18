@@ -1,6 +1,15 @@
 {
   "title": "FE — Tài liệu học",
   "lessons": [
-    { "stt": 5, "topic": "集合と論理演算", "theory": "ly-thuyet/5.html", "test": "kiem-tra/5.html", "status": "done" }
+    { "stt": 5,  "topic": "集合と論理演算",                  "theory": "ly-thuyet/5.html",  "test": "kiem-tra/5.html",  "status": "done" },
+    { "stt": 6,  "topic": "論理回路 · Mạch logic",            "theory": "ly-thuyet/6.html",  "test": "kiem-tra/6.html",  "status": "done" },
+    { "stt": 7,  "topic": "計算式の表し方 (逆ポーランド)",      "theory": "ly-thuyet/7.html",  "test": "kiem-tra/7.html",  "status": "done" },
+    { "stt": 8,  "topic": "オートマトン · Máy tự động",        "theory": "ly-thuyet/8.html",  "test": "kiem-tra/8.html",  "status": "done" },
+    { "stt": 9,  "topic": "AI + 確率 (xác suất)",            "theory": "ly-thuyet/9.html",  "test": "kiem-tra/9.html",  "status": "done" },
+    { "stt": 10, "topic": "プログラムの基本+フローチャート",     "theory": "ly-thuyet/10.html", "test": "kiem-tra/10.html", "status": "done" },
+    { "stt": 11, "topic": "データ構造 · Stack,Queue,Tree",    "theory": "ly-thuyet/11.html", "test": "kiem-tra/11.html", "status": "done" },
+    { "stt": 12, "topic": "基本アルゴリズム · Tìm kiếm",       "theory": "ly-thuyet/12.html", "test": "kiem-tra/12.html", "status": "done" },
+    { "stt": 13, "topic": "ソート · Sắp xếp",                "theory": "ly-thuyet/13.html", "test": "kiem-tra/13.html", "status": "done" },
+    { "stt": 14, "topic": "OOP+UML + 過去問 Ch.3",           "theory": "ly-thuyet/14.html", "test": "kiem-tra/14.html", "status": "done" }
   ]
 }
