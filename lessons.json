@@ -1,6 +1,6 @@
 {
   "title": "FE — Tài liệu học",
   "lessons": [
-    { "stt": 6, "topic": "集合と論理演算", "theory": "ly-thuyet/6.html", "test": "kiem-tra/6.html", "status": "done" }
+    { "stt": 5, "topic": "集合と論理演算", "theory": "ly-thuyet/5.html", "test": "kiem-tra/5.html", "status": "done" }
   ]
 }
