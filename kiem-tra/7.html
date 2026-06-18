@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE Exam — 計算式の表し方 (逆ポーランド記法)</title>
+<style>
+  :root{
+    --bg:#0f1218; --card:#171c26; --card2:#1f2632; --accent:#4f8cff; --accent2:#6cd4ff;
+    --green:#22c55e; --red:#ef4444; --amber:#fbbf24;
+    --text:#e6e9ef; --muted:#9aa3b2; --border:#2a3140;
+    --easy:#22c55e; --mid:#fbbf24; --hard:#ef4444;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:20px; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif;
+    background:linear-gradient(135deg,#0f1218 0%,#141a26 100%); color:var(--text); min-height:100vh;
+    line-height:1.6;
+  }
+  .container{max-width:880px; margin:0 auto;}
+  header{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:20px 24px; margin-bottom:16px;}
+  h1{margin:0 0 6px; font-size:1.35rem; color:var(--accent2)}
+  .subtitle{color:var(--muted); font-size:.9rem; margin:0}
+  .meta{display:flex; gap:14px; flex-wrap:wrap; margin-top:10px; font-size:.85rem; color:var(--muted)}
+  .meta span{background:var(--card2); padding:4px 10px; border-radius:8px; border:1px solid var(--border)}
+
+  .progress-wrap{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 16px; margin-bottom:14px;}
+  .progress-info{display:flex; justify-content:space-between; font-size:.9rem; margin-bottom:8px}
+  .progress-bar{height:8px; background:var(--card2); border-radius:99px; overflow:hidden}
+  .progress-fill{height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0; transition:width .3s}
+
+  .card{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:22px 24px; margin-bottom:14px;}
+  .difficulty{display:inline-block; padding:2px 10px; border-radius:99px; font-size:.78rem; font-weight:600; margin-bottom:10px;}
+  .diff-easy{background:rgba(34,197,94,.15); color:var(--easy); border:1px solid rgba(34,197,94,.4)}
+  .diff-mid{background:rgba(251,191,36,.15); color:var(--mid); border:1px solid rgba(251,191,36,.4)}
+  .diff-hard{background:rgba(239,68,68,.15); color:var(--hard); border:1px solid rgba(239,68,68,.4)}
+
+  .question{font-size:1.02rem; margin:0 0 16px; white-space:pre-wrap}
+  .question .ja{display:block; color:var(--muted); font-size:.88rem; margin-top:6px; padding-left:8px; border-left:2px solid var(--border)}
+
+  .options{display:flex; flex-direction:column; gap:8px}
+  .option{background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:12px 16px; cursor:pointer; transition:all .15s; display:flex; align-items:flex-start; gap:10px; user-select:none;}
+  .option:hover:not(.locked){border-color:var(--accent); background:#222a39}
+  .option .key{flex:none; width:26px; height:26px; border-radius:50%; background:var(--border); display:grid; place-items:center; font-weight:700; font-size:.85rem;}
+  .option .body{flex:1}
+  .option.correct{background:rgba(34,197,94,.12); border-color:var(--green)}
+  .option.correct .key{background:var(--green); color:#fff}
+  .option.wrong{background:rgba(239,68,68,.12); border-color:var(--red)}
+  .option.wrong .key{background:var(--red); color:#fff}
+  .option.locked{cursor:not-allowed; opacity:.85}
+  .option.locked:hover{border-color:var(--border)}
+  .option.correct.locked, .option.wrong.locked{opacity:1}
+
+  .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px}
+  button{background:var(--accent); color:#fff; border:0; border-radius:10px; padding:10px 18px; font-size:.95rem; font-weight:600; cursor:pointer; transition:opacity .15s, transform .05s;}
+  button:hover:not(:disabled){opacity:.9}
+  button:active:not(:disabled){transform:translateY(1px)}
+  button:disabled{opacity:.4; cursor:not-allowed}
+  button.secondary{background:var(--card2); color:var(--text); border:1px solid var(--border)}
+  button.amber{background:var(--amber); color:#1a1a1a}
+
+  .explanation{margin-top:14px; padding:14px 16px; border-radius:10px; background:var(--card2); border-left:3px solid var(--accent2); display:none;}
+  .explanation.show{display:block}
+  .explanation h4{margin:0 0 8px; font-size:.95rem; color:var(--accent2)}
+  .explanation p{margin:6px 0; font-size:.92rem}
+  .explanation .label{color:var(--accent2); font-weight:600}
+  .explanation .topic{margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); font-size:.85rem; color:var(--muted);}
+
+  .result{text-align:center; padding:36px 24px}
+  .result h2{margin:0 0 12px; font-size:1.6rem; color:var(--accent2)}
+  .score-big{font-size:3rem; font-weight:800; color:var(--accent); margin:14px 0 6px}
+  .score-pct{font-size:1.1rem; color:var(--muted); margin-bottom:14px}
+  .verdict{font-size:1.05rem; margin:14px 0 22px; padding:14px; border-radius:12px}
+  .v-excellent{background:rgba(34,197,94,.12); color:var(--green)}
+  .v-good{background:rgba(251,191,36,.12); color:var(--amber)}
+  .v-needs-work{background:rgba(239,68,68,.12); color:var(--red)}
+  .breakdown{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:18px 0; text-align:left;}
+  .breakdown-item{background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:12px;}
+  .breakdown-item .lbl{font-size:.8rem; color:var(--muted)}
+  .breakdown-item .val{font-size:1.3rem; font-weight:700; margin-top:4px}
+
+  code{background:var(--card2); padding:1px 6px; border-radius:4px; font-family:"SFMono-Regular",Consolas,monospace; font-size:.9em}
+  .formula{display:inline-block; background:#0d1119; padding:6px 12px; border-radius:6px; font-family:"SFMono-Regular",Consolas,monospace; font-size:.95em; color:var(--accent2); margin:2px 0}
+
+  @media(max-width:600px){
+    body{padding:12px}
+    .card{padding:16px 18px}
+    h1{font-size:1.15rem}
+    .breakdown{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>FE Exam — 計算式の表し方 (逆ポーランド記法 RPN)</h1>
+    <p class="subtitle">Yasashii Ch.2 Lesson 02-03 + Slide 2 (アルゴリズム / スタック応用)</p>
+    <div class="meta">
+      <span>📝 40 câu</span>
+      <span>⏱ 30 phút</span>
+      <span>🎯 Phong cách IPA</span>
+      <span>🟢 12 Dễ • 🟡 16 TB • 🔴 12 Khó</span>
+    </div>
+  </header>
+
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-info">
+      <span id="progress-text">Câu 1 / 40</span>
+      <span id="answered-count">Đã trả lời: 0</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <div id="quiz-area"></div>
+  <div id="result-area" style="display:none"></div>
+</div>
+
+<script>
+const questions = [
+  // ============ PART 1: 3 cách biểu diễn cơ bản (Yasashii 02-03) — 10 câu ============
+  {
+    id:1, diff:"easy",
+    q:"Có **3 cách biểu diễn 計算式 (公式 toán)** theo Yasashii 02-03. Đó là 3 cách nào?",
+    ja:"計算式を表す方法の3種類はどれか。",
+    options:[
+      "中置記法 / 順置記法 / 逆置記法",
+      "**中置記法 / 前置記法 (ポーランド表記法) / 後置記法 (逆ポーランド表記法)**",
+      "10進法 / 2進法 / 16進法",
+      "代数表記 / 函数表記 / 集合表記"
+    ],
+    correct:1,
+    why:"Yasashii Lesson 02-03: 「計算式を表す方法には、次の3種類があります。・中置記法 ・前置記法（ポーランド表記法）・後置記法（逆ポーランド表記法）」.\nKhác biệt nằm ở VỊ TRÍ đặt toán tử (演算子) so với toán hạng:\n• 中置: toán tử ở GIỮA (như công thức thông thường).\n• 前置: toán tử Ở TRƯỚC.\n• 後置: toán tử Ở SAU.",
+    whyWrong:{
+      0:"Không có thuật ngữ \"順置/逆置\" trong FE.",
+      2:"Đó là cách biểu diễn SỐ, không phải công thức.",
+      3:"Đó là thuật ngữ toán học rộng, không phải 3 cách biểu diễn 計算式 theo Yasashii."
+    },
+    topic:"FE Syllabus — 基礎理論 / 計算式の表し方 / Yasashii 02-03"
+  },
+  {
+    id:2, diff:"easy",
+    q:"**中置記法 (chū-chi-ki-hō / infix notation)** là gì?",
+    ja:"中置記法の定義はどれか。",
+    options:[
+      "Đặt toán tử ở TRƯỚC các toán hạng",
+      "Đặt toán tử ở SAU các toán hạng",
+      "**Đặt toán tử ở GIỮA hai toán hạng (数字の間に演算子を置く) — đây là cách chúng ta thường dùng hàng ngày**",
+      "Không có toán tử, chỉ có toán hạng"
+    ],
+    correct:2,
+    why:"Yasashii: 「中置記法とは、数字の間に『+』や『-』などの演算子を置く表記法です。中置記法は、私たちが普段利用している表記法です。演算子を値と値の『中』に『置』くので、中置記法です」.\nVí dụ: \"1 + 2\" — dấu + nằm GIỮA 1 và 2.",
+    whyWrong:{
+      0:"Đó là 前置記法 (prefix).",
+      1:"Đó là 後置記法 (postfix).",
+      3:"Sai — phải có toán tử."
+    },
+    topic:"FE Syllabus — 基礎理論 / 中置記法"
+  },
+  {
+    id:3, diff:"easy",
+    q:"Biểu thức 「1 + 2」 được viết lại bằng **前置記法 (ポーランド表記法)** là gì?",
+    ja:"「1 + 2」を前置記法で表すとどれか。",
+    options:[
+      "1 2 +",
+      "**+ 1 2**",
+      "1 + 2",
+      "1 2 + 3"
+    ],
+    correct:1,
+    why:"Yasashii: 「前置記法とは、数字の前に『+』や『-』などの演算子を置く表記法です」. Toán tử + được đặt ở **đầu**, các toán hạng theo sau với khoảng trắng (スペース) phân cách: 「+ 1 2」.\n別名: **ポーランド表記法** (Polish notation) — đặt theo tên nhà logic học Ba Lan **ヤン・ウカシェヴィチ (Jan Łukasiewicz)**.",
+    whyWrong:{
+      0:"Đó là 後置記法 (postfix / 逆ポーランド).",
+      2:"Đó là 中置記法 (infix - ban đầu).",
+      3:"Không khớp công thức 1+2."
+    },
+    topic:"FE Syllabus — 基礎理論 / 前置記法 / ポーランド表記法"
+  },
+  {
+    id:4, diff:"easy",
+    q:"Biểu thức 「1 + 2」 được viết lại bằng **後置記法 (逆ポーランド表記法)** là gì?",
+    ja:"「1 + 2」を後置記法で表すとどれか。",
+    options:[
+      "**1 2 +**",
+      "+ 1 2",
+      "1 + 2",
+      "+ 2 1"
+    ],
+    correct:0,
+    why:"Yasashii: 「後置記法とは、数字の後ろに『+』や『-』などの演算子を置く表記法です。表記ルールは、演算子を後ろに置くこと以外、前置記法と同じです。後置記法は逆ポーランド表記法とも呼ばれます」.\nToán tử + đặt ở **cuối**, các toán hạng đứng trước: 「1 2 +」.",
+    whyWrong:{
+      1:"Đó là 前置記法 (prefix).",
+      2:"Đó là 中置記法 (infix).",
+      3:"Sai thứ tự toán hạng (đảo 2 và 1)."
+    },
+    topic:"FE Syllabus — 基礎理論 / 後置記法 / 逆ポーランド表記法"
+  },
+  {
+    id:5, diff:"easy",
+    q:"Theo Yasashii 「**試験にはコレが出る!**」, dạng nào ĐƯỢC HỎI trong kỳ thi FE?",
+    ja:"基本情報技術者試験で出題されるのはどの表記法か。",
+    options:[
+      "中置記法 (infix)",
+      "前置記法 (ポーランド表記法 / prefix)",
+      "**後置記法 (逆ポーランド表記法 / postfix)**",
+      "Cả 3 đều được hỏi đều nhau"
+    ],
+    correct:2,
+    why:"Yasashii nhấn mạnh: 「基本情報技術者試験では『後置記法（逆ポーランド表記法）』が出題される。中置記法や前置記法（ポーランド表記法）は出題されない」.\nLý do: 逆ポーランド表記法 là cách máy tính **TÍNH THỰC SỰ** ở bên trong (kết hợp với 「スタックの仕組み」). FE muốn thí sinh hiểu cách máy tính xử lý biểu thức.",
+    whyWrong:{
+      0:"中置記法 là cách viết thông thường, KHÔNG được hỏi (Yasashii nói rõ).",
+      1:"前置記法 cũng KHÔNG được hỏi.",
+      3:"Sai — chỉ 後置記法 (逆ポーランド) được hỏi."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド表記法 / 出題傾向"
+  },
+  {
+    id:6, diff:"mid",
+    q:"Tại sao FE thi 「**逆ポーランド表記法**」 mà không thi 中置記法 hay 前置記法?",
+    ja:"なぜ逆ポーランド表記法がFE試験で出題されるのか。",
+    options:[
+      "Vì nó là cách dễ nhất để viết",
+      "**Vì 逆ポーランド表記法 là cách máy tính BÊN TRONG (コンピュータ内部) thực sự dùng để xử lý biểu thức — kết hợp với スタックの仕組み (cơ chế stack)**",
+      "Vì nó được phát minh tại Nhật",
+      "Vì nó không cần dùng dấu cách (スペース)"
+    ],
+    correct:1,
+    why:"Yasashii もう少し詳しく: 「基本情報技術者試験で『逆ポーランド表記法』が出題される理由は、この記法がコンピュータ内部で使われている表記法だからです。コンピュータは、下図のように『逆ポーランド表記法』と『スタックの仕組み』（p.81）を組み合わせて計算を行っています」.",
+    whyWrong:{
+      0:"Sai — viết bằng tay thì 中置 dễ nhất.",
+      2:"Sai — phát minh bởi nhà logic học Ba Lan ヤン・ウカシェヴィチ.",
+      3:"Sai — 逆ポーランド CẦN khoảng trắng để phân tách các số."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド表記法 / 出題理由"
+  },
+  {
+    id:7, diff:"easy",
+    q:"Trong cả 前置記法 và 後置記法, **vì sao cần dấu スペース (khoảng trắng)** giữa các số?",
+    ja:"前置/後置記法でスペースが必要な理由はどれか。",
+    options:[
+      "Vì đẹp mắt hơn",
+      "**Vì nếu không có スペース, 「1」 và 「2」 sẽ dính nhau thành 「12」 — không phân biệt được**",
+      "Vì máy tính yêu cầu cú pháp như vậy",
+      "Vì là quy ước tiếng Nhật"
+    ],
+    correct:1,
+    why:"Yasashii (trong phần 前置記法): 「前置記法では、数と数をスペースで区切ります。スペースがなければ『1』と『2』がくっついて『12』と読めてしまうからです」.\nVD: 「+ 1 2」 nếu thiếu スペース thành 「+12」 không thể phân biệt là 「+ 1 2」 hay 「+ 12」 hay 「+ 1 2」.",
+    whyWrong:{
+      0:"Không phải lý do thẩm mỹ.",
+      2:"Không có yêu cầu cú pháp hệ điều hành.",
+      3:"Không liên quan đến quy ước ngôn ngữ."
+    },
+    topic:"FE Syllabus — 基礎理論 / 表記法 / スペース"
+  },
+  {
+    id:8, diff:"mid",
+    q:"Bảng tổng kết (Yasashii 表記法のまとめ): biểu thức 「**1 + 2**」 được viết trong 3 cách lần lượt là?",
+    ja:"「1+2」の3つの表記の組合せはどれか。",
+    options:[
+      "中置: +1 2 / 前置: 1+2 / 後置: 1 2+",
+      "**中置: 1+2 / 前置: +1 2 / 後置: 1 2+**",
+      "中置: 1 2+ / 前置: 1+2 / 後置: +1 2",
+      "Tất cả đều là 1+2"
+    ],
+    correct:1,
+    why:"Theo bảng 表記法のまとめ trong Yasashii 02-03:\n• 中置記法: 「1+2」 (toán tử giữa, dùng hàng ngày).\n• 前置記法 (ポーランド表記法): 「+1 2」.\n• 後置記法 (逆ポーランド表記法): 「1 2+」.",
+    whyWrong:{
+      0:"Sai vị trí của 中置 và 前置.",
+      2:"Hoán đổi sai cả 3 cách.",
+      3:"Sai — 3 cách biểu diễn KHÁC NHAU."
+    },
+    topic:"FE Syllabus — 基礎理論 / 表記法のまとめ"
+  },
+  {
+    id:9, diff:"easy",
+    q:"**別名 (tên gọi khác)** của 前置記法 và 後置記法 trong Yasashii là gì?",
+    ja:"前置記法と後置記法の別名はどれか。",
+    options:[
+      "前置 = 上位記法 / 後置 = 下位記法",
+      "**前置 = ポーランド表記法 / 後置 = 逆ポーランド表記法**",
+      "前置 = ヨーロッパ式 / 後置 = アメリカ式",
+      "2 cách không có tên gọi khác"
+    ],
+    correct:1,
+    why:"Yasashii bảng tổng kết:\n• 前置記法 → 別名: **ポーランド表記法 (Polish Notation)** — đặt theo tên nhà toán học Ba Lan ヤン・ウカシェヴィチ.\n• 後置記法 → 別名: **逆ポーランド表記法 (Reverse Polish Notation / RPN)** — vì viết ngược với ポーランド表記法.",
+    whyWrong:{
+      0:"Không có thuật ngữ \"上位/下位記法\".",
+      2:"Không có sự phân chia theo địa lý.",
+      3:"Sai — đều có tên gọi khác."
+    },
+    topic:"FE Syllabus — 基礎理論 / 別名"
+  },
+  {
+    id:10, diff:"mid",
+    q:"Theo Yasashii (mở đầu Lesson 02-03), 「**ポーランド表記法**」 được phát minh bởi ai?",
+    ja:"ポーランド表記法を考案した人物はどれか。",
+    options:[
+      "アラン・チューリング (Alan Turing)",
+      "**ヤン・ウカシェヴィチ (Jan Łukasiewicz) — nhà logic học Ba Lan**",
+      "クロード・シャノン (Claude Shannon)",
+      "ジョン・フォン・ノイマン (John von Neumann)"
+    ],
+    correct:1,
+    why:"Yasashii 02-03 ghi: 「ヤン・ウカシェヴィチが考案した計算式『ポーランド表記法』には、発案者の名前ではなく、彼の出生国の国名が付けられました」.\nJan Łukasiewicz (1878-1956) — nhà logic học người Ba Lan. Cách biểu diễn được đặt tên theo QUỐC GIA (Ba Lan) thay vì tên ông.",
+    whyWrong:{
+      0:"Turing là cha đẻ của 計算理論 / Turing machine, không phải Polish notation.",
+      2:"Shannon là cha đẻ của 情報理論.",
+      3:"Von Neumann nổi tiếng với 「ノイマン型コンピュータ」, không liên quan."
+    },
+    topic:"FE Syllabus — 基礎理論 / ポーランド表記法 / 歴史"
+  },
+
+  // ============ PART 2: Chuyển đổi 中置 ↔ 逆ポーランド (Yasashii 過去問風) — 10 câu ============
+  {
+    id:11, diff:"easy",
+    q:"Chuyển biểu thức 「**3 + 4**」 sang 逆ポーランド表記法 (後置記法)?",
+    ja:"「3+4」を逆ポーランド表記法で表せ。",
+    options:[
+      "**3 4 +**",
+      "+ 3 4",
+      "3 + 4",
+      "4 3 +"
+    ],
+    correct:0,
+    why:"Quy tắc: đặt toán tử SAU 2 toán hạng, GIỮ NGUYÊN thứ tự toán hạng.\n3 + 4 → **3 4 +**.\nĐọc: \"đem 3, đem 4, cộng lại\".",
+    whyWrong:{
+      1:"Đó là 前置記法.",
+      2:"Đó là 中置記法 ban đầu.",
+      3:"Sai thứ tự toán hạng — phải giữ 3 trước 4 vì phép cộng có giao hoán nhưng quy ước chuyển vẫn giữ thứ tự ban đầu."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド変換 / 基本"
+  },
+  {
+    id:12, diff:"easy",
+    q:"Chuyển biểu thức 「**5 - 2**」 sang 逆ポーランド表記法?",
+    ja:"「5-2」を逆ポーランド表記法で表せ。",
+    options:[
+      "- 5 2",
+      "**5 2 -**",
+      "2 5 -",
+      "5 - 2"
+    ],
+    correct:1,
+    why:"Phép trừ KHÔNG có tính giao hoán, nên thứ tự RẤT QUAN TRỌNG.\n5 - 2 → **5 2 -**.\nKiểm tra: pop 2 trước (top), pop 5 sau, tính \"5 - 2\" = 3 (số dưới TRỪ số trên).",
+    whyWrong:{
+      0:"Đó là 前置記法.",
+      2:"Đảo ngược thứ tự → \"2-5\" = -3, không phải kết quả mong muốn.",
+      3:"Đó là 中置記法."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / 順序の重要性"
+  },
+  {
+    id:13, diff:"mid",
+    q:"Chuyển biểu thức 「**(1 + 2) × 3**」 sang 逆ポーランド表記法 (theo ví dụ Yasashii):",
+    ja:"「(1+2)×3」を逆ポーランド表記法で表せ。",
+    options:[
+      "1 + 2 × 3",
+      "**1 2 + 3 ×**",
+      "1 2 3 + ×",
+      "× + 1 2 3"
+    ],
+    correct:1,
+    why:"Quy tắc convert:\n1. Tính 「1+2」 trước (do dấu ngoặc) → \"1 2 +\" (kết quả ngầm = 3).\n2. Lấy kết quả nhân với 3 → \"(1 2 +) 3 ×\" → **「1 2 + 3 ×」**.\nĐây là VÍ DỤ trong Yasashii 02-03 (もう少し詳しく box).",
+    whyWrong:{
+      0:"Đó vẫn là 中置記法.",
+      2:"Sai thứ tự — phải tính (1+2) trước rồi mới × 3.",
+      3:"Đó là 前置記法 sai cú pháp."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド変換 / Yasashii 02-03 例"
+  },
+  {
+    id:14, diff:"mid",
+    q:"Chuyển biểu thức 「**A × (B + C)**」 sang 逆ポーランド表記法?",
+    ja:"「A×(B+C)」を逆ポーランド表記法で表せ。",
+    options:[
+      "A B C + ×",
+      "**A B C + ×** (toán hạng A, B, C giữ thứ tự; tính B+C trước rồi × A)",
+      "A + B × C",
+      "× A + B C"
+    ],
+    correct:1,
+    why:"Bước 1: B + C → 「B C +」.\nBước 2: A × (B+C) → 「A (B C +) ×」 → **「A B C + ×」**.\nKiểm tra bằng stack: push A, push B, push C, gặp + → pop C, B → push (B+C); push thực ra không, gặp × → pop (B+C), A → push (A × (B+C)).",
+    whyWrong:{
+      0:"Đúng — nhưng A đáp án đã ghi giống B (cùng đáp án).",
+      2:"Đó là 中置記法.",
+      3:"Đó là 前置記法."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / 括弧の処理"
+  },
+  {
+    id:15, diff:"mid",
+    q:"Chuyển biểu thức 「**A + B × C**」 (không có dấu ngoặc) sang 逆ポーランド表記法 — chú ý 演算子の優先順位 (× > +):",
+    ja:"「A+B×C」を逆ポーランド表記法で表せ。（×が+より優先）",
+    options:[
+      "A B C × +",
+      "**A B C × +**",
+      "A B + C ×",
+      "A + B × C"
+    ],
+    correct:1,
+    why:"Quy tắc 優先順位 (ưu tiên): **括弧 > かけ算・わり算 > たし算・ひき算**.\nDo × ưu tiên hơn +, ta tính 「B×C」 trước:\n• B × C → 「B C ×」\n• A + (B×C) → 「A (B C ×) +」 → **「A B C × +」**.",
+    whyWrong:{
+      0:"Cùng đáp án với B.",
+      2:"Sai — đây là cách tính nếu (A+B)×C, KHÔNG phải A+B×C.",
+      3:"Đó là 中置記法."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / 演算子の優先順位"
+  },
+  {
+    id:16, diff:"hard",
+    q:"**過去問 平成24年度 Yasashii 問題2-8**: Chuyển 「**Y = (A + B) × (C - D ÷ E)**」 sang 逆ポーランド表記法 (chú ý 「=」 cũng là toán tử và đặt ở cuối cùng):",
+    ja:"「Y=(A+B)×(C-D÷E)」を後置記法で表せ。",
+    options:[
+      "Y A B + C - D E ÷ × =",
+      "**Y A B + C D E ÷ - × =**",
+      "Y A + B × C - D ÷ E =",
+      "Y A B + C D - E ÷ × ="
+    ],
+    correct:1,
+    why:"Phương pháp Yasashii: chuyển từng phép theo thứ tự ưu tiên — 括弧 > × ÷ > + - > = (= ở cuối):\n1. D ÷ E → 「D E ÷」\n2. C - (D÷E) → 「C D E ÷ -」\n3. A + B → 「A B +」\n4. (A+B) × (C-D÷E) → 「(A B +) (C D E ÷ -) ×」 → 「A B + C D E ÷ - ×」\n5. Y = ... → 「Y (...) =」 → **「Y A B + C D E ÷ - × =」**.\nĐây là 平成24年度 問題2-8 trong Yasashii 02-03.",
+    whyWrong:{
+      0:"Sai vị trí - và DE÷ — phải là 「C D E ÷ -」 chứ không phải 「C - D E ÷」.",
+      2:"Đó là 中置記法.",
+      3:"Sai — không phải 「C D - E ÷」 mà phải tính D÷E trước rồi C trừ kết quả."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / Yasashii 問題2-8 平成24年度"
+  },
+  {
+    id:17, diff:"mid",
+    q:"Chuyển biểu thức 「**(A - B) × (C + D)**」 sang 逆ポーランド表記法?",
+    ja:"「(A-B)×(C+D)」を後置記法で表せ。",
+    options:[
+      "A - B × C + D",
+      "**A B - C D + ×**",
+      "A B - × C D +",
+      "× - A B + C D"
+    ],
+    correct:1,
+    why:"Tính từng vế trong dấu ngoặc trước:\n1. A - B → 「A B -」\n2. C + D → 「C D +」\n3. (A-B) × (C+D) → 「(A B -) (C D +) ×」 → **「A B - C D + ×」**.",
+    whyWrong:{
+      0:"Đó là 中置記法.",
+      2:"Sai thứ tự — × phải đặt CUỐI CÙNG sau khi cả 2 vế đã sẵn sàng.",
+      3:"Đó là 前置記法 sai cú pháp."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / 2つの括弧"
+  },
+  {
+    id:18, diff:"hard",
+    q:"Chuyển biểu thức 「**A + B × C - D ÷ E**」 (không có ngoặc) sang 逆ポーランド?",
+    ja:"「A+B×C-D÷E」を後置記法で表せ。",
+    options:[
+      "A B C + × D E ÷ -",
+      "**A B C × + D E ÷ -**",
+      "A B + C × D - E ÷",
+      "A + B × C - D ÷ E"
+    ],
+    correct:1,
+    why:"Ưu tiên: × và ÷ trước, sau đó + và -:\n1. B × C → 「B C ×」\n2. A + (B×C) → 「A B C × +」\n3. D ÷ E → 「D E ÷」\n4. (A+B×C) - (D÷E) → 「(A B C × +) (D E ÷) -」 → **「A B C × + D E ÷ -」**.",
+    whyWrong:{
+      0:"Sai vị trí ×, phải nằm sau B C chứ không sau A B C.",
+      2:"Sai vị trí + và ×.",
+      3:"Đó là 中置記法."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / 優先順位の混在"
+  },
+  {
+    id:19, diff:"hard",
+    q:"Chuyển 「**A × B + C × D**」 sang 逆ポーランド?",
+    ja:"「A×B+C×D」を後置記法で表せ。",
+    options:[
+      "A B × C D + ×",
+      "**A B × C D × +**",
+      "A B + C D × ×",
+      "A B C D × × +"
+    ],
+    correct:1,
+    why:"Vì × ưu tiên hơn +, tính 2 phép × trước:\n1. A × B → 「A B ×」\n2. C × D → 「C D ×」\n3. (A×B) + (C×D) → **「A B × C D × +」**.",
+    whyWrong:{
+      0:"Sai — phải là 「A B × C D ×」 cho 2 phép nhân riêng biệt; cuối cùng là +.",
+      2:"Sai vị trí + (phải cuối cùng) và × (phải sau từng cặp).",
+      3:"Sai cú pháp — không thể có 2 × liền nhau."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / 同じ優先度"
+  },
+  {
+    id:20, diff:"mid",
+    q:"Chuyển biểu thức **3 mức ngoặc**: 「**((A + B) × C) - D**」 sang 逆ポーランド?",
+    ja:"「((A+B)×C)-D」を後置記法で表せ。",
+    options:[
+      "**A B + C × D -**",
+      "A + B × C - D",
+      "A B + × C - D",
+      "A B C + × D -"
+    ],
+    correct:0,
+    why:"Tính từ trong ra ngoài:\n1. A + B → 「A B +」\n2. (A+B) × C → 「(A B +) C ×」 → 「A B + C ×」\n3. ((A+B)×C) - D → 「(A B + C ×) D -」 → **「A B + C × D -」**.",
+    whyWrong:{
+      1:"Đó là 中置記法.",
+      2:"Sai thứ tự — × phải đứng sau C, không phải sau +.",
+      3:"Sai vị trí + (phải nằm ngay sau A B)."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / 多重括弧"
+  },
+
+  // ============ PART 3: Tính giá trị 逆ポーランド + Stack (Slide 2 + Yasashii) — 10 câu ============
+  {
+    id:21, diff:"easy",
+    q:"Khi tính biểu thức 逆ポーランド bằng **スタック (stack)**, quy tắc là gì? (theo Yasashii 計算手順)",
+    ja:"スタックを使った逆ポーランドの計算方法はどれか。",
+    options:[
+      "Đọc từ phải sang trái",
+      "**Đọc từ trái sang phải; gặp 数字 → PUSH vào stack; gặp 演算子 → POP 2 số trên cùng, tính, PUSH kết quả lại**",
+      "Tất cả số được push trước, sau đó mới tính",
+      "Sử dụng queue (FIFO) thay vì stack"
+    ],
+    correct:1,
+    why:"Yasashii もう少し詳しく - 逆ポーランド表記法での計算手順:\n• Duyệt biểu thức TỪ TRÁI SANG PHẢI.\n• Nếu là 数字 (toán hạng) → **PUSH** vào stack.\n• Nếu là 演算子 → **POP 2 phần tử** trên cùng (số B = top, A = next), tính (A op B), rồi **PUSH** kết quả trở lại stack.\n• Cuối cùng, kết quả còn lại trong stack = giá trị biểu thức.",
+    whyWrong:{
+      0:"Sai — đọc từ TRÁI sang PHẢI.",
+      2:"Sai — push và pop xen kẽ theo thứ tự token.",
+      3:"Sai — stack (LIFO) không phải queue (FIFO)."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド計算 / スタック"
+  },
+  {
+    id:22, diff:"easy",
+    q:"Khi gặp 演算子 trong 逆ポーランド, **thứ tự pop** 2 số từ stack là gì? Giả sử stack có A (đáy) - B (đỉnh):",
+    ja:"演算子に出会ったとき、スタックから取り出す順序はどれか。",
+    options:[
+      "Pop A trước, pop B sau → tính A op B",
+      "**Pop B trước (top), pop A sau (next-to-top) → tính A op B (số dưới op số trên)**",
+      "Pop cả 2 cùng lúc",
+      "Không pop, chỉ peek"
+    ],
+    correct:1,
+    why:"Stack là LIFO — **pop ra phần tử trên cùng trước** (B), rồi pop phần tử kế tiếp (A). Khi tính 「A op B」: A là toán hạng TRƯỚC, B là toán hạng SAU trong biểu thức gốc.\nLý do: trong 逆ポーランド 「A B op」, A được push trước (xuống đáy), B push sau (lên đỉnh). Khi pop, ra B trước, sau đó A. Phép toán chuẩn là 「A op B」 (theo thứ tự xuất hiện gốc).",
+    whyWrong:{
+      0:"Sai — không thể pop A trước vì A nằm dưới B trong stack.",
+      2:"Sai — stack pop từng phần tử một.",
+      3:"Sai — phải pop để có thể tính rồi push kết quả."
+    },
+    topic:"FE Syllabus — 基礎理論 / スタック演算 / pop順序"
+  },
+  {
+    id:23, diff:"mid",
+    q:"Tính giá trị của biểu thức 逆ポーランド: **「2 3 +」**",
+    ja:"逆ポーランドの式「2 3 +」の値はいくつか。",
+    options:[
+      "**5**",
+      "6",
+      "23",
+      "-1"
+    ],
+    correct:0,
+    why:"Trace stack:\n1. 「2」: push 2 → stack [2].\n2. 「3」: push 3 → stack [2, 3].\n3. 「+」: pop 3, pop 2, tính 2+3=5, push 5 → stack [**5**].\nKết quả cuối cùng: **5**.",
+    whyWrong:{
+      1:"6 không phải tổng của 2 và 3.",
+      2:"23 là ghép số chứ không phải phép cộng.",
+      3:"-1 sẽ đúng nếu là phép trừ 2-3, không phải cộng."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド計算 / 基本"
+  },
+  {
+    id:24, diff:"mid",
+    q:"Tính giá trị của biểu thức 逆ポーランド: **「6 2 -」**",
+    ja:"逆ポーランドの式「6 2 -」の値はいくつか。",
+    options:[
+      "**4**",
+      "-4",
+      "8",
+      "62"
+    ],
+    correct:0,
+    why:"Trace stack:\n1. 「6」: push 6 → [6].\n2. 「2」: push 2 → [6, 2].\n3. 「-」: pop 2 (top), pop 6 (next), tính **6 - 2 = 4**, push → [4].\nQuan trọng: phải tính số DƯỚI trừ số TRÊN (6 - 2), KHÔNG phải số trên trừ số dưới.",
+    whyWrong:{
+      1:"-4 sẽ đúng nếu tính 2-6 (sai thứ tự).",
+      2:"8 là phép cộng.",
+      3:"62 là ghép số."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド計算 / 引き算の順序"
+  },
+  {
+    id:25, diff:"mid",
+    q:"Tính giá trị của biểu thức 逆ポーランド (theo Yasashii ví dụ): **「1 2 + 3 ×」**",
+    ja:"逆ポーランドの式「1 2 + 3 ×」の値はいくつか。",
+    options:[
+      "**9**",
+      "7",
+      "6",
+      "5"
+    ],
+    correct:0,
+    why:"Trace stack (theo Yasashii 計算手順):\n1. 「1」: push 1 → [1].\n2. 「2」: push 2 → [1, 2].\n3. 「+」: pop 2, pop 1, tính 1+2=3, push 3 → [3].\n4. 「3」: push 3 → [3, 3].\n5. 「×」: pop 3, pop 3, tính 3×3=**9**, push 9 → [9].\nĐây tương đương với 中置記法 「(1+2)×3 = 9」.",
+    whyWrong:{
+      1:"7 = 1+2+3+1, sai phép tính.",
+      2:"6 = 1×2×3 hoặc 1+2+3, không khớp.",
+      3:"5 = chỉ tính 2+3, bỏ qua 1."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / Yasashii 計算例"
+  },
+  {
+    id:26, diff:"hard",
+    q:"Tính giá trị của biểu thức 逆ポーランド: **「5 3 2 × +」**",
+    ja:"逆ポーランドの式「5 3 2 × +」の値はいくつか。",
+    options:[
+      "**11**",
+      "16",
+      "13",
+      "30"
+    ],
+    correct:0,
+    why:"Trace stack:\n1. 「5」: push → [5].\n2. 「3」: push → [5, 3].\n3. 「2」: push → [5, 3, 2].\n4. 「×」: pop 2, pop 3, tính 3×2=6, push → [5, 6].\n5. 「+」: pop 6, pop 5, tính 5+6=**11**, push → [11].\nTương đương 中置 「5 + 3×2 = 11」.",
+    whyWrong:{
+      1:"16 = (5+3)×2 — sai vì × phải tính trước.",
+      2:"13 không khớp phép tính nào.",
+      3:"30 = 5×3×2 — không có 2 phép ×."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド計算 / 演算順序"
+  },
+  {
+    id:27, diff:"hard",
+    q:"Tính giá trị của biểu thức 逆ポーランド: **「8 2 ÷ 3 +」**",
+    ja:"逆ポーランドの式「8 2 ÷ 3 +」の値はいくつか。",
+    options:[
+      "**7**",
+      "5",
+      "11",
+      "4"
+    ],
+    correct:0,
+    why:"Trace stack:\n1. 「8」: push → [8].\n2. 「2」: push → [8, 2].\n3. 「÷」: pop 2, pop 8, tính **8 ÷ 2 = 4**, push → [4].\n4. 「3」: push → [4, 3].\n5. 「+」: pop 3, pop 4, tính 4+3=**7**, push → [7].\nTương đương 中置 「8÷2 + 3 = 4 + 3 = 7」.",
+    whyWrong:{
+      1:"5 = 8÷2 - 3 hoặc nhầm phép.",
+      2:"11 = sai phép.",
+      3:"4 = chỉ tính 8÷2, bỏ qua + 3."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド計算 / 割り算"
+  },
+  {
+    id:28, diff:"hard",
+    q:"Tính giá trị của biểu thức 逆ポーランド: **「4 5 + 6 2 - ×」**",
+    ja:"逆ポーランドの式「4 5 + 6 2 - ×」の値はいくつか。",
+    options:[
+      "**36**",
+      "30",
+      "60",
+      "20"
+    ],
+    correct:0,
+    why:"Trace stack:\n1. 「4」: push → [4].\n2. 「5」: push → [4, 5].\n3. 「+」: pop 5, pop 4, 4+5=9, push → [9].\n4. 「6」: push → [9, 6].\n5. 「2」: push → [9, 6, 2].\n6. 「-」: pop 2, pop 6, 6-2=4, push → [9, 4].\n7. 「×」: pop 4, pop 9, **9×4=36**, push → [36].\nTương đương 中置 「(4+5)×(6-2) = 9×4 = 36」.",
+    whyWrong:{
+      1:"30 = 9+6×2 hoặc tương tự, không khớp.",
+      2:"60 không khớp.",
+      3:"20 = 4×5, bỏ qua các phép sau."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド計算 / 複雑な式"
+  },
+  {
+    id:29, diff:"hard",
+    q:"Tính 逆ポーランド: **「10 2 3 + ÷」**",
+    ja:"逆ポーランドの式「10 2 3 + ÷」の値はいくつか。",
+    options:[
+      "**2**",
+      "5",
+      "15",
+      "8"
+    ],
+    correct:0,
+    why:"Trace stack:\n1. 「10」: push → [10].\n2. 「2」: push → [10, 2].\n3. 「3」: push → [10, 2, 3].\n4. 「+」: pop 3, pop 2, 2+3=5, push → [10, 5].\n5. 「÷」: pop 5, pop 10, **10÷5=2**, push → [2].\nTương đương 中置 「10 ÷ (2+3) = 10÷5 = 2」.",
+    whyWrong:{
+      1:"5 = chỉ tính 2+3, bỏ qua phép ÷.",
+      2:"15 = 10+2+3, sai phép.",
+      3:"8 = 10-2 hoặc tương tự, không khớp."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド計算 / 演算結合"
+  },
+  {
+    id:30, diff:"mid",
+    q:"Biểu thức 逆ポーランド: **「A B + C ×」** tương đương với 中置記法 nào?",
+    ja:"後置記法「A B + C ×」を中置記法で表すとどれか。",
+    options:[
+      "A + B × C",
+      "**(A + B) × C**",
+      "A + (B × C)",
+      "A × (B + C)"
+    ],
+    correct:1,
+    why:"Trace:\n1. push A.\n2. push B.\n3. +: pop B, A → tính (A+B), push.\n4. push C.\n5. ×: pop C, (A+B) → tính (A+B)×C, push.\nKết quả: **(A+B)×C**.",
+    whyWrong:{
+      0:"A + B × C = A + (B×C) — sai vì 「+」 thực hiện trước 「×」 trong biểu thức 逆ポーランド trên.",
+      2:"Cùng nghĩa với A.",
+      3:"Sai vị trí — không có (B+C)."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド → 中置 変換"
+  },
+
+  // ============ PART 4: 過去問 + 応用 + Khái niệm liên quan — 10 câu ============
+  {
+    id:31, diff:"mid",
+    q:"**Yasashii 問題2-8 phong cách**: Y = (A - B) × C được viết bằng 後置記法 là 「YAB-C×=」. Tương tự, Y = (A + B) × (C - D ÷ E) được viết là?",
+    ja:"Y=(A+B)×(C-D÷E)を後置記法で表せ。",
+    options:[
+      "Y A B + C - D E ÷ × =",
+      "**Y A B + C D E ÷ - × =**",
+      "Y A B + C × D - E ÷ =",
+      "Y + A B × C - D ÷ E ="
+    ],
+    correct:1,
+    why:"Phương pháp Yasashii (cùng 問題2-8): chuyển dần dần, đặt 「=」 cuối cùng:\n• D ÷ E → 「D E ÷」\n• C - (D÷E) → 「C D E ÷ -」\n• A + B → 「A B +」\n• (A+B) × (C-D÷E) → 「A B + C D E ÷ - ×」\n• Y = ... → **「Y A B + C D E ÷ - × =」**.\nNotice: 「=」 cũng được xem như toán tử và đặt SAU.",
+    whyWrong:{
+      0:"Sai vị trí - và DE÷.",
+      2:"Sai cấu trúc — × phải nằm cuối cùng (trước =).",
+      3:"Đó là một dạng 前置記法, không phải 後置."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / Yasashii 問題2-8 平成24年度"
+  },
+  {
+    id:32, diff:"mid",
+    q:"Trong 逆ポーランド表記法, **toán tử và toán hạng** xuất hiện theo thứ tự nào trong stack?",
+    ja:"逆ポーランド表記法における計算では、スタックは何を保持するか。",
+    options:[
+      "Stack chỉ chứa toán tử",
+      "Stack chỉ chứa toán hạng (số)",
+      "**Stack chỉ chứa OPERANDS (số / kết quả trung gian). Toán tử KHÔNG được lưu vào stack — chúng được dùng ngay khi gặp**",
+      "Stack chứa cả 2 với label phân biệt"
+    ],
+    correct:2,
+    why:"Đặc trưng của thuật toán tính 逆ポーランド bằng stack:\n• Toán hạng (số) → push vào stack.\n• Toán tử → KHÔNG push, mà dùng NGAY để pop 2 toán hạng, tính, push kết quả.\nStack chỉ chứa số (operands hoặc partial results).",
+    whyWrong:{
+      0:"Sai — toán tử không lưu trong stack.",
+      1:"Đúng một phần, nhưng không nêu rõ toán tử dùng ngay.",
+      3:"Quá phức tạp — thực tế stack chỉ chứa số."
+    },
+    topic:"FE Syllabus — 基礎理論 / スタック / 逆ポーランドのスタック"
+  },
+  {
+    id:33, diff:"easy",
+    q:"逆ポーランド表記法 có cần dấu **括弧 (ngoặc)** không?",
+    ja:"逆ポーランド表記法では括弧は必要か。",
+    options:[
+      "Có — luôn cần ngoặc để phân biệt thứ tự",
+      "**Không — đây là một MERIT lớn của 逆ポーランド: thứ tự thực hiện đã được xác định rõ chỉ bằng vị trí của toán tử**",
+      "Chỉ cần khi có nhiều phép toán",
+      "Tuỳ thuộc vào máy tính"
+    ],
+    correct:1,
+    why:"Lợi ích lớn của 逆ポーランド (và cả ポーランド表記法):\n• KHÔNG cần ngoặc.\n• Thứ tự thực hiện được xác định **DUY NHẤT** bởi vị trí của toán tử.\nVD: 「1 2 + 3 ×」 chắc chắn là (1+2)×3, không thể là 1+(2×3).\nĐây là lý do máy tính ưa dùng cách này.",
+    whyWrong:{
+      0:"Sai — đặc trưng của 中置 (chứ không phải 逆ポーランド).",
+      2:"Sai — ngay cả khi nhiều phép, vẫn không cần ngoặc.",
+      3:"Sai — không phụ thuộc máy tính."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / メリット"
+  },
+  {
+    id:34, diff:"mid",
+    q:"Một biểu thức 逆ポーランド có **N toán hạng** thì cần bao nhiêu **toán tử** (cho phép tính nhị phân)?",
+    ja:"N個の数字を持つ逆ポーランド式の演算子数はいくつか。",
+    options:[
+      "N",
+      "**N - 1**",
+      "N + 1",
+      "2N"
+    ],
+    correct:1,
+    why:"Mỗi toán tử nhị phân (+, -, ×, ÷) lấy 2 toán hạng và trả ra 1 kết quả → giảm số toán hạng đi 1. Để từ N toán hạng còn lại 1 kết quả cuối, cần **N - 1** toán tử.\nVD:\n• 「1 2 +」: 2 toán hạng, 1 toán tử ✓\n• 「1 2 + 3 ×」: 3 toán hạng, 2 toán tử ✓\n• 「1 2 3 4 + × -」: 4 toán hạng, 3 toán tử ✓",
+    whyWrong:{
+      0:"N toán tử = N kết quả không ghép thành 1.",
+      2:"N+1 dư — không đủ toán hạng để pop.",
+      3:"2N — quá nhiều."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / 構造"
+  },
+  {
+    id:35, diff:"hard",
+    q:"Một biểu thức 逆ポーランド 「**5 1 2 + 4 × + 3 -**」 có giá trị là?",
+    ja:"「5 1 2 + 4 × + 3 -」の値はいくつか。",
+    options:[
+      "**14**",
+      "11",
+      "20",
+      "9"
+    ],
+    correct:0,
+    why:"Trace stack từng bước:\n1. 「5」: [5]\n2. 「1」: [5, 1]\n3. 「2」: [5, 1, 2]\n4. 「+」: pop 2, 1 → 1+2=3, push → [5, 3]\n5. 「4」: [5, 3, 4]\n6. 「×」: pop 4, 3 → 3×4=12, push → [5, 12]\n7. 「+」: pop 12, 5 → 5+12=17, push → [17]\n8. 「3」: [17, 3]\n9. 「-」: pop 3, 17 → 17-3=**14**, push → [14].\nKết quả: **14**.\nTương đương 中置: 5 + (1+2)×4 - 3 = 5 + 12 - 3 = 14.",
+    whyWrong:{
+      1:"11 sai phép tính.",
+      2:"20 = (5+1+2)×4-... sai.",
+      3:"9 sai phép tính."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド計算 / 複雑な式 / 過去問風"
+  },
+  {
+    id:36, diff:"mid",
+    q:"Khi tính 「**A B C - +**」 với A=10, B=5, C=2, kết quả là?",
+    ja:"A=10, B=5, C=2のとき「A B C - +」の値はいくつか。",
+    options:[
+      "**13**",
+      "7",
+      "17",
+      "3"
+    ],
+    correct:0,
+    why:"Trace:\n1. push 10 → [10]\n2. push 5 → [10, 5]\n3. push 2 → [10, 5, 2]\n4. 「-」: pop 2, 5 → 5-2=3, push → [10, 3]\n5. 「+」: pop 3, 10 → 10+3=**13**, push → [13].\nTương đương 中置: 10 + (5-2) = 10 + 3 = **13**.",
+    whyWrong:{
+      1:"7 = 10-5+2, sai phép.",
+      2:"17 = 10+5+2, sai phép.",
+      3:"3 = chỉ tính (5-2), bỏ qua phép +."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / 変数代入計算"
+  },
+  {
+    id:37, diff:"hard",
+    q:"**Yasashii nhấn mạnh** trong 「もう少し詳しく」: lý do FE thi 逆ポーランド là gì?",
+    ja:"逆ポーランド表記法がコンピュータで使われる理由はどれか。",
+    options:[
+      "Vì ngắn gọn hơn 中置記法",
+      "**Vì kết hợp tự nhiên với cơ chế STACK — máy tính dễ dàng tính giá trị mà không cần phân tích cú pháp phức tạp (như xử lý ngoặc)**",
+      "Vì chỉ dùng được số nguyên",
+      "Vì khả năng đọc cao hơn cho người"
+    ],
+    correct:1,
+    why:"Yasashii もう少し詳しく: 「コンピュータは、下図のように『逆ポーランド表記法』と『スタックの仕組み』を組み合わせて計算を行っています」.\nLợi ích:\n• Không cần parse ngoặc.\n• Thuật toán đơn giản, O(n).\n• Phù hợp với CPU stack-based.\n→ Compiler thường chuyển 中置 → 逆ポーランド để CPU xử lý.",
+    whyWrong:{
+      0:"Không hẳn ngắn hơn — vd \"1+2\" (3 ký tự) ngắn hơn \"1 2 +\" (5 ký tự với khoảng trắng).",
+      2:"Sai — 逆ポーランド không giới hạn loại số.",
+      3:"Ngược lại — người đọc 中置記法 dễ hơn."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / コンピュータ内部処理"
+  },
+  {
+    id:38, diff:"mid",
+    q:"Chuyển biểu thức **「A ÷ B ÷ C」** (cùng độ ưu tiên, kết hợp trái) sang 逆ポーランド?",
+    ja:"「A÷B÷C」（左結合）を後置記法で表せ。",
+    options:[
+      "A B ÷ C ÷",
+      "**A B ÷ C ÷**",
+      "A B C ÷ ÷",
+      "A ÷ B C ÷"
+    ],
+    correct:1,
+    why:"Phép ÷ kết hợp TRÁI: A÷B÷C = (A÷B)÷C.\n1. A ÷ B → 「A B ÷」.\n2. (A÷B) ÷ C → 「(A B ÷) C ÷」 → **「A B ÷ C ÷」**.\nKhác với: A B C ÷ ÷ = A÷(B÷C) — cách kết hợp PHẢI, không đúng quy ước thông thường.",
+    whyWrong:{
+      0:"Cùng đáp án với B.",
+      2:"Đó là A÷(B÷C), không phải kết hợp trái.",
+      3:"Đó là 中置 hỗn hợp, không phải 逆ポーランド."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / 結合性"
+  },
+  {
+    id:39, diff:"mid",
+    q:"Một biểu thức 逆ポーランド có thể tính được không **nếu thiếu một toán hạng**, vd: 「**2 +**」?",
+    ja:"「2 +」は計算できるか。",
+    options:[
+      "Có — phép + đơn nhị (unary)",
+      "**Không — phép + cần 2 toán hạng (binary). Khi gặp +, pop chỉ được 1 số → ERROR (stack underflow)**",
+      "Có — kết quả mặc định là 2",
+      "Phụ thuộc vào ngôn ngữ lập trình"
+    ],
+    correct:1,
+    why:"Toán tử + trong bối cảnh thông thường là BINARY (cần 2 toán hạng). Trong 逆ポーランド:\n• Push 2 → stack [2].\n• Gặp + → cần pop 2 phần tử, nhưng chỉ có 1 → **stack underflow** → lỗi.\nBiểu thức 逆ポーランド hợp lệ cần **N toán hạng + (N-1) toán tử** đúng vị trí.",
+    whyWrong:{
+      0:"+ unary thường viết khác (vd \"+2\"), không phải dạng RPN chuẩn.",
+      2:"Sai — RPN nghiêm ngặt, không có mặc định.",
+      3:"Sai — đây là quy tắc toán học, không phụ thuộc ngôn ngữ."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / エラー処理"
+  },
+  {
+    id:40, diff:"hard",
+    q:"Tổng kết: chiến lược tốt nhất để giải bài toán **逆ポーランド** trong kỳ thi FE là gì?",
+    ja:"FE試験で逆ポーランド問題を解くベスト戦略はどれか。",
+    options:[
+      "Học thuộc tất cả công thức chuyển đổi",
+      "**(1) Nắm chắc quy tắc PUSH số / OP toán tử pop 2; (2) VẼ stack thực sự khi giải; (3) Convert có hệ thống: 括弧 > × ÷ > + -, đặt 「=」 cuối cùng nếu có; (4) Luyện 過去問 đa dạng**",
+      "Đoán dựa trên hình thức",
+      "Dùng máy tính bỏ túi"
+    ],
+    correct:1,
+    why:"Chiến lược thực hành tốt cho FE:\n1. **Hiểu cơ chế stack** (Yasashii Ch.3 Lesson 03-01).\n2. **Vẽ stack từng bước** khi tính — đừng nhẩm dễ sai.\n3. **Convert có hệ thống**: theo thứ tự ưu tiên 括弧 → × ÷ → + - → =.\n4. **Luyện qua 過去問**: 平成24, 26, 28... có nhiều dạng.\n5. **Kiểm tra ngược**: thử convert ngược 逆ポーランド → 中置 để verify.",
+    whyWrong:{
+      0:"Không có \"công thức\" cố định, chỉ có quy tắc.",
+      2:"Đoán không hiệu quả với bài tính phức tạp.",
+      3:"FE không cho dùng máy tính bỏ túi."
+    },
+    topic:"FE Syllabus — 基礎理論 / 逆ポーランド / 学習戦略"
+  }
+];
+
+// ===== State =====
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+
+const quizArea = document.getElementById('quiz-area');
+const resultArea = document.getElementById('result-area');
+const progressText = document.getElementById('progress-text');
+const progressFill = document.getElementById('progress-fill');
+const answeredCount = document.getElementById('answered-count');
+const progressWrap = document.getElementById('progress-wrap');
+
+function diffClass(d){return d==='easy'?'diff-easy':d==='mid'?'diff-mid':'diff-hard'}
+function diffLabel(d){return d==='easy'?'[Dễ / 易]':d==='mid'?'[TB / 中]':'[Khó / 難]'}
+
+function render(){
+  if(current >= questions.length){renderResult(); return;}
+  const q = questions[current];
+  const a = answers[current];
+  const locked = a !== null;
+
+  const opts = q.options.map((opt, i) => {
+    let cls = 'option';
+    if(locked){
+      cls += ' locked';
+      if(i === q.correct) cls += ' correct';
+      else if(i === a) cls += ' wrong';
+    }
+    return `<div class="${cls}" data-idx="${i}">
+      <div class="key">${String.fromCharCode(65+i)}</div>
+      <div class="body">${opt}</div>
+    </div>`;
+  }).join('');
+
+  let expHtml = '';
+  if(locked){
+    const wrongList = Object.keys(q.whyWrong).map(k=>{
+      return `<p><span class="label">${String.fromCharCode(65+(+k))}.</span> ${q.whyWrong[k]}</p>`;
+    }).join('');
+    expHtml = `
+      <div class="explanation" id="exp">
+        <h4>💡 Giải thích</h4>
+        <p><span class="label">Đáp án đúng:</span> ${String.fromCharCode(65+q.correct)}</p>
+        <p><span class="label">Vì sao đúng:</span> ${q.why.replace(/\n/g,'<br>')}</p>
+        <p><span class="label">Vì sao các phương án còn lại sai:</span></p>
+        ${wrongList}
+        <div class="topic">📚 <strong>Liên hệ FE:</strong> ${q.topic}</div>
+      </div>`;
+  }
+
+  quizArea.innerHTML = `
+    <div class="card">
+      <span class="difficulty ${diffClass(q.diff)}">${diffLabel(q.diff)}</span>
+      <p class="question"><strong>Câu ${q.id}.</strong> ${q.q.replace(/\n/g,'<br>')}
+        <span class="ja">${q.ja}</span></p>
+      <div class="options">${opts}</div>
+      ${expHtml}
+      <div class="actions">
+        <button class="secondary" id="prev-btn" ${current===0?'disabled':''}>← Câu trước</button>
+        ${locked ? `<button id="toggle-exp" class="amber">Xem / Ẩn giải thích</button>` : ''}
+        <button id="next-btn" ${!locked?'disabled':''}>${current===questions.length-1?'Kết thúc & Xem kết quả':'Câu tiếp →'}</button>
+      </div>
+    </div>
+  `;
+
+  if(!locked){
+    quizArea.querySelectorAll('.option').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        const idx = +el.dataset.idx;
+        answers[current] = idx;
+        render();
+        updateProgress();
+      });
+    });
+  }
+
+  document.getElementById('prev-btn').addEventListener('click', ()=>{if(current>0){current--; render(); updateProgress();}});
+  document.getElementById('next-btn').addEventListener('click', ()=>{current++; render(); updateProgress();});
+  const tex = document.getElementById('toggle-exp');
+  if(tex){
+    const expDiv = document.getElementById('exp');
+    expDiv.classList.add('show');
+    tex.addEventListener('click', ()=>{ expDiv.classList.toggle('show'); });
+  }
+}
+
+function updateProgress(){
+  if(current >= questions.length){
+    progressWrap.style.display = 'none';
+    return;
+  }
+  progressText.textContent = `Câu ${current+1} / ${questions.length}`;
+  const answered = answers.filter(a=>a!==null).length;
+  answeredCount.textContent = `Đã trả lời: ${answered}`;
+  progressFill.style.width = ((current+1)/questions.length*100)+'%';
+}
+
+function renderResult(){
+  quizArea.style.display='none';
+  resultArea.style.display='block';
+  progressWrap.style.display='none';
+
+  const totals = {easy:{c:0,t:0}, mid:{c:0,t:0}, hard:{c:0,t:0}};
+  let score = 0;
+  questions.forEach((q,i)=>{
+    totals[q.diff].t++;
+    if(answers[i]===q.correct){score++; totals[q.diff].c++;}
+  });
+  const pct = Math.round(score/questions.length*100);
+  let verdict, vClass;
+  if(pct >= 80){verdict='🌟 Xuất sắc! Em đã nắm chắc 逆ポーランド表記法 + Stack — sẵn sàng cho 科目A!'; vClass='v-excellent'}
+  else if(pct >= 60){verdict='👍 Khá tốt! Luyện thêm phần chuyển đổi và tính qua stack để chắc chắn.'; vClass='v-good'}
+  else{verdict='💪 Cần cố gắng thêm! Hãy ôn lại Yasashii 02-03 + VẼ STACK từng bước khi tính.'; vClass='v-needs-work'}
+
+  resultArea.innerHTML = `
+    <div class="card result">
+      <h2>🎉 Hoàn thành bài kiểm tra!</h2>
+      <div class="score-big">${score} / ${questions.length}</div>
+      <div class="score-pct">Đạt ${pct}%</div>
+      <div class="verdict ${vClass}">${verdict}</div>
+      <div class="breakdown">
+        <div class="breakdown-item">
+          <div class="lbl">🟢 Dễ / 易</div>
+          <div class="val">${totals.easy.c} / ${totals.easy.t}</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="lbl">🟡 TB / 中</div>
+          <div class="val">${totals.mid.c} / ${totals.mid.t}</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="lbl">🔴 Khó / 難</div>
+          <div class="val">${totals.hard.c} / ${totals.hard.t}</div>
+        </div>
+      </div>
+      <button id="restart-btn">🔁 Làm lại từ đầu</button>
+      <button class="secondary" id="review-btn">📖 Xem lại bài</button>
+    </div>
+  `;
+  document.getElementById('restart-btn').addEventListener('click', ()=>{
+    current=0; answers=new Array(questions.length).fill(null);
+    quizArea.style.display='block'; resultArea.style.display='none'; progressWrap.style.display='block';
+    render(); updateProgress();
+  });
+  document.getElementById('review-btn').addEventListener('click', ()=>{
+    current=0;
+    quizArea.style.display='block'; resultArea.style.display='none'; progressWrap.style.display='block';
+    render(); updateProgress();
+  });
+}
+
+render();
+updateProgress();
+</script>
+</body>
+</html>

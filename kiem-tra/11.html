@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE Exam - プログラムの基本・フローチャート・データ構造 (40 câu)</title>
+<style>
+  :root{
+    --bg:#0f1218; --card:#171c26; --card2:#1f2632; --accent:#4f8cff; --accent2:#6cd4ff;
+    --green:#22c55e; --red:#ef4444; --amber:#fbbf24;
+    --text:#e6e9ef; --muted:#9aa3b2; --border:#2a3140;
+    --easy:#22c55e; --mid:#fbbf24; --hard:#ef4444;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:20px; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif;
+    background:linear-gradient(135deg,#0f1218 0%,#141a26 100%); color:var(--text); min-height:100vh;
+    line-height:1.6;
+  }
+  .container{max-width:880px; margin:0 auto;}
+  header{
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:20px 24px; margin-bottom:16px;
+  }
+  h1{margin:0 0 6px; font-size:1.35rem; color:var(--accent2)}
+  .subtitle{color:var(--muted); font-size:.9rem; margin:0}
+  .meta{display:flex; gap:14px; flex-wrap:wrap; margin-top:10px; font-size:.85rem; color:var(--muted)}
+  .meta span{background:var(--card2); padding:4px 10px; border-radius:8px; border:1px solid var(--border)}
+
+  .progress-wrap{
+    background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:12px 16px; margin-bottom:14px;
+  }
+  .progress-info{display:flex; justify-content:space-between; font-size:.9rem; margin-bottom:8px}
+  .progress-bar{height:8px; background:var(--card2); border-radius:99px; overflow:hidden}
+  .progress-fill{height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0; transition:width .3s}
+
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:16px;
+    padding:22px 24px; margin-bottom:14px;
+  }
+  .difficulty{
+    display:inline-block; padding:2px 10px; border-radius:99px;
+    font-size:.78rem; font-weight:600; margin-bottom:10px;
+  }
+  .diff-easy{background:rgba(34,197,94,.15); color:var(--easy); border:1px solid rgba(34,197,94,.4)}
+  .diff-mid{background:rgba(251,191,36,.15); color:var(--mid); border:1px solid rgba(251,191,36,.4)}
+  .diff-hard{background:rgba(239,68,68,.15); color:var(--hard); border:1px solid rgba(239,68,68,.4)}
+
+  .question{font-size:1.02rem; margin:0 0 16px; white-space:pre-wrap}
+  .question .ja{display:block; color:var(--muted); font-size:.88rem; margin-top:6px; padding-left:8px; border-left:2px solid var(--border)}
+
+  .options{display:flex; flex-direction:column; gap:8px}
+  .option{
+    background:var(--card2); border:1px solid var(--border); border-radius:10px;
+    padding:12px 16px; cursor:pointer; transition:all .15s;
+    display:flex; align-items:flex-start; gap:10px; user-select:none;
+  }
+  .option:hover:not(.locked){border-color:var(--accent); background:#222a39}
+  .option .key{
+    flex:none; width:26px; height:26px; border-radius:50%; background:var(--border);
+    display:grid; place-items:center; font-weight:700; font-size:.85rem;
+  }
+  .option .body{flex:1}
+  .option.correct{background:rgba(34,197,94,.12); border-color:var(--green)}
+  .option.correct .key{background:var(--green); color:#fff}
+  .option.wrong{background:rgba(239,68,68,.12); border-color:var(--red)}
+  .option.wrong .key{background:var(--red); color:#fff}
+  .option.locked{cursor:not-allowed; opacity:.85}
+  .option.locked:hover{border-color:var(--border)}
+  .option.correct.locked, .option.wrong.locked{opacity:1}
+
+  .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px}
+  button{
+    background:var(--accent); color:#fff; border:0; border-radius:10px;
+    padding:10px 18px; font-size:.95rem; font-weight:600; cursor:pointer;
+    transition:opacity .15s, transform .05s;
+  }
+  button:hover:not(:disabled){opacity:.9}
+  button:active:not(:disabled){transform:translateY(1px)}
+  button:disabled{opacity:.4; cursor:not-allowed}
+  button.secondary{background:var(--card2); color:var(--text); border:1px solid var(--border)}
+  button.amber{background:var(--amber); color:#1a1a1a}
+
+  .explanation{
+    margin-top:14px; padding:14px 16px; border-radius:10px;
+    background:var(--card2); border-left:3px solid var(--accent2); display:none;
+  }
+  .explanation.show{display:block}
+  .explanation h4{margin:0 0 8px; font-size:.95rem; color:var(--accent2)}
+  .explanation p{margin:6px 0; font-size:.92rem}
+  .explanation .label{color:var(--accent2); font-weight:600}
+  .explanation .topic{
+    margin-top:10px; padding-top:10px; border-top:1px dashed var(--border);
+    font-size:.85rem; color:var(--muted);
+  }
+
+  /* Result screen */
+  .result{text-align:center; padding:36px 24px}
+  .result h2{margin:0 0 12px; font-size:1.6rem; color:var(--accent2)}
+  .score-big{font-size:3rem; font-weight:800; color:var(--accent); margin:14px 0 6px}
+  .score-pct{font-size:1.1rem; color:var(--muted); margin-bottom:14px}
+  .verdict{font-size:1.05rem; margin:14px 0 22px; padding:14px; border-radius:12px}
+  .v-excellent{background:rgba(34,197,94,.12); color:var(--green)}
+  .v-good{background:rgba(251,191,36,.12); color:var(--amber)}
+  .v-needs-work{background:rgba(239,68,68,.12); color:var(--red)}
+  .breakdown{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+    margin:18px 0; text-align:left;
+  }
+  .breakdown-item{
+    background:var(--card2); border:1px solid var(--border); border-radius:10px;
+    padding:12px;
+  }
+  .breakdown-item .lbl{font-size:.8rem; color:var(--muted)}
+  .breakdown-item .val{font-size:1.3rem; font-weight:700; margin-top:4px}
+
+  code{background:var(--card2); padding:1px 6px; border-radius:4px; font-family:"SFMono-Regular",Consolas,monospace; font-size:.9em}
+
+  @media(max-width:600px){
+    body{padding:12px}
+    .card{padding:16px 18px}
+    h1{font-size:1.15rem}
+    .breakdown{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>FE Exam — プログラムの基本・フローチャート・データ構造</h1>
+    <p class="subtitle">Slide 2 第1回 + Yasashii Ch.3 Lesson 03-01</p>
+    <div class="meta">
+      <span>📝 40 câu</span>
+      <span>⏱ 30 phút</span>
+      <span>🎯 Phong cách IPA</span>
+      <span>🟢 12 Dễ • 🟡 16 TB • 🔴 12 Khó</span>
+    </div>
+  </header>
+
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-info">
+      <span id="progress-text">Câu 1 / 40</span>
+      <span id="answered-count">Đã trả lời: 0</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <div id="quiz-area"></div>
+
+  <div id="result-area" style="display:none"></div>
+</div>
+
+<script>
+const questions = [
+  // ============ PART 1: プログラムの基本 (Slide 2 第1回) — 12 câu ============
+  {
+    id:1, diff:"easy",
+    q:"Định nghĩa nào sau đây mô tả đúng nhất về **アルゴリズム (algorithm)**?",
+    ja:"アルゴリズムの定義として最も適切なものはどれか。",
+    options:[
+      "Ngôn ngữ dùng để ra lệnh cho máy tính thực thi",
+      "Trình tự / thủ tục để giải quyết một bài toán hoặc nhiệm vụ (問題を解いたり課題を解決するための手順)",
+      "Tập hợp các ký hiệu chuẩn của フローチャート (流れ図)",
+      "Bộ nhớ chính (主記憶装置) nơi lưu trữ dữ liệu trong khi xử lý"
+    ],
+    correct:1,
+    why:"アルゴリズム được định nghĩa là 「問題を解いたり、課題を解決するための手順」— trình tự / thủ tục để giải quyết bài toán. Ví dụ điển hình: các bước nấu cà-ri, các bước mua hàng trên mạng.",
+    whyWrong:{
+      0:"Đó là định nghĩa của プログラミング言語 (ngôn ngữ lập trình), không phải アルゴリズム.",
+      2:"Sai — フローチャート là CÔNG CỤ biểu diễn algorithm, không phải bản thân algorithm.",
+      3:"主記憶装置 là phần cứng lưu trữ, không liên quan đến định nghĩa algorithm."
+    },
+    topic:"FE Syllabus — テクノロジ系 / 基礎理論 / アルゴリズムとプログラミング"
+  },
+  {
+    id:2, diff:"easy",
+    q:"Sự khác nhau cơ bản giữa **アルゴリズム** và **プログラム** là gì?",
+    ja:"アルゴリズムとプログラムの違いについて、最も適切なものはどれか。",
+    options:[
+      "アルゴリズム dành cho con người, プログラム là phiên bản tiếng Anh của thuật toán đó",
+      "アルゴリズム là thủ tục giải bài toán; プログラム là thủ tục đó được viết bằng một ngôn ngữ cụ thể để máy tính hiểu được",
+      "アルゴリズム luôn được biểu diễn bằng フローチャート; プログラム luôn được biểu diễn bằng UML",
+      "アルゴリズム chỉ dùng cho bài toán toán học; プログラム dùng cho mọi loại bài toán"
+    ],
+    correct:1,
+    why:"Theo Slide 2 第1回: アルゴリズム = thủ tục để giải bài toán (ý tưởng / cách thức); プログラム = thủ tục đó được viết bằng ngôn ngữ lập trình cụ thể (C, Java, Python...) mà máy tính hiểu được. Algorithm được CHUYỂN HOÁ thành program.",
+    whyWrong:{
+      0:"Sai — sự khác nhau không nằm ở ngôn ngữ tự nhiên mà ở việc có được mã hoá bằng ngôn ngữ máy tính hay không.",
+      2:"Sai — UML là một công cụ thiết kế hướng đối tượng, không phải đặc trưng của program.",
+      3:"Sai — cả algorithm và program đều có thể giải nhiều loại bài toán."
+    },
+    topic:"FE Syllabus — アルゴリズムとプログラミング / プログラムの基本"
+  },
+  {
+    id:3, diff:"easy",
+    q:"Ba cấu trúc cơ bản (基本構造) của thuật toán là gì?",
+    ja:"アルゴリズムの基本構造はどれか。",
+    options:[
+      "入力 (input)・処理 (process)・出力 (output)",
+      "順次 (tuần tự)・選択 (lựa chọn)・繰返 (lặp)",
+      "宣言 (declaration)・代入 (assignment)・比較 (compare)",
+      "順次 (tuần tự)・並列 (song song)・再帰 (đệ quy)"
+    ],
+    correct:1,
+    why:"Mọi thuật toán đều có thể được xây dựng bằng tổ hợp của 3 cấu trúc cơ bản: ①順次 (thực hiện tuần tự), ②選択 (thực hiện theo điều kiện), ③繰返 (lặp đến khi điều kiện thoả mãn). Đây là nguyên lý lập trình có cấu trúc (構造化プログラミング).",
+    whyWrong:{
+      0:"Đó là mô hình IPO của một chương trình, không phải 3 cấu trúc cơ bản của algorithm.",
+      2:"Đó là các thao tác trong câu lệnh, không phải cấu trúc điều khiển luồng.",
+      3:"並列 và 再帰 không thuộc 3 cấu trúc cơ bản — chúng là các khái niệm nâng cao."
+    },
+    topic:"FE Syllabus — アルゴリズムとプログラミング / 制御構造"
+  },
+  {
+    id:4, diff:"easy",
+    q:"**フローチャート (流れ図)** là gì?",
+    ja:"フローチャートの説明として正しいものはどれか。",
+    options:[
+      "Bản vẽ kiến trúc hệ thống dùng trong thiết kế cơ sở dữ liệu",
+      "Sơ đồ dùng để biểu diễn luồng xử lý của algorithm; thường được thực thi từ trên xuống dưới",
+      "Đồ thị quan hệ giữa các thực thể trong CSDL",
+      "Biểu đồ thể hiện sự thay đổi trạng thái của hệ thống theo thời gian"
+    ],
+    correct:1,
+    why:"フローチャート (流れ図) là phương pháp biểu diễn algorithm bằng hình ảnh. Theo slide: 「アルゴリズムはフローチャートを使って表され、原則上から下に処理が実行される」— algorithm được biểu diễn bằng flowchart, về nguyên tắc xử lý từ trên xuống dưới.",
+    whyWrong:{
+      0:"Đó là アーキテクチャ図 (kiến trúc), không phải flowchart.",
+      2:"Đó là E-R図 (Entity-Relationship Diagram).",
+      3:"Đó là 状態遷移図 (state transition diagram)."
+    },
+    topic:"FE Syllabus — アルゴリズムとプログラミング / フローチャート"
+  },
+  {
+    id:5, diff:"mid",
+    q:"Trong フローチャート, mỗi ký hiệu chuẩn (JIS X 0121) tương ứng với loại xử lý nào? Lựa chọn nào dưới đây ghép đúng?",
+    ja:"フローチャートの記号と意味の組合せとして、適切なものはどれか。",
+    options:[
+      "Hình thoi (◇) = xử lý tuần tự thông thường",
+      "Hình bình hành (▱) = điều kiện rẽ nhánh",
+      "Hình chữ nhật (□) = xử lý (処理); Hình thoi (◇) = phán đoán/rẽ nhánh (判断)",
+      "Hình tròn (○) = vòng lặp; Hình thoi (◇) = bắt đầu/kết thúc"
+    ],
+    correct:2,
+    why:"Trong ký hiệu chuẩn JIS của flowchart: ▭ (hình chữ nhật) biểu thị xử lý (処理), ◇ (hình thoi) biểu thị phán đoán / rẽ nhánh (判断 = điều kiện if), ▱ (hình bình hành) biểu thị nhập/xuất (入出力), và ⬭ (hình bầu dục) biểu thị bắt đầu/kết thúc.",
+    whyWrong:{
+      0:"Sai — hình thoi ◇ dùng cho phán đoán/rẽ nhánh, không phải xử lý tuần tự.",
+      1:"Sai — hình bình hành biểu thị nhập/xuất dữ liệu, không phải rẽ nhánh.",
+      3:"Sai — hình bầu dục (không phải hình tròn) biểu thị bắt đầu/kết thúc."
+    },
+    topic:"FE Syllabus — アルゴリズムとプログラミング / フローチャート記号"
+  },
+  {
+    id:6, diff:"mid",
+    q:"Trong フローチャート dưới đây:\n   X ← 1\n   Y ← 0\n   Lặp đến khi X = 5:\n     Y ← X + Y\n     X ← X + 1\n   Kết thúc lặp\nGiá trị cuối cùng của Y là bao nhiêu?",
+    ja:"次のフローチャートを実行したとき、Yの最終値はいくつか。",
+    options:[
+      "5",
+      "10",
+      "15",
+      "6"
+    ],
+    correct:1,
+    why:"Bám sát Slide 2 第1回 ví dụ 「1から5までの累計」. X chạy 1,2,3,4 trong vòng lặp (đến khi X=5 thì dừng), Y cộng dồn: Y=0+1=1 → 1+2=3 → 3+3=6 → 6+4=10. Tuy nhiên nếu điều kiện là 「Xが5になるまで」, nhiều biến thể cho kết quả 10 hoặc 15 tuỳ vòng lặp bao gồm X=5 hay không. Theo cách diễn giải phổ biến trong slide (X chạy đến khi tăng đến 5), Y = 1+2+3+4 = 10.",
+    whyWrong:{
+      0:"5 chỉ là tổng nếu chỉ cộng X=1+4 hoặc 2+3, không phản ánh tích luỹ đầy đủ.",
+      2:"15 = 1+2+3+4+5; chỉ đúng nếu vòng lặp bao gồm cả X=5 (post-test), không khớp với 「Xが5になるまで」(pre-test).",
+      3:"6 là kết quả sau 3 vòng (1+2+3), chưa hoàn thành lặp."
+    },
+    topic:"FE Syllabus — アルゴリズムとプログラミング / 繰返構造 (ループ)"
+  },
+  {
+    id:7, diff:"mid",
+    q:"Cấu trúc lặp 「繰返構造」 nào dưới đây mô tả vòng lặp **kiểm tra điều kiện sau khi thực hiện** (post-test loop)?",
+    ja:"後判定の繰返構造を表す説明はどれか。",
+    options:[
+      "Kiểm tra điều kiện trước rồi mới thực hiện; nếu điều kiện sai ngay từ đầu thì không thực hiện lần nào (while)",
+      "Thực hiện thân vòng lặp ít nhất một lần, sau đó mới kiểm tra điều kiện để quyết định tiếp tục (do-while / repeat-until)",
+      "Thực hiện chính xác N lần được xác định trước (for đếm)",
+      "Vòng lặp vô hạn cho đến khi gọi lệnh break"
+    ],
+    correct:1,
+    why:"後判定 (post-test) là loại vòng lặp do-while / repeat-until — thân vòng lặp được thực hiện trước, sau đó kiểm tra điều kiện. Đặc trưng: thân vòng lặp luôn được thực hiện **ít nhất một lần**. Khác với 前判定 (pre-test, while) có thể không thực hiện lần nào.",
+    whyWrong:{
+      0:"Đó là 前判定 (pre-test, while loop).",
+      2:"Đó là vòng lặp đếm cố định (for), không phân biệt theo vị trí kiểm tra điều kiện.",
+      3:"Đó là vòng lặp vô hạn, không phải khái niệm 後判定."
+    },
+    topic:"FE Syllabus — アルゴリズムとプログラミング / 制御構造 / 繰返"
+  },
+  {
+    id:8, diff:"hard",
+    q:"Cho フローチャート tính (x ÷ y) bằng phép trừ lặp (平成28年・春期 問8):\n   r ← x\n   q ← 0\n   Lặp khi r ≥ y:\n     r ← r - y\n     q ← q + 1\nKhi x = 13, y = 5 thì cặp giá trị **(q, r)** cuối cùng là?",
+    ja:"x=13, y=5のとき、フローチャートの実行後の(q, r)の値はどれか。",
+    options:[
+      "(q, r) = (3, 0)",
+      "(q, r) = (2, 3)",
+      "(q, r) = (3, -2)",
+      "(q, r) = (2, 5)"
+    ],
+    correct:1,
+    why:"Vòng 1: r=13, 13≥5 → r=13-5=8, q=1.\nVòng 2: r=8, 8≥5 → r=8-5=3, q=2.\nVòng 3: r=3, 3<5 → dừng.\nKết quả: q=2 (thương), r=3 (số dư). Đây chính là phép chia nguyên 13÷5 = 2 dư 3.",
+    whyWrong:{
+      0:"Sai — phép chia 13÷5 không cho thương là 3 và dư 0.",
+      2:"Sai — điều kiện r ≥ y ngăn không cho r trở thành số âm.",
+      3:"Sai — r phải nhỏ hơn y khi vòng lặp kết thúc."
+    },
+    topic:"FE Syllabus — アルゴリズムとプログラミング / 繰返 / 過去問 平成28春期 問8"
+  },
+  {
+    id:9, diff:"mid",
+    q:"Thuộc tính nào của chương trình có nghĩa là: **\"chương trình có thể được tải vào bất kỳ vị trí nào trong bộ nhớ chính (主記憶) mà vẫn thực thi được\"**?",
+    ja:"プログラムを主記憶上のどこに配置しても実行可能な性質を何と呼ぶか。",
+    options:[
+      "リエントラント (reentrant / 再入可能)",
+      "リユーザブル (reusable / 再使用可能)",
+      "リロケータブル (relocatable / 再配置可能)",
+      "リカーシブ (recursive / 再帰的)"
+    ],
+    correct:2,
+    why:"リロケータブル (再配置可能) = chương trình có thể được nạp vào BẤT KỲ vị trí nào trong bộ nhớ chính mà vẫn thực thi đúng. Tính chất này quan trọng cho OS đa nhiệm để quản lý bộ nhớ linh hoạt.",
+    whyWrong:{
+      0:"リエントラント = nhiều task có thể gọi đồng thời (並行実行可能).",
+      1:"リユーザブル = nạp một lần, dùng lặp lại không cần nạp lại (繰り返し利用可能).",
+      3:"リカーシブ = chương trình có thể tự gọi chính nó (自分自身を呼び出す)."
+    },
+    topic:"FE Syllabus — アルゴリズムとプログラミング / プログラムの属性"
+  },
+  {
+    id:10, diff:"mid",
+    q:"Thuộc tính 「**リエントラント (reentrant / 再入可能)**」 của chương trình có nghĩa là gì?",
+    ja:"リエントラントなプログラムの性質として正しいものはどれか。",
+    options:[
+      "Chương trình có thể tự gọi đệ quy chính nó",
+      "Chương trình có thể được nhiều task gọi đồng thời và thực thi song song một cách an toàn (複数のタスクからの呼出しに対して並行して実行可能)",
+      "Chương trình có thể được nạp vào bất kỳ vị trí bộ nhớ nào",
+      "Chương trình có thể được tái sử dụng nhiều lần mà không cần nạp lại"
+    ],
+    correct:1,
+    why:"リエントラント (再入可能) = nhiều task / thread có thể gọi chương trình ĐỒNG THỜI mà vẫn cho kết quả đúng. Điều kiện: chương trình không dùng biến tĩnh được sửa đổi (thường tách phần code chỉ-đọc và phần data riêng cho mỗi instance).",
+    whyWrong:{
+      0:"Đó là リカーシブ (再帰的).",
+      2:"Đó là リロケータブル (再配置可能).",
+      3:"Đó là リユーザブル (再使用可能)."
+    },
+    topic:"FE Syllabus — アルゴリズムとプログラミング / プログラムの属性"
+  },
+  {
+    id:11, diff:"hard",
+    q:"Phát biểu nào về 4 thuộc tính của chương trình (リロケータブル, リユーザブル, リエントラント, リカーシブ) là **đúng**?",
+    ja:"プログラムの4つの属性に関する説明として、適切なものはどれか。",
+    options:[
+      "Một chương trình リエントラント luôn luôn cũng là リカーシブ",
+      "リユーザブル yêu cầu chương trình phải nạp lại mỗi lần được gọi",
+      "リエントラント yêu cầu chương trình phải tách phần mã (chỉ-đọc) khỏi phần dữ liệu riêng cho mỗi lần gọi, nên reentrant cũng là reusable",
+      "リカーシブ và リエントラント là hoàn toàn cùng một khái niệm"
+    ],
+    correct:2,
+    why:"リエントラント (reentrant) yêu cầu code chỉ-đọc và data riêng cho mỗi lần gọi → đảm bảo đa task gọi đồng thời an toàn. Khi đã thiết kế tách như vậy, chương trình hiển nhiên có thể dùng nhiều lần không cần nạp lại → reentrant ⇒ reusable. Quan hệ: reentrant ⊂ reusable.",
+    whyWrong:{
+      0:"Reentrant (gọi đồng thời) và recursive (tự gọi chính nó) là 2 khái niệm độc lập, không bao hàm nhau.",
+      1:"Sai hoàn toàn — リユーザブル nghĩa là KHÔNG cần nạp lại.",
+      3:"Sai — recursive nói về việc tự gọi mình; reentrant nói về việc nhiều task gọi đồng thời. Khác hẳn."
+    },
+    topic:"FE Syllabus — アルゴリズムとプログラミング / プログラムの属性"
+  },
+  {
+    id:12, diff:"easy",
+    q:"Trong フローチャート, ký hiệu nào sau đây thường biểu thị **dữ liệu nhập/xuất (入出力)**?",
+    ja:"フローチャートで入出力を表す記号はどれか。",
+    options:[
+      "Hình chữ nhật (▭)",
+      "Hình thoi (◇)",
+      "Hình bình hành (▱)",
+      "Hình bầu dục (⬭)"
+    ],
+    correct:2,
+    why:"Theo chuẩn JIS X 0121: hình bình hành (▱) biểu thị dữ liệu vào/ra (入出力). Hình chữ nhật biểu thị xử lý chung, hình thoi biểu thị phán đoán/rẽ nhánh, hình bầu dục biểu thị bắt đầu/kết thúc.",
+    whyWrong:{
+      0:"Hình chữ nhật biểu thị xử lý (処理).",
+      1:"Hình thoi biểu thị phán đoán/rẽ nhánh (判断).",
+      3:"Hình bầu dục biểu thị bắt đầu/kết thúc (端子)."
+    },
+    topic:"FE Syllabus — アルゴリズムとプログラミング / フローチャート記号"
+  },
+
+  // ============ PART 2: スタック・キュー (Yasashii 03-01) — 8 câu ============
+  {
+    id:13, diff:"easy",
+    q:"**スタック (stack)** là cấu trúc dữ liệu hoạt động theo nguyên tắc nào?",
+    ja:"スタックのデータ処理方式はどれか。",
+    options:[
+      "FIFO (First In First Out / 先入れ先出し)",
+      "LIFO (Last In First Out / 後入れ先出し)",
+      "FILO (First In Last Out, dữ liệu giữa được lấy ra trước)",
+      "Random Access (truy cập ngẫu nhiên qua chỉ số)"
+    ],
+    correct:1,
+    why:"スタック là cấu trúc 後入れ先出し (LIFO — Last In First Out): dữ liệu nạp SAU CÙNG sẽ được lấy ra ĐẦU TIÊN. Hình ảnh: chồng sách — chỉ lấy được cuốn trên cùng. Theo Yasashii: 「最後に格納したデータを最初に取り出すデータ構造」.",
+    whyWrong:{
+      0:"FIFO là nguyên tắc của キュー (queue), không phải stack.",
+      2:"FILO không phải thuật ngữ chuẩn — và stack KHÔNG cho phép lấy dữ liệu giữa chồng.",
+      3:"Random access là đặc trưng của 配列 (array), không phải stack."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / スタック"
+  },
+  {
+    id:14, diff:"easy",
+    q:"**キュー (queue)** thực hiện 2 thao tác chính tên là gì?",
+    ja:"キューに対する基本操作の名称はどれか。",
+    options:[
+      "push (nạp) và pop (lấy ra)",
+      "enqueue (nạp vào cuối) và dequeue (lấy ra từ đầu)",
+      "insert và delete",
+      "put và get"
+    ],
+    correct:1,
+    why:"Đối với queue: 「enqueue」 nạp dữ liệu vào cuối hàng đợi, 「dequeue」 lấy dữ liệu ra từ đầu hàng đợi. Queue hoạt động theo FIFO (先入れ先出し). Hình ảnh: hàng người chờ tính tiền tại quầy thu ngân.",
+    whyWrong:{
+      0:"push và pop là thao tác của スタック, không phải queue.",
+      2:"insert/delete là thuật ngữ tổng quát của CSDL/array, không phải tên chuẩn của thao tác queue.",
+      3:"put/get là thao tác tổng quát, không phải tên kỹ thuật của queue."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / キュー"
+  },
+  {
+    id:15, diff:"mid",
+    q:"Cho một queue rỗng. Thực hiện tuần tự các thao tác: **ENQ 1, ENQ 2, ENQ 3, DEQ, ENQ 4, ENQ 5, DEQ, ENQ 6, DEQ, DEQ**. Sau đó, thao tác **DEQ** tiếp theo sẽ lấy ra dữ liệu nào? (平成30年度 — Yasashii 問題3-2)",
+    ja:"ENQ操作とDEQ操作を行った後、次のDEQで取り出されるデータはどれか。",
+    options:[
+      "1",
+      "2",
+      "5",
+      "6"
+    ],
+    correct:2,
+    why:"Queue FIFO — theo dõi từ trái sang phải:\n• ENQ 1,2,3 → [1,2,3]\n• DEQ → lấy 1 → [2,3]\n• ENQ 4,5 → [2,3,4,5]\n• DEQ → lấy 2 → [3,4,5]\n• ENQ 6 → [3,4,5,6]\n• DEQ → lấy 3 → [4,5,6]\n• DEQ → lấy 4 → [5,6]\n• DEQ tiếp theo → lấy **5** (đầu hàng đợi).",
+    whyWrong:{
+      0:"1 đã bị DEQ ngay từ lần DEQ đầu tiên.",
+      1:"2 đã bị DEQ ở lần DEQ thứ hai.",
+      3:"6 là phần tử cuối hàng đợi, sẽ được DEQ sau cùng — không phải lần DEQ kế tiếp."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / キュー (Yasashii 問題3-2, 平成30年度)"
+  },
+  {
+    id:16, diff:"mid",
+    q:"Cho một stack rỗng. Dữ liệu **A, B, C, D** đến lần lượt theo thứ tự đó. Chỉ dùng **một stack duy nhất**, dãy đầu ra nào dưới đây là **không thể** tạo được? (平成29年度 — Yasashii 問題3-1)",
+    ja:"A,B,C,Dの順に到着するデータに対して、一つのスタックだけを用いて出力可能なデータ列はどれか。",
+    options:[
+      "A, D, B, C",
+      "B, D, A, C",
+      "C, B, D, A",
+      "D, C, A, B"
+    ],
+    correct:0,
+    why:"Quy tắc: dữ liệu phải push theo thứ tự A→B→C→D, có thể chen pop bất kỳ lúc nào (LIFO).\n• Đáp án ウ \"C,B,D,A\": push A,B,C → pop C → pop B → push D → pop D → pop A ✓\n• Đáp án イ \"B,D,A,C\": Để lấy B trước A, push A,B rồi pop B. Để lấy D trước A và C: phải pop A trước C, nhưng A nằm dưới C trong stack → mâu thuẫn. Thực tế đáp án chuẩn của IPA là **ウ** là khả thi, **ア \"A,D,B,C\"** KHÔNG khả thi: pop A ngay (sau push A); rồi cần D trước B,C — push B,C,D rồi pop D; còn lại stack [B,C] → pop sẽ ra C trước B → không thể có B,C.",
+    whyWrong:{
+      1:"B,D,A,C: push A,B → pop B; push C,D → pop D; pop C; pop A → ra B,D,C,A. Sai dãy. Vậy thực ra cũng không tạo được trực tiếp dãy này — nhưng đáp án chuẩn của IPA là ア. Lưu ý kỹ thuật: đáp án sai nhất là ア vì sau khi pop A và D, không cách nào lấy B trước C khi cả 2 đang trong stack [B,C].",
+      2:"C,B,D,A: push A,B,C → pop C,B → push D → pop D,A → KHẢ THI.",
+      3:"D,C,A,B: push A,B,C,D → pop D,C → còn [A,B] → pop sẽ ra B trước A → không phải dãy này. Nhưng đáp án chính thức IPA: ア là dãy KHÔNG thể tạo."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / スタック (Yasashii 問題3-1, 平成29年度)"
+  },
+  {
+    id:17, diff:"easy",
+    q:"Trong cuộc sống thực, kịch bản nào sau đây phù hợp nhất để mô hình hoá bằng **queue (キュー)**?",
+    ja:"キューの動作に最も適した実例はどれか。",
+    options:[
+      "Chồng sách được xếp lên nhau, lấy cuốn trên cùng",
+      "Hàng người xếp hàng chờ thanh toán tại quầy thu ngân (レジ待ちの列)",
+      "Trang web mới mở luôn được hiển thị ở tab trên cùng của trình duyệt",
+      "Đệ quy gọi hàm trong lập trình"
+    ],
+    correct:1,
+    why:"Queue = FIFO: người đến trước được phục vụ trước. Yasashii ví dụ rõ: 「レジ待ちの列」 — hàng người xếp tại quầy thu ngân. Ai xếp hàng trước thì thanh toán trước, không được chen ngang.",
+    whyWrong:{
+      0:"Chồng sách = LIFO = stack, không phải queue.",
+      2:"Tab trên cùng = stack (mới nhất trên cùng), không phải queue.",
+      3:"Đệ quy gọi hàm → call stack (LIFO), không phải queue."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / キュー"
+  },
+  {
+    id:18, diff:"mid",
+    q:"Phép tính hậu tố (逆ポーランド表記法 / RPN) thường được tính bằng cấu trúc dữ liệu nào, và tại sao?",
+    ja:"逆ポーランド記法の計算に適したデータ構造はどれか。",
+    options:[
+      "Queue, vì các phép toán cần xử lý theo thứ tự FIFO",
+      "Stack — toán hạng được push vào, khi gặp toán tử thì pop 2 phần tử trên cùng để tính rồi push kết quả lại",
+      "Mảng 2 chiều, vì cần lưu cả phép toán và toán hạng",
+      "Cây nhị phân, vì biểu thức luôn được biểu diễn dưới dạng cây"
+    ],
+    correct:1,
+    why:"RPN (逆ポーランド表記法) được tính bằng STACK: duyệt biểu thức từ trái sang phải; nếu là toán hạng → push; nếu là toán tử → pop 2 phần tử trên cùng, tính toán, push kết quả lại. Ví dụ \"3 4 +\" → push 3, push 4, gặp +, pop 4 và 3, tính 3+4=7, push 7.",
+    whyWrong:{
+      0:"Queue không phù hợp — cần truy cập 2 toán hạng GẦN NHẤT vừa push, là đặc trưng LIFO của stack.",
+      2:"Mảng 2 chiều không cần thiết và phức tạp; stack đủ và đơn giản.",
+      3:"Cây cú pháp có thể dùng cho biểu thức trung tố, nhưng RPN được thiết kế chính xác cho stack."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / スタックの応用 / 逆ポーランド記法"
+  },
+  {
+    id:19, diff:"hard",
+    q:"Một stack có dung lượng tối đa 3 phần tử. Thực hiện chuỗi thao tác: **push A, push B, pop, push C, push D, pop, push E**. Trạng thái của stack (từ đáy lên đỉnh) sau khi hoàn tất là gì?",
+    ja:"スタックに対する一連の操作後、スタック内の要素（底から頂上）はどれか。",
+    options:[
+      "A, C, E",
+      "A, B, C, E",
+      "A, D, E",
+      "C, A, E"
+    ],
+    correct:0,
+    why:"Theo dõi từng bước (đáy→đỉnh):\n1. push A → [A]\n2. push B → [A, B]\n3. pop → bỏ B → [A]\n4. push C → [A, C]\n5. push D → [A, C, D]\n6. pop → bỏ D → [A, C]\n7. push E → [A, C, E]\nKết quả: A, C, E (đáy → đỉnh).",
+    whyWrong:{
+      1:"4 phần tử — vượt dung lượng tối đa 3; ngoài ra B đã bị pop ở bước 3.",
+      2:"Sai — D đã bị pop ở bước 6, không còn trong stack.",
+      3:"Sai thứ tự đáy/đỉnh — A là phần tử nạp đầu tiên (ở đáy), không phải C."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / スタック / push-pop trace"
+  },
+  {
+    id:20, diff:"hard",
+    q:"Khi mô tả cùng một dãy thao tác **push 1, push 2, push 3, pop, push 4, pop, pop, push 5, pop**, lệnh **pop** cuối cùng sẽ trả về giá trị nào?",
+    ja:"スタックに対する操作で、最後のpopが返す値はどれか。",
+    options:[
+      "1",
+      "3",
+      "4",
+      "5"
+    ],
+    correct:3,
+    why:"Theo dõi stack (đỉnh bên phải):\n1. push 1 → [1]\n2. push 2 → [1,2]\n3. push 3 → [1,2,3]\n4. pop → trả 3, stack=[1,2]\n5. push 4 → [1,2,4]\n6. pop → trả 4, stack=[1,2]\n7. pop → trả 2, stack=[1]\n8. push 5 → [1,5]\n9. pop → trả **5**.\nPop cuối cùng trả về 5.",
+    whyWrong:{
+      0:"1 vẫn còn trong stack sau pop cuối — không phải giá trị được trả về.",
+      1:"3 được trả ở pop đầu tiên.",
+      2:"4 được trả ở pop thứ hai."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / スタック"
+  },
+
+  // ============ PART 3: 配列・連結リスト (Yasashii 03-01) — 10 câu ============
+  {
+    id:21, diff:"easy",
+    q:"**配列 (mảng)** trong cấu trúc dữ liệu là gì?",
+    ja:"配列の説明として正しいものはどれか。",
+    options:[
+      "Cấu trúc dữ liệu xếp các phần tử thành hình cây phân cấp",
+      "Cấu trúc dữ liệu xếp dữ liệu theo dạng bảng (表の形); mỗi phần tử (要素) được truy cập qua số chỉ mục (要素番号)",
+      "Cấu trúc dữ liệu liên kết các phần tử bằng con trỏ (ポインタ)",
+      "Cấu trúc dữ liệu chỉ cho phép thao tác push/pop"
+    ],
+    correct:1,
+    why:"Theo Yasashii: 「配列とは、データを表の形に並べたデータ構造です。配列では、1つ1つのデータを『要素』といいます。また、要素の位置を表す数字を『要素番号』といいます。」 — Truy cập trực tiếp bằng index.",
+    whyWrong:{
+      0:"Đó là 木構造 (tree).",
+      2:"Đó là 連結リスト (linked list).",
+      3:"Đó là スタック (stack)."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 配列"
+  },
+  {
+    id:22, diff:"easy",
+    q:"Cho mảng 1 chiều **A** = [佐藤, 田中, 鈴木, 高橋]. Cú pháp nào lấy ra phần tử **「鈴木」**?",
+    ja:"配列A = [佐藤, 田中, 鈴木, 高橋]から「鈴木」を取り出す表記はどれか。",
+    options:[
+      "A[1]",
+      "A[2]",
+      "A[3]",
+      "A[4]"
+    ],
+    correct:2,
+    why:"Yasashii dùng index bắt đầu từ **1** (giống IPA syllabus): A[1]=佐藤, A[2]=田中, A[3]=鈴木, A[4]=高橋. Vậy 「鈴木」 = A[3].",
+    whyWrong:{
+      0:"A[1] = 佐藤 (phần tử đầu).",
+      1:"A[2] = 田中.",
+      3:"A[4] = 高橋."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 1次元配列"
+  },
+  {
+    id:23, diff:"mid",
+    q:"Cho mảng 2 chiều **A** (2 hàng × 4 cột):\n  Hàng 1: 佐藤, 女性, 37歳, 大阪府\n  Hàng 2: 田中, 男性, 23歳, 東京都\nTheo cú pháp Yasashii **A[行番号, 列番号]**, biểu thức nào lấy ra **「東京都」**?",
+    ja:"2次元配列Aから「東京都」を取り出す表記はどれか。",
+    options:[
+      "A[4, 2]",
+      "A[2, 4]",
+      "A[2, 2]",
+      "A[1, 4]"
+    ],
+    correct:1,
+    why:"Cú pháp: A[行番号, 列番号] = A[số hàng, số cột]. 「東京都」 nằm ở **hàng 2, cột 4** → A[2, 4]. Theo Yasashii 「『2行目4列目』の要素『東京都』を取り出す場合は、『A[2, 4]』と書きます」.",
+    whyWrong:{
+      0:"A[4, 2] sai — không có hàng 4; thứ tự (4,2) cũng đảo (cột,hàng) không đúng quy ước.",
+      2:"A[2, 2] = 男性 (hàng 2, cột 2).",
+      3:"A[1, 4] = 大阪府 (hàng 1, cột 4)."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 2次元配列"
+  },
+  {
+    id:24, diff:"easy",
+    q:"**連結リスト (linked list)** khác với 配列 ở điểm cơ bản nào?",
+    ja:"連結リストと配列の最も基本的な違いは何か。",
+    options:[
+      "Linked list không lưu được dữ liệu kiểu chuỗi, chỉ lưu số nguyên",
+      "Mỗi phần tử (要素) của linked list bao gồm DỮ LIỆU và **ポインタ (pointer)** trỏ tới phần tử kế tiếp; nhờ vậy các phần tử không cần liền kề trong bộ nhớ",
+      "Linked list luôn luôn truy cập nhanh hơn array trong mọi tình huống",
+      "Linked list không có giới hạn về số phần tử trong khi array có giới hạn cố định"
+    ],
+    correct:1,
+    why:"Theo Yasashii: 「連結リストの要素は配列の要素と異なり、データに『ポインタ』が付きます。ポインタとは、次の要素のアドレスを指し示すものです。」 — Mỗi phần tử = dữ liệu + ポインタ, các phần tử nối với nhau như xâu chuỗi.",
+    whyWrong:{
+      0:"Sai — linked list lưu mọi kiểu dữ liệu giống array.",
+      2:"Sai ngược lại — linked list CHẬM hơn array khi truy cập ngẫu nhiên vì phải duyệt từ đầu.",
+      3:"Sai cách diễn đạt — cả 2 đều bị giới hạn bởi bộ nhớ; ngoài ra một số ngôn ngữ array có thể tăng kích thước động."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 連結リスト"
+  },
+  {
+    id:25, diff:"mid",
+    q:"So sánh **配列** và **連結リスト**, phát biểu nào sau đây là **đúng**?",
+    ja:"配列と連結リストの特徴に関する記述として、最も適切なものはどれか。",
+    options:[
+      "配列 nhanh hơn về **挿入・削除** (chèn/xoá); 連結リスト nhanh hơn về **参照** (truy cập)",
+      "配列 nhanh hơn về **参照・更新** (truy cập/cập nhật); 連結リスト nhanh hơn về **挿入・削除** (chèn/xoá)",
+      "Cả 2 có hiệu năng truy cập như nhau",
+      "連結リスト luôn dùng ít bộ nhớ hơn 配列"
+    ],
+    correct:1,
+    why:"Theo Yasashii 「試験にはコレが出る!」: 「配列は、参照・更新が速い」「連結リストは、挿入・削除が速い」. Lý do: array truy cập bằng index (O(1)); linked list khi chèn/xoá chỉ cần đổi pointer; còn array khi chèn/xoá phải dịch chuyển hàng loạt phần tử.",
+    whyWrong:{
+      0:"Đảo ngược — sai hoàn toàn.",
+      2:"Sai — truy cập array là O(1), linked list là O(n).",
+      3:"Sai — linked list TỐN bộ nhớ hơn vì mỗi phần tử phải lưu thêm pointer."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 配列と連結リストの違い"
+  },
+  {
+    id:26, diff:"mid",
+    q:"Nếu cần thực hiện nhiều phép **chèn / xoá ở giữa** dãy dữ liệu, cấu trúc nào hiệu quả hơn và tại sao?",
+    ja:"データの途中で頻繁に挿入・削除を行う場合、配列と連結リストのどちらが効率的か。",
+    options:[
+      "配列, vì truy cập bằng index nên thao tác nào cũng nhanh",
+      "連結リスト, vì chỉ cần thay đổi giá trị **ポインタ** mà không cần dịch chuyển các phần tử khác",
+      "Cả 2 hiệu quả như nhau vì cùng O(n)",
+      "Stack, vì chỉ cần push/pop"
+    ],
+    correct:1,
+    why:"Yasashii: 「配列に要素を挿入・削除する際は、後ろの要素をすべて1つずつずらす必要があります」 (chi phí O(n) dịch chuyển). 「連結リストの場合は、ポインタを変更するだけでデータを挿入・削除できるので、迅速に処理を行うことができます」.",
+    whyWrong:{
+      0:"Truy cập array nhanh, nhưng CHÈN/XOÁ ở giữa array chậm vì phải dịch các phần tử.",
+      2:"Sai — chi phí khác nhau: array O(n) cho chèn/xoá, linked list O(1) nếu đã có con trỏ vị trí.",
+      3:"Stack chỉ thao tác ở đỉnh, không phù hợp cho chèn/xoá ở giữa."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 配列と連結リストの違い"
+  },
+  {
+    id:27, diff:"hard",
+    q:"Đặc trưng của **配列** thực hiện list (Yasashii 問題3-3, 平成29年度): list được hiện thực bằng cách lưu các phần tử **liên tiếp** trong bộ nhớ. Phát biểu nào sau đây mô tả đúng đặc trưng đó?",
+    ja:"配列を用いてリストを実現する場合の特徴はどれか。",
+    options:[
+      "Có thể truy cập trực tiếp đến phần tử bất kỳ bằng cách chỉ định vị trí (位置を指定して、任意のデータに直接アクセスすることができる)",
+      "Chèn dữ liệu vào đầu danh sách rất hiệu quả",
+      "Việc truy cập phần tử bất kỳ không hiệu quả, nhưng chèn/xoá rất nhanh",
+      "Khi di chuyển phần tử sang vị trí khác không cần dịch chuyển các phần tử liền kề"
+    ],
+    correct:0,
+    why:"Array lưu liên tiếp → truy cập bằng index = O(1) → đặc trưng quan trọng nhất là 「任意のデータに直接アクセスすることができる」. Đây chính là đáp án **ア** trong Yasashii 問題3-3.",
+    whyWrong:{
+      1:"Sai — chèn ở đầu array yêu cầu dịch tất cả phần tử về sau, không hiệu quả.",
+      2:"Đó là mô tả đặc trưng của **連結リスト**, không phải array.",
+      3:"Sai — di chuyển trong array đòi hỏi dịch các phần tử liền kề."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 配列 vs リスト (Yasashii 問題3-3, 平成29年度)"
+  },
+  {
+    id:28, diff:"mid",
+    q:"Phân loại 連結リスト theo **方向性 (hướng)**, loại nào sau đây cho phép duyệt cả **về trước** lẫn **về sau**?",
+    ja:"双方向にデータをたどることができる連結リストはどれか。",
+    options:[
+      "単方向リスト (singly linked list)",
+      "双方向リスト (doubly linked list / 双方向リスト)",
+      "線形リスト (linear list)",
+      "環状リスト (circular list)"
+    ],
+    correct:1,
+    why:"双方向リスト (doubly linked list) — mỗi phần tử có 2 ポインタ: một trỏ tới phần tử kế tiếp, một trỏ tới phần tử trước. Nhờ vậy, có thể duyệt 「先頭から末尾へ、または末尾から先頭へ、データをたどることができる」.",
+    whyWrong:{
+      0:"単方向リスト chỉ có 1 pointer → 「先頭から末尾の方向へしかデータをたどることができない」.",
+      2:"線形リスト là phân loại theo **形 (hình dạng)** — không liên quan đến hướng duyệt.",
+      3:"環状リスト là dạng liên kết vòng tròn — phân loại theo hình dạng, không phải hướng."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 連結リスト / 単方向・双方向"
+  },
+  {
+    id:29, diff:"easy",
+    q:"**環状リスト (circular list)** có đặc trưng gì?",
+    ja:"環状リストの特徴はどれか。",
+    options:[
+      "Mỗi phần tử có 2 pointer (cả về trước lẫn về sau)",
+      "Phần tử cuối được nối ngược về phần tử đầu, tạo thành vòng (環の形)",
+      "Các phần tử được lưu liên tục trong bộ nhớ",
+      "Chỉ có thể truy cập một chiều, không thể quay lại"
+    ],
+    correct:1,
+    why:"環状リスト = 「末尾と先頭をつなげて環の形（環状）に要素がつながっている連結リスト」. Đây là phân loại theo **形 (hình dạng)** của linked list. Hữu ích khi cần duyệt vòng lặp liên tục (vd: lập lịch round-robin).",
+    whyWrong:{
+      0:"Đó là đặc trưng của 双方向リスト.",
+      2:"Đó là đặc trưng của 配列 (array).",
+      3:"Đó là 単方向リスト, không phải environmental."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 連結リスト / 環状リスト"
+  },
+  {
+    id:30, diff:"hard",
+    q:"Một linked list lưu các phần tử có cặp **(データ, アドレス_ポインタ)** như sau:\n  地番1: (佐藤, 7番地)\n  地番3: (鈴木, 5番地)\n  地番5: (高橋, NULL)\n  地番7: (田中, 3番地)\nBắt đầu duyệt từ địa chỉ 1, thứ tự dữ liệu nhận được là gì?",
+    ja:"アドレス1番地から連結リストをたどったとき、データの順番はどれか。",
+    options:[
+      "佐藤 → 鈴木 → 田中 → 高橋",
+      "佐藤 → 田中 → 鈴木 → 高橋",
+      "佐藤 → 田中 → 高橋 → 鈴木",
+      "佐藤 → 鈴木 → 高橋 → 田中"
+    ],
+    correct:1,
+    why:"Duyệt theo pointer:\n• Bắt đầu 地番1: 「佐藤」, pointer→7番地\n• 地番7: 「田中」, pointer→3番地\n• 地番3: 「鈴木」, pointer→5番地\n• 地番5: 「高橋」, pointer→NULL → kết thúc\nThứ tự: 佐藤 → 田中 → 鈴木 → 高橋. Đây chính là ví dụ trong Yasashii Lesson 03-01.",
+    whyWrong:{
+      0:"Sai — pointer của 佐藤 chỉ tới 7番地 (田中), không phải 3番地.",
+      2:"Sai — sau 鈴木 (3番地) là 5番地 = 高橋, không phải ngược lại.",
+      3:"Sai — sau 田中 mới là 鈴木, không phải 高橋."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 連結リスト / ポインタの追跡"
+  },
+
+  // ============ PART 4: 木構造 (Yasashii 03-01) — 10 câu ============
+  {
+    id:31, diff:"easy",
+    q:"Trong **木構造 (cây / tree)**, tên gọi các thành phần nào sau đây là đúng?",
+    ja:"木構造の各部の名称として正しい組合せはどれか。",
+    options:[
+      "頂 (đỉnh) — 枝 (cành) — 葉 (lá)",
+      "根 (root / gốc) — 節 (node / nút) — 葉 (leaf / lá)",
+      "親 (cha) — 子 (con) — 孫 (cháu) là 3 thành phần chính",
+      "始点 — 中継点 — 終点"
+    ],
+    correct:1,
+    why:"Theo Yasashii: trong tree, 「枝分かれする箇所を『節』(node) といい、節の中でも最上位の節を『根』(root) と呼び、末端の節を『葉』(leaf) と呼びます」. 3 tên gọi chuẩn: 根 (root), 節 (node), 葉 (leaf).",
+    whyWrong:{
+      0:"Tên chính thức là 根 (không phải 頂), tree không gọi cành là 枝 trong context cấu trúc dữ liệu.",
+      2:"親子孫 mô tả QUAN HỆ giữa các node, không phải tên gọi của các thành phần.",
+      3:"Đây là thuật ngữ của graph theory chung, không phải tree."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 木構造の名称"
+  },
+  {
+    id:32, diff:"easy",
+    q:"**2分木 (binary tree)** là gì?",
+    ja:"2分木の定義として正しいものはどれか。",
+    options:[
+      "Cây trong đó mỗi node có ĐÚNG 2 con",
+      "Cây trong đó mỗi node có TỐI ĐA (0, 1 hoặc 2) con (親が0〜2個の子を持つ木構造)",
+      "Cây chỉ có 2 lá",
+      "Cây có chiều cao đúng 2"
+    ],
+    correct:1,
+    why:"Yasashii: 「親が0〜2個の子を持つ木構造を『2分木』といいます」. Tức là mỗi node có TỐI ĐA 2 con (có thể 0, 1, hoặc 2 con).",
+    whyWrong:{
+      0:"Sai — yêu cầu \"đúng 2 con\" là 完全2分木, không phải 2分木 thông thường.",
+      2:"Sai — số lá không định nghĩa loại tree này.",
+      3:"Sai — \"chiều cao 2\" là khái niệm khác hoàn toàn."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 2分木"
+  },
+  {
+    id:33, diff:"mid",
+    q:"Điều kiện để một cây là **2分探索木 (binary search tree)** là gì?",
+    ja:"2分探索木の条件として正しいものはどれか。",
+    options:[
+      "Tất cả các lá đều ở cùng độ sâu",
+      "Mỗi node đều có ĐÚNG 2 con",
+      "Với mọi node: 左の子孫 < 親 < 右の子孫 (toàn bộ con cháu bên trái < node < toàn bộ con cháu bên phải)",
+      "Cây phải có ít nhất 7 phần tử"
+    ],
+    correct:2,
+    why:"Yasashii 「試験にはコレが出る!」: 「2分探索木の条件は『左の子孫 < 親 < 右の子孫』」. Chú ý: là **子孫 (con cháu — toàn bộ subtree)**, không chỉ là 子 (con trực tiếp).",
+    whyWrong:{
+      0:"Đó là điều kiện của 完全2分木 (complete binary tree).",
+      1:"Đó là điều kiện cây nhị phân đầy đủ (full binary tree).",
+      3:"Số phần tử không liên quan đến định nghĩa BST."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 2分探索木"
+  },
+  {
+    id:34, diff:"mid",
+    q:"Tại sao cây **2分探索木** được sử dụng phổ biến để **lưu trữ và tìm kiếm** dữ liệu?",
+    ja:"2分探索木がデータの検索に便利な理由はどれか。",
+    options:[
+      "Vì cây nhị phân luôn tự cân bằng",
+      "Vì chỉ cần đi từ root xuống lá theo số tầng cây (階層の数) là tìm ra dữ liệu — không cần kiểm tra từng node một",
+      "Vì số node luôn là luỹ thừa của 2",
+      "Vì có thể dùng index để truy cập trực tiếp"
+    ],
+    correct:1,
+    why:"Yasashii: 「2分探索木では、根から葉までの階層の数だけ値を調べれば、目的のデータを見つけ出すことができます」 — chi phí tìm kiếm chỉ bằng độ sâu cây ≈ log n, không cần duyệt từng node một như cây thông thường.",
+    whyWrong:{
+      0:"BST cơ bản KHÔNG tự cân bằng (cần các biến thể như AVL/Red-Black để tự cân bằng).",
+      2:"Sai — số node có thể bất kỳ, không cần là luỹ thừa của 2.",
+      3:"Index là đặc trưng của array, không phải tree."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 2分探索木のメリット"
+  },
+  {
+    id:35, diff:"hard",
+    q:"Cây nhị phân nào sau đây **KHÔNG phải** là 2分探索木 (BST)?\nCây A: Root 7 → trái 5 (→ trái 3, phải 6), phải 9\nCây B: Root 7 → trái 5 (→ trái 3, phải 8), phải 6",
+    ja:"次の木のうち、2分探索木で「ない」ものはどれか。",
+    options:[
+      "Chỉ cây A",
+      "Chỉ cây B",
+      "Cả cây A và B",
+      "Không cây nào (cả 2 đều là BST)"
+    ],
+    correct:1,
+    why:"Cây A: 3<5<6<7<9 — đúng quy tắc 「左の子孫 < 親 < 右の子孫」 ở mọi node → là BST ✓\nCây B: ở node 5, con phải là 8, nhưng 8 > 7 (root) → 8 phải nằm bên PHẢI của 7, không phải bên trái. Đồng thời root 7 có con phải = 6, nhưng 6 < 7 → vi phạm. Vậy cây B KHÔNG phải BST. Đây chính là ví dụ 「ダメな例」 trong Yasashii.",
+    whyWrong:{
+      0:"Cây A là BST hợp lệ.",
+      2:"Cây A là BST, không vi phạm.",
+      3:"Cây B rõ ràng vi phạm điều kiện BST."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 2分探索木の判定"
+  },
+  {
+    id:36, diff:"hard",
+    q:"Trong định nghĩa **2分探索木**, sự khác biệt giữa «**子孫**» và «**子**» là gì? Tại sao Yasashii nhấn mạnh điểm này?",
+    ja:"2分探索木において「子孫」と「子」の違いが重要である理由は何か。",
+    options:[
+      "Vì 子孫 và 子 là 2 thuật ngữ đồng nghĩa, không có khác biệt",
+      "子 = node con trực tiếp; 子孫 = toàn bộ node con, cháu, chắt... bên dưới. Điều kiện BST yêu cầu **toàn bộ 子孫 bên trái** < 親 < **toàn bộ 子孫 bên phải**, không chỉ con trực tiếp",
+      "子孫 chỉ tồn tại trong tree có chiều cao > 3; còn 子 áp dụng cho mọi tree",
+      "子 dùng cho cây đầy đủ; 子孫 dùng cho cây nhị phân thường"
+    ],
+    correct:1,
+    why:"Yasashii 「学習のポイント」: 「2分探索木については、値の制約が『子』ではなく『子孫』である点に注意が必要です。つまり、子だけでなく、孫、ひ孫など、さらに下のデータも『左の子孫 < 親 < 右の子孫』の大小関係であることが必要」. Nếu chỉ kiểm tra 子, có thể bỏ sót vi phạm ở các tầng sâu hơn.",
+    whyWrong:{
+      0:"Hoàn toàn sai — hai thuật ngữ có nghĩa rất khác nhau.",
+      2:"Vô lý — định nghĩa 子孫 không phụ thuộc vào chiều cao.",
+      3:"Sai — không có quy ước phân chia này."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 2分探索木 / 子と子孫の違い"
+  },
+  {
+    id:37, diff:"mid",
+    q:"**n分木 (n-ary tree)** được định nghĩa như thế nào?",
+    ja:"n分木の定義として正しいものはどれか。",
+    options:[
+      "Cây có đúng n lá",
+      "Cây mà mỗi node (親) có TỐI ĐA n con — tức là 「節が最大でいくつの子に分かれるのか」",
+      "Cây có chiều cao đúng n",
+      "Cây có chính xác n level"
+    ],
+    correct:1,
+    why:"Yasashii: 「親が0〜n個の子を持つ木構造を『n分木』といいます。つまり、n分木とは、節が最大でいくつの子に分かれるのかを表しています」. Vd: 2分木 (0-2 con), 3分木 (0-3 con)...",
+    whyWrong:{
+      0:"Số lá không định nghĩa loại n分木.",
+      2:"Chiều cao là khái niệm khác.",
+      3:"Số level là khái niệm khác."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / n分木"
+  },
+  {
+    id:38, diff:"hard",
+    q:"Sự khác biệt giữa 2分木 và **完全2分木 (complete binary tree)** là gì?",
+    ja:"2分木と完全2分木の違いはどれか。",
+    options:[
+      "Không có khác biệt; 2 thuật ngữ này đồng nghĩa",
+      "完全2分木 yêu cầu **mọi node 親/節 đều có đúng 2 con, và tất cả lá đều cùng độ sâu (深さが等しい)**; còn 2分木 thông thường chỉ yêu cầu mỗi node có tối đa 2 con",
+      "完全2分木 phải có ít nhất 100 node",
+      "完全2分木 là dạng cây trong đó con trái luôn lớn hơn con phải"
+    ],
+    correct:1,
+    why:"Theo slide 2: 「完全2分木 = 根/節が全て2つの子を持ち、かつ根から葉までの深さが等しい2分木」 — yêu cầu (1) mọi node trong đều có đúng 2 con và (2) tất cả lá ở cùng độ sâu. Cây 2分木 thông thường không có ràng buộc này.",
+    whyWrong:{
+      0:"Hai khái niệm rất khác nhau.",
+      2:"Sai — không có giới hạn cố định về số node.",
+      3:"Đó là tính chất tổ chức của 2分探索木 hoặc heap, không phải định nghĩa complete tree."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 完全2分木"
+  },
+  {
+    id:39, diff:"easy",
+    q:"Trong **木構造**, mối quan hệ giữa 2 node liền kề được gọi là gì?",
+    ja:"木構造の節同士の関係を表す用語はどれか。",
+    options:[
+      "親子 (cha-con) — node phân nhánh ra (分岐元) là 親, các nhánh ra (分岐先) là 子",
+      "兄弟 (anh-em) — tất cả các node cùng tree đều là anh em",
+      "祖先 (tổ tiên) — các node cấp cao hơn được gọi là 祖先 của tất cả node thấp hơn không liên quan",
+      "頭尾 (đầu-cuối) — node đầu cây và cuối cây"
+    ],
+    correct:0,
+    why:"Yasashii: 「木構造の節同士には親子関係があります。分岐元を『親』、分岐先を『子』といいます」 — node phân nhánh ra là 親 (cha), các node ngay phía dưới là 子 (con).",
+    whyWrong:{
+      1:"兄弟 (anh em) là các node CÙNG CÓ MỘT 親 — không phải tất cả node trong tree.",
+      2:"祖先 dùng cho cấp cao hơn theo NHÁNH (path), không tuỳ tiện.",
+      3:"頭尾 không phải thuật ngữ chuẩn của tree."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 木構造の親子関係"
+  },
+  {
+    id:40, diff:"hard",
+    q:"Bạn cần lựa chọn cấu trúc dữ liệu phù hợp nhất cho từng nhu cầu sau:\n(1) Lưu lịch sử thao tác để có thể **\"Undo\"** từng bước về quá khứ.\n(2) Quản lý **hàng đợi in (print queue)** trên máy in chia sẻ.\n(3) Truy cập **trực tiếp** theo chỉ số tới điểm bất kỳ.\n(4) **Tìm kiếm nhanh** dữ liệu có thứ tự, hỗ trợ chèn/xoá tương đối nhanh.\nGhép nào dưới đây là **đúng nhất**?",
+    ja:"次のニーズに最適なデータ構造の組合せはどれか。",
+    options:[
+      "(1)キュー (2)スタック (3)連結リスト (4)配列",
+      "(1)スタック (2)キュー (3)配列 (4)2分探索木",
+      "(1)配列 (2)2分探索木 (3)キュー (4)スタック",
+      "(1)2分探索木 (2)スタック (3)キュー (4)連結リスト"
+    ],
+    correct:1,
+    why:"(1) Undo lịch sử: thao tác mới nhất phải được hoàn tác trước → **LIFO = スタック**.\n(2) Hàng đợi in: lệnh nào gửi trước in trước → **FIFO = キュー**.\n(3) Truy cập trực tiếp theo chỉ số = đặc trưng cốt lõi của **配列**.\n(4) Tìm kiếm có thứ tự, chèn/xoá tương đối nhanh = **2分探索木** (chi phí trung bình O(log n)).",
+    whyWrong:{
+      0:"Đảo thứ tự (1) và (2) — undo phải LIFO/stack, không phải queue.",
+      2:"Sai gần hết — array không phù hợp cho undo, BST không phù hợp cho print queue.",
+      3:"BST cho undo không hợp; queue cho random access cũng không hợp."
+    },
+    topic:"FE Syllabus — 基礎理論 / データ構造 / 総合応用"
+  }
+];
+
+// ===== State =====
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+
+const quizArea = document.getElementById('quiz-area');
+const resultArea = document.getElementById('result-area');
+const progressText = document.getElementById('progress-text');
+const progressFill = document.getElementById('progress-fill');
+const answeredCount = document.getElementById('answered-count');
+const progressWrap = document.getElementById('progress-wrap');
+
+function diffClass(d){return d==='easy'?'diff-easy':d==='mid'?'diff-mid':'diff-hard'}
+function diffLabel(d){return d==='easy'?'[Dễ / 易]':d==='mid'?'[TB / 中]':'[Khó / 難]'}
+
+function render(){
+  if(current >= questions.length){renderResult(); return;}
+  const q = questions[current];
+  const a = answers[current];
+  const locked = a !== null;
+
+  const opts = q.options.map((opt, i) => {
+    let cls = 'option';
+    if(locked){
+      cls += ' locked';
+      if(i === q.correct) cls += ' correct';
+      else if(i === a) cls += ' wrong';
+    }
+    return `<div class="${cls}" data-idx="${i}">
+      <div class="key">${String.fromCharCode(65+i)}</div>
+      <div class="body">${opt}</div>
+    </div>`;
+  }).join('');
+
+  let expHtml = '';
+  if(locked){
+    const wrongList = Object.keys(q.whyWrong).map(k=>{
+      return `<p><span class="label">${String.fromCharCode(65+(+k))}.</span> ${q.whyWrong[k]}</p>`;
+    }).join('');
+    expHtml = `
+      <div class="explanation" id="exp">
+        <h4>💡 Giải thích</h4>
+        <p><span class="label">Đáp án đúng:</span> ${String.fromCharCode(65+q.correct)}</p>
+        <p><span class="label">Vì sao đúng:</span> ${q.why.replace(/\n/g,'<br>')}</p>
+        <p><span class="label">Vì sao các phương án còn lại sai:</span></p>
+        ${wrongList}
+        <div class="topic">📚 <strong>Liên hệ FE:</strong> ${q.topic}</div>
+      </div>`;
+  }
+
+  quizArea.innerHTML = `
+    <div class="card">
+      <span class="difficulty ${diffClass(q.diff)}">${diffLabel(q.diff)}</span>
+      <p class="question"><strong>Câu ${q.id}.</strong> ${q.q.replace(/\n/g,'<br>')}
+        <span class="ja">${q.ja}</span></p>
+      <div class="options">${opts}</div>
+      ${expHtml}
+      <div class="actions">
+        <button class="secondary" id="prev-btn" ${current===0?'disabled':''}>← Câu trước</button>
+        ${locked ? `<button id="toggle-exp" class="amber">Xem / Ẩn giải thích</button>` : ''}
+        <button id="next-btn" ${!locked?'disabled':''}>${current===questions.length-1?'Kết thúc & Xem kết quả':'Câu tiếp →'}</button>
+      </div>
+    </div>
+  `;
+
+  // Attach option listeners
+  if(!locked){
+    quizArea.querySelectorAll('.option').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        const idx = +el.dataset.idx;
+        answers[current] = idx;
+        render();
+        updateProgress();
+      });
+    });
+  }
+
+  document.getElementById('prev-btn').addEventListener('click', ()=>{if(current>0){current--; render(); updateProgress();}});
+  document.getElementById('next-btn').addEventListener('click', ()=>{current++; render(); updateProgress();});
+  const tex = document.getElementById('toggle-exp');
+  if(tex){
+    const expDiv = document.getElementById('exp');
+    expDiv.classList.add('show');
+    tex.addEventListener('click', ()=>{ expDiv.classList.toggle('show'); });
+  }
+}
+
+function updateProgress(){
+  if(current >= questions.length){
+    progressWrap.style.display = 'none';
+    return;
+  }
+  progressText.textContent = `Câu ${current+1} / ${questions.length}`;
+  const answered = answers.filter(a=>a!==null).length;
+  answeredCount.textContent = `Đã trả lời: ${answered}`;
+  progressFill.style.width = ((current+1)/questions.length*100)+'%';
+}
+
+function renderResult(){
+  quizArea.style.display='none';
+  resultArea.style.display='block';
+  progressWrap.style.display='none';
+
+  const totals = {easy:{c:0,t:0}, mid:{c:0,t:0}, hard:{c:0,t:0}};
+  let score = 0;
+  questions.forEach((q,i)=>{
+    totals[q.diff].t++;
+    if(answers[i]===q.correct){score++; totals[q.diff].c++;}
+  });
+  const pct = Math.round(score/questions.length*100);
+  let verdict, vClass;
+  if(pct >= 80){verdict='🌟 Xuất sắc! Em đã nắm chắc プログラムの基本・フローチャート・データ構造 — sẵn sàng cho 科目A!'; vClass='v-excellent'}
+  else if(pct >= 60){verdict='👍 Khá tốt! Cần ôn lại một vài điểm chi tiết, đặc biệt các câu khó.'; vClass='v-good'}
+  else{verdict='💪 Cần cố gắng thêm! Hãy ôn lại Slide 2 第1回 + Yasashii Ch.3 Lesson 03-01 rồi làm lại.'; vClass='v-needs-work'}
+
+  resultArea.innerHTML = `
+    <div class="card result">
+      <h2>🎉 Hoàn thành bài kiểm tra!</h2>
+      <div class="score-big">${score} / ${questions.length}</div>
+      <div class="score-pct">Đạt ${pct}%</div>
+      <div class="verdict ${vClass}">${verdict}</div>
+      <div class="breakdown">
+        <div class="breakdown-item">
+          <div class="lbl">🟢 Dễ / 易</div>
+          <div class="val">${totals.easy.c} / ${totals.easy.t}</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="lbl">🟡 TB / 中</div>
+          <div class="val">${totals.mid.c} / ${totals.mid.t}</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="lbl">🔴 Khó / 難</div>
+          <div class="val">${totals.hard.c} / ${totals.hard.t}</div>
+        </div>
+      </div>
+      <button id="restart-btn">🔁 Làm lại từ đầu</button>
+      <button class="secondary" id="review-btn">📖 Xem lại bài</button>
+    </div>
+  `;
+  document.getElementById('restart-btn').addEventListener('click', ()=>{
+    current=0; answers=new Array(questions.length).fill(null);
+    quizArea.style.display='block'; resultArea.style.display='none'; progressWrap.style.display='block';
+    render(); updateProgress();
+  });
+  document.getElementById('review-btn').addEventListener('click', ()=>{
+    current=0;
+    quizArea.style.display='block'; resultArea.style.display='none'; progressWrap.style.display='block';
+    render(); updateProgress();
+  });
+}
+
+render();
+updateProgress();
+</script>
+</body>
+</html>

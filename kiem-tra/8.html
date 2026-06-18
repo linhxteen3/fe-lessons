@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE Exam — AI + 確率 (xác suất / hoán vị / tổ hợp / kỳ vọng)</title>
+<style>
+  :root{
+    --bg:#0f1218; --card:#171c26; --card2:#1f2632; --accent:#4f8cff; --accent2:#6cd4ff;
+    --green:#22c55e; --red:#ef4444; --amber:#fbbf24;
+    --text:#e6e9ef; --muted:#9aa3b2; --border:#2a3140;
+    --easy:#22c55e; --mid:#fbbf24; --hard:#ef4444;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:20px; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif;
+    background:linear-gradient(135deg,#0f1218 0%,#141a26 100%); color:var(--text); min-height:100vh;
+    line-height:1.6;
+  }
+  .container{max-width:880px; margin:0 auto;}
+  header{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:20px 24px; margin-bottom:16px;}
+  h1{margin:0 0 6px; font-size:1.35rem; color:var(--accent2)}
+  .subtitle{color:var(--muted); font-size:.9rem; margin:0}
+  .meta{display:flex; gap:14px; flex-wrap:wrap; margin-top:10px; font-size:.85rem; color:var(--muted)}
+  .meta span{background:var(--card2); padding:4px 10px; border-radius:8px; border:1px solid var(--border)}
+
+  .progress-wrap{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 16px; margin-bottom:14px;}
+  .progress-info{display:flex; justify-content:space-between; font-size:.9rem; margin-bottom:8px}
+  .progress-bar{height:8px; background:var(--card2); border-radius:99px; overflow:hidden}
+  .progress-fill{height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0; transition:width .3s}
+
+  .card{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:22px 24px; margin-bottom:14px;}
+  .difficulty{display:inline-block; padding:2px 10px; border-radius:99px; font-size:.78rem; font-weight:600; margin-bottom:10px;}
+  .diff-easy{background:rgba(34,197,94,.15); color:var(--easy); border:1px solid rgba(34,197,94,.4)}
+  .diff-mid{background:rgba(251,191,36,.15); color:var(--mid); border:1px solid rgba(251,191,36,.4)}
+  .diff-hard{background:rgba(239,68,68,.15); color:var(--hard); border:1px solid rgba(239,68,68,.4)}
+
+  .question{font-size:1.02rem; margin:0 0 16px; white-space:pre-wrap}
+  .question .ja{display:block; color:var(--muted); font-size:.88rem; margin-top:6px; padding-left:8px; border-left:2px solid var(--border)}
+
+  .options{display:flex; flex-direction:column; gap:8px}
+  .option{background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:12px 16px; cursor:pointer; transition:all .15s; display:flex; align-items:flex-start; gap:10px; user-select:none;}
+  .option:hover:not(.locked){border-color:var(--accent); background:#222a39}
+  .option .key{flex:none; width:26px; height:26px; border-radius:50%; background:var(--border); display:grid; place-items:center; font-weight:700; font-size:.85rem;}
+  .option .body{flex:1}
+  .option.correct{background:rgba(34,197,94,.12); border-color:var(--green)}
+  .option.correct .key{background:var(--green); color:#fff}
+  .option.wrong{background:rgba(239,68,68,.12); border-color:var(--red)}
+  .option.wrong .key{background:var(--red); color:#fff}
+  .option.locked{cursor:not-allowed; opacity:.85}
+  .option.locked:hover{border-color:var(--border)}
+  .option.correct.locked, .option.wrong.locked{opacity:1}
+
+  .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px}
+  button{background:var(--accent); color:#fff; border:0; border-radius:10px; padding:10px 18px; font-size:.95rem; font-weight:600; cursor:pointer; transition:opacity .15s, transform .05s;}
+  button:hover:not(:disabled){opacity:.9}
+  button:active:not(:disabled){transform:translateY(1px)}
+  button:disabled{opacity:.4; cursor:not-allowed}
+  button.secondary{background:var(--card2); color:var(--text); border:1px solid var(--border)}
+  button.amber{background:var(--amber); color:#1a1a1a}
+
+  .explanation{margin-top:14px; padding:14px 16px; border-radius:10px; background:var(--card2); border-left:3px solid var(--accent2); display:none;}
+  .explanation.show{display:block}
+  .explanation h4{margin:0 0 8px; font-size:.95rem; color:var(--accent2)}
+  .explanation p{margin:6px 0; font-size:.92rem}
+  .explanation .label{color:var(--accent2); font-weight:600}
+  .explanation .topic{margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); font-size:.85rem; color:var(--muted);}
+  .formula{background:#0d1119; padding:8px 12px; border-radius:6px; display:inline-block; font-family:"SFMono-Regular",Consolas,monospace; font-size:.9em; margin:4px 0}
+
+  .result{text-align:center; padding:36px 24px}
+  .result h2{margin:0 0 12px; font-size:1.6rem; color:var(--accent2)}
+  .score-big{font-size:3rem; font-weight:800; color:var(--accent); margin:14px 0 6px}
+  .score-pct{font-size:1.1rem; color:var(--muted); margin-bottom:14px}
+  .verdict{font-size:1.05rem; margin:14px 0 22px; padding:14px; border-radius:12px}
+  .v-excellent{background:rgba(34,197,94,.12); color:var(--green)}
+  .v-good{background:rgba(251,191,36,.12); color:var(--amber)}
+  .v-needs-work{background:rgba(239,68,68,.12); color:var(--red)}
+  .breakdown{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:18px 0; text-align:left;}
+  .breakdown-item{background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:12px;}
+  .breakdown-item .lbl{font-size:.8rem; color:var(--muted)}
+  .breakdown-item .val{font-size:1.3rem; font-weight:700; margin-top:4px}
+
+  code{background:var(--card2); padding:1px 6px; border-radius:4px; font-family:"SFMono-Regular",Consolas,monospace; font-size:.9em}
+
+  @media(max-width:600px){
+    body{padding:12px}
+    .card{padding:16px 18px}
+    h1{font-size:1.15rem}
+    .breakdown{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>FE Exam — AI + 確率（xác suất・hoán vị・tổ hợp・kỳ vọng）</h1>
+    <p class="subtitle">Yasashii Ch.2 Lesson 02-05 AI + Ch.20 Lesson 20-03 期待値 + Slide 1 第10回</p>
+    <div class="meta">
+      <span>📝 40 câu</span>
+      <span>⏱ 30 phút</span>
+      <span>🎯 Phong cách IPA</span>
+      <span>🟢 12 Dễ • 🟡 16 TB • 🔴 12 Khó</span>
+    </div>
+  </header>
+
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-info">
+      <span id="progress-text">Câu 1 / 40</span>
+      <span id="answered-count">Đã trả lời: 0</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <div id="quiz-area"></div>
+  <div id="result-area" style="display:none"></div>
+</div>
+
+<script>
+const questions = [
+  // ============ PART 1: AI - 人工知能 (Yasashii 02-05) — 12 câu ============
+  {
+    id:1, diff:"easy",
+    q:"**AI（人工知能 / Artificial Intelligence）** được định nghĩa như thế nào theo Yasashii?",
+    ja:"AI（人工知能）の定義として最も適切なものはどれか。",
+    options:[
+      "Kỹ thuật giúp máy tính tự sinh ra điện năng",
+      "Kỹ thuật tái hiện **「人間の知的なふるまい」 (hành vi trí tuệ của con người)** trên máy tính",
+      "Phần cứng đặc biệt dùng cho siêu máy tính",
+      "Thuật toán sắp xếp dữ liệu nhanh nhất hiện nay"
+    ],
+    correct:1,
+    why:"Theo Yasashii Lesson 02-05: 「AI（人工知能）とは人間の知的なふるまいを、コンピュータ上に再現する技術」 — AI là kỹ thuật tái hiện hành vi trí tuệ của con người trên máy tính.",
+    whyWrong:{
+      0:"Không liên quan đến điện năng.",
+      2:"AI là khái niệm kỹ thuật, không phải phần cứng cụ thể.",
+      3:"Đó là khái niệm thuật toán sắp xếp (sort), không phải AI."
+    },
+    topic:"FE Syllabus — 基礎理論 / AI（人工知能）/ Yasashii 02-05"
+  },
+  {
+    id:2, diff:"easy",
+    q:"Mối quan hệ giữa **AI, 機械学習 (machine learning), ニューラルネットワーク, ディープラーニング (deep learning)** là gì?",
+    ja:"AI、機械学習、ニューラルネットワーク、ディープラーニングの包含関係はどれか。",
+    options:[
+      "4 khái niệm tách biệt, không liên quan",
+      "AI ⊃ 機械学習 ⊃ ディープラーニング (deep learning là một loại của machine learning, machine learning là một cách hiện thực AI); ニューラルネットワーク là kỹ thuật mà deep learning sử dụng",
+      "ディープラーニング ⊃ AI ⊃ 機械学習",
+      "AI và 機械学習 là cùng một khái niệm"
+    ],
+    correct:1,
+    why:"Theo Yasashii: AI (rộng nhất, tái hiện hành vi trí tuệ) ⊃ 機械学習 (kỹ thuật tái hiện 学習能力, là một loại AI) ⊃ ディープラーニング (loại machine learning đặc biệt dùng nhiều tầng ニューラルネットワーク). Ngắn gọn: 「ディープラーニングはニューラルネットワークを何重にも重ねた機械学習」.",
+    whyWrong:{
+      0:"Sai — 4 khái niệm có quan hệ bao hàm rõ ràng.",
+      2:"Sai — đảo ngược thứ tự bao hàm.",
+      3:"Sai — AI rộng hơn machine learning; có những loại AI không dựa trên học máy (vd: hệ chuyên gia)."
+    },
+    topic:"FE Syllabus — 基礎理論 / AI / 機械学習 / ディープラーニング"
+  },
+  {
+    id:3, diff:"easy",
+    q:"**機械学習 (machine learning)** là gì?",
+    ja:"機械学習の説明として正しいものはどれか。",
+    options:[
+      "Kỹ thuật chế tạo robot cơ khí",
+      "Kỹ thuật tái hiện 「人間が持つ学習能力」 (khả năng học của con người) trên máy tính — cho máy tính dữ liệu học để máy có thể dự đoán hoặc ra quyết định trong tương lai",
+      "Cách lập trình bằng cách ghi tay từng dòng lệnh",
+      "Phương pháp lưu trữ dữ liệu trong CSDL quan hệ"
+    ],
+    correct:1,
+    why:"Yasashii 02-05: 「機械学習とは、人間が持つ学習能力をコンピュータ上に再現する技術であり、AI（人工知能）技術の1つです。機械学習では、コンピュータに学習用のデータを与えることで、コンピュータ自身が将来予測や意思決定を行うことができます」.",
+    whyWrong:{
+      0:"Đó là robotics (ロボット工学), không phải machine learning.",
+      2:"Đó là lập trình thủ công truyền thống, hoàn toàn ngược với machine learning.",
+      3:"Đó là CSDL (RDB), không liên quan."
+    },
+    topic:"FE Syllabus — 基礎理論 / 機械学習"
+  },
+  {
+    id:4, diff:"easy",
+    q:"**ニューラルネットワーク (neural network)** trong AI mô phỏng cái gì?",
+    ja:"ニューラルネットワークが模倣している人間の仕組みはどれか。",
+    options:[
+      "Hệ tiêu hoá",
+      "Hệ tuần hoàn máu",
+      "**Mạng nơ-ron của bộ não — cách các tín hiệu thần kinh trao đổi qua các neuron (神経回路が信号をやり取りする仕組み)**",
+      "Hệ xương khớp"
+    ],
+    correct:2,
+    why:"Yasashii: 「ニューラルネットワークは、人間の脳の中にある『神経回路が信号をやり取りする仕組み』（これを『ニューロン』という）を、コンピュータ上に再現する技術」.",
+    whyWrong:{
+      0:"Không liên quan đến AI.",
+      1:"Không liên quan đến AI.",
+      3:"Không liên quan đến AI."
+    },
+    topic:"FE Syllabus — 基礎理論 / ニューラルネットワーク"
+  },
+  {
+    id:5, diff:"easy",
+    q:"**ディープラーニング (deep learning / 深層学習)** được định nghĩa như thế nào?",
+    ja:"ディープラーニングの定義として正しいものはどれか。",
+    options:[
+      "Là phương pháp đào dữ liệu (data mining) sử dụng SQL",
+      "Là machine learning có cấu trúc 「ニューラルネットワークを何重にも重ねた」 — chồng nhiều tầng neural network với nhau",
+      "Là kỹ thuật lưu trữ AI lâu dài",
+      "Là phương pháp duy nhất để xây dựng hệ chuyên gia"
+    ],
+    correct:1,
+    why:"Yasashii 02-05: 「ディープラーニングとは、ニューラルネットワークを何重にも重ねた構造を持つ機械学習」 — Deep learning là một loại machine learning sử dụng neural network nhiều tầng (multi-layer / deep).",
+    whyWrong:{
+      0:"Data mining và SQL không liên quan trực tiếp đến deep learning.",
+      2:"Không liên quan đến \"lưu trữ\".",
+      3:"Hệ chuyên gia (エキスパートシステム) là loại AI khác, dựa trên rule-base."
+    },
+    topic:"FE Syllabus — 基礎理論 / ディープラーニング / 深層学習"
+  },
+  {
+    id:6, diff:"mid",
+    q:"Trong **教師あり学習 (supervised learning)**, máy tính được cung cấp những loại dữ liệu nào?",
+    ja:"教師あり学習で、コンピュータに与えられるデータは何か。",
+    options:[
+      "Chỉ dữ liệu đầu vào (入力データ), không có nhãn",
+      "**Cặp dữ liệu đầu vào (入力データ) + dữ liệu đáp án đúng (正解データ)** — máy học cách ánh xạ từ input sang đáp án",
+      "Chỉ dữ liệu phần thưởng (報酬), máy tự khám phá",
+      "Dữ liệu được sinh ngẫu nhiên không có cấu trúc"
+    ],
+    correct:1,
+    why:"Yasashii 02-05: 「教師あり学習とは、入力データと正解データをセットにしてコンピュータに与える手法」. Ví dụ phân loại email spam: input = nội dung email, 正解 = label \"spam\"/\"không spam\".",
+    whyWrong:{
+      0:"Đó là 教師なし学習 (unsupervised learning).",
+      2:"Đó là 強化学習 (reinforcement learning).",
+      3:"Sai — supervised learning yêu cầu dữ liệu CÓ NHÃN."
+    },
+    topic:"FE Syllabus — 基礎理論 / 機械学習 / 教師あり学習"
+  },
+  {
+    id:7, diff:"mid",
+    q:"**教師なし学習 (unsupervised learning)** có đặc trưng gì?",
+    ja:"教師なし学習の特徴はどれか。",
+    options:[
+      "Cung cấp cả input + đáp án để máy học ánh xạ",
+      "**Chỉ cung cấp 入力データ (không có 正解データ)** — máy tự tìm pattern / nhóm các dữ liệu giống nhau (vd: phân cụm khách hàng)",
+      "Máy tự chơi game để học",
+      "Chỉ áp dụng cho dữ liệu hình ảnh"
+    ],
+    correct:1,
+    why:"Yasashii 02-05: 「教師なし学習とは、入力データのみをコンピュータに与える手法。正解データは与えません。この作業を無数に繰り返すことで、コンピュータが独自にグループ分けを行います」. Ứng dụng tiêu biểu: phân cụm khách hàng (クラスタリング).",
+    whyWrong:{
+      0:"Đó là 教師あり学習.",
+      2:"Đó là 強化学習.",
+      3:"Sai — unsupervised learning không bị giới hạn loại dữ liệu."
+    },
+    topic:"FE Syllabus — 基礎理論 / 機械学習 / 教師なし学習"
+  },
+  {
+    id:8, diff:"mid",
+    q:"**強化学習 (reinforcement learning)** có cơ chế hoạt động như thế nào? (theo Slide 1 第10回 với ví dụ học cờ vây)",
+    ja:"強化学習の仕組みはどれか。",
+    options:[
+      "Cung cấp đầy đủ cặp input-output để máy ghi nhớ",
+      "Máy không học, chỉ tra cứu cơ sở dữ liệu",
+      "**Máy thực hiện hành động trong môi trường; mỗi hành động cho **報酬 (phần thưởng)** dưới dạng phản hồi; máy điều chỉnh để **報酬が最大** (tối đa hóa phần thưởng)**",
+      "Yêu cầu con người giám sát từng bước và sửa lỗi"
+    ],
+    correct:2,
+    why:"Slide 1 第10回 - ví dụ học cờ vây: 「碁石を打つ場所を探し、打った場所に応じて報酬がフィードバックされる。その報酬が最大となるように学習をしていく」. Đặc trưng: không có nhãn trực tiếp, học qua trial-and-error với phản hồi reward.",
+    whyWrong:{
+      0:"Đó là supervised learning.",
+      1:"Sai — máy thực sự học.",
+      3:"Sai — RL không cần giám sát từng bước, máy tự khám phá qua reward."
+    },
+    topic:"FE Syllabus — 基礎理論 / 機械学習 / 強化学習"
+  },
+  {
+    id:9, diff:"mid",
+    q:"Bạn được giao bài toán: **dự đoán giá thuê nhà** dựa trên 10.000 căn nhà có dữ liệu (giá thuê + đặc trưng). Loại học máy nào phù hợp nhất?",
+    ja:"不動産価格の予測には、どの機械学習が最適か。",
+    options:[
+      "教師あり学習 — vì có 正解データ (giá thuê thực tế) cho từng căn nhà",
+      "教師なし学習 — vì cần phân nhóm khách hàng",
+      "強化学習 — vì cần thử-sai trên thị trường thật",
+      "Không cần học máy, dùng công thức cố định"
+    ],
+    correct:0,
+    why:"Đây là bài toán hồi quy (regression) điển hình của supervised learning. Slide 1 第10回 ví dụ: 「教師あり学習：不動産価格の予測」 — input = đặc trưng nhà (vị trí, diện tích, số tầng...), 正解 = giá thuê thực tế. Máy học mô hình dự đoán.",
+    whyWrong:{
+      1:"Unsupervised learning không phù hợp khi đã có nhãn (giá thật).",
+      2:"RL phù hợp với bài toán liên tục có reward (game, control), không phải dự đoán tĩnh.",
+      3:"Sai — giá nhà phụ thuộc nhiều biến phi tuyến, công thức cố định không đủ chính xác."
+    },
+    topic:"FE Syllabus — 基礎理論 / 教師あり学習 / 回帰問題"
+  },
+  {
+    id:10, diff:"mid",
+    q:"**ビッグデータ (Big Data)** được đặc trưng bởi 3 yếu tố (3V) nào theo Slide 1?",
+    ja:"ビッグデータの3つの特徴はどれか。",
+    options:[
+      "Volume (lớn) / Velocity (tốc độ cao) / Vector (hướng)",
+      "**Volume (量: 大量) / Variety (種類: 多様) / Velocity (頻度: 高頻度)**",
+      "Validity / Visualization / Value",
+      "Vision / Voice / Video"
+    ],
+    correct:1,
+    why:"Slide 1: 「3つの特徴を満たすデータのこと：大量 (Volume), 多様 (Variety), 高頻度 (Velocity)」. AI học từ Big Data → đưa ra dự đoán chính xác cao (vd: lịch sử xem video → đề xuất video phù hợp).",
+    whyWrong:{
+      0:"Vector không thuộc 3V.",
+      2:"Đó là 3V mở rộng nhưng không phải 3V chuẩn theo Slide.",
+      3:"Hoàn toàn không liên quan đến 3V của Big Data."
+    },
+    topic:"FE Syllabus — 基礎理論 / ビッグデータ / 3V"
+  },
+  {
+    id:11, diff:"hard",
+    q:"Đặc trưng nào sau đây của **ディープラーニング** so với 機械学習 cổ điển là **đúng nhất**?",
+    ja:"ディープラーニングが従来の機械学習に対して優れている点はどれか。",
+    options:[
+      "Không cần dữ liệu để học",
+      "**Có thể tự thiết kế đặc trưng (特徴量) và học mô hình cùng lúc — trong khi machine learning cổ điển yêu cầu con người thiết kế đặc trưng**",
+      "Luôn cho kết quả 100% chính xác",
+      "Không thể áp dụng cho dữ liệu hình ảnh"
+    ],
+    correct:1,
+    why:"Theo Slide 1 第10回: Trong ML cổ điển, đặc trưng (特徴量) phải do con người thiết kế (vd: tự chọn vị trí, diện tích nhà...) — 「人が設定するので、不十分なケースがある」. Deep learning có thể **tự học đặc trưng từ dữ liệu thô** (vd: ảnh) đồng thời với việc học mô hình → mạnh hơn cho dữ liệu phi cấu trúc như ảnh, âm thanh.",
+    whyWrong:{
+      0:"Sai — deep learning cần RẤT NHIỀU dữ liệu để học hiệu quả.",
+      2:"Sai — không có mô hình ML nào đảm bảo 100%.",
+      3:"Sai — deep learning đặc biệt mạnh với dữ liệu hình ảnh (CNN)."
+    },
+    topic:"FE Syllabus — 基礎理論 / ディープラーニング / 特徴量設計"
+  },
+  {
+    id:12, diff:"hard",
+    q:"Tình huống nào sau đây phù hợp với **教師なし学習 (unsupervised learning)** hơn cả?",
+    ja:"教師なし学習に最適なシナリオはどれか。",
+    options:[
+      "Phân loại email là spam / không spam (đã có nhãn)",
+      "Dự đoán doanh số tháng sau dựa trên doanh số quá khứ có sẵn",
+      "**Phân nhóm 1 triệu khách hàng thành các cụm để cá nhân hoá marketing — KHÔNG có nhãn cụm trước**",
+      "Dạy AI chơi cờ vua để thắng kiện tướng"
+    ],
+    correct:2,
+    why:"Slide 1 第10回 ví dụ tiêu biểu: 「教師なし学習：顧客データの分類 — 顧客データを読み込ませてコンピュータに学習させることで、属性毎にグルーピングをする」. Không có nhãn cụm trước → máy tự phát hiện pattern → là bài toán clustering.",
+    whyWrong:{
+      0:"Có nhãn spam/không spam → supervised learning.",
+      1:"Có 正解データ (doanh số quá khứ) → supervised regression.",
+      3:"Có reward (thắng/thua) → reinforcement learning."
+    },
+    topic:"FE Syllabus — 基礎理論 / 教師なし学習 / クラスタリング"
+  },
+
+  // ============ PART 2: 確率 - Xác suất cơ bản (Slide 1 第10回) — 8 câu ============
+  {
+    id:13, diff:"easy",
+    q:"**確率 (xác suất)** trong toán học được biểu diễn bằng giá trị trong khoảng nào?",
+    ja:"確率の値が取り得る範囲はどれか。",
+    options:[
+      "Bất kỳ giá trị nào",
+      "**0 ≤ P ≤ 1** (hoặc 0% ~ 100%)",
+      "-1 ≤ P ≤ 1",
+      "0 ≤ P ≤ 100 (chỉ phần trăm, không dùng tỉ lệ)"
+    ],
+    correct:1,
+    why:"Slide 1 第10回: 「確率とは物事の起こりやすさを 0〜1 の数値で表現したもの」. Tính chất: P=0 nghĩa là không bao giờ xảy ra, P=1 nghĩa là chắc chắn xảy ra.",
+    whyWrong:{
+      0:"Sai — xác suất bị chặn trong [0,1].",
+      2:"Sai — xác suất không âm.",
+      3:"% chỉ là cách biểu diễn khác; định nghĩa toán học là [0,1]."
+    },
+    topic:"FE Syllabus — 基礎理論 / 確率の基本"
+  },
+  {
+    id:14, diff:"easy",
+    q:"Công thức tính xác suất cơ bản theo Slide 1 第10回 là gì?",
+    ja:"確率の計算方法はどれか。",
+    options:[
+      "P = số trường hợp thuận lợi × số trường hợp toàn bộ",
+      "**P = (số trường hợp sự kiện xảy ra / ある事象が起こる場合の数) ÷ (tổng số trường hợp có thể / 起こり得る事象の全ての場合の数)**",
+      "P = (tổng số trường hợp) - (số trường hợp xảy ra)",
+      "P = 1 / (tổng số sự kiện)"
+    ],
+    correct:1,
+    why:"Slide 1 第10回: 「確率は『ある事象が起こる場合の数 / 起こり得る事象の全ての場合の数』で算出できる」. Ví dụ: xác suất xúc xắc ra mặt 1 = 1 (cách ra mặt 1) / 6 (số mặt) = 1/6.",
+    whyWrong:{
+      0:"Nhân thay vì chia — sai.",
+      2:"Trừ — sai công thức.",
+      3:"Chỉ đúng khi tất cả sự kiện đồng xác suất — không phải định nghĩa tổng quát."
+    },
+    topic:"FE Syllabus — 基礎理論 / 確率の計算"
+  },
+  {
+    id:15, diff:"easy",
+    q:"Tung 1 con xúc xắc 6 mặt (sai số đều). Xác suất ra mặt **chẵn** (2, 4, 6) là bao nhiêu?",
+    ja:"サイコロを1回振って偶数の目が出る確率はいくらか。",
+    options:[
+      "1/6",
+      "1/3",
+      "**1/2**",
+      "2/3"
+    ],
+    correct:2,
+    why:"Số mặt chẵn = 3 (mặt 2, 4, 6). Tổng số mặt = 6. P(chẵn) = 3/6 = **1/2** = 50%.",
+    whyWrong:{
+      0:"1/6 là xác suất ra MỘT mặt cụ thể, vd P(=1).",
+      1:"1/3 = 2/6, không tương ứng với số mặt chẵn.",
+      3:"2/3 = 4/6, vượt quá số mặt chẵn."
+    },
+    topic:"FE Syllabus — 基礎理論 / 確率の計算 / サイコロ"
+  },
+  {
+    id:16, diff:"mid",
+    q:"Một hộp có **5 viên bi đỏ và 3 viên bi xanh**. Rút ngẫu nhiên **1 viên không hoàn lại, rồi rút tiếp 1 viên nữa**. Xác suất cả 2 viên đều là viên ĐỎ là?",
+    ja:"赤玉5個と青玉3個の中から、非復元で2個取り出すとき、2個とも赤玉である確率はいくらか。",
+    options:[
+      "25/64",
+      "**5/14**",
+      "1/4",
+      "10/56"
+    ],
+    correct:1,
+    why:"Lần 1: 5 đỏ / 8 tổng = 5/8.\nLần 2 (sau khi đã rút 1 đỏ, không hoàn): còn 4 đỏ / 7 tổng = 4/7.\nXác suất chung = 5/8 × 4/7 = 20/56 = **5/14**.",
+    whyWrong:{
+      0:"25/64 = (5/8)² — đó là rút CÓ HOÀN LẠI, không phải bài này.",
+      2:"1/4 không khớp với phép tính.",
+      3:"10/56 sai — đáp án đúng phải là 20/56 = 5/14, không phải 10/56."
+    },
+    topic:"FE Syllabus — 基礎理論 / 確率の計算 / 非復元抽出"
+  },
+  {
+    id:17, diff:"mid",
+    q:"Tung 2 đồng xu cân đối. Xác suất được **ít nhất một mặt ngửa** (head) là?",
+    ja:"コインを2枚投げたとき、少なくとも1枚が表である確率はいくらか。",
+    options:[
+      "1/4",
+      "1/2",
+      "**3/4**",
+      "1"
+    ],
+    correct:2,
+    why:"Không gian mẫu: {HH, HT, TH, TT}, 4 khả năng đồng xác suất.\nSự kiện \"ít nhất 1 ngửa\" = tất cả TRỪ {TT} = 3 khả năng.\nP = 3/4.\nCách khác: P(ít nhất 1H) = 1 - P(không H nào) = 1 - (1/2)² = 1 - 1/4 = 3/4.",
+    whyWrong:{
+      0:"1/4 là P(cả 2 đều ngửa) = HH.",
+      1:"1/2 là P(đúng 1 ngửa).",
+      3:"1 nghĩa là chắc chắn — không đúng vì có khả năng TT."
+    },
+    topic:"FE Syllabus — 基礎理論 / 確率 / 余事象"
+  },
+  {
+    id:18, diff:"hard",
+    q:"Có 3 xưởng sản xuất bóng đèn: A, B, C. A sản xuất 50% lượng đèn nhưng có 2% bị lỗi; B sản xuất 30% với 3% lỗi; C sản xuất 20% với 5% lỗi. Tỉ lệ đèn lỗi trong toàn bộ sản phẩm là bao nhiêu?",
+    ja:"A,B,C工場の生産比率と不良率から、全体の不良率を求めよ。",
+    options:[
+      "2%",
+      "**2.9%**",
+      "3.3%",
+      "5%"
+    ],
+    correct:1,
+    why:"Sử dụng công thức xác suất toàn phần (全確率の公式):\nP(lỗi) = P(A)×P(lỗi|A) + P(B)×P(lỗi|B) + P(C)×P(lỗi|C)\n= 0.5×0.02 + 0.3×0.03 + 0.2×0.05\n= 0.010 + 0.009 + 0.010\n= 0.029 = **2.9%**.",
+    whyWrong:{
+      0:"2% là tỉ lệ lỗi chỉ của xưởng A.",
+      2:"3.3% sai trong tính toán (có thể nhầm trung bình đơn).",
+      3:"5% là tỉ lệ lỗi chỉ của xưởng C."
+    },
+    topic:"FE Syllabus — 基礎理論 / 確率 / 全確率の公式 / 過去問風"
+  },
+  {
+    id:19, diff:"hard",
+    q:"3 đặc trưng cơ bản của xác suất (Slide 1 第10回) **KHÔNG bao gồm** đặc trưng nào sau đây?",
+    ja:"確率の3つの性質に含まれないものはどれか。",
+    options:[
+      "P(sự kiện chắc chắn) = 1",
+      "P(sự kiện không xảy ra) = 0",
+      "0 ≤ P(bất kỳ sự kiện nào) ≤ 1",
+      "**P(sự kiện bất kỳ) luôn = 1/2**"
+    ],
+    correct:3,
+    why:"3 tính chất cơ bản của xác suất (確率の3つの性質):\n1. 0 ≤ P(A) ≤ 1 cho mọi sự kiện A.\n2. P(sự kiện chắc chắn / 全事象) = 1.\n3. P(sự kiện không thể / 空事象) = 0.\nKhông có quy tắc \"P luôn = 1/2\" — đó là vô lý.",
+    whyWrong:{
+      0:"Đúng — là 1 trong 3 tính chất.",
+      1:"Đúng — là 1 trong 3 tính chất.",
+      2:"Đúng — là 1 trong 3 tính chất."
+    },
+    topic:"FE Syllabus — 基礎理論 / 確率の3つの性質"
+  },
+  {
+    id:20, diff:"mid",
+    q:"Một sự kiện A có P(A) = 0.3. Sự kiện đối (余事象) của A — ký hiệu Ā — có xác suất bao nhiêu?",
+    ja:"P(A) = 0.3 のとき、余事象 P(Ā) はいくらか。",
+    options:[
+      "0.3",
+      "**0.7**",
+      "0",
+      "1"
+    ],
+    correct:1,
+    why:"Sự kiện đối Ā = \"A KHÔNG xảy ra\". Vì A xảy ra hoặc không xảy ra là 2 sự kiện loại trừ phủ kín không gian mẫu:\nP(A) + P(Ā) = 1\n→ P(Ā) = 1 - 0.3 = **0.7**.",
+    whyWrong:{
+      0:"Đó là P(A), không phải P(Ā).",
+      2:"P(Ā) = 0 chỉ khi A chắc chắn xảy ra (P(A)=1).",
+      3:"P(Ā) = 1 chỉ khi A không bao giờ xảy ra (P(A)=0)."
+    },
+    topic:"FE Syllabus — 基礎理論 / 確率 / 余事象"
+  },
+
+  // ============ PART 3: 順列・組合せ - Hoán vị & Tổ hợp (Slide 1 第10回) — 10 câu ============
+  {
+    id:21, diff:"easy",
+    q:"Sự khác biệt cơ bản giữa **順列 (hoán vị, permutation)** và **組合せ (tổ hợp, combination)** là gì?",
+    ja:"順列と組合せの違いは何か。",
+    options:[
+      "Không có khác biệt; 2 thuật ngữ đồng nghĩa",
+      "**順列: 取り出して並べる (lấy ra VÀ sắp xếp — thứ tự quan trọng); 組合せ: 取り出すだけ (chỉ lấy ra — không xét thứ tự)**",
+      "順列 chỉ áp dụng cho số; 組合せ chỉ áp dụng cho chữ",
+      "順列 dành cho dữ liệu nhỏ; 組合せ dành cho dữ liệu lớn"
+    ],
+    correct:1,
+    why:"Slide 1 第10回:\n• 「n個の中からr個取り出して並べる場合は順列の公式」 — hoán vị xét THỨ TỰ.\n• 「n個の中からr個取り出すだけの場合は組み合わせの公式」 — tổ hợp KHÔNG xét thứ tự.\nVD: chọn 3 người trong 5 — nếu chỉ lập đội = tổ hợp; nếu sắp chủ tịch/phó/thư ký = hoán vị.",
+    whyWrong:{
+      0:"Sai — 2 khái niệm rất khác nhau.",
+      2:"Sai — cả 2 đều có thể áp dụng cho số/chữ/bất kỳ phần tử nào.",
+      3:"Sai — không có quy ước theo kích thước."
+    },
+    topic:"FE Syllabus — 基礎理論 / 順列と組合せ / 違い"
+  },
+  {
+    id:22, diff:"easy",
+    q:"Công thức tính số hoán vị **chọn r từ n** (nPr) là gì?",
+    ja:"順列の公式 nPr はどれか。",
+    options:[
+      "nPr = n + r",
+      "**nPr = n! / (n-r)!** = n × (n-1) × ... × (n-r+1)",
+      "nPr = n! / (r! × (n-r)!)",
+      "nPr = n × r"
+    ],
+    correct:1,
+    why:"Công thức 順列 (hoán vị): nPr = n!/(n-r)! = n × (n-1) × (n-2) × ... × (n-r+1).\nĐếm số cách CHỌN r phần tử từ n và SẮP XẾP chúng theo thứ tự.\nVD: P(5,3) = 5×4×3 = 60.",
+    whyWrong:{
+      0:"Cộng — sai hoàn toàn.",
+      2:"Đó là công thức TỔ HỢP nCr = n!/(r!(n-r)!), không phải hoán vị.",
+      3:"n × r là sai — không phản ánh đếm trật tự."
+    },
+    topic:"FE Syllabus — 基礎理論 / 順列 / nPr 公式"
+  },
+  {
+    id:23, diff:"easy",
+    q:"Công thức tính số tổ hợp **chọn r từ n** (nCr / C(n,r)) là gì?",
+    ja:"組合せの公式 nCr はどれか。",
+    options:[
+      "nCr = n!/(n-r)!",
+      "**nCr = n! / (r! × (n-r)!) = nPr / r!**",
+      "nCr = n × r",
+      "nCr = n - r"
+    ],
+    correct:1,
+    why:"Công thức 組合せ (tổ hợp): nCr = n!/(r!(n-r)!) = nPr / r!.\nVì tổ hợp không xét thứ tự, ta lấy hoán vị nPr và chia cho r! (số cách sắp r phần tử).\nVD: C(5,3) = 5!/(3!×2!) = 120/(6×2) = 10.",
+    whyWrong:{
+      0:"Đó là công thức HOÁN VỊ nPr, không phải tổ hợp.",
+      2:"Sai cấu trúc.",
+      3:"Trừ — sai hoàn toàn."
+    },
+    topic:"FE Syllabus — 基礎理論 / 組合せ / nCr 公式"
+  },
+  {
+    id:24, diff:"mid",
+    q:"Có **5 quyển sách khác nhau** và 3 ngăn giá. Có bao nhiêu cách **chọn 3 quyển và xếp** vào 3 ngăn (mỗi ngăn 1 quyển)?",
+    ja:"5冊の本から3冊を選んで本棚の3つの位置に並べる方法は何通りか。",
+    options:[
+      "10",
+      "15",
+      "**60**",
+      "120"
+    ],
+    correct:2,
+    why:"Vì 「chọn VÀ xếp」 = thứ tự quan trọng → dùng HOÁN VỊ.\nP(5,3) = 5!/(5-3)! = 5×4×3 = **60** cách.\nGiải thích trực quan: ngăn 1 có 5 lựa chọn, ngăn 2 có 4 lựa chọn còn lại, ngăn 3 có 3 lựa chọn → 5×4×3 = 60.",
+    whyWrong:{
+      0:"10 = C(5,3) — đó là chỉ CHỌN không xếp.",
+      1:"15 không khớp công thức nào.",
+      3:"120 = 5! — đó là sắp tất cả 5 quyển, không chọn ra 3."
+    },
+    topic:"FE Syllabus — 基礎理論 / 順列 / 計算問題"
+  },
+  {
+    id:25, diff:"mid",
+    q:"Một lớp có **10 học sinh**. Có bao nhiêu cách **chọn 3 học sinh** để lập một nhóm thuyết trình (không phân vai)?",
+    ja:"10人の中から3人を選んで発表チームを作る方法は何通りか。",
+    options:[
+      "30",
+      "**120**",
+      "720",
+      "1000"
+    ],
+    correct:1,
+    why:"「Chọn nhóm không phân vai」 = không xét thứ tự → TỔ HỢP.\nC(10,3) = 10!/(3!×7!) = (10×9×8)/(3×2×1) = 720/6 = **120**.",
+    whyWrong:{
+      0:"30 sai phép tính.",
+      2:"720 = P(10,3) — đó là CHỌN VÀ XẾP (có phân vai).",
+      3:"1000 không khớp công thức."
+    },
+    topic:"FE Syllabus — 基礎理論 / 組合せ / 計算問題"
+  },
+  {
+    id:26, diff:"mid",
+    q:"Trường hợp **複数事象が組み合わさっている** (nhiều sự kiện kết hợp), Slide 1 第10回 hướng dẫn dùng phép toán nào?",
+    ja:"複数事象が組み合わさっている場合の数の計算で使う演算はどれか。",
+    options:[
+      "Chỉ phép cộng",
+      "Chỉ phép nhân",
+      "**Phép nhân nếu các sự kiện xảy ra ĐỒNG THỜI / TUẦN TỰ (AND); phép cộng nếu chỉ một trong các sự kiện xảy ra (OR / 排他事象)**",
+      "Phép trừ"
+    ],
+    correct:2,
+    why:"Slide 1: 「複数事象が組み合わさっている場合、掛け算・もしくは足し算で場合の数を計算する」.\n• Nhân (AND): \"chọn món chính VÀ món tráng miệng\" → cách × cách.\n• Cộng (OR loại trừ): \"đi tàu HOẶC đi xe buýt\" → cách + cách.\nQuy tắc: AND → ×, OR (loại trừ) → +.",
+    whyWrong:{
+      0:"Không đủ — thiếu trường hợp AND.",
+      1:"Không đủ — thiếu trường hợp OR.",
+      3:"Phép trừ chỉ dùng trong tính 余事象 (sự kiện đối), không phải trong phép kết hợp cơ bản."
+    },
+    topic:"FE Syllabus — 基礎理論 / 場合の数 / 掛け算と足し算"
+  },
+  {
+    id:27, diff:"hard",
+    q:"Một thực đơn nhà hàng có: 3 món khai vị, 5 món chính, 4 món tráng miệng. Khách chọn **1 món từ mỗi nhóm** để có một bữa ăn đầy đủ. Có bao nhiêu thực đơn khả dĩ?",
+    ja:"前菜3種、メイン5種、デザート4種から各1品ずつ選ぶ場合、組合せは何通りか。",
+    options:[
+      "12 (= 3+5+4)",
+      "**60 (= 3×5×4)**",
+      "120",
+      "720"
+    ],
+    correct:1,
+    why:"Đây là kết hợp 3 lựa chọn ĐỒNG THỜI (AND) → nhân: 3 × 5 × 4 = **60** thực đơn.\nSlide 1 第10回 ví dụ 「掛け算で場合の数を算出」.",
+    whyWrong:{
+      0:"12 = cộng — chỉ đúng khi \"chọn HOẶC khai vị HOẶC món chính HOẶC tráng miệng\" (loại trừ).",
+      2:"120 = 5! không khớp.",
+      3:"720 = 6! không khớp."
+    },
+    topic:"FE Syllabus — 基礎理論 / 場合の数 / 掛け算の法則"
+  },
+  {
+    id:28, diff:"hard",
+    q:"Có 4 chữ cái A, B, C, D. Có bao nhiêu cách **sắp xếp tất cả 4 chữ cái thành dãy** sao cho **A đứng trước B** (không nhất thiết liền kề)?",
+    ja:"A,B,C,Dの4文字を並べるとき、AがBより前に来る並べ方は何通りか。",
+    options:[
+      "6",
+      "**12**",
+      "24",
+      "16"
+    ],
+    correct:1,
+    why:"Tổng số hoán vị 4 chữ = 4! = 24.\nVới mỗi cặp vị trí của A và B, có 2 thứ tự (A trước B HOẶC B trước A) — đối xứng. Vậy số dãy mà A trước B = 24/2 = **12**.\nKiểm tra: P(A trước B) = 1/2 vì 2 hoán vị tương đương về vị trí A,B.",
+    whyWrong:{
+      0:"6 = 3! — không khớp.",
+      2:"24 = tổng hoán vị, không có ràng buộc.",
+      3:"16 không khớp công thức."
+    },
+    topic:"FE Syllabus — 基礎理論 / 順列 / 条件付き並び替え"
+  },
+  {
+    id:29, diff:"hard",
+    q:"Một ủy ban gồm **2 nam và 3 nữ** sẽ được chọn từ nhóm **5 nam + 4 nữ**. Có bao nhiêu cách?",
+    ja:"男性5人と女性4人から、男性2人と女性3人の委員会を作る方法は何通りか。",
+    options:[
+      "20",
+      "**40**",
+      "60",
+      "120"
+    ],
+    correct:1,
+    why:"Chọn 2 nam từ 5 nam: C(5,2) = 5!/(2!×3!) = 10.\nChọn 3 nữ từ 4 nữ: C(4,3) = 4!/(3!×1!) = 4.\nKết hợp 2 sự kiện độc lập (AND) → nhân: 10 × 4 = **40** cách.",
+    whyWrong:{
+      0:"20 sai phép tính.",
+      2:"60 không khớp.",
+      3:"120 không khớp."
+    },
+    topic:"FE Syllabus — 基礎理論 / 組合せ + 掛け算の法則"
+  },
+  {
+    id:30, diff:"mid",
+    q:"Có **n chữ số khác nhau** và cần **xếp tất cả n chữ số thành một dãy**. Số cách xếp là?",
+    ja:"異なるn個を全て並べる場合の数はいくつか。",
+    options:[
+      "n",
+      "n²",
+      "**n!** (= n × (n-1) × (n-2) × ... × 1)",
+      "2^n"
+    ],
+    correct:2,
+    why:"Xếp toàn bộ n phần tử = P(n,n) = n!/(n-n)! = n!/0! = n!.\nVị trí 1 có n lựa chọn, vị trí 2 có (n-1) lựa chọn (còn lại), ..., vị trí cuối có 1 lựa chọn → n!.\nVD: n=3 → 3! = 6 hoán vị.",
+    whyWrong:{
+      0:"n chỉ là số phần tử, không phải số cách xếp.",
+      1:"n² là đếm cặp có lặp (như tích Descartes).",
+      3:"2^n là đếm tập con, không phải hoán vị."
+    },
+    topic:"FE Syllabus — 基礎理論 / 順列 / 全並べ"
+  },
+
+  // ============ PART 4: 期待値 - Kỳ vọng (Slide 1 第10回 + Yasashii 20-03) — 10 câu ============
+  {
+    id:31, diff:"easy",
+    q:"**期待値 (giá trị kỳ vọng / expected value)** trong xác suất là gì?",
+    ja:"期待値の定義として正しいものはどれか。",
+    options:[
+      "Giá trị lớn nhất có thể đạt được",
+      "Giá trị nhỏ nhất có thể đạt được",
+      "**Giá trị trung bình thu được trong 1 lần thử (1回の試行で得られる値の平均値) — tính bằng 確率的に決まる平均値**",
+      "Giá trị mà người chơi mong muốn nhất"
+    ],
+    correct:2,
+    why:"Yasashii 20-03: 「期待値とは、文字どおり『期待される値』であり、確率的に決まる平均値です」.\nSlide 1: 「期待値とは1回の試行で得られる値の平均値のこと」.\nCông thức: E = Σ(値 × 確率) — tổng của (giá trị × xác suất tương ứng).",
+    whyWrong:{
+      0:"Đó là giá trị MAX, không phải kỳ vọng.",
+      1:"Đó là giá trị MIN, không phải kỳ vọng.",
+      3:"Đó là khái niệm \"mong muốn\" không có công thức toán học."
+    },
+    topic:"FE Syllabus — 基礎理論 / 期待値の定義"
+  },
+  {
+    id:32, diff:"easy",
+    q:"Công thức tính **期待値** E[X] khi X có thể nhận các giá trị x₁, x₂, ..., xₙ với xác suất tương ứng p₁, p₂, ..., pₙ là?",
+    ja:"期待値の計算式はどれか。",
+    options:[
+      "E[X] = x₁ + x₂ + ... + xₙ",
+      "**E[X] = (x₁ × p₁) + (x₂ × p₂) + ... + (xₙ × pₙ) = Σ(値 × 確率)**",
+      "E[X] = (p₁ + p₂ + ... + pₙ) / n",
+      "E[X] = x₁ × x₂ × ... × xₙ"
+    ],
+    correct:1,
+    why:"Yasashii: 「期待値は『値』と『確率』をかけ算し、その後、すべての組み合わせを合計して求めます」.\nE[X] = Σ xᵢ × pᵢ.\nVD: xúc xắc 6 mặt: E = 1×(1/6) + 2×(1/6) + ... + 6×(1/6) = 21/6 = **3.5**.",
+    whyWrong:{
+      0:"Tổng giá trị mà không có trọng số xác suất — sai.",
+      2:"Trung bình xác suất — vô nghĩa (p tổng phải = 1).",
+      3:"Tích giá trị — sai hoàn toàn."
+    },
+    topic:"FE Syllabus — 基礎理論 / 期待値の公式"
+  },
+  {
+    id:33, diff:"easy",
+    q:"Tung 1 con xúc xắc 6 mặt. Giá trị kỳ vọng của số mặt là bao nhiêu? (Ví dụ tiêu biểu trong Yasashii 20-03)",
+    ja:"サイコロを1回振ったとき、出る目の期待値はいくつか。",
+    options:[
+      "3",
+      "**3.5**",
+      "4",
+      "6"
+    ],
+    correct:1,
+    why:"E = 1×(1/6) + 2×(1/6) + 3×(1/6) + 4×(1/6) + 5×(1/6) + 6×(1/6)\n= (1+2+3+4+5+6)/6\n= 21/6\n= **3.5**.\nĐây là ví dụ kinh điển trong Yasashii 20-03.",
+    whyWrong:{
+      0:"3 là số mặt nằm giữa 1 và 6 nhưng không phải kỳ vọng chính xác.",
+      2:"4 sai phép tính.",
+      3:"6 là giá trị MAX, không phải kỳ vọng."
+    },
+    topic:"FE Syllabus — 基礎理論 / 期待値 / サイコロの例"
+  },
+  {
+    id:34, diff:"mid",
+    q:"Một xổ số có 3 giải:\n• Giải 1: 1.000.000円, xác suất 0.001\n• Giải 2: 10.000円, xác suất 0.01\n• Giải 3: 100円, xác suất 0.1\n(Còn lại không trúng = 0円)\nGiá trị kỳ vọng của 1 vé là?",
+    ja:"宝くじ1枚の期待値はいくらか。",
+    options:[
+      "1.000円",
+      "**1.110円**",
+      "10.000円",
+      "11.100円"
+    ],
+    correct:1,
+    why:"E = 1.000.000 × 0.001 + 10.000 × 0.01 + 100 × 0.1 + 0 × P(không trúng)\n= 1.000 + 100 + 10 + 0\n= **1.110円**.\nNếu vé bán giá > 1.110円, người chơi lỗ trung bình.",
+    whyWrong:{
+      0:"1.000円 chỉ là đóng góp của giải 1, thiếu các giải khác.",
+      2:"10.000円 = giải 2, không phải kỳ vọng.",
+      3:"11.100円 sai phép tính (có thể nhân 10 lần)."
+    },
+    topic:"FE Syllabus — 基礎理論 / 期待値 / 計算問題"
+  },
+  {
+    id:35, diff:"mid",
+    q:"Slide 1 第10回 đưa ví dụ trò chơi: trả 300円 để chơi, kỳ vọng thu lại 350円. Kết luận gì?",
+    ja:"300円払えば平均350円入手できるゲームの判定はどれか。",
+    options:[
+      "Người chơi nên TRÁNH chơi vì luôn thua",
+      "**Trung bình LỜI 50円/lần, người chơi nên CHƠI (kỳ vọng > chi phí)**",
+      "Không đủ thông tin để quyết định",
+      "Phải chơi ít nhất 100 lần mới có lời"
+    ],
+    correct:1,
+    why:"Slide 1: 「300円払えば平均350円入手できるので得をする確率が高い」.\nLợi nhuận kỳ vọng = 350 - 300 = +50円. Trung bình mỗi lần chơi sẽ LỜI 50円 → quyết định rationale là CHƠI.\nLưu ý: kỳ vọng là dài hạn — ngắn hạn có thể thua.",
+    whyWrong:{
+      0:"Sai — kỳ vọng cao hơn chi phí.",
+      2:"Đã đủ thông tin để tính.",
+      3:"Không có quy tắc \"phải 100 lần\"; ngay cả 1 lần cũng có giá trị kỳ vọng dương."
+    },
+    topic:"FE Syllabus — 基礎理論 / 期待値の応用 / 意思決定"
+  },
+  {
+    id:36, diff:"mid",
+    q:"Tung 2 đồng xu cân đối. Đặt X = số mặt ngửa (head). Giá trị kỳ vọng E[X] là?",
+    ja:"コインを2枚投げたとき、表の枚数の期待値はいくつか。",
+    options:[
+      "0.5",
+      "**1**",
+      "1.5",
+      "2"
+    ],
+    correct:1,
+    why:"X có thể nhận giá trị 0, 1, 2:\n• P(X=0) = 1/4 (cả 2 ngửa)\n• P(X=1) = 2/4 = 1/2 (1 ngửa, 1 sấp)\n• P(X=2) = 1/4 (cả 2 ngửa)\nE[X] = 0×(1/4) + 1×(1/2) + 2×(1/4) = 0 + 0.5 + 0.5 = **1**.\nCách trực quan: mỗi đồng xu có E = 0.5 ngửa, 2 đồng → E tổng = 1.",
+    whyWrong:{
+      0:"0.5 là kỳ vọng của 1 đồng xu.",
+      2:"1.5 sai phép tính.",
+      3:"2 là giá trị max, không phải kỳ vọng."
+    },
+    topic:"FE Syllabus — 基礎理論 / 期待値 / コイン"
+  },
+  {
+    id:37, diff:"hard",
+    q:"**Bài toán Yasashii 20-12 (平成30年度 過去問)**: Lợi nhuận mỗi sản phẩm = 1.000円; lỗ phế thải mỗi sản phẩm không bán được = 300円. Bảng xác suất bán được (販売個数 hàng / 仕入個数 cột):\n  仕入4: 100% bán 4\n  仕入5: 30% bán 4, 70% bán 5\n  仕入6: 30% bán 4, 30% bán 5, 40% bán 6\n  仕入7: 30% bán 4, 30% bán 5, 30% bán 6, 10% bán 7\n仕入個数 nào cho **kỳ vọng lợi nhuận MAX**?",
+    ja:"利益の期待値が最大になる仕入個数はどれか。（平成30年度）",
+    options:[
+      "4 cái",
+      "5 cái",
+      "**6 cái**",
+      "7 cái"
+    ],
+    correct:2,
+    why:"Lợi nhuận = 1.000 × (bán được) - 300 × (không bán được = nhập - bán).\n仕入4: bán chắc 4 → LN = 4×1000 = 4.000円.\n仕入5: E = 0.3×(4×1000-1×300) + 0.7×(5×1000) = 0.3×3700 + 0.7×5000 = 1110+3500 = 4.610.\n仕入6: E = 0.3×(4000-600) + 0.3×(5000-300) + 0.4×6000 = 0.3×3400 + 0.3×4700 + 0.4×6000 = 1020+1410+2400 = 4.830.\n仕入7: E = 0.3×(4000-900)+0.3×(5000-600)+0.3×(6000-300)+0.1×7000 = 0.3×3100+0.3×4400+0.3×5700+0.1×7000 = 930+1320+1710+700 = 4.660.\nMax là **仕入6 (4.830円)**.",
+    whyWrong:{
+      0:"4 cái LN cố định = 4.000円, thấp nhất.",
+      1:"5 cái LN kỳ vọng = 4.610円, không max.",
+      3:"7 cái LN kỳ vọng = 4.660円, kém 6 cái."
+    },
+    topic:"FE Syllabus — 基礎理論 / 期待値 / Yasashii 20-12 / 平成30年度"
+  },
+  {
+    id:38, diff:"hard",
+    q:"Một sòng bài có trò chơi: đặt cược 1.000円, có xác suất 0.4 thắng và nhận về 2.500円 (lãi 1.500円), xác suất 0.6 thua (mất 1.000円). Giá trị kỳ vọng của LỢI NHUẬN ròng mỗi ván là?",
+    ja:"カジノのゲームでの1回の純利益の期待値はいくらか。",
+    options:[
+      "+600円 (có lời)",
+      "**0円 (hoà vốn — fair game)**",
+      "-200円 (lỗ)",
+      "+1.500円 (luôn lời)"
+    ],
+    correct:1,
+    why:"Lợi nhuận ròng:\n• Thắng: +1.500円 với P = 0.4\n• Thua: -1.000円 với P = 0.6\nE[LN] = 0.4×(+1.500) + 0.6×(-1.000) = 600 - 600 = **0円**.\nĐây là FAIR GAME — về dài hạn, người chơi không lời không lỗ.",
+    whyWrong:{
+      0:"600円 chỉ là phần lợi từ trường hợp thắng, chưa trừ phần lỗ.",
+      2:"-200円 sai phép tính.",
+      3:"+1.500円 là lợi nhuận TỪNG VÁN THẮNG, không phải kỳ vọng."
+    },
+    topic:"FE Syllabus — 基礎理論 / 期待値 / 公正なゲーム"
+  },
+  {
+    id:39, diff:"hard",
+    q:"Một sản phẩm bán ra có 3 trạng thái: (1) bình thường — không tốn chi phí, xác suất 0.85; (2) bảo hành nhỏ — tốn 5.000円, xác suất 0.12; (3) bảo hành lớn — tốn 50.000円, xác suất 0.03. Để duy trì lợi nhuận, công ty cần cộng thêm bao nhiêu vào giá bán (mỗi sản phẩm) để **bù đắp chi phí bảo hành kỳ vọng**?",
+    ja:"製品1個あたりの保証費用の期待値はいくらか。",
+    options:[
+      "0円",
+      "1.500円",
+      "**2.100円**",
+      "5.500円"
+    ],
+    correct:2,
+    why:"E[chi phí bảo hành] = 0×0.85 + 5.000×0.12 + 50.000×0.03\n= 0 + 600 + 1.500\n= **2.100円**.\nĐể bù đắp, cần cộng tối thiểu 2.100円 vào giá bán mỗi sản phẩm.",
+    whyWrong:{
+      0:"0円 chỉ đúng nếu không có bảo hành.",
+      1:"1.500円 = chi phí kỳ vọng từ chỉ trường hợp bảo hành lớn, thiếu trường hợp nhỏ.",
+      3:"5.500円 = tổng đơn thuần của 2 chi phí (5.000+500), không có trọng số."
+    },
+    topic:"FE Syllabus — 基礎理論 / 期待値 / ビジネス応用"
+  },
+  {
+    id:40, diff:"hard",
+    q:"Phát biểu nào về quan hệ giữa **xác suất / kỳ vọng** và **AI / machine learning** là ĐÚNG nhất?",
+    ja:"確率・期待値と AI・機械学習の関係について、最も適切な記述はどれか。",
+    options:[
+      "AI không liên quan đến xác suất; AI chỉ dùng logic if-then",
+      "**Nhiều mô hình AI (đặc biệt machine learning) đưa ra dự đoán dưới dạng xác suất; trong huấn luyện và đánh giá mô hình, các đại lượng kỳ vọng / xác suất là nền tảng quan trọng**",
+      "Xác suất và kỳ vọng chỉ dùng trong xổ số, không dùng trong AI",
+      "AI luôn cho kết quả tất định, không có yếu tố xác suất"
+    ],
+    correct:1,
+    why:"Phần lớn các mô hình ML hiện đại (logistic regression, neural network, naive Bayes, random forest, deep learning...) đều output **xác suất** thuộc lớp nào (vd: \"email này 92% là spam\"). Các metric như cross-entropy loss, MSE, EM algorithm... đều là kỳ vọng. Xác suất + thống kê là nền móng toán học của AI hiện đại — không thể tách rời.",
+    whyWrong:{
+      0:"Sai — AI hiện đại dựa nhiều vào xác suất; if-then là AI cổ điển (rule-based).",
+      2:"Sai — xác suất là công cụ toán học rộng, không giới hạn xổ số.",
+      3:"Sai — phần lớn AI hiện đại có yếu tố ngẫu nhiên / xác suất (xác suất phân lớp, dropout, sampling...)."
+    },
+    topic:"FE Syllabus — 基礎理論 / AI と 確率 の関連性"
+  }
+];
+
+// ===== State =====
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+
+const quizArea = document.getElementById('quiz-area');
+const resultArea = document.getElementById('result-area');
+const progressText = document.getElementById('progress-text');
+const progressFill = document.getElementById('progress-fill');
+const answeredCount = document.getElementById('answered-count');
+const progressWrap = document.getElementById('progress-wrap');
+
+function diffClass(d){return d==='easy'?'diff-easy':d==='mid'?'diff-mid':'diff-hard'}
+function diffLabel(d){return d==='easy'?'[Dễ / 易]':d==='mid'?'[TB / 中]':'[Khó / 難]'}
+
+function render(){
+  if(current >= questions.length){renderResult(); return;}
+  const q = questions[current];
+  const a = answers[current];
+  const locked = a !== null;
+
+  const opts = q.options.map((opt, i) => {
+    let cls = 'option';
+    if(locked){
+      cls += ' locked';
+      if(i === q.correct) cls += ' correct';
+      else if(i === a) cls += ' wrong';
+    }
+    return `<div class="${cls}" data-idx="${i}">
+      <div class="key">${String.fromCharCode(65+i)}</div>
+      <div class="body">${opt}</div>
+    </div>`;
+  }).join('');
+
+  let expHtml = '';
+  if(locked){
+    const wrongList = Object.keys(q.whyWrong).map(k=>{
+      return `<p><span class="label">${String.fromCharCode(65+(+k))}.</span> ${q.whyWrong[k]}</p>`;
+    }).join('');
+    expHtml = `
+      <div class="explanation" id="exp">
+        <h4>💡 Giải thích</h4>
+        <p><span class="label">Đáp án đúng:</span> ${String.fromCharCode(65+q.correct)}</p>
+        <p><span class="label">Vì sao đúng:</span> ${q.why.replace(/\n/g,'<br>')}</p>
+        <p><span class="label">Vì sao các phương án còn lại sai:</span></p>
+        ${wrongList}
+        <div class="topic">📚 <strong>Liên hệ FE:</strong> ${q.topic}</div>
+      </div>`;
+  }
+
+  quizArea.innerHTML = `
+    <div class="card">
+      <span class="difficulty ${diffClass(q.diff)}">${diffLabel(q.diff)}</span>
+      <p class="question"><strong>Câu ${q.id}.</strong> ${q.q.replace(/\n/g,'<br>')}
+        <span class="ja">${q.ja}</span></p>
+      <div class="options">${opts}</div>
+      ${expHtml}
+      <div class="actions">
+        <button class="secondary" id="prev-btn" ${current===0?'disabled':''}>← Câu trước</button>
+        ${locked ? `<button id="toggle-exp" class="amber">Xem / Ẩn giải thích</button>` : ''}
+        <button id="next-btn" ${!locked?'disabled':''}>${current===questions.length-1?'Kết thúc & Xem kết quả':'Câu tiếp →'}</button>
+      </div>
+    </div>
+  `;
+
+  if(!locked){
+    quizArea.querySelectorAll('.option').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        const idx = +el.dataset.idx;
+        answers[current] = idx;
+        render();
+        updateProgress();
+      });
+    });
+  }
+
+  document.getElementById('prev-btn').addEventListener('click', ()=>{if(current>0){current--; render(); updateProgress();}});
+  document.getElementById('next-btn').addEventListener('click', ()=>{current++; render(); updateProgress();});
+  const tex = document.getElementById('toggle-exp');
+  if(tex){
+    const expDiv = document.getElementById('exp');
+    expDiv.classList.add('show');
+    tex.addEventListener('click', ()=>{ expDiv.classList.toggle('show'); });
+  }
+}
+
+function updateProgress(){
+  if(current >= questions.length){
+    progressWrap.style.display = 'none';
+    return;
+  }
+  progressText.textContent = `Câu ${current+1} / ${questions.length}`;
+  const answered = answers.filter(a=>a!==null).length;
+  answeredCount.textContent = `Đã trả lời: ${answered}`;
+  progressFill.style.width = ((current+1)/questions.length*100)+'%';
+}
+
+function renderResult(){
+  quizArea.style.display='none';
+  resultArea.style.display='block';
+  progressWrap.style.display='none';
+
+  const totals = {easy:{c:0,t:0}, mid:{c:0,t:0}, hard:{c:0,t:0}};
+  let score = 0;
+  questions.forEach((q,i)=>{
+    totals[q.diff].t++;
+    if(answers[i]===q.correct){score++; totals[q.diff].c++;}
+  });
+  const pct = Math.round(score/questions.length*100);
+  let verdict, vClass;
+  if(pct >= 80){verdict='🌟 Xuất sắc! Em đã nắm chắc AI + 確率/期待値 — sẵn sàng cho 科目A!'; vClass='v-excellent'}
+  else if(pct >= 60){verdict='👍 Khá tốt! Cần ôn lại một số điểm chi tiết, đặc biệt phần 期待値 và bài tập tính toán.'; vClass='v-good'}
+  else{verdict='💪 Cần cố gắng thêm! Hãy ôn lại Yasashii 02-05 + 20-03 và Slide 1 第10回 rồi làm lại.'; vClass='v-needs-work'}
+
+  resultArea.innerHTML = `
+    <div class="card result">
+      <h2>🎉 Hoàn thành bài kiểm tra!</h2>
+      <div class="score-big">${score} / ${questions.length}</div>
+      <div class="score-pct">Đạt ${pct}%</div>
+      <div class="verdict ${vClass}">${verdict}</div>
+      <div class="breakdown">
+        <div class="breakdown-item">
+          <div class="lbl">🟢 Dễ / 易</div>
+          <div class="val">${totals.easy.c} / ${totals.easy.t}</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="lbl">🟡 TB / 中</div>
+          <div class="val">${totals.mid.c} / ${totals.mid.t}</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="lbl">🔴 Khó / 難</div>
+          <div class="val">${totals.hard.c} / ${totals.hard.t}</div>
+        </div>
+      </div>
+      <button id="restart-btn">🔁 Làm lại từ đầu</button>
+      <button class="secondary" id="review-btn">📖 Xem lại bài</button>
+    </div>
+  `;
+  document.getElementById('restart-btn').addEventListener('click', ()=>{
+    current=0; answers=new Array(questions.length).fill(null);
+    quizArea.style.display='block'; resultArea.style.display='none'; progressWrap.style.display='block';
+    render(); updateProgress();
+  });
+  document.getElementById('review-btn').addEventListener('click', ()=>{
+    current=0;
+    quizArea.style.display='block'; resultArea.style.display='none'; progressWrap.style.display='block';
+    render(); updateProgress();
+  });
+}
+
+render();
+updateProgress();
+</script>
+</body>
+</html>

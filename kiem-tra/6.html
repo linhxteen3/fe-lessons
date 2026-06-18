@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>半加算器・全加算器と論理回路 | Mạch logic - FE Study</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Sans', 'Yu Gothic', 'Meiryo', 'Segoe UI', sans-serif;
+    line-height: 1.7;
+    color: #2c3e50;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8edf3 100%);
+    padding: 20px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 25px rgba(102,126,234,0.3);
+  }
+  header h1 { font-size: 28px; margin-bottom: 8px; }
+  header .subtitle { font-size: 16px; opacity: 0.95; }
+  section {
+    background: white;
+    padding: 28px;
+    border-radius: 12px;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+  }
+  h2 {
+    color: #667eea;
+    font-size: 22px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #e8edf3;
+  }
+  h3 {
+    color: #4a5568;
+    font-size: 18px;
+    margin: 18px 0 10px;
+  }
+  h4 { color: #2d3748; margin: 12px 0 6px; font-size: 16px; }
+  p { margin-bottom: 10px; }
+  ul, ol { margin: 8px 0 12px 24px; }
+  li { margin-bottom: 5px; }
+  .lang-block {
+    background: #f8f9fc;
+    border-left: 4px solid #667eea;
+    padding: 12px 16px;
+    margin: 10px 0;
+    border-radius: 6px;
+  }
+  .lang-block.jp { border-left-color: #e74c3c; }
+  .lang-block.vi { border-left-color: #f39c12; }
+  .lang-block.en { border-left-color: #3498db; }
+  .lang-label {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 6px;
+    display: inline-block;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  th {
+    background: #667eea;
+    color: white;
+    padding: 10px;
+    text-align: center;
+  }
+  td {
+    padding: 9px;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+  }
+  tr:nth-child(even) td { background: #f8f9fc; }
+  .highlight {
+    background: #fff5cc;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+  .formula {
+    background: #f0f4ff;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-family: 'Consolas', monospace;
+    margin: 8px 0;
+    border-left: 3px solid #667eea;
+  }
+  .example-box {
+    background: #fef9f3;
+    border: 1px solid #f5c97a;
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin: 10px 0;
+  }
+  .example-box .label {
+    color: #d97706;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  .ascii-diagram {
+    background: #1a202c;
+    color: #e2e8f0;
+    padding: 16px;
+    border-radius: 8px;
+    font-family: 'Consolas', 'Courier New', monospace;
+    white-space: pre;
+    overflow-x: auto;
+    margin: 10px 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  /* Flashcards */
+  .flashcards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+  }
+  .flashcard {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    height: 180px;
+    border-radius: 12px;
+    perspective: 1000px;
+    cursor: pointer;
+    position: relative;
+  }
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
+  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    text-align: center;
+    border-radius: 12px;
+    font-size: 15px;
+  }
+  .flashcard-front {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .flashcard-back {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    transform: rotateY(180deg);
+    font-size: 13px;
+  }
+  /* Quiz */
+  .quiz-item {
+    background: #f8f9fc;
+    padding: 16px 20px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    border-left: 4px solid #667eea;
+  }
+  .quiz-question { font-weight: bold; margin-bottom: 10px; }
+  .quiz-options label {
+    display: block;
+    padding: 6px 10px;
+    margin: 4px 0;
+    background: white;
+    border: 1px solid #d6dee8;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .quiz-options label:hover { background: #e8edf3; }
+  .quiz-options input { margin-right: 8px; }
+  .check-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 14px;
+  }
+  .check-btn:hover { opacity: 0.9; }
+  .result {
+    margin-top: 12px;
+    padding: 10px;
+    border-radius: 6px;
+    font-weight: bold;
+    display: none;
+  }
+  .result.correct { background: #d4edda; color: #155724; }
+  .result.incorrect { background: #f8d7da; color: #721c24; }
+  .mindmap-container {
+    background: #fafbfc;
+    padding: 18px;
+    border-radius: 10px;
+    overflow-x: auto;
+    text-align: center;
+  }
+  .mindmap-container svg { max-width: 100%; height: auto; }
+  .nav-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .nav-pills a {
+    background: white;
+    color: #667eea;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: all 0.2s;
+  }
+  .nav-pills a:hover {
+    background: #667eea;
+    color: white;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>半加算器・全加算器と論理回路</h1>
+  <div class="subtitle">Mạch logic: Bộ cộng nửa và Bộ cộng đầy đủ | FE Study - 基礎理論 第8回</div>
+</header>
+
+<nav class="nav-pills">
+  <a href="#part1">① 理論</a>
+  <a href="#part2">② 例</a>
+  <a href="#part3">③ Flashcard</a>
+  <a href="#part4">④ 問題</a>
+  <a href="#part5">⑤ Mind Map</a>
+</nav>
+
+<!-- =============== PART 1: 理論 =============== -->
+<section id="part1">
+<h2>📘 Phần 1 — Tóm tắt lý thuyết</h2>
+
+<h3>1. 加算器 (Adder) - Bộ cộng là gì?</h3>
+<div class="lang-block jp">
+  <span class="lang-label">🇯🇵 日本語</span><br>
+  <strong>加算器</strong>とは、<span class="highlight">論理演算を活用して疑似的に2進数の足し算を行う電子回路</span>のこと。半加算器と全加算器の2種類がある。
+</div>
+<div class="lang-block vi">
+  <span class="lang-label">🇻🇳 Tiếng Việt</span><br>
+  <strong>Bộ cộng (Adder)</strong> là <span class="highlight">mạch điện tử mô phỏng phép cộng số nhị phân bằng cách dùng các phép toán logic</span>. Có 2 loại: bộ cộng nửa và bộ cộng đầy đủ.
+</div>
+<div class="lang-block en">
+  <span class="lang-label">🇬🇧 English</span><br>
+  An <strong>Adder</strong> is <span class="highlight">an electronic circuit that performs binary addition using logic operations</span>. Two main types: half adder and full adder.
+</div>
+
+<div class="example-box">
+  <div class="label">💡 Ví von đời thực:</div>
+  Hãy tưởng tượng máy tính giống một đứa bé chỉ biết bật/tắt công tắc (1/0). Bộ cộng giống như "bàn tính" được lắp từ các công tắc đó để máy có thể cộng số nhị phân.
+</div>
+
+<h3>2. 半加算器 (Half Adder - HA) - Bộ cộng nửa</h3>
+<div class="lang-block jp">
+  <span class="lang-label">🇯🇵 日本語</span><br>
+  <strong>半加算器</strong>は、<span class="highlight">2つの2進数を加算して同桁の値（S: Sum）と繰上り（C: Carry）を出力する回路</span>。<strong>下位桁からの繰上りを考慮しない</strong>。
+</div>
+<div class="lang-block vi">
+  <span class="lang-label">🇻🇳 Tiếng Việt</span><br>
+  <strong>Bộ cộng nửa</strong> là mạch <span class="highlight">cộng 2 bit nhị phân và xuất ra giá trị cùng hàng (S) và bit nhớ (C)</span>. <strong>KHÔNG xét đến bit nhớ từ hàng dưới</strong> mang lên.
+</div>
+<div class="lang-block en">
+  <span class="lang-label">🇬🇧 English</span><br>
+  A <strong>Half Adder</strong> adds 2 binary digits and outputs <span class="highlight">Sum (S) and Carry (C)</span>. It <strong>does NOT consider carry-in</strong> from a lower digit.
+</div>
+
+<h4>📋 Bảng chân lý của 半加算器 (Truth Table)</h4>
+<table>
+  <thead>
+    <tr><th colspan="2">入力 (Input)</th><th colspan="2">出力 (Output)</th></tr>
+    <tr><th>X</th><th>Y</th><th>S (和=和の1桁目)</th><th>C (桁上がり=Carry)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+  </tbody>
+</table>
+
+<p>👉 Nhìn vào bảng:</p>
+<ul>
+  <li><strong>S (和の1桁目)</strong> = giống bảng chân lý <span class="highlight">XOR (排他的論理和)</span>: X ⊕ Y</li>
+  <li><strong>C (桁上がり)</strong> = giống bảng chân lý <span class="highlight">AND (論理積)</span>: X · Y</li>
+</ul>
+
+<div class="formula">
+S = X ⊕ Y  &nbsp;(XOR)<br>
+C = X · Y  &nbsp;(AND)
+</div>
+
+<h4>🔌 Sơ đồ mạch 半加算器</h4>
+<div class="ascii-diagram">
+入力                          出力
+              ┌─────────┐
+   X ────┬───▶│  AND    │────▶ C (桁上がり / Carry)
+         │    │  回路   │
+         │    └─────────┘
+         │    ┌─────────┐
+   Y ────┼───▶│  XOR    │────▶ S (和の1桁目 / Sum)
+         │    │  回路   │
+         └───▶└─────────┘
+</div>
+
+<h3>3. 全加算器 (Full Adder - FA) - Bộ cộng đầy đủ</h3>
+<div class="lang-block jp">
+  <span class="lang-label">🇯🇵 日本語</span><br>
+  <strong>全加算器</strong>とは、<span class="highlight">2進数のたし算において、下の位からの桁上がりを考慮する加算回路</span>。入力は<strong>3つ（X、Y、Z）</strong>。Z = 下位からの桁上がり。
+</div>
+<div class="lang-block vi">
+  <span class="lang-label">🇻🇳 Tiếng Việt</span><br>
+  <strong>Bộ cộng đầy đủ</strong> là mạch cộng <span class="highlight">CÓ xét đến bit nhớ từ hàng dưới mang lên</span>. Có <strong>3 đầu vào (X, Y, Z)</strong> trong đó Z = carry-in từ hàng dưới.
+</div>
+<div class="lang-block en">
+  <span class="lang-label">🇬🇧 English</span><br>
+  A <strong>Full Adder</strong> performs binary addition <span class="highlight">while considering the carry-in from the lower digit</span>. It has <strong>3 inputs (X, Y, Z)</strong> where Z is carry-in.
+</div>
+
+<h4>📋 Bảng chân lý của 全加算器 (8 patterns)</h4>
+<table>
+  <thead>
+    <tr><th colspan="3">入力 (Input)</th><th colspan="2">出力 (Output)</th></tr>
+    <tr><th>X</th><th>Y</th><th>Z</th><th>C (桁上がり)</th><th>S (和の1桁目)</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+    <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+    <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+    <tr><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+    <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+    <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+  </tbody>
+</table>
+
+<h4>🔌 Sơ đồ mạch 全加算器 (= 2 × 半加算器 + 1 × OR)</h4>
+<div class="ascii-diagram">
+下の位からの
+桁上がり (Z)
+   │
+   │     ┌──────────┐         ┌──────┐
+   X ───▶│ 半加算器 ├────────▶│      │
+   Y ───▶│   #1     │  C1     │ OR   │───▶ C (桁上がり)
+         └────┬─────┘         │ 回路 │
+              │ S1            │      │
+              ▼               └──────┘
+         ┌──────────┐             ▲
+   Z ───▶│ 半加算器 ├──── C2 ─────┘
+         │   #2     │
+         └────┬─────┘
+              │
+              ▼
+              S ─────▶ 和の1桁目
+</div>
+
+<h3>4. 半加算器と全加算器の使い分け - Khi nào dùng cái nào?</h3>
+<div class="lang-block jp">
+  <span class="lang-label">🇯🇵 日本語</span><br>
+  ・<strong>1桁目（最下位ビット）</strong>： 下位がないので桁上がりを考慮する必要がない → <span class="highlight">半加算器</span><br>
+  ・<strong>2桁目以上</strong>： 下位からの桁上がりを考慮する必要がある → <span class="highlight">全加算器</span>
+</div>
+<div class="lang-block vi">
+  <span class="lang-label">🇻🇳 Tiếng Việt</span><br>
+  ・<strong>Bit hàng đơn vị (LSB)</strong>: không có hàng dưới → dùng <span class="highlight">Half Adder</span><br>
+  ・<strong>Bit từ hàng 2 trở lên</strong>: phải nhận carry từ dưới → dùng <span class="highlight">Full Adder</span>
+</div>
+<div class="lang-block en">
+  <span class="lang-label">🇬🇧 English</span><br>
+  ・<strong>LSB (1st bit)</strong>: no lower bit, no carry-in needed → use <span class="highlight">Half Adder</span><br>
+  ・<strong>2nd bit and above</strong>: must handle carry-in → use <span class="highlight">Full Adder</span>
+</div>
+
+<h3>5. 主な論理回路 (6 loại mạch logic chính)</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>回路名 / Tên mạch</th>
+      <th>論理式</th>
+      <th>説明 (Mô tả)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>AND (論理積)</strong></td>
+      <td>A · B</td>
+      <td>Cả 2 đầu vào đều là 1 → 1<br>(両方が1のときのみ1)</td>
+    </tr>
+    <tr>
+      <td><strong>OR (論理和)</strong></td>
+      <td>A + B</td>
+      <td>Ít nhất 1 đầu vào là 1 → 1<br>(少なくとも一方が1なら1)</td>
+    </tr>
+    <tr>
+      <td><strong>NOT (否定)</strong></td>
+      <td>Ā</td>
+      <td>Đảo ngược giá trị đầu vào<br>(入力の反対が出力)</td>
+    </tr>
+    <tr>
+      <td><strong>NAND (否定論理積)</strong></td>
+      <td>(A · B) gạch trên</td>
+      <td>AND rồi đảo ngược<br>(論理積の結果と逆)</td>
+    </tr>
+    <tr>
+      <td><strong>NOR (否定論理和)</strong></td>
+      <td>(A + B) gạch trên</td>
+      <td>OR rồi đảo ngược<br>(論理和の結果と逆)</td>
+    </tr>
+    <tr>
+      <td><strong>XOR (排他的論理和)</strong></td>
+      <td>A ⊕ B</td>
+      <td>2 đầu vào khác nhau → 1, giống nhau → 0<br>(異なるとき1、同じとき0)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>📋 Bảng chân lý 6 mạch cơ bản</h4>
+<table>
+  <thead>
+    <tr><th>A</th><th>B</th><th>AND<br>(A·B)</th><th>OR<br>(A+B)</th><th>NAND</th><th>NOR</th><th>XOR<br>(A⊕B)</th><th>NOT A</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+    <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+    <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+    <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+  </tbody>
+</table>
+
+</section>
+
+<!-- =============== PART 2: 例 =============== -->
+<section id="part2">
+<h2>💡 Phần 2 — Ví dụ minh hoạ</h2>
+
+<h3>Ví dụ 1: 半加算器 hoạt động — Cộng 1 + 1</h3>
+<div class="example-box">
+  <div class="label">🔢 入力: X=1, Y=1</div>
+  Tính từng bước:<br>
+  ① S = X ⊕ Y = 1 ⊕ 1 = <strong>0</strong> (vì XOR cho ra 0 khi 2 đầu vào giống nhau)<br>
+  ② C = X · Y = 1 · 1 = <strong>1</strong> (vì AND cho ra 1 khi cả 2 đều là 1)<br>
+  → Kết quả: <strong>CS = 10</strong> (= 2 trong hệ thập phân, đúng vì 1+1=2)
+</div>
+
+<h3>Ví dụ 2: 全加算器 hoạt động — 平成21年・秋期 問25</h3>
+<div class="example-box">
+  <div class="label">🔢 入力: X=1, Y=0, Z=1</div>
+  Đây là bài toán thi thật. X, Y, Z là 3 bit cần cộng:<br>
+  &nbsp;&nbsp;&nbsp;X = 1<br>
+  &nbsp;&nbsp;&nbsp;Y = 0<br>
+  &nbsp;&nbsp;+ Z = 1<br>
+  &nbsp;&nbsp;━━━━━<br>
+  &nbsp;&nbsp;CS = <strong>10</strong> (= 2 trong hệ thập phân)<br><br>
+  → 桁上がり C = <strong>1</strong>, 和の1桁目 S = <strong>0</strong> &nbsp;<strong>（答）ウ</strong>
+</div>
+
+<h3>Ví dụ 3: 半加算器 = AND + XOR — 平成29年・春期 問22</h3>
+<div class="example-box">
+  <div class="label">🧩 Đề: trong sơ đồ 半加算器, mạch A và mạch B là gì?</div>
+  Quan sát bảng chân lý:<br>
+  ・"1桁目" (S) ứng với XOR → A = <strong>排他的論理和 (XOR)</strong><br>
+  ・"桁上げ" (C) ứng với AND → B = <strong>論理積 (AND)</strong><br>
+  <strong>（答）ア</strong>
+</div>
+
+<h3>Ví dụ 4: Logic gates trong đời thực</h3>
+<div class="example-box">
+  <div class="label">🏪 So sánh với "tiêu chí chọn quán ăn"</div>
+  ・<strong>AND</strong>: quán phải <em>vừa rẻ vừa ngon</em> → cả 2 đúng mới chọn<br>
+  ・<strong>OR</strong>: quán chỉ cần <em>rẻ HOẶC ngon</em> → 1 trong 2 đúng là chọn<br>
+  ・<strong>XOR</strong>: quán chỉ rẻ HOẶC chỉ ngon (chứ không cả hai) → "tôi muốn quán đặc biệt!"
+</div>
+
+</section>
+
+<!-- =============== PART 3: Flashcard =============== -->
+<section id="part3">
+<h2>🃏 Phần 3 — Flashcards (Bấm để lật)</h2>
+<p style="color:#718096; font-size:14px; margin-bottom:12px;">Click vào mỗi thẻ để xem mặt sau.</p>
+
+<div class="flashcards-grid" id="flashcards">
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="flashcard-inner">
+      <div class="flashcard-front">加算器 (かさんき) là gì?</div>
+      <div class="flashcard-back">Mạch điện tử thực hiện phép cộng nhị phân bằng các phép toán logic. Có 2 loại: 半加算器 và 全加算器.</div>
+    </div>
+  </div>
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="flashcard-inner">
+      <div class="flashcard-front">半加算器 (HA) khác 全加算器 (FA) ở điểm nào?</div>
+      <div class="flashcard-back">HA không xét carry-in (2 đầu vào), FA có xét carry-in từ hàng dưới (3 đầu vào).</div>
+    </div>
+  </div>
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="flashcard-inner">
+      <div class="flashcard-front">S và C trong 半加算器 là gì?</div>
+      <div class="flashcard-back">S = Sum (和 = tổng cùng hàng), C = Carry (桁上がり = bit nhớ sang hàng trên).</div>
+    </div>
+  </div>
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="flashcard-inner">
+      <div class="flashcard-front">半加算器 dùng những mạch nào?</div>
+      <div class="flashcard-back">XOR (排他的論理和) để tính S, và AND (論理積) để tính C.</div>
+    </div>
+  </div>
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="flashcard-inner">
+      <div class="flashcard-front">全加算器 được cấu tạo từ?</div>
+      <div class="flashcard-back">2 × 半加算器 + 1 × OR (論理和) gate.</div>
+    </div>
+  </div>
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="flashcard-inner">
+      <div class="flashcard-front">AND (論理積) cho ra 1 khi nào?</div>
+      <div class="flashcard-back">Khi CẢ 2 đầu vào đều là 1. (両方が1のときのみ1)</div>
+    </div>
+  </div>
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="flashcard-inner">
+      <div class="flashcard-front">OR (論理和) cho ra 1 khi nào?</div>
+      <div class="flashcard-back">Khi ÍT NHẤT 1 đầu vào là 1. (少なくとも一方が1なら1)</div>
+    </div>
+  </div>
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="flashcard-inner">
+      <div class="flashcard-front">XOR (排他的論理和) cho ra 1 khi nào?</div>
+      <div class="flashcard-back">Khi 2 đầu vào KHÁC NHAU. (異なるときに1、同じときに0)</div>
+    </div>
+  </div>
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="flashcard-inner">
+      <div class="flashcard-front">NAND khác AND ở điểm gì?</div>
+      <div class="flashcard-back">NAND = NOT AND. Kết quả ngược lại AND. (0001 → 1110)</div>
+    </div>
+  </div>
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="flashcard-inner">
+      <div class="flashcard-front">Khi cộng 1 byte (8 bit), cần bao nhiêu HA và FA?</div>
+      <div class="flashcard-back">1 × 半加算器 cho bit LSB + 7 × 全加算器 cho 7 bit còn lại.</div>
+    </div>
+  </div>
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="flashcard-inner">
+      <div class="flashcard-front">MIL記号 là gì?</div>
+      <div class="flashcard-back">Ký hiệu chuẩn để vẽ các loại cổng logic (AND, OR, NOT, XOR...) trong sơ đồ mạch.</div>
+    </div>
+  </div>
+  <div class="flashcard" onclick="this.classList.toggle('flipped')">
+    <div class="flashcard-inner">
+      <div class="flashcard-front">真理値表 (しんりちひょう) là gì?</div>
+      <div class="flashcard-back">Truth Table - Bảng liệt kê tất cả tổ hợp đầu vào và đầu ra tương ứng của 1 mạch logic.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- =============== PART 4: Quiz =============== -->
+<section id="part4">
+<h2>❓ Phần 4 — Câu hỏi ôn tập</h2>
+<p style="color:#718096; font-size:14px; margin-bottom:12px;">Chọn đáp án rồi bấm "Kiểm tra".</p>
+
+<div id="quiz">
+
+<div class="quiz-item">
+  <div class="quiz-question">Q1. 半加算器 (Half Adder) có bao nhiêu đầu vào?</div>
+  <div class="quiz-options">
+    <label><input type="radio" name="q1" value="A"> A. 1</label>
+    <label><input type="radio" name="q1" value="B"> B. 2</label>
+    <label><input type="radio" name="q1" value="C"> C. 3</label>
+    <label><input type="radio" name="q1" value="D"> D. 4</label>
+  </div>
+  <button class="check-btn" onclick="checkAnswer('q1','B','半加算器 chỉ cộng 2 bit, không có carry-in.')">Kiểm tra</button>
+  <div class="result" id="result-q1"></div>
+</div>
+
+<div class="quiz-item">
+  <div class="quiz-question">Q2. Trong 半加算器, S (Sum) được tính bằng phép toán logic nào?</div>
+  <div class="quiz-options">
+    <label><input type="radio" name="q2" value="A"> A. AND (論理積)</label>
+    <label><input type="radio" name="q2" value="B"> B. OR (論理和)</label>
+    <label><input type="radio" name="q2" value="C"> C. XOR (排他的論理和)</label>
+    <label><input type="radio" name="q2" value="D"> D. NOT (否定)</label>
+  </div>
+  <button class="check-btn" onclick="checkAnswer('q2','C','S = X ⊕ Y (XOR). Vì XOR cho ra 1 khi 2 đầu vào khác nhau, đúng với cách cộng 0+1=1, 1+0=1, 1+1=10 (S=0).')">Kiểm tra</button>
+  <div class="result" id="result-q2"></div>
+</div>
+
+<div class="quiz-item">
+  <div class="quiz-question">Q3. Trong 半加算器, C (Carry) được tính bằng phép toán logic nào?</div>
+  <div class="quiz-options">
+    <label><input type="radio" name="q3" value="A"> A. AND (論理積)</label>
+    <label><input type="radio" name="q3" value="B"> B. OR (論理和)</label>
+    <label><input type="radio" name="q3" value="C"> C. XOR (排他的論理和)</label>
+    <label><input type="radio" name="q3" value="D"> D. NAND (否定論理積)</label>
+  </div>
+  <button class="check-btn" onclick="checkAnswer('q3','A','C = X · Y (AND). Chỉ khi cả 2 đều là 1 mới sinh ra carry (vì 1+1=10).')">Kiểm tra</button>
+  <div class="result" id="result-q3"></div>
+</div>
+
+<div class="quiz-item">
+  <div class="quiz-question">Q4. Khi cộng X=1, Y=1, Z=1 trong 全加算器, kết quả CS là?</div>
+  <div class="quiz-options">
+    <label><input type="radio" name="q4" value="A"> A. CS = 00</label>
+    <label><input type="radio" name="q4" value="B"> B. CS = 01</label>
+    <label><input type="radio" name="q4" value="C"> C. CS = 10</label>
+    <label><input type="radio" name="q4" value="D"> D. CS = 11</label>
+  </div>
+  <button class="check-btn" onclick="checkAnswer('q4','D','1+1+1 = 3 (thập phân) = 11 (nhị phân). Vậy C=1, S=1.')">Kiểm tra</button>
+  <div class="result" id="result-q4"></div>
+</div>
+
+<div class="quiz-item">
+  <div class="quiz-question">Q5. 全加算器 được cấu tạo từ những gì?</div>
+  <div class="quiz-options">
+    <label><input type="radio" name="q5" value="A"> A. 1 半加算器 + 1 AND</label>
+    <label><input type="radio" name="q5" value="B"> B. 2 半加算器 + 1 OR (論理和)</label>
+    <label><input type="radio" name="q5" value="C"> C. 3 半加算器</label>
+    <label><input type="radio" name="q5" value="D"> D. 1 AND + 1 OR + 1 XOR</label>
+  </div>
+  <button class="check-btn" onclick="checkAnswer('q5','B','全加算器 = 2 × 半加算器 + 1 × OR gate. 2 HA xử lý 3 đầu vào, OR gộp 2 carry lại.')">Kiểm tra</button>
+  <div class="result" id="result-q5"></div>
+</div>
+
+<div class="quiz-item">
+  <div class="quiz-question">Q6. Khi cộng 1 chuỗi 8-bit, mạch nào dùng cho bit LSB (hàng đơn vị)?</div>
+  <div class="quiz-options">
+    <label><input type="radio" name="q6" value="A"> A. 半加算器, vì không có hàng dưới nên không cần carry-in</label>
+    <label><input type="radio" name="q6" value="B"> B. 全加算器, vì luôn cần xét carry</label>
+    <label><input type="radio" name="q6" value="C"> C. Tùy theo giá trị bit</label>
+    <label><input type="radio" name="q6" value="D"> D. Cần cả 2 mạch</label>
+  </div>
+  <button class="check-btn" onclick="checkAnswer('q6','A','LSB không có hàng dưới → không có carry-in → 半加算器 là đủ.')">Kiểm tra</button>
+  <div class="result" id="result-q6"></div>
+</div>
+
+<div class="quiz-item">
+  <div class="quiz-question">Q7. Mạch XOR cho ra 1 trong trường hợp nào?</div>
+  <div class="quiz-options">
+    <label><input type="radio" name="q7" value="A"> A. Cả 2 đầu vào là 0</label>
+    <label><input type="radio" name="q7" value="B"> B. Cả 2 đầu vào là 1</label>
+    <label><input type="radio" name="q7" value="C"> C. 2 đầu vào giống nhau</label>
+    <label><input type="radio" name="q7" value="D"> D. 2 đầu vào khác nhau</label>
+  </div>
+  <button class="check-btn" onclick="checkAnswer('q7','D','XOR = 排他的論理和: khi 2 đầu vào KHÁC NHAU thì cho ra 1 (0⊕1=1, 1⊕0=1).')">Kiểm tra</button>
+  <div class="result" id="result-q7"></div>
+</div>
+
+<div class="quiz-item">
+  <div class="quiz-question">Q8. Phát biểu nào về 全加算器 là ĐÚNG?</div>
+  <div class="quiz-options">
+    <label><input type="radio" name="q8" value="A"> A. Có 2 đầu vào và 2 đầu ra</label>
+    <label><input type="radio" name="q8" value="B"> B. Không xét carry-in từ hàng dưới</label>
+    <label><input type="radio" name="q8" value="C"> C. Có 3 đầu vào (X, Y, carry-in) và 2 đầu ra (S, C)</label>
+    <label><input type="radio" name="q8" value="D"> D. Chỉ dùng được cho số 1 bit</label>
+  </div>
+  <button class="check-btn" onclick="checkAnswer('q8','C','全加算器 nhận 3 input (X, Y, Z=carry-in) và xuất ra 2 output: S (sum) và C (carry-out). Có 8 patterns (2³=8).')">Kiểm tra</button>
+  <div class="result" id="result-q8"></div>
+</div>
+
+<div class="quiz-item">
+  <div class="quiz-question">Q9. NAND là kết hợp của 2 phép toán nào?</div>
+  <div class="quiz-options">
+    <label><input type="radio" name="q9" value="A"> A. AND + OR</label>
+    <label><input type="radio" name="q9" value="B"> B. AND + NOT</label>
+    <label><input type="radio" name="q9" value="C"> C. OR + NOT</label>
+    <label><input type="radio" name="q9" value="D"> D. XOR + NOT</label>
+  </div>
+  <button class="check-btn" onclick="checkAnswer('q9','B','NAND = NOT AND = 否定論理積. Kết quả là AND rồi đảo ngược.')">Kiểm tra</button>
+  <div class="result" id="result-q9"></div>
+</div>
+
+<div class="quiz-item">
+  <div class="quiz-question">Q10. Cộng 2 số 1 byte (8 bit), tối thiểu cần bao nhiêu 全加算器?</div>
+  <div class="quiz-options">
+    <label><input type="radio" name="q10" value="A"> A. 0 (chỉ cần 半加算器)</label>
+    <label><input type="radio" name="q10" value="B"> B. 1</label>
+    <label><input type="radio" name="q10" value="C"> C. 7</label>
+    <label><input type="radio" name="q10" value="D"> D. 8</label>
+  </div>
+  <button class="check-btn" onclick="checkAnswer('q10','C','LSB (bit 1) dùng 半加算器, 7 bit còn lại (bit 2-8) cần 全加算器 để xét carry-in. Tổng: 1 HA + 7 FA.')">Kiểm tra</button>
+  <div class="result" id="result-q10"></div>
+</div>
+
+</div>
+
+<h3 style="margin-top:24px;">📝 Đáp án tóm tắt</h3>
+<table>
+  <thead><tr><th>Câu</th><th>Đáp án</th><th>Câu</th><th>Đáp án</th></tr></thead>
+  <tbody>
+    <tr><td>Q1</td><td>B</td><td>Q6</td><td>A</td></tr>
+    <tr><td>Q2</td><td>C</td><td>Q7</td><td>D</td></tr>
+    <tr><td>Q3</td><td>A</td><td>Q8</td><td>C</td></tr>
+    <tr><td>Q4</td><td>D</td><td>Q9</td><td>B</td></tr>
+    <tr><td>Q5</td><td>B</td><td>Q10</td><td>C</td></tr>
+  </tbody>
+</table>
+
+</section>
+
+<!-- =============== PART 5: Mind Map SVG =============== -->
+<section id="part5">
+<h2>🗺️ Phần 5 — Mind Map</h2>
+<div class="mindmap-container">
+<svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg" font-family="Hiragino Sans, Yu Gothic, sans-serif">
+  <!-- Central node -->
+  <ellipse cx="600" cy="400" rx="110" ry="55" fill="#667eea" stroke="#4c51bf" stroke-width="3"/>
+  <text x="600" y="395" text-anchor="middle" fill="white" font-size="18" font-weight="bold">加算器と</text>
+  <text x="600" y="418" text-anchor="middle" fill="white" font-size="18" font-weight="bold">論理回路</text>
+
+  <!-- Branch 1: 半加算器 (red) - upper left -->
+  <path d="M 510 370 Q 350 280 220 220" stroke="#e74c3c" stroke-width="3" fill="none"/>
+  <rect x="100" y="190" width="240" height="60" rx="12" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+  <text x="220" y="215" text-anchor="middle" fill="white" font-size="16" font-weight="bold">半加算器</text>
+  <text x="220" y="238" text-anchor="middle" fill="white" font-size="13">Half Adder (HA)</text>
+
+  <!-- Sub branches of 半加算器 -->
+  <path d="M 220 250 Q 130 290 60 330" stroke="#e74c3c" stroke-width="2" fill="none"/>
+  <rect x="10" y="320" width="170" height="40" rx="8" fill="#fadbd8" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="95" y="346" text-anchor="middle" fill="#922b21" font-size="13">入力2つ (X, Y)</text>
+
+  <path d="M 220 250 Q 200 320 195 380" stroke="#e74c3c" stroke-width="2" fill="none"/>
+  <rect x="105" y="380" width="180" height="40" rx="8" fill="#fadbd8" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="195" y="405" text-anchor="middle" fill="#922b21" font-size="13">S = X XOR Y</text>
+
+  <path d="M 220 250 Q 300 320 320 380" stroke="#e74c3c" stroke-width="2" fill="none"/>
+  <rect x="230" y="380" width="180" height="40" rx="8" fill="#fadbd8" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="320" y="405" text-anchor="middle" fill="#922b21" font-size="13">C = X AND Y</text>
+
+  <path d="M 220 250 Q 130 130 60 100" stroke="#e74c3c" stroke-width="2" fill="none"/>
+  <rect x="10" y="80" width="180" height="40" rx="8" fill="#fadbd8" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="100" y="106" text-anchor="middle" fill="#922b21" font-size="13">桁上がり考慮なし</text>
+
+  <!-- Branch 2: 全加算器 (orange) - upper right -->
+  <path d="M 690 370 Q 850 280 980 220" stroke="#e67e22" stroke-width="3" fill="none"/>
+  <rect x="860" y="190" width="240" height="60" rx="12" fill="#e67e22" stroke="#d35400" stroke-width="2"/>
+  <text x="980" y="215" text-anchor="middle" fill="white" font-size="16" font-weight="bold">全加算器</text>
+  <text x="980" y="238" text-anchor="middle" fill="white" font-size="13">Full Adder (FA)</text>
+
+  <!-- Sub branches of 全加算器 -->
+  <path d="M 980 250 Q 1070 290 1140 330" stroke="#e67e22" stroke-width="2" fill="none"/>
+  <rect x="1020" y="320" width="170" height="40" rx="8" fill="#fae5d3" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="1105" y="346" text-anchor="middle" fill="#a04000" font-size="13">入力3つ (X,Y,Z)</text>
+
+  <path d="M 980 250 Q 990 320 1005 380" stroke="#e67e22" stroke-width="2" fill="none"/>
+  <rect x="915" y="380" width="180" height="40" rx="8" fill="#fae5d3" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="1005" y="405" text-anchor="middle" fill="#a04000" font-size="13">桁上がり考慮あり</text>
+
+  <path d="M 980 250 Q 900 320 880 380" stroke="#e67e22" stroke-width="2" fill="none"/>
+  <rect x="780" y="380" width="190" height="40" rx="8" fill="#fae5d3" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="875" y="405" text-anchor="middle" fill="#a04000" font-size="12">HA x 2 + OR</text>
+
+  <path d="M 980 250 Q 1080 130 1140 100" stroke="#e67e22" stroke-width="2" fill="none"/>
+  <rect x="1010" y="80" width="180" height="40" rx="8" fill="#fae5d3" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="1100" y="106" text-anchor="middle" fill="#a04000" font-size="13">8パターン</text>
+
+  <!-- Branch 3: 基本論理回路 (blue) - lower left -->
+  <path d="M 530 440 Q 350 540 220 600" stroke="#3498db" stroke-width="3" fill="none"/>
+  <rect x="100" y="580" width="240" height="60" rx="12" fill="#3498db" stroke="#2874a6" stroke-width="2"/>
+  <text x="220" y="605" text-anchor="middle" fill="white" font-size="16" font-weight="bold">基本論理回路</text>
+  <text x="220" y="628" text-anchor="middle" fill="white" font-size="13">Basic Gates</text>
+
+  <!-- Sub branches -->
+  <path d="M 220 640 Q 100 680 50 710" stroke="#3498db" stroke-width="2" fill="none"/>
+  <rect x="10" y="700" width="100" height="40" rx="8" fill="#d6eaf8" stroke="#3498db" stroke-width="1.5"/>
+  <text x="60" y="726" text-anchor="middle" fill="#1b4f72" font-size="13">AND 論理積</text>
+
+  <path d="M 220 640 Q 180 690 175 720" stroke="#3498db" stroke-width="2" fill="none"/>
+  <rect x="125" y="710" width="100" height="40" rx="8" fill="#d6eaf8" stroke="#3498db" stroke-width="1.5"/>
+  <text x="175" y="736" text-anchor="middle" fill="#1b4f72" font-size="13">OR 論理和</text>
+
+  <path d="M 220 640 Q 260 690 285 720" stroke="#3498db" stroke-width="2" fill="none"/>
+  <rect x="235" y="710" width="100" height="40" rx="8" fill="#d6eaf8" stroke="#3498db" stroke-width="1.5"/>
+  <text x="285" y="736" text-anchor="middle" fill="#1b4f72" font-size="13">NOT 否定</text>
+
+  <path d="M 220 640 Q 360 680 400 710" stroke="#3498db" stroke-width="2" fill="none"/>
+  <rect x="345" y="700" width="100" height="40" rx="8" fill="#d6eaf8" stroke="#3498db" stroke-width="1.5"/>
+  <text x="395" y="726" text-anchor="middle" fill="#1b4f72" font-size="13">XOR 排他的</text>
+
+  <!-- Branch 4: 組み合わせ回路 (green) - lower right -->
+  <path d="M 670 440 Q 850 540 980 600" stroke="#27ae60" stroke-width="3" fill="none"/>
+  <rect x="860" y="580" width="240" height="60" rx="12" fill="#27ae60" stroke="#1e8449" stroke-width="2"/>
+  <text x="980" y="605" text-anchor="middle" fill="white" font-size="16" font-weight="bold">組み合わせ回路</text>
+  <text x="980" y="628" text-anchor="middle" fill="white" font-size="13">Combined Gates</text>
+
+  <path d="M 980 640 Q 870 680 820 710" stroke="#27ae60" stroke-width="2" fill="none"/>
+  <rect x="770" y="700" width="120" height="40" rx="8" fill="#d4efdf" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="830" y="726" text-anchor="middle" fill="#0e6251" font-size="13">NAND 否定論理積</text>
+
+  <path d="M 980 640 Q 960 690 950 720" stroke="#27ae60" stroke-width="2" fill="none"/>
+  <rect x="900" y="710" width="120" height="40" rx="8" fill="#d4efdf" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="960" y="736" text-anchor="middle" fill="#0e6251" font-size="13">NOR 否定論理和</text>
+
+  <path d="M 980 640 Q 1090 680 1140 710" stroke="#27ae60" stroke-width="2" fill="none"/>
+  <rect x="1030" y="700" width="155" height="40" rx="8" fill="#d4efdf" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="1107" y="726" text-anchor="middle" fill="#0e6251" font-size="13">真理値表で確認</text>
+
+</svg>
+</div>
+</section>
+
+<footer style="text-align:center; padding:20px; color:#718096; font-size:14px;">
+  📚 基礎理論コース 第8回 — 半加算器と全加算器・論理回路 | FE Study Materials
+</footer>
+
+</div>
+
+<script>
+function checkAnswer(qid, correct, explanation) {
+  const selected = document.querySelector(`input[name="${qid}"]:checked`);
+  const resultDiv = document.getElementById(`result-${qid}`);
+  resultDiv.style.display = 'block';
+  if (!selected) {
+    resultDiv.className = 'result incorrect';
+    resultDiv.style.display = 'block';
+    resultDiv.innerHTML = '⚠️ Vui lòng chọn 1 đáp án';
+    return;
+  }
+  if (selected.value === correct) {
+    resultDiv.className = 'result correct';
+    resultDiv.innerHTML = `✅ Chính xác! ${explanation}`;
+  } else {
+    resultDiv.className = 'result incorrect';
+    resultDiv.innerHTML = `❌ Chưa đúng. Đáp án đúng là <strong>${correct}</strong>. ${explanation}`;
+  }
+}
+</script>
+</body>
+</html>

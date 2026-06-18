@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE Exam — オートマトン・状態遷移 (Máy tự động & Chuyển trạng thái)</title>
+<style>
+  :root{
+    --bg:#0f1218; --card:#171c26; --card2:#1f2632; --accent:#4f8cff; --accent2:#6cd4ff;
+    --green:#22c55e; --red:#ef4444; --amber:#fbbf24;
+    --text:#e6e9ef; --muted:#9aa3b2; --border:#2a3140;
+    --easy:#22c55e; --mid:#fbbf24; --hard:#ef4444;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:20px; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif;
+    background:linear-gradient(135deg,#0f1218 0%,#141a26 100%); color:var(--text); min-height:100vh;
+    line-height:1.6;
+  }
+  .container{max-width:880px; margin:0 auto;}
+  header{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:20px 24px; margin-bottom:16px;}
+  h1{margin:0 0 6px; font-size:1.35rem; color:var(--accent2)}
+  .subtitle{color:var(--muted); font-size:.9rem; margin:0}
+  .meta{display:flex; gap:14px; flex-wrap:wrap; margin-top:10px; font-size:.85rem; color:var(--muted)}
+  .meta span{background:var(--card2); padding:4px 10px; border-radius:8px; border:1px solid var(--border)}
+
+  .progress-wrap{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 16px; margin-bottom:14px;}
+  .progress-info{display:flex; justify-content:space-between; font-size:.9rem; margin-bottom:8px}
+  .progress-bar{height:8px; background:var(--card2); border-radius:99px; overflow:hidden}
+  .progress-fill{height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0; transition:width .3s}
+
+  .card{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:22px 24px; margin-bottom:14px;}
+  .difficulty{display:inline-block; padding:2px 10px; border-radius:99px; font-size:.78rem; font-weight:600; margin-bottom:10px;}
+  .diff-easy{background:rgba(34,197,94,.15); color:var(--easy); border:1px solid rgba(34,197,94,.4)}
+  .diff-mid{background:rgba(251,191,36,.15); color:var(--mid); border:1px solid rgba(251,191,36,.4)}
+  .diff-hard{background:rgba(239,68,68,.15); color:var(--hard); border:1px solid rgba(239,68,68,.4)}
+
+  .question{font-size:1.02rem; margin:0 0 16px; white-space:pre-wrap}
+  .question .ja{display:block; color:var(--muted); font-size:.88rem; margin-top:6px; padding-left:8px; border-left:2px solid var(--border)}
+
+  .options{display:flex; flex-direction:column; gap:8px}
+  .option{background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:12px 16px; cursor:pointer; transition:all .15s; display:flex; align-items:flex-start; gap:10px; user-select:none;}
+  .option:hover:not(.locked){border-color:var(--accent); background:#222a39}
+  .option .key{flex:none; width:26px; height:26px; border-radius:50%; background:var(--border); display:grid; place-items:center; font-weight:700; font-size:.85rem;}
+  .option .body{flex:1}
+  .option.correct{background:rgba(34,197,94,.12); border-color:var(--green)}
+  .option.correct .key{background:var(--green); color:#fff}
+  .option.wrong{background:rgba(239,68,68,.12); border-color:var(--red)}
+  .option.wrong .key{background:var(--red); color:#fff}
+  .option.locked{cursor:not-allowed; opacity:.85}
+  .option.locked:hover{border-color:var(--border)}
+  .option.correct.locked, .option.wrong.locked{opacity:1}
+
+  .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px}
+  button{background:var(--accent); color:#fff; border:0; border-radius:10px; padding:10px 18px; font-size:.95rem; font-weight:600; cursor:pointer; transition:opacity .15s, transform .05s;}
+  button:hover:not(:disabled){opacity:.9}
+  button:active:not(:disabled){transform:translateY(1px)}
+  button:disabled{opacity:.4; cursor:not-allowed}
+  button.secondary{background:var(--card2); color:var(--text); border:1px solid var(--border)}
+  button.amber{background:var(--amber); color:#1a1a1a}
+
+  .explanation{margin-top:14px; padding:14px 16px; border-radius:10px; background:var(--card2); border-left:3px solid var(--accent2); display:none;}
+  .explanation.show{display:block}
+  .explanation h4{margin:0 0 8px; font-size:.95rem; color:var(--accent2)}
+  .explanation p{margin:6px 0; font-size:.92rem}
+  .explanation .label{color:var(--accent2); font-weight:600}
+  .explanation .topic{margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); font-size:.85rem; color:var(--muted);}
+
+  .result{text-align:center; padding:36px 24px}
+  .result h2{margin:0 0 12px; font-size:1.6rem; color:var(--accent2)}
+  .score-big{font-size:3rem; font-weight:800; color:var(--accent); margin:14px 0 6px}
+  .score-pct{font-size:1.1rem; color:var(--muted); margin-bottom:14px}
+  .verdict{font-size:1.05rem; margin:14px 0 22px; padding:14px; border-radius:12px}
+  .v-excellent{background:rgba(34,197,94,.12); color:var(--green)}
+  .v-good{background:rgba(251,191,36,.12); color:var(--amber)}
+  .v-needs-work{background:rgba(239,68,68,.12); color:var(--red)}
+  .breakdown{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:18px 0; text-align:left;}
+  .breakdown-item{background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:12px;}
+  .breakdown-item .lbl{font-size:.8rem; color:var(--muted)}
+  .breakdown-item .val{font-size:1.3rem; font-weight:700; margin-top:4px}
+
+  code{background:var(--card2); padding:1px 6px; border-radius:4px; font-family:"SFMono-Regular",Consolas,monospace; font-size:.9em}
+
+  /* table for state-transition tables embedded in questions */
+  .stt-table{border-collapse:collapse; margin:8px 0; font-size:.88rem; background:var(--card2)}
+  .stt-table th,.stt-table td{border:1px solid var(--border); padding:5px 10px; text-align:center}
+  .stt-table th{background:#252d3d; color:var(--accent2)}
+
+  @media(max-width:600px){
+    body{padding:12px}
+    .card{padding:16px 18px}
+    h1{font-size:1.15rem}
+    .breakdown{grid-template-columns:1fr}
+    .stt-table{font-size:.78rem}
+    .stt-table th,.stt-table td{padding:3px 6px}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>FE Exam — オートマトン・状態遷移 (Máy tự động &amp; Chuyển trạng thái)</h1>
+    <p class="subtitle">Yasashii Ch.2 Lesson 02-04 + Slide 1 第9回</p>
+    <div class="meta">
+      <span>📝 40 câu</span>
+      <span>⏱ 30 phút</span>
+      <span>🎯 Phong cách IPA</span>
+      <span>🟢 12 Dễ • 🟡 16 TB • 🔴 12 Khó</span>
+    </div>
+  </header>
+
+  <div class="progress-wrap" id="progress-wrap">
+    <div class="progress-info">
+      <span id="progress-text">Câu 1 / 40</span>
+      <span id="answered-count">Đã trả lời: 0</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  </div>
+
+  <div id="quiz-area"></div>
+  <div id="result-area" style="display:none"></div>
+</div>
+
+<script>
+const questions = [
+  // ============ PART 1: モデル化 + オートマトン định nghĩa (Yasashii 02-04) — 10 câu ============
+  {
+    id:1, diff:"easy",
+    q:"**モデル化 (modeling / mô hình hoá)** là gì theo Yasashii?",
+    ja:"モデル化の定義として正しいものはどれか。",
+    options:[
+      "Kỹ thuật xây dựng mô hình 3D bằng máy tính",
+      "**Quá trình 単純化 (đơn giản hoá) các đối tượng phức tạp trong thế giới thực để dễ hiểu hơn — kết quả được gọi là モデル (mô hình)**",
+      "Phương pháp kiểm thử phần mềm bằng các kịch bản giả lập",
+      "Cách lưu trữ dữ liệu vào CSDL theo dạng quan hệ"
+    ],
+    correct:1,
+    why:"Yasashii Lesson 02-04: 「モデル化とは、現実世界にある複雑なモノを単純化してわかりやすくすることです。単純化したものを『モデル』といいます」. Ví dụ: 地球儀 (quả địa cầu) là モデル化 của Trái Đất — đơn giản hoá đến mức chỉ giữ bề mặt.",
+    whyWrong:{
+      0:"Đó là 3D modeling, không phải khái niệm 「モデル化」 trong FE.",
+      2:"Đó là テスト, không liên quan đến mô hình hoá.",
+      3:"Đó là データベース設計, không phải モデル化."
+    },
+    topic:"FE Syllabus — 基礎理論 / モデル化 / Yasashii 02-04"
+  },
+  {
+    id:2, diff:"easy",
+    q:"**オートマトン (automaton)** là gì?",
+    ja:"オートマトンの定義として最も適切なものはどれか。",
+    options:[
+      "Robot công nghiệp dùng trong nhà máy ô tô",
+      "Một loại ngôn ngữ lập trình hướng đối tượng",
+      "**Mô hình hệ thống biểu diễn chức năng bằng 3 thành phần: 「入力 (input)・状態 (state)・出力 (output)」**",
+      "Phần mềm tự động hoá quy trình kinh doanh (RPA)"
+    ],
+    correct:2,
+    why:"Yasashii 02-04: 「オートマトンとは、機能を『入力』『状態』『出力』の3つで表すシステムのモデルです」. Đây là mô hình toán học/lý thuyết tính toán dùng để mô tả các hệ thống có trạng thái thay đổi theo input.",
+    whyWrong:{
+      0:"Robot công nghiệp ≠ オートマトン trong lý thuyết FE.",
+      1:"Không phải ngôn ngữ lập trình.",
+      3:"RPA là kỹ thuật khác, không phải khái niệm オートマトン."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / Yasashii 02-04"
+  },
+  {
+    id:3, diff:"easy",
+    q:"Trong từ điển Hy Lạp, **オートマトン** có nghĩa gốc là gì? (Yasashii ghi chú này)",
+    ja:"オートマトンのギリシャ語の本来の意味はどれか。",
+    options:[
+      "「数字を計算するもの」 (vật tính toán số)",
+      "**「自らの意思で動くもの」 (vật tự vận động theo ý chí riêng)**",
+      "「電気で動くもの」 (vật chạy bằng điện)",
+      "「人間を真似るもの」 (vật bắt chước con người)"
+    ],
+    correct:1,
+    why:"Yasashii 02-04 もう少し詳しく: 「オートマトンとは、ギリシャ語で『自らの意思で動くもの』という意味です」. Nguồn gốc từ Hy Lạp 「αὐτόματον」 — tự động vận hành dựa trên trạng thái nội tại + input.",
+    whyWrong:{
+      0:"Không phải ý nghĩa gốc.",
+      2:"Không liên quan đến nguồn gốc thuật ngữ.",
+      3:"Cũng không phải nghĩa gốc tiếng Hy Lạp."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / 語源"
+  },
+  {
+    id:4, diff:"easy",
+    q:"Trong ví dụ Yasashii về **máy bán hàng tự động (自動販売機)** — cấu thành オートマトン như thế nào?",
+    ja:"自動販売機をオートマトンとしてモデル化する際、3要素の対応はどれか。",
+    options:[
+      "**入力 = お金 (tiền nhập vào) / 状態 = 入れたお金の合計金額 (tổng tiền đã đưa vào) / 出力 = 商品 (sản phẩm đẩy ra)**",
+      "入力 = 商品 / 状態 = お金 / 出力 = ボタン",
+      "入力 = ボタン / 状態 = 商品 / 出力 = お金",
+      "入力 = 電力 / 状態 = 重さ / 出力 = 音"
+    ],
+    correct:0,
+    why:"Yasashii Lesson 02-04 ví dụ cụ thể: 「自動販売機のオートマトンの『入力』『状態』『出力』は以下のとおりです。\n・入力 → 自動販売機に入れるお金\n・状態 → 入れたお金の合計金額\n・出力 → 自動販売機から出てくる商品」.",
+    whyWrong:{
+      1:"Đảo vai trò — sai cách hiểu input/output.",
+      2:"Lẫn lộn các thành phần.",
+      3:"Hoàn toàn sai — không phải mô hình hoá automaton."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / 自動販売機の例"
+  },
+  {
+    id:5, diff:"easy",
+    q:"Lợi ích chính của việc mô hình hoá hệ thống thành **オートマトン** là gì?",
+    ja:"オートマトンでモデル化することのメリットはどれか。",
+    options:[
+      "Hệ thống chạy nhanh hơn",
+      "Hệ thống tốn ít điện năng hơn",
+      "**「複雑なシステムを単純化して表すことができる」 — biểu diễn hệ thống phức tạp dưới dạng đơn giản, dễ phân tích**",
+      "Hệ thống không bao giờ bị lỗi"
+    ],
+    correct:2,
+    why:"Yasashii: 「システムの本質的な機能を『入力』『状態』『出力』に分けて考えて、オートマトンとしてモデル化すると、複雑なシステムを単純化して表すことができます」. Lợi ích là về MẶT MÔ HÌNH/PHÂN TÍCH, không phải về hiệu năng vận hành.",
+    whyWrong:{
+      0:"Mô hình hoá không trực tiếp làm hệ thống chạy nhanh hơn.",
+      1:"Không liên quan đến năng lượng.",
+      3:"Sai — mô hình hoá không ngăn lỗi xảy ra."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / メリット"
+  },
+  {
+    id:6, diff:"mid",
+    q:"Trong オートマトン, 「**受理状態 (受理状態 / accepting state)**」 là gì?",
+    ja:"オートマトンにおける受理状態とは何か。",
+    options:[
+      "Trạng thái khởi đầu (初期状態) của automaton",
+      "Trạng thái khi automaton bị lỗi và dừng",
+      "**Trạng thái CUỐI CÙNG mà automaton đạt tới sau khi thực hiện chuỗi chuyển trạng thái — biểu thị bằng vòng tròn KÉP (二重丸)**",
+      "Trạng thái trung gian được sử dụng nhiều nhất"
+    ],
+    correct:2,
+    why:"Yasashii: 「オートマトンにおける『状態』は、時間や動作によって、初期状態からいくつかの状態を遷移して、最終的な状態に行き着きます。この最終的な状態を『受理状態』と呼びます」. Trong 状態遷移図, 受理状態 được biểu diễn bằng VÒNG TRÒN KÉP (二重丸).",
+    whyWrong:{
+      0:"Đó là 初期状態 (initial state), được biểu thị bằng mũi tên đậm chỉ vào.",
+      1:"Không phải khái niệm 受理状態 — có thể là 「停止状態」 hoặc lỗi.",
+      3:"Tần suất sử dụng không liên quan đến định nghĩa 受理状態."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / 受理状態"
+  },
+  {
+    id:7, diff:"mid",
+    q:"Trong 状態遷移図, các ký hiệu chuẩn được dùng như thế nào (theo bảng ký hiệu Yasashii)?",
+    ja:"状態遷移図の記号と意味の組合せとして正しいものはどれか。",
+    options:[
+      "○ (vòng tròn đơn) = 受理状態; →→ (mũi tên đậm) = chuyển trạng thái",
+      "**○ (vòng tròn) = 状態 (二重丸 ⊙ = 受理状態); ➡ (mũi tên đậm) = 初期状態; → (mũi tên thường) = 遷移**",
+      "□ (hình vuông) = 状態; ◇ (hình thoi) = chuyển trạng thái",
+      "Mọi trạng thái được vẽ bằng hình thoi"
+    ],
+    correct:1,
+    why:"Theo Yasashii bảng ký hiệu:\n• ○ vòng tròn: 状態 (state) — 二重丸 ⊙ = 受理状態.\n• ➡ mũi tên đậm: chỉ 初期状態 (initial state).\n• → mũi tên thường: 遷移 (transition).\n• Nhãn trên mũi tên: 入力/出力 (input/output).",
+    whyWrong:{
+      0:"○ đơn là 状態 thường, không phải 受理状態 (受理状態 cần 二重丸).",
+      2:"Sai — flowchart dùng hình thoi/vuông, automaton dùng vòng tròn.",
+      3:"Hoàn toàn sai — ký hiệu của 状態遷移図 là vòng tròn."
+    },
+    topic:"FE Syllabus — 基礎理論 / 状態遷移図の記号"
+  },
+  {
+    id:8, diff:"mid",
+    q:"Sự khác biệt giữa **状態遷移表 (bảng chuyển trạng thái)** và **状態遷移図 (sơ đồ chuyển trạng thái)** là gì?",
+    ja:"状態遷移表と状態遷移図の違いはどれか。",
+    options:[
+      "状態遷移表 dành cho hệ thống nhỏ; 状態遷移図 dành cho hệ thống lớn",
+      "**Cả 2 cùng mô tả 状態の変化 (sự thay đổi trạng thái); 状態遷移表 dùng BẢNG (表), 状態遷移図 dùng SƠ ĐỒ (図)**",
+      "状態遷移表 chỉ áp dụng cho hệ thống số; 状態遷移図 cho hệ thống tương tự",
+      "状態遷移表 ngược lại với 状態遷移図 về nghĩa"
+    ],
+    correct:1,
+    why:"Yasashii: 「このような状態の遷移を表で表したものを状態遷移表、図で表したものを状態遷移図といいます」. Cả 2 cùng biểu diễn cùng một thông tin (chuyển trạng thái), chỉ khác hình thức trình bày: bảng vs sơ đồ.",
+    whyWrong:{
+      0:"Không có giới hạn theo kích thước hệ thống.",
+      2:"Sai — không có phân chia theo loại tín hiệu.",
+      3:"Sai — 2 cách biểu diễn này tương đương về nghĩa, không phải ngược nhau."
+    },
+    topic:"FE Syllabus — 基礎理論 / 状態遷移表 vs 状態遷移図"
+  },
+  {
+    id:9, diff:"mid",
+    q:"Cho hệ thống nhận input 0 hoặc 1, **đếm tổng** và phân loại tổng là **偶数 (chẵn) hay 奇数 (lẻ)**. 状態遷移表 nào ĐÚNG?",
+    ja:"0か1を入力値に取り、合計が偶数か奇数かを表すシステムの状態遷移表はどれか。",
+    options:[
+      `<table class="stt-table"><tr><th>現在の状態</th><th>0をたす</th><th>1をたす</th></tr><tr><td>偶数</td><td>奇数</td><td>偶数</td></tr><tr><td>奇数</td><td>偶数</td><td>奇数</td></tr></table>`,
+      `<table class="stt-table"><tr><th>現在の状態</th><th>0をたす</th><th>1をたす</th></tr><tr><td>偶数</td><td>偶数</td><td>奇数</td></tr><tr><td>奇数</td><td>奇数</td><td>偶数</td></tr></table>`,
+      `<table class="stt-table"><tr><th>現在の状態</th><th>0をたす</th><th>1をたす</th></tr><tr><td>偶数</td><td>偶数</td><td>偶数</td></tr><tr><td>奇数</td><td>奇数</td><td>奇数</td></tr></table>`,
+      `<table class="stt-table"><tr><th>現在の状態</th><th>0をたす</th><th>1をたす</th></tr><tr><td>偶数</td><td>奇数</td><td>奇数</td></tr><tr><td>奇数</td><td>偶数</td><td>偶数</td></tr></table>`
+    ],
+    correct:1,
+    why:"Phân tích từng ô:\n• 偶数 + 0 = 偶数 (chẵn + 0 = chẵn) ✓\n• 偶数 + 1 = 奇数 (chẵn + 1 = lẻ) ✓\n• 奇数 + 0 = 奇数 (lẻ + 0 = lẻ) ✓\n• 奇数 + 1 = 偶数 (lẻ + 1 = chẵn) ✓\nĐây là bảng tiêu chuẩn trong Yasashii 02-04.",
+    whyWrong:{
+      0:"Sai logic — chẵn + 0 phải vẫn là chẵn, không phải lẻ.",
+      2:"Sai — thêm 1 phải đổi chẵn↔lẻ.",
+      3:"Đảo ngược — chẵn + 0 vẫn là chẵn, không phải lẻ."
+    },
+    topic:"FE Syllabus — 基礎理論 / 状態遷移表 / 偶数・奇数の例"
+  },
+  {
+    id:10, diff:"hard",
+    q:"Theo 「**試験にはコレが出る!**」 trong Yasashii 02-04, dạng câu hỏi nào thường xuất hiện trong FE?",
+    ja:"オートマトンに関するFE試験での頻出問題はどれか。",
+    options:[
+      "Tính độ phức tạp thời gian của automaton",
+      "**Cho 状態遷移表 hoặc 状態遷移図, hỏi 「最終的な状態（受理状態）が何になるか」 (trạng thái cuối/受理状態 sẽ là gì) khi nhập một chuỗi input cụ thể**",
+      "Vẽ lại 状態遷移図 từ mô tả ngôn ngữ tự nhiên",
+      "Chứng minh tính đúng đắn của automaton"
+    ],
+    correct:1,
+    why:"Yasashii nhấn mạnh: 「基本情報技術者試験では『状態遷移表』もしくは『状態遷移図』が示され、オートマトンの最終的な状態（受理状態）が何になるかが問われる」. Dạng phổ biến: cho input string → trace qua sơ đồ → tìm trạng thái cuối.",
+    whyWrong:{
+      0:"Đó là chủ đề thuật toán, không phải automaton ở mức FE.",
+      2:"FE chủ yếu hỏi đọc hiểu, không phải vẽ.",
+      3:"Chứng minh formal automaton không có trong FE."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / 出題傾向"
+  },
+
+  // ============ PART 2: 状態遷移図 - Trace với chuỗi input (Slide 1 第9回) — 10 câu ============
+  {
+    id:11, diff:"easy",
+    q:"Trong 状態遷移図, 「**現在の状態と入力によって出力が決定される機械**」 là mô tả của khái niệm nào?",
+    ja:"現在の状態と入力によって出力が決定される機械をモデル化したものは何か。",
+    options:[
+      "フローチャート (flowchart)",
+      "**状態遷移図 (state transition diagram)**",
+      "E-R図 (Entity-Relationship)",
+      "クラス図 (UML class diagram)"
+    ],
+    correct:1,
+    why:"Slide 1 第9回 định nghĩa: 「状態遷移図とは現在の状態と入力によって出力が決定される機械をモデル化したもの」. Đầu vào (入力) + trạng thái hiện tại → quyết định đầu ra (出力) và trạng thái tiếp theo.",
+    whyWrong:{
+      0:"Flowchart biểu diễn luồng xử lý, không có khái niệm 「状態」.",
+      2:"E-R図 mô tả thực thể + quan hệ trong CSDL.",
+      3:"Class diagram mô tả class trong OOP."
+    },
+    topic:"FE Syllabus — 基礎理論 / 状態遷移図 / 定義"
+  },
+  {
+    id:12, diff:"easy",
+    q:"Ý nghĩa của các phần tử trong 状態遷移図 (theo Slide 1 第9回) là gì?",
+    ja:"状態遷移図の要素の意味として正しいものはどれか。",
+    options:[
+      "○ = 入力, → = 状態, label = 出力",
+      "**○ = 状態 (S₁, S₂, S₃...) / → = 状態の移り変わり (chuyển trạng thái) / label trên mũi tên = 入力/出力値**",
+      "○ = 出力, → = 入力, label = 状態",
+      "○ = node bộ nhớ, → = tín hiệu điện, label = tốc độ"
+    ],
+    correct:1,
+    why:"Slide 1 第9回: 「状態を○で表現。状態の移り変わりを矢印で表現。矢印の上の数字: 入力/出力値」. Ví dụ: S₁ →(0/1)→ S₂ nghĩa là từ trạng thái S₁, gặp input 0, output 1, chuyển sang S₂.",
+    whyWrong:{
+      0:"Sai — ○ là 状態, không phải input.",
+      2:"Đảo ngược ý nghĩa.",
+      3:"Hoàn toàn vô lý — không phải mạch điện."
+    },
+    topic:"FE Syllabus — 基礎理論 / 状態遷移図 / 要素の意味"
+  },
+  {
+    id:13, diff:"easy",
+    q:"「**絶対的なルールがある分けでは無いので問題文の指示に従って読み解く**」 — câu này (Slide 1 第9回) ám chỉ điều gì?",
+    ja:"状態遷移図の読み解きにおいて重要なことはどれか。",
+    options:[
+      "Phải nhớ thuộc lòng tất cả quy tắc chuẩn",
+      "**Không có quy ước tuyệt đối — phải đọc kỹ ĐỀ BÀI để hiểu cách quy ước (label nào là input/output, ký hiệu nào là 初期/受理状態...)**",
+      "Luôn luôn đi từ trái sang phải",
+      "Trạng thái đầu tiên trong bảng là 受理状態"
+    ],
+    correct:1,
+    why:"Slide 1 第9回 nhấn mạnh: 「絶対的なルールがある分けでは無いので問題文の指示に従って読み解く」. Tuy có ký hiệu thông dụng (○, ➡, ⊙), nhưng cách dùng label có thể khác nhau theo đề. Phải đọc đề kỹ.",
+    whyWrong:{
+      0:"Sai — không cần thuộc lòng, mà cần đọc đề.",
+      2:"Sai — không có quy tắc chiều đọc cố định.",
+      3:"Sai — 受理状態 được chỉ rõ bằng 二重丸, không phải vị trí."
+    },
+    topic:"FE Syllabus — 基礎理論 / 状態遷移図 / 読み解き原則"
+  },
+  {
+    id:14, diff:"mid",
+    q:"Cho 状態遷移図 (Slide 1 第9回 - bài luyện tập): có 3 trạng thái S₁, S₂, S₃; S₁ là 初期状態; với input 0 từ S₁ → S₁ (output 0); với input 1 từ S₁ → S₂ (output 0). Nếu input là 「0」 từ S₁, kết quả là?",
+    ja:"S₁から0を入力したときの状態と出力はどれか。",
+    options:[
+      "**状態 = S₁, 出力値 = 0**",
+      "状態 = S₂, 出力値 = 0",
+      "状態 = S₃, 出力値 = 1",
+      "状態 = S₂, 出力値 = 1"
+    ],
+    correct:0,
+    why:"Theo Slide 1 第9回 - 過去問練習: 「0が入力: 状態はS₁、出力値は0」. Đây là vòng lặp self-loop tại S₁ khi gặp input 0.",
+    whyWrong:{
+      1:"S₂ chỉ đến khi input là 1, không phải 0.",
+      2:"S₃ không phải mục tiêu từ S₁ với input 0.",
+      3:"Output cho input 0 là 0, không phải 1."
+    },
+    topic:"FE Syllabus — 基礎理論 / 状態遷移図 / Slide 第9回 過去問練習"
+  },
+  {
+    id:15, diff:"mid",
+    q:"Tiếp câu trên: Nếu input là 「1」 từ S₁, kết quả là?",
+    ja:"S₁から1を入力したときの状態と出力はどれか。",
+    options:[
+      "状態 = S₁, 出力値 = 0",
+      "**状態 = S₂, 出力値 = 0**",
+      "状態 = S₃, 出力値 = 1",
+      "状態 = S₂, 出力値 = 1"
+    ],
+    correct:1,
+    why:"Slide 1 第9回 過去問練習: 「1が入力: 状態はS₂、出力値は0」. Từ S₁, input 1 đưa sang S₂, output là 0.",
+    whyWrong:{
+      0:"S₁ tự lặp khi input là 0, không phải 1.",
+      2:"S₃ không đến từ S₁ với input 1.",
+      3:"Output là 0, không phải 1."
+    },
+    topic:"FE Syllabus — 基礎理論 / 状態遷移図 / Slide 第9回 過去問練習"
+  },
+  {
+    id:16, diff:"hard",
+    q:"Cho 状態遷移図 nhận chuỗi bit, **受理状態 = S₃** (二重丸). Trạng thái khởi đầu = S₁. Luật chuyển: S₁→1→S₂ (vẫn S₁ nếu input=0); S₂→0→S₃ (S₂→1→S₂); S₃→{0,1}→S₃ (vòng lặp). Chuỗi nào dưới đây được **受理** (cuối cùng đến S₃)?",
+    ja:"オートマトンで受理されるビット列はどれか。",
+    options:[
+      "「0000」",
+      "「0111」",
+      "**「1010」**",
+      "「1111」"
+    ],
+    correct:2,
+    why:"Trace từng chuỗi từ S₁:\n• 0000: S₁→0→S₁→0→S₁→0→S₁→0→S₁ ❌ (kết thúc tại S₁).\n• 0111: S₁→0→S₁→1→S₂→1→S₂→1→S₂ ❌ (kết thúc tại S₂).\n• 1010: S₁→1→S₂→0→S₃→1→S₃→0→S₃ ✓ (đến S₃, 受理).\n• 1111: S₁→1→S₂→1→S₂→1→S₂→1→S₂ ❌ (kẹt ở S₂).\nĐây là dạng câu hỏi 平成28年度 問題2-10 trong Yasashii.",
+    whyWrong:{
+      0:"Không có 1 → không bao giờ rời S₁.",
+      1:"Sau 1 đầu tiên đến S₂, nhưng không có 0 tiếp theo để sang S₃.",
+      3:"4 số 1 liên tiếp giữ ở S₂, không chuyển sang S₃."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / 受理状態の判定 / 平成28年度風"
+  },
+  {
+    id:17, diff:"mid",
+    q:"Một 状態遷移図 đơn giản: 2 trạng thái A (初期) và B (受理). Quy tắc: A→0→A, A→1→B, B→0→B, B→1→A. Hỏi chuỗi 「1010」 có được **受理** không?",
+    ja:"2状態のオートマトンで「1010」は受理されるか。",
+    options:[
+      "Có — kết thúc tại B (受理状態)",
+      "**Không — kết thúc tại A (không phải 受理状態)**",
+      "Không — không đủ ký tự",
+      "Không xác định được"
+    ],
+    correct:1,
+    why:"Trace chuỗi 「1010」 từ A:\n• '1': A → B (quy tắc A→1→B).\n• '0': B → B (B→0→B, self-loop).\n• '1': B → A (B→1→A).\n• '0': A → A (A→0→A, self-loop).\nKết thúc tại **A** ≠ B → **KHÔNG được 受理**.\nLogic chung: automaton này đếm số ký tự '1' theo mod 2 — chuỗi 「1010」 có 2 số 1 (chẵn) → quay về A.",
+    whyWrong:{
+      0:"Sai — trace cuối cùng đến A, không phải B. Chuỗi 「1010」 có 2 số 1 (chẵn) nên quay về A.",
+      2:"4 ký tự đủ để trace, không phải lý do từ chối.",
+      3:"Có thể xác định được rõ ràng bằng cách trace từng ký tự."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / トレース問題"
+  },
+  {
+    id:18, diff:"hard",
+    q:"Cho 状態遷移図 đếm '1' theo modulo 3 — 3 trạng thái q0 (初期, 受理), q1, q2. Quy tắc: q0→1→q1→1→q2→1→q0; input 0 luôn giữ nguyên trạng thái. Chuỗi nào dưới đây được **受理**?",
+    ja:"1の個数が3の倍数のとき受理するオートマトンで、受理される列はどれか。",
+    options:[
+      "「11」 (2 số 1)",
+      "「1111」 (4 số 1)",
+      "**「111000」 (3 số 1)**",
+      "「11111」 (5 số 1)"
+    ],
+    correct:2,
+    why:"Quy tắc: input 0 không đổi state; chỉ input 1 mới làm xoay vòng q0→q1→q2→q0.\nNumber of '1's cần là bội số của 3 để về q0 (受理):\n• 「11」: 2 số 1 → q2 ❌\n• 「1111」: 4 số 1 → q1 (4 mod 3 = 1) ❌\n• 「111000」: 3 số 1 → q0 ✓ (3 mod 3 = 0)\n• 「11111」: 5 số 1 → q2 (5 mod 3 = 2) ❌",
+    whyWrong:{
+      0:"2 không chia hết cho 3.",
+      1:"4 mod 3 = 1, vẫn ở q1.",
+      3:"5 mod 3 = 2, ở q2."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / 剰余系オートマトン"
+  },
+  {
+    id:19, diff:"mid",
+    q:"状態遷移表 có 3 cột: 「現在の状態」「入力」「次の状態」「出力」. Cho bảng (theo Slide 1 第9回 練習問題):\n| 現在 | 入力 | 次 | 出力 |\n|---|---|---|---|\n| S₁ | 0 | S₁ | 0 |\n| S₁ | 1 | S₂ | 0 |\n| S₂ | 0 | S₃ | 0 |\n| S₂ | 1 | S₂ | 1 |\nTại S₂, input là 「1」, kết quả là?",
+    ja:"S₂に1を入力した場合の次の状態と出力はどれか。",
+    options:[
+      "次の状態 = S₃, 出力 = 0",
+      "次の状態 = S₁, 出力 = 1",
+      "**次の状態 = S₂, 出力 = 1**",
+      "次の状態 = S₃, 出力 = 1"
+    ],
+    correct:2,
+    why:"Tra bảng dòng (S₂, 1): 次の状態 = S₂, 出力 = 1. Đây là self-loop tại S₂ với input 1.",
+    whyWrong:{
+      0:"Đó là dòng (S₂, 0), không phải (S₂, 1).",
+      1:"S₁ không xuất hiện trong các transition từ S₂.",
+      3:"Cột 次の状態 ghi S₂, không phải S₃."
+    },
+    topic:"FE Syllabus — 基礎理論 / 状態遷移表 / 読み解き"
+  },
+  {
+    id:20, diff:"hard",
+    q:"Cho automaton dùng phát hiện 「**ít nhất một số 1 trong chuỗi**」: q0 (初期), q1 (受理 - 二重丸). q0→0→q0; q0→1→q1; q1→{0,1}→q1. Chuỗi nào sau đây KHÔNG được **受理**?",
+    ja:"「少なくとも1つの1を含む」を受理するオートマトンで、受理されない列はどれか。",
+    options:[
+      "「1」",
+      "「100」",
+      "**「000」**",
+      "「001」"
+    ],
+    correct:2,
+    why:"Trace:\n• 「1」: q0→1→q1 ✓ 受理.\n• 「100」: q0→1→q1→0→q1→0→q1 ✓ 受理.\n• 「000」: q0→0→q0→0→q0→0→q0 ❌ kết thúc tại q0 (không phải 受理).\n• 「001」: q0→0→q0→0→q0→1→q1 ✓ 受理.\nChỉ「000」 không có số 1 nào → không bao giờ chuyển sang q1.",
+    whyWrong:{
+      0:"Một số 1 → ngay lập tức 受理.",
+      1:"Có số 1 → q1 → giữ ở q1.",
+      3:"Số 1 ở cuối vẫn đưa vào q1."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / 受理判定"
+  },
+
+  // ============ PART 3: 過去問 sát đề thật (Slide 1 第9回 過去問練習) — 10 câu ============
+  {
+    id:21, diff:"easy",
+    q:"Theo Slide 1 第9回, ví dụ điển hình của 状態遷移図 trong thực tế là gì?",
+    ja:"状態遷移図の代表的な例はどれか。",
+    options:[
+      "Sơ đồ mạch điện",
+      "**Máy bán hàng tự động (自動販売機) — input = tiền, state = tổng tiền, output = sản phẩm**",
+      "Sơ đồ ER cho CSDL",
+      "Biểu đồ Gantt"
+    ],
+    correct:1,
+    why:"Slide 1 第9回: 「状態遷移図の例（自動販売機）」 — đây cũng là ví dụ song hành với Yasashii. Self-service vending machine là minh hoạ kinh điển của automaton: input = đồng xu/tiền giấy, state = tổng tiền đã nhập, output = sản phẩm khi đủ giá.",
+    whyWrong:{
+      0:"Sơ đồ mạch điện thuộc 電気回路.",
+      2:"ER diagram thuộc CSDL.",
+      3:"Gantt chart thuộc プロジェクト管理."
+    },
+    topic:"FE Syllabus — 基礎理論 / 状態遷移図 / 自動販売機例"
+  },
+  {
+    id:22, diff:"mid",
+    q:"Một 状態遷移図 đơn giản: q0 (初期) → input '0' → q1; q0 → '1' → q0; q1 → '0' → q1; q1 → '1' → q0. **受理状態 = q1**. Chuỗi 「**1010**」 có được受理 không?",
+    ja:"「1010」は受理されるか。",
+    options:[
+      "Có — kết thúc tại q1",
+      "**Có — trace: q0→1→q0→0→q1→1→q0→0→q1, kết thúc tại q1**",
+      "Không — kết thúc tại q0",
+      "Không xác định"
+    ],
+    correct:1,
+    why:"Trace cẩn thận từ q0:\n• '1': q0 → q0 (vì q0→'1'→q0).\n• '0': q0 → q1 (vì q0→'0'→q1).\n• '1': q1 → q0 (vì q1→'1'→q0).\n• '0': q0 → q1 (vì q0→'0'→q1).\nKết thúc tại **q1** = 受理. → 受理.",
+    whyWrong:{
+      0:"Đúng kết luận nhưng thiếu giải thích trace; đáp án B chi tiết hơn.",
+      2:"Sai — trace cuối cùng đến q1, không phải q0.",
+      3:"Có thể xác định được bằng cách trace."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / トレース"
+  },
+  {
+    id:23, diff:"hard",
+    q:"**過去問風 平成26年度**: 状態遷移表 dùng để 検査 chuỗi ký tự. 初期状態 = a; nếu trong khi 検査 trạng thái chuyển sang e thì 不合格. 文字 phân loại: 空白, 数字, 符号, 小数点, その他. Bảng (rút gọn): a + 空白→a; a + 数字→b; a + 符号→c; a + 小数点→d; a + その他→e. b + 数字→b; b + 小数点→e. (Yasashii 問題2-9 風). Chuỗi 「12.2」 có 合格 không?",
+    ja:"「12.2」は合格か不合格か。",
+    options:[
+      "合格 (kết thúc trạng thái không phải e)",
+      "**不合格 — trace: a→1→b→2→b→.→e (kết thúc tại e)**",
+      "合格 — chuỗi không có ký tự đặc biệt",
+      "Không xác định được"
+    ],
+    correct:1,
+    why:"Bám sát Yasashii 平成26年度 問題2-9:\n• Bắt đầu a.\n• '1' (数字): a → b.\n• '2' (数字): b → b.\n• '.' (小数点): b → **e** ❌ → **不合格**.\nLưu ý: trong bảng này, b + 小数点 → e (vì sau dấu chấm thập phân ở trạng thái b không hợp lệ, có thể là cấu hình kiểm tra dạng số).",
+    whyWrong:{
+      0:"Sai — kết thúc tại e, là 不合格.",
+      2:"\"không ký tự đặc biệt\" không có nghĩa — '.' là 小数点.",
+      3:"Đề bài đủ thông tin, xác định được."
+    },
+    topic:"FE Syllabus — 基礎理論 / 状態遷移表 / Yasashii 問題2-9 風"
+  },
+  {
+    id:24, diff:"hard",
+    q:"Tiếp theo: Chuỗi 「**-1**」 (gồm '-' là 符号, '1' là 数字) trong cùng bảng trên. Có 合格 không? (a + 符号 → c; c + 数字 = ?)",
+    ja:"「-1」は合格か。",
+    options:[
+      "**Phụ thuộc vào cấu hình c + 数字 — nếu c + 数字 → b thì 合格 (kết thúc tại b ≠ e)**",
+      "合格 chắc chắn (kết thúc tại c)",
+      "不合格 (kết thúc tại e)",
+      "Không xác định"
+    ],
+    correct:0,
+    why:"Bám sát Yasashii 問題2-9 dạng thiết kế: bảng đầy đủ thường có (c, 数字) → b để chấp nhận số có dấu (vd '-1', '+5'). Nếu vậy:\n• Bắt đầu a.\n• '-' (符号): a → c.\n• '1' (数字): c → b.\nKết thúc tại b, KHÔNG phải e → 合格.\nLưu ý: đáp án phụ thuộc vào ô (c, 数字) — nếu bảng cấu hình khác (vd c+数字→e), kết quả khác.",
+    whyWrong:{
+      1:"Không thể kết thúc tại c vì còn ký tự '1' chưa xử lý.",
+      2:"Chỉ đúng nếu c + 数字 → e, đề mặc định không vậy.",
+      3:"Có thể xác định nếu giả thiết cấu hình chuẩn."
+    },
+    topic:"FE Syllabus — 基礎理論 / 状態遷移表 / Yasashii 問題2-9 風"
+  },
+  {
+    id:25, diff:"mid",
+    q:"Khi đọc 状態遷移図, **mũi tên đậm (➡)** không có ký hiệu trên đó thường biểu thị gì?",
+    ja:"状態遷移図の太い矢印（ラベル無し）が示すものはどれか。",
+    options:[
+      "受理状態 cuối cùng",
+      "**初期状態 (initial state) — chỉ vào trạng thái khởi đầu của automaton**",
+      "Lỗi trong sơ đồ",
+      "Sự chuyển trạng thái có ưu tiên cao"
+    ],
+    correct:1,
+    why:"Theo Yasashii bảng ký hiệu: 「矢印 (太い): 初期状態を指し示す」. Mũi tên đậm KHÔNG có label dùng để chỉ trạng thái khởi đầu — không phải transition giữa các trạng thái.",
+    whyWrong:{
+      0:"受理状態 dùng 二重丸 (vòng tròn kép).",
+      2:"Lỗi không có ký hiệu chuẩn riêng.",
+      3:"Không có khái niệm 「ưu tiên」 trong automaton chuẩn."
+    },
+    topic:"FE Syllabus — 基礎理論 / 状態遷移図 / 記号"
+  },
+  {
+    id:26, diff:"easy",
+    q:"Trong notation 「**入力/出力**」 trên mũi tên giữa 2 trạng thái, ký hiệu 「**1/0**」 nghĩa là gì?",
+    ja:"矢印に書かれた「1/0」の意味はどれか。",
+    options:[
+      "**Khi input là 1, output là 0**",
+      "Khi input là 0, output là 1",
+      "1 chia 0 (lỗi)",
+      "1 và 0 là tên 2 trạng thái"
+    ],
+    correct:0,
+    why:"Trong 状態遷移図, label trên mũi tên thường viết theo dạng 「入力/出力」 (cách bởi dấu /):\n• Bên trái dấu / = INPUT.\n• Bên phải dấu / = OUTPUT.\nVậy 「1/0」 = nhận input '1', tạo output '0', đồng thời chuyển sang trạng thái mà mũi tên chỉ tới.",
+    whyWrong:{
+      1:"Đảo ngược thứ tự.",
+      2:"Không phải phép chia.",
+      3:"Trạng thái thường được đánh tên S₁, S₂, q₀..., không phải '1' '0'."
+    },
+    topic:"FE Syllabus — 基礎理論 / 状態遷移図 / 入力/出力表記"
+  },
+  {
+    id:27, diff:"mid",
+    q:"Một automaton **Mealy machine** so với **Moore machine** khác nhau như thế nào? (Kiến thức mở rộng FE)",
+    ja:"MealyマシンとMooreマシンの違いはどれか。",
+    options:[
+      "Mealy chỉ có 1 trạng thái; Moore có nhiều",
+      "**Mealy: output phụ thuộc cả 状態 và 入力 (label trên mũi tên); Moore: output chỉ phụ thuộc 状態 (label trong vòng tròn)**",
+      "Cả 2 hoàn toàn giống nhau",
+      "Mealy dùng cho 受理問題; Moore dùng cho 変換問題"
+    ],
+    correct:1,
+    why:"Hai loại finite state machine chính:\n• **Mealy machine**: output gắn với TRANSITION (cạnh) → output phụ thuộc cả (state, input). Label: 「入力/出力」 trên mũi tên.\n• **Moore machine**: output gắn với STATE (đỉnh) → output chỉ phụ thuộc state. Label output viết trong vòng tròn.\nTheo Slide 1 第9回, dạng dùng 「入力/出力」 trên mũi tên = Mealy.",
+    whyWrong:{
+      0:"Số trạng thái không phải tiêu chí phân biệt.",
+      2:"Sai — 2 loại có cách biểu diễn output khác nhau.",
+      3:"Cả 2 đều có thể dùng cho cả 2 mục đích."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / Mealy vs Moore"
+  },
+  {
+    id:28, diff:"hard",
+    q:"**過去問 平成28年度 問題2-10**: Trong automaton 3 trạng thái nhận chuỗi bit, **受理状態** ở trạng thái cuối có self-loop {0,1}. Trace nào dưới đây cho chuỗi 「**1010**」 phản ánh đúng quy tắc 「S₁→1→S₂, S₂→0→S₃, S₃→{0,1}→S₃」 (S₁ khởi đầu, S₃ 受理)?",
+    ja:"「1010」を入力したときの遷移経路はどれか。",
+    options:[
+      "S₁ → S₁ → S₂ → S₃ → S₃ (không, sai bước đầu)",
+      "**S₁ → S₂ → S₃ → S₃ → S₃ (đúng: từ S₁ thấy 1→S₂; thấy 0→S₃; sau đó vòng tại S₃)**",
+      "S₁ → S₂ → S₂ → S₃ → S₃",
+      "S₁ → S₁ → S₁ → S₂ → S₃"
+    ],
+    correct:1,
+    why:"Trace 「1010」 với quy tắc:\n• Bắt đầu S₁.\n• '1': S₁ → S₂.\n• '0': S₂ → S₃.\n• '1': S₃ → S₃ (self-loop).\n• '0': S₃ → S₃ (self-loop).\nĐường đi: S₁ → S₂ → S₃ → S₃ → S₃. Kết thúc tại S₃ = 受理.",
+    whyWrong:{
+      0:"Bước đầu '1' phải từ S₁ → S₂, không phải tự lặp S₁.",
+      2:"Bước thứ 2 phải sang S₃ (do gặp '0'), không phải lặp S₂.",
+      3:"Hai '1' đầu mà cứ ở S₁ là sai — '1' đầu tiên phải sang S₂ ngay."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / 平成28年度 問題2-10"
+  },
+  {
+    id:29, diff:"mid",
+    q:"Một automaton được dùng để mô hình hoá **đèn giao thông 3 màu** (赤→青→黄→赤...). Đây là loại automaton nào?",
+    ja:"信号機（赤→青→黄→赤の周期）をモデル化するオートマトンはどれか。",
+    options:[
+      "**Cyclic automaton (周期的) — 3 trạng thái 赤, 青, 黄 chuyển vòng theo tín hiệu thời gian**",
+      "Linear automaton — không có vòng lặp",
+      "Tree-structured automaton",
+      "Đây không phải automaton vì không có input"
+    ],
+    correct:0,
+    why:"Đèn giao thông là ví dụ kinh điển: 3 trạng thái {赤, 青, 黄} chuyển vòng tròn theo input (thường là timer / xung clock). 状態遷移図:\n赤 →(timer)→ 青 →(timer)→ 黄 →(timer)→ 赤.\nĐây là **cyclic** (周期的) automaton.",
+    whyWrong:{
+      1:"Linear (không vòng) không phù hợp — đèn quay lại sau khi hết chu kỳ.",
+      2:"Tree không có chu kỳ, không hợp.",
+      3:"Sai — timer/xung clock chính là input."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / 信号機の例"
+  },
+  {
+    id:30, diff:"mid",
+    q:"Khi giải bài 状態遷移図 trong FE, chiến lược hiệu quả nhất là gì?",
+    ja:"状態遷移図の問題を解くベストプラクティスはどれか。",
+    options:[
+      "Học thuộc lòng tất cả các bài 過去問",
+      "**Trace TỪNG ký tự của input string theo thứ tự, ghi lại trạng thái sau mỗi bước, đến cuối chuỗi xem có ở 受理状態 không**",
+      "Tính tổng số trạng thái và so sánh với độ dài chuỗi",
+      "Đoán dựa vào mẫu (pattern)"
+    ],
+    correct:1,
+    why:"Phương pháp chuẩn cho IPA FE:\n1. Xác định 初期状態 (mũi tên đậm) và 受理状態 (二重丸).\n2. Đọc đề kỹ về cách label.\n3. Bắt đầu từ initial state, đọc TỪNG ký tự input.\n4. Áp dụng quy tắc transition, ghi state sau mỗi bước.\n5. Kết thúc chuỗi: kiểm tra state cuối = 受理状態?\nSlide 1 第9回 dùng phương pháp này trong 過去問練習.",
+    whyWrong:{
+      0:"Học thuộc không hiệu quả — các bài luôn có biến thể.",
+      2:"Sai — không có quan hệ giữa số trạng thái và độ dài chuỗi.",
+      3:"Sai — không có pattern đảm bảo."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / 解法戦略"
+  },
+
+  // ============ PART 4: 応用 + 関連概念 (タスク状態遷移, ứng dụng) — 10 câu ============
+  {
+    id:31, diff:"mid",
+    q:"Trong OS, **タスクの状態遷移 (task state transition)** có 3 trạng thái cơ bản nào? (Slide 4 ソフトウェア / Slide 1 第9回 mở rộng)",
+    ja:"タスクの状態遷移の3つの状態はどれか。",
+    options:[
+      "起動 / 動作 / 終了",
+      "**実行可能状態 / 実行状態 / 待機状態 (ready / running / waiting)**",
+      "初期 / 中間 / 終了",
+      "開始 / 一時停止 / 完了"
+    ],
+    correct:1,
+    why:"Theo Slide 4 ソフトウェア (mở rộng từ 状態遷移): 「タスクは実行可能状態・実行状態・待機状態の3つの状態を遷移しながら処理される」.\n• 実行可能 (ready): chờ CPU.\n• 実行 (running): đang được CPU xử lý.\n• 待機 (waiting): chờ I/O hoàn thành.",
+    whyWrong:{
+      0:"Tên gọi sai chuẩn FE.",
+      2:"Quá chung chung, không đúng thuật ngữ.",
+      3:"Không khớp thuật ngữ OS chuẩn."
+    },
+    topic:"FE Syllabus — テクノロジ系 / ソフトウェア / タスク状態遷移"
+  },
+  {
+    id:32, diff:"mid",
+    q:"Trong sơ đồ trạng thái task (Slide 4): 「**実行状態 → 待機状態**」 xảy ra khi nào?",
+    ja:"タスクが実行状態から待機状態へ遷移するきっかけは何か。",
+    options:[
+      "Khi CPU sai cấu hình",
+      "**Khi task phát sinh nhu cầu I/O (vd: đọc file) và phải chờ thiết bị ngoại vi hoàn thành**",
+      "Khi task vượt quá thời gian cho phép",
+      "Khi user nhấn nút stop"
+    ],
+    correct:1,
+    why:"Transition 「実行 → 待機」 = task đang chạy phát sinh yêu cầu I/O (input/output) → giải phóng CPU và chuyển sang trạng thái chờ I/O hoàn thành. Sau khi I/O xong, task chuyển 「待機 → 実行可能」 (lại vào hàng đợi chờ CPU).",
+    whyWrong:{
+      0:"Lỗi hệ thống không phải transition chuẩn.",
+      2:"Đó là 「実行→実行可能」 trong cơ chế round-robin (time slice hết).",
+      3:"User stop làm task chuyển trực tiếp sang 「タスク消滅」, không qua 待機."
+    },
+    topic:"FE Syllabus — テクノロジ系 / ソフトウェア / タスク状態遷移"
+  },
+  {
+    id:33, diff:"mid",
+    q:"Mối liên hệ giữa **オートマトン** và **タスクの状態遷移** trong OS là gì?",
+    ja:"オートマトンとタスク状態遷移の関係はどれか。",
+    options:[
+      "Hai khái niệm hoàn toàn độc lập, không liên quan",
+      "**タスクの状態遷移 là một ỨNG DỤNG cụ thể của khái niệm 状態遷移 (オートマトン) — task được mô hình hoá như automaton với 3 trạng thái và các transition do sự kiện hệ thống**",
+      "オートマトン là mô hình con của タスク状態遷移",
+      "Hai khái niệm cùng nghĩa, chỉ khác ngôn ngữ"
+    ],
+    correct:1,
+    why:"状態遷移 (chuyển trạng thái) là khái niệm TRỪU TƯỢNG — có thể áp dụng cho nhiều bối cảnh:\n• Automaton lý thuyết (Slide 1 第9回)\n• Task scheduling trong OS (Slide 4)\n• UI state (loading/loaded/error)\n• Network protocol (TCP: SYN, ESTABLISHED, FIN_WAIT...)\nTask state machine là CASE STUDY của ý tưởng automaton.",
+    whyWrong:{
+      0:"Sai — có quan hệ rõ ràng.",
+      2:"Đảo ngược: オートマトン rộng hơn.",
+      3:"Khác cụ thể: automaton chung, task state là instance."
+    },
+    topic:"FE Syllabus — 基礎理論 / 状態遷移の応用"
+  },
+  {
+    id:34, diff:"hard",
+    q:"Một **数当てゲーム** (đoán số) được mô hình bằng automaton: trạng thái = 「正解との差」. Player nhập một số → output \"高い\" / \"低い\" / \"正解\". Đây là dạng automaton nào?",
+    ja:"数当てゲームをモデル化するオートマトンの特徴はどれか。",
+    options:[
+      "Có hữu hạn trạng thái cố định trước (deterministic finite)",
+      "**Có vô hạn (hoặc rất nhiều) trạng thái tiềm năng tuỳ vào dải số; output (高い/低い/正解) phụ thuộc cả 状態 và 入力 → là dạng Mealy machine**",
+      "Chỉ có 1 trạng thái",
+      "Không phải automaton vì có output"
+    ],
+    correct:1,
+    why:"Phân tích:\n• Trạng thái = 「正解との差」 → nếu dải số là 1-1000, có 1000 trạng thái tiềm năng.\n• Output phụ thuộc cả state (số đúng) và input (số đoán) → MEALY type.\n• Khi input = 正解, chuyển sang trạng thái 「終了」 (受理).\nĐây là minh hoạ automaton với nhiều state.",
+    whyWrong:{
+      0:"Sai — số trạng thái rất lớn, không cố định trước.",
+      2:"Sai — cần nhiều trạng thái để track sự khác biệt.",
+      3:"Sai — automaton có thể có output (Mealy/Moore)."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / 応用例"
+  },
+  {
+    id:35, diff:"hard",
+    q:"Một automaton chấp nhận biểu thức chính quy 「**0\\*1\\***」 (zero hoặc nhiều số 0, theo sau là zero hoặc nhiều số 1). Có bao nhiêu trạng thái TỐI THIỂU cần thiết?",
+    ja:"正規表現「0*1*」を受理するオートマトンの最小状態数はいくつか。",
+    options:[
+      "1",
+      "**2 (q0: đang ở phần '0*' / q1: đã sang '1*', cả 2 đều 受理 vì biểu thức cho phép rỗng)**",
+      "3",
+      "4"
+    ],
+    correct:1,
+    why:"Phân tích 「0*1*」:\n• Chuỗi rỗng \"\" ✓\n• 「000」 ✓ (toàn '0')\n• 「111」 ✓ (toàn '1')\n• 「0011」 ✓\n• 「10」 ❌ ('1' xong rồi '0')\nAutomaton tối thiểu:\n• q0 (受理): nhận 0 → q0 (self), nhận 1 → q1.\n• q1 (受理): nhận 1 → q1 (self), nhận 0 → trap (hoặc không có chuyển).\nVậy 2 trạng thái 受理 đủ.",
+    whyWrong:{
+      0:"1 trạng thái không phân biệt được khi đã 'sang' phần 1.",
+      2:"Có thể có thêm trap state nhưng không bắt buộc.",
+      3:"Quá nhiều."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / 正規表現"
+  },
+  {
+    id:36, diff:"mid",
+    q:"Quan sát automaton 「**điện thoại di động hoạt động**」: trạng thái có thể bao gồm gì?",
+    ja:"スマートフォンの動作をモデル化したときの状態の例はどれか。",
+    options:[
+      "Chỉ 「電源ON」 và 「電源OFF」",
+      "**Có nhiều trạng thái: 「電源OFF」「ロック画面」「ホーム画面」「アプリ実行中」「通話中」「充電中」 v.v. — input là user action hoặc system event**",
+      "Không có trạng thái — smartphone là stateless",
+      "Chỉ trạng thái phần cứng, không có trạng thái phần mềm"
+    ],
+    correct:1,
+    why:"Smartphone là ví dụ hệ thống phức tạp được mô hình hoá tốt bằng automaton:\n• States: OFF, locked, home, in-app, in-call, charging, sleep...\n• Inputs: power button, swipe, app launch, incoming call, charger plug...\n• Transitions: vd 「ロック画面 + swipe up → ホーム画面」.\nĐây minh hoạ giá trị của automaton trong thiết kế hệ thống thực tế.",
+    whyWrong:{
+      0:"Quá đơn giản — bỏ qua nhiều trạng thái thực.",
+      2:"Sai — smartphone rõ ràng có trạng thái.",
+      3:"Trạng thái phần mềm (lock, foreground app...) là yếu tố chính."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / 実世界応用"
+  },
+  {
+    id:37, diff:"hard",
+    q:"Khái niệm **DFA (Deterministic Finite Automaton)** khác **NFA (Non-deterministic FA)** ở điểm gì? (Kiến thức mở rộng — FE chỉ test DFA)",
+    ja:"DFAとNFAの違いはどれか。",
+    options:[
+      "DFA dùng cho FE, NFA dùng cho ứng dụng AI",
+      "**DFA: với mỗi (state, input), CÓ ĐÚNG 1 trạng thái kế tiếp; NFA: có thể có 0, 1, hoặc nhiều trạng thái kế tiếp (\"đoán\" đường đi)**",
+      "DFA chậm hơn NFA",
+      "DFA chỉ có 2 trạng thái, NFA có vô hạn"
+    ],
+    correct:1,
+    why:"• **DFA (Deterministic)**: hàm chuyển δ(state, input) → đúng 1 next state. Đường đi cho mỗi input là DUY NHẤT.\n• **NFA (Nondeterministic)**: có thể có nhiều next state, cho phép ε-transitions (không cần input). Có thể \"đoán\" để chấp nhận.\nĐịnh lý: NFA và DFA tương đương về khả năng diễn đạt (cùng nhận regular language).\nFE chỉ test DFA dạng đơn giản.",
+    whyWrong:{
+      0:"Sai — DFA/NFA dùng trong nhiều lĩnh vực.",
+      2:"Tốc độ không phải tiêu chí phân biệt.",
+      3:"Sai hoàn toàn."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / DFA vs NFA"
+  },
+  {
+    id:38, diff:"easy",
+    q:"Một automaton có thể có **bao nhiêu 初期状態** (initial state)?",
+    ja:"オートマトンの初期状態の数はいくつか。",
+    options:[
+      "**Đúng 1 trạng thái khởi đầu (cho DFA)**",
+      "Có thể có nhiều khởi đầu",
+      "Không có",
+      "Tuỳ thuộc vào ngôn ngữ được nhận"
+    ],
+    correct:0,
+    why:"Định nghĩa chuẩn DFA: phải có **DUY NHẤT 1 初期状態**. Ký hiệu bằng mũi tên đậm chỉ vào (➡). Đây là điểm khởi đầu xác định để trace input.\n(Trong NFA mở rộng có thể có nhiều initial state, nhưng FE chỉ test DFA.)",
+    whyWrong:{
+      1:"Chỉ đúng với NFA mở rộng, không phải DFA chuẩn.",
+      2:"Không có initial state thì không thể bắt đầu trace.",
+      3:"Số initial state là đặc trưng định nghĩa, không phụ thuộc ngôn ngữ."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / 初期状態"
+  },
+  {
+    id:39, diff:"mid",
+    q:"Một automaton có thể có **bao nhiêu 受理状態** (accepting state)?",
+    ja:"オートマトンの受理状態の数の制限はどれか。",
+    options:[
+      "Chỉ duy nhất 1 受理状態",
+      "**0, 1, hoặc nhiều 受理状態 — tuỳ vào ngôn ngữ được nhận**",
+      "Đúng bằng số 初期状態",
+      "Phải là số chẵn"
+    ],
+    correct:1,
+    why:"Số lượng 受理状態 không cố định:\n• Có thể có 0 (automaton không nhận chuỗi nào — trống).\n• Có thể có 1 (vd: \"chứa đúng pattern X\").\n• Có thể có nhiều (vd: \"chuỗi có độ dài chia hết cho 2 hoặc 3\").\nDuy nhất 1 初期状態, NHƯNG nhiều 受理状態 được phép.",
+    whyWrong:{
+      0:"Sai — có thể có nhiều.",
+      2:"Không có quan hệ này.",
+      3:"Hoàn toàn vô lý."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / 受理状態の数"
+  },
+  {
+    id:40, diff:"hard",
+    q:"Tổng kết: chiến lược tốt nhất để học **オートマトン** cho kỳ thi FE là gì?",
+    ja:"FE試験でオートマトンを習得するベスト戦略はどれか。",
+    options:[
+      "Học thuộc lý thuyết DFA/NFA hình thức",
+      "**(1) Nắm chắc định nghĩa 入力・状態・出力; (2) Hiểu ý nghĩa 初期/受理状態 và ký hiệu (○, 二重丸, mũi tên); (3) Luyện tape trace input string qua nhiều bài 過去問; (4) Tập đọc cả 状態遷移表 và 状態遷移図**",
+      "Chỉ học công thức",
+      "Tự vẽ automaton mới mà không cần đọc đề"
+    ],
+    correct:1,
+    why:"Phối hợp 4 yếu tố:\n1. **Khái niệm**: hiểu rõ 入力/状態/出力 (Yasashii 02-04).\n2. **Ký hiệu**: ○ = state, ⊙ = 受理, ➡ = 初期, → = 遷移.\n3. **Trace skill**: thực hành nhiều 過去問 (平成26, 28, 30...) bằng cách trace từng ký tự.\n4. **Cả 2 biểu diễn**: bảng (状態遷移表) và sơ đồ (状態遷移図) — phải đọc được cả 2.\nSlide 1 第9回 và Yasashii 02-04 cung cấp đủ phương pháp này.",
+    whyWrong:{
+      0:"Không cần lý thuyết hình thức cho FE — chỉ cần trace.",
+      2:"Không có \"công thức\" — chỉ có quy tắc đọc/trace.",
+      3:"Vẽ mà không hiểu đề không có giá trị thi."
+    },
+    topic:"FE Syllabus — 基礎理論 / オートマトン / 学習戦略"
+  }
+];
+
+// ===== State =====
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+
+const quizArea = document.getElementById('quiz-area');
+const resultArea = document.getElementById('result-area');
+const progressText = document.getElementById('progress-text');
+const progressFill = document.getElementById('progress-fill');
+const answeredCount = document.getElementById('answered-count');
+const progressWrap = document.getElementById('progress-wrap');
+
+function diffClass(d){return d==='easy'?'diff-easy':d==='mid'?'diff-mid':'diff-hard'}
+function diffLabel(d){return d==='easy'?'[Dễ / 易]':d==='mid'?'[TB / 中]':'[Khó / 難]'}
+
+function render(){
+  if(current >= questions.length){renderResult(); return;}
+  const q = questions[current];
+  const a = answers[current];
+  const locked = a !== null;
+
+  const opts = q.options.map((opt, i) => {
+    let cls = 'option';
+    if(locked){
+      cls += ' locked';
+      if(i === q.correct) cls += ' correct';
+      else if(i === a) cls += ' wrong';
+    }
+    return `<div class="${cls}" data-idx="${i}">
+      <div class="key">${String.fromCharCode(65+i)}</div>
+      <div class="body">${opt}</div>
+    </div>`;
+  }).join('');
+
+  let expHtml = '';
+  if(locked){
+    const wrongList = Object.keys(q.whyWrong).map(k=>{
+      return `<p><span class="label">${String.fromCharCode(65+(+k))}.</span> ${q.whyWrong[k]}</p>`;
+    }).join('');
+    expHtml = `
+      <div class="explanation" id="exp">
+        <h4>💡 Giải thích</h4>
+        <p><span class="label">Đáp án đúng:</span> ${String.fromCharCode(65+q.correct)}</p>
+        <p><span class="label">Vì sao đúng:</span> ${q.why.replace(/\n/g,'<br>')}</p>
+        <p><span class="label">Vì sao các phương án còn lại sai:</span></p>
+        ${wrongList}
+        <div class="topic">📚 <strong>Liên hệ FE:</strong> ${q.topic}</div>
+      </div>`;
+  }
+
+  quizArea.innerHTML = `
+    <div class="card">
+      <span class="difficulty ${diffClass(q.diff)}">${diffLabel(q.diff)}</span>
+      <p class="question"><strong>Câu ${q.id}.</strong> ${q.q.replace(/\n/g,'<br>')}
+        <span class="ja">${q.ja}</span></p>
+      <div class="options">${opts}</div>
+      ${expHtml}
+      <div class="actions">
+        <button class="secondary" id="prev-btn" ${current===0?'disabled':''}>← Câu trước</button>
+        ${locked ? `<button id="toggle-exp" class="amber">Xem / Ẩn giải thích</button>` : ''}
+        <button id="next-btn" ${!locked?'disabled':''}>${current===questions.length-1?'Kết thúc & Xem kết quả':'Câu tiếp →'}</button>
+      </div>
+    </div>
+  `;
+
+  if(!locked){
+    quizArea.querySelectorAll('.option').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        const idx = +el.dataset.idx;
+        answers[current] = idx;
+        render();
+        updateProgress();
+      });
+    });
+  }
+
+  document.getElementById('prev-btn').addEventListener('click', ()=>{if(current>0){current--; render(); updateProgress();}});
+  document.getElementById('next-btn').addEventListener('click', ()=>{current++; render(); updateProgress();});
+  const tex = document.getElementById('toggle-exp');
+  if(tex){
+    const expDiv = document.getElementById('exp');
+    expDiv.classList.add('show');
+    tex.addEventListener('click', ()=>{ expDiv.classList.toggle('show'); });
+  }
+}
+
+function updateProgress(){
+  if(current >= questions.length){
+    progressWrap.style.display = 'none';
+    return;
+  }
+  progressText.textContent = `Câu ${current+1} / ${questions.length}`;
+  const answered = answers.filter(a=>a!==null).length;
+  answeredCount.textContent = `Đã trả lời: ${answered}`;
+  progressFill.style.width = ((current+1)/questions.length*100)+'%';
+}
+
+function renderResult(){
+  quizArea.style.display='none';
+  resultArea.style.display='block';
+  progressWrap.style.display='none';
+
+  const totals = {easy:{c:0,t:0}, mid:{c:0,t:0}, hard:{c:0,t:0}};
+  let score = 0;
+  questions.forEach((q,i)=>{
+    totals[q.diff].t++;
+    if(answers[i]===q.correct){score++; totals[q.diff].c++;}
+  });
+  const pct = Math.round(score/questions.length*100);
+  let verdict, vClass;
+  if(pct >= 80){verdict='🌟 Xuất sắc! Em đã nắm chắc オートマトン・状態遷移 — sẵn sàng cho 科目A!'; vClass='v-excellent'}
+  else if(pct >= 60){verdict='👍 Khá tốt! Cần luyện thêm phần trace chuỗi qua 状態遷移図.'; vClass='v-good'}
+  else{verdict='💪 Cần cố gắng thêm! Hãy ôn lại Yasashii 02-04 + Slide 1 第9回 rồi luyện trace từng ký tự.'; vClass='v-needs-work'}
+
+  resultArea.innerHTML = `
+    <div class="card result">
+      <h2>🎉 Hoàn thành bài kiểm tra!</h2>
+      <div class="score-big">${score} / ${questions.length}</div>
+      <div class="score-pct">Đạt ${pct}%</div>
+      <div class="verdict ${vClass}">${verdict}</div>
+      <div class="breakdown">
+        <div class="breakdown-item">
+          <div class="lbl">🟢 Dễ / 易</div>
+          <div class="val">${totals.easy.c} / ${totals.easy.t}</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="lbl">🟡 TB / 中</div>
+          <div class="val">${totals.mid.c} / ${totals.mid.t}</div>
+        </div>
+        <div class="breakdown-item">
+          <div class="lbl">🔴 Khó / 難</div>
+          <div class="val">${totals.hard.c} / ${totals.hard.t}</div>
+        </div>
+      </div>
+      <button id="restart-btn">🔁 Làm lại từ đầu</button>
+      <button class="secondary" id="review-btn">📖 Xem lại bài</button>
+    </div>
+  `;
+  document.getElementById('restart-btn').addEventListener('click', ()=>{
+    current=0; answers=new Array(questions.length).fill(null);
+    quizArea.style.display='block'; resultArea.style.display='none'; progressWrap.style.display='block';
+    render(); updateProgress();
+  });
+  document.getElementById('review-btn').addEventListener('click', ()=>{
+    current=0;
+    quizArea.style.display='block'; resultArea.style.display='none'; progressWrap.style.display='block';
+    render(); updateProgress();
+  });
+}
+
+render();
+updateProgress();
+</script>
+</body>
+</html>
