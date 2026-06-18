@@ -1,0 +1,1346 @@
+
+AND/OR/NOT/XORtest.html
+
+Trang
+1
+/
+1
+100%
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài kiểm tra FE — 論理演算 & 半加算器 (40 câu)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f3f0e8;
+  --paper:#fffdf7;
+  --ink:#1a1a1a;
+  --muted:#6b6b6b;
+  --primary:#1e3a8a;
+  --primary-soft:#dbeafe;
+  --accent:#c2410c;
+  --correct:#16a34a;
+  --correct-bg:#dcfce7;
+  --wrong:#dc2626;
+  --wrong-bg:#fee2e2;
+  --border:#d6d0c0;
+}
+html,body{height:100%}
+body{
+  font-family: system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.6;
+  font-size:16px;
+  padding:20px 16px;
+  min-height:100vh;
+}
+.container{
+  max-width:820px;
+  margin:0 auto;
+  background:var(--paper);
+  border:1px solid var(--border);
+  border-radius:12px;
+  box-shadow:0 4px 24px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.04);
+  overflow:hidden;
+}
+header{
+  padding:24px 28px 18px;
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg, #fffdf7 0%, #f9f5ea 100%);
+}
+header h1{font-size:20px; font-weight:700; color:var(--primary); margin-bottom:4px}
+header .subtitle{font-size:13px; color:var(--muted); letter-spacing:.02em}
+header .meta{margin-top:10px; display:flex; gap:14px; flex-wrap:wrap; font-size:12px; color:var(--muted)}
+header .meta span{background:#fff; border:1px solid var(--border); padding:3px 10px; border-radius:20px}
+
+.progress-wrap{padding:14px 28px; border-bottom:1px solid var(--border); background:#fcfaf3}
+.progress-label{display:flex; justify-content:space-between; align-items:center; font-size:13px; color:var(--muted); margin-bottom:6px}
+.progress-label .num{font-weight:600; color:var(--ink)}
+.progress-bar{height:6px; background:#e5dfd0; border-radius:6px; overflow:hidden}
+.progress-fill{height:100%; background:linear-gradient(90deg, var(--primary), var(--accent)); width:2.5%; transition:width .35s ease}
+
+/* Quick nav */
+.quicknav{
+  padding:12px 28px; border-bottom:1px solid var(--border);
+  background:#fffdf7;
+  display:flex; flex-wrap:wrap; gap:6px;
+  max-height:0; overflow:hidden;
+  transition: max-height .3s ease, padding .3s ease;
+}
+.quicknav.open{max-height:300px; padding:12px 28px; overflow-y:auto}
+.quicknav-toggle{
+  background:#fcfaf3; border:1px solid var(--border);
+  padding:8px 28px; cursor:pointer; font-size:12px;
+  width:100%; text-align:left; color:var(--muted);
+  font-family:inherit;
+}
+.quicknav-toggle:hover{background:#f3f0e8}
+.qnav-btn{
+  width:34px; height:34px;
+  font-size:12px; font-weight:600;
+  border:1px solid var(--border);
+  background:#fff;
+  cursor:pointer;
+  border-radius:6px;
+  font-family:inherit;
+  color:var(--ink);
+  transition: all .15s;
+}
+.qnav-btn:hover{background:var(--primary-soft); border-color:var(--primary)}
+.qnav-btn.current{background:var(--primary); color:#fff; border-color:var(--primary)}
+.qnav-btn.answered.right{background:var(--correct); color:#fff; border-color:var(--correct)}
+.qnav-btn.answered.wrong{background:var(--wrong); color:#fff; border-color:var(--wrong)}
+
+main{padding:28px}
+.question-card{display:none}
+.question-card.active{display:block; animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+
+.q-tag{display:inline-block; font-size:11px; font-weight:700; letter-spacing:.1em; padding:3px 10px; border-radius:4px; margin-bottom:12px; text-transform:uppercase}
+.q-tag.de{background:#dcfce7; color:#14532d}
+.q-tag.tb{background:#fef3c7; color:#92400e}
+.q-tag.kho{background:#fee2e2; color:#991b1b}
+
+.q-num{font-size:13px; color:var(--muted); margin-bottom:8px; font-weight:600}
+.q-text{font-size:17px; font-weight:600; margin-bottom:18px; line-height:1.55}
+.q-text code{background:#f3f0e8; padding:2px 7px; border-radius:4px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size:.95em}
+.q-pre{
+  background:#1a1a1a; color:#fef3c7;
+  padding:14px 18px; border-radius:8px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size:14px; margin:10px 0 18px; white-space:pre; overflow-x:auto; line-height:1.5;
+}
+
+.options{list-style:none; display:flex; flex-direction:column; gap:10px}
+.option{
+  background:#fff; border:2px solid var(--border); border-radius:10px;
+  padding:14px 18px; cursor:pointer; transition: all .18s ease;
+  display:flex; align-items:flex-start; gap:14px; font-size:15px; user-select:none;
+}
+.option:hover:not(.disabled){border-color:var(--primary); background:var(--primary-soft); transform:translateX(2px)}
+.option .letter{
+  background:#f3f0e8; color:var(--ink);
+  width:30px; height:30px; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:14px; flex-shrink:0; transition: all .18s;
+}
+.option .text{flex:1; line-height:1.5}
+.option.correct{background:var(--correct-bg); border-color:var(--correct); color:#14532d}
+.option.correct .letter{background:var(--correct); color:#fff}
+.option.correct::after{content:'✓'; color:var(--correct); font-weight:700; font-size:20px; margin-left:auto}
+.option.wrong{background:var(--wrong-bg); border-color:var(--wrong); color:#991b1b}
+.option.wrong .letter{background:var(--wrong); color:#fff}
+.option.wrong::after{content:'✗'; color:var(--wrong); font-weight:700; font-size:20px; margin-left:auto}
+.option.disabled{cursor:not-allowed; opacity:.85}
+
+.explain-btn{
+  display:none; margin-top:16px; background:transparent;
+  border:1.5px solid var(--primary); color:var(--primary);
+  padding:8px 18px; border-radius:8px; font-size:14px; font-weight:600;
+  cursor:pointer; transition:all .15s; font-family:inherit;
+}
+.explain-btn.show{display:inline-block}
+.explain-btn:hover{background:var(--primary); color:#fff}
+
+.explain{
+  display:none; margin-top:14px; background:#fcfaf3;
+  border-left:4px solid var(--primary); padding:16px 20px; border-radius:6px;
+  font-size:14.5px;
+}
+.explain.show{display:block; animation:slideDown .25s ease}
+@keyframes slideDown{from{opacity:0} to{opacity:1}}
+.explain p{margin-bottom:8px}
+.explain p:last-child{margin-bottom:0}
+.explain code{background:#e5dfd0; padding:1px 6px; border-radius:3px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size:.92em}
+.explain .lbl{
+  display:inline-block; font-size:11px; font-weight:700; letter-spacing:.08em;
+  padding:2px 8px; background:var(--primary); color:#fff;
+  border-radius:4px; margin-right:6px; text-transform:uppercase;
+}
+.explain .lbl.bad{background:var(--wrong)}
+.explain .lbl.fe{background:var(--accent)}
+
+.nav-buttons{
+  margin-top:24px; padding-top:20px; border-top:1px solid var(--border);
+  display:flex; gap:10px; justify-content:space-between; align-items:center;
+}
+.btn{
+  padding:11px 22px; font-size:14px; font-weight:600; border-radius:8px;
+  cursor:pointer; border:none; transition:all .15s; font-family:inherit;
+}
+.btn-prev{background:#f3f0e8; color:var(--ink); border:1px solid var(--border)}
+.btn-prev:hover:not(:disabled){background:#e5dfd0}
+.btn-next{background:var(--primary); color:#fff}
+.btn-next:hover:not(:disabled){background:#1e2f6b}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+
+.result{display:none; text-align:center; padding:20px 0}
+.result.active{display:block; animation:fadeIn .4s ease}
+.result h2{font-size:24px; color:var(--primary); margin-bottom:8px}
+.result .subtitle{color:var(--muted); margin-bottom:24px}
+.score-circle{
+  width:180px; height:180px; margin:20px auto;
+  border-radius:50%;
+  background:conic-gradient(var(--primary) 0deg, var(--primary) var(--deg,0deg), #e5dfd0 var(--deg,0deg));
+  display:flex; align-items:center; justify-content:center; position:relative;
+}
+.score-circle::before{content:''; position:absolute; inset:14px; background:var(--paper); border-radius:50%}
+.score-inner{position:relative; text-align:center}
+.score-inner .score{font-size:42px; font-weight:800; color:var(--primary); line-height:1}
+.score-inner .max{font-size:14px; color:var(--muted)}
+.percent{font-size:28px; font-weight:700; margin:14px 0 6px}
+.feedback{font-size:17px; font-weight:600; margin-bottom:24px; padding:14px 20px; border-radius:10px; display:inline-block}
+.feedback.excellent{background:#dcfce7; color:#14532d}
+.feedback.good{background:#bfdbfe; color:#1e3a8a}
+.feedback.average{background:#fef3c7; color:#92400e}
+.feedback.work{background:#fee2e2; color:#991b1b}
+
+.summary{
+  text-align:left; max-width:600px; margin:0 auto 24px;
+  background:#fcfaf3; border:1px solid var(--border);
+  border-radius:10px; padding:18px 22px;
+}
+.summary h3{font-size:14px; margin-bottom:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em}
+.summary-grid{
+  display:grid; grid-template-columns:repeat(10, 1fr); gap:5px; margin-top:8px;
+}
+.summary-cell{
+  aspect-ratio:1; display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:11px; border-radius:5px; background:#e5dfd0;
+  cursor:pointer; transition:transform .1s;
+}
+.summary-cell:hover{transform:scale(1.1)}
+.summary-cell.ok{background:var(--correct); color:#fff}
+.summary-cell.no{background:var(--wrong); color:#fff}
+
+.breakdown{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
+  max-width:600px; margin:0 auto 24px;
+}
+.bd-card{
+  background:#fff; border:1px solid var(--border); border-radius:8px;
+  padding:14px; text-align:center;
+}
+.bd-card .lbl{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em}
+.bd-card .val{font-size:22px; font-weight:700; margin-top:4px}
+.bd-card.de .val{color:#14532d}
+.bd-card.tb .val{color:#92400e}
+.bd-card.kho .val{color:#991b1b}
+
+.btn-restart{background:var(--accent); color:#fff; padding:13px 32px; font-size:15px}
+.btn-restart:hover{background:#9a3308}
+
+@media (max-width:600px){
+  body{padding:10px}
+  header{padding:18px 18px 14px}
+  header h1{font-size:17px}
+  .progress-wrap, main{padding:14px 18px}
+  main{padding-top:20px; padding-bottom:20px}
+  .q-text{font-size:15px}
+  .option{font-size:14px; padding:12px 14px}
+  .q-pre{font-size:12px; padding:10px 14px}
+  .nav-buttons{flex-direction:column-reverse}
+  .nav-buttons .btn{width:100%}
+  .score-circle{width:150px; height:150px}
+  .score-inner .score{font-size:34px}
+  .summary-grid{grid-template-columns:repeat(8,1fr)}
+  .breakdown{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <h1>Bài kiểm tra FE — 論理演算 &amp; 半加算器</h1>
+    <div class="subtitle">Phép toán logic và mạch cộng bán phần · 40 câu trắc nghiệm</div>
+    <div class="meta">
+      <span>📝 40 câu</span>
+      <span>⏱ Gợi ý: 60 phút</span>
+      <span>🎯 FE Syllabus · Chương 2</span>
+    </div>
+  </header>
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-label">
+      <span>Tiến độ <span id="answeredCount">0</span> đã trả lời</span>
+      <span class="num"><span id="curNum">1</span> / 40</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+
+  <button class="quicknav-toggle" onclick="document.getElementById('quicknav').classList.toggle('open')" id="quicknavToggle">▼ Chuyển nhanh đến câu...</button>
+  <div class="quicknav" id="quicknav"></div>
+
+  <main id="quiz">
+
+    <!-- ============================================== -->
+    <!-- ================== Q1 ======================== -->
+    <!-- ============================================== -->
+    <div class="question-card active" data-q="1" data-correct="C" data-level="de">
+      <div class="q-num">Câu 1 / 40</div>
+      <span class="q-tag de">Dễ</span>
+      <div class="q-text">Phép toán logic nào sau đây cho kết quả "1" <em>chỉ khi và chỉ khi</em> cả hai đầu vào đều là "1"?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">論理和 (OR)</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">排他的論理和 (XOR)</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">論理積 (AND)</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">否定論理和 (NOR)</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>C — 論理積 (AND)</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>AND chỉ trả về <strong>1</strong> khi cả A và B đều bằng 1; các trường hợp khác đều trả về 0. Đây là đặc điểm cốt lõi của phép tích logic.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A (OR):</strong> trả 1 khi ít nhất 1 đầu vào = 1. <strong>B (XOR):</strong> trả 1 khi 2 đầu vào KHÁC nhau, 1+1=0. <strong>D (NOR):</strong> ngược lại OR, trả 1 khi cả 2 đều = 0.</p>
+        <p><span class="lbl fe">FE</span>テクノロジ系 · 基礎理論 · 論理演算</p>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question-card" data-q="2" data-correct="B" data-level="de">
+      <div class="q-num">Câu 2 / 40</div>
+      <span class="q-tag de">Dễ</span>
+      <div class="q-text">Bảng chân lý nào sau đây là của phép XOR (排他的論理和)?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">0,0→0 · 0,1→1 · 1,0→1 · 1,1→1</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">0,0→0 · 0,1→1 · 1,0→1 · 1,1→0</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">0,0→1 · 0,1→1 · 1,0→1 · 1,1→0</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">0,0→0 · 0,1→0 · 1,0→0 · 1,1→1</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>B</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>XOR trả về 1 khi hai đầu vào <strong>khác nhau</strong>, và 0 khi <strong>giống nhau</strong>. Vì vậy: 0,0→0; 0,1→1; 1,0→1; 1,1→0.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> bảng OR. <strong>C:</strong> bảng NAND. <strong>D:</strong> bảng AND.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 論理演算 (真理値表)</p>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question-card" data-q="3" data-correct="A" data-level="de">
+      <div class="q-num">Câu 3 / 40</div>
+      <span class="q-tag de">Dễ</span>
+      <div class="q-text">Tên gọi tiếng Nhật chính thức (別名) của phép NOT là gì?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">否定 (ひてい)</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">論理積 (ろんりせき)</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">論理和 (ろんりわ)</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">排他的論理和 (はいたてきろんりわ)</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>A — 否定</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>NOT là phép đảo ngược đầu vào (0↔1), tên gọi chính thức trong tiếng Nhật là 否定 (phủ định). Ký hiệu là Ā (gạch ngang trên A).</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>B:</strong> 論理積 = AND. <strong>C:</strong> 論理和 = OR. <strong>D:</strong> 排他的論理和 = XOR.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 論理演算 (用語)</p>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="question-card" data-q="4" data-correct="D" data-level="de">
+      <div class="q-num">Câu 4 / 40</div>
+      <span class="q-tag de">Dễ</span>
+      <div class="q-text">Phép NAND (否定論理積) được định nghĩa như thế nào?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">Là phép OR với đầu vào bị đảo</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">Là phép XOR với đầu ra bị đảo</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">Là phép OR với đầu ra bị đảo (= NOR)</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Là phép AND với đầu ra bị đảo (NOT AND)</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>D — NAND = NOT AND</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>NAND có nghĩa "NOT AND", tức là kết quả của phép AND bị đảo. Bảng chân lý: 0,0→1; 0,1→1; 1,0→1; 1,1→0 (ngược với AND).</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> không có phép này. <strong>B:</strong> XOR đảo không phải NAND. <strong>C:</strong> đây là định nghĩa của NOR.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 論理演算 (NAND/NOR)</p>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="question-card" data-q="5" data-correct="A" data-level="de">
+      <div class="q-num">Câu 5 / 40</div>
+      <span class="q-tag de">Dễ</span>
+      <div class="q-text">Trong ký hiệu MIL (MIL記号), MIL là viết tắt của từ gì?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">Military Standard (chuẩn quân sự Mỹ)</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">Multi-Input Logic</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">Modular Integrated Logic</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Mathematical Inference Language</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>A — Military Standard</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>MIL記号 là ký hiệu được quy định trong MIL規格 (Military Standard) — chuẩn về vật tư của quân đội Mỹ. Tuy nhiên đề thi FE không hỏi trực tiếp về cái tên này.</p>
+        <p><span class="lbl bad">Vì sao sai</span>Các phương án B, C, D đều là tên giả không tồn tại trong thuật ngữ kỹ thuật chính thức.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 論理回路 (MIL記号)</p>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="question-card" data-q="6" data-correct="B" data-level="de">
+      <div class="q-num">Câu 6 / 40</div>
+      <span class="q-tag de">Dễ</span>
+      <div class="q-text">Phép XOR có tên gọi tiếng Nhật chính thức là gì?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">否定論理和 (NOR)</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">排他的論理和 (Tổng logic loại trừ)</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">否定論理積 (NAND)</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">条件付き論理和 (Conditional OR)</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>B — 排他的論理和</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>XOR (exclusive-OR) = 排他的論理和 nghĩa là "tổng logic loại trừ" — chỉ cho ra 1 khi 2 đầu vào loại trừ lẫn nhau (khác nhau).</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> 否定論理和 = NOR. <strong>C:</strong> 否定論理積 = NAND. <strong>D:</strong> không phải thuật ngữ chính thức.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 論理演算 (用語)</p>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="question-card" data-q="7" data-correct="B" data-level="de">
+      <div class="q-num">Câu 7 / 40</div>
+      <span class="q-tag de">Dễ</span>
+      <div class="q-text">Theo nội dung bài, ベン図 (Sơ đồ Venn) là gì?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">Bảng liệt kê các giá trị đầu vào và đầu ra của phép toán logic</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">Sơ đồ biểu diễn quan hệ giữa các tập hợp bằng hình ảnh</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">Ký hiệu chuẩn biểu diễn mạch logic trên giấy</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Lưu đồ thuật toán có nhánh điều kiện</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>B</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>ベン図 (Venn diagram) là sơ đồ biểu diễn trực quan quan hệ giữa các tập hợp, được nhà toán học người Anh John Venn nghĩ ra. Khi gặp bài toán logic, vẽ Venn là cách giải nhanh nhất.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> đó là 真理値表 (truth table). <strong>C:</strong> đó là MIL記号. <strong>D:</strong> đó là flowchart, không liên quan.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 集合とベン図</p>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="question-card" data-q="8" data-correct="C" data-level="de">
+      <div class="q-num">Câu 8 / 40</div>
+      <span class="q-tag de">Dễ</span>
+      <div class="q-text">Ký hiệu nào dưới đây thể hiện phép AND giữa A và B?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">A + B</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">A ⊕ B</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">A · B</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Ā</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>C — A · B</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>Ký hiệu dấu chấm "·" (giống phép nhân) biểu diễn AND vì AND được gọi là 論理積 (tích logic).</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A (A+B):</strong> ký hiệu của OR. <strong>B (A⊕B):</strong> ký hiệu của XOR. <strong>D (Ā):</strong> ký hiệu của NOT.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 論理演算 (記号)</p>
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="question-card" data-q="9" data-correct="C" data-level="de">
+      <div class="q-num">Câu 9 / 40</div>
+      <span class="q-tag de">Dễ</span>
+      <div class="q-text">Trong mạch cộng bán phần (半加算器), ký hiệu "S" (Sum) đại diện cho giá trị gì?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">Số nhớ sang hàng cao hơn (carry-out)</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">Số nhớ từ hàng dưới sang (carry-in)</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">Tổng của 1 cột (chữ số hàng đơn vị của kết quả)</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Tổng tổng quát của toàn bộ phép cộng</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>C — Tổng 1 cột (和の1桁目)</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>S = Sum = 和の1桁目 (chữ số hàng đơn vị của kết quả). Ví dụ 1+1=10, S = 0 (hàng đơn vị), C = 1 (nhớ).</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> đó là C (Carry-out). <strong>B:</strong> 半加算器 không có carry-in. <strong>D:</strong> S chỉ là chữ số đơn vị, không phải tổng tổng quát.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 半加算器</p>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="question-card" data-q="10" data-correct="A" data-level="de">
+      <div class="q-num">Câu 10 / 40</div>
+      <span class="q-tag de">Dễ</span>
+      <div class="q-text">Theo nội dung bài giảng, các thuật ngữ "論理回路", "論理素子", "論理ゲート" có quan hệ thế nào trong đề thi FE?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">Cả 3 thuật ngữ có nghĩa hoàn toàn giống nhau</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">論理素子 là phần con của 論理回路</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">論理ゲート là tên gọi cũ, không còn dùng</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Chỉ có 論理回路 mới đúng, 2 từ kia là sai</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>A — Cả 3 đều cùng nghĩa</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>Trong đề thi FE: 論理回路 (mạch logic) = 論理素子 (phần tử logic) = 論理ゲート (cổng logic). Ba từ này dùng thay thế cho nhau.</p>
+        <p><span class="lbl bad">Vì sao sai</span>Không có sự phân cấp hay khác biệt nghĩa giữa 3 thuật ngữ này theo nội dung bài.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 論理回路 (素子・ゲート)</p>
+      </div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="question-card" data-q="11" data-correct="C" data-level="tb">
+      <div class="q-num">Câu 11 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Trong dãy 8 bit, thao tác nào sau đây sẽ <strong>giữ nguyên 4 bit thấp</strong> không thay đổi, đồng thời đưa 4 bit cao về 0?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">Lấy XOR với 16進数 0F (排他的論理和)</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">Lấy NAND với 16進数 0F (否定論理積)</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">Lấy AND với 16進数 0F (論理積)</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Lấy OR với 16進数 0F (論理和)</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>C — AND với 0F</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>0F = <code>00001111</code>. Quy tắc AND: bit AND với <strong>1</strong> giữ nguyên, AND với <strong>0</strong> trở thành 0. Ví dụ: <code>10101010 AND 00001111 = 00001010</code>.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> XOR đảo 4 bit thấp, không giữ nguyên. <strong>B:</strong> NAND cho kết quả ngược. <strong>D:</strong> OR đặt 4 bit thấp thành 1.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · ビット操作 (đề thi 平成29年度)</p>
+      </div>
+    </div>
+
+    <!-- Q12 -->
+    <div class="question-card" data-q="12" data-correct="C" data-level="tb">
+      <div class="q-num">Câu 12 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Thao tác nào sau đây sẽ <strong>đảo ngược toàn bộ 8 bit</strong> của một dãy bit cho trước?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">Lấy XOR với 16進数 00</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">Lấy OR với 16進数 00</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">Lấy XOR với 16進数 FF</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Lấy OR với 16進数 FF</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>C — XOR với FF</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>FF = <code>11111111</code>. Quy tắc XOR: bit XOR với <strong>1</strong> bị đảo (0↔1). Ví dụ <code>10101010 XOR 11111111 = 01010101</code>.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> XOR với 0 giữ nguyên. <strong>B:</strong> OR với 0 giữ nguyên. <strong>D:</strong> OR với FF làm tất cả thành 1, không phải đảo.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · ビット反転 (đề thi 令和元年度)</p>
+      </div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="question-card" data-q="13" data-correct="B" data-level="tb">
+      <div class="q-num">Câu 13 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Biểu thức logic <code>A OR B AND C</code> được tính như thế nào theo thứ tự ưu tiên?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">Tính từ trái sang phải: (A OR B) trước, rồi AND với C</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">Tính (B AND C) trước, rồi OR với A</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">Tính (A OR B) và (B AND C) song song</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">OR và AND cùng ưu tiên, kết quả không xác định</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>B — Tính B AND C trước</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>Thứ tự ưu tiên: <strong>括弧 &gt; NOT &gt; AND &gt; OR</strong>. AND ưu tiên cao hơn OR (tương tự × ưu tiên hơn + trong số học).</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> không tính tuần tự trái-phải. <strong>C:</strong> logic là phép xác định. <strong>D:</strong> ưu tiên đã rõ ràng.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 論理演算子の優先順位</p>
+      </div>
+    </div>
+
+    <!-- Q14 -->
+    <div class="question-card" data-q="14" data-correct="A" data-level="tb">
+      <div class="q-num">Câu 14 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Trong ký hiệu MIL của các cổng logic, dấu chấm tròn nhỏ (○) gắn ở đầu ra của một cổng có ý nghĩa gì?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">Biểu thị 否定 (phủ định / NOT) trên đầu ra</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">Biểu thị 排他的 (loại trừ / exclusive)</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">Biểu thị điểm nối tín hiệu giữa các dây dẫn</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Biểu thị đầu vào ở mức điện áp cao</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>A — Phủ định (否定)</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>Dấu ○ ở đầu ra biểu thị NOT. NAND = AND + ○, NOR = OR + ○, NOT = tam giác + ○.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>B:</strong> 排他的 dùng vạch dọc cong thêm vào bên trái OR. <strong>C:</strong> điểm nối là chấm đen đặc. <strong>D:</strong> không có quy ước này.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 論理回路 (MIL論理記号)</p>
+      </div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="question-card" data-q="15" data-correct="B" data-level="tb">
+      <div class="q-num">Câu 15 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Tính kết quả: <code>1 OR 0 AND 1</code> = ?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">0</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">1</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">Phụ thuộc thứ tự đọc</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Không thể tính nếu không có ngoặc</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>B — Kết quả = 1</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>AND ưu tiên hơn OR: tính 0 AND 1 = 0 trước, rồi 1 OR 0 = 1.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> nếu tính trái-phải sẽ ra (1 OR 0)=1, rồi 1 AND 1=1, vẫn không phải 0. <strong>C, D:</strong> ưu tiên đã rõ.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 論理演算 (計算)</p>
+      </div>
+    </div>
+
+    <!-- Q16 -->
+    <div class="question-card" data-q="16" data-correct="D" data-level="tb">
+      <div class="q-num">Câu 16 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Cho dãy 8 bit X = <code>11001100</code>. Thao tác <code>X OR 11110000</code> cho kết quả là gì?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">11001100</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">11000000</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">00111100</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">11111100</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>D — 11111100</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>OR với 1 luôn cho 1; OR với 0 giữ nguyên. <code>11001100 OR 11110000</code>: 4 bit cao = 1 (đặt =1 hết), 4 bit thấp = 1100 (giữ nguyên) → kết quả <code>11111100</code>.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> đáp án nếu OR với 00000000. <strong>B:</strong> đáp án của AND. <strong>C:</strong> đáp án nếu XOR.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · ビット操作</p>
+      </div>
+    </div>
+
+    <!-- Q17 -->
+    <div class="question-card" data-q="17" data-correct="C" data-level="tb">
+      <div class="q-num">Câu 17 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Thao tác nào sau đây sẽ <strong>đặt 4 bit cao thành 1</strong> mà không làm thay đổi 4 bit thấp của dãy 8 bit?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">AND với 16進数 F0</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">XOR với 16進数 F0</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">OR với 16進数 F0</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">NAND với 16進数 F0</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>C — OR với F0</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>F0 = <code>11110000</code>. Quy tắc OR: OR với <strong>1</strong> đặt bit = 1 (set), OR với <strong>0</strong> giữ nguyên. Vậy 4 bit cao = 1, 4 bit thấp giữ nguyên.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A (AND với F0):</strong> giữ 4 bit cao, xoá 4 bit thấp. <strong>B (XOR với F0):</strong> đảo 4 bit cao. <strong>D (NAND):</strong> cho kết quả phức tạp khác.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · ビット操作 (bit set)</p>
+      </div>
+    </div>
+
+    <!-- Q18 -->
+    <div class="question-card" data-q="18" data-correct="A" data-level="tb">
+      <div class="q-num">Câu 18 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Trong mạch cộng bán phần (半加算器), nếu X = 1, Y = 1, giá trị (C, S) đầu ra là?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">(C, S) = (1, 0)</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">(C, S) = (0, 1)</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">(C, S) = (1, 1)</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">(C, S) = (0, 0)</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>A — (1, 0)</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>1 + 1 = 10₂ (nhị phân). Số nhớ C = 1, tổng đơn vị S = 0. Kiểm chứng: C = X AND Y = 1, S = X XOR Y = 0.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>B (0,1):</strong> đó là trường hợp 0+1 hoặc 1+0. <strong>C (1,1):</strong> không thể xảy ra với 半加算器 (chỉ có max 1+1=10). <strong>D (0,0):</strong> đó là 0+0.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 半加算器</p>
+      </div>
+    </div>
+
+    <!-- Q19 -->
+    <div class="question-card" data-q="19" data-correct="B" data-level="tb">
+      <div class="q-num">Câu 19 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Trong mạch cộng toàn phần (全加算器), số đầu vào là bao nhiêu?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">2 đầu vào (X, Y)</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">3 đầu vào (X, Y, và carry-in Z)</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">4 đầu vào (X, Y, carry-in, clock)</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">1 đầu vào duy nhất</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>B — 3 đầu vào</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>全加算器 cần thêm 1 đầu vào nữa là <strong>carry-in</strong> (số nhớ từ cột bên phải), nên tổng có 3 đầu vào (X, Y, Z). Đây là điểm khác biệt cốt lõi so với 半加算器 (2 đầu vào).</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> đó là 半加算器. <strong>C:</strong> mạch tổ hợp không cần clock. <strong>D:</strong> không thể cộng với 1 đầu vào.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 全加算器</p>
+      </div>
+    </div>
+
+    <!-- Q20 -->
+    <div class="question-card" data-q="20" data-correct="C" data-level="tb">
+      <div class="q-num">Câu 20 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Phép NOR (否定論理和) cho giá trị "1" trong trường hợp nào?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">Khi cả 2 đầu vào đều = 1</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">Khi ít nhất 1 đầu vào = 1</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">Khi cả 2 đầu vào đều = 0</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Khi 2 đầu vào khác nhau</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>C — Cả 2 đầu vào đều = 0</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>NOR = NOT OR. OR cho 0 chỉ khi cả 2 = 0, nên NOR đảo lại → cho 1 chỉ khi cả 2 = 0. Bảng: 0,0→1; 0,1→0; 1,0→0; 1,1→0.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> đó là AND. <strong>B:</strong> đó là OR. <strong>D:</strong> đó là XOR.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · NAND/NOR</p>
+      </div>
+    </div>
+
+    <!-- Q21 -->
+    <div class="question-card" data-q="21" data-correct="A" data-level="tb">
+      <div class="q-num">Câu 21 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Để <strong>kiểm tra một bit cụ thể</strong> trong dãy bit có phải là 1 hay không (ví dụ bit thứ 3), nên dùng thao tác nào?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">AND với mask có duy nhất bit thứ 3 = 1, các bit khác = 0</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">OR với mask có duy nhất bit thứ 3 = 1</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">XOR với mask toàn 1</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">NAND với mask toàn 0</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>A — AND với mask</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>AND với mask chỉ giữ lại các bit tương ứng với 1 trong mask, đặt các bit khác = 0. Nếu kết quả khác 0, nghĩa là bit cần kiểm tra = 1. Đây là phép "bit test".</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>B (OR):</strong> set bit, không kiểm tra. <strong>C (XOR toàn 1):</strong> đảo toàn bộ. <strong>D (NAND với 0):</strong> luôn cho FF.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · ビット操作 (bit test)</p>
+      </div>
+    </div>
+
+    <!-- Q22 -->
+    <div class="question-card" data-q="22" data-correct="B" data-level="tb">
+      <div class="q-num">Câu 22 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Cho A = 1, B = 1. Tính giá trị của <code>NOT A AND B</code>?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">1</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">0</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">Không xác định</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Phụ thuộc nơi đặt NOT</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>B — Kết quả = 0</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>Ưu tiên NOT cao hơn AND. ① NOT A = NOT 1 = 0. ② 0 AND B = 0 AND 1 = <strong>0</strong>.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> sai khi tính NOT trước. <strong>C, D:</strong> thứ tự ưu tiên đã rõ: NOT &gt; AND.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 論理演算 (優先順位)</p>
+      </div>
+    </div>
+
+    <!-- Q23 -->
+    <div class="question-card" data-q="23" data-correct="D" data-level="tb">
+      <div class="q-num">Câu 23 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Trong các MIL記号, cổng nào có hình dạng "<em>3 góc đều nhọn</em>" theo mô tả trong giáo trình?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">AND (論理積)</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">NOT (否定)</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">NAND (否定論理積)</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">OR (論理和)</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>D — OR</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>Theo giáo trình: AND là "<em>nửa tròn + 2 góc vuông</em>", OR là "<em>3 góc đều nhọn</em>" (hình hơi nhọn về phía đầu ra, với mặt sau cong lõm).</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> AND có nửa tròn. <strong>B:</strong> NOT là tam giác + chấm tròn. <strong>C:</strong> NAND là AND + chấm tròn, vẫn có nửa tròn.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · MIL記号</p>
+      </div>
+    </div>
+
+    <!-- Q24 -->
+    <div class="question-card" data-q="24" data-correct="A" data-level="tb">
+      <div class="q-num">Câu 24 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Khi giải bài toán mạch logic phức tạp, giáo trình khuyến nghị phương pháp giải nào?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">Vẽ ベン図 (Venn) cho từng MIL記号 một, theo dõi kết quả từng bước</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">Bắt buộc phải áp dụng Định luật De Morgan</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">Chuyển ngay sang biểu thức ma trận tuyến tính</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Đoán theo cảm tính, không cần vẽ</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>A — Vẽ ベン図 từng bước</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>Giáo trình khuyến nghị: "<em>論理回路の問題では、すべての論理回路（MIL記号）に、ベン図を描いていきます</em>". Vẽ Venn cho từng cổng giúp xác định được phép toán cuối cùng.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>B:</strong> De Morgan là phương pháp phụ trợ (tùy ý). <strong>C:</strong> không có khái niệm ma trận trong phần này. <strong>D:</strong> luôn cần phương pháp có hệ thống.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 論理回路 (giải bài tập)</p>
+      </div>
+    </div>
+
+    <!-- Q25 -->
+    <div class="question-card" data-q="25" data-correct="B" data-level="tb">
+      <div class="q-num">Câu 25 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Trong khái niệm "素子" (so-shi), điều nào sau đây là <strong>đúng</strong>?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">素子 chỉ riêng các phần tử thực hiện phép logic</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">素子 là đơn vị cơ bản cấu thành thiết bị (điện trở, tụ điện, transistor, diode...)</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">素子 = mạch tích hợp IC nguyên khối</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">素子 là tên gọi khác của vi xử lý CPU</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>B</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>素子 là khái niệm chung — đơn vị cơ bản cấu thành thiết bị. Trong điện tử: điện trở, tụ điện, transistor, diode đều là 素子. Còn 論理素子 (mới) là 素子 thực hiện phép logic.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> chỉ riêng 論理素子 mới làm phép logic. <strong>C:</strong> IC là tổ hợp nhiều 素子. <strong>D:</strong> CPU lớn hơn 素子 nhiều cấp.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 素子・ゲート</p>
+      </div>
+    </div>
+
+    <!-- Q26 -->
+    <div class="question-card" data-q="26" data-correct="D" data-level="tb">
+      <div class="q-num">Câu 26 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Tại sao máy tính (CPU) không thể trực tiếp thực hiện 4 phép toán số học (+, −, ×, ÷)?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">Vì các phép số học quá phức tạp để mã hoá</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">Vì CPU chỉ hỗ trợ phép cộng, không hỗ trợ phép trừ</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">Vì các phép số học cần phần mềm chuyên dụng</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Vì CPU hoạt động bằng tín hiệu điện 0/1 (nhị phân), chỉ làm được phép toán logic</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>D</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>CPU hoạt động trong thế giới nhị phân (0 = điện áp thấp, 1 = điện áp cao). Không thể trực tiếp làm 4 phép toán, nhưng có thể tạo ra phép cộng bằng cách kết hợp các phép toán logic (cụ thể qua mạch 加算器).</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A, B, C:</strong> không đúng về mặt nguyên lý cơ bản — vấn đề nằm ở cấu trúc vật lý nhị phân.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 論理演算 (sự cần thiết)</p>
+      </div>
+    </div>
+
+    <!-- Q27 -->
+    <div class="question-card" data-q="27" data-correct="C" data-level="tb">
+      <div class="q-num">Câu 27 / 40</div>
+      <span class="q-tag tb">Trung bình</span>
+      <div class="q-text">Trong cấu trúc mạch toàn phần (全加算器), thành phần nào dưới đây là <strong>chính xác</strong>?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">1 cổng AND + 1 cổng OR</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">1 mạch bán phần + 1 cổng XOR</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">2 mạch bán phần + 1 cổng OR</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">3 cổng XOR mắc nối tiếp</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>C — 2 半加算器 + 1 OR</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>全加算器 = 2 半加算器 ghép nối + 1 cổng OR để tổng hợp 2 tín hiệu carry-out của 2 半加算器. Đây là cấu trúc chuẩn trong giáo trình FE.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> chỉ 2 cổng thì không đủ. <strong>B:</strong> không có cấu trúc chuẩn này. <strong>D:</strong> không thể tạo 全加算器 chỉ bằng XOR.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 全加算器 (cấu trúc)</p>
+      </div>
+    </div>
+
+    <!-- Q28 -->
+    <div class="question-card" data-q="28" data-correct="B" data-level="kho">
+      <div class="q-num">Câu 28 / 40</div>
+      <span class="q-tag kho">Khó</span>
+      <div class="q-text">Mạch cộng bán phần (半加算器) cộng hai số nhị phân 1 bit X và Y, cho ra số nhớ C và tổng S. Mạch này được tạo từ tổ hợp các cổng nào?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">1 cổng AND (cho S) và 1 cổng OR (cho C)</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">1 cổng XOR (cho S) và 1 cổng AND (cho C)</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">2 cổng NAND và 1 cổng NOT</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">1 cổng OR (cho S) và 1 cổng XOR (cho C)</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>B — XOR + AND</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>Phân tích bảng chân lý: S = 0,1,1,0 khớp với <strong>X XOR Y</strong>; C = 0,0,0,1 khớp với <strong>X AND Y</strong> (chỉ khi 1+1 mới có nhớ). Vậy S = X⊕Y, C = X·Y.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> đảo vai trò. <strong>C:</strong> không phải cấu trúc chuẩn. <strong>D:</strong> OR cho S sai vì OR(1,1)=1, nhưng S phải = 0.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 半加算器</p>
+      </div>
+    </div>
+
+    <!-- Q29 -->
+    <div class="question-card" data-q="29" data-correct="C" data-level="kho">
+      <div class="q-num">Câu 29 / 40</div>
+      <span class="q-tag kho">Khó</span>
+      <div class="q-text">Cho mạch toàn phần (全加算器) có 3 đầu vào X, Y, Z (Z là số nhớ từ hàng dưới). Với X = 1, Y = 0, Z = 1, giá trị (C, S) đầu ra là?</div>
+      <div class="q-pre">  X = 1
+  Y = 0
++ Z = 1
+─────────
+  (C, S) = ?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">(0, 0)</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">(0, 1)</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">(1, 0)</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">(1, 1)</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>C — (1, 0)</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>1 + 0 + 1 = 2 (thập phân) = 10₂ (nhị phân). Chữ số hàng cao = C = 1, chữ số hàng đơn vị = S = 0.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A (0,0):</strong> tương ứng 0+0+0. <strong>B (0,1):</strong> tương ứng tổng = 1 không nhớ. <strong>D (1,1):</strong> tương ứng 1+1+1 = 11₂.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 全加算器 (đề thi 平成21年度)</p>
+      </div>
+    </div>
+
+    <!-- Q30 -->
+    <div class="question-card" data-q="30" data-correct="D" data-level="kho">
+      <div class="q-num">Câu 30 / 40</div>
+      <span class="q-tag kho">Khó</span>
+      <div class="q-text">Khi thiết kế mạch cộng cho phép cộng nhị phân nhiều bit (ví dụ <code>1011 + 0101</code>), tại các vị trí cột bit cần dùng loại mạch cộng nào?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">Tất cả cột đều dùng 全加算器 để đồng nhất</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">Tất cả cột đều dùng 半加算器 để tiết kiệm linh kiện</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">Cột thấp nhất (LSB) dùng 全加算器, các cột còn lại dùng 半加算器</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Cột thấp nhất (LSB) dùng 半加算器, các cột còn lại dùng 全加算器</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>D</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>LSB không có bit nào ở dưới → không có carry-in → dùng <strong>半加算器</strong> (2 đầu vào). Từ cột 2 trở lên, cần xét carry từ cột bên phải → cần <strong>全加算器</strong> (3 đầu vào).</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> lãng phí ở LSB. <strong>B:</strong> 半加算器 không xử lý được carry-in từ cột 2 trở lên. <strong>C:</strong> đảo ngược logic.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 半加算器・全加算器の使い分け</p>
+      </div>
+    </div>
+
+    <!-- Q31 -->
+    <div class="question-card" data-q="31" data-correct="A" data-level="kho">
+      <div class="q-num">Câu 31 / 40</div>
+      <span class="q-tag kho">Khó</span>
+      <div class="q-text">Tính giá trị của biểu thức logic với A=1, B=0, C=1:<br><code>(A OR B) AND NOT C</code></div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">0</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">1</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">Phụ thuộc thứ tự đọc</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Không xác định</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>A — Kết quả = 0</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>Thực hiện theo ưu tiên 括弧 &gt; NOT &gt; AND:<br>
+        ① (A OR B) = (1 OR 0) = 1<br>
+        ② NOT C = NOT 1 = 0<br>
+        ③ 1 AND 0 = <strong>0</strong></p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>B:</strong> sai khi tính NOT 1 = 1. <strong>C, D:</strong> ưu tiên đã rõ.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 論理演算 (tính biểu thức)</p>
+      </div>
+    </div>
+
+    <!-- Q32 -->
+    <div class="question-card" data-q="32" data-correct="B" data-level="kho">
+      <div class="q-num">Câu 32 / 40</div>
+      <span class="q-tag kho">Khó</span>
+      <div class="q-text">Cho dãy 8 bit X. Để <strong>vừa đảo 4 bit cao vừa giữ nguyên 4 bit thấp</strong>, nên dùng thao tác nào?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">AND với 16進数 F0</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">XOR với 16進数 F0</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">OR với 16進数 F0</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">XOR với 16進数 0F</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>B — XOR với F0</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>F0 = <code>11110000</code>. Quy tắc XOR: XOR với 1 đảo bit, XOR với 0 giữ nguyên. Vậy 4 bit cao bị đảo, 4 bit thấp giữ nguyên — đúng yêu cầu.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> AND F0 giữ 4 bit cao, xoá 4 bit thấp. <strong>C:</strong> OR F0 đặt 4 bit cao = 1, không phải đảo. <strong>D:</strong> XOR với 0F sẽ đảo 4 bit thấp (sai vị trí).</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · ビット操作 (XOR mask)</p>
+      </div>
+    </div>
+
+    <!-- Q33 -->
+    <div class="question-card" data-q="33" data-correct="A" data-level="kho">
+      <div class="q-num">Câu 33 / 40</div>
+      <span class="q-tag kho">Khó</span>
+      <div class="q-text">Cho X = <code>11110000</code> (8 bit). Tính <code>NOT X</code> (đảo bit) ở dạng nhị phân?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">00001111</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">11110000</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">00000000</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">11111111</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>A — 00001111</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>NOT (否定) đảo từng bit: 1→0 và 0→1. <code>11110000</code> sau khi NOT từng bit → <code>00001111</code>.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>B:</strong> giữ nguyên, sai. <strong>C:</strong> toàn 0 — sai vì NOT 0 = 1. <strong>D:</strong> toàn 1 — sai.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · NOT (否定)</p>
+      </div>
+    </div>
+
+    <!-- Q34 -->
+    <div class="question-card" data-q="34" data-correct="C" data-level="kho">
+      <div class="q-num">Câu 34 / 40</div>
+      <span class="q-tag kho">Khó</span>
+      <div class="q-text">Khi cộng 2 số nhị phân 4 bit <code>1101 + 0111</code>, kết quả là?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">10000</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">11000</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">10100</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">01010</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>C — 10100</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>Cộng nhị phân từng cột, có nhớ:<br>
+        <code>  1101</code><br><code>+ 0111</code><br><code>──────</code><br><code> 10100</code><br>
+        Hoặc tính theo thập phân: 1101₂=13, 0111₂=7, 13+7=20=10100₂.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A (10000=16):</strong> sai số. <strong>B (11000=24):</strong> sai số. <strong>D (01010=10):</strong> sai số.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 加算回路 (phép cộng nhị phân)</p>
+      </div>
+    </div>
+
+    <!-- Q35 -->
+    <div class="question-card" data-q="35" data-correct="D" data-level="kho">
+      <div class="q-num">Câu 35 / 40</div>
+      <span class="q-tag kho">Khó</span>
+      <div class="q-text">Định luật De Morgan (ド・モルガンの法則) phát biểu rằng <code>NOT(A AND B)</code> tương đương với?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">A AND B</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">NOT A AND NOT B</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">A OR B</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">NOT A OR NOT B</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>D — NOT A OR NOT B</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>Định luật De Morgan: <code>NOT(A·B) = Ā + B̄</code> tức là <code>NOT(A AND B) = (NOT A) OR (NOT B)</code>. Khi đảo phép tích → trở thành phép tổng (và đảo từng phần tử).</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> không phải biến đổi. <strong>B (NOT A AND NOT B):</strong> đây là tương đương của <code>NOT(A OR B)</code>, sai. <strong>C:</strong> thiếu NOT.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · ド・モルガンの法則</p>
+      </div>
+    </div>
+
+    <!-- Q36 -->
+    <div class="question-card" data-q="36" data-correct="C" data-level="kho">
+      <div class="q-num">Câu 36 / 40</div>
+      <span class="q-tag kho">Khó</span>
+      <div class="q-text">Cho X = <code>10110101</code> (8 bit). Thực hiện <code>X AND 11110000</code>. Kết quả ở dạng nhị phân là?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">00000101</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">11110101</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">10110000</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">01001010</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>C — 10110000</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>AND với 1 giữ nguyên, AND với 0 thành 0. Kẻ cột:<br>
+        <code>10110101</code><br><code>11110000 AND</code><br><code>10110000</code><br>
+        → 4 bit cao giữ nguyên (1011), 4 bit thấp = 0000.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A (00000101):</strong> kết quả AND với 0F (giữ 4 bit thấp). <strong>B:</strong> kết quả OR với F0. <strong>D:</strong> kết quả XOR với FF.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · ビット操作 (mask AND)</p>
+      </div>
+    </div>
+
+    <!-- Q37 -->
+    <div class="question-card" data-q="37" data-correct="B" data-level="kho">
+      <div class="q-num">Câu 37 / 40</div>
+      <span class="q-tag kho">Khó</span>
+      <div class="q-text">Trong mạch toàn phần (全加算器), với X = Y = Z = 1, đầu ra (C, S) là?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">(0, 1)</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">(1, 1)</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">(1, 0)</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">(0, 0)</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>B — (1, 1)</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>1 + 1 + 1 = 3 (thập phân) = 11₂ (nhị phân). Cả 2 chữ số đều = 1 → C = 1, S = 1. Theo bảng chân lý 全加算器 dòng X=Y=Z=1: (C, S) = (1, 1).</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A (0,1):</strong> phép có tổng 1, không nhớ — sai. <strong>C (1,0):</strong> tương ứng tổng = 2 (như 1+0+1). <strong>D (0,0):</strong> tương ứng 0+0+0.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 全加算器 (bảng chân lý)</p>
+      </div>
+    </div>
+
+    <!-- Q38 -->
+    <div class="question-card" data-q="38" data-correct="A" data-level="kho">
+      <div class="q-num">Câu 38 / 40</div>
+      <span class="q-tag kho">Khó</span>
+      <div class="q-text">Biểu thức <code>X NAND X</code> (NAND của X với chính nó) có giá trị tương đương với phép nào?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">NOT X</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">X (giữ nguyên)</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">X OR X = X</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Luôn = 1</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>A — NOT X</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>X NAND X = NOT(X AND X) = NOT(X) (vì X AND X = X). Thử: X=0 → 0 NAND 0 = NOT(0)=1; X=1 → 1 NAND 1 = NOT(1)=0 ⇒ chính là NOT X.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>B:</strong> không giữ nguyên, mà đảo. <strong>C:</strong> X OR X = X ≠ NAND. <strong>D:</strong> chỉ đúng khi X=0, sai khi X=1.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · NAND (đề thi 平成29年度 cấp ứng dụng)</p>
+      </div>
+    </div>
+
+    <!-- Q39 -->
+    <div class="question-card" data-q="39" data-correct="C" data-level="kho">
+      <div class="q-num">Câu 39 / 40</div>
+      <span class="q-tag kho">Khó</span>
+      <div class="q-text">Biểu thức <code>(X NAND X) NAND (Y NAND Y)</code> tương đương với phép nào sau đây?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">X AND Y</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">X NAND Y</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">X OR Y</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">X XOR Y</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>C — X OR Y</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>Theo Q38: X NAND X = NOT X; Y NAND Y = NOT Y. Vậy biểu thức = (NOT X) NAND (NOT Y) = NOT(NOT X AND NOT Y). Áp dụng De Morgan: NOT(NOT X AND NOT Y) = X OR Y.</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> NAND không cho ra AND trực tiếp như vậy. <strong>B:</strong> mất bước biến đổi. <strong>D:</strong> XOR có cấu trúc khác.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · NAND (đề thi 平成29年度)</p>
+      </div>
+    </div>
+
+    <!-- Q40 -->
+    <div class="question-card" data-q="40" data-correct="D" data-level="kho">
+      <div class="q-num">Câu 40 / 40</div>
+      <span class="q-tag kho">Khó</span>
+      <div class="q-text">Cho mạch logic gồm 3 cổng NAND mắc theo cấu trúc bên dưới (đầu vào A, B; đầu ra Y):<div class="q-pre">A ─┬───┐
+   │   NAND─┐
+B ─┼───┘   │
+   │       NAND─ Y
+   └─NAND──┘
+       │
+   (NAND của (A,B), kết quả vào NAND cuối cùng với chính (NAND của A,B))</div>Đầu ra Y của mạch tương đương với phép nào?</div>
+      <ul class="options">
+        <li class="option" data-opt="A"><span class="letter">A</span><span class="text">Y = A NAND B</span></li>
+        <li class="option" data-opt="B"><span class="letter">B</span><span class="text">Y = A NOR B</span></li>
+        <li class="option" data-opt="C"><span class="letter">C</span><span class="text">Y = A XOR B</span></li>
+        <li class="option" data-opt="D"><span class="letter">D</span><span class="text">Y = A AND B</span></li>
+      </ul>
+      <button class="explain-btn" onclick="toggleExplain(this)">Xem giải thích</button>
+      <div class="explain">
+        <p><span class="lbl">Đáp án</span><strong>D — Y = A AND B</strong></p>
+        <p><span class="lbl">Vì sao đúng</span>Đặt T = A NAND B = NOT(A AND B). Sau đó Y = T NAND T = NOT T = NOT(NOT(A AND B)) = <strong>A AND B</strong>. Đây là cách dùng NAND để mô phỏng AND (kết hợp 2 NAND).</p>
+        <p><span class="lbl bad">Vì sao sai</span><strong>A:</strong> NAND chỉ có 1 lần. <strong>B, C:</strong> cấu trúc mạch không tạo ra NOR hoặc XOR. Dùng ベン図 để kiểm chứng từng bước sẽ thấy.</p>
+        <p><span class="lbl fe">FE</span>基礎理論 · 論理回路 (giải mạch tổ hợp NAND)</p>
+      </div>
+    </div>
+
+    <!-- NAV BUTTONS -->
+    <div class="nav-buttons" id="navButtons">
+      <button class="btn btn-prev" id="btnPrev" onclick="prevQuestion()" disabled>← Câu trước</button>
+      <button class="btn btn-next" id="btnNext" onclick="nextQuestion()">Câu tiếp →</button>
+    </div>
+
+    <!-- RESULT PAGE -->
+    <div class="result" id="resultPage">
+      <h2>Kết quả bài kiểm tra</h2>
+      <div class="subtitle">論理演算 &amp; 半加算器 · 40 câu</div>
+      <div class="score-circle" id="scoreCircle">
+        <div class="score-inner">
+          <div class="score" id="scoreNum">0</div>
+          <div class="max">/ 40 câu</div>
+        </div>
+      </div>
+      <div class="percent" id="percentText">0%</div>
+      <div class="feedback" id="feedback">—</div>
+
+      <div class="breakdown">
+        <div class="bd-card de"><div class="lbl">Câu dễ</div><div class="val" id="scoreDe">0/10</div></div>
+        <div class="bd-card tb"><div class="lbl">Trung bình</div><div class="val" id="scoreTb">0/17</div></div>
+        <div class="bd-card kho"><div class="lbl">Câu khó</div><div class="val" id="scoreKho">0/13</div></div>
+      </div>
+
+      <div class="summary">
+        <h3>Chi tiết 40 câu (click để xem lại)</h3>
+        <div class="summary-grid" id="summaryGrid"></div>
+      </div>
+
+      <button class="btn btn-restart" onclick="restartQuiz()">↻ Làm lại từ đầu</button>
+    </div>
+
+  </main>
+
+</div>
+
+<script>
+let currentQ = 1;
+const totalQ = 40;
+const answers = {};
+
+// Build quicknav
+const quicknav = document.getElementById('quicknav');
+for(let i = 1; i <= totalQ; i++){
+  const btn = document.createElement('button');
+  btn.className = 'qnav-btn';
+  btn.textContent = i;
+  btn.dataset.target = i;
+  btn.onclick = () => {
+    goToQuestion(i);
+    document.getElementById('quicknav').classList.remove('open');
+  };
+  quicknav.appendChild(btn);
+}
+
+function updateQuickNav(){
+  document.querySelectorAll('.qnav-btn').forEach(b => {
+    const q = parseInt(b.dataset.target);
+    b.classList.remove('current', 'answered', 'right', 'wrong');
+    if(q === currentQ) b.classList.add('current');
+    if(answers[q]){
+      b.classList.add('answered');
+      b.classList.add(answers[q].isRight ? 'right' : 'wrong');
+    }
+  });
+}
+
+function showQuestion(num){
+  document.querySelectorAll('.question-card').forEach(c => c.classList.remove('active'));
+  const card = document.querySelector(`.question-card[data-q="${num}"]`);
+  if(card) card.classList.add('active');
+  document.getElementById('curNum').textContent = num;
+  document.getElementById('progressFill').style.width = (num / totalQ * 100) + '%';
+  document.getElementById('btnPrev').disabled = (num === 1);
+  document.getElementById('btnNext').textContent = (num === totalQ) ? 'Xem kết quả →' : 'Câu tiếp →';
+
+  // Update answered count
+  const ansCount = Object.keys(answers).length;
+  document.getElementById('answeredCount').textContent = ansCount;
+
+  updateQuickNav();
+}
+
+function goToQuestion(num){
+  currentQ = num;
+  showQuestion(num);
+}
+
+function nextQuestion(){
+  if(currentQ < totalQ){
+    currentQ++;
+    showQuestion(currentQ);
+  } else {
+    showResult();
+  }
+}
+
+function prevQuestion(){
+  if(currentQ > 1){
+    currentQ--;
+    showQuestion(currentQ);
+  }
+}
+
+document.querySelectorAll('.option').forEach(opt => {
+  opt.addEventListener('click', function(){
+    const card = this.closest('.question-card');
+    if(card.dataset.answered === 'true') return;
+    const correct = card.dataset.correct;
+    const chosen = this.dataset.opt;
+    card.dataset.answered = 'true';
+    card.querySelectorAll('.option').forEach(o => {
+      o.classList.add('disabled');
+      if(o.dataset.opt === correct){
+        o.classList.add('correct');
+      } else if(o === this){
+        o.classList.add('wrong');
+      }
+    });
+    card.querySelector('.explain-btn').classList.add('show');
+    card.querySelector('.explain').classList.add('show');
+    const qNum = parseInt(card.dataset.q);
+    const level = card.dataset.level;
+    answers[qNum] = {
+      chosen: chosen,
+      correct: correct,
+      isRight: (chosen === correct),
+      level: level
+    };
+    updateQuickNav();
+    document.getElementById('answeredCount').textContent = Object.keys(answers).length;
+  });
+});
+
+function toggleExplain(btn){
+  const exp = btn.nextElementSibling;
+  exp.classList.toggle('show');
+}
+
+function showResult(){
+  document.querySelectorAll('.question-card').forEach(c => c.style.display = 'none');
+  document.getElementById('navButtons').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('quicknav').style.display = 'none';
+  document.getElementById('quicknavToggle').style.display = 'none';
+
+  let score = 0;
+  let scoreDe = 0, scoreTb = 0, scoreKho = 0;
+  for(let i = 1; i <= totalQ; i++){
+    if(answers[i] && answers[i].isRight){
+      score++;
+      if(answers[i].level === 'de') scoreDe++;
+      else if(answers[i].level === 'tb') scoreTb++;
+      else if(answers[i].level === 'kho') scoreKho++;
+    }
+  }
+  const percent = Math.round((score / totalQ) * 100);
+
+  document.getElementById('scoreNum').textContent = score;
+  document.getElementById('percentText').textContent = percent + '%';
+  document.getElementById('scoreDe').textContent = scoreDe + '/10';
+  document.getElementById('scoreTb').textContent = scoreTb + '/17';
+  document.getElementById('scoreKho').textContent = scoreKho + '/13';
+
+  const deg = (percent / 100) * 360;
+  document.getElementById('scoreCircle').style.setProperty('--deg', deg + 'deg');
+
+  const fb = document.getElementById('feedback');
+  if(percent >= 85){
+    fb.textContent = '🏆 Xuất sắc — Bạn đã thành thạo chủ đề!';
+    fb.className = 'feedback excellent';
+  } else if(percent >= 70){
+    fb.textContent = '👍 Khá — Sẵn sàng cho đề thi FE chính thức';
+    fb.className = 'feedback good';
+  } else if(percent >= 50){
+    fb.textContent = '📚 Trung bình — Cần ôn lại một vài điểm yếu';
+    fb.className = 'feedback average';
+  } else {
+    fb.textContent = '💪 Cần cố gắng — Hãy đọc lại lý thuyết và làm lại';
+    fb.className = 'feedback work';
+  }
+
+  const grid = document.getElementById('summaryGrid');
+  grid.innerHTML = '';
+  for(let i = 1; i <= totalQ; i++){
+    const cell = document.createElement('div');
+    cell.className = 'summary-cell';
+    if(answers[i]){
+      cell.classList.add(answers[i].isRight ? 'ok' : 'no');
+    }
+    cell.textContent = i;
+    cell.onclick = () => {
+      // back to that question to review
+      restartFromResult();
+      goToQuestion(i);
+    };
+    grid.appendChild(cell);
+  }
+
+  document.getElementById('resultPage').classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function restartFromResult(){
+  // keep answers, just go back to quiz view
+  document.querySelectorAll('.question-card').forEach(c => c.style.display = '');
+  document.getElementById('navButtons').style.display = 'flex';
+  document.getElementById('progressWrap').style.display = 'block';
+  document.getElementById('quicknav').style.display = '';
+  document.getElementById('quicknavToggle').style.display = '';
+  document.getElementById('resultPage').classList.remove('active');
+}
+
+function restartQuiz(){
+  currentQ = 1;
+  for(const key in answers) delete answers[key];
+  document.querySelectorAll('.question-card').forEach(c => {
+    c.style.display = '';
+    c.classList.remove('active');
+    c.dataset.answered = 'false';
+    c.querySelectorAll('.option').forEach(o => {
+      o.classList.remove('correct', 'wrong', 'disabled');
+    });
+    c.querySelector('.explain-btn').classList.remove('show');
+    c.querySelector('.explain').classList.remove('show');
+  });
+  document.querySelector('.question-card[data-q="1"]').classList.add('active');
+  document.getElementById('navButtons').style.display = 'flex';
+  document.getElementById('progressWrap').style.display = 'block';
+  document.getElementById('quicknav').style.display = '';
+  document.getElementById('quicknavToggle').style.display = '';
+  document.getElementById('resultPage').classList.remove('active');
+  showQuestion(1);
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+showQuestion(1);
+</script>
+
+</body>
+</html>
+Đang hiển thị AND/OR/NOT/XORtest.html.
