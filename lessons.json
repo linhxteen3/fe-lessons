@@ -1,6 +1,8 @@
 {
   "title": "FE — Tài liệu học",
   "lessons": [
+    { "stt": 1,  "topic": "n進数の概念",                  "theory": "ly-thuyet/1.html",  "test": "kiem-tra/1.html",  "status": "done" },
+    { "stt": 2,  "topic": "基数変換 · Chuyển đổi cơ số",   "theory": "ly-thuyet/2.html",  "test": "kiem-tra/2.html",  "status": "done" },
     { "stt": 5,  "topic": "集合と論理演算",                  "theory": "ly-thuyet/5.html",  "test": "kiem-tra/5.html",  "status": "done" },
     { "stt": 6,  "topic": "論理回路 · Mạch logic",            "theory": "ly-thuyet/6.html",  "test": "kiem-tra/6.html",  "status": "done" },
     { "stt": 7,  "topic": "計算式の表し方 (逆ポーランド)",      "theory": "ly-thuyet/7.html",  "test": "kiem-tra/7.html",  "status": "done" },
