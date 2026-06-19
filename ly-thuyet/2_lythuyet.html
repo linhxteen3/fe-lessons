@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STT 2 — 基数変換 · Chuyển đổi cơ số</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@600;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1419; --bg-2:#161c24; --bg-3:#1e2733; --border:#2a3441;
+  --text:#e8eef5; --text-dim:#a0adbb;
+  --accent:#ff6b35; --accent-2:#4ecdc4;
+  --jp:#f7d794; --vn:#a8e6cf; --en:#c7a8e6;
+  --ok:#3ddc97; --ng:#ff5a5f;
+  --font-jp:"Noto Sans JP",system-ui,sans-serif;
+  --font-mono:"Space Mono",ui-monospace,monospace;
+  --font-display:"Syne","Noto Sans JP",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-jp);line-height:1.7;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 20px 80px}
+header.hero{background:linear-gradient(135deg,#1e2733 0%,#0f1419 100%);border:1px solid var(--border);border-radius:16px;padding:32px 28px;margin-bottom:28px;position:relative;overflow:hidden}
+header.hero::before{content:"";position:absolute;top:-50%;right:-20%;width:400px;height:400px;background:radial-gradient(circle,rgba(255,107,53,0.12) 0%,transparent 70%)}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:11px;color:var(--accent);border:1px solid var(--accent);padding:3px 10px;border-radius:20px;letter-spacing:0.1em;margin-bottom:14px}
+h1.title{font-family:var(--font-display);font-weight:800;font-size:2.4rem;line-height:1.2;margin-bottom:8px}
+.subtitle{color:var(--text-dim);font-size:1.05rem;margin-bottom:18px}
+.meta{display:flex;flex-wrap:wrap;gap:10px;font-family:var(--font-mono);font-size:12px;color:var(--text-dim)}
+.meta span{background:var(--bg-3);padding:5px 12px;border-radius:6px}
+nav.toc{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:28px}
+nav.toc h3{font-family:var(--font-display);font-size:0.9rem;letter-spacing:0.15em;color:var(--accent-2);margin-bottom:12px}
+nav.toc ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+nav.toc a{color:var(--text);text-decoration:none;font-size:0.92rem;padding:6px 10px;border-radius:6px;display:block;border-left:2px solid transparent}
+nav.toc a:hover{background:var(--bg-3);border-left-color:var(--accent)}
+section.part{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:28px 26px;margin-bottom:24px}
+h2.part-title{font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:var(--text);border-bottom:2px solid var(--accent);padding-bottom:10px;margin-bottom:22px}
+h2.part-title .num{font-family:var(--font-mono);color:var(--accent);font-size:1.1rem;margin-right:10px}
+h3.sub{font-family:var(--font-display);font-size:1.2rem;color:var(--accent-2);margin-top:24px;margin-bottom:12px;padding-left:14px;border-left:4px solid var(--accent-2)}
+h4.sub2{font-family:var(--font-display);font-size:1.02rem;color:var(--jp);margin-top:16px;margin-bottom:10px}
+.lang-block{display:grid;gap:10px;margin:14px 0}
+.lang-row{background:var(--bg-3);border-radius:10px;padding:14px 18px;border-left:4px solid var(--border)}
+.lang-row.jp{border-left-color:var(--jp)}
+.lang-row.vn{border-left-color:var(--vn)}
+.lang-row.en{border-left-color:var(--en)}
+.lang-row .label{font-family:var(--font-mono);font-size:11px;letter-spacing:0.1em;color:var(--text-dim);margin-bottom:4px;display:block}
+.lang-row.jp .label{color:var(--jp)}
+.lang-row.vn .label{color:var(--vn)}
+.lang-row.en .label{color:var(--en)}
+.lang-row .content{font-size:0.97rem}
+ul.bullets{margin:10px 0 10px 22px}
+ul.bullets li{margin-bottom:6px}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:0.92rem;background:var(--bg-3);border-radius:8px;overflow:hidden}
+th,td{padding:10px 14px;border:1px solid var(--border);text-align:left;vertical-align:top}
+th{background:var(--bg);color:var(--accent-2);font-family:var(--font-display);font-weight:600}
+tr:hover td{background:rgba(255,107,53,0.05)}
+.callout{background:linear-gradient(90deg,rgba(78,205,196,0.08) 0%,transparent 100%);border-left:4px solid var(--accent-2);padding:14px 18px;border-radius:8px;margin:16px 0}
+.callout.warn{background:linear-gradient(90deg,rgba(255,107,53,0.1) 0%,transparent 100%);border-left-color:var(--accent)}
+.callout .head{font-family:var(--font-display);font-weight:700;color:var(--accent-2);margin-bottom:6px;font-size:0.92rem;letter-spacing:0.05em}
+.callout.warn .head{color:var(--accent)}
+.ascii{background:#0a0d12;color:var(--accent-2);font-family:var(--font-mono);font-size:0.85rem;padding:14px 18px;border-radius:8px;overflow-x:auto;white-space:pre;line-height:1.5;margin:12px 0;border:1px solid var(--border)}
+.example-box{background:var(--bg-3);border:1px dashed var(--accent);border-radius:10px;padding:16px 20px;margin:14px 0}
+.example-box .ex-tag{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:0.15em;margin-bottom:8px;display:inline-block;background:rgba(255,107,53,0.1);padding:3px 10px;border-radius:4px}
+.example-box .step{margin:8px 0;padding-left:18px;border-left:2px solid var(--border)}
+.example-box .step b{color:var(--accent-2)}
+.fc-filter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.fc-filter button{background:var(--bg-3);color:var(--text-dim);border:1px solid var(--border);padding:7px 14px;border-radius:20px;cursor:pointer;font-family:var(--font-mono);font-size:12px;transition:all 0.2s}
+.fc-filter button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.fc-filter button:hover:not(.active){border-color:var(--accent);color:var(--text)}
+.fc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.fc-card{background:var(--bg-3);border:1px solid var(--border);border-radius:12px;padding:18px 18px;min-height:140px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;position:relative;transition:transform 0.2s,border-color 0.2s}
+.fc-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.fc-card .fc-cat{position:absolute;top:8px;right:10px;font-family:var(--font-mono);font-size:10px;color:var(--text-dim);background:var(--bg);padding:2px 8px;border-radius:10px}
+.fc-card .fc-front{font-family:var(--font-display);font-weight:600;font-size:1.05rem;color:var(--jp);text-align:center}
+.fc-card .fc-back{display:none;font-size:0.92rem;line-height:1.6}
+.fc-card.flipped .fc-front{display:none}
+.fc-card.flipped .fc-back{display:block}
+.fc-card .hint{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:9px;color:var(--text-dim);letter-spacing:0.1em}
+.quiz-q{background:var(--bg-3);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.quiz-q .qnum{font-family:var(--font-mono);font-size:12px;color:var(--accent);letter-spacing:0.1em;margin-bottom:6px}
+.quiz-q .qtext{font-size:1rem;margin-bottom:14px;font-weight:500}
+.quiz-q .opts{display:grid;gap:8px}
+.quiz-q .opt{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;cursor:pointer;font-size:0.94rem;transition:all 0.15s;display:flex;align-items:center;gap:10px}
+.quiz-q .opt:hover:not(.locked){border-color:var(--accent);background:var(--bg-3)}
+.quiz-q .opt .ltr{font-family:var(--font-mono);font-weight:700;color:var(--accent);min-width:20px}
+.quiz-q .opt.correct{background:rgba(61,220,151,0.15);border-color:var(--ok);color:var(--ok)}
+.quiz-q .opt.correct .ltr{color:var(--ok)}
+.quiz-q .opt.wrong{background:rgba(255,90,95,0.12);border-color:var(--ng);color:var(--ng)}
+.quiz-q .opt.wrong .ltr{color:var(--ng)}
+.quiz-q.locked .opt{cursor:default}
+.quiz-q .expl{display:none;margin-top:14px;padding:12px 14px;background:var(--bg);border-left:3px solid var(--accent-2);border-radius:6px;font-size:0.9rem;line-height:1.65}
+.quiz-q.locked .expl{display:block}
+.quiz-q .expl b{color:var(--accent-2)}
+#quiz-result{background:linear-gradient(135deg,var(--bg-3) 0%,var(--bg) 100%);border:2px solid var(--accent);border-radius:14px;padding:24px;text-align:center;margin-top:20px;display:none}
+#quiz-result.show{display:block}
+#quiz-result .score{font-family:var(--font-display);font-size:3rem;font-weight:800;color:var(--accent);margin:10px 0}
+#quiz-result .verdict{font-size:1.1rem;color:var(--text-dim);margin-bottom:14px}
+.btn{background:var(--accent);color:#fff;border:none;padding:10px 22px;border-radius:8px;font-family:var(--font-mono);cursor:pointer;font-size:13px;letter-spacing:0.1em;font-weight:700}
+.btn:hover{background:#ff7f4f}
+.mindmap-wrap{background:#0a0d12;border-radius:12px;padding:16px;overflow-x:auto;border:1px solid var(--border)}
+.mindmap-wrap svg{max-width:100%;height:auto;display:block;margin:0 auto}
+footer{text-align:center;color:var(--text-dim);font-family:var(--font-mono);font-size:11px;margin-top:32px;padding-top:24px;border-top:1px solid var(--border)}
+@media(max-width:640px){
+  .wrap{padding:16px 12px 60px}
+  h1.title{font-size:1.7rem}
+  header.hero{padding:22px 18px}
+  section.part{padding:20px 16px}
+  nav.toc ul{grid-template-columns:1fr}
+  .fc-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="tag">STT 02 · Tuần 1 · Ch.1 基礎理論①</div>
+  <h1 class="title">基数変換<br><span style="color:var(--accent);font-size:1.4rem">Chuyển đổi cơ số</span></h1>
+  <p class="subtitle">桁の重み + 指数, n進数 ↔ 10進数, 2 ↔ 8/16進数</p>
+  <div class="meta">
+    <span>📘 Yasashii Ch.1 Lesson 01-03, 01-04</span>
+    <span>🎬 Slide 1_基礎理論 第2回</span>
+    <span>⏱ ~70 phút</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <h3>▸ MỤC LỤC</h3>
+  <ul>
+    <li><a href="#p1">① Tóm tắt lý thuyết</a></li>
+    <li><a href="#p2">② Ví dụ minh hoạ</a></li>
+    <li><a href="#p3">③ Flashcards</a></li>
+    <li><a href="#p4">④ Quiz 10 câu</a></li>
+    <li><a href="#p5">⑤ Mind map</a></li>
+  </ul>
+</nav>
+
+<section class="part" id="p1">
+<h2 class="part-title"><span class="num">①</span>Tóm tắt lý thuyết</h2>
+
+<h3 class="sub">1.1 桁の重み + 指数 · Trọng số hàng và Số mũ</h3>
+
+<div class="lang-block">
+  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content"><b>桁の重み</b>とは「位」のこと。10進数 "7297" の左端の7と右端の7は同じ「7」でも、左端は右端の<b>1000倍</b>大きい。これは桁ごとに重みが異なるため。数の大きさ＝<b>桁ごとの重みをかけて、それらを合計する</b>ことで表現される。<br><br><b>指数</b>とは数をかけ合わせる回数。例: 10³ = 10×10×10 = 1000。ルール: <b>a⁰ = 1</b>（基数に関わらず）、<b>a⁻ⁿ = 1/aⁿ</b>。</div></div>
+  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>Trọng số (桁の重み)</b> = giá trị của một hàng. Trong 10進数 "7297", chữ số 7 ở bên trái nặng gấp 1000 lần chữ số 7 ở bên phải. Tổng giá trị một số = <b>(chữ số × trọng số) cộng lại</b>.<br><br><b>指数 (shisuu — số mũ)</b>: số lần nhân cùng một số. Ví dụ 10³ = 10×10×10 = 1000. Hai quy tắc: <b>a⁰ = 1</b> (mọi cơ số), <b>a⁻ⁿ = 1/aⁿ</b>.</div></div>
+  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content"><b>Place weight</b>: each digit position has a weight. A number's value = sum of (digit × position weight). <b>Exponents</b>: a⁰ = 1; a⁻ⁿ = 1/aⁿ.</div></div>
+</div>
+
+<table>
+<thead><tr><th>10進数 7297.41</th><th>7</th><th>2</th><th>9</th><th>7</th><th>.</th><th>4</th><th>1</th></tr></thead>
+<tbody>
+<tr><td>位 (vị trí)</td><td>千</td><td>百</td><td>十</td><td>一</td><td>.</td><td>1/10</td><td>1/100</td></tr>
+<tr><td>桁の重み</td><td>1000</td><td>100</td><td>10</td><td>1</td><td>.</td><td>0.1</td><td>0.01</td></tr>
+<tr><td>= 10ⁿ</td><td>10³</td><td>10²</td><td>10¹</td><td>10⁰</td><td>.</td><td>10⁻¹</td><td>10⁻²</td></tr>
+</tbody>
+</table>
+
+<div class="callout warn">
+  <div class="head">⚠ CÔNG THỨC CHUNG (Yasashii Ch.1 Lesson 01-04)</div>
+  Với n進数 viết là <code>d₃d₂d₁d₀ . d₋₁d₋₂d₋₃</code>, giá trị trong hệ 10 = <b>d₃n³ + d₂n² + d₁n¹ + d₀n⁰ + d₋₁n⁻¹ + d₋₂n⁻² + d₋₃n⁻³</b>. Thay n bằng cơ số tương ứng (2, 8, 16, …) để tính giá trị thực.
+</div>
+
+<h3 class="sub">1.2 基数変換 là gì</h3>
+
+<div class="lang-block">
+  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content"><b>基数変換</b>とは、n進数の「n」を他の数字に置き換えること（数値の表記法を変えること）。コンピュータの世界では2進数/8進数/10進数/16進数の<b>4つを互いに変換できればOK</b>。</div></div>
+  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>基数変換 (kisuu henkan — chuyển đổi cơ số)</b> = đổi cách biểu diễn số từ hệ n này sang hệ n khác (vd: 2進数 ↔ 10進数). Trong FE chỉ cần thành thạo 4 hệ: <b>2 / 8 / 10 / 16</b>.</div></div>
+  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content"><b>Base conversion</b>: changing the representation of a number from base n to another base. FE exam focuses on bases 2, 8, 10, 16.</div></div>
+</div>
+
+<div class="ascii">     2進数  ⇄  10進数  ⇄  16進数
+              ⇕            ⇕
+            8進数       (qua 2進数)</div>
+
+<h3 class="sub">1.3 n進数 → 10進数 · Đổi sang hệ 10</h3>
+
+<div class="lang-block">
+  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content">n進数を10進数に変換するには、<b>各桁の重みをかけてから、各桁の積を合計する</b>。16進数の場合は<b>事前にA〜Fを10進数（10〜15）に変換してから計算</b>することが必須。</div></div>
+  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>Công thức 1 dòng:</b> mỗi chữ số × trọng số hàng của nó → cộng tất cả lại. Với 16進数 có chữ A–F thì <b>phải đổi A=10, B=11, ..., F=15 TRƯỚC</b> rồi mới nhân.</div></div>
+  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content">Multiply each digit by its weight, then sum. For hex, convert A–F to 10–15 first.</div></div>
+</div>
+
+<h4 class="sub2">▸ Ví dụ: 2進数 1001.001 → 10進数</h4>
+<div class="ascii">2進数 ··· 1    0    0    1   .   0    0    1
+         ×    ×    ×    ×       ×    ×    ×
+重 み ··· 2³   2²   2¹   2⁰      2⁻¹  2⁻²  2⁻³
+       =  8    0    0    1   +   0    0    0.125
+                                              = 9.125</div>
+
+<h4 class="sub2">▸ Ví dụ: 16進数 2BD.C8 → 10進数</h4>
+<div class="ascii">16進数 ··    2      B      D    .    C      8
+         B=11, D=13, C=12, mọi chữ → đổi sang số trước
+        (2)   (11)   (13)        (12)    (8)
+         ×     ×      ×           ×       ×
+重 み ··· 16²   16¹    16⁰         16⁻¹    16⁻²
+       = 512 + 176 + 13     +   0.75 + 0.03125
+                                          = 701.78125</div>
+
+<h3 class="sub">1.4 10進数 → 2進数 · Đổi sang hệ 2</h3>
+
+<div class="lang-block">
+  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content"><b>整数部と小数部を分けて計算する</b>。整数部: 10進数を<b>基数2でわり算</b>し、商が0になるまで繰り返し、<b>余りを下から上に並べる</b>。小数部: 10進小数に<b>基数2をかけ算</b>し、積の<b>整数部だけを取り出して上から下に並べる</b>。小数部が0になるまで繰り返す。</div></div>
+  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>Tách phần nguyên và phần thập phân</b> tính riêng:<br>• <b>Phần nguyên</b>: chia liên tục cho 2 đến khi thương = 0, lấy <b>số dư từ DƯỚI lên TRÊN</b>.<br>• <b>Phần thập phân</b>: nhân với 2 nhiều lần, mỗi lần lấy phần nguyên của tích, đến khi phần thập phân = 0 (hoặc tuần hoàn). Ghép phần nguyên đã lấy <b>từ TRÊN xuống DƯỚI</b>.</div></div>
+  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content">Split integer and fractional parts. Integer: divide by 2 until quotient = 0, read remainders bottom-up. Fraction: multiply by 2; extract integer part each step; read top-down.</div></div>
+</div>
+
+<h4 class="sub2">▸ Ví dụ: 10進数 4.625 → 2進数 (Yasashii)</h4>
+<div class="ascii">[Phần nguyên: 4]                  [Phần thập phân: 0.625]
+  2) 4                              0.625 × 2 = 1.250  → lấy 1
+  2) 2 …… 0  ↑                      0.25  × 2 = 0.50   → lấy 0
+  2) 1 …… 0  | đọc từ dưới lên      0.5   × 2 = 1.0    → lấy 1
+     0 …… 1  ↑                                            (dừng vì = 0)
+  ⇒ 100                             ⇒ 0.101 (đọc từ trên xuống)
+
+Ghép: 10進 4.625 = 2進 100.101</div>
+
+<div class="callout warn">
+  <div class="head">⚠ ĐIỂM CẦN NHỚ — 無限小数 (vô hạn)</div>
+  Khi đổi 10進小数 → 2進小数, thường phần thập phân <b>KHÔNG về 0</b> mà thành <b>無限小数</b> (vô hạn). Trong FE hầu hết các giá trị này là <b>循環小数</b> (tuần hoàn). Khi thấy cụm số <b>lặp lại</b> → dừng và kết luận là vô hạn.
+</div>
+
+<h3 class="sub">1.5 10進数 → 16進数 · Đổi sang hệ 16</h3>
+
+<div class="lang-block">
+  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content">基本手順は10進数→2進数と同じだが、わる数/かける数が<b>「16」</b>になる。さらに、<b>余り 10〜15 はアルファベット A〜F に置き換える</b>必要がある。</div></div>
+  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content">Quy trình giống đổi sang hệ 2 nhưng <b>chia / nhân với 16</b>. Lưu ý quan trọng: <b>nếu số dư ≥ 10 phải đổi thành A–F</b> (10=A, 11=B, 12=C, 13=D, 14=E, 15=F) khi viết ra.</div></div>
+  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content">Same process as binary, but divide/multiply by 16. Convert remainders 10–15 to A–F.</div></div>
+</div>
+
+<h4 class="sub2">▸ Ví dụ: 10進数 701.78125 → 16進数 (Yasashii)</h4>
+<div class="ascii">[Phần nguyên: 701]                [Phần thập phân: 0.78125]
+  16) 701                          0.78125 × 16 = 12.50000 → lấy 12 = C
+  16) 43 …… 13 → D                 0.5     × 16 =  8.0    → lấy 8
+  16)  2 …… 11 → B                                          (dừng)
+       0 …… 2  → 2                 ⇒ 0.C8
+
+Đọc từ dưới lên: 2BD              Đọc từ trên xuống: C8
+Ghép: 10進 701.78125 = 16進 2BD.C8</div>
+
+<h3 class="sub">1.6 2進数 ↔ 8進数 (Slide 第2回)</h3>
+
+<div class="lang-block">
+  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content">2進数 → 8進数: 小数点を基準に、2進数を<b>3桁ずつに区切り</b>、各ブロックを8進数に直す（2³=8 だから3桁）。8進数 → 2進数: 8進数の各桁を<b>2進数3桁で表現</b>してくっつける。</div></div>
+  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>2進数 → 8進数</b>: lấy dấu chấm làm gốc, chia dãy bit thành <b>nhóm 3 chữ số</b>, mỗi nhóm đổi sang 1 chữ số hệ 8. <b>8進数 → 2進数</b>: mỗi chữ số hệ 8 viết thành <b>3 bit</b>, ghép lại.<br><b>Vì sao 3?</b> Vì 2³ = 8 (mỗi 3 bit biểu diễn được đúng 8 giá trị, khớp với 1 chữ số hệ 8).</div></div>
+  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content">Binary ↔ octal: group 3 bits per octal digit (2³ = 8).</div></div>
+</div>
+
+<div class="ascii">▸ Ví dụ: 2進数 1101011.01 → 8進数
+  Chia nhóm 3 bit (đệm 0 nếu thiếu):
+       001  101  011  .  010
+        1    5    3      2
+  ⇒ 8進数 153.2
+
+▸ Ví dụ: 8進数 63.5 → 2進数
+       6   3   .   5
+       ↓   ↓       ↓
+      110 011    101
+  ⇒ 2進数 110011.101</div>
+
+<h3 class="sub">1.7 2進数 ↔ 16進数 (Slide 第2回)</h3>
+
+<div class="lang-block">
+  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content">2進数 ↔ 16進数 は8進数のときの「3桁」が「4桁」になるだけで、方法は同じ。<b>2⁴ = 16</b> なので、2進数を<b>4桁ずつ区切る</b>。</div></div>
+  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>2進数 ↔ 16進数</b>: y hệt 2 ↔ 8 nhưng <b>nhóm 4 bit</b> thay vì 3. Vì 2⁴ = 16. Mỗi 4 bit = 1 chữ số hệ 16.</div></div>
+  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content">Binary ↔ hex: group 4 bits per hex digit (2⁴ = 16).</div></div>
+</div>
+
+<table>
+<thead><tr><th>4 bit</th><th>16進数</th><th>4 bit</th><th>16進数</th></tr></thead>
+<tbody>
+<tr><td>0000</td><td>0</td><td>1000</td><td>8</td></tr>
+<tr><td>0001</td><td>1</td><td>1001</td><td>9</td></tr>
+<tr><td>0010</td><td>2</td><td>1010</td><td>A</td></tr>
+<tr><td>0011</td><td>3</td><td>1011</td><td>B</td></tr>
+<tr><td>0100</td><td>4</td><td>1100</td><td>C</td></tr>
+<tr><td>0101</td><td>5</td><td>1101</td><td>D</td></tr>
+<tr><td>0110</td><td>6</td><td>1110</td><td>E</td></tr>
+<tr><td>0111</td><td>7</td><td>1111</td><td>F</td></tr>
+</tbody>
+</table>
+
+<div class="callout">
+  <div class="head">💡 MẸO TỪ SLIDE — Đi đường vòng qua 2進数</div>
+  Khi cần đổi <b>10進数 → 8 hoặc 16進数</b>, đi thẳng cũng được nhưng <b>đi vòng qua 2進数 dễ hơn nhiều</b>:<br>
+  ❌ 10進数 ⇒ 8/16進数 (chia nhiều bước, dễ sai)<br>
+  ⭕ 10進数 ⇒ 2進数 ⇒ 8/16進数 (chia cho 2 đơn giản → gom nhóm 3 hoặc 4 bit)
+</div>
+
+<h3 class="sub">1.8 n進数 → 10進数 (mở rộng) · Cho bất kỳ cơ số nào</h3>
+
+<div class="lang-block">
+  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content">FE đôi khi xuất hiện <b>8進数, 11進数</b>… Thay vì học thuộc từng cách, nắm <b>công thức chung</b>: với số n進数 "d₃d₂d₁d₀.d₋₁d₋₂d₋₃" — giá trị = d₃×n³ + d₂×n² + d₁×n¹ + d₀×n⁰ + d₋₁×n⁻¹ + d₋₂×n⁻² + d₋₃×n⁻³. Chỉ cần thay n = 2 (2進数), 8 (8進数), 16 (16進数)…</div></div>
+</div>
+
+<div class="ascii">▸ Ví dụ (Yasashii): 8進数 3725.104 → 10進数
+  = 3×8³ + 7×8² + 2×8¹ + 5×8⁰ + 1×8⁻¹ + 0×8⁻² + 4×8⁻³
+  = 1536 + 448 + 16 + 5 + 0.125 + 0 + 0.0078125
+  = 2005.1328125</div>
+
+<div class="callout warn">
+  <div class="head">⚠ ĐIỂM THI — 過去問 平成31年度</div>
+  Câu hỏi đầu sách: "10進数 7÷32 を 2進数で表したものはどれか"<br>
+  → 7÷32 = 0.21875 → áp dụng phương pháp đổi phần thập phân (nhân 2 liên tục):<br>
+  0.21875×2=0.4375 (0); 0.4375×2=0.875 (0); 0.875×2=1.75 (1); 0.75×2=1.5 (1); 0.5×2=1.0 (1) → dừng<br>
+  ⇒ <b>0.00111</b> (đáp án ウ)
+</div>
+
+</section>
+
+<section class="part" id="p2">
+<h2 class="part-title"><span class="num">②</span>Ví dụ minh hoạ</h2>
+
+<div class="example-box">
+<span class="ex-tag">VÍ DỤ 1 · 2進数 → 10進数 (số nguyên)</span>
+<p><b>Câu hỏi:</b> Chuyển 2進数 "1101" sang 10進数.</p>
+<div class="step"><b>Bước 1.</b> Viết trọng số từ phải sang trái: 2⁰=1, 2¹=2, 2²=4, 2³=8.</div>
+<div class="step"><b>Bước 2.</b> Nhân: 1×8 + 1×4 + 0×2 + 1×1 = 8 + 4 + 0 + 1.</div>
+<div class="step"><b>Kết quả:</b> = <b>13</b>.</div>
+</div>
+
+<div class="example-box">
+<span class="ex-tag">VÍ DỤ 2 · 2進数 → 10進数 (có phần thập phân)</span>
+<p><b>Câu hỏi:</b> Chuyển 2進数 "1010.01" sang 10進数.</p>
+<div class="step"><b>Bước 1.</b> Phần nguyên: 1×8 + 0×4 + 1×2 + 0×1 = 10.</div>
+<div class="step"><b>Bước 2.</b> Phần thập phân: 0×0.5 + 1×0.25 = 0.25.</div>
+<div class="step"><b>Kết quả:</b> 10 + 0.25 = <b>10.25</b>.</div>
+</div>
+
+<div class="example-box">
+<span class="ex-tag">VÍ DỤ 3 · 10進数 → 2進数 (số nguyên)</span>
+<p><b>Câu hỏi:</b> Chuyển 10進数 "13" sang 2進数.</p>
+<div class="step"><b>Bước 1.</b> Chia liên tục cho 2:<br>
+&nbsp;&nbsp;13 ÷ 2 = 6 dư <b>1</b><br>
+&nbsp;&nbsp;6 ÷ 2 = 3 dư <b>0</b><br>
+&nbsp;&nbsp;3 ÷ 2 = 1 dư <b>1</b><br>
+&nbsp;&nbsp;1 ÷ 2 = 0 dư <b>1</b> (dừng vì thương = 0)</div>
+<div class="step"><b>Bước 2.</b> Đọc số dư <b>TỪ DƯỚI LÊN</b>: 1, 1, 0, 1.</div>
+<div class="step"><b>Kết quả:</b> <b>1101</b>.</div>
+</div>
+
+<div class="example-box">
+<span class="ex-tag">VÍ DỤ 4 · 10進数 → 2進数 (có phần thập phân)</span>
+<p><b>Câu hỏi:</b> Chuyển 10進数 "0.625" sang 2進数.</p>
+<div class="step"><b>Bước 1.</b> Nhân liên tục với 2, lấy phần nguyên:<br>
+&nbsp;&nbsp;0.625 × 2 = <b>1</b>.25  → lấy 1<br>
+&nbsp;&nbsp;0.25 × 2 = <b>0</b>.5   → lấy 0<br>
+&nbsp;&nbsp;0.5 × 2 = <b>1</b>.0   → lấy 1, phần thập phân = 0, dừng.</div>
+<div class="step"><b>Bước 2.</b> Ghép phần nguyên <b>TỪ TRÊN XUỐNG</b>: 1, 0, 1.</div>
+<div class="step"><b>Kết quả:</b> <b>0.101</b>.</div>
+</div>
+
+<div class="example-box">
+<span class="ex-tag">VÍ DỤ 5 · 16進数 → 10進数</span>
+<p><b>Câu hỏi:</b> Chuyển 16進数 "1A" sang 10進数.</p>
+<div class="step"><b>Bước 1.</b> Đổi chữ cái trước: A = 10. Số trở thành (1)(10).</div>
+<div class="step"><b>Bước 2.</b> Nhân theo trọng số: 1×16¹ + 10×16⁰ = 16 + 10.</div>
+<div class="step"><b>Kết quả:</b> = <b>26</b>.</div>
+</div>
+
+<div class="example-box">
+<span class="ex-tag">VÍ DỤ 6 · 10進数 → 16進数</span>
+<p><b>Câu hỏi:</b> Chuyển 10進数 "255" sang 16進数.</p>
+<div class="step"><b>Bước 1.</b> Chia liên tục cho 16:<br>
+&nbsp;&nbsp;255 ÷ 16 = 15 dư <b>15</b> → F<br>
+&nbsp;&nbsp;15 ÷ 16 = 0 dư <b>15</b> → F (dừng)</div>
+<div class="step"><b>Bước 2.</b> Đọc từ dưới lên (đã đổi sang ký hiệu A–F): F, F.</div>
+<div class="step"><b>Kết quả:</b> <b>FF</b>.</div>
+</div>
+
+<div class="example-box">
+<span class="ex-tag">VÍ DỤ 7 · 2進数 → 8進数 (chia nhóm 3)</span>
+<p><b>Câu hỏi:</b> Chuyển 2進数 "10110.1" sang 8進数.</p>
+<div class="step"><b>Bước 1.</b> Chia nhóm 3 bit từ dấu chấm, đệm 0 nếu thiếu:<br>
+&nbsp;&nbsp;<code>010 110 . 100</code></div>
+<div class="step"><b>Bước 2.</b> Đổi từng nhóm: 010=2, 110=6, 100=4.</div>
+<div class="step"><b>Kết quả:</b> <b>26.4</b> (hệ 8).</div>
+</div>
+
+<div class="example-box">
+<span class="ex-tag">VÍ DỤ 8 · 16進数 → 2進数 (mỗi chữ = 4 bit)</span>
+<p><b>Câu hỏi:</b> Chuyển 16進数 "3F" sang 2進数.</p>
+<div class="step"><b>Bước 1.</b> Đổi từng chữ thành 4 bit: 3 → 0011; F (= 15) → 1111.</div>
+<div class="step"><b>Bước 2.</b> Ghép lại: 0011 1111.</div>
+<div class="step"><b>Kết quả:</b> <b>111111</b> (bỏ 0 ở đầu).</div>
+</div>
+
+<div class="example-box">
+<span class="ex-tag">VÍ DỤ 9 · Mẹo đi vòng — 10進数 18 → 16進数</span>
+<p><b>Cách trực tiếp:</b> 18÷16 = 1 dư 2 → "12".</p>
+<p><b>Cách đi vòng qua 2進数:</b></p>
+<div class="step"><b>Bước 1.</b> 18 → 2進数: 18÷2=9 dư 0; 9÷2=4 dư 1; 4÷2=2 dư 0; 2÷2=1 dư 0; 1÷2=0 dư 1 → đọc ngược: <b>10010</b>.</div>
+<div class="step"><b>Bước 2.</b> Chia nhóm 4 bit từ phải: <code>0001 0010</code>.</div>
+<div class="step"><b>Bước 3.</b> Đổi mỗi nhóm: 0001=1, 0010=2 → <b>12</b>. ✓ Khớp với cách trực tiếp.</div>
+</div>
+
+</section>
+
+<section class="part" id="p3">
+<h2 class="part-title"><span class="num">③</span>Flashcards · Click để lật</h2>
+
+<div class="fc-filter" id="fcFilter">
+  <button class="active" data-cat="all">Tất cả</button>
+  <button data-cat="concept">Khái niệm</button>
+  <button data-cat="to10">→ 10進数</button>
+  <button data-cat="from10">10進数 →</button>
+  <button data-cat="shortcut">Mẹo 2↔8/16</button>
+</div>
+
+<div class="fc-grid" id="fcGrid"></div>
+</section>
+
+<section class="part" id="p4">
+<h2 class="part-title"><span class="num">④</span>Quiz ôn tập · 10 câu tự chấm</h2>
+<p style="color:var(--text-dim);font-size:0.9rem;margin-bottom:18px">Chọn 1 đáp án. Sau khi chọn sẽ tự khoá — xanh = đúng, đỏ = sai, kèm giải thích.</p>
+<div id="quizArea"></div>
+<div id="quiz-result">
+  <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.2em;color:var(--text-dim)">KẾT QUẢ</div>
+  <div class="score" id="qScore">0 / 10</div>
+  <div class="verdict" id="qVerdict"></div>
+  <button class="btn" onclick="resetQuiz()">↻ LÀM LẠI</button>
+</div>
+</section>
+
+<section class="part" id="p5">
+<h2 class="part-title"><span class="num">⑤</span>Mind map tổng kết</h2>
+<div class="mindmap-wrap">
+<svg viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans JP, system-ui, sans-serif">
+  <defs>
+    <style>
+      .center{fill:#ff6b35;stroke:#fff;stroke-width:2}
+      .branch{stroke-width:2.5;fill:none}
+      .b1{stroke:#4ecdc4}.b2{stroke:#f7d794}.b3{stroke:#a8e6cf}.b4{stroke:#c7a8e6}
+      .node1{fill:#4ecdc4}.node2{fill:#f7d794}.node3{fill:#a8e6cf}.node4{fill:#c7a8e6}
+      .leaf1{fill:#2a5d5a}.leaf2{fill:#6b5a32}.leaf3{fill:#3a6051}.leaf4{fill:#5a426b}
+      text{fill:#0f1419;font-weight:600;font-size:13px}
+      .leaf-text{fill:#e8eef5;font-size:11px;font-weight:500}
+      .center-text{fill:#fff;font-size:16px;font-weight:800}
+    </style>
+  </defs>
+
+  <ellipse cx="550" cy="360" rx="105" ry="55" class="center"/>
+  <text x="550" y="355" text-anchor="middle" class="center-text">基数変換</text>
+  <text x="550" y="378" text-anchor="middle" class="center-text" font-size="12">Chuyen doi co so</text>
+
+  <path class="branch b1" d="M 460 320 Q 350 250 230 200"/>
+  <rect x="120" y="170" width="180" height="50" rx="10" class="node1"/>
+  <text x="210" y="190" text-anchor="middle">n進数 to 10進数</text>
+  <text x="210" y="208" text-anchor="middle" font-size="11">Nhan x Trong so</text>
+
+  <path class="branch b1" d="M 210 220 Q 180 250 130 280"/>
+  <rect x="40" y="265" width="160" height="32" rx="6" class="leaf1"/>
+  <text x="120" y="285" text-anchor="middle" class="leaf-text">CT: d x n^k</text>
+
+  <path class="branch b1" d="M 210 220 Q 220 270 235 320"/>
+  <rect x="160" y="305" width="180" height="32" rx="6" class="leaf1"/>
+  <text x="250" y="325" text-anchor="middle" class="leaf-text">16進: A-F to 10-15</text>
+
+  <path class="branch b1" d="M 210 220 Q 100 220 50 150"/>
+  <rect x="10" y="120" width="160" height="32" rx="6" class="leaf1"/>
+  <text x="90" y="140" text-anchor="middle" class="leaf-text">Cong tat ca tich</text>
+
+  <path class="branch b2" d="M 460 400 Q 350 480 230 540"/>
+  <rect x="120" y="515" width="190" height="50" rx="10" class="node2"/>
+  <text x="215" y="535" text-anchor="middle">10進数 to 2/16進</text>
+  <text x="215" y="553" text-anchor="middle" font-size="11">Chia / Nhan</text>
+
+  <path class="branch b2" d="M 215 565 Q 180 600 130 630"/>
+  <rect x="40" y="615" width="180" height="32" rx="6" class="leaf2"/>
+  <text x="130" y="635" text-anchor="middle" class="leaf-text">Phan nguyen: chia, du</text>
+
+  <path class="branch b2" d="M 215 565 Q 250 620 280 660"/>
+  <rect x="200" y="645" width="190" height="32" rx="6" class="leaf2"/>
+  <text x="295" y="665" text-anchor="middle" class="leaf-text">Thap phan: nhan, du</text>
+
+  <path class="branch b2" d="M 215 565 Q 100 540 50 480"/>
+  <rect x="10" y="465" width="160" height="32" rx="6" class="leaf2"/>
+  <text x="90" y="485" text-anchor="middle" class="leaf-text">He 16: 10-15 to A-F</text>
+
+  <path class="branch b3" d="M 640 320 Q 750 250 870 200"/>
+  <rect x="780" y="170" width="180" height="50" rx="10" class="node3"/>
+  <text x="870" y="190" text-anchor="middle">2 to 8 / 16進</text>
+  <text x="870" y="208" text-anchor="middle" font-size="11">Gom nhom bit</text>
+
+  <path class="branch b3" d="M 870 220 Q 920 260 970 290"/>
+  <rect x="905" y="275" width="170" height="32" rx="6" class="leaf3"/>
+  <text x="990" y="295" text-anchor="middle" class="leaf-text">2 to 8: nhom 3 bit</text>
+
+  <path class="branch b3" d="M 870 220 Q 1000 230 1060 170"/>
+  <rect x="970" y="140" width="120" height="32" rx="6" class="leaf3"/>
+  <text x="1030" y="160" text-anchor="middle" class="leaf-text">2^3 = 8</text>
+
+  <path class="branch b3" d="M 870 220 Q 900 280 920 340"/>
+  <rect x="845" y="325" width="170" height="32" rx="6" class="leaf3"/>
+  <text x="930" y="345" text-anchor="middle" class="leaf-text">2 to 16: nhom 4 bit</text>
+
+  <path class="branch b3" d="M 870 220 Q 800 160 750 110"/>
+  <rect x="685" y="80" width="160" height="32" rx="6" class="leaf3"/>
+  <text x="765" y="100" text-anchor="middle" class="leaf-text">2^4 = 16</text>
+
+  <path class="branch b4" d="M 640 400 Q 760 480 880 540"/>
+  <rect x="790" y="515" width="180" height="50" rx="10" class="node4"/>
+  <text x="880" y="535" text-anchor="middle">Khai niem nen</text>
+  <text x="880" y="553" text-anchor="middle" font-size="11">桁の重み + 指数</text>
+
+  <path class="branch b4" d="M 880 565 Q 920 600 980 630"/>
+  <rect x="900" y="615" width="160" height="32" rx="6" class="leaf4"/>
+  <text x="980" y="635" text-anchor="middle" class="leaf-text">a^0=1, a^-n=1/a^n</text>
+
+  <path class="branch b4" d="M 880 565 Q 820 610 770 660"/>
+  <rect x="690" y="645" width="170" height="32" rx="6" class="leaf4"/>
+  <text x="775" y="665" text-anchor="middle" class="leaf-text">Trong so: n^k / n^-k</text>
+
+  <path class="branch b4" d="M 880 565 Q 1000 530 1060 470"/>
+  <rect x="960" y="455" width="130" height="32" rx="6" class="leaf4"/>
+  <text x="1025" y="475" text-anchor="middle" class="leaf-text">Meo: vong qua 2進</text>
+
+</svg>
+</div>
+</section>
+
+<footer>
+  Tai lieu ly thuyet · STT 2 · 基数変換 · Yasashii Ch.1 (Lesson 01-03, 01-04) + Slide 1 第2回
+</footer>
+
+</div>
+
+<script>
+const FLASHCARDS = [
+  {cat:"concept", front:"基数変換 là gì?", back:"Đổi cách biểu diễn số từ hệ n này sang hệ n khác (vd: 2進数 ↔ 10進数). FE tập trung 4 hệ: 2, 8, 10, 16."},
+  {cat:"concept", front:"桁の重み (place weight)", back:"Giá trị của mỗi hàng. Tổng giá trị 1 số = Σ (chữ số × trọng số). Trong n進数, hàng thứ k bên trái dấu chấm có trọng số n^k."},
+  {cat:"concept", front:"指数 (shisuu — số mũ)", back:"Số lần nhân cùng một số. 10³ = 10×10×10 = 1000. Trong công thức a^b, a là 基数, b là 指数."},
+  {cat:"concept", front:"a⁰ = ? và a⁻ⁿ = ?", back:"<b>a⁰ = 1</b> với mọi cơ số a (kể cả 10⁰, 2⁰, 16⁰ đều = 1). <b>a⁻ⁿ = 1/aⁿ</b>. VD: 2⁻³ = 1/8 = 0.125."},
+  {cat:"concept", front:"Công thức tổng quát n進数 → 10進数", back:"Số \"d₃d₂d₁d₀.d₋₁d₋₂\" trong hệ n = d₃×n³ + d₂×n² + d₁×n¹ + d₀×n⁰ + d₋₁×n⁻¹ + d₋₂×n⁻². Thay n bằng cơ số tương ứng."},
+  {cat:"to10", front:"2進数 → 10進数: cách làm?", back:"Nhân từng chữ số với trọng số (2⁰, 2¹, 2², …) rồi <b>cộng tất cả</b>. VD: 1101 = 1×8+1×4+0×2+1×1 = 13."},
+  {cat:"to10", front:"16進数 → 10進数: bước đặc biệt?", back:"Trước khi nhân với trọng số 16^k, phải <b>đổi A–F sang 10–15 trước</b> (A=10, B=11, C=12, D=13, E=14, F=15)."},
+  {cat:"to10", front:"2進数 0.011 → 10進数 = ?", back:"= 0×0.5 + 1×0.25 + 1×0.125 = <b>0.375</b>."},
+  {cat:"to10", front:"16進数 \"A\" → 10進数 = ?", back:"A=10 (chỉ 1 chữ số). Kiểm tra: 10×16⁰ = 10×1 = 10."},
+  {cat:"to10", front:"8進数 17 → 10進数 = ?", back:"= 1×8¹ + 7×8⁰ = 8 + 7 = <b>15</b>."},
+  {cat:"from10", front:"10進数 → 2進数 (phần nguyên)?", back:"<b>Chia liên tục cho 2</b> đến khi thương = 0. Đọc số dư <b>TỪ DƯỚI LÊN</b>. VD: 13 → 1101."},
+  {cat:"from10", front:"10進数 → 2進数 (phần thập phân)?", back:"<b>Nhân với 2</b> nhiều lần, mỗi lần lấy phần nguyên của tích. Đọc các phần nguyên <b>TỪ TRÊN XUỐNG</b>. VD: 0.625 → 0.101."},
+  {cat:"from10", front:"10進数 → 16進数?", back:"Y hệt như đổi sang 2進数 nhưng <b>chia/nhân với 16</b>. Quan trọng: <b>nếu số dư ≥ 10 phải đổi thành A–F</b>."},
+  {cat:"from10", front:"Tại sao kết quả thường ra 無限小数?", back:"Vì hầu hết 10進小数 không biểu diễn chính xác trong 2進数. Khi thấy cụm số <b>lặp lại</b> thì dừng và kết luận là <b>循環小数</b>."},
+  {cat:"from10", front:"10進 0.5 → 2進 = ?", back:"0.5 × 2 = 1.0 (dừng) → <b>0.1</b>. (Vì hàng đầu sau dấu chấm trong 2進数 = 2⁻¹ = 0.5)"},
+  {cat:"from10", front:"10進 10 → 2進 = ?", back:"10÷2=5 dư 0; 5÷2=2 dư 1; 2÷2=1 dư 0; 1÷2=0 dư 1 → đọc ngược: <b>1010</b>."},
+  {cat:"shortcut", front:"2進数 → 8進数: chia mấy bit?", back:"<b>3 bit</b>. Lý do: 2³ = 8 (mỗi nhóm 3 bit khớp với 1 chữ số hệ 8). Chia nhóm từ dấu chấm ra 2 phía, đệm 0 nếu thiếu."},
+  {cat:"shortcut", front:"2進数 → 16進数: chia mấy bit?", back:"<b>4 bit</b>. Lý do: 2⁴ = 16. Mỗi nhóm 4 bit = 1 chữ số hệ 16. Đệm 0 nếu thiếu."},
+  {cat:"shortcut", front:"16進 F → 2進 = ?", back:"F = 15. Viết thành 4 bit = <b>1111</b>."},
+  {cat:"shortcut", front:"Mẹo 10進 → 8/16進 dễ hơn?", back:"Đi vòng qua 2進数: <b>10進 → 2進 → gom nhóm 3 hoặc 4 bit → 8/16進</b>. Chia cho 2 nhanh hơn chia cho 8 hay 16."},
+  {cat:"shortcut", front:"2進 \"110100\" → 16進 = ?", back:"Chia nhóm 4 bit từ PHẢI: <code>0011 0100</code> → 3, 4 → <b>34</b> (hệ 16). ⚠ Đệm 0 ở đầu cho đủ 4 bit."},
+];
+
+function renderFC(cat){
+  const grid = document.getElementById('fcGrid');
+  grid.innerHTML = '';
+  const items = cat==='all' ? FLASHCARDS : FLASHCARDS.filter(f=>f.cat===cat);
+  items.forEach(f=>{
+    const card = document.createElement('div');
+    card.className='fc-card';
+    const catLabel = {concept:'KHÁI NIỆM',to10:'→10進数',from10:'10進数→',shortcut:'MẸO 2↔'}[f.cat];
+    card.innerHTML = `
+      <span class="fc-cat">${catLabel}</span>
+      <div class="fc-front">${f.front}</div>
+      <div class="fc-back">${f.back}</div>
+      <div class="hint">▸ CLICK ĐỂ LẬT</div>
+    `;
+    card.addEventListener('click', ()=>card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+document.querySelectorAll('#fcFilter button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('#fcFilter button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderFC(btn.dataset.cat);
+  });
+});
+renderFC('all');
+
+const QUIZ = [
+  {
+    q: "2進数 \"1011\" を10進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>Số 2進数 \"1011\" trong hệ 10 là?</span>",
+    opts: ["9", "10", "11", "13"],
+    ans: 2,
+    expl: "<b>Đáp án: C.</b> 1×2³ + 0×2² + 1×2¹ + 1×2⁰ = 8+0+2+1 = <b>11</b>. (A) sai vì thiếu hàng 2⁰. (B) là 1010. (D) là 1101."
+  },
+  {
+    q: "10進数 \"13\" を2進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>Số 10進数 \"13\" trong hệ 2 là?</span>",
+    opts: ["1011", "1101", "1110", "1111"],
+    ans: 1,
+    expl: "<b>Đáp án: B.</b> 13÷2=6 dư 1; 6÷2=3 dư 0; 3÷2=1 dư 1; 1÷2=0 dư 1 → đọc ngược: <b>1101</b>. (A) là 11. (C) là 14. (D) là 15."
+  },
+  {
+    q: "16進数 \"1A\" を10進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>Số 16進数 \"1A\" trong hệ 10 là?</span>",
+    opts: ["19", "26", "110", "1010"],
+    ans: 1,
+    expl: "<b>Đáp án: B.</b> Đổi A=10 trước. 1×16¹ + 10×16⁰ = 16 + 10 = <b>26</b>. (A) nhầm đọc \"1A\" như \"19\". (C, D) nhầm với hệ 2."
+  },
+  {
+    q: "10進数 \"255\" を16進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>Số 10進数 \"255\" trong hệ 16 là?</span>",
+    opts: ["FF", "F0", "100", "255"],
+    ans: 0,
+    expl: "<b>Đáp án: A.</b> 255÷16=15 dư 15→F; 15÷16=0 dư 15→F → đọc ngược: <b>FF</b>. (B) F0 = 240. (C) 100₁₆ = 256. (D) là cách đọc hệ 10."
+  },
+  {
+    q: "2進数 \"1010.01\" を10進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>2進数 \"1010.01\" trong hệ 10 là?</span>",
+    opts: ["10.1", "10.25", "10.5", "10.01"],
+    ans: 1,
+    expl: "<b>Đáp án: B.</b> Phần nguyên: 1×8+0×4+1×2+0×1 = 10. Phần thập phân: 0×0.5 + 1×0.25 = 0.25. Tổng: <b>10.25</b>. (A, D) nhầm trọng số. (C) là 1010.1."
+  },
+  {
+    q: "10進数 \"0.625\" を2進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>10進数 \"0.625\" trong hệ 2 là?</span>",
+    opts: ["0.110", "0.101", "0.011", "0.111"],
+    ans: 1,
+    expl: "<b>Đáp án: B.</b> 0.625×2=<b>1</b>.25 → 1; 0.25×2=<b>0</b>.5 → 0; 0.5×2=<b>1</b>.0 → 1, dừng. Đọc trên xuống: <b>0.101</b>. (Tương ứng 0.5+0.125=0.625 ✓)."
+  },
+  {
+    q: "2進数 \"110101\" を16進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>2進数 \"110101\" trong hệ 16 là?</span>",
+    opts: ["35", "53", "65", "D5"],
+    ans: 0,
+    expl: "<b>Đáp án: A.</b> Chia nhóm 4 bit từ PHẢI, đệm 0: <code>0011 0101</code> → 3, 5 → <b>35</b>. Kiểm tra: 3×16+5 = 53 = 110101₂ (32+16+4+1=53 ✓). (B) sai do đọc ngược."
+  },
+  {
+    q: "16進数 \"3F\" を2進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>16進数 \"3F\" trong hệ 2 là?</span>",
+    opts: ["111111", "100001", "11110", "1011111"],
+    ans: 0,
+    expl: "<b>Đáp án: A.</b> Mỗi chữ hệ 16 = 4 bit: 3 → 0011; F (=15) → 1111. Ghép: 00111111 → bỏ 0 đầu → <b>111111</b>. (= 10進 63 = 3×16+15 ✓)."
+  },
+  {
+    q: "2進数 \"101101\" を8進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>2進数 \"101101\" trong hệ 8 là?</span>",
+    opts: ["45", "55", "65", "D"],
+    ans: 1,
+    expl: "<b>Đáp án: B.</b> Chia nhóm 3 bit từ PHẢI: <code>101 101</code> → 5, 5 → <b>55</b>. Kiểm tra: 5×8+5 = 45 = 101101₂ (32+8+4+1=45 ✓). (D) là hệ 16."
+  },
+  {
+    q: "次のうち、10進数を16進数に変換する手順として正しいものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>Cách đúng để đổi 10進数 sang 16進数 là?</span>",
+    opts: [
+      "Nhân liên tục với 16, lấy thương",
+      "Chia liên tục cho 16, đọc số dư từ TRÊN xuống",
+      "Chia liên tục cho 16, đọc số dư TỪ DƯỚI LÊN; số dư ≥ 10 đổi thành A–F",
+      "Đếm số chữ số rồi nhân với 16"
+    ],
+    ans: 2,
+    expl: "<b>Đáp án: C.</b> Quy trình đúng từ Yasashii Lesson 01-04: chia liên tục cho cơ số (=16), đến khi thương = 0; <b>đọc số dư từ dưới lên</b>; nếu dư từ 10–15 phải đổi thành A–F. (A) là quy tắc cho phần thập phân. (B) nhầm hướng đọc. (D) không phải quy tắc."
+  }
+];
+
+let score = 0, answered = 0;
+
+function renderQuiz(){
+  const area = document.getElementById('quizArea');
+  area.innerHTML = '';
+  score = 0; answered = 0;
+  QUIZ.forEach((item, idx)=>{
+    const q = document.createElement('div');
+    q.className = 'quiz-q';
+    q.dataset.idx = idx;
+    let optsHtml = '';
+    item.opts.forEach((opt, oi)=>{
+      const letter = ['A','B','C','D'][oi];
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}.</span><span>${opt}</span></div>`;
+    });
+    q.innerHTML = `
+      <div class="qnum">CÂU ${idx+1} / 10</div>
+      <div class="qtext">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl}</div>
+    `;
+    area.appendChild(q);
+    q.querySelectorAll('.opt').forEach(optEl=>{
+      optEl.addEventListener('click', ()=>{
+        if(q.classList.contains('locked')) return;
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+        q.classList.add('locked');
+        const correctEl = q.querySelector('.opt[data-oi="'+correct+'"]');
+        if(correctEl) correctEl.classList.add('correct');
+        if(chosen !== correct){
+          optEl.classList.add('wrong');
+        } else {
+          score++;
+        }
+        answered++;
+        if(answered === QUIZ.length) showResult();
+      });
+    });
+  });
+  document.getElementById('quiz-result').classList.remove('show');
+}
+
+function showResult(){
+  const pct = Math.round((score/QUIZ.length)*100);
+  document.getElementById('qScore').textContent = score + ' / ' + QUIZ.length;
+  let verdict = '';
+  if(pct >= 90) verdict = '🏆 Xuất sắc! Sẵn sàng cho STT 3.';
+  else if(pct >= 70) verdict = '👍 Khá tốt — Ôn lại 1-2 câu sai là OK.';
+  else if(pct >= 50) verdict = '📚 Trung bình — Đọc lại Phần 1.';
+  else verdict = '💪 Cần cố gắng — Quay lại đọc lý thuyết từ đầu.';
+  document.getElementById('qVerdict').textContent = verdict + ' (' + pct + '%)';
+  document.getElementById('quiz-result').classList.add('show');
+  document.getElementById('quiz-result').scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function resetQuiz(){
+  renderQuiz();
+  document.getElementById('quizArea').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+renderQuiz();
+</script>
+</body>
+</html>

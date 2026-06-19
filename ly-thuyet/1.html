@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STT 1 — n進数の概念 · Khái niệm n進数</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@600;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1419;
+  --bg-2:#161c24;
+  --bg-3:#1e2733;
+  --border:#2a3441;
+  --text:#e8eef5;
+  --text-dim:#a0adbb;
+  --accent:#ff6b35;
+  --accent-2:#4ecdc4;
+  --jp:#f7d794;
+  --vn:#a8e6cf;
+  --en:#c7a8e6;
+  --ok:#3ddc97;
+  --ng:#ff5a5f;
+  --shadow:0 4px 16px rgba(0,0,0,0.3);
+  --font-jp:"Noto Sans JP",system-ui,sans-serif;
+  --font-mono:"Space Mono",ui-monospace,monospace;
+  --font-display:"Syne","Noto Sans JP",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font-jp);
+  line-height:1.7;
+  padding:0;
+  min-height:100vh;
+}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 20px 80px}
+header.hero{
+  background:linear-gradient(135deg,#1e2733 0%,#0f1419 100%);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:32px 28px;
+  margin-bottom:28px;
+  position:relative;
+  overflow:hidden;
+}
+header.hero::before{
+  content:"";position:absolute;top:-50%;right:-20%;width:400px;height:400px;
+  background:radial-gradient(circle,rgba(255,107,53,0.12) 0%,transparent 70%);
+}
+.tag{
+  display:inline-block;font-family:var(--font-mono);font-size:11px;
+  color:var(--accent);border:1px solid var(--accent);padding:3px 10px;
+  border-radius:20px;letter-spacing:0.1em;margin-bottom:14px;
+}
+h1.title{
+  font-family:var(--font-display);font-weight:800;font-size:2.4rem;
+  line-height:1.2;margin-bottom:8px;
+}
+.subtitle{color:var(--text-dim);font-size:1.05rem;margin-bottom:18px}
+.meta{
+  display:flex;flex-wrap:wrap;gap:10px;font-family:var(--font-mono);
+  font-size:12px;color:var(--text-dim);
+}
+.meta span{background:var(--bg-3);padding:5px 12px;border-radius:6px}
+
+nav.toc{
+  background:var(--bg-2);border:1px solid var(--border);border-radius:12px;
+  padding:18px 20px;margin-bottom:28px;
+}
+nav.toc h3{font-family:var(--font-display);font-size:0.9rem;letter-spacing:0.15em;color:var(--accent-2);margin-bottom:12px}
+nav.toc ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+nav.toc a{color:var(--text);text-decoration:none;font-size:0.92rem;padding:6px 10px;border-radius:6px;display:block;border-left:2px solid transparent}
+nav.toc a:hover{background:var(--bg-3);border-left-color:var(--accent)}
+
+section.part{
+  background:var(--bg-2);border:1px solid var(--border);
+  border-radius:14px;padding:28px 26px;margin-bottom:24px;
+}
+h2.part-title{
+  font-family:var(--font-display);font-size:1.6rem;font-weight:700;
+  color:var(--text);
+  border-bottom:2px solid var(--accent);padding-bottom:10px;margin-bottom:22px;
+}
+h2.part-title .num{
+  font-family:var(--font-mono);color:var(--accent);font-size:1.1rem;margin-right:10px;
+}
+h3.sub{
+  font-family:var(--font-display);font-size:1.2rem;color:var(--accent-2);
+  margin-top:24px;margin-bottom:12px;padding-left:14px;border-left:4px solid var(--accent-2);
+}
+h4.sub2{
+  font-family:var(--font-display);font-size:1.02rem;color:var(--jp);
+  margin-top:16px;margin-bottom:10px;
+}
+
+.lang-block{
+  display:grid;gap:10px;margin:14px 0;
+}
+.lang-row{
+  background:var(--bg-3);border-radius:10px;padding:14px 18px;
+  border-left:4px solid var(--border);
+}
+.lang-row.jp{border-left-color:var(--jp)}
+.lang-row.vn{border-left-color:var(--vn)}
+.lang-row.en{border-left-color:var(--en)}
+.lang-row .label{font-family:var(--font-mono);font-size:11px;letter-spacing:0.1em;color:var(--text-dim);margin-bottom:4px;display:block}
+.lang-row.jp .label{color:var(--jp)}
+.lang-row.vn .label{color:var(--vn)}
+.lang-row.en .label{color:var(--en)}
+.lang-row .content{font-size:0.97rem}
+
+ul.bullets{margin:10px 0 10px 22px}
+ul.bullets li{margin-bottom:6px}
+
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:0.92rem;background:var(--bg-3);border-radius:8px;overflow:hidden}
+th,td{padding:10px 14px;border:1px solid var(--border);text-align:left;vertical-align:top}
+th{background:var(--bg);color:var(--accent-2);font-family:var(--font-display);font-weight:600}
+tr:hover td{background:rgba(255,107,53,0.05)}
+
+.callout{
+  background:linear-gradient(90deg,rgba(78,205,196,0.08) 0%,transparent 100%);
+  border-left:4px solid var(--accent-2);
+  padding:14px 18px;border-radius:8px;margin:16px 0;
+}
+.callout.warn{
+  background:linear-gradient(90deg,rgba(255,107,53,0.1) 0%,transparent 100%);
+  border-left-color:var(--accent);
+}
+.callout .head{font-family:var(--font-display);font-weight:700;color:var(--accent-2);margin-bottom:6px;font-size:0.92rem;letter-spacing:0.05em}
+.callout.warn .head{color:var(--accent)}
+
+.ascii{
+  background:#0a0d12;color:var(--accent-2);font-family:var(--font-mono);
+  font-size:0.85rem;padding:14px 18px;border-radius:8px;overflow-x:auto;
+  white-space:pre;line-height:1.5;margin:12px 0;border:1px solid var(--border);
+}
+
+.example-box{
+  background:var(--bg-3);border:1px dashed var(--accent);border-radius:10px;
+  padding:16px 20px;margin:14px 0;
+}
+.example-box .ex-tag{
+  font-family:var(--font-mono);font-size:11px;color:var(--accent);
+  letter-spacing:0.15em;margin-bottom:8px;display:inline-block;
+  background:rgba(255,107,53,0.1);padding:3px 10px;border-radius:4px;
+}
+.example-box .step{margin:8px 0;padding-left:18px;border-left:2px solid var(--border)}
+.example-box .step b{color:var(--accent-2)}
+
+.fc-filter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.fc-filter button{
+  background:var(--bg-3);color:var(--text-dim);border:1px solid var(--border);
+  padding:7px 14px;border-radius:20px;cursor:pointer;font-family:var(--font-mono);
+  font-size:12px;transition:all 0.2s;
+}
+.fc-filter button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.fc-filter button:hover:not(.active){border-color:var(--accent);color:var(--text)}
+
+.fc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.fc-card{
+  background:var(--bg-3);border:1px solid var(--border);border-radius:12px;
+  padding:18px 18px;min-height:140px;cursor:pointer;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;transition:transform 0.2s,border-color 0.2s;
+}
+.fc-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.fc-card .fc-cat{
+  position:absolute;top:8px;right:10px;
+  font-family:var(--font-mono);font-size:10px;color:var(--text-dim);
+  background:var(--bg);padding:2px 8px;border-radius:10px;
+}
+.fc-card .fc-front{font-family:var(--font-display);font-weight:600;font-size:1.05rem;color:var(--jp);text-align:center}
+.fc-card .fc-back{display:none;font-size:0.92rem;line-height:1.6}
+.fc-card.flipped .fc-front{display:none}
+.fc-card.flipped .fc-back{display:block}
+.fc-card .hint{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:9px;color:var(--text-dim);letter-spacing:0.1em}
+
+.quiz-q{
+  background:var(--bg-3);border:1px solid var(--border);border-radius:12px;
+  padding:18px 20px;margin-bottom:16px;
+}
+.quiz-q .qnum{font-family:var(--font-mono);font-size:12px;color:var(--accent);letter-spacing:0.1em;margin-bottom:6px}
+.quiz-q .qtext{font-size:1rem;margin-bottom:14px;font-weight:500}
+.quiz-q .opts{display:grid;gap:8px}
+.quiz-q .opt{
+  background:var(--bg);border:1px solid var(--border);border-radius:8px;
+  padding:10px 14px;cursor:pointer;font-size:0.94rem;
+  transition:all 0.15s;display:flex;align-items:center;gap:10px;
+}
+.quiz-q .opt:hover:not(.locked){border-color:var(--accent);background:var(--bg-3)}
+.quiz-q .opt .ltr{font-family:var(--font-mono);font-weight:700;color:var(--accent);min-width:20px}
+.quiz-q .opt.correct{background:rgba(61,220,151,0.15);border-color:var(--ok);color:var(--ok)}
+.quiz-q .opt.correct .ltr{color:var(--ok)}
+.quiz-q .opt.wrong{background:rgba(255,90,95,0.12);border-color:var(--ng);color:var(--ng)}
+.quiz-q .opt.wrong .ltr{color:var(--ng)}
+.quiz-q.locked .opt{cursor:default}
+.quiz-q .expl{
+  display:none;margin-top:14px;padding:12px 14px;background:var(--bg);
+  border-left:3px solid var(--accent-2);border-radius:6px;font-size:0.9rem;line-height:1.65;
+}
+.quiz-q.locked .expl{display:block}
+.quiz-q .expl b{color:var(--accent-2)}
+
+#quiz-result{
+  background:linear-gradient(135deg,var(--bg-3) 0%,var(--bg) 100%);
+  border:2px solid var(--accent);border-radius:14px;
+  padding:24px;text-align:center;margin-top:20px;display:none;
+}
+#quiz-result.show{display:block}
+#quiz-result .score{font-family:var(--font-display);font-size:3rem;font-weight:800;color:var(--accent);margin:10px 0}
+#quiz-result .verdict{font-size:1.1rem;color:var(--text-dim);margin-bottom:14px}
+.btn{
+  background:var(--accent);color:#fff;border:none;padding:10px 22px;
+  border-radius:8px;font-family:var(--font-mono);cursor:pointer;font-size:13px;
+  letter-spacing:0.1em;font-weight:700;
+}
+.btn:hover{background:#ff7f4f}
+
+.mindmap-wrap{
+  background:#0a0d12;border-radius:12px;padding:16px;overflow-x:auto;
+  border:1px solid var(--border);
+}
+.mindmap-wrap svg{max-width:100%;height:auto;display:block;margin:0 auto}
+
+footer{
+  text-align:center;color:var(--text-dim);font-family:var(--font-mono);
+  font-size:11px;margin-top:32px;padding-top:24px;border-top:1px solid var(--border);
+}
+
+@media(max-width:640px){
+  .wrap{padding:16px 12px 60px}
+  h1.title{font-size:1.7rem}
+  header.hero{padding:22px 18px}
+  section.part{padding:20px 16px}
+  nav.toc ul{grid-template-columns:1fr}
+  .fc-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="tag">STT 01 · Tuần 1 · Ch.1 基礎理論①</div>
+  <h1 class="title">n進数の概念<br><span style="color:var(--accent);font-size:1.4rem">Khái niệm n進数</span></h1>
+  <p class="subtitle">Bit, Byte, 10進数 / 2進数 / 16進数, 桁の重み, 小数の種類</p>
+  <div class="meta">
+    <span>📘 Yasashii Ch.1 Lesson 01-01, 01-02</span>
+    <span>🎬 Slide 1_基礎理論 第1回</span>
+    <span>⏱ ~60 phút</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <h3>▸ MỤC LỤC</h3>
+  <ul>
+    <li><a href="#p1">① Tóm tắt lý thuyết</a></li>
+    <li><a href="#p2">② Ví dụ minh hoạ</a></li>
+    <li><a href="#p3">③ Flashcards</a></li>
+    <li><a href="#p4">④ Quiz 10 câu</a></li>
+    <li><a href="#p5">⑤ Mind map</a></li>
+  </ul>
+</nav>
+
+<section class="part" id="p1">
+<h2 class="part-title"><span class="num">①</span>Tóm tắt lý thuyết</h2>
+
+<h3 class="sub">1.1 ビットとバイト · Bit và Byte</h3>
+
+<div class="lang-block">
+  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content"><b>ビット</b>(bit) とは、コンピュータが扱うデータの<b>最小単位</b>。1ビットは「0」または「1」のいずれかの値を表す。<b>バイト</b>(byte) とは、<b>8個のビットの集まり</b>。1バイトでは 2⁸ = 256通り の状態を表すことができる。</div></div>
+  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>Bit</b> là đơn vị nhỏ nhất của dữ liệu máy tính — chỉ nhận giá trị <b>0 hoặc 1</b> (như công tắc đèn: bật/tắt). <b>Byte</b> là một nhóm gồm <b>8 bit</b>, biểu diễn được 2⁸ = <b>256</b> trạng thái khác nhau. Dãy 0 và 1 như "10010011" gọi là <b>ビット列 (bit string)</b> hoặc <b>ビットパターン (bit pattern)</b>.</div></div>
+  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content">A <b>bit</b> is the smallest unit of computer data, taking only the value <b>0 or 1</b>. A <b>byte</b> is a group of <b>8 bits</b>, capable of representing 2⁸ = 256 different states.</div></div>
+</div>
+
+<div class="callout">
+  <div class="head">💡 VÍ VON ĐỜI THỰC</div>
+  Bit giống <b>1 bóng đèn</b>: chỉ có Tắt (0) hoặc Bật (1). Byte giống <b>1 dãy 8 bóng đèn cạnh nhau</b>: mỗi tổ hợp bật/tắt khác nhau cho ra 1 "trạng thái" → tổng cộng có 256 cách bật/tắt.
+</div>
+
+<div class="ascii">1 ビット:  [ 0 hoặc 1 ]                          ← 2¹ = 2 trạng thái
+2 ビット:  [00][01][10][11]                       ← 2² = 4 trạng thái
+3 ビット:  [000][001][010][011][100][101][110][111] ← 2³ = 8 trạng thái
+   ⋮
+8 ビット = 1バイト:  ........                     ← 2⁸ = 256 trạng thái</div>
+
+<h3 class="sub">1.2 さまざまなデータの単位 · Các đơn vị dữ liệu</h3>
+
+<div class="lang-block">
+  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content">コンピュータの世界では、非常に大きな値や小さな値を扱うため、簡潔に表すための単位が用意されている。大きい方は <b>テラ・ギガ・メガ・キロ</b>、小さい方は <b>ミリ・マイクロ・ナノ・ピコ</b>。</div></div>
+  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content">Vì máy tính làm việc với cả giá trị rất lớn (dung lượng lưu trữ) lẫn rất nhỏ (thời gian xử lý), nên dùng các tiền tố — lớn: <b>T, G, M, k</b>; nhỏ: <b>m, μ, n, p</b>.</div></div>
+  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content">Computers work with both very large (storage) and very small (processing time) numbers, so prefixes T/G/M/k and m/μ/n/p are used.</div></div>
+</div>
+
+<table>
+<thead><tr><th>単位 (Đơn vị)</th><th>記号 (Ký hiệu)</th><th>10進数表記</th><th>累乗 (Luỹ thừa)</th></tr></thead>
+<tbody>
+<tr><td>テラ (Tera)</td><td>T</td><td>1,000,000,000,000</td><td>10¹²</td></tr>
+<tr><td>ギガ (Giga)</td><td>G</td><td>1,000,000,000</td><td>10⁹</td></tr>
+<tr><td>メガ (Mega)</td><td>M</td><td>1,000,000</td><td>10⁶</td></tr>
+<tr><td>キロ (Kilo)</td><td>k</td><td>1,000</td><td>10³</td></tr>
+<tr><td style="color:var(--text-dim)">(基準)</td><td>—</td><td>1</td><td>1</td></tr>
+<tr><td>ミリ (Milli)</td><td>m</td><td>0.001</td><td>10⁻³</td></tr>
+<tr><td>マイクロ (Micro)</td><td>μ</td><td>0.000001</td><td>10⁻⁶</td></tr>
+<tr><td>ナノ (Nano)</td><td>n</td><td>0.000000001</td><td>10⁻⁹</td></tr>
+<tr><td>ピコ (Pico)</td><td>p</td><td>0.000000000001</td><td>10⁻¹²</td></tr>
+</tbody>
+</table>
+
+<div class="callout warn">
+  <div class="head">⚠ ĐIỂM THI HAY HỎI</div>
+  <b>1 GB = 10⁹ byte = 10 億バイト</b>. Đổi sang bit: 10⁹ × 8 = <b>80 億ビット</b>. IPA đã công bố sẽ <b>tăng tỷ lệ câu hỏi tính toán</b> liên quan đến đơn vị dữ liệu trong kỳ thi FE.
+</div>
+
+<h3 class="sub">1.3 文字の表現 · Biểu diễn chữ (từ Slide 第1回)</h3>
+
+<div class="lang-block">
+  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content">コンピュータは2進数で処理を行うため、文字も「0と1」で定義された<b>文字コード</b>で表現する。同じ文字でも文字コードの種類によって番号が異なる。</div></div>
+  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content">Máy tính chỉ xử lý 0/1 nên chữ cũng phải mã hoá bằng dãy bit — gọi là <b>bộ mã ký tự (文字コード)</b>. Cùng 1 chữ "あ" nhưng <b>mã khác nhau</b> tuỳ bộ mã: Shift JIS = <code>1000 0010 1010 0000</code>, Unicode = <code>1110 0011 1000 0001 1000 0010</code>.</div></div>
+  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content">Computers process only 0/1, so characters are encoded as bit patterns using a <b>character code</b>. The same character has different codes in different encodings (Shift JIS vs Unicode).</div></div>
+</div>
+
+<h3 class="sub">1.4 n進数とは · n進数 là gì</h3>
+
+<div class="lang-block">
+  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content"><b>n進数</b>とは、<b>n個の記号を用いて数を表現する</b>表記法。値が n になるときに桁が1つ上がる。</div></div>
+  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>n進数 (số hệ cơ số n)</b> là cách biểu diễn số dùng <b>n ký hiệu</b>. Khi giá trị đạt tới n thì <b>nhảy lên 1 hàng (carry)</b>. n gọi là <b>基数 (cơ số)</b>.</div></div>
+  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content"><b>Base-n notation</b> uses n symbols to represent numbers. The digit carries up when the value reaches n. n is called the <b>radix (base)</b>.</div></div>
+</div>
+
+<h4 class="sub2">▸ 10進数 (Decimal)</h4>
+<ul class="bullets">
+  <li>記号: <b>0,1,2,3,4,5,6,7,8,9</b> (10 symbols) — đời thường dùng.</li>
+  <li>Đạt 10 thì lên hàng: 0,1,2,...,9, <b>10</b>, 11,...</li>
+</ul>
+
+<h4 class="sub2">▸ 2進数 (Binary)</h4>
+<ul class="bullets">
+  <li>記号: <b>0, 1</b> (2 symbols). Đạt 2 thì lên hàng → 10進数 "2" = 2進数 "10".</li>
+  <li>Cách đọc: 10進数 (10) đọc là "じゅう"; 2進数 (10)₂ đọc là "<b>いちぜろ</b>". Để phân biệt, ghi cơ số dưới ngoặc: <code>(10)₂</code>, <code>(10)₁₀</code>.</li>
+</ul>
+
+<div class="ascii">10進数:  0   1   2    3    4     5    6    7    8    9    10
+2 進数:  0   1  10   11  100   101  110  111 1000 1001  1010
+              ↑桁↑桁              ↑桁              ↑桁
+            (lên 2)(lên 3)       (lên 3)         (lên 4)</div>
+
+<h4 class="sub2">▸ 16進数 (Hexadecimal)</h4>
+<ul class="bullets">
+  <li>記号: <b>0–9 + A,B,C,D,E,F</b> (16 symbols). A=10, B=11, C=12, D=13, E=14, F=15.</li>
+  <li>Vì chữ số Ả Rập chỉ có 0–9 nên phải mượn chữ cái A–F cho 10–15.</li>
+  <li>Đạt 16 thì lên hàng: 0,1,...,9,A,B,C,D,E,F, <b>10</b>, 11,...</li>
+</ul>
+
+<table>
+<thead><tr><th>2進数</th><th>10進数</th><th>16進数</th><th>2進数</th><th>10進数</th><th>16進数</th></tr></thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>1000</td><td>8</td><td>8</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>1001</td><td>9</td><td>9</td></tr>
+<tr><td>10</td><td>2</td><td>2</td><td>1010</td><td>10</td><td><b>A</b></td></tr>
+<tr><td>11</td><td>3</td><td>3</td><td>1011</td><td>11</td><td><b>B</b></td></tr>
+<tr><td>100</td><td>4</td><td>4</td><td>1100</td><td>12</td><td><b>C</b></td></tr>
+<tr><td>101</td><td>5</td><td>5</td><td>1101</td><td>13</td><td><b>D</b></td></tr>
+<tr><td>110</td><td>6</td><td>6</td><td>1110</td><td>14</td><td><b>E</b></td></tr>
+<tr><td>111</td><td>7</td><td>7</td><td>1111</td><td>15</td><td><b>F</b></td></tr>
+<tr><td colspan="3"></td><td>10000</td><td>16</td><td><b>10</b></td></tr>
+</tbody>
+</table>
+
+<h3 class="sub">1.5 桁の重み · Trọng số của hàng</h3>
+
+<div class="lang-block">
+  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content">どの表記法でも、各桁には<b>重み</b>がある。小数点を基準に、左に行くほど n 倍、右に行くほど 1/n 倍になる。<br><b>公式:</b> 整数部の重み = n⁰, n¹, n², n³… / 小数部の重み = n⁻¹, n⁻², n⁻³…</div></div>
+  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content">Mỗi hàng (桁) có một <b>trọng số</b> riêng. Lấy dấu chấm thập phân làm gốc — đi sang trái thì <b>nhân n lần</b>, đi sang phải thì <b>chia n lần (×1/n)</b>. Với cơ số n: phần nguyên = n⁰, n¹, n², n³…; phần thập phân = n⁻¹, n⁻², n⁻³…</div></div>
+  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content">Each digit position has a <b>weight</b>. Moving left of the decimal point multiplies by n; moving right divides by n. Integer part weights: n⁰, n¹, n², …; fractional part: n⁻¹, n⁻², n⁻³…</div></div>
+</div>
+
+<table>
+<thead><tr><th>Hệ</th><th>10³</th><th>10²</th><th>10¹</th><th>10⁰</th><th>.</th><th>10⁻¹</th><th>10⁻²</th></tr></thead>
+<tbody>
+<tr><td><b>10進数</b></td><td>1000</td><td>100</td><td>10</td><td>1</td><td>.</td><td>0.1</td><td>0.01</td></tr>
+</tbody></table>
+
+<table>
+<thead><tr><th>Hệ</th><th>2⁵</th><th>2⁴</th><th>2³</th><th>2²</th><th>2¹</th><th>2⁰</th><th>.</th><th>2⁻¹</th><th>2⁻²</th></tr></thead>
+<tbody>
+<tr><td><b>2進数</b></td><td>32</td><td>16</td><td>8</td><td>4</td><td>2</td><td>1</td><td>.</td><td>0.5</td><td>0.25</td></tr>
+</tbody></table>
+
+<div class="callout">
+  <div class="head">💡 VÍ VON ĐỜI THỰC (cái bập bênh trong sách)</div>
+  Trọng số của hàng giống như <b>cái bập bênh</b>: càng ngồi xa điểm tựa (dấu chấm thập phân) thì lực (giá trị) càng lớn. Số ở hàng càng cao bên trái thì "nặng" càng nhiều.
+</div>
+
+<h3 class="sub">1.6 小数 · Số thập phân</h3>
+
+<div class="lang-block">
+  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content">小数は<b>小数点</b>を境にして、左を<b>整数部</b>、右を<b>小数部</b>という。種類: <b>有限小数</b>(桁数に限りあり), <b>無限小数</b>(桁数に限りなし), <b>循環小数</b>(ある桁から同じ数字列が無限に繰り返される)。2進数や16進数にも小数があり、それぞれ <b>2進小数</b>, <b>16進小数</b>と呼ぶ。</div></div>
+  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content">Số thập phân chia thành <b>phần nguyên (整数部)</b> ở bên trái và <b>phần thập phân (小数部)</b> ở bên phải của dấu chấm. Có 3 loại: <b>有限小数 (hữu hạn)</b> như 0.5, 1.1; <b>無限小数 (vô hạn)</b> như π = 3.1415…; <b>循環小数 (tuần hoàn)</b> — vô hạn nhưng <b>lặp đi lặp lại một cụm số</b>, ví dụ 1÷7 = 0.142857142857… Hệ 2 và 16 cũng có số thập phân của riêng mình.</div></div>
+  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content">Decimals split into <b>integer part</b> (left of point) and <b>fractional part</b> (right). Three types: <b>finite</b> (e.g. 0.5), <b>infinite</b> (e.g. π = 3.1415…), <b>repeating</b> (e.g. 1÷7 = 0.142857142857…).</div></div>
+</div>
+
+<div class="ascii">            3 8 . 4 5
+            ↑↑   ↑↑
+        整数部   小数部
+       (phần    (phần
+       nguyên)  thập phân)</div>
+
+<div class="callout warn">
+  <div class="head">⚠ ĐIỂM THI HAY HỎI</div>
+  Đề FE thường hỏi <b>phân biệt 有限小数 / 無限小数</b>. Ví dụ: 1÷4 = 0.25 (hữu hạn); 1÷3 = 0.333… (vô hạn, tuần hoàn).
+</div>
+
+</section>
+
+<section class="part" id="p2">
+<h2 class="part-title"><span class="num">②</span>Ví dụ minh hoạ</h2>
+
+<div class="example-box">
+<span class="ex-tag">VÍ DỤ 1 · Số trạng thái biểu diễn được</span>
+<p><b>Câu hỏi:</b> 5 bit biểu diễn được bao nhiêu trạng thái?</p>
+<div class="step"><b>Bước 1.</b> Mỗi bit có 2 trạng thái (0 hoặc 1).</div>
+<div class="step"><b>Bước 2.</b> n bit → 2ⁿ trạng thái (theo quy tắc nhân).</div>
+<div class="step"><b>Bước 3.</b> 5 bit → 2⁵ = <b>32 trạng thái</b>.</div>
+</div>
+
+<div class="example-box">
+<span class="ex-tag">VÍ DỤ 2 · Quy đổi đơn vị</span>
+<p><b>Câu hỏi:</b> 1 GB bằng bao nhiêu bit?</p>
+<div class="step"><b>Bước 1.</b> 1 GB = 10⁹ byte (theo bảng đơn vị).</div>
+<div class="step"><b>Bước 2.</b> 1 byte = 8 bit.</div>
+<div class="step"><b>Bước 3.</b> 1 GB = 10⁹ × 8 = <b>8 × 10⁹ bit = 80 億ビット</b>.</div>
+</div>
+
+<div class="example-box">
+<span class="ex-tag">VÍ DỤ 3 · Đếm trong hệ 2 (2進数)</span>
+<p><b>Câu hỏi:</b> Sau 2進数 "111" là số nào?</p>
+<div class="step"><b>Bước 1.</b> 2進数 chỉ có 0 và 1, hễ đạt 2 là carry.</div>
+<div class="step"><b>Bước 2.</b> 111 + 1: hàng cuối 1+1=10 (carry); chuyển sang hàng kế: 1+1=10 (carry); chuyển tiếp: 1+1=10 (carry).</div>
+<div class="step"><b>Bước 3.</b> Kết quả: <b>1000</b>. (= 10進数 8)</div>
+</div>
+
+<div class="example-box">
+<span class="ex-tag">VÍ DỤ 4 · Đếm trong hệ 16 (16進数)</span>
+<p><b>Câu hỏi:</b> Sau 16進数 "F" là số nào? Sau "1F" thì sao?</p>
+<div class="step"><b>Bước 1.</b> 16進数 dùng 0–9, A–F (16 ký hiệu). F = 10進数 15.</div>
+<div class="step"><b>Bước 2.</b> Sau F là <b>10</b> (16進数) = 10進数 16. Sau 1F là <b>20</b> (16進数) = 10進数 32.</div>
+</div>
+
+<div class="example-box">
+<span class="ex-tag">VÍ DỤ 5 · Trọng số hàng trong 2進数</span>
+<p><b>Câu hỏi:</b> Trọng số của các hàng trong 2進数 "1011.1" là gì?</p>
+<div class="ascii">  vị trí:    3  2  1  0  .  -1
+  ký hiệu:   1  0  1  1  .   1
+  trọng số:  2³ 2² 2¹ 2⁰ .  2⁻¹
+             8  4  2  1  .  0.5</div>
+<div class="step"><b>Kết quả:</b> các hàng có trọng số <b>8, 4, 2, 1, 0.5</b> (giá trị mỗi vị trí khi viết ra hệ 10).</div>
+</div>
+
+<div class="example-box">
+<span class="ex-tag">VÍ DỤ 6 · Phân loại số thập phân</span>
+<p><b>Câu hỏi:</b> Phân loại các số sau: (a) 0.5, (b) 0.3333…, (c) π = 3.14159265…, (d) 0.142857142857…</p>
+<div class="step"><b>(a) 0.5</b> → <b>有限小数</b> (hữu hạn, chỉ 1 chữ số sau dấu chấm).</div>
+<div class="step"><b>(b) 0.333…</b> → <b>循環小数</b> (tuần hoàn, lặp "3"). Cũng thuộc 無限小数.</div>
+<div class="step"><b>(c) π</b> → <b>無限小数</b> không tuần hoàn (không phải 循環).</div>
+<div class="step"><b>(d) 0.142857142857…</b> → <b>循環小数</b> (lặp cụm "142857"). Là 1÷7.</div>
+</div>
+
+</section>
+
+<section class="part" id="p3">
+<h2 class="part-title"><span class="num">③</span>Flashcards · Click để lật</h2>
+
+<div class="fc-filter" id="fcFilter">
+  <button class="active" data-cat="all">Tất cả</button>
+  <button data-cat="unit">Bit/Byte/Đơn vị</button>
+  <button data-cat="base">n進数</button>
+  <button data-cat="weight">桁の重み</button>
+  <button data-cat="dec">小数</button>
+</div>
+
+<div class="fc-grid" id="fcGrid"></div>
+</section>
+
+<section class="part" id="p4">
+<h2 class="part-title"><span class="num">④</span>Quiz ôn tập · 10 câu tự chấm</h2>
+<p style="color:var(--text-dim);font-size:0.9rem;margin-bottom:18px">Chọn 1 đáp án. Sau khi chọn sẽ tự khoá — xanh = đúng, đỏ = sai, kèm giải thích.</p>
+<div id="quizArea"></div>
+<div id="quiz-result">
+  <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.2em;color:var(--text-dim)">KẾT QUẢ</div>
+  <div class="score" id="qScore">0 / 10</div>
+  <div class="verdict" id="qVerdict"></div>
+  <button class="btn" onclick="resetQuiz()">↻ LÀM LẠI</button>
+</div>
+</section>
+
+<section class="part" id="p5">
+<h2 class="part-title"><span class="num">⑤</span>Mind map tổng kết</h2>
+<div class="mindmap-wrap">
+<svg viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans JP, system-ui, sans-serif">
+  <defs>
+    <style>
+      .center{fill:#ff6b35;stroke:#fff;stroke-width:2}
+      .branch{stroke-width:2.5;fill:none}
+      .b1{stroke:#4ecdc4}
+      .b2{stroke:#f7d794}
+      .b3{stroke:#a8e6cf}
+      .b4{stroke:#c7a8e6}
+      .node1{fill:#4ecdc4}
+      .node2{fill:#f7d794}
+      .node3{fill:#a8e6cf}
+      .node4{fill:#c7a8e6}
+      .leaf1{fill:#2a5d5a}
+      .leaf2{fill:#6b5a32}
+      .leaf3{fill:#3a6051}
+      .leaf4{fill:#5a426b}
+      text{fill:#0f1419;font-weight:600;font-size:13px}
+      .leaf-text{fill:#e8eef5;font-size:11px;font-weight:500}
+      .center-text{fill:#fff;font-size:16px;font-weight:800}
+    </style>
+  </defs>
+
+  <ellipse cx="550" cy="360" rx="105" ry="55" class="center"/>
+  <text x="550" y="355" text-anchor="middle" class="center-text">n進数の概念</text>
+  <text x="550" y="378" text-anchor="middle" class="center-text" font-size="12">Khai niem n進数</text>
+
+  <path class="branch b1" d="M 460 320 Q 350 250 230 200"/>
+  <rect x="120" y="170" width="180" height="50" rx="10" class="node1"/>
+  <text x="210" y="190" text-anchor="middle">Bit &amp; Byte</text>
+  <text x="210" y="208" text-anchor="middle" font-size="11">Don vi du lieu</text>
+
+  <path class="branch b1" d="M 210 220 Q 180 250 130 280"/>
+  <rect x="40" y="265" width="130" height="32" rx="6" class="leaf1"/>
+  <text x="105" y="285" text-anchor="middle" class="leaf-text">1 bit = 0/1</text>
+
+  <path class="branch b1" d="M 210 220 Q 220 270 235 320"/>
+  <rect x="160" y="305" width="150" height="32" rx="6" class="leaf1"/>
+  <text x="235" y="325" text-anchor="middle" class="leaf-text">1 byte = 8 bit = 256</text>
+
+  <path class="branch b1" d="M 210 220 Q 100 220 50 150"/>
+  <rect x="10" y="120" width="120" height="32" rx="6" class="leaf1"/>
+  <text x="70" y="140" text-anchor="middle" class="leaf-text">Bit pattern</text>
+
+  <path class="branch b2" d="M 460 400 Q 350 480 230 540"/>
+  <rect x="120" y="515" width="190" height="50" rx="10" class="node2"/>
+  <text x="215" y="535" text-anchor="middle">Data Units</text>
+  <text x="215" y="553" text-anchor="middle" font-size="11">T G M k / m mu n p</text>
+
+  <path class="branch b2" d="M 215 565 Q 180 600 130 630"/>
+  <rect x="40" y="615" width="150" height="32" rx="6" class="leaf2"/>
+  <text x="115" y="635" text-anchor="middle" class="leaf-text">Lon: T=10^12 G=10^9</text>
+
+  <path class="branch b2" d="M 215 565 Q 250 620 280 660"/>
+  <rect x="200" y="645" width="170" height="32" rx="6" class="leaf2"/>
+  <text x="285" y="665" text-anchor="middle" class="leaf-text">Nho: m=10^-3 p=10^-12</text>
+
+  <path class="branch b2" d="M 215 565 Q 100 540 50 480"/>
+  <rect x="10" y="465" width="140" height="32" rx="6" class="leaf2"/>
+  <text x="80" y="485" text-anchor="middle" class="leaf-text">1GB = 80 billion bit</text>
+
+  <path class="branch b3" d="M 640 320 Q 750 250 870 200"/>
+  <rect x="780" y="170" width="180" height="50" rx="10" class="node3"/>
+  <text x="870" y="190" text-anchor="middle">Cac he co so</text>
+  <text x="870" y="208" text-anchor="middle" font-size="11">10 / 2 / 16</text>
+
+  <path class="branch b3" d="M 870 220 Q 920 260 970 290"/>
+  <rect x="905" y="275" width="170" height="32" rx="6" class="leaf3"/>
+  <text x="990" y="295" text-anchor="middle" class="leaf-text">He 10: 0-9</text>
+
+  <path class="branch b3" d="M 870 220 Q 1000 230 1060 170"/>
+  <rect x="970" y="140" width="120" height="32" rx="6" class="leaf3"/>
+  <text x="1030" y="160" text-anchor="middle" class="leaf-text">He 2: 0,1</text>
+
+  <path class="branch b3" d="M 870 220 Q 900 280 920 340"/>
+  <rect x="845" y="325" width="170" height="32" rx="6" class="leaf3"/>
+  <text x="930" y="345" text-anchor="middle" class="leaf-text">He 16: 0-9, A-F</text>
+
+  <path class="branch b3" d="M 870 220 Q 800 160 750 110"/>
+  <rect x="685" y="80" width="160" height="32" rx="6" class="leaf3"/>
+  <text x="765" y="100" text-anchor="middle" class="leaf-text">Co so (kisuu) = n</text>
+
+  <path class="branch b4" d="M 640 400 Q 760 480 880 540"/>
+  <rect x="790" y="515" width="180" height="50" rx="10" class="node4"/>
+  <text x="880" y="535" text-anchor="middle">So thap phan</text>
+  <text x="880" y="553" text-anchor="middle" font-size="11">+ Trong so hang</text>
+
+  <path class="branch b4" d="M 880 565 Q 920 600 980 630"/>
+  <rect x="900" y="615" width="160" height="32" rx="6" class="leaf4"/>
+  <text x="980" y="635" text-anchor="middle" class="leaf-text">Phan nguyen/thap phan</text>
+
+  <path class="branch b4" d="M 880 565 Q 820 610 770 660"/>
+  <rect x="690" y="645" width="170" height="32" rx="6" class="leaf4"/>
+  <text x="775" y="665" text-anchor="middle" class="leaf-text">Huu han/Vo han/Tuan hoan</text>
+
+  <path class="branch b4" d="M 880 565 Q 1000 530 1060 470"/>
+  <rect x="960" y="455" width="130" height="32" rx="6" class="leaf4"/>
+  <text x="1025" y="475" text-anchor="middle" class="leaf-text">Weight: n^k / n^-k</text>
+
+</svg>
+</div>
+</section>
+
+<footer>
+  Tai lieu ly thuyet · STT 1 · n進数の概念 · Yasashii Ch.1 (Lesson 01-01, 01-02) + Slide 1 第1回
+</footer>
+
+</div>
+
+<script>
+const FLASHCARDS = [
+  {cat:"unit", front:"ビット (bit)", back:"Đơn vị dữ liệu nhỏ nhất của máy tính. 1 bit chỉ nhận giá trị <b>0 hoặc 1</b>."},
+  {cat:"unit", front:"バイト (byte)", back:"Tập hợp <b>8 bit</b>. 1 byte biểu diễn được 2⁸ = <b>256</b> trạng thái khác nhau."},
+  {cat:"unit", front:"ビットパターン", back:"Dãy 0 và 1 (ví dụ '10010011'). Còn gọi là <b>ビット列 (bit string)</b>."},
+  {cat:"unit", front:"テラ (T)", back:"10¹² = 1,000,000,000,000. Lớn nhất trong các đơn vị FE hay dùng."},
+  {cat:"unit", front:"ピコ (p)", back:"10⁻¹² = 0.000000000001. Nhỏ nhất trong các tiền tố FE hay dùng."},
+  {cat:"unit", front:"1 GB = ? bit", back:"1 GB = 10⁹ byte = 10⁹ × 8 = <b>8 × 10⁹ bit (80 億ビット)</b>."},
+  {cat:"unit", front:"ミリ (m)", back:"10⁻³ = 0.001. Cấp đầu tiên của phía 'nhỏ' tính từ điểm gốc."},
+  {cat:"unit", front:"文字コード", back:"Bộ mã quy định mỗi chữ tương ứng với dãy bit nào. Ví dụ: <b>Shift JIS, Unicode</b>. Cùng chữ \"あ\" có mã khác nhau ở các bộ mã khác nhau."},
+  {cat:"base", front:"n進数 là gì?", back:"Cách biểu diễn số dùng <b>n ký hiệu</b>. Khi giá trị đạt n thì <b>nhảy lên 1 hàng (carry)</b>. n gọi là <b>基数 (cơ số)</b>."},
+  {cat:"base", front:"基数 (cơ số)", back:"Số dùng làm chuẩn để nhảy hàng (桁上がり). 10進数 → 10; 2進数 → 2; 16進数 → 16."},
+  {cat:"base", front:"2進数 dùng mấy ký hiệu?", back:"<b>2 ký hiệu: 0 và 1</b>. Đạt 2 thì carry. Đây là hệ máy tính dùng vì điện chỉ có Bật/Tắt."},
+  {cat:"base", front:"16進数 dùng ký hiệu nào?", back:"<b>0–9 và A,B,C,D,E,F</b> (16 ký hiệu). A=10, B=11, C=12, D=13, E=14, F=15."},
+  {cat:"base", front:"10進数 'A' trong 16進数 = ?", back:"A trong 16進数 = <b>10</b> trong 10進数. Ngược lại 10進数 \"10\" = 16進数 \"A\"."},
+  {cat:"base", front:"Cách ghi (10)₂ vs (10)₁₀", back:"Vì viết giống nhau nhưng giá trị khác, phải ghi cơ số ở dưới ngoặc. (10)₂ = 2 trong 10進数; (10)₁₀ vẫn là 10."},
+  {cat:"base", front:"Cách đọc 2進数 (10)₂", back:"Đọc là \"<b>いちぜろ</b>\" (ichi-zero) — KHÔNG đọc là \"じゅう\" như 10進数."},
+  {cat:"weight", front:"桁の重み là gì?", back:"<b>Trọng số của mỗi hàng</b>. Đi sang trái dấu chấm thập phân thì ×n; đi sang phải thì ×1/n (chia n)."},
+  {cat:"weight", front:"Công thức trọng số", back:"<b>Phần nguyên:</b> n⁰, n¹, n², n³…<br><b>Phần thập phân:</b> n⁻¹, n⁻², n⁻³…"},
+  {cat:"weight", front:"Trọng số hàng 2進数", back:"Từ phải sang trái phần nguyên: <b>1, 2, 4, 8, 16, 32, 64</b>… Phần thập phân: <b>0.5, 0.25, 0.125</b>…"},
+  {cat:"weight", front:"Trọng số hàng 10進数", back:"Phần nguyên: <b>1, 10, 100, 1000</b>… Phần thập phân: <b>0.1, 0.01, 0.001</b>…"},
+  {cat:"dec", front:"整数部 vs 小数部", back:"Số thập phân chia bởi <b>小数点 (.)</b>: bên trái là <b>整数部 (phần nguyên)</b>, bên phải là <b>小数部 (phần thập phân)</b>."},
+  {cat:"dec", front:"有限小数 (yuugen shousuu)", back:"Số thập phân <b>HỮU HẠN</b> — phần thập phân có số chữ số nhất định. Ví dụ: 0.5, 1.1, 0.25."},
+  {cat:"dec", front:"無限小数 (mugen shousuu)", back:"Số thập phân <b>VÔ HẠN</b> — phần thập phân kéo dài mãi. Ví dụ: π = 3.1415…"},
+  {cat:"dec", front:"循環小数 (junkan shousuu)", back:"Số thập phân <b>tuần hoàn</b> — vô hạn nhưng một cụm chữ số <b>lặp đi lặp lại</b>. Ví dụ: 1÷7 = 0.142857142857…"},
+  {cat:"dec", front:"2進小数 / 16進小数", back:"Số thập phân không chỉ có ở hệ 10. Hệ 2 và hệ 16 cũng có số thập phân, gọi là <b>2進小数</b> và <b>16進小数</b>."},
+];
+
+function renderFC(cat){
+  const grid = document.getElementById('fcGrid');
+  grid.innerHTML = '';
+  const items = cat==='all' ? FLASHCARDS : FLASHCARDS.filter(f=>f.cat===cat);
+  items.forEach(f=>{
+    const card = document.createElement('div');
+    card.className='fc-card';
+    const catLabel = {unit:'BIT/BYTE',base:'N進数',weight:'重み',dec:'小数'}[f.cat];
+    card.innerHTML = `
+      <span class="fc-cat">${catLabel}</span>
+      <div class="fc-front">${f.front}</div>
+      <div class="fc-back">${f.back}</div>
+      <div class="hint">▸ CLICK ĐỂ LẬT</div>
+    `;
+    card.addEventListener('click', ()=>card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+document.querySelectorAll('#fcFilter button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('#fcFilter button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderFC(btn.dataset.cat);
+  });
+});
+renderFC('all');
+
+const QUIZ = [
+  {
+    q: "1 ビット (bit) で表すことのできる状態の数はいくつか？<br><span style='color:var(--text-dim);font-size:0.88rem'>1 bit biểu diễn được bao nhiêu trạng thái?</span>",
+    opts: ["1 通り (1 trạng thái)", "2 通り (2 trạng thái)", "8 通り (8 trạng thái)", "256 通り (256 trạng thái)"],
+    ans: 1,
+    expl: "<b>Đáp án: B.</b> 1 bit chỉ nhận giá trị 0 hoặc 1 → 2 trạng thái (2¹). 256 là số trạng thái của <b>1 byte (8 bit)</b> = 2⁸."
+  },
+  {
+    q: "1 バイト (byte) は何ビットか？<br><span style='color:var(--text-dim);font-size:0.88rem'>1 byte gồm bao nhiêu bit?</span>",
+    opts: ["4 bit", "8 bit", "16 bit", "32 bit"],
+    ans: 1,
+    expl: "<b>Đáp án: B.</b> 1 byte = <b>8 bit</b>. Đây là định nghĩa chuẩn. Với 8 bit ta có 2⁸ = 256 trạng thái."
+  },
+  {
+    q: "次のうち、無限小数（循環小数）に該当するものはどれか？<br><span style='color:var(--text-dim);font-size:0.88rem'>Số nào là số thập phân vô hạn tuần hoàn (循環小数)?</span>",
+    opts: ["0.5", "0.25", "1 ÷ 7 = 0.142857142857…", "π = 3.14159265…"],
+    ans: 2,
+    expl: "<b>Đáp án: C.</b> 1÷7 = 0.142857142857… lặp cụm \"142857\" → <b>循環小数</b>. (A) 0.5 và (B) 0.25 là <b>有限小数</b>. (D) π là <b>無限小数</b> nhưng KHÔNG tuần hoàn."
+  },
+  {
+    q: "16進数の \"A\" は10進数でいくつか？<br><span style='color:var(--text-dim);font-size:0.88rem'>Hex \"A\" tương ứng số nào trong hệ 10?</span>",
+    opts: ["9", "10", "15", "16"],
+    ans: 1,
+    expl: "<b>Đáp án: B.</b> Trong 16進数: A=10, B=11, C=12, D=13, E=14, F=15. (D) 16 là khi viết \"10\" trong hệ 16."
+  },
+  {
+    q: "2進数で \"111\" の次の数はいくつか？<br><span style='color:var(--text-dim);font-size:0.88rem'>Trong hệ 2, số tiếp theo sau 111 là?</span>",
+    opts: ["112", "120", "1000", "1111"],
+    ans: 2,
+    expl: "<b>Đáp án: C.</b> 2進数 chỉ có 0/1. 111 + 1: hàng cuối 1+1=10 (carry); lan truyền carry hết các hàng → <b>1000</b>. = 10進数 8. (A) và (B) sai vì 2進数 không có chữ số ≥ 2."
+  },
+  {
+    q: "1 GB は何バイトか？<br><span style='color:var(--text-dim);font-size:0.88rem'>1 GB bằng bao nhiêu byte?</span>",
+    opts: ["10³ バイト", "10⁶ バイト", "10⁹ バイト", "10¹² バイト"],
+    ans: 2,
+    expl: "<b>Đáp án: C.</b> Theo bảng đơn vị: G = 10⁹ (Giga). Nên 1 GB = <b>10⁹ byte = 10 億バイト</b>. (A) là kB, (B) là MB, (D) là TB."
+  },
+  {
+    q: "2進数 \"1011\" の各桁の重みとして正しい組合せはどれか？(左から)<br><span style='color:var(--text-dim);font-size:0.88rem'>Trọng số từng hàng của 2進数 \"1011\" (từ trái sang) là?</span>",
+    opts: ["1, 2, 4, 8", "8, 4, 2, 1", "2, 4, 8, 16", "0.5, 0.25, 0.125, 0.0625"],
+    ans: 1,
+    expl: "<b>Đáp án: B.</b> Trọng số 2進数 từ <b>trái sang phải</b> phần nguyên: <b>8, 4, 2, 1</b> (= 2³, 2², 2¹, 2⁰). (A) bị đảo ngược. (D) là phần thập phân."
+  },
+  {
+    q: "10進数の \"15\" を16進数で表したものはどれか？<br><span style='color:var(--text-dim);font-size:0.88rem'>Số 15 (hệ 10) viết trong hệ 16 là?</span>",
+    opts: ["F", "10", "15", "1F"],
+    ans: 0,
+    expl: "<b>Đáp án: A.</b> Theo bảng đối chiếu, 10進数 15 = 16進数 <b>F</b>. (B) \"10\" trong hệ 16 là 10進数 16. (C) \"15\" trong hệ 16 là 10進数 21. (D) \"1F\" là 31."
+  },
+  {
+    q: "「ある桁から同じ数字の列が無限に繰り返される小数」を何と呼ぶか？<br><span style='color:var(--text-dim);font-size:0.88rem'>Số thập phân mà từ một hàng nào đó <b>cùng cụm chữ số lặp đi lặp lại vô hạn</b> gọi là gì?</span>",
+    opts: ["有限小数", "無限小数", "循環小数", "2進小数"],
+    ans: 2,
+    expl: "<b>Đáp án: C.</b> Đó là <b>循環小数 (tuần hoàn)</b> — ví dụ 1÷7. (A) có số chữ số nhất định. (B) chỉ vô hạn (có thể không tuần hoàn như π). (D) là số thập phân hệ 2."
+  },
+  {
+    q: "コンピュータが文字を扱う際に使うのはどれか？<br><span style='color:var(--text-dim);font-size:0.88rem'>Khi máy tính xử lý chữ thì nó dùng cái gì?</span>",
+    opts: ["小数点", "基数", "文字コード", "ビットパターン辞書"],
+    ans: 2,
+    expl: "<b>Đáp án: C.</b> Máy tính chỉ xử lý 0/1, nên cần <b>文字コード (bộ mã ký tự)</b> để gán mỗi chữ thành 1 dãy bit. Ví dụ \"あ\" trong Shift JIS = 1000 0010 1010 0000, trong Unicode = mã khác. (A) là dấu chấm thập phân. (B) là cơ số. (D) không phải khái niệm chuẩn."
+  }
+];
+
+let score = 0, answered = 0;
+
+function renderQuiz(){
+  const area = document.getElementById('quizArea');
+  area.innerHTML = '';
+  score = 0; answered = 0;
+  QUIZ.forEach((item, idx)=>{
+    const q = document.createElement('div');
+    q.className = 'quiz-q';
+    q.dataset.idx = idx;
+    let optsHtml = '';
+    item.opts.forEach((opt, oi)=>{
+      const letter = ['A','B','C','D'][oi];
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}.</span><span>${opt}</span></div>`;
+    });
+    q.innerHTML = `
+      <div class="qnum">CÂU ${idx+1} / 10</div>
+      <div class="qtext">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl}</div>
+    `;
+    area.appendChild(q);
+    q.querySelectorAll('.opt').forEach(optEl=>{
+      optEl.addEventListener('click', ()=>{
+        if(q.classList.contains('locked')) return;
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+        q.classList.add('locked');
+        const correctEl = q.querySelector('.opt[data-oi="'+correct+'"]');
+        if(correctEl) correctEl.classList.add('correct');
+        if(chosen !== correct){
+          optEl.classList.add('wrong');
+        } else {
+          score++;
+        }
+        answered++;
+        if(answered === QUIZ.length) showResult();
+      });
+    });
+  });
+  document.getElementById('quiz-result').classList.remove('show');
+}
+
+function showResult(){
+  const pct = Math.round((score/QUIZ.length)*100);
+  document.getElementById('qScore').textContent = score + ' / ' + QUIZ.length;
+  let verdict = '';
+  if(pct >= 90) verdict = '🏆 Xuất sắc! Sẵn sàng cho Lesson tiếp theo.';
+  else if(pct >= 70) verdict = '👍 Khá tốt — Ôn lại 1-2 câu sai là OK.';
+  else if(pct >= 50) verdict = '📚 Trung bình — Đọc lại Phần 1.';
+  else verdict = '💪 Cần cố gắng — Quay lại đọc lý thuyết từ đầu.';
+  document.getElementById('qVerdict').textContent = verdict + ' (' + pct + '%)';
+  document.getElementById('quiz-result').classList.add('show');
+  document.getElementById('quiz-result').scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function resetQuiz(){
+  renderQuiz();
+  document.getElementById('quizArea').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+renderQuiz();
+</script>
+</body>
+</html>
