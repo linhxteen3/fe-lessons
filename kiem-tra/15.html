@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đề kiểm tra 40 câu — 5大装置・CPU基本 (FE)</title>
+<style>
+:root{
+  --bg:#0e1117; --panel:#161b22; --panel-2:#1c2330; --line:#2a3142;
+  --text:#e6edf3; --muted:#8b949e; --accent:#ff8c42; --accent-2:#f0b76b;
+  --good:#3fb950; --bad:#f85149; --easy:#3fb950; --mid:#d29922; --hard:#f85149;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
+  font-family:system-ui,-apple-system,'Segoe UI','Noto Sans JP',sans-serif;line-height:1.65;font-size:15.5px}
+.wrap{max-width:860px;margin:0 auto;padding:24px 18px 60px}
+
+header.hero{background:linear-gradient(135deg,#1c2330,#161b22);border:1px solid var(--line);
+  border-radius:16px;padding:26px 24px;margin-bottom:20px}
+header.hero h1{font-size:24px;margin:0 0 8px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+header.hero p{margin:4px 0;color:var(--muted);font-size:13.5px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.badges span{background:var(--panel-2);border:1px solid var(--line);padding:4px 11px;border-radius:999px;font-size:12px;color:var(--muted)}
+
+/* progress */
+.topbar{position:sticky;top:0;z-index:20;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);margin-bottom:16px}
+.progress-info{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:var(--muted);margin-bottom:8px}
+.progress-track{height:7px;background:var(--panel-2);border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .3s}
+
+/* jump grid */
+.jump{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin:14px 0}
+.jump button{aspect-ratio:1;border:1px solid var(--line);background:var(--panel-2);color:var(--muted);
+  border-radius:7px;cursor:pointer;font-size:12px;font-weight:600;transition:.12s;padding:0}
+.jump button:hover{border-color:var(--accent)}
+.jump button.current{outline:2px solid var(--accent);color:var(--text)}
+.jump button.correct{background:rgba(63,185,80,.25);border-color:var(--good);color:#bff5c5}
+.jump button.wrong{background:rgba(248,81,73,.22);border-color:var(--bad);color:#ffb8b3}
+
+/* question */
+.qcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;display:none}
+.qcard.active{display:block}
+.qmeta{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+.tag{font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px}
+.tag.easy{background:rgba(63,185,80,.15);color:var(--easy);border:1px solid var(--easy)}
+.tag.mid{background:rgba(210,153,34,.15);color:var(--mid);border:1px solid var(--mid)}
+.tag.hard{background:rgba(248,81,73,.15);color:var(--hard);border:1px solid var(--hard)}
+.qnum{font-size:12.5px;color:var(--muted)}
+.qcat{font-size:11.5px;color:var(--muted);margin-left:auto}
+.qtext{font-size:16px;font-weight:600;margin-bottom:14px;line-height:1.6}
+.qtext .jp{display:block;color:var(--accent-2);font-size:14px;font-weight:500;margin-top:4px}
+.qextra{background:#0a0d12;border:1px solid var(--line);border-radius:8px;padding:12px;
+  font-family:'Space Mono',ui-monospace,monospace;font-size:13px;white-space:pre;overflow-x:auto;margin-bottom:14px;color:var(--accent-2)}
+
+.opts{list-style:none;padding:0;margin:0}
+.opts li{padding:12px 16px;margin:8px 0;border:1px solid var(--line);border-radius:10px;
+  cursor:pointer;background:var(--panel-2);transition:.13s;display:flex;gap:10px;align-items:flex-start}
+.opts li:hover{border-color:var(--accent)}
+.opts li .key{font-weight:700;color:var(--accent-2);flex-shrink:0}
+.opts li.correct{background:rgba(63,185,80,.16);border-color:var(--good)}
+.opts li.wrong{background:rgba(248,81,73,.14);border-color:var(--bad)}
+.opts li.locked{cursor:default}
+.opts li.locked:hover{border-color:var(--line)}
+.opts li.correct.locked{border-color:var(--good)}
+.opts li.wrong.locked{border-color:var(--bad)}
+
+.explain{display:none;margin-top:16px;padding:14px 16px;background:var(--panel-2);border-left:3px solid var(--accent);border-radius:8px;font-size:14px}
+.explain.show{display:block}
+.explain .row{margin:6px 0}
+.explain .lab{color:var(--accent);font-weight:700}
+.explain .fe{color:var(--muted);font-size:13px;font-style:italic;margin-top:8px}
+
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.nav button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel-2);
+  color:var(--text);cursor:pointer;font-size:14px;font-weight:600;transition:.13s}
+.nav button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.nav button:disabled{opacity:.4;cursor:not-allowed}
+.nav button.primary{background:var(--accent);color:#0e1117;border-color:var(--accent)}
+
+/* results */
+.results{display:none;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:32px;text-align:center}
+.results.show{display:block}
+.results h2{font-size:26px;margin:0 0 6px}
+.score-big{font-size:54px;font-weight:800;margin:10px 0;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.score-sub{color:var(--muted);font-size:15px}
+.verdict{font-size:18px;font-weight:700;margin:16px 0;padding:12px;border-radius:10px}
+.breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}
+.bd-item{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:16px 10px}
+.bd-item .t{font-size:12.5px;color:var(--muted);margin-bottom:6px}
+.bd-item .v{font-size:22px;font-weight:800}
+.restart{margin-top:18px;padding:13px 30px;border-radius:10px;border:none;
+  background:var(--accent);color:#0e1117;font-weight:700;cursor:pointer;font-size:15px}
+.restart:hover{filter:brightness(1.08)}
+
+footer{margin-top:40px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:18px}
+
+@media(max-width:600px){
+  .wrap{padding:16px 12px 40px}
+  header.hero h1{font-size:20px}
+  .jump{grid-template-columns:repeat(8,1fr)}
+  .breakdown{grid-template-columns:1fr}
+  .qtext{font-size:15px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>Đề kiểm tra 40 câu — 5大装置・CPU基本</h1>
+  <p>Năm thiết bị chính &amp; Cơ bản CPU · 五大装置・CPU基本</p>
+  <p>⏱ Thời gian gợi ý: 30 phút · 40 câu trắc nghiệm</p>
+  <div class="badges">
+    <span>📘 Yasashii Ch.4 (04-01 / 04-02)</span>
+    <span>🎴 Slide 3_ハードウェア 第1-2回</span>
+    <span style="color:var(--easy)">易 12</span>
+    <span style="color:var(--mid)">中 16</span>
+    <span style="color:var(--hard)">難 12</span>
+  </div>
+</header>
+
+<div class="topbar">
+  <div class="progress-info">
+    <span id="progLabel">Câu 1 / 40</span>
+    <span id="answeredLabel">Đã trả lời: 0</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progFill"></div></div>
+  <div class="jump" id="jumpGrid"></div>
+</div>
+
+<div id="quizArea"></div>
+
+<div class="results" id="results">
+  <h2>🎉 Kết quả</h2>
+  <div class="score-big" id="scoreBig">0 / 40</div>
+  <div class="score-sub" id="scorePct">0%</div>
+  <div class="verdict" id="verdict"></div>
+  <div class="breakdown">
+    <div class="bd-item"><div class="t" style="color:var(--easy)">易 (Dễ)</div><div class="v" id="bdEasy">0/12</div></div>
+    <div class="bd-item"><div class="t" style="color:var(--mid)">中 (TB)</div><div class="v" id="bdMid">0/16</div></div>
+    <div class="bd-item"><div class="t" style="color:var(--hard)">難 (Khó)</div><div class="v" id="bdHard">0/12</div></div>
+  </div>
+  <button class="restart" onclick="restartQuiz()">🔄 Làm lại từ đầu</button>
+</div>
+
+<footer>📘 Bám sát Yasashii Ch.4 + Slide 3_ハードウェア 第1-2回 · IPA-style · FE試験対策</footer>
+</div>
+
+<script>
+const QUESTIONS = [
+// ===== 易 (Easy) x12 =====
+{d:"easy",cat:"五大装置",q:"Năm thiết bị chính (五大装置) của máy tính KHÔNG bao gồm thiết bị nào sau đây?",jp:"五大装置に含まれないものはどれか。",
+ opts:["制御装置 (Control Unit)","演算装置 (ALU)","通信装置 (Communication Unit)","入力装置 (Input)"],ans:2,
+ why:"五大装置 = 制御装置・演算装置・記憶装置・入力装置・出力装置. 「通信装置」không nằm trong 5 thiết bị chính.",
+ dist:["制御装置 là 1 trong 5","演算装置 là 1 trong 5","入力装置 là 1 trong 5"],fe:"ハードウェア / 五大装置"},
+
+{d:"easy",cat:"CPU",q:"CPU là viết tắt của cụm từ nào?",jp:"CPUの正式名称はどれか。",
+ opts:["Computer Processing Unit","Central Processing Unit","Control Program Unit","Core Processing Utility"],ans:1,
+ why:"CPU = Central Processing Unit = 中央処理装置. Trong đề FE đôi khi được gọi là プロセッサ.",
+ dist:["Không phải 'Computer'","Không phải 'Control Program'","Không phải 'Utility'"],fe:"プロセッサ / CPU"},
+
+{d:"easy",cat:"CPU",q:"CPU đảm nhiệm 2 thiết bị nào trong số năm thiết bị chính?",jp:"CPUが担当する2つの装置はどれか。",
+ opts:["記憶装置 と 入力装置","制御装置 と 演算装置","入力装置 と 出力装置","演算装置 と 記憶装置"],ans:1,
+ why:"CPU = 制御装置 (điều khiển) + 演算装置 (tính toán). Đây là 'bộ não' của máy tính.",
+ dist:["記憶装置 là thiết bị riêng","I/O là thiết bị riêng","記憶装置 không thuộc CPU"],fe:"五大装置 / CPU"},
+
+{d:"easy",cat:"レジスタ",q:"レジスタ (thanh ghi) là gì?",jp:"レジスタの説明として正しいものはどれか。",
+ opts:["CPU内部にある一時的な記憶装置","大容量の補助記憶装置","入力専用の装置","ネットワーク接続装置"],ans:0,
+ why:"レジスタ là thiết bị nhớ nhỏ <b>bên trong CPU</b>, lưu tạm lệnh và dữ liệu — như 'kho chứa mini'.",
+ dist:["Không phải補助記憶 (đó là HDD)","Không phải thiết bị nhập","Không phải thiết bị mạng"],fe:"レジスタ"},
+
+{d:"easy",cat:"レジスタ",q:"「次に実行する命令のアドレス」を記憶するレジスタはどれか。",jp:"Thanh ghi lưu địa chỉ lệnh tiếp theo là gì?",
+ opts:["命令レジスタ","汎用レジスタ","プログラムカウンター","アキュムレーター"],ans:2,
+ why:"プログラムカウンター (プログラムレジスタ / PC) lưu địa chỉ của lệnh <b>tiếp theo</b> sẽ thực thi.",
+ dist:["命令レジスタ lưu lệnh đang chạy","汎用レジスタ lưu dữ liệu","アキュムレーター lưu kết quả tính"],fe:"レジスタ / プログラムカウンター"},
+
+{d:"easy",cat:"性能指標",q:"クロック周波数の単位はどれか。",jp:"Đơn vị của tần số xung nhịp là gì?",
+ opts:["bps","Hz","byte","dpi"],ans:1,
+ why:"クロック周波数 đo bằng <b>Hz (Hertz)</b> — số tín hiệu/giây. 1 Hz = 1 tín hiệu/giây.",
+ dist:["bps là tốc độ truyền","byte là dung lượng","dpi là độ phân giải"],fe:"性能指標 / クロック周波数"},
+
+{d:"easy",cat:"性能指標",q:"CPUの性能を評価する3つの指標として正しい組み合わせはどれか。",jp:"3 chỉ số đánh giá hiệu năng CPU?",
+ opts:["クロック周波数・MIPS・コア","電圧・電流・抵抗","容量・速度・価格","幅・高さ・奥行"],ans:0,
+ why:"Yasashii nêu 3 chỉ số: <b>クロック周波数</b>, <b>MIPS</b>, <b>コア</b>.",
+ dist:["Đó là điện học","Không phải tiêu chí CPU","Đó là kích thước vật lý"],fe:"性能指標"},
+
+{d:"easy",cat:"性能指標",q:"「2MIPS」 の意味として正しいものはどれか。",jp:"2 MIPS nghĩa là gì?",
+ opts:["1秒間に2クロック発生","1秒間に200万個の命令を実行","2つのコアを搭載","命令1個に2秒かかる"],ans:1,
+ why:"MIPS = Million Instructions Per Second. 2 MIPS = <b>2 triệu lệnh/giây</b>.",
+ dist:["Đó là clock chứ không phải MIPS","Đó là số core","Sai hoàn toàn về tốc độ"],fe:"性能指標 / MIPS"},
+
+{d:"easy",cat:"命令の構成",q:"主記憶装置からCPUに読み込まれる命令は、何で構成されているか。",jp:"Một lệnh gồm mấy phần?",
+ opts:["命令部 と アドレス部","ヘッダ部 と データ部","入力部 と 出力部","制御部 と 記憶部"],ans:0,
+ why:"Lệnh = <b>命令部 (opcode)</b> (làm gì) + <b>アドレス部 / オペランド部</b> (dữ liệu ở đâu).",
+ dist:["Đó là cấu trúc gói tin mạng","Sai","Sai"],fe:"命令の構成"},
+
+{d:"easy",cat:"命令実行",q:"主記憶装置から命令を取り出して命令レジスタに格納することを何というか。",jp:"Việc lấy lệnh và lưu vào 命令レジスタ gọi là gì?",
+ opts:["デコード","フェッチ","コンパイル","インタプリト"],ans:1,
+ why:"Việc lấy lệnh từ bộ nhớ về 命令レジスタ gọi là <b>フェッチ (fetch)</b>.",
+ dist:["デコード là giải mã (bước sau)","コンパイル là biên dịch","インタプリト là thông dịch"],fe:"命令実行手順 / フェッチ"},
+
+{d:"easy",cat:"ノイマン型",q:"ノイマン型コンピュータの特徴として、命令を前から1つずつ順番に実行する方式を何というか。",jp:"Phương thức thực thi lệnh tuần tự từng cái gọi là gì?",
+ opts:["並列制御方式","逐次制御方式","分散制御方式","割込み制御方式"],ans:1,
+ why:"ノイマン型 có <b>逐次制御方式</b> = thực thi lệnh lần lượt từng cái theo thứ tự.",
+ dist:["並列 = song song (không phải)","分散 = phân tán","割込み là cơ chế ngắt"],fe:"ノイマン型 / 逐次制御方式"},
+
+{d:"easy",cat:"割込み",q:"割込みの説明として正しいものはどれか。",jp:"Định nghĩa đúng về ngắt (割込み)?",
+ opts:["プログラムを永久に停止すること","実行中のプログラムを中断して別のプログラムに切り替えること","データを暗号化すること","メモリを増設すること"],ans:1,
+ why:"割込み = tạm dừng chương trình đang chạy, chuyển sang chương trình ưu tiên cao hơn; xong rồi quay lại.",
+ dist:["Không phải dừng vĩnh viễn","Không liên quan mã hóa","Không liên quan mở rộng RAM"],fe:"割込み"},
+
+// ===== 中 (Medium) x16 =====
+{d:"mid",cat:"性能指標",q:"クロック周波数が 2GHz、1命令の実行に平均4クロック必要なCPUがある。1秒間に実行できる命令数はおよそいくつか。",jp:"2GHz, 1 lệnh = 4 clock → bao nhiêu lệnh/giây?",
+ opts:["5億個","8億個","2億個","20億個"],ans:0,
+ why:"2GHz = 2×10⁹ = 20億クロック/秒. 実行命令数 = 20億 ÷ 4 = <b>5億命令/秒</b>.",
+ dist:["8億 sai phép chia","2億 chia nhầm 10","20億 chưa chia clock"],fe:"性能指標 / クロック周波数"},
+
+{d:"mid",cat:"性能指標",q:"2MIPSのCPUにおける「平均命令実行時間」はいくつか。",jp:"CPU 2 MIPS thì thời gian trung bình mỗi lệnh là bao nhiêu?",
+ opts:["2マイクロ秒","500ナノ秒","2ナノ秒","5マイクロ秒"],ans:1,
+ why:"2 MIPS → 1 lệnh = 1/(2×10⁶) giây = 0.5×10⁻⁶ giây = 0.5 μs = <b>500 ns</b>.",
+ dist:["2 μs sai (lấy ngược)","2 ns quá nhỏ","5 μs sai"],fe:"性能指標 / MIPS"},
+
+{d:"mid",cat:"レジスタ",q:"命令レジスタの役割として正しいものはどれか。",jp:"Vai trò của 命令レジスタ?",
+ opts:["次の命令のアドレスを記憶","実行する命令を一時的に記憶","データを記憶","演算結果を記憶"],ans:1,
+ why:"命令レジスタ (Instruction Register) lưu <b>lệnh đang được thực thi</b> — vừa fetch từ bộ nhớ.",
+ dist:["Đó là プログラムカウンター","Đó là 汎用レジスタ","Đó là アキュムレーター"],fe:"レジスタ / 命令レジスタ"},
+
+{d:"mid",cat:"命令実行",q:"CPUの命令実行において、プログラムカウンターが一度参照された後に行われる動作はどれか。",jp:"Sau khi PC được tham chiếu, điều gì xảy ra với PC?",
+ opts:["値が0にリセットされる","自動的に番号が加算される","値が削除される","2倍になる"],ans:1,
+ why:"Sau khi tham chiếu, PC <b>tự động cộng thêm</b> để trỏ tới lệnh kế tiếp (vd 1番地→2番地).",
+ dist:["Không reset về 0","Không xóa","Không nhân đôi"],fe:"命令実行手順"},
+
+{d:"mid",cat:"命令実行",q:"CPUが命令を処理する流れ「①命令取り出し → ②PC更新 → ③(  ) → ④デコード → ⑤データ取得 → ⑥汎用レジスタ格納」。③に入るものはどれか。",jp:"Bước ③ trong chu trình lệnh là gì?",
+ opts:["命令レジスタに格納（フェッチ）","ALUで演算","主記憶に書き戻し","割込み発生"],ans:0,
+ why:"Bước ③: lệnh vừa lấy được lưu vào <b>命令レジスタ</b> — đây chính là フェッチ.",
+ dist:["ALU演算 ở bước thực thi sau","Ghi lại bộ nhớ là cuối","Ngắt không thuộc chu trình thường"],fe:"命令実行手順"},
+
+{d:"mid",cat:"アドレス指定",q:"アドレス部に「処理対象データが格納されている有効アドレス」がそのまま入っている方式はどれか。",jp:"Phần địa chỉ chính là địa chỉ hợp lệ chứa dữ liệu — phương thức nào?",
+ opts:["間接アドレス指定","直接アドレス指定","即値アドレス指定","相対アドレス指定"],ans:1,
+ why:"<b>直接アドレス指定</b>: アドレス部 chính là 有効アドレス → đi 1 lần là tới dữ liệu.",
+ dist:["間接 phải qua 2 lần","即値 thì địa chỉ là dữ liệu","相対 cộng PC"],fe:"アドレス指定方式 / 直接"},
+
+{d:"mid",cat:"アドレス指定",q:"アドレス部に「データそのもの」が入っているアドレス指定方式はどれか。",jp:"Phương thức mà phần địa chỉ chứa luôn dữ liệu?",
+ opts:["直接アドレス指定","間接アドレス指定","即値アドレス指定","ベースアドレス指定"],ans:2,
+ why:"<b>即値アドレス指定 (immediate)</b>: アドレス部 chứa luôn dữ liệu → không cần truy cập bộ nhớ.",
+ dist:["直接 chứa địa chỉ","間接 chứa địa chỉ của địa chỉ","ベース cộng base register"],fe:"アドレス指定方式 / 即値"},
+
+{d:"mid",cat:"アドレス指定",q:"アドレス部の値にインデックスレジスタの値を加算して有効アドレスを求める方式はどれか。",jp:"Cộng giá trị index register vào phần địa chỉ — phương thức nào?",
+ opts:["指標アドレス指定","ベースアドレス指定","相対アドレス指定","間接アドレス指定"],ans:0,
+ why:"<b>指標(インデックス)アドレス指定</b>: 有効アドレス = アドレス部 + インデックスレジスタの値.",
+ dist:["ベース cộng base register","相対 cộng PC","間接 không cộng register"],fe:"アドレス指定方式 / 指標"},
+
+{d:"mid",cat:"割込み",q:"次のうち「内部割込み」に分類されるものはどれか。",jp:"Cái nào là 内部割込み (ngắt trong)?",
+ opts:["インターバルタイマによる時間経過","ゼロ除算によるエラー","プリンターの用紙切れ","停電による電源異常"],ans:1,
+ why:"<b>ゼロ除算</b> do chính chương trình đang chạy gây ra → 内部割込み.",
+ dist:["タイマ là 外部","プリンター là I/O 外部","停電 là machine check 外部"],fe:"割込み / 内部割込み"},
+
+{d:"mid",cat:"割込み",q:"次のうち「外部割込み」に分類されるものはどれか。",jp:"Cái nào là 外部割込み (ngắt ngoài)?",
+ opts:["演算結果のオーバーフロー","未定義命令の実行","インターバルタイマによる割込み","ゼロ除算"],ans:2,
+ why:"<b>インターバルタイマ</b> là nguyên nhân từ ngoài chương trình → 外部割込み (タイマ割込み).",
+ dist:["オーバーフロー là 内部","未定義命令 là 内部","ゼロ除算 là 内部"],fe:"割込み / 外部割込み"},
+
+{d:"mid",cat:"割込み",q:"内部割込みか外部割込みかを見分ける最も重要なポイントはどれか。",jp:"Mẹo phân biệt 内部 / 外部 là gì?",
+ opts:["割込みの優先度","割込みの原因が実行中のプログラムかどうか","CPUの種類","メモリの容量"],ans:1,
+ why:"Điểm mấu chốt: <b>nguyên nhân có phải do chương trình đang chạy không</b> — Có = 内部, Không = 外部.",
+ dist:["Ưu tiên không quyết định loại","Không liên quan loại CPU","Không liên quan RAM"],fe:"割込み"},
+
+{d:"mid",cat:"性能指標",q:"マルチコアプロセッサに関する記述として正しいものはどれか。",jp:"Mô tả đúng về multi-core processor?",
+ opts:["1つのCPUに1つのコアしかない","複数のコアが別々の処理を実行できる","コアが多いほど低性能になる","コアとは記憶装置のことである"],ans:1,
+ why:"マルチコア: 1 CPU có nhiều コア, <b>mỗi lõi thực thi tác vụ riêng</b> → nhiều lõi = mạnh hơn.",
+ dist:["Đó là single-core","Ngược lại — nhiều lõi mạnh hơn","コア là đơn vị tính toán chứ không phải bộ nhớ"],fe:"性能指標 / コア"},
+
+{d:"mid",cat:"ノイマン型",q:"ノイマン型コンピュータの「プログラム内蔵方式」の説明として正しいものはどれか。",jp:"Mô tả đúng về 'lưu chương trình trong bộ nhớ'?",
+ opts:["プログラムを常にCPU内に保存する","実行時にプログラムを主記憶装置に読み込ませる","プログラムを暗号化して保存する","プログラムを実行できない"],ans:1,
+ why:"プログラム内蔵方式: chương trình thường ở bộ nhớ phụ, <b>khi thực thi mới nạp vào 主記憶装置</b>.",
+ dist:["Không lưu mãi trong CPU","Không liên quan mã hóa","Sai"],fe:"ノイマン型 / プログラム内蔵方式"},
+
+{d:"mid",cat:"レジスタ",q:"汎用レジスタの主な役割はどれか。",jp:"Vai trò chính của 汎用レジスタ?",
+ opts:["命令を記憶する","次の命令アドレスを記憶する","データを記憶する（用途は限定されない）","命令を解読する"],ans:2,
+ why:"<b>汎用レジスタ</b> lưu <b>dữ liệu</b>, dùng cho nhiều mục đích, không giới hạn.",
+ dist:["Đó là 命令レジスタ","Đó là プログラムカウンター","Giải mã là việc của デコーダ"],fe:"レジスタ / 汎用レジスタ"},
+
+{d:"mid",cat:"命令実行",q:"命令デコーダ（命令解読器）の役割として正しいものはどれか。",jp:"Vai trò của 命令デコーダ?",
+ opts:["命令を解読して必要な装置に指示を出す","データを長期保存する","ネットワークに接続する","電力を供給する"],ans:0,
+ why:"命令デコーダ phân tích &amp; <b>giải mã lệnh</b>, ra chỉ thị cho các thiết bị thực thi.",
+ dist:["Lưu trữ là việc bộ nhớ","Không liên quan mạng","Không liên quan nguồn điện"],fe:"命令実行手順 / デコーダ"},
+
+{d:"mid",cat:"五大装置",q:"次の装置のうち「出力装置」に分類されるものはどれか。",jp:"Thiết bị nào là 出力装置?",
+ opts:["マウス","キーボード","プリンター","USBメモリ"],ans:2,
+ why:"<b>プリンター</b> đưa dữ liệu RA ngoài → 出力装置.",
+ dist:["マウス là 入力","キーボード là 入力","USBメモリ là 記憶"],fe:"五大装置 / 出力装置"},
+
+// ===== 難 (Hard) x12 =====
+{d:"hard",cat:"命令実行",q:"図はプロセッサによってフェッチされた命令の格納順序を表している。「a」に当てはまるものはどれか。（平成30年度）",jp:"a là gì trong sơ đồ fetch?",
+ extra:"主記憶 ─→ [   a   ] ─→ 命令デコーダ",
+ opts:["アキュムレーター","データキャッシュ","プログラムレジスタ（プログラムカウンター）","命令レジスタ"],ans:3,
+ why:"Quy trình: 主記憶 → <b>命令レジスタ</b> → 命令デコーダ. Lệnh sau khi fetch được giữ ở 命令レジスタ trước khi giải mã.",
+ dist:["アキュムレーター lưu kết quả tính","データキャッシュ cache dữ liệu","プログラムレジスタ chỉ lưu địa chỉ, không phải nơi lệnh đi qua"],fe:"命令実行手順 (平成30年度 過去問)"},
+
+{d:"hard",cat:"アドレス指定",q:"アドレス部の値が「20」、20番地には「25」、25番地には「データ」が格納されている。このアドレス指定方式はどれか。（平成28年度）",jp:"Phương thức nào? (20→25→data)",
+ extra:"命令: [取り出せ | 20]\n          ↓\n     20番地 → 「25」\n               ↓\n          25番地 → データ",
+ opts:["間接アドレス指定","指標アドレス指定","相対アドレス指定","直接アドレス指定"],ans:0,
+ why:"Truy cập <b>2 lần</b> bộ nhớ (20→25→データ) → <b>間接アドレス指定</b>.",
+ dist:["指標 cộng index register","相対 cộng PC","直接 lấy thẳng 1 lần"],fe:"アドレス指定方式 (平成28年度 過去問)"},
+
+{d:"hard",cat:"アドレス指定",q:"間接アドレス指定方式のデメリットとして最も適切なものはどれか。",jp:"Nhược điểm của gián tiếp địa chỉ?",
+ opts:["大きなアドレスを保存できない","主記憶へのアクセスが2回必要で処理に時間がかかる","データを暗号化できない","コア数が制限される"],ans:1,
+ why:"間接アドレス指定 cần truy cập bộ nhớ <b>2 lần</b> → chậm hơn. (Ưu điểm là lưu được địa chỉ kích thước lớn.)",
+ dist:["Ngược lại — đây là ưu điểm","Không liên quan mã hóa","Không liên quan số core"],fe:"アドレス指定方式 / 間接"},
+
+{d:"hard",cat:"性能指標",q:"あるCPUは命令の50%が3クロック、50%が5クロックで実行される。クロック周波数が 2GHz のとき、1秒間に実行できる平均命令数はおよそいくつか。",jp:"Trung bình lệnh/giây? (50%×3 + 50%×5 clock, 2GHz)",
+ opts:["5億個","2.5億個","4億個","10億個"],ans:0,
+ why:"Clock trung bình/lệnh = 0.5×3 + 0.5×5 = 4. 2GHz=20億クロック. 20億÷4 = <b>5億命令/秒</b>.",
+ dist:["2.5億 chia nhầm 8","4億 chia nhầm 5","10億 chia nhầm 2"],fe:"性能指標 / クロック周波数"},
+
+{d:"hard",cat:"性能指標",q:"平均命令実行時間が 250ナノ秒のCPUの性能はおよそ何MIPSか。",jp:"250 ns/lệnh → bao nhiêu MIPS?",
+ opts:["2 MIPS","4 MIPS","8 MIPS","0.25 MIPS"],ans:1,
+ why:"MIPS = (1 ÷ 250×10⁻⁹) × 10⁻⁶ = (4×10⁶) × 10⁻⁶ = <b>4 MIPS</b>. (1 giây ÷ 250 ns = 4 triệu lệnh.)",
+ dist:["2 MIPS ứng với 500 ns","8 MIPS ứng với 125 ns","0.25 quá thấp"],fe:"性能指標 / MIPS"},
+
+{d:"hard",cat:"割込み",q:"割込みが発生したとき、CPUがプログラムカウンターに対して最初に行う動作はどれか。",jp:"Khi có ngắt, CPU làm gì đầu tiên với PC?",
+ opts:["プログラムカウンターの値を別の場所に退避する","プログラムカウンターを0にする","プログラムカウンターを削除する","プログラムカウンターを2倍にする"],ans:0,
+ why:"Khi ngắt: CPU <b>退避 (cất giữ)</b> giá trị PC hiện tại, rồi set PC = địa chỉ lệnh xử lý ngắt; xong thì 復帰 (khôi phục).",
+ dist:["Không reset 0","Không xóa","Không nhân đôi"],fe:"割込み / プログラムカウンター"},
+
+{d:"hard",cat:"割込み",q:"次の割込みのうち、内部割込みと外部割込みの組み合わせとして正しいものはどれか。",jp:"Cặp 内部/外部 nào đúng?",
+ opts:["内部=ページフォールト, 外部=ゼロ除算","内部=ゼロ除算, 外部=入出力割込み","内部=タイマ割込み, 外部=オーバーフロー","内部=機械チェック, 外部=ページフォールト"],ans:1,
+ why:"<b>内部 = ゼロ除算</b> (do chương trình), <b>外部 = 入出力割込み</b> (do I/O). Đây là cặp đúng.",
+ dist:["ゼロ除算 là 内部 không phải外部","タイマ là 外部, overflow là 内部 → đảo ngược","機械チェック là 外部"],fe:"割込み / 内部・外部"},
+
+{d:"hard",cat:"レジスタ",q:"演算の対象となる値や演算結果を記憶するレジスタはどれか。",jp:"Thanh ghi lưu đối tượng &amp; kết quả phép tính?",
+ opts:["プログラムカウンター","インデックスレジスタ","アキュムレーター","ベースレジスタ"],ans:2,
+ why:"<b>アキュムレーター</b> lưu 演算対象 (toán hạng) và 演算結果 (kết quả).",
+ dist:["PC lưu địa chỉ lệnh","インデックス lưu địa chỉ cơ sở","ベース lưu địa chỉ cơ sở"],fe:"レジスタ / アキュムレーター"},
+
+{d:"hard",cat:"アドレス指定",q:"アドレス部に格納できないような大きなサイズのアドレスを扱う場合に利用される指定方式として、最も適切なものはどれか。",jp:"Dùng phương thức nào khi địa chỉ quá lớn?",
+ opts:["即値アドレス指定","直接アドレス指定","間接アドレス指定","固定アドレス指定"],ans:2,
+ why:"<b>間接アドレス指定</b>: vì アドレス部 dung lượng có hạn, địa chỉ lớn được lưu trong 主記憶装置 và trỏ gián tiếp tới.",
+ dist:["即値 chỉ chứa dữ liệu nhỏ","直接 bị giới hạn dung lượng アドレス部","固定アドレス không phải khái niệm chuẩn"],fe:"アドレス指定方式 / 間接"},
+
+{d:"hard",cat:"命令実行",q:"CPUが「4番地のデータを取り出せ」という命令を処理した。データ「3」は最終的にどこに格納されるか。",jp:"Dữ liệu '3' cuối cùng được lưu ở đâu?",
+ opts:["命令レジスタ","プログラムカウンター","汎用レジスタ","命令デコーダ"],ans:2,
+ why:"Bước ⑥ của chu trình: dữ liệu lấy được từ bộ nhớ được lưu vào <b>汎用レジスタ</b>.",
+ dist:["命令レジスタ chứa lệnh","PC chứa địa chỉ","デコーダ giải mã, không lưu dữ liệu"],fe:"命令実行手順"},
+
+{d:"hard",cat:"性能指標",q:"クロック周波数 1.6GHz のCPUにおいて、1クロックにかかる時間（クロック周期）はおよそいくつか。",jp:"Chu kỳ 1 clock của CPU 1.6GHz?",
+ opts:["0.625ナノ秒","1.6ナノ秒","625ナノ秒","16ナノ秒"],ans:0,
+ why:"Chu kỳ = 1 ÷ tần số = 1 ÷ (1.6×10⁹) = 0.625×10⁻⁹ giây = <b>0.625 ns</b>.",
+ dist:["1.6 ns lấy nhầm số","625 ns sai 1000 lần","16 ns sai mũ"],fe:"性能指標 / クロック周波数"},
+
+{d:"hard",cat:"割込み",q:"割込みを行う主な目的として、最も適切なものはどれか。",jp:"Mục đích chính của ngắt là gì?",
+ opts:["メモリ容量を増やすため","優先度の高い命令を先に処理し、CPUを効率よく利用するため","プログラムを暗号化するため","クロック周波数を上げるため"],ans:1,
+ why:"Mục đích: khi có việc <b>ưu tiên cao</b>, xử lý nó trước → dùng CPU hiệu quả hơn (và xử lý lỗi bất ngờ).",
+ dist:["Không liên quan dung lượng","Không liên quan mã hóa","Không thay đổi clock"],fe:"割込み"},
+];
+
+let current=0;
+let answers=new Array(QUESTIONS.length).fill(null); // stores chosen index or null
+
+const quizArea=document.getElementById('quizArea');
+const jumpGrid=document.getElementById('jumpGrid');
+
+function tagClass(d){return d==='easy'?'easy':d==='mid'?'mid':'hard';}
+function tagLabel(d){return d==='easy'?'易 Dễ':d==='mid'?'中 TB':'難 Khó';}
+
+function buildQuiz(){
+  quizArea.innerHTML='';
+  QUESTIONS.forEach((Q,i)=>{
+    const card=document.createElement('div');
+    card.className='qcard'+(i===0?' active':'');
+    card.dataset.i=i;
+    let optsHtml='';
+    Q.opts.forEach((o,j)=>{
+      const key=['ア','イ','ウ','エ'][j];
+      optsHtml+=`<li data-j="${j}"><span class="key">${key}.</span><span>${o}</span></li>`;
+    });
+    const extraHtml=Q.extra?`<div class="qextra">${Q.extra}</div>`:'';
+    let distHtml='';
+    Q.dist.forEach((dd,j)=>{
+      const wrongKeys=[0,1,2,3].filter(x=>x!==Q.ans);
+      const key=['ア','イ','ウ','エ'][wrongKeys[j]];
+      distHtml+=`<div class="row" style="color:var(--muted);font-size:13px">・<b>${key}</b>: ${dd}</div>`;
+    });
+    const ansKey=['ア','イ','ウ','エ'][Q.ans];
+    card.innerHTML=`
+      <div class="qmeta">
+        <span class="tag ${tagClass(Q.d)}">${tagLabel(Q.d)}</span>
+        <span class="qnum">問 ${i+1} / 40</span>
+        <span class="qcat">${Q.cat}</span>
+      </div>
+      <div class="qtext">${Q.q}<span class="jp">${Q.jp}</span></div>
+      ${extraHtml}
+      <ul class="opts">${optsHtml}</ul>
+      <div class="explain">
+        <div class="row"><span class="lab">Đáp án đúng: ${ansKey}</span></div>
+        <div class="row">${Q.why}</div>
+        <div style="margin-top:8px;font-weight:600;color:var(--accent-2)">Vì sao các phương án khác sai:</div>
+        ${distHtml}
+        <div class="fe">📌 Liên hệ FE: ${Q.fe}</div>
+      </div>
+      <div class="nav">
+        <button class="prevBtn">← Câu trước</button>
+        <button class="nextBtn primary">Câu tiếp →</button>
+      </div>`;
+    quizArea.appendChild(card);
+
+    // option clicks
+    card.querySelectorAll('.opts li').forEach(li=>{
+      li.addEventListener('click',()=>{
+        if(answers[i]!==null) return; // locked
+        const j=parseInt(li.dataset.j);
+        answers[i]=j;
+        lockCard(card,Q,j);
+        updateJump();updateProgress();
+      });
+    });
+    card.querySelector('.prevBtn').addEventListener('click',()=>goto(i-1));
+    card.querySelector('.nextBtn').addEventListener('click',()=>{
+      if(i===QUESTIONS.length-1){showResults();}else{goto(i+1);}
+    });
+  });
+  // last card button label
+  const lastCard=quizArea.querySelector(`.qcard[data-i="${QUESTIONS.length-1}"]`);
+  lastCard.querySelector('.nextBtn').textContent='Xem kết quả ✓';
+  buildJump();
+  syncNavButtons();
+}
+
+function lockCard(card,Q,chosen){
+  const lis=card.querySelectorAll('.opts li');
+  lis.forEach((li,j)=>{
+    li.classList.add('locked');
+    if(j===Q.ans) li.classList.add('correct');
+    if(j===chosen && chosen!==Q.ans) li.classList.add('wrong');
+  });
+  card.querySelector('.explain').classList.add('show');
+}
+
+function buildJump(){
+  jumpGrid.innerHTML='';
+  QUESTIONS.forEach((Q,i)=>{
+    const b=document.createElement('button');
+    b.textContent=i+1;
+    b.addEventListener('click',()=>goto(i));
+    jumpGrid.appendChild(b);
+  });
+  updateJump();
+}
+function updateJump(){
+  const btns=jumpGrid.querySelectorAll('button');
+  btns.forEach((b,i)=>{
+    b.className='';
+    if(i===current) b.classList.add('current');
+    if(answers[i]!==null){
+      b.classList.add(answers[i]===QUESTIONS[i].ans?'correct':'wrong');
+    }
+  });
+}
+function updateProgress(){
+  const done=answers.filter(a=>a!==null).length;
+  document.getElementById('progLabel').textContent=`Câu ${current+1} / 40`;
+  document.getElementById('answeredLabel').textContent=`Đã trả lời: ${done}`;
+  document.getElementById('progFill').style.width=(done/QUESTIONS.length*100)+'%';
+}
+function goto(i){
+  if(i<0||i>=QUESTIONS.length) return;
+  document.querySelector('.qcard.active')?.classList.remove('active');
+  current=i;
+  const card=quizArea.querySelector(`.qcard[data-i="${i}"]`);
+  card.classList.add('active');
+  // restore locked state if answered
+  if(answers[i]!==null && !card.querySelector('.opts li.locked')){
+    lockCard(card,QUESTIONS[i],answers[i]);
+  }
+  updateJump();updateProgress();syncNavButtons();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function syncNavButtons(){
+  const card=quizArea.querySelector('.qcard.active');
+  card.querySelector('.prevBtn').disabled=(current===0);
+}
+
+function showResults(){
+  let score=0,e=0,m=0,h=0;
+  QUESTIONS.forEach((Q,i)=>{
+    if(answers[i]===Q.ans){
+      score++;
+      if(Q.d==='easy')e++;else if(Q.d==='mid')m++;else h++;
+    }
+  });
+  const pct=Math.round(score/QUESTIONS.length*100);
+  document.getElementById('scoreBig').textContent=`${score} / 40`;
+  document.getElementById('scorePct').textContent=`${pct}%`;
+  document.getElementById('bdEasy').textContent=`${e}/12`;
+  document.getElementById('bdMid').textContent=`${m}/16`;
+  document.getElementById('bdHard').textContent=`${h}/12`;
+  const v=document.getElementById('verdict');
+  if(pct>=80){v.textContent='🌟 Xuất sắc! Bạn đã nắm vững chủ đề này.';v.style.background='rgba(63,185,80,.15)';v.style.color='var(--good)';}
+  else if(pct>=60){v.textContent='👍 Khá! Đạt mức điểm đỗ (≥60%). Ôn lại các câu sai nhé.';v.style.background='rgba(210,153,34,.15)';v.style.color='var(--mid)';}
+  else{v.textContent='💪 Cần cố gắng thêm. Hãy xem lại tài liệu lý thuyết và làm lại.';v.style.background='rgba(248,81,73,.15)';v.style.color='var(--bad)';}
+
+  document.querySelector('.qcard.active')?.classList.remove('active');
+  document.getElementById('results').classList.add('show');
+  document.getElementById('quizArea').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function restartQuiz(){
+  current=0;
+  answers=new Array(QUESTIONS.length).fill(null);
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('quizArea').style.display='block';
+  buildQuiz();
+  goto(0);
+  updateProgress();
+}
+
+buildQuiz();
+updateProgress();
+</script>
+</body>
+</html>
