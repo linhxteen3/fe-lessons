@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE - 負の2進数 · Số âm nhị phân</title>
+<style>
+:root{
+  --bg:#0f1419; --panel:#1a2027; --panel2:#232a33; --border:#2e3744;
+  --text:#e6edf3; --muted:#8b98a5;
+  --accent:#58a6ff; --accent2:#a78bfa; --pink:#f778ba;
+  --green:#3fb950; --red:#f85149; --yellow:#d29922; --orange:#ff8e3c;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.65;padding:16px}
+.wrap{max-width:960px;margin:0 auto}
+header{background:linear-gradient(135deg,#1f2937 0%,#312e81 50%,#581c87 100%);padding:28px;border-radius:14px;border:1px solid var(--border);margin-bottom:20px;text-align:center}
+header h1{margin:0;font-size:1.8em}
+header .sub{color:#cbd5e1;margin-top:6px;font-size:.95em}
+nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:20px;position:sticky;top:0;background:var(--bg);padding:10px;z-index:10;border-bottom:1px solid var(--border)}
+nav a{color:var(--accent);text-decoration:none;background:var(--panel);padding:6px 12px;border-radius:6px;border:1px solid var(--border);font-size:.9em}
+nav a:hover{background:var(--panel2);border-color:var(--accent)}
+section{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:18px}
+h2{color:var(--accent);border-bottom:2px solid var(--accent);padding-bottom:8px;margin-top:0;font-size:1.35em}
+h3{color:var(--accent2);margin-top:22px;font-size:1.1em}
+h4{color:var(--pink);margin-top:16px;font-size:1em}
+.tri{background:var(--panel2);border-left:4px solid var(--accent);padding:12px 16px;margin:12px 0;border-radius:6px}
+.tri .lang{display:block;margin:4px 0;font-size:.97em}
+.tri .jp{color:#79c0ff}
+.tri .vi{color:#7ee787}
+.tri .en{color:#e3b341}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.93em}
+th,td{border:1px solid var(--border);padding:8px 10px;text-align:center}
+th{background:var(--panel2);color:var(--accent2)}
+td.neg{color:var(--red);font-weight:600}
+td.pos{color:var(--green);font-weight:600}
+code{background:#0b1018;padding:2px 6px;border-radius:4px;color:#79c0ff;font-family:"SF Mono",Consolas,monospace;font-size:.92em}
+.box{background:#11161d;border:1px solid var(--border);border-radius:8px;padding:14px;margin:12px 0;font-family:"SF Mono",Consolas,monospace;font-size:.95em;overflow-x:auto;white-space:pre}
+.tip{background:rgba(210,153,34,.12);border-left:4px solid var(--yellow);padding:12px 16px;margin:12px 0;border-radius:6px}
+.warn{background:rgba(248,81,73,.12);border-left:4px solid var(--red);padding:12px 16px;margin:12px 0;border-radius:6px}
+.flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;margin:14px 0}
+.flow .node{background:var(--panel2);border:2px solid var(--accent);padding:10px 16px;border-radius:8px;font-weight:600}
+.flow .arr{color:var(--accent);font-size:1.5em}
+.example{background:linear-gradient(135deg,#1a2027,#1f2937);border:1px solid var(--accent);border-radius:10px;padding:16px;margin:14px 0}
+.example h4{margin-top:0;color:var(--accent)}
+.step{background:var(--panel2);padding:10px 14px;border-radius:6px;margin:8px 0;border-left:3px solid var(--accent2)}
+.step .n{display:inline-block;background:var(--accent2);color:#0b1220;font-weight:700;border-radius:50%;width:22px;height:22px;line-height:22px;text-align:center;margin-right:8px;font-size:.85em}
+/* Flashcards */
+.fc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.fc{background:var(--panel2);border:1.5px solid var(--border);border-radius:10px;padding:0;cursor:pointer;min-height:160px;position:relative;transition:transform .15s, border-color .15s}
+.fc:hover{transform:translateY(-2px);border-color:var(--accent)}
+.fc-side{padding:16px;display:none;font-size:.92em}
+.fc.show-front .fc-front{display:block}
+.fc.show-back .fc-back{display:block}
+.fc-front{color:var(--accent);font-weight:600}
+.fc-front .h{font-size:.78em;color:var(--muted);font-weight:400;margin-bottom:8px;letter-spacing:1px}
+.fc-back{color:var(--text)}
+.fc-back .h{font-size:.78em;color:var(--green);margin-bottom:8px;letter-spacing:1px}
+.fc-back .jp{color:#79c0ff;margin-top:6px;font-size:.88em}
+/* Quiz */
+.qz{background:var(--panel2);border-radius:8px;padding:14px;margin:12px 0;border:1px solid var(--border)}
+.qz-q{font-weight:600;margin-bottom:10px}
+.qz-opt{padding:8px 12px;background:var(--panel);border:1px solid var(--border);border-radius:6px;cursor:pointer;margin:6px 0;display:block;font-size:.94em}
+.qz-opt:hover:not(.locked){border-color:var(--accent)}
+.qz-opt.ok{background:rgba(63,185,80,.2);border-color:var(--green);color:#7ee787}
+.qz-opt.ng{background:rgba(248,81,73,.2);border-color:var(--red);color:#ff7b72}
+.qz-opt.locked{cursor:default}
+.qz-exp{margin-top:10px;font-size:.9em;color:var(--muted);display:none;background:#11161d;padding:10px;border-radius:6px;border-left:3px solid var(--accent2)}
+.qz-exp.show{display:block}
+@media(max-width:600px){
+  header h1{font-size:1.35em}
+  body{padding:10px}
+  section{padding:16px}
+  nav{font-size:.8em;position:static}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>➖ 負の2進数 · Số âm nhị phân</h1>
+  <div class="sub">Yasashii (補数 không có ở Ch.1) ・Nguồn chính: <strong>Slide 1 基礎理論 第3回</strong></div>
+</header>
+
+<nav>
+  <a href="#p1">① Lý thuyết</a>
+  <a href="#p2">② Ví dụ</a>
+  <a href="#p3">③ Flashcard</a>
+  <a href="#p4">④ Câu hỏi ôn tập</a>
+  <a href="#p5">⑤ Mind map</a>
+</nav>
+
+<!-- ============ PHẦN 1: LÝ THUYẾT ============ -->
+<section id="p1">
+<h2>📘 Phần 1 — Tóm tắt lý thuyết</h2>
+
+<h3>1.1. Vì sao cần biểu diễn số âm trong 2進数?</h3>
+<div class="tri">
+<span class="lang jp">🇯🇵 コンピュータは足し算しかできないので、引き算は負の数の足し算として考える。</span>
+<span class="lang vi">🇻🇳 Máy tính chỉ biết phép cộng, vì vậy phép trừ được xử lý như "cộng với số âm".</span>
+<span class="lang en">🇬🇧 Computers can only add; subtraction is handled as "adding a negative number".</span>
+</div>
+
+<div class="tip">
+💡 <strong>Ví von:</strong> Hãy hình dung CPU như một "máy đếm" chỉ biết cộng từng bước. Để làm phép <code>10 − 3</code>, máy không trừ trực tiếp mà cộng <code>10 + (−3)</code>. Do đó cần một cách viết <em>số âm</em> sao cho khi cộng vào số dương lại ra đúng kết quả phép trừ.
+</div>
+
+<h3>1.2. 符号ビット (Sign bit – bit dấu)</h3>
+<div class="tri">
+<span class="lang jp">🇯🇵 コンピューターにはマイナスという記号が無いため、2進数の一番最初のビットを符号として扱う。</span>
+<span class="lang vi">🇻🇳 Máy tính không có ký hiệu dấu trừ riêng, nên bit đầu tiên (trái nhất) của số 2進 được dùng làm bit dấu.</span>
+<span class="lang en">🇬🇧 Computers have no minus sign; the leftmost bit of a binary number is used as the sign bit.</span>
+</div>
+<ul>
+  <li><code>0</code> ở bit đầu → 正 (số dương / positive)</li>
+  <li><code>1</code> ở bit đầu → 負 (số âm / negative)</li>
+</ul>
+
+<h3>1.3. 補数 (Complement – số bù) là gì?</h3>
+<div class="tri">
+<span class="lang jp">🇯🇵 nの補数とは桁上がりするために必要な最小の数、n-1の補数とは現在の桁のまま最大の数になるために必要な数のこと。</span>
+<span class="lang vi">🇻🇳 Bù của n (nの補数): số nhỏ nhất cần cộng vào để xảy ra carry (lên 1 chữ số mới). Bù của n−1: số cần cộng vào để đạt giá trị lớn nhất mà không bị carry.</span>
+<span class="lang en">🇬🇧 The n's complement is the smallest number needed to cause a carry; the (n−1)'s complement keeps the digit count unchanged at maximum.</span>
+</div>
+
+<div class="example">
+<h4>Ví dụ — 10進数 450 (3 chữ số)</h4>
+<ul>
+  <li><strong>10の補数</strong> = 1000 − 450 = <strong style="color:var(--green)">550</strong> (cộng vào sẽ tràn lên 4 chữ số)</li>
+  <li><strong>9の補数</strong> = 999 − 450 = <strong style="color:var(--yellow)">549</strong> (đẩy lên max 3 chữ số 999)</li>
+</ul>
+</div>
+
+<div class="tri">
+<span class="lang jp">🇯🇵 n進数では、nの補数で足し算することで引き算することが出来る。</span>
+<span class="lang vi">🇻🇳 Trong hệ n進, ta có thể thực hiện phép trừ bằng cách CỘNG bù của n.</span>
+<span class="lang en">🇬🇧 In base-n, subtraction can be performed by adding the n's complement.</span>
+</div>
+
+<h3>1.4. Cách tạo 2の補数 (Two's complement) — QUAN TRỌNG, phải thuộc</h3>
+<div class="tri">
+<span class="lang jp">🇯🇵 2の補数の作り方は2進数をビット反転して1を加える（要暗記）。</span>
+<span class="lang vi">🇻🇳 Cách tạo bù 2: <strong>đảo bit (0↔1) rồi cộng thêm 1</strong>. Bắt buộc thuộc lòng.</span>
+<span class="lang en">🇬🇧 To create the two's complement: <strong>invert all bits, then add 1</strong>. Must memorize.</span>
+</div>
+
+<div class="flow">
+  <div class="node">2進数</div><div class="arr">→</div>
+  <div class="node" style="border-color:var(--yellow)">ビット反転<br><small>= 1の補数</small></div><div class="arr">→</div>
+  <div class="node" style="border-color:var(--green)">+1<br><small>= 2の補数</small></div>
+</div>
+
+<div class="example">
+<h4>Ví dụ — Số 2進 <code>1100101</code></h4>
+<div class="box">
+2進数  : 1100101
+            ↓  ビット反転 (đảo bit)
+1の補数 : 0011010
+            ↓  +1
+2の補数 : 0011011
+</div>
+</div>
+
+<h3>1.5. 引き算の手順 (Quy trình thực hiện phép trừ 2進)</h3>
+<div class="tri">
+<span class="lang jp">🇯🇵 2進数で引き算をする際は、引く数を補数で表現し、引かれる数と足し算を行う。</span>
+<span class="lang vi">🇻🇳 Khi trừ 2進: biểu diễn số bị trừ bằng <em>bù 2</em>, rồi <em>cộng</em> với số được trừ.</span>
+<span class="lang en">🇬🇧 To subtract in binary: take the two's complement of the subtrahend, then add it to the minuend.</span>
+</div>
+
+<div class="step"><span class="n">1</span>Lấy số trừ (引く数) → đảo bit + 1 → 2の補数</div>
+<div class="step"><span class="n">2</span>Cộng vào số bị trừ (引かれる数)</div>
+<div class="step"><span class="n">3</span>Bỏ bit tràn (carry) ngoài cùng nếu có → kết quả là hiệu</div>
+
+<h3>1.6. 8ビットで表せる範囲 (Phạm vi biểu diễn 8 bit)</h3>
+<table>
+<tr><th>2進数</th><th>符号無 (Unsigned)<br>10進数</th><th>符号付 (Signed, bù 2)<br>10進数</th></tr>
+<tr><td><code>00000000</code></td><td class="pos">0</td><td class="pos">0</td></tr>
+<tr><td><code>00000001</code></td><td class="pos">1</td><td class="pos">1</td></tr>
+<tr><td>...</td><td>...</td><td>...</td></tr>
+<tr><td><code>01111111</code></td><td class="pos">127</td><td class="pos">+127</td></tr>
+<tr><td><code>10000000</code></td><td class="pos">128</td><td class="neg">−128</td></tr>
+<tr><td><code>10000001</code></td><td class="pos">129</td><td class="neg">−127</td></tr>
+<tr><td>...</td><td>...</td><td>...</td></tr>
+<tr><td><code>11111110</code></td><td class="pos">254</td><td class="neg">−2</td></tr>
+<tr><td><code>11111111</code></td><td class="pos">255</td><td class="neg">−1</td></tr>
+</table>
+
+<div class="tip">
+🔑 <strong>Ghi nhớ phạm vi 8 bit:</strong>
+<ul style="margin:6px 0">
+  <li>符号無 (unsigned): <code>0 ~ 255</code> tức <code>0 ~ 2⁸−1</code></li>
+  <li>符号付 (signed, 2の補数): <code>−128 ~ +127</code> tức <code>−2⁷ ~ 2⁷−1</code></li>
+</ul>
+Tổng quát với <strong>n bit</strong>: signed = <code>−2ⁿ⁻¹ ~ 2ⁿ⁻¹−1</code>
+</div>
+
+<div class="warn">
+⚠️ <strong>Lưu ý quan trọng:</strong> Cùng một chuỗi bit <code>11111111</code> có thể là <strong>255</strong> (nếu hiểu là 符号無) hoặc <strong>−1</strong> (nếu hiểu là 符号付/2の補数). Cần biết hệ thống đang dùng kiểu nào!
+</div>
+
+</section>
+
+<!-- ============ PHẦN 2: VÍ DỤ MINH HỌA ============ -->
+<section id="p2">
+<h2>📐 Phần 2 — Ví dụ minh họa</h2>
+
+<h3>Ví dụ 1 — Tạo bù 2 của <code>1100101</code> (7 bit)</h3>
+<div class="example">
+<div class="box">
+Bước 1: Bắt đầu       1 1 0 0 1 0 1
+Bước 2: ビット反転     0 0 1 1 0 1 0   ← 1の補数
+Bước 3: +1            0 0 1 1 0 1 1   ← 2の補数 ✓
+</div>
+<p><strong>Kiểm tra:</strong> <code>1100101₂ = 101</code> (10進). Bù 2 với 7 bit = <code>2⁷ − 101 = 128 − 101 = 27 = 0011011₂</code> ✓</p>
+</div>
+
+<h3>Ví dụ 2 — Phép trừ <code>10 − 3</code> ở 2進 (4 bit)</h3>
+<div class="example">
+<div class="step"><span class="n">1</span>10 = <code>1010</code>, 3 = <code>0011</code></div>
+<div class="step"><span class="n">2</span>Tạo bù 2 của 3 (4 bit): đảo <code>0011</code> → <code>1100</code>, +1 → <code>1101</code></div>
+<div class="step"><span class="n">3</span>Cộng: <code>1010 + 1101 = 10111</code></div>
+<div class="step"><span class="n">4</span>Bỏ bit tràn (carry) ngoài 4 bit → <code>0111</code> = 7 ✓</div>
+</div>
+
+<h3>Ví dụ 3 — Biểu diễn −24 bằng 8 bit (bù 2)</h3>
+<div class="example">
+<div class="box">
++24             : 0 0 0 1 1 0 0 0
+ビット反転       : 1 1 1 0 0 1 1 1   ← 1の補数
++1              : 1 1 1 0 1 0 0 0   ← −24 ở dạng 2の補数 ✓
+</div>
+<p>Bit đầu = 1 → đây là số âm. Khớp với slide: <em>1の補数 0001 0111 → 2の補数 0001 1000 (24), ngược lại 1110 1000 = −24</em>.</p>
+</div>
+
+<h3>Ví dụ 4 — Số −1 ở 8 bit</h3>
+<div class="example">
+<div class="box">
++1              : 0 0 0 0 0 0 0 1
+ビット反転       : 1 1 1 1 1 1 1 0
++1              : 1 1 1 1 1 1 1 1   ← −1 ✓
+</div>
+<p>Vì sao? <code>1 + (−1) = 0</code>. Cộng <code>00000001 + 11111111 = 100000000</code> (9 bit), bỏ bit tràn ra ngoài 8 bit → <code>00000000 = 0</code> ✓</p>
+</div>
+
+<h3>Ví dụ 5 — Bù 10 và bù 9 của 450 (đã có trong Slide)</h3>
+<div class="example">
+<table style="margin:0">
+<tr><th>Số gốc</th><th>9の補数</th><th>10の補数</th></tr>
+<tr><td>450</td><td>999 − 450 = <strong>549</strong></td><td>1000 − 450 = <strong>550</strong></td></tr>
+</table>
+<p>Kiểm: 549 + 450 = 999 (max 3 chữ số), 550 + 450 = 1000 (tràn lên 4 chữ số) ✓</p>
+</div>
+
+<h3>Ví dụ 6 — Phạm vi 4 bit signed</h3>
+<div class="example">
+<table style="margin:0">
+<tr><th>2進数 (4 bit)</th><th>Signed (bù 2)</th></tr>
+<tr><td><code>0111</code></td><td class="pos">+7</td></tr>
+<tr><td><code>0001</code></td><td class="pos">+1</td></tr>
+<tr><td><code>0000</code></td><td class="pos">0</td></tr>
+<tr><td><code>1111</code></td><td class="neg">−1</td></tr>
+<tr><td><code>1000</code></td><td class="neg">−8</td></tr>
+</table>
+<p>Phạm vi: <code>−2³ ~ 2³−1 = −8 ~ +7</code></p>
+</div>
+
+</section>
+
+<!-- ============ PHẦN 3: FLASHCARD ============ -->
+<section id="p3">
+<h2>🎴 Phần 3 — Flashcard (Click để lật)</h2>
+<p style="color:var(--muted);font-size:.92em">10 thẻ. Click vào mỗi thẻ để xem mặt sau.</p>
+<div class="fc-grid" id="fcg">
+<!-- generated by JS -->
+</div>
+</section>
+
+<!-- ============ PHẦN 4: ÔN TẬP ============ -->
+<section id="p4">
+<h2>📝 Phần 4 — 8 câu ôn tập (tự kiểm tra)</h2>
+<div id="quiz"></div>
+</section>
+
+<!-- ============ PHẦN 5: MIND MAP ============ -->
+<section id="p5">
+<h2>🗺️ Phần 5 — Mind map</h2>
+<svg viewBox="0 0 1100 700" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;background:#0b1018;border-radius:10px;border:1px solid var(--border)">
+  <defs>
+    <style>
+      .lbl{font-family:system-ui,sans-serif;font-size:14px;fill:#e6edf3;font-weight:600}
+      .lbl-sm{font-family:system-ui,sans-serif;font-size:12px;fill:#cbd5e1}
+      .lbl-c{font-family:system-ui,sans-serif;font-size:18px;fill:#fff;font-weight:700}
+    </style>
+  </defs>
+
+  <!-- Center -->
+  <ellipse cx="550" cy="350" rx="120" ry="55" fill="#a78bfa" stroke="#fff" stroke-width="2"/>
+  <text x="550" y="345" text-anchor="middle" class="lbl-c">負の2進数</text>
+  <text x="550" y="365" text-anchor="middle" class="lbl-sm" style="fill:#fff">So am nhi phan</text>
+
+  <!-- Branch 1: 符号ビット (top-left, blue) -->
+  <path d="M 470 320 Q 350 250 230 200" stroke="#58a6ff" stroke-width="3" fill="none"/>
+  <rect x="100" y="170" width="200" height="60" rx="10" fill="#58a6ff" stroke="#fff" stroke-width="1.5"/>
+  <text x="200" y="195" text-anchor="middle" class="lbl">符号ビット</text>
+  <text x="200" y="215" text-anchor="middle" class="lbl-sm" style="fill:#0b1018">Bit dau</text>
+  <!-- subnodes -->
+  <path d="M 200 230 Q 200 270 130 290" stroke="#58a6ff" stroke-width="2" fill="none"/>
+  <rect x="40" y="280" width="170" height="40" rx="8" fill="#1e3a8a" stroke="#58a6ff"/>
+  <text x="125" y="305" text-anchor="middle" class="lbl-sm" style="fill:#fff">0 = 正 (duong)</text>
+  <path d="M 200 230 Q 240 280 220 320" stroke="#58a6ff" stroke-width="2" fill="none"/>
+  <rect x="135" y="320" width="170" height="40" rx="8" fill="#1e3a8a" stroke="#58a6ff"/>
+  <text x="220" y="345" text-anchor="middle" class="lbl-sm" style="fill:#fff">1 = 負 (am)</text>
+
+  <!-- Branch 2: 補数 (top-right, pink) -->
+  <path d="M 630 320 Q 750 250 870 200" stroke="#f778ba" stroke-width="3" fill="none"/>
+  <rect x="800" y="170" width="200" height="60" rx="10" fill="#f778ba" stroke="#fff" stroke-width="1.5"/>
+  <text x="900" y="195" text-anchor="middle" class="lbl">補数 (Bu)</text>
+  <text x="900" y="215" text-anchor="middle" class="lbl-sm" style="fill:#0b1018">Complement</text>
+  <path d="M 900 230 Q 900 270 970 290" stroke="#f778ba" stroke-width="2" fill="none"/>
+  <rect x="900" y="280" width="180" height="40" rx="8" fill="#831843" stroke="#f778ba"/>
+  <text x="990" y="305" text-anchor="middle" class="lbl-sm" style="fill:#fff">nの補数 (carry)</text>
+  <path d="M 900 230 Q 860 280 880 320" stroke="#f778ba" stroke-width="2" fill="none"/>
+  <rect x="800" y="320" width="180" height="40" rx="8" fill="#831843" stroke="#f778ba"/>
+  <text x="890" y="345" text-anchor="middle" class="lbl-sm" style="fill:#fff">n-1の補数 (max)</text>
+
+  <!-- Branch 3: 2の補数の作り方 (bottom-left, green) -->
+  <path d="M 470 380 Q 350 460 230 510" stroke="#3fb950" stroke-width="3" fill="none"/>
+  <rect x="100" y="490" width="220" height="60" rx="10" fill="#3fb950" stroke="#fff" stroke-width="1.5"/>
+  <text x="210" y="515" text-anchor="middle" class="lbl">2の補数の作り方</text>
+  <text x="210" y="535" text-anchor="middle" class="lbl-sm" style="fill:#0b1018">Cach tao bu 2</text>
+  <path d="M 210 550 Q 210 590 130 600" stroke="#3fb950" stroke-width="2" fill="none"/>
+  <rect x="30" y="590" width="170" height="40" rx="8" fill="#14532d" stroke="#3fb950"/>
+  <text x="115" y="615" text-anchor="middle" class="lbl-sm" style="fill:#fff">B1: bit dao (反転)</text>
+  <path d="M 210 550 Q 260 600 240 640" stroke="#3fb950" stroke-width="2" fill="none"/>
+  <rect x="155" y="640" width="170" height="40" rx="8" fill="#14532d" stroke="#3fb950"/>
+  <text x="240" y="665" text-anchor="middle" class="lbl-sm" style="fill:#fff">B2: +1</text>
+
+  <!-- Branch 4: 引き算 (bottom-right, orange) -->
+  <path d="M 630 380 Q 750 460 870 510" stroke="#ff8e3c" stroke-width="3" fill="none"/>
+  <rect x="800" y="490" width="220" height="60" rx="10" fill="#ff8e3c" stroke="#fff" stroke-width="1.5"/>
+  <text x="910" y="515" text-anchor="middle" class="lbl">引き算 (Tru)</text>
+  <text x="910" y="535" text-anchor="middle" class="lbl-sm" style="fill:#0b1018">= cong bu 2</text>
+  <path d="M 910 550 Q 910 600 980 610" stroke="#ff8e3c" stroke-width="2" fill="none"/>
+  <rect x="890" y="600" width="190" height="40" rx="8" fill="#7c2d12" stroke="#ff8e3c"/>
+  <text x="985" y="625" text-anchor="middle" class="lbl-sm" style="fill:#fff">Bo carry tran ngoai</text>
+  <path d="M 910 550 Q 860 600 880 640" stroke="#ff8e3c" stroke-width="2" fill="none"/>
+  <rect x="790" y="640" width="190" height="40" rx="8" fill="#7c2d12" stroke="#ff8e3c"/>
+  <text x="885" y="665" text-anchor="middle" class="lbl-sm" style="fill:#fff">8 bit: -128 ~ +127</text>
+
+  <!-- Top label -->
+  <text x="550" y="40" text-anchor="middle" style="font-family:system-ui;font-size:16px;fill:#8b98a5">FE - 基礎理論 - 符号と補数</text>
+</svg>
+</section>
+
+</div>
+
+<script>
+// ============ FLASHCARDS ============
+const FC = [
+  {f:"符号ビット (sign bit)", b:"Bit ngoài cùng bên trái của 2進số. 0=正 (dương), 1=負 (âm).", jp:"2進数の一番最初のビットを符号として扱う"},
+  {f:"nの補数 (bù của n)", b:"Số nhỏ nhất cần cộng vào để gây carry (lên 1 chữ số mới). VD: 10の補数 của 450 là 550.", jp:"桁上がりするために必要な最小の数"},
+  {f:"n−1の補数 (bù của n−1)", b:"Số cần cộng vào để đạt giá trị max cùng số chữ số. VD: 9の補数 của 450 là 549.", jp:"現在の桁のまま最大の数になるために必要な数"},
+  {f:"Cách tạo 2の補数", b:"① Đảo bit (ビット反転 = 0↔1) → ② Cộng 1. Phải thuộc lòng!", jp:"ビット反転して1を加える（要暗記）"},
+  {f:"1の補数", b:"Chính là kết quả sau bước đảo bit (chưa +1). VD: 1100101 → 1の補数 = 0011010.", jp:"ビット反転だけ"},
+  {f:"Quy trình trừ 2進", b:"Lấy bù 2 của số trừ, cộng vào số bị trừ, bỏ carry tràn → ra hiệu.", jp:"引く数を補数で表現し、引かれる数と足し算"},
+  {f:"Vì sao máy tính dùng bù 2?", b:"Vì máy tính chỉ biết cộng. Bù 2 biến phép trừ thành phép cộng → mạch đơn giản hơn.", jp:"コンピュータは足し算しかできない"},
+  {f:"Phạm vi 8 bit signed", b:"−128 ~ +127 (= −2⁷ ~ 2⁷−1). 10000000 = −128, 01111111 = +127.", jp:"符号付2進数 (8ビット): -128 ~ +127"},
+  {f:"Phạm vi 8 bit unsigned", b:"0 ~ 255 (= 0 ~ 2⁸−1). 11111111 = 255.", jp:"符号無2進数 (8ビット): 0 ~ 255"},
+  {f:"11111111 nghĩa là gì?", b:"Tùy ngữ cảnh: unsigned = 255; signed (bù 2) = −1.", jp:"符号無：255、符号付：-1"},
+];
+const fcg = document.getElementById('fcg');
+FC.forEach((c,i)=>{
+  const el = document.createElement('div');
+  el.className = 'fc show-front';
+  el.innerHTML = `
+    <div class="fc-side fc-front"><div class="h">CÂU HỎI / 表</div>${c.f}</div>
+    <div class="fc-side fc-back"><div class="h">TRẢ LỜI / 裏</div>${c.b}<div class="jp">🇯🇵 ${c.jp}</div></div>`;
+  el.onclick = ()=>{
+    el.classList.toggle('show-front');
+    el.classList.toggle('show-back');
+  };
+  fcg.appendChild(el);
+});
+
+// ============ QUIZ ============
+const Q = [
+  {q:"Bit dấu (符号ビット) của số 2進 trong máy tính nằm ở vị trí nào?", o:["Bit ngoài cùng bên TRÁI","Bit ngoài cùng bên PHẢI","Bit ở giữa","Không có bit dấu"], a:0, e:"符号ビット = bit trái nhất. 0=dương, 1=âm. (Slide 1 第3回)"},
+  {q:"Cách tạo 2の補数 (bù 2) đúng là?", o:["Đảo bit rồi +1","+1 rồi đảo bit","Nhân với −1","Đảo bit rồi −1"], a:0, e:"Slide ghi rõ: ビット反転して1を加える (要暗記)."},
+  {q:"1の補数 của 2進 1100101 là?", o:["0011010","0011011","1100100","1100110"], a:0, e:"Chỉ cần đảo bit: 1100101 → 0011010. Nếu +1 nữa mới ra 2の補数 = 0011011."},
+  {q:"2の補数 của 2進 1100101 là?", o:["0011011","0011010","1100100","0011100"], a:0, e:"Đảo bit → 0011010, +1 → 0011011."},
+  {q:"Phép trừ 2進 được máy tính thực hiện bằng cách nào?", o:["Lấy bù 2 của số trừ rồi CỘNG vào số bị trừ","Trừ trực tiếp bit theo bit","Lấy bù 2 của số bị trừ","Đảo dấu rồi nhân"], a:0, e:"Máy tính chỉ có mạch cộng. Trừ = cộng bù 2 của số trừ."},
+  {q:"Phạm vi của số 2進 8 bit có dấu (符号付) là?", o:["−128 ~ +127","0 ~ 255","−127 ~ +128","−256 ~ +255"], a:0, e:"Signed 8 bit: −2⁷ ~ 2⁷−1 = −128 ~ +127. Bảng trong Slide 第3回 xác nhận."},
+  {q:"Chuỗi bit 11111111 (8 bit) hiểu theo signed (bù 2) bằng bao nhiêu?", o:["−1","255","−128","127"], a:0, e:"11111111 signed = −1. Kiểm: 1 + (−1) = 0, đúng vì 00000001 + 11111111 = 100000000, bỏ carry còn 00000000."},
+  {q:"10の補数 của 450 là?", o:["550","549","450","1000"], a:0, e:"1000 − 450 = 550. Còn 9の補数 = 999 − 450 = 549."},
+];
+
+const qz = document.getElementById('quiz');
+Q.forEach((q,i)=>{
+  const wrap = document.createElement('div');
+  wrap.className='qz';
+  const letters=['A','B','C','D'];
+  wrap.innerHTML = `<div class="qz-q">Câu ${i+1}. ${q.q}</div>` +
+    q.o.map((o,j)=>`<div class="qz-opt" data-i="${j}"><strong>${letters[j]}.</strong> ${o}</div>`).join('') +
+    `<div class="qz-exp">✓ Đáp án đúng: <strong>${letters[q.a]}</strong>. ${q.e}</div>`;
+  wrap.querySelectorAll('.qz-opt').forEach(el=>{
+    el.onclick=()=>{
+      if(wrap.querySelector('.locked')) return;
+      const i = parseInt(el.dataset.i);
+      wrap.querySelectorAll('.qz-opt').forEach((o,k)=>{
+        o.classList.add('locked');
+        if(k===q.a) o.classList.add('ok');
+        else if(k===i) o.classList.add('ng');
+      });
+      wrap.querySelector('.qz-exp').classList.add('show');
+    };
+  });
+  qz.appendChild(wrap);
+});
+</script>
+</body>
+</html>

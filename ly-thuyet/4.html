@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE - 2進数の四則演算+シフト · Số học + Dịch bit</title>
+<style>
+:root{
+  --bg:#0f1419; --panel:#1a2027; --panel2:#232a33; --border:#2e3744;
+  --text:#e6edf3; --muted:#8b98a5;
+  --accent:#58a6ff; --accent2:#a78bfa; --pink:#f778ba;
+  --green:#3fb950; --red:#f85149; --yellow:#d29922; --orange:#ff8e3c;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.65;padding:16px}
+.wrap{max-width:980px;margin:0 auto}
+header{background:linear-gradient(135deg,#0c4a6e 0%,#1e3a8a 50%,#581c87 100%);padding:28px;border-radius:14px;border:1px solid var(--border);margin-bottom:20px;text-align:center}
+header h1{margin:0;font-size:1.8em}
+header .sub{color:#cbd5e1;margin-top:6px;font-size:.95em}
+nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:20px;position:sticky;top:0;background:var(--bg);padding:10px;z-index:10;border-bottom:1px solid var(--border)}
+nav a{color:var(--accent);text-decoration:none;background:var(--panel);padding:6px 12px;border-radius:6px;border:1px solid var(--border);font-size:.9em}
+nav a:hover{background:var(--panel2);border-color:var(--accent)}
+section{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:18px}
+h2{color:var(--accent);border-bottom:2px solid var(--accent);padding-bottom:8px;margin-top:0;font-size:1.35em}
+h3{color:var(--accent2);margin-top:22px;font-size:1.1em}
+h4{color:var(--pink);margin-top:16px;font-size:1em}
+.tri{background:var(--panel2);border-left:4px solid var(--accent);padding:12px 16px;margin:12px 0;border-radius:6px}
+.tri .lang{display:block;margin:4px 0;font-size:.97em}
+.tri .jp{color:#79c0ff}
+.tri .vi{color:#7ee787}
+.tri .en{color:#e3b341}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.93em}
+th,td{border:1px solid var(--border);padding:8px 10px;text-align:center}
+th{background:var(--panel2);color:var(--accent2)}
+code{background:#0b1018;padding:2px 6px;border-radius:4px;color:#79c0ff;font-family:"SF Mono",Consolas,monospace;font-size:.92em}
+.box{background:#11161d;border:1px solid var(--border);border-radius:8px;padding:14px;margin:12px 0;font-family:"SF Mono",Consolas,monospace;font-size:.95em;overflow-x:auto;white-space:pre;color:#cbd5e1}
+.tip{background:rgba(210,153,34,.12);border-left:4px solid var(--yellow);padding:12px 16px;margin:12px 0;border-radius:6px}
+.warn{background:rgba(248,81,73,.12);border-left:4px solid var(--red);padding:12px 16px;margin:12px 0;border-radius:6px}
+.flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;margin:14px 0}
+.flow .node{background:var(--panel2);border:2px solid var(--accent);padding:10px 16px;border-radius:8px;font-weight:600}
+.flow .arr{color:var(--accent);font-size:1.5em}
+.example{background:linear-gradient(135deg,#1a2027,#1f2937);border:1px solid var(--accent);border-radius:10px;padding:16px;margin:14px 0}
+.example h4{margin-top:0;color:var(--accent)}
+.step{background:var(--panel2);padding:10px 14px;border-radius:6px;margin:8px 0;border-left:3px solid var(--accent2)}
+.step .n{display:inline-block;background:var(--accent2);color:#0b1220;font-weight:700;border-radius:50%;width:22px;height:22px;line-height:22px;text-align:center;margin-right:8px;font-size:.85em}
+.bits{display:flex;justify-content:center;gap:2px;margin:8px 0;flex-wrap:wrap}
+.bits .b{display:inline-block;width:32px;height:32px;line-height:32px;text-align:center;border:1px solid var(--border);background:var(--panel2);font-family:monospace;font-weight:600}
+.bits .b.fill{background:rgba(63,185,80,.25);color:#7ee787}
+.bits .b.drop{background:rgba(248,81,73,.25);color:#ff7b72;text-decoration:line-through}
+.bits .b.sign{background:rgba(247,119,186,.25);color:#f778ba}
+/* Flashcards */
+.fc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.fc{background:var(--panel2);border:1.5px solid var(--border);border-radius:10px;padding:0;cursor:pointer;min-height:160px;position:relative;transition:transform .15s, border-color .15s}
+.fc:hover{transform:translateY(-2px);border-color:var(--accent)}
+.fc-side{padding:16px;display:none;font-size:.92em}
+.fc.show-front .fc-front{display:block}
+.fc.show-back .fc-back{display:block}
+.fc-front{color:var(--accent);font-weight:600}
+.fc-front .h{font-size:.78em;color:var(--muted);font-weight:400;margin-bottom:8px;letter-spacing:1px}
+.fc-back{color:var(--text)}
+.fc-back .h{font-size:.78em;color:var(--green);margin-bottom:8px;letter-spacing:1px}
+.fc-back .jp{color:#79c0ff;margin-top:6px;font-size:.88em}
+/* Quiz */
+.qz{background:var(--panel2);border-radius:8px;padding:14px;margin:12px 0;border:1px solid var(--border)}
+.qz-q{font-weight:600;margin-bottom:10px}
+.qz-opt{padding:8px 12px;background:var(--panel);border:1px solid var(--border);border-radius:6px;cursor:pointer;margin:6px 0;display:block;font-size:.94em}
+.qz-opt:hover:not(.locked){border-color:var(--accent)}
+.qz-opt.ok{background:rgba(63,185,80,.2);border-color:var(--green);color:#7ee787}
+.qz-opt.ng{background:rgba(248,81,73,.2);border-color:var(--red);color:#ff7b72}
+.qz-opt.locked{cursor:default}
+.qz-exp{margin-top:10px;font-size:.9em;color:var(--muted);display:none;background:#11161d;padding:10px;border-radius:6px;border-left:3px solid var(--accent2)}
+.qz-exp.show{display:block}
+@media(max-width:600px){
+  header h1{font-size:1.35em}
+  body{padding:10px}
+  section{padding:16px}
+  nav{font-size:.8em;position:static}
+  .bits .b{width:26px;height:26px;line-height:26px;font-size:.85em}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>➕➖✖️➗ 2進数の四則演算 + シフト演算</h1>
+  <div class="sub">Số học nhị phân + Dịch bit · Nguồn: Slide 1 基礎理論 第3回・第4回</div>
+</header>
+
+<nav>
+  <a href="#p1">① Lý thuyết</a>
+  <a href="#p2">② Ví dụ</a>
+  <a href="#p3">③ Flashcard</a>
+  <a href="#p4">④ Ôn tập</a>
+  <a href="#p5">⑤ Mind map</a>
+</nav>
+
+<!-- ============ PHẦN 1: LÝ THUYẾT ============ -->
+<section id="p1">
+<h2>📘 Phần 1 — Tóm tắt lý thuyết</h2>
+
+<h3>1.1. 足し算 (Phép cộng) — 2進数</h3>
+<div class="tri">
+<span class="lang jp">🇯🇵 2進数の足し算では足して「2」になったら繰り上がる。</span>
+<span class="lang vi">🇻🇳 Trong phép cộng 2進, khi tổng đạt "2" thì có nhớ (carry) sang trái 1 bit.</span>
+<span class="lang en">🇬🇧 In binary addition, when the sum reaches "2", a carry is generated to the next bit.</span>
+</div>
+
+<div class="tip">
+💡 <strong>Bảng cộng 1 bit:</strong>
+<table style="max-width:400px;margin:8px auto">
+<tr><th>A</th><th>B</th><th>合 (Sum)</th><th>桁上がり (Carry)</th></tr>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td><strong style="color:var(--yellow)">0</strong></td><td><strong style="color:var(--green)">1</strong></td></tr>
+</table>
+</div>
+
+<h3>1.2. 引き算 (Phép trừ) — bằng cộng bù 2</h3>
+<div class="tri">
+<span class="lang jp">🇯🇵 コンピュータは足し算しかできないので、引き算は負の数の足し算として考える。引く数を2の補数で表現し、引かれる数と足し算を行う。</span>
+<span class="lang vi">🇻🇳 Máy tính chỉ biết cộng, nên phép trừ = cộng với số âm. Lấy bù 2 của số trừ rồi cộng vào số bị trừ.</span>
+<span class="lang en">🇬🇧 Computers only add; subtraction = adding the two's complement of the subtrahend.</span>
+</div>
+
+<div class="flow">
+  <div class="node">引かれる数 (a)</div><div class="arr">+</div>
+  <div class="node" style="border-color:var(--pink)">引く数 の 2の補数</div><div class="arr">→</div>
+  <div class="node" style="border-color:var(--green)">a − b</div>
+</div>
+
+<p style="font-size:.9em;color:var(--muted)">📎 Chi tiết về 補数 đã học ở bài <em>負の2進数</em>.</p>
+
+<h3>1.3. かけ算・割り算 → dùng シフト演算</h3>
+<div class="tri">
+<span class="lang jp">🇯🇵 2進数では桁を左右にずらす（シフト）ことで2のべき乗のかけ算・割り算ができる。</span>
+<span class="lang vi">🇻🇳 Trong 2進, dịch bit trái/phải tương đương nhân/chia cho lũy thừa của 2.</span>
+<span class="lang en">🇬🇧 In binary, bit shifting performs multiplication/division by powers of 2.</span>
+</div>
+
+<div class="tip">
+🔑 <strong>Quy luật vàng (cần thuộc):</strong>
+<ul style="margin:6px 0">
+  <li>桁を1つ左にずらす → <strong>×2</strong>; 2つ → ×4; ... n つ → <strong>×2ⁿ</strong></li>
+  <li>桁を1つ右にずらす → <strong>×1/2</strong>; 2つ → ×1/4; ... n つ → <strong>×2⁻ⁿ</strong></li>
+</ul>
+</div>
+
+<div class="example">
+<h4>So sánh với 10進:</h4>
+<div class="box">
+73.6 ×10  = 736     (dịch trái 1 → ×基数 = ×10)
+73.6 ×1/10 = 7.36   (dịch phải 1 → ÷基数 = ×1/10)
+</div>
+<p>Ở 10進, dịch 1 chỗ = ×10 (cơ số). Tương tự ở 2進: dịch 1 bit = ×2 (cơ số).</p>
+</div>
+
+<h3>1.4. Hai loại シフト演算</h3>
+<div class="tri">
+<span class="lang jp">🇯🇵 桁をずらすには論理シフトと算術シフトの2通りがある。</span>
+<span class="lang vi">🇻🇳 Có 2 loại dịch bit: <strong>論理シフト</strong> (logical shift – không quan tâm dấu) và <strong>算術シフト</strong> (arithmetic shift – có quan tâm dấu).</span>
+<span class="lang en">🇬🇧 Two types: logical shift (ignores sign) and arithmetic shift (preserves sign).</span>
+</div>
+
+<h4>🔵 論理シフト (Logical Shift) — không quan tâm dấu</h4>
+<table>
+<tr><th>Hướng</th><th>Thao tác</th><th>Ý nghĩa</th></tr>
+<tr><td><strong>左シフト</strong></td><td>Bit thoát ra ngoài bên trái → bỏ. Chỗ trống bên phải → điền <strong>0</strong></td><td>×2ⁿ. Nếu bit <code>1</code> trào ra → <strong>オーバーフロー</strong></td></tr>
+<tr><td><strong>右シフト</strong></td><td>Bit thoát ra ngoài bên phải → bỏ. Chỗ trống bên trái → điền <strong>0</strong></td><td>×2⁻ⁿ (chia). Phần trào ra = số dư của phép chia</td></tr>
+</table>
+
+<h4>🟣 算術シフト (Arithmetic Shift) — quan tâm dấu</h4>
+<table>
+<tr><th>Hướng</th><th>Thao tác</th><th>Ý nghĩa / オーバーフロー</th></tr>
+<tr><td><strong>左シフト</strong></td><td>Chỗ trống bên phải → điền <strong>0</strong></td><td>×2ⁿ. Tràn khi bit khác bit dấu trào ra</td></tr>
+<tr><td><strong>右シフト</strong></td><td>Chỗ trống bên trái → điền <strong>符号ビット</strong> (sign bit)</td><td>×2⁻ⁿ. Phần trào ra = số dư</td></tr>
+</table>
+
+<div class="warn">
+⚠️ <strong>Điểm KHÁC BIỆT CỐT LÕI giữa 論理 và 算術 (右シフト):</strong>
+<ul style="margin:6px 0">
+  <li><strong>論理右シフト</strong>: chỗ trống bên trái điền <code>0</code> → có thể làm sai số âm</li>
+  <li><strong>算術右シフト</strong>: chỗ trống bên trái điền <strong>符号ビット</strong> → bảo toàn dấu, đúng cho số âm</li>
+</ul>
+</div>
+
+<h3>1.5. Bảng tổng kết シフト</h3>
+<table>
+<tr><th></th><th>論理シフト<br><small>(không xét dấu)</small></th><th>算術シフト<br><small>(có xét dấu)</small></th></tr>
+<tr><td><strong>左シフト<br>(×)</strong></td>
+<td>Chỗ trống điền <code>0</code><br>1 trào ra → <strong>オーバーフロー</strong></td>
+<td>Chỗ trống điền <code>0</code><br>Khác bit dấu trào ra → <strong>オーバーフロー</strong></td></tr>
+<tr><td><strong>右シフト<br>(÷)</strong></td>
+<td>Chỗ trống điền <code>0</code><br>Phần trào = số dư</td>
+<td>Chỗ trống điền <strong>符号ビット</strong><br>Phần trào = số dư</td></tr>
+</table>
+
+<h3>1.6. Nhân với số KHÔNG phải 2ⁿ — dùng kết hợp</h3>
+<div class="tri">
+<span class="lang jp">🇯🇵 シフト演算を利用してかけ算/割り算を行うことが出来る。例：×7 = ×(2² + 2¹ + 2⁰)。</span>
+<span class="lang vi">🇻🇳 Có thể nhân với số bất kỳ bằng cách phân tích thành tổng các lũy thừa 2, mỗi thành phần là 1 phép shift.</span>
+<span class="lang en">🇬🇧 Multiplication by any number = sum of shifts (decompose into powers of 2).</span>
+</div>
+
+<div class="example">
+<h4>Ví dụ Slide: x × 7</h4>
+<div class="box">
+7 = 4 + 2 + 1 = 2² + 2¹ + 2⁰
+
+x × 7 = x×2² + x×2¹ + x×2⁰
+      = (x dịch trái 2) + (x dịch trái 1) + x
+</div>
+<p>→ 3 phép shift + 2 phép cộng = thay 1 phép nhân.</p>
+</div>
+
+</section>
+
+<!-- ============ PHẦN 2: VÍ DỤ MINH HỌA ============ -->
+<section id="p2">
+<h2>📐 Phần 2 — Ví dụ minh họa</h2>
+
+<h3>Ví dụ 1 — Cộng 2進: 1011 + 1101</h3>
+<div class="example">
+<div class="box">
+  carry: 1 1 1 1
+       :   1 0 1 1   (=11)
+       : + 1 1 0 1   (=13)
+       : ─────────
+       : 1 1 0 0 0   (=24) ✓
+</div>
+<p>Lần lượt từ phải: 1+1=10 (viết 0, nhớ 1); 1+0+1=10 (viết 0, nhớ 1); 0+1+1=10 (viết 0, nhớ 1); 1+1+1=11 (viết 1, nhớ 1); cuối cùng 1.</p>
+</div>
+
+<h3>Ví dụ 2 — Trừ 2進: 1010 − 0011 (= 10 − 3) bằng bù 2</h3>
+<div class="example">
+<div class="step"><span class="n">1</span>Bù 2 của 0011: đảo bit → 1100, +1 → <strong>1101</strong></div>
+<div class="step"><span class="n">2</span>Cộng: <code>1010 + 1101 = 10111</code> (5 bit)</div>
+<div class="step"><span class="n">3</span>Bỏ bit carry tràn ra ngoài 4 bit → <strong>0111</strong> = 7 ✓</div>
+</div>
+
+<h3>Ví dụ 3 — 論理左シフト 2 bit (Slide: 42 → 168)</h3>
+<div class="example">
+<p>Trước (10進数 42):</p>
+<div class="bits">
+<span class="b">0</span><span class="b">0</span><span class="b">1</span><span class="b">0</span><span class="b">1</span><span class="b">0</span><span class="b">1</span><span class="b">0</span>
+</div>
+<p>Sau 2-bit left shift (×2² = ×4, kết quả 168):</p>
+<div class="bits">
+<span class="b">1</span><span class="b">0</span><span class="b">1</span><span class="b">0</span><span class="b">1</span><span class="b">0</span><span class="b fill">0</span><span class="b fill">0</span>
+</div>
+<p>2 bit phải mới (xanh) điền <code>0</code>. 42 × 4 = 168 ✓</p>
+</div>
+
+<h3>Ví dụ 4 — 論理右シフト 2 bit (Slide: 73 → 18 dư 1)</h3>
+<div class="example">
+<p>Trước (10進数 73):</p>
+<div class="bits">
+<span class="b">0</span><span class="b">1</span><span class="b">0</span><span class="b">0</span><span class="b">1</span><span class="b">0</span><span class="b">0</span><span class="b">1</span>
+</div>
+<p>Sau 2-bit right shift (×2⁻² = ÷4):</p>
+<div class="bits">
+<span class="b fill">0</span><span class="b fill">0</span><span class="b">0</span><span class="b">1</span><span class="b">0</span><span class="b">0</span><span class="b">1</span><span class="b">0</span>
+<span style="color:var(--muted);align-self:center;margin-left:8px">… <span class="b drop">0</span><span class="b drop">1</span></span>
+</div>
+<p>Kết quả = 10進 18, phần trào (01₂ = 1) là số dư. 73 ÷ 4 = 18 dư 1 ✓</p>
+</div>
+
+<h3>Ví dụ 5 — 算術左シフト 2 bit cho −24 → −96 (Slide)</h3>
+<div class="example">
+<p>Trước (−24, bù 2 8 bit):</p>
+<div class="bits">
+<span class="b sign">1</span><span class="b">1</span><span class="b">1</span><span class="b">0</span><span class="b">1</span><span class="b">0</span><span class="b">0</span><span class="b">0</span>
+</div>
+<p>Sau 2-bit arithmetic left shift (×4):</p>
+<div class="bits">
+<span class="b sign">1</span><span class="b">0</span><span class="b">1</span><span class="b">0</span><span class="b">0</span><span class="b">0</span><span class="b fill">0</span><span class="b fill">0</span>
+</div>
+<p>= 10진수 −96. −24 × 4 = −96 ✓. Bit dấu (hồng) giữ nguyên =1, các bit khác bit dấu không tràn ra → không overflow.</p>
+</div>
+
+<h3>Ví dụ 6 — 算術右シフト 2 bit cho −24 → −6 (Slide)</h3>
+<div class="example">
+<p>Trước (−24):</p>
+<div class="bits">
+<span class="b sign">1</span><span class="b">1</span><span class="b">1</span><span class="b">0</span><span class="b">1</span><span class="b">0</span><span class="b">0</span><span class="b">0</span>
+</div>
+<p>Sau 2-bit arithmetic right shift (×1/4):</p>
+<div class="bits">
+<span class="b fill">1</span><span class="b fill">1</span><span class="b sign">1</span><span class="b">1</span><span class="b">1</span><span class="b">0</span><span class="b">1</span><span class="b">0</span>
+</div>
+<p>= 10進 −6. −24 ÷ 4 = −6 ✓. Chỗ trống bên trái điền <strong>bit dấu (=1)</strong> để giữ dấu âm.</p>
+</div>
+
+<h3>Ví dụ 7 — 算術左シフト gây overflow (Slide: −34 với 2-bit shift)</h3>
+<div class="example">
+<p>Trước (−34):</p>
+<div class="bits">
+<span class="b sign">1</span><span class="b">1</span><span class="b">0</span><span class="b">1</span><span class="b">1</span><span class="b">1</span><span class="b">1</span><span class="b">0</span>
+</div>
+<p>Sau 2-bit left shift, bit <code>0</code> trào ra (khác bit dấu <code>1</code>) → <strong>オーバーフロー</strong>. Kết quả tính được −136 nhưng vượt phạm vi 8 bit signed (−128 ~ +127).</p>
+</div>
+
+<h3>Ví dụ 8 — Nhân với 7 bằng shift</h3>
+<div class="example">
+<p>Tính <code>x × 7</code> với x = 5 (= <code>00000101</code>):</p>
+<div class="box">
+x × 7 = x×4 + x×2 + x×1
+      = (x << 2) + (x << 1) + x
+      = 00010100 + 00001010 + 00000101
+      = 00100011
+      = 35  ✓  (5×7 = 35)
+</div>
+</div>
+
+</section>
+
+<!-- ============ PHẦN 3: FLASHCARD ============ -->
+<section id="p3">
+<h2>🎴 Phần 3 — Flashcard (Click để lật)</h2>
+<div class="fc-grid" id="fcg"></div>
+</section>
+
+<!-- ============ PHẦN 4: ÔN TẬP ============ -->
+<section id="p4">
+<h2>📝 Phần 4 — 10 câu ôn tập</h2>
+<div id="quiz"></div>
+</section>
+
+<!-- ============ PHẦN 5: MIND MAP ============ -->
+<section id="p5">
+<h2>🗺️ Phần 5 — Mind map</h2>
+<svg viewBox="0 0 1200 780" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;background:#0b1018;border-radius:10px;border:1px solid var(--border)">
+  <defs>
+    <style>
+      .lbl{font-family:system-ui,sans-serif;font-size:14px;fill:#e6edf3;font-weight:600}
+      .lbl-sm{font-family:system-ui,sans-serif;font-size:11px;fill:#cbd5e1}
+      .lbl-c{font-family:system-ui,sans-serif;font-size:17px;fill:#fff;font-weight:700}
+    </style>
+  </defs>
+
+  <text x="600" y="35" text-anchor="middle" style="font-family:system-ui;font-size:15px;fill:#8b98a5">FE - 基礎理論 - 四則演算とシフト</text>
+
+  <!-- Center -->
+  <ellipse cx="600" cy="390" rx="140" ry="60" fill="#a78bfa" stroke="#fff" stroke-width="2"/>
+  <text x="600" y="385" text-anchor="middle" class="lbl-c">2進数の四則演算</text>
+  <text x="600" y="408" text-anchor="middle" class="lbl-sm" style="fill:#fff">+ シフト演算</text>
+
+  <!-- 1. 足し算 (top-left, blue) -->
+  <path d="M 510 350 Q 380 250 230 180" stroke="#58a6ff" stroke-width="3" fill="none"/>
+  <rect x="80" y="160" width="200" height="55" rx="10" fill="#58a6ff" stroke="#fff" stroke-width="1.5"/>
+  <text x="180" y="183" text-anchor="middle" class="lbl">足し算 (Cong)</text>
+  <text x="180" y="202" text-anchor="middle" class="lbl-sm" style="fill:#0b1018">2 -> ke len 1</text>
+  <path d="M 180 215 Q 180 250 110 270" stroke="#58a6ff" stroke-width="2" fill="none"/>
+  <rect x="20" y="260" width="170" height="40" rx="8" fill="#1e3a8a" stroke="#58a6ff"/>
+  <text x="105" y="285" text-anchor="middle" class="lbl-sm" style="fill:#fff">繰り上がり (carry)</text>
+
+  <!-- 2. 引き算 (top-right, pink) -->
+  <path d="M 690 350 Q 820 250 970 180" stroke="#f778ba" stroke-width="3" fill="none"/>
+  <rect x="900" y="160" width="220" height="55" rx="10" fill="#f778ba" stroke="#fff" stroke-width="1.5"/>
+  <text x="1010" y="183" text-anchor="middle" class="lbl">引き算 (Tru)</text>
+  <text x="1010" y="202" text-anchor="middle" class="lbl-sm" style="fill:#0b1018">= cong bu 2</text>
+  <path d="M 1010 215 Q 1010 250 1080 280" stroke="#f778ba" stroke-width="2" fill="none"/>
+  <rect x="1000" y="270" width="180" height="40" rx="8" fill="#831843" stroke="#f778ba"/>
+  <text x="1090" y="295" text-anchor="middle" class="lbl-sm" style="fill:#fff">Bo carry tran</text>
+
+  <!-- 3. 論理シフト (bottom-left, green) -->
+  <path d="M 510 430 Q 380 540 230 620" stroke="#3fb950" stroke-width="3" fill="none"/>
+  <rect x="80" y="600" width="220" height="55" rx="10" fill="#3fb950" stroke="#fff" stroke-width="1.5"/>
+  <text x="190" y="623" text-anchor="middle" class="lbl">論理シフト</text>
+  <text x="190" y="642" text-anchor="middle" class="lbl-sm" style="fill:#0b1018">khong xet dau</text>
+  <path d="M 190 655 Q 190 690 110 705" stroke="#3fb950" stroke-width="2" fill="none"/>
+  <rect x="15" y="695" width="170" height="40" rx="8" fill="#14532d" stroke="#3fb950"/>
+  <text x="100" y="720" text-anchor="middle" class="lbl-sm" style="fill:#fff">Trai: dien 0, x2^n</text>
+  <path d="M 190 655 Q 250 700 240 740" stroke="#3fb950" stroke-width="2" fill="none"/>
+  <rect x="155" y="730" width="180" height="40" rx="8" fill="#14532d" stroke="#3fb950"/>
+  <text x="245" y="755" text-anchor="middle" class="lbl-sm" style="fill:#fff">Phai: dien 0, du</text>
+
+  <!-- 4. 算術シフト (bottom-right, orange) -->
+  <path d="M 690 430 Q 820 540 970 620" stroke="#ff8e3c" stroke-width="3" fill="none"/>
+  <rect x="900" y="600" width="220" height="55" rx="10" fill="#ff8e3c" stroke="#fff" stroke-width="1.5"/>
+  <text x="1010" y="623" text-anchor="middle" class="lbl">算術シフト</text>
+  <text x="1010" y="642" text-anchor="middle" class="lbl-sm" style="fill:#0b1018">co xet dau</text>
+  <path d="M 1010 655 Q 1010 695 1090 710" stroke="#ff8e3c" stroke-width="2" fill="none"/>
+  <rect x="1005" y="700" width="180" height="40" rx="8" fill="#7c2d12" stroke="#ff8e3c"/>
+  <text x="1095" y="725" text-anchor="middle" class="lbl-sm" style="fill:#fff">Trai: dien 0</text>
+  <path d="M 1010 655 Q 950 700 970 740" stroke="#ff8e3c" stroke-width="2" fill="none"/>
+  <rect x="880" y="730" width="200" height="40" rx="8" fill="#7c2d12" stroke="#ff8e3c"/>
+  <text x="980" y="755" text-anchor="middle" class="lbl-sm" style="fill:#fff">Phai: dien bit dau</text>
+
+  <!-- 5. かけ算/割り算 (top, yellow) -->
+  <path d="M 600 330 Q 600 230 600 130" stroke="#d29922" stroke-width="3" fill="none"/>
+  <rect x="490" y="80" width="220" height="55" rx="10" fill="#d29922" stroke="#fff" stroke-width="1.5"/>
+  <text x="600" y="103" text-anchor="middle" class="lbl">かけ算/割り算</text>
+  <text x="600" y="122" text-anchor="middle" class="lbl-sm" style="fill:#0b1018">= shift</text>
+
+  <!-- 6. オーバーフロー (bottom center, red) -->
+  <path d="M 600 450 Q 600 560 600 660" stroke="#f85149" stroke-width="3" fill="none"/>
+  <rect x="490" y="660" width="220" height="55" rx="10" fill="#f85149" stroke="#fff" stroke-width="1.5"/>
+  <text x="600" y="683" text-anchor="middle" class="lbl">オーバーフロー</text>
+  <text x="600" y="702" text-anchor="middle" class="lbl-sm" style="fill:#fff">Tran so</text>
+</svg>
+</section>
+
+</div>
+
+<script>
+// ============ FLASHCARDS ============
+const FC = [
+  {f:"足し算の繰り上がり (carry)", b:"Khi tổng 2 bit đạt 2 (10₂), viết 0 và nhớ 1 sang bit kế bên trái.", jp:"足して2になったら繰り上がる"},
+  {f:"引き算の方法", b:"Lấy bù 2 của số trừ rồi CỘNG vào số bị trừ. Bỏ carry tràn.", jp:"引く数を2の補数で表現して足し算"},
+  {f:"左シフト n bit = ?", b:"× 2ⁿ (nhân). VD: 1 bit = ×2, 2 bit = ×4, 3 bit = ×8.", jp:"左にn個ずれると 2ⁿ倍"},
+  {f:"右シフト n bit = ?", b:"× 2⁻ⁿ (chia). VD: 1 bit = ÷2, 2 bit = ÷4. Phần trào = số dư.", jp:"右にn個ずれると 2⁻ⁿ倍"},
+  {f:"論理シフト là gì?", b:"Dịch bit KHÔNG quan tâm dấu. Chỗ trống đều điền 0 (cả 2 hướng).", jp:"符号を考慮せずにシフト操作"},
+  {f:"算術シフト là gì?", b:"Dịch bit CÓ quan tâm dấu. Trái: điền 0. Phải: điền bit dấu để giữ dấu.", jp:"符号を考慮してシフト操作"},
+  {f:"論理左シフトのオーバーフロー", b:"Khi bit 1 trào ra khỏi đầu trái → overflow.", jp:"1がはみ出るとオーバーフロー"},
+  {f:"算術左シフトのオーバーフロー", b:"Khi bit KHÁC bit dấu trào ra → overflow.", jp:"符号ビットと異なる数字がはみ出るとオーバーフロー"},
+  {f:"右シフトではみ出した部分", b:"Bit trào ra bên phải = số dư của phép chia.", jp:"はみ出た分は割り算の余り"},
+  {f:"算術右シフトの空きスペース", b:"Điền bằng bit dấu (sign bit). Số dương điền 0, số âm điền 1.", jp:"空いたスペースに符号ビットを入れる"},
+  {f:"×7 bằng shift?", b:"7 = 4+2+1 = 2²+2¹+2⁰ → x×7 = (x<<2) + (x<<1) + x.", jp:"7 = 2² + 2¹ + 2⁰"},
+  {f:"42 を 2ビット左シフト = ?", b:"42 × 4 = 168. (Slide ví dụ: 00101010 → 10101000)", jp:"42 → 168"},
+];
+const fcg = document.getElementById('fcg');
+FC.forEach(c=>{
+  const el = document.createElement('div');
+  el.className = 'fc show-front';
+  el.innerHTML = `
+    <div class="fc-side fc-front"><div class="h">CÂU HỎI / 表</div>${c.f}</div>
+    <div class="fc-side fc-back"><div class="h">TRẢ LỜI / 裏</div>${c.b}<div class="jp">🇯🇵 ${c.jp}</div></div>`;
+  el.onclick = ()=>{
+    el.classList.toggle('show-front');
+    el.classList.toggle('show-back');
+  };
+  fcg.appendChild(el);
+});
+
+// ============ QUIZ ============
+const Q = [
+  {q:"2進数の足し算で、1 + 1 の結果として正しいのは？", o:["10₂ (= 2)","11₂","1₂","0₂"], a:0, e:"Slide: 足して2になったら繰り上がる. 1+1=10₂ tức viết 0, nhớ 1."},
+  {q:"2進数の引き算「1010 − 0011」を計算する際の最初の手順は？", o:["0011 の2の補数を作る","1010 の2の補数を作る","両方をビット反転","左シフトする"], a:0, e:"Lấy bù 2 của số trừ (引く数 = 0011) rồi cộng vào số bị trừ."},
+  {q:"2進数を1ビット左にシフトした結果は元の値の何倍？", o:["2倍","1/2倍","4倍","変わらない"], a:0, e:"Slide: 桁が1つ左にずれると2倍."},
+  {q:"2進数を3ビット右にシフトした結果は元の値の何倍？", o:["2⁻³ (1/8)倍","2³倍","3倍","1/3倍"], a:0, e:"右シフト n bit = ×2⁻ⁿ. 3 bit = ×1/8."},
+  {q:"論理右シフトの空いたスペースには何を入れる？", o:["0","符号ビット","1","直前のビット"], a:0, e:"Slide: 論理シフトは符号を考慮しない → cả 2 hướng đều điền 0."},
+  {q:"算術右シフトの空いたスペースには何を入れる？", o:["符号ビット","0","1","ランダム"], a:0, e:"Slide: 算術右シフトは空いたスペースに符号ビットを入れる để giữ dấu."},
+  {q:"論理左シフトでオーバーフローが起こる条件は？", o:["1 がはみ出たとき","0 がはみ出たとき","符号ビットが変わったとき","シフト幅が大きいとき"], a:0, e:"Slide: 論理シフトの場合は1がはみ出たらオーバーフロー."},
+  {q:"算術左シフトでオーバーフローが起こる条件は？", o:["符号ビットと異なる値がはみ出たとき","0 がはみ出たとき","1 が右に流れたとき","シフト後の値が偶数のとき"], a:0, e:"Slide: 符号ビットと異なる値がはみ出たらオーバーフロー."},
+  {q:"右シフトではみ出したビットは何を表す？", o:["割り算の余り","次のシフト用","符号","オーバーフローフラグ"], a:0, e:"Slide: はみ出した部分は割り算の余りを表している."},
+  {q:"x × 7 をシフト演算で計算する正しい分解は？", o:["(x<<2) + (x<<1) + x","(x<<3) − x","(x<<7)","(x<<2) × 7"], a:0, e:"Slide: 7 = 4+2+1 = 2²+2¹+2⁰. → x×7 = x×4 + x×2 + x×1."},
+];
+
+const qz = document.getElementById('quiz');
+Q.forEach((q,i)=>{
+  const wrap = document.createElement('div');
+  wrap.className='qz';
+  const letters=['A','B','C','D'];
+  wrap.innerHTML = `<div class="qz-q">Câu ${i+1}. ${q.q}</div>` +
+    q.o.map((o,j)=>`<div class="qz-opt" data-i="${j}"><strong>${letters[j]}.</strong> ${o}</div>`).join('') +
+    `<div class="qz-exp">✓ Đáp án đúng: <strong>${letters[q.a]}</strong>. ${q.e}</div>`;
+  wrap.querySelectorAll('.qz-opt').forEach(el=>{
+    el.onclick=()=>{
+      if(wrap.querySelector('.locked')) return;
+      const i = parseInt(el.dataset.i);
+      wrap.querySelectorAll('.qz-opt').forEach((o,k)=>{
+        o.classList.add('locked');
+        if(k===q.a) o.classList.add('ok');
+        else if(k===i) o.classList.add('ng');
+      });
+      wrap.querySelector('.qz-exp').classList.add('show');
+    };
+  });
+  qz.appendChild(wrap);
+});
+</script>
+</body>
+</html>
