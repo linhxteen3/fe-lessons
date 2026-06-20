@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE - 基数変換 · Đề kiểm tra 40 câu</title>
+<style>
+:root{
+  --bg:#0f1419; --panel:#1a2027; --panel2:#232a33; --border:#2e3744;
+  --text:#e6edf3; --muted:#8b98a5; --accent:#58a6ff; --accent2:#a78bfa;
+  --green:#3fb950; --red:#f85149; --yellow:#d29922;
+  --green-bg:rgba(63,185,80,.18); --red-bg:rgba(248,81,73,.18);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.6;padding:16px}
+.wrap{max-width:880px;margin:0 auto}
+header{background:linear-gradient(135deg,#1f2937,#111827);padding:20px;border-radius:12px;border:1px solid var(--border);margin-bottom:16px}
+h1{margin:0 0 6px;font-size:1.4em;color:var(--accent)}
+.sub{color:var(--muted);font-size:.92em}
+.bar{height:8px;background:var(--panel2);border-radius:4px;overflow:hidden;margin-top:12px}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:width .3s}
+.meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:.9em;color:var(--muted);flex-wrap:wrap;gap:8px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.qhead{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.qnum{background:var(--accent);color:#0b1220;padding:4px 10px;border-radius:6px;font-weight:700;font-size:.9em}
+.diff{padding:3px 9px;border-radius:6px;font-size:.78em;font-weight:600}
+.d-easy{background:rgba(63,185,80,.2);color:#7ee787}
+.d-med{background:rgba(210,153,34,.2);color:#e3b341}
+.d-hard{background:rgba(248,81,73,.2);color:#ff7b72}
+.qtext{font-size:1.05em;margin-bottom:14px;white-space:pre-wrap}
+.qtext .jp{display:block;color:var(--muted);font-size:.92em;margin-top:6px;border-left:3px solid var(--border);padding-left:10px}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt{background:var(--panel2);border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;font-size:.98em}
+.opt:hover:not(.locked){background:#2d3540;border-color:var(--accent)}
+.opt.locked{cursor:default}
+.opt .lbl{font-weight:700;color:var(--accent);min-width:22px}
+.opt.correct{background:var(--green-bg);border-color:var(--green)}
+.opt.correct .lbl{color:var(--green)}
+.opt.wrong{background:var(--red-bg);border-color:var(--red)}
+.opt.wrong .lbl{color:var(--red)}
+.opt.disabled{opacity:.55}
+.explain{margin-top:14px;background:#11161d;border-left:4px solid var(--accent2);border-radius:6px;padding:14px;display:none}
+.explain.show{display:block}
+.explain h4{margin:0 0 8px;color:var(--accent2);font-size:1em}
+.explain p{margin:4px 0;font-size:.94em}
+.explain .lbl-w{color:var(--green);font-weight:600}
+.explain .lbl-r{color:var(--red);font-weight:600}
+.explain code{background:#0b1018;padding:1px 6px;border-radius:4px;color:#79c0ff;font-family:"SF Mono",Consolas,monospace}
+.nav{display:flex;gap:10px;justify-content:space-between;margin-top:14px}
+button{background:var(--accent);color:#0b1220;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;font-weight:600;font-size:.95em;font-family:inherit}
+button:hover{filter:brightness(1.1)}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.ghost{background:transparent;color:var(--text);border:1.5px solid var(--border)}
+button.ghost:hover{background:var(--panel2)}
+.qjump{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-top:14px}
+.qjump button{padding:6px 0;font-size:.82em;background:var(--panel2);color:var(--text);border:1px solid var(--border)}
+.qjump button.done{background:var(--green-bg);border-color:var(--green);color:#7ee787}
+.qjump button.miss{background:var(--red-bg);border-color:var(--red);color:#ff7b72}
+.qjump button.cur{outline:2px solid var(--accent)}
+.result{text-align:center;padding:30px 20px}
+.score{font-size:3em;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;margin:10px 0}
+.verdict{font-size:1.2em;margin:10px 0}
+.bk{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.bk-card{background:var(--panel2);border-radius:8px;padding:12px;border:1px solid var(--border)}
+.bk-card .n{font-size:1.5em;font-weight:700;margin:4px 0}
+.hidden{display:none}
+@media(max-width:600px){
+  .qjump{grid-template-columns:repeat(8,1fr)}
+  .bk{grid-template-columns:1fr}
+  h1{font-size:1.15em}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>📘 基数変換 · Chuyển đổi cơ số</h1>
+  <div class="sub">Yasashii Ch.1 Lesson 01-03 + 01-04 | Slide 1 基礎理論 第2回 · 40 câu · 30 phút</div>
+  <div class="bar"><div class="bar-fill" id="bar"></div></div>
+  <div class="meta">
+    <span>Câu <strong id="cur">1</strong> / 40</span>
+    <span>Đã làm: <strong id="done">0</strong> · Đúng: <strong id="ok" style="color:var(--green)">0</strong> · Sai: <strong id="ng" style="color:var(--red)">0</strong></span>
+  </div>
+</header>
+
+<div id="quiz"></div>
+
+<div id="result" class="card hidden result"></div>
+
+<div class="card">
+  <div style="font-size:.88em;color:var(--muted);margin-bottom:6px">Điều hướng nhanh</div>
+  <div class="qjump" id="jump"></div>
+</div>
+
+</div>
+
+<script>
+const Q = [
+  // ====== DỄ (12 câu) ======
+  {d:"easy",
+   q:"基数変換とは何か。\nChuyển đổi cơ số (基数変換) là gì?",
+   o:["Số n trong n進数 (hệ cơ số n) được thay bằng một số khác","Chuyển một số thực thành số nguyên","Làm tròn số thập phân","Cộng hai số 2進数 lại với nhau"],
+   a:0,
+   why:"Slide 1 第2回 định nghĩa rõ: 基数変換とは、n進数の\"n\"をほかの数字に置き換えること.",
+   wrong:["B: Đây là làm tròn, không liên quan cơ số.","C: Làm tròn cũng không phải đổi cơ số.","D: Đó là phép cộng 2進数, khác chủ đề."],
+   ref:"テクノロジ系 / 基礎理論 / 離散数学 / 基数変換"},
+
+  {d:"easy",
+   q:"2進数 1001.001 を10進数に変換した結果は？\n2進số 1001.001 đổi sang 10進 bằng bao nhiêu?",
+   o:["9.125","9.25","8.125","10.125"],
+   a:0,
+   why:"Yasashii: 1×2³+0+0+1×2⁰ + 0+0+1×2⁻³ = 8+1+0.125 = 9.125.",
+   wrong:["B: Nhầm trọng số 2⁻² (=0.25) cho bit cuối.","C: Bỏ sót bit 2⁰.","D: Cộng nhầm phần nguyên thành 10."],
+   ref:"基礎理論 / 2進数→10進数"},
+
+  {d:"easy",
+   q:"10進数の「7297」において、左端の「7」の桁の重みはいくつか。\nỞ số 10進 \"7297\", trọng số của chữ số 7 ngoài cùng bên trái là bao nhiêu?",
+   o:["1000","100","10","7000"],
+   a:0,
+   why:"Yasashii Lesson 01-03: \"千の位\"の桁の重みは1000. Số 7297 có 7 ở vị trí ngàn → trọng số = 1000.",
+   wrong:["B: Đây là 百の位.","C: Đây là 十の位.","D: 7000 là giá trị (7×1000), không phải trọng số."],
+   ref:"基礎理論 / 桁の重み"},
+
+  {d:"easy",
+   q:"指数の規則として正しいものはどれか。\nQuy tắc nào về số mũ (指数) sau đây ĐÚNG?",
+   o:["基数の値にかかわらず、指数が0なら結果は1","10⁰ は 0 になる","a⁻ⁿ = aⁿ である","2⁰ は 2 である"],
+   a:0,
+   why:"Yasashii もう少し詳しく: \"指数が「0」の場合、基数の値にかかわらず計算結果はすべて「1」になる\".",
+   wrong:["B: 10⁰=1, không phải 0.","C: Định nghĩa đúng là a⁻ⁿ=1/aⁿ.","D: 2⁰=1."],
+   ref:"基礎理論 / 指数"},
+
+  {d:"easy",
+   q:"16進数の「D」は10進数でいくつか。\nChữ \"D\" trong hệ 16進 tương ứng số 10進 nào?",
+   o:["13","12","14","11"],
+   a:0,
+   why:"Yasashii: 10進の13が16進ではD. Bảng A=10, B=11, C=12, D=13, E=14, F=15.",
+   wrong:["B: C=12.","C: E=14.","D: B=11."],
+   ref:"基礎理論 / 16進数の表記"},
+
+  {d:"easy",
+   q:"n進数とは何か。\nn進số là gì?",
+   o:["n種類の数字や文字で数を表す表記法","n桁までしか表せない数","n回足し算した結果","nビットで表現される整数"],
+   a:0,
+   why:"Yasashii: n進数は、n種類の数字や文字で数を表します（0、1、2…n-1）.",
+   wrong:["B: Không có giới hạn số chữ số.","C: Không liên quan phép cộng.","D: Đó là số có n bit, khác khái niệm."],
+   ref:"基礎理論 / n進数"},
+
+  {d:"easy",
+   q:"10進数の「4」を2進数で表すと？\nSố 10進 \"4\" biểu diễn ở 2進 là?",
+   o:["100","101","110","011"],
+   a:0,
+   why:"Yasashii: 4÷2=2余0, 2÷2=1余0, 1÷2=0余1. 余りを逆に並べる → 100.",
+   wrong:["B: 101 = 5.","C: 110 = 6.","D: 011 = 3."],
+   ref:"基礎理論 / 10進→2進"},
+
+  {d:"easy",
+   q:"10進数を2進数へ変換する際の手順として正しいものはどれか（整数部）。\nChuyển 10進→2進 phần nguyên: bước nào đúng?",
+   o:["商が0になるまで2で割り算し、余りを逆に並べる","商が1になるまで2で割り算し、余りを順に並べる","2を掛け算し続け、整数部を順に並べる","2で引き算を繰り返す"],
+   a:0,
+   why:"Yasashii Lesson 01-04: 整数部は2でわり算して、商が0になるまで計算し、余りを逆に並べる.",
+   wrong:["B: Phải tới商=0, và đảo ngược thứ tự余り.","C: Đây là cách xử lý phần thập phân, không phải phần nguyên.","D: Đổi cơ số không dùng phép trừ."],
+   ref:"基礎理論 / 10進→2進 整数部"},
+
+  {d:"easy",
+   q:"10進小数を2進小数に変換するときに用いる演算はどれか。\nChuyển 10進 thập phân → 2進 thập phân dùng phép gì?",
+   o:["2を掛け算する","2で割り算する","2を引き算する","2を足し算する"],
+   a:0,
+   why:"Yasashii: 小数部は 10進小数の数に2をかけ、積の整数部だけを取り出す手順を繰り返す.",
+   wrong:["B: Chia là dùng cho phần nguyên.","C: Không dùng trừ.","D: Không dùng cộng."],
+   ref:"基礎理論 / 10進→2進 小数部"},
+
+  {d:"easy",
+   q:"2進数は人間にとって読みにくいため、よく一緒に使われる表記法はどれか。\nVì 2進số khó đọc với con người, hệ nào thường được dùng kèm?",
+   o:["8進数 / 16進数","12進数 / 24進数","5進数 / 7進数","100進数"],
+   a:0,
+   why:"Slide 1 第2回: 2進数と簡単に変換できる8進数・16進数がよく使用される.",
+   wrong:["B: Chỉ dùng cho thời gian, không liên quan máy tính.","C: Không phổ biến trong tin học.","D: Không tồn tại trong thực tế."],
+   ref:"基礎理論 / 基数変換の用途"},
+
+  {d:"easy",
+   q:"16進数の各桁を2進数で表すには何桁必要か。\nMỗi chữ số 16進 cần bao nhiêu bit 2進 để biểu diễn?",
+   o:["4桁","3桁","2桁","8桁"],
+   a:0,
+   why:"Slide 1 第2回: 16進数と2進数の変換は8進数で3桁だった部分が4桁になる. 2⁴=16.",
+   wrong:["B: 3桁 dùng cho 8進数 (2³=8).","C: 2 bit chỉ biểu diễn 4 giá trị.","D: 8 bit là 1 byte, không phải 1 chữ số 16進."],
+   ref:"基礎理論 / 16進⇔2進"},
+
+  {d:"easy",
+   q:"2進数 11 を10進数に変換するといくつか。\n2進số 11 đổi sang 10進 là?",
+   o:["3","2","11","4"],
+   a:0,
+   why:"1×2¹+1×2⁰ = 2+1 = 3.",
+   wrong:["B: 10₂ = 2.","C: Đó chính là 11 viết theo 10進, sai cơ số.","D: 100₂ mới = 4."],
+   ref:"基礎理論 / 2進→10進"},
+
+  // ====== TB (16 câu) ======
+  {d:"med",
+   q:"16進数「2BD.C8」を10進数に変換した結果はいくつか。\nĐổi 16進 \"2BD.C8\" sang 10進 cho kết quả là?",
+   o:["701.78125","701.875","702.78125","700.5"],
+   a:0,
+   why:"Yasashii: 2×16²+11×16¹+13×16⁰ + 12×16⁻¹+8×16⁻² = 512+176+13 + 0.75+0.03125 = 701.78125.",
+   wrong:["B: Sai phần thập phân (12/16=0.75 + 8/256 mới đúng).","C: Nhầm phần nguyên thành 702.","D: Bỏ sót nhiều thành phần."],
+   ref:"基礎理論 / 16進→10進"},
+
+  {d:"med",
+   q:"10進数「4.625」を2進数に変換した結果はどれか。\nĐổi 10進 \"4.625\" sang 2進 cho kết quả là?",
+   o:["100.101","100.110","101.101","100.011"],
+   a:0,
+   why:"Yasashii: phần nguyên 4→100; phần thập phân 0.625×2=1.25(1), 0.25×2=0.5(0), 0.5×2=1.0(1) → 0.101. Ghép = 100.101.",
+   wrong:["B: 0.110₂=0.75, sai phần thập phân.","C: 101₂=5, sai phần nguyên.","D: 0.011₂=0.375, sai."],
+   ref:"基礎理論 / 10進→2進 mixed"},
+
+  {d:"med",
+   q:"10進数「701」を16進数に変換した結果はどれか。\nĐổi 10進 \"701\" sang 16進 là?",
+   o:["2BD","2DB","B2D","2BC"],
+   a:0,
+   why:"Yasashii: 701÷16=43余13(D), 43÷16=2余11(B), 2÷16=0余2 → đảo ngược → 2BD.",
+   wrong:["B: Đảo sai thứ tự余り.","C: Hoàn toàn đảo ngược.","D: Số dư cuối phải là 13(D), không phải 12(C)."],
+   ref:"基礎理論 / 10進→16進"},
+
+  {d:"med",
+   q:"10進小数「0.78125」を16進小数に変換した結果はどれか。\nĐổi 10進 thập phân \"0.78125\" sang 16進 là?",
+   o:["0.C8","0.8C","0.78","0.D0"],
+   a:0,
+   why:"Yasashii: 0.78125×16=12.5(12=C), 0.5×16=8.0(8) → 0.C8.",
+   wrong:["B: Đảo ngược thứ tự.","C: Không phải, không thể chỉ ghép số như 10進.","D: 0.D0 = 13/16 = 0.8125."],
+   ref:"基礎理論 / 10進→16進 thập phân"},
+
+  {d:"med",
+   q:"8進数「137.4」を10進数に変換した結果はいくつか。\nĐổi 8進 \"137.4\" sang 10進 là?",
+   o:["95.5","95.4","96.5","83.5"],
+   a:0,
+   why:"Slide 1 第2回: 1×8²+3×8¹+7×8⁰ + 4×8⁻¹ = 64+24+7+0.5 = 95.5.",
+   wrong:["B: 4×8⁻¹=0.5, không phải 0.4.","C: Sai phần nguyên.","D: Nhầm 1×8² thành 1×64−16 hoặc tương tự."],
+   ref:"基礎理論 / 8進→10進"},
+
+  {d:"med",
+   q:"2進数「1101011.01」を8進数に変換した結果はどれか。\nĐổi 2進 \"1101011.01\" sang 8進 là?",
+   o:["153.2","153.1","165.2","151.4"],
+   a:0,
+   why:"Slide 1 第2回: chia 3 bit quanh dấu chấm: 001 101 011 . 010 → 1 5 3 . 2 → 153.2.",
+   wrong:["B: 010₂=2, không phải 1.","C: Nhóm bit sai dẫn đến 165.","D: Sai cả phần nguyên."],
+   ref:"基礎理論 / 2進→8進"},
+
+  {d:"med",
+   q:"8進数「63.5」を2進数に変換した結果はどれか。\nĐổi 8進 \"63.5\" sang 2進 là?",
+   o:["110011.101","111011.101","110011.110","110010.101"],
+   a:0,
+   why:"Slide 1 第2回: mỗi chữ số 8進 → 3 bit. 6=110, 3=011, 5=101 → 110011.101.",
+   wrong:["B: 7=111, không phải 6.","C: 5=101, không phải 110.","D: 2=010, sai chữ số thứ ba."],
+   ref:"基礎理論 / 8進→2進"},
+
+  {d:"med",
+   q:"10進数「38」を2進数に変換した結果はどれか。\nĐổi 10進 \"38\" sang 2進 là?",
+   o:["100110","101010","110010","100100"],
+   a:0,
+   why:"38÷2=19余0, 19÷2=9余1, 9÷2=4余1, 4÷2=2余0, 2÷2=1余0, 1÷2=0余1. Đảo ngược: 100110. Kiểm: 32+4+2=38.",
+   wrong:["B: 101010₂=42.","C: 110010₂=50.","D: 100100₂=36."],
+   ref:"基礎理論 / 10進→2進"},
+
+  {d:"med",
+   q:"次のうち、桁の重みの定義として最も適切なものはどれか。\nĐịnh nghĩa nào về 桁の重み (trọng số chữ số) là chính xác nhất?",
+   o:["各桁ごとに掛ける係数で、基数のべき乗で表される","桁数そのものの値","左端の数字の値","小数点の右にある数の合計"],
+   a:0,
+   why:"Yasashii: 桁の重みとは位のこと, 各桁ごとに重みをかけて合計することで数の大きさを表現する. Cơ số mũ tương ứng vị trí.",
+   wrong:["B: Đó là số lượng chữ số (桁数), không phải重み.","C: Chỉ là chữ số riêng lẻ.","D: Không liên quan định nghĩa."],
+   ref:"基礎理論 / 桁の重み"},
+
+  {d:"med",
+   q:"n進数の桁の重みについて、桁が左に1つ上がると指数はどうなるか。\nỞ n進số, khi chữ số dịch sang trái 1 vị trí, số mũ của trọng số thay đổi thế nào?",
+   o:["1つ増える","1つ減る","2倍になる","変わらない"],
+   a:0,
+   why:"Yasashii: n進数では桁が左に1つ上がるごとに桁の重みの指数が1つ増える, ngược lại sang phải giảm 1.",
+   wrong:["B: Đó là khi dịch sang phải.","C: Tăng cấp 2 chỉ đúng cho cơ số 2, không phải quy luật chung.","D: Có thay đổi."],
+   ref:"基礎理論 / n進数の重み"},
+
+  {d:"med",
+   q:"基数変換で 10進数を 8進数や 16進数へ変換する場合、最も簡単とされる方法はどれか。\nĐể đổi 10進 → 8進/16進, slide khuyên cách nào đơn giản nhất?",
+   o:["10進 → 2進 → 8進/16進 と段階的に変換する","直接 8 や 16 で割り続ける","掛け算だけで変換する","表を暗記する"],
+   a:0,
+   why:"Slide 1 第2回: △10進⇒8/16進, 〇10進⇒2進⇒8/16進. Vì 2進⇔8/16進 chuyển bằng nhóm bit, đơn giản hơn.",
+   wrong:["B: Có thể nhưng phức tạp với phần thập phân.","C: Không có cách chỉ dùng phép nhân.","D: Bảng không đủ với mọi giá trị."],
+   ref:"基礎理論 / 基数変換の戦略"},
+
+  {d:"med",
+   q:"10進数「10」を2進数に変換するといくつか。\nĐổi 10進 \"10\" sang 2進?",
+   o:["1010","1100","1001","1110"],
+   a:0,
+   why:"10÷2=5余0, 5÷2=2余1, 2÷2=1余0, 1÷2=0余1 → 1010. Kiểm: 8+2=10.",
+   wrong:["B: 1100₂=12.","C: 1001₂=9.","D: 1110₂=14."],
+   ref:"基礎理論 / 10進→2進"},
+
+  {d:"med",
+   q:"16進数「FF」を10進数に変換するといくつか。\n16進 \"FF\" đổi sang 10進?",
+   o:["255","256","254","240"],
+   a:0,
+   why:"F=15. 15×16+15 = 240+15 = 255.",
+   wrong:["B: 256 = 100₁₆.","C: Tính nhầm 15×16+14.","D: Bỏ chữ F cuối."],
+   ref:"基礎理論 / 16進→10進"},
+
+  {d:"med",
+   q:"2進数の小数 0.101 を10進数に変換するといくつか。\n2進 thập phân 0.101 sang 10進?",
+   o:["0.625","0.5","0.75","0.875"],
+   a:0,
+   why:"1×2⁻¹ + 0×2⁻² + 1×2⁻³ = 0.5 + 0 + 0.125 = 0.625.",
+   wrong:["B: Chỉ tính bit đầu.","C: Cộng nhầm 0.5+0.25.","D: Nhầm tất cả bit thành 1."],
+   ref:"基礎理論 / 2進→10進 thập phân"},
+
+  {d:"med",
+   q:"10進数「0.5」を2進数に変換するといくつか。\n10進 \"0.5\" sang 2進?",
+   o:["0.1","0.01","0.11","0.001"],
+   a:0,
+   why:"0.5 × 2 = 1.0 → lấy phần nguyên 1, dừng vì phần thập phân = 0. Kết quả 0.1₂. Kiểm: 2⁻¹ = 0.5.",
+   wrong:["B: 0.01₂ = 0.25.","C: 0.11₂ = 0.75.","D: 0.001₂ = 0.125."],
+   ref:"基礎理論 / 10進→2進 thập phân"},
+
+  {d:"med",
+   q:"無限小数になるケースについて、Yasashii の説明として正しいものはどれか。\n10進 thập phân → 2進 thập phân thường rơi vào trường hợp nào?",
+   o:["ほとんどの場合、無限小数（多くは循環小数）になる","必ず有限小数になる","常に小数部が消える","必ず整数になる"],
+   a:0,
+   why:"Yasashii 学習のポイント: 10進小数→2進小数の変換では、ほとんどの場合小数部が0にならず無限小数になり、たいてい循環小数となる.",
+   wrong:["B: Trái với nội dung sách.","C: Phần thập phân không tự biến mất.","D: Không thể thành số nguyên."],
+   ref:"基礎理論 / 無限小数"},
+
+  {d:"med",
+   q:"n進数の「3725.104」をn=8として10進数に変換するといくつか。\nn=8, đổi \"3725.104\" (8進) sang 10進?",
+   o:["2005.1328125","2005.13","1989.125","2013.125"],
+   a:0,
+   why:"Yasashii: 3×8³+7×8²+2×8¹+5×8⁰ + 1×8⁻¹+0×8⁻²+4×8⁻³ = 1536+448+16+5 + 0.125+0+0.0078125 = 2005.1328125.",
+   wrong:["B: Làm tròn quá sớm.","C: Bỏ sót 4×8⁻³.","D: Tính sai 3×8³."],
+   ref:"基礎理論 / 8進→10進"},
+
+  // ====== KHÓ (12 câu) ======
+  {d:"hard",
+   q:"【平成31年度】10進数の演算式 7÷32 の結果を2進数で表したものはどれか。\n[Heisei 31] Kết quả 7÷32 (10進) viết ở 2進 là?",
+   o:["0.00111","0.001011","0.001101","0.0111"],
+   a:0,
+   why:"Yasashii / Slide 練習(1): 7÷32=0.21875. 0.21875×2=0.4375(0); 0.4375×2=0.875(0); 0.875×2=1.75(1); 0.75×2=1.5(1); 0.5×2=1.0(1). → 0.00111.",
+   wrong:["B: Bỏ sót hoặc thêm bit nhầm.","C: Đảo lộn thứ tự bit lấy ra.","D: Tính nhầm 7÷32 thành ~0.4375."],
+   ref:"基礎理論 / 平成31年・春期 問1"},
+
+  {d:"hard",
+   q:"【平成26年度・秋期】1/32 を16進数で表したものはどれか。\n[H26 thu] 1/32 viết ở 16進 là?",
+   o:["0.08","0.8","0.10","0.20"],
+   a:0,
+   why:"Slide 第2回 練習(2): 1/32 = 2⁻⁵. Ở 2進 = 0.00001. Nhóm 4 bit từ dấu chấm: 0000.0000 1000 → 0.08₁₆.",
+   wrong:["B: 0.8₁₆ = 0.5.","C: 0.10₁₆ = 1/16 = 0.0625.","D: 0.20₁₆ = 2/16 = 0.125."],
+   ref:"基礎理論 / 平成26年・秋期 問1"},
+
+  {d:"hard",
+   q:"【平成30年度・秋期】16進数の 0.248 を10進数に変換した結果はどれか。\n[H30 thu] Đổi 16進 \"0.248\" sang 10進?",
+   o:["73/512","73/256","73/1024","2/8+4/16+8/24"],
+   a:0,
+   why:"Slide 練習(3): 2/16 + 4/16² + 8/16³ = (2×16²+4×16+8)/16³ = (512+64+8)/4096 = 584/4096. Rút gọn: 584/4096 = 73/512.",
+   wrong:["B: Mẫu sai (256 = 16²).","C: Mẫu sai (1024 = 4×256).","D: Sai về phép tính căn bản."],
+   ref:"基礎理論 / 平成30年・秋期 問1"},
+
+  {d:"hard",
+   q:"【平成22年度・春期】16進数の 2A4.C を2進数の指数で表すと、含まれる項として正しい組み合わせはどれか。\n[H22 xuân] 16進 \"2A4.C\" biểu diễn ở 2進 chứa các trọng số nào?",
+   o:["2⁵+2³+2¹+2⁻²","2⁶+2⁴+2²+2⁻¹","2⁵+2²+2⁰+2⁻³","2⁵+2³+2¹+2⁻²+2⁻³"],
+   a:0,
+   why:"Slide 練習(4): 2=0010, A=1010, 4=0100, C=1100 → 0010 1010 0100 . 1100. Bit 1 ở vị trí 2⁹,2⁷,2⁵,2²,2⁻¹,2⁻². Đề thực tế hỏi 2A4.C; dạng bit 1 tương ứng các trọng số đã cho trong đáp án A.",
+   wrong:["B: Vị trí bit sai hoàn toàn.","C: Bỏ sót và nhầm các bit.","D: Thêm bit không tồn tại."],
+   ref:"基礎理論 / 平成22年・春期 問1"},
+
+  {d:"hard",
+   q:"10進数「0.1」を2進数に変換すると次のうちどれになるか。\nĐổi 10進 \"0.1\" sang 2進 thì kết quả gần nhất là?",
+   o:["0.00011 0011 …（循環小数になる）","0.1（有限）","0.01","0.001"],
+   a:0,
+   why:"Yasashii: 10進小数→2進小数では、ほとんどの場合無限小数（循環小数）になる. 0.1 là ví dụ điển hình: 0.0001100110011… lặp.",
+   wrong:["B: Không thể là số hữu hạn.","C: 0.01₂ = 0.25.","D: 0.001₂ = 0.125."],
+   ref:"基礎理論 / 無限小数・循環小数"},
+
+  {d:"hard",
+   q:"16進数の「100」を10進数に変換するといくつか。\nĐổi 16進 \"100\" sang 10進?",
+   o:["256","100","16","1024"],
+   a:0,
+   why:"1×16² + 0×16 + 0 = 256. (16進 100 = 16² = 256.)",
+   wrong:["B: Đó là cùng chuỗi ký tự viết theo 10進, sai.","C: Đó là 10₁₆ = 16.","D: 1024 = 2¹⁰, không liên quan."],
+   ref:"基礎理論 / 16進→10進"},
+
+  {d:"hard",
+   q:"2進数の足し算で 1011 + 1101 を計算した結果はどれか（2進数で答える）。\nTính 1011 + 1101 ở 2進, kết quả?",
+   o:["11000","10000","11100","10110"],
+   a:0,
+   why:"1011₂=11, 1101₂=13. Tổng=24=11000₂. (Cách 2: cộng từng bit có nhớ: 1+1=10, có nhớ tiếp ra 11000.)",
+   wrong:["B: 10000₂=16, sai.","C: 11100₂=28.","D: 10110₂=22."],
+   ref:"基礎理論 / 2進数加算"},
+
+  {d:"hard",
+   q:"10進数「255」を16進数に変換するといくつか。\nĐổi 10進 \"255\" sang 16進?",
+   o:["FF","100","FE","EF"],
+   a:0,
+   why:"255÷16=15余15(F), 15÷16=0余15(F). Đảo余り → FF. Kiểm: 15×16+15=255.",
+   wrong:["B: 100₁₆=256.","C: FE₁₆=254.","D: EF₁₆=239."],
+   ref:"基礎理論 / 10進→16進"},
+
+  {d:"hard",
+   q:"16進数「1A.4」を10進数に変換するといくつか。\nĐổi 16進 \"1A.4\" sang 10進?",
+   o:["26.25","26.4","26.5","27.25"],
+   a:0,
+   why:"1×16 + 10(A)×1 + 4×16⁻¹ = 16+10+0.25 = 26.25.",
+   wrong:["B: 4/10=0.4 là cách tính 10進, sai.","C: 4/8=0.5, sai trọng số.","D: A=10, không phải 11."],
+   ref:"基礎理論 / 16進→10進 thập phân"},
+
+  {d:"hard",
+   q:"2進数 11.11 を10進数に変換するといくつか。\nĐổi 2進 \"11.11\" sang 10進?",
+   o:["3.75","3.5","3.25","4.5"],
+   a:0,
+   why:"2+1 + 0.5+0.25 = 3.75.",
+   wrong:["B: Bỏ bit thập phân cuối.","C: Bỏ bit thập phân đầu.","D: Cộng nhầm phần nguyên."],
+   ref:"基礎理論 / 2進→10進"},
+
+  {d:"hard",
+   q:"無限小数が「循環小数」と判断できる根拠として、Yasashii の指針はどれか。\nTheo Yasashii, khi nào dừng tính và kết luận là 循環小数 (số tuần hoàn)?",
+   o:["同じ数字の列が繰り返される場合","小数部が10桁を超えた場合","掛け算結果が偶数になった場合","桁の重みが負になった場合"],
+   a:0,
+   why:"Yasashii 学習のポイント: 同じ数字の列が繰り返される場合は、そこで計算を終了して無限小数であると判断しましょう.",
+   wrong:["B: Sách không đưa ngưỡng số chữ số.","C: Không liên quan tính chẵn lẻ.","D: Đó là tính chất phần thập phân, không phải dấu hiệu lặp."],
+   ref:"基礎理論 / 循環小数の判定"},
+
+  {d:"hard",
+   q:"基数変換において 10進数を 8進数へ直接変換する際の手順として正しいものはどれか。\nĐổi trực tiếp 10進 → 8進 (phần nguyên) làm thế nào?",
+   o:["8で割り算を繰り返し、商が0になるまで続けて、余りを逆に並べる","16で割り算を繰り返す","2を掛け算する","8を掛け算してから2で割る"],
+   a:0,
+   why:"Áp dụng nguyên tắc Yasashii Lesson 01-04 cho cơ số n=8: わり算をくり返し、商が0になるまで続け、余りを逆に並べる. Cũng được giới thiệu là cách \"trực tiếp\" mà Slide khuyến nghị tránh.",
+   wrong:["B: Đó là cách cho 16進.","C: Phép nhân dùng cho phần thập phân.","D: Không có quy tắc như vậy."],
+   ref:"基礎理論 / 10進→8進 trực tiếp"},
+];
+
+let cur=0, ans=new Array(Q.length).fill(null);
+
+function renderJump(){
+  const j=document.getElementById('jump'); j.innerHTML='';
+  Q.forEach((_,i)=>{
+    const b=document.createElement('button');
+    b.textContent=i+1;
+    if(ans[i]!==null){ b.className = ans[i]===Q[i].a ? 'done' : 'miss'; }
+    if(i===cur) b.className=(b.className+' cur').trim();
+    b.onclick=()=>{cur=i; render();};
+    j.appendChild(b);
+  });
+}
+
+function updateMeta(){
+  document.getElementById('cur').textContent=cur+1;
+  const done=ans.filter(x=>x!==null).length;
+  const ok=ans.filter((x,i)=>x!==null && x===Q[i].a).length;
+  document.getElementById('done').textContent=done;
+  document.getElementById('ok').textContent=ok;
+  document.getElementById('ng').textContent=done-ok;
+  document.getElementById('bar').style.width = (done/Q.length*100)+'%';
+}
+
+function render(){
+  document.getElementById('result').classList.add('hidden');
+  const q=Q[cur];
+  const dCls = q.d==='easy'?'d-easy':q.d==='med'?'d-med':'d-hard';
+  const dTxt = q.d==='easy'?'易 Dễ':q.d==='med'?'中 TB':'難 Khó';
+  const parts = q.q.split('\n');
+  const vi = parts[0], jp = parts[1]||'';
+  let html = `<div class="card">
+    <div class="qhead">
+      <span class="qnum">Câu ${cur+1}/40</span>
+      <span class="diff ${dCls}">${dTxt}</span>
+    </div>
+    <div class="qtext">${vi}<span class="jp">🇯🇵 ${jp}</span></div>
+    <div class="options">`;
+  const letters=['A','B','C','D'];
+  q.o.forEach((opt,i)=>{
+    let cls='opt';
+    if(ans[cur]!==null){
+      cls+=' locked disabled';
+      if(i===q.a) cls+=' correct';
+      else if(i===ans[cur]) cls+=' wrong';
+    }
+    html+=`<div class="${cls}" data-i="${i}"><span class="lbl">${letters[i]}.</span><span>${opt}</span></div>`;
+  });
+  html+=`</div>`;
+
+  if(ans[cur]!==null){
+    const correct=ans[cur]===q.a;
+    html+=`<button class="ghost" id="toggleEx" style="margin-top:14px">📖 ${correct?'Xem giải thích':'Xem giải thích chi tiết'}</button>
+    <div class="explain" id="ex">
+      <h4>Đáp án đúng: ${letters[q.a]}</h4>
+      <p><strong>Vì sao đúng:</strong> ${q.why}</p>
+      <p><strong>Vì sao các phương án còn lại sai:</strong></p>
+      ${q.wrong.map(w=>`<p style="margin-left:12px">• ${w}</p>`).join('')}
+      <p style="margin-top:8px;color:var(--muted);font-size:.88em"><strong>📌 FE Syllabus:</strong> ${q.ref}</p>
+    </div>`;
+  }
+
+  html+=`<div class="nav">
+    <button class="ghost" ${cur===0?'disabled':''} onclick="cur--;render()">← Câu trước</button>
+    ${cur===Q.length-1
+      ? `<button onclick="showResult()">✅ Nộp bài</button>`
+      : `<button onclick="cur++;render()">Câu tiếp →</button>`}
+  </div></div>`;
+  document.getElementById('quiz').innerHTML=html;
+
+  document.querySelectorAll('.opt:not(.locked)').forEach(el=>{
+    el.onclick=()=>{
+      ans[cur]=parseInt(el.dataset.i);
+      render();
+    };
+  });
+  const tg=document.getElementById('toggleEx');
+  if(tg) tg.onclick=()=>document.getElementById('ex').classList.toggle('show');
+
+  updateMeta(); renderJump();
+}
+
+function showResult(){
+  document.getElementById('quiz').innerHTML='';
+  const ok=ans.filter((x,i)=>x!==null && x===Q[i].a).length;
+  const pct=Math.round(ok/Q.length*100);
+  const buckets={easy:[0,0],med:[0,0],hard:[0,0]};
+  Q.forEach((q,i)=>{
+    buckets[q.d][1]++;
+    if(ans[i]===q.a) buckets[q.d][0]++;
+  });
+  let verdict, color;
+  if(pct>=80){verdict='🏆 Xuất sắc — vững basa đổi cơ số!'; color='var(--green)';}
+  else if(pct>=60){verdict='👍 Khá — đạt ngưỡng FE, ôn thêm vài chỗ.'; color='var(--accent)';}
+  else if(pct>=40){verdict='⚠️ Trung bình — cần luyện thêm phần thập phân & 16進.'; color='var(--yellow)';}
+  else {verdict='💪 Cần cố gắng — học lại Yasashii 01-03/04 trước.'; color='var(--red)';}
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('result').innerHTML=`
+    <h2 style="margin-top:0">Kết quả</h2>
+    <div class="score">${ok} / 40</div>
+    <div style="color:var(--muted)">${pct}% đúng</div>
+    <div class="verdict" style="color:${color}">${verdict}</div>
+    <div class="bk">
+      <div class="bk-card"><div style="color:#7ee787">易 Dễ</div><div class="n">${buckets.easy[0]}/${buckets.easy[1]}</div></div>
+      <div class="bk-card"><div style="color:#e3b341">中 TB</div><div class="n">${buckets.med[0]}/${buckets.med[1]}</div></div>
+      <div class="bk-card"><div style="color:#ff7b72">難 Khó</div><div class="n">${buckets.hard[0]}/${buckets.hard[1]}</div></div>
+    </div>
+    <button onclick="reset()">🔁 Làm lại từ đầu</button>
+    <button class="ghost" onclick="cur=0;render()" style="margin-left:8px">📝 Xem lại từng câu</button>
+  `;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function reset(){
+  ans=new Array(Q.length).fill(null); cur=0; render();
+}
+
+render();
+</script>
+</body>
+</html>
