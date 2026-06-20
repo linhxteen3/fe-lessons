@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE - 負の2進数 · Đề kiểm tra 40 câu</title>
+<style>
+:root{
+  --bg:#0f1419; --panel:#1a2027; --panel2:#232a33; --border:#2e3744;
+  --text:#e6edf3; --muted:#8b98a5; --accent:#58a6ff; --accent2:#a78bfa;
+  --green:#3fb950; --red:#f85149; --yellow:#d29922;
+  --green-bg:rgba(63,185,80,.18); --red-bg:rgba(248,81,73,.18);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.6;padding:16px}
+.wrap{max-width:880px;margin:0 auto}
+header{background:linear-gradient(135deg,#1f2937,#581c87);padding:20px;border-radius:12px;border:1px solid var(--border);margin-bottom:16px}
+h1{margin:0 0 6px;font-size:1.4em;color:#fff}
+.sub{color:#cbd5e1;font-size:.92em}
+.bar{height:8px;background:var(--panel2);border-radius:4px;overflow:hidden;margin-top:12px}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:width .3s}
+.meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:.9em;color:#cbd5e1;flex-wrap:wrap;gap:8px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.qhead{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.qnum{background:var(--accent);color:#0b1220;padding:4px 10px;border-radius:6px;font-weight:700;font-size:.9em}
+.diff{padding:3px 9px;border-radius:6px;font-size:.78em;font-weight:600}
+.d-easy{background:rgba(63,185,80,.2);color:#7ee787}
+.d-med{background:rgba(210,153,34,.2);color:#e3b341}
+.d-hard{background:rgba(248,81,73,.2);color:#ff7b72}
+.qtext{font-size:1.05em;margin-bottom:14px;white-space:pre-wrap}
+.qtext .jp{display:block;color:var(--muted);font-size:.92em;margin-top:6px;border-left:3px solid var(--border);padding-left:10px}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt{background:var(--panel2);border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;font-size:.98em}
+.opt:hover:not(.locked){background:#2d3540;border-color:var(--accent)}
+.opt.locked{cursor:default}
+.opt .lbl{font-weight:700;color:var(--accent);min-width:22px}
+.opt.correct{background:var(--green-bg);border-color:var(--green)}
+.opt.correct .lbl{color:var(--green)}
+.opt.wrong{background:var(--red-bg);border-color:var(--red)}
+.opt.wrong .lbl{color:var(--red)}
+.opt.disabled{opacity:.55}
+.explain{margin-top:14px;background:#11161d;border-left:4px solid var(--accent2);border-radius:6px;padding:14px;display:none}
+.explain.show{display:block}
+.explain h4{margin:0 0 8px;color:var(--accent2);font-size:1em}
+.explain p{margin:4px 0;font-size:.94em}
+.explain code{background:#0b1018;padding:1px 6px;border-radius:4px;color:#79c0ff;font-family:"SF Mono",Consolas,monospace}
+.nav{display:flex;gap:10px;justify-content:space-between;margin-top:14px}
+button{background:var(--accent);color:#0b1220;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;font-weight:600;font-size:.95em;font-family:inherit}
+button:hover{filter:brightness(1.1)}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.ghost{background:transparent;color:var(--text);border:1.5px solid var(--border)}
+button.ghost:hover{background:var(--panel2)}
+.qjump{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-top:14px}
+.qjump button{padding:6px 0;font-size:.82em;background:var(--panel2);color:var(--text);border:1px solid var(--border)}
+.qjump button.done{background:var(--green-bg);border-color:var(--green);color:#7ee787}
+.qjump button.miss{background:var(--red-bg);border-color:var(--red);color:#ff7b72}
+.qjump button.cur{outline:2px solid var(--accent)}
+.result{text-align:center;padding:30px 20px}
+.score{font-size:3em;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;margin:10px 0}
+.verdict{font-size:1.2em;margin:10px 0}
+.bk{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.bk-card{background:var(--panel2);border-radius:8px;padding:12px;border:1px solid var(--border)}
+.bk-card .n{font-size:1.5em;font-weight:700;margin:4px 0}
+.hidden{display:none}
+@media(max-width:600px){
+  .qjump{grid-template-columns:repeat(8,1fr)}
+  .bk{grid-template-columns:1fr}
+  h1{font-size:1.15em}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>➖ 負の2進数 · Đề kiểm tra 40 câu</h1>
+  <div class="sub">Nguồn: Slide 1 基礎理論 第3回 · 30 phút · IPA style</div>
+  <div class="bar"><div class="bar-fill" id="bar"></div></div>
+  <div class="meta">
+    <span>Câu <strong id="cur">1</strong> / 40</span>
+    <span>Đã làm: <strong id="done">0</strong> · Đúng: <strong id="ok" style="color:var(--green)">0</strong> · Sai: <strong id="ng" style="color:var(--red)">0</strong></span>
+  </div>
+</header>
+
+<div id="quiz"></div>
+<div id="result" class="card hidden result"></div>
+
+<div class="card">
+  <div style="font-size:.88em;color:var(--muted);margin-bottom:6px">Điều hướng nhanh</div>
+  <div class="qjump" id="jump"></div>
+</div>
+</div>
+
+<script>
+const Q = [
+  // ====== DỄ (12 câu) ======
+  {d:"easy",
+   q:"なぜコンピュータは負の数を表現する必要があるのか。\nVì sao máy tính phải biểu diễn được số âm?",
+   o:["コンピュータは足し算しかできず、引き算を負の数の足し算として処理するため","引き算回路が高速だから","負の数の方がメモリを節約できるから","小数を表すため"],
+   a:0,
+   why:"Slide 第3回: コンピュータは足し算しかできないので、引き算は負の数の足し算として考える.",
+   wrong:["B: Sai, máy không có \"mạch trừ riêng\".","C: Không liên quan tiết kiệm bộ nhớ.","D: Số âm khác với số thập phân."],
+   ref:"基礎理論 / 負の数の必要性"},
+
+  {d:"easy",
+   q:"2進数で符号を表すのに使われるビットはどれか。\nBit nào được dùng làm bit dấu trong 2進số?",
+   o:["最上位ビット（左端）","最下位ビット（右端）","中央のビット","符号専用の別バイト"],
+   a:0,
+   why:"Slide: 2進数の一番最初のビット (= bit ngoài cùng bên trái) を符号として扱う.",
+   wrong:["B: Đó là LSB, biểu diễn giá trị nhỏ nhất.","C: Không có quy ước nào dùng bit giữa.","D: Không có byte riêng cho dấu."],
+   ref:"基礎理論 / 符号ビット"},
+
+  {d:"easy",
+   q:"符号付2進数において、符号ビットが「1」のとき何を表すか。\nKhi bit dấu là 1, số biểu diễn là?",
+   o:["負の数","正の数","ゼロ","オーバーフロー"],
+   a:0,
+   why:"Quy ước: 0=正, 1=負.",
+   wrong:["B: Đó là khi bit dấu = 0.","C: Zero là 00000000.","D: Tràn không liên quan bit dấu đơn lẻ."],
+   ref:"基礎理論 / 符号ビット"},
+
+  {d:"easy",
+   q:"「nの補数」の定義として正しいものはどれか。\nĐịnh nghĩa \"nの補数\" nào đúng?",
+   o:["桁上がりするために必要な最小の数","桁数を保ったまま最大の数になる数","必ず1を足すだけで得られる数","常に元の数より小さい数"],
+   a:0,
+   why:"Slide: nの補数とは桁上がりするために必要な最小の数.",
+   wrong:["B: Đó là n−1の補数.","C: Không phải định nghĩa.","D: Có thể lớn hơn, ví dụ bù 10 của 450 là 550 (lớn hơn)."],
+   ref:"基礎理論 / 補数の定義"},
+
+  {d:"easy",
+   q:"2の補数を作る手順として正しいものはどれか。\nThứ tự đúng để tạo 2の補数?",
+   o:["ビット反転してから1を加える","1を加えてからビット反転する","2を掛けてから反転する","下位ビットだけ反転する"],
+   a:0,
+   why:"Slide (要暗記): 2の補数の作り方は2進数をビット反転して1を加える.",
+   wrong:["B: Đảo thứ tự cho kết quả khác.","C: Không có quy tắc nhân 2.","D: Phải đảo TẤT CẢ bit."],
+   ref:"基礎理論 / 2の補数の作り方"},
+
+  {d:"easy",
+   q:"「1の補数」とは、2進数に対して何をした結果か。\n\"1の補数\" là kết quả của thao tác nào?",
+   o:["全ビットを反転（0↔1）","全ビットに1を加える","左端ビットだけ反転","右端ビットだけ反転"],
+   a:0,
+   why:"1の補数 = ビット反転だけ (0 và 1 hoán đổi).",
+   wrong:["B: Đó không phải định nghĩa bù 1.","C: Chỉ đảo bit trái = bit dấu, không phải bù 1.","D: Tương tự, không đúng."],
+   ref:"基礎理論 / 1の補数"},
+
+  {d:"easy",
+   q:"2進数の引き算を行う際の手順として正しいものはどれか。\nQuy trình đúng để trừ 2進số?",
+   o:["引く数を補数で表現し、引かれる数と足し算する","引かれる数を補数で表現し、引く数と足し算する","両方の数を補数で表現する","ビットを左にシフトする"],
+   a:0,
+   why:"Slide: 引く数 (số trừ) を補数で表現し、引かれる数 (số bị trừ) と足し算を行う.",
+   wrong:["B: Đảo vai trò, kết quả sai dấu.","C: Không có quy tắc đó.","D: Đó là phép nhân 2, không phải trừ."],
+   ref:"基礎理論 / 引き算の手順"},
+
+  {d:"easy",
+   q:"10進数「450」の10の補数はいくつか。\n10の補数 của 450 (3 chữ số) là?",
+   o:["550","549","450","999"],
+   a:0,
+   why:"Slide ví dụ: 10の補数 = 1000 − 450 = 550. Cộng vào tràn 4 chữ số.",
+   wrong:["B: 549 là 9の補数 = 999 − 450.","C: Chính số gốc, không phải bù.","D: 999 là max 3 chữ số."],
+   ref:"基礎理論 / 10の補数"},
+
+  {d:"easy",
+   q:"10進数「450」の9の補数はいくつか。\n9の補数 của 450 là?",
+   o:["549","550","450","999"],
+   a:0,
+   why:"Slide ví dụ: 9の補数 = 999 − 450 = 549. Đẩy đến max 3 chữ số 999.",
+   wrong:["B: 550 là 10の補数.","C: Số gốc.","D: 999 là max chứ không phải bù."],
+   ref:"基礎理論 / 9の補数"},
+
+  {d:"easy",
+   q:"8ビットの符号無2進数で表現できる数値の範囲はどれか。\nPhạm vi 2進 8 bit KHÔNG dấu là?",
+   o:["0 ~ 255","−128 ~ +127","0 ~ 127","−255 ~ +255"],
+   a:0,
+   why:"符号無 (unsigned): 0 ~ 2⁸−1 = 0 ~ 255. Bảng Slide xác nhận 11111111 = 255.",
+   wrong:["B: Đó là signed.","C: Đó là 7 bit unsigned.","D: Không có khái niệm này."],
+   ref:"基礎理論 / 符号無2進数"},
+
+  {d:"easy",
+   q:"8ビットの符号付2進数（2の補数表現）で表現できる範囲はどれか。\nPhạm vi 2進 8 bit có dấu (bù 2) là?",
+   o:["−128 ~ +127","−127 ~ +128","0 ~ 255","−255 ~ 0"],
+   a:0,
+   why:"Signed (bù 2): −2⁷ ~ 2⁷−1 = −128 ~ +127. Bảng Slide: 10000000 = −128, 01111111 = +127.",
+   wrong:["B: Lệch 1: max âm là −128 chứ không phải −127.","C: Đó là unsigned.","D: Không có khái niệm này."],
+   ref:"基礎理論 / 符号付2進数"},
+
+  {d:"easy",
+   q:"2の補数表現において「00000000」は10進数で何を表すか。\n00000000 (8 bit, bù 2) là số 10進 nào?",
+   o:["0","256","−128","−0"],
+   a:0,
+   why:"Bảng Slide: 00000000 → 0 (cả signed lẫn unsigned).",
+   wrong:["B: 256 vượt phạm vi 8 bit.","C: Đó là 10000000.","D: Không có khái niệm \"âm 0\" trong bù 2 (đây là ưu điểm)."],
+   ref:"基礎理論 / 8ビット範囲表"},
+
+  // ====== TB (16 câu) ======
+  {d:"med",
+   q:"2進数「1100101」の1の補数はどれか。\n1の補数 của 2進 1100101 là?",
+   o:["0011010","0011011","1100100","1100110"],
+   a:0,
+   why:"Slide ví dụ: ビット反転 → 0011010 = 1の補数.",
+   wrong:["B: 0011011 là 2の補数 (đã +1).","C: Chỉ đảo bit cuối, sai.","D: Không phải đảo bit."],
+   ref:"基礎理論 / 1の補数 ví dụ"},
+
+  {d:"med",
+   q:"2進数「1100101」の2の補数はどれか。\n2の補数 của 2進 1100101 là?",
+   o:["0011011","0011010","1100100","0011100"],
+   a:0,
+   why:"Slide: 1の補数 = 0011010, +1 → 0011011 = 2の補数.",
+   wrong:["B: Mới chỉ làm bước 1 (bù 1).","C: Sai phương pháp.","D: +2 thay vì +1."],
+   ref:"基礎理論 / 2の補数 ví dụ"},
+
+  {d:"med",
+   q:"符号付8ビット2進数「11111111」を10進数で表すといくつか。\n11111111 (8 bit, bù 2) = ?",
+   o:["−1","255","−127","−255"],
+   a:0,
+   why:"Bảng Slide: 11111111 (符号付) = −1. Kiểm: 1+(−1)=0 → 00000001+11111111 = 1 00000000, bỏ carry = 0 ✓.",
+   wrong:["B: 255 là cách hiểu unsigned.","C: −127 là 10000001.","D: Sai biểu diễn."],
+   ref:"基礎理論 / 符号付8ビット"},
+
+  {d:"med",
+   q:"符号付8ビット2進数「10000000」を10進数で表すといくつか。\n10000000 (8 bit, bù 2) = ?",
+   o:["−128","128","−127","0"],
+   a:0,
+   why:"Bảng Slide: 10000000 (符号付) = −128. Đây là số âm nhỏ nhất biểu diễn được.",
+   wrong:["B: 128 là cách hiểu unsigned.","C: −127 là 10000001.","D: 0 là 00000000."],
+   ref:"基礎理論 / 符号付8ビット"},
+
+  {d:"med",
+   q:"符号付8ビット2進数「10000001」を10進数で表すといくつか。\n10000001 (8 bit, bù 2) = ?",
+   o:["−127","129","−129","−1"],
+   a:0,
+   why:"Bảng Slide: 10000001 (符号付) = −127.",
+   wrong:["B: 129 là unsigned.","C: −129 vượt phạm vi.","D: −1 là 11111111."],
+   ref:"基礎理論 / 符号付8ビット"},
+
+  {d:"med",
+   q:"符号付8ビット2進数「11111110」を10進数で表すといくつか。\n11111110 (8 bit, bù 2) = ?",
+   o:["−2","254","−128","−254"],
+   a:0,
+   why:"Bảng Slide: 11111110 (符号付) = −2. Kiểm: 2 + (−2) = 0 → 00000010 + 11111110 = 1 00000000, bỏ carry ✓.",
+   wrong:["B: 254 là unsigned.","C: −128 là 10000000.","D: Vượt phạm vi."],
+   ref:"基礎理論 / 符号付8ビット"},
+
+  {d:"med",
+   q:"10進数「+24」を8ビット2進数で表すとどれか。\n+24 ở 2進 8 bit?",
+   o:["00011000","11101000","00001100","00110000"],
+   a:0,
+   why:"24 = 16 + 8 = 2⁴ + 2³ → 00011000. Kiểm với Slide: 1の補数 0001 0111, +1 = 0001 1000 = 24.",
+   wrong:["B: Đó là −24 (bù 2 của +24).","C: 00001100 = 12.","D: 00110000 = 48."],
+   ref:"基礎理論 / +24 biểu diễn"},
+
+  {d:"med",
+   q:"10進数「−24」を8ビット2進数（2の補数）で表すとどれか。\n−24 ở 2進 8 bit (bù 2)?",
+   o:["11101000","00011000","10011000","11100111"],
+   a:0,
+   why:"Slide ví dụ: +24 = 00011000 → bit phản 11100111 (1の補数) → +1 = 11101000 = −24.",
+   wrong:["B: Đó là +24.","C: Sai biểu diễn.","D: 11100111 chỉ là 1の補数, chưa +1."],
+   ref:"基礎理論 / −24 ví dụ Slide"},
+
+  {d:"med",
+   q:"10進数「−1」を8ビット2進数（2の補数）で表すとどれか。\n−1 ở 2進 8 bit (bù 2)?",
+   o:["11111111","10000001","00000001","11111110"],
+   a:0,
+   why:"+1 = 00000001 → đảo bit 11111110 → +1 = 11111111. Khớp bảng Slide.",
+   wrong:["B: 10000001 = −127.","C: Đó là +1.","D: 11111110 = −2."],
+   ref:"基礎理論 / −1 biểu diễn"},
+
+  {d:"med",
+   q:"10進数「−128」を8ビット2進数（2の補数）で表すとどれか。\n−128 ở 2進 8 bit (bù 2)?",
+   o:["10000000","11111111","10000001","11000000"],
+   a:0,
+   why:"Bảng Slide: 10000000 (符号付) = −128. Đây là biên dưới của phạm vi.",
+   wrong:["B: 11111111 = −1.","C: 10000001 = −127.","D: 11000000 = −64."],
+   ref:"基礎理論 / −128 biểu diễn"},
+
+  {d:"med",
+   q:"4ビットの符号付2進数で表現できる範囲はどれか。\nPhạm vi 2進 4 bit có dấu (bù 2)?",
+   o:["−8 ~ +7","−7 ~ +8","0 ~ 15","−15 ~ +15"],
+   a:0,
+   why:"n=4: −2³ ~ 2³−1 = −8 ~ +7. Tổng quát hóa từ công thức 8 bit của Slide.",
+   wrong:["B: Lệch 1 ở biên.","C: Đó là unsigned 4 bit.","D: Sai công thức."],
+   ref:"基礎理論 / n bit signed"},
+
+  {d:"med",
+   q:"2進数の引き算「1010 − 0011」を2の補数で計算する場合、まず何をするか。\nTrừ 1010 − 0011 (bù 2), bước đầu tiên?",
+   o:["0011 の2の補数を作る","1010 の2の補数を作る","両方を反転する","左シフトする"],
+   a:0,
+   why:"Quy trình: 引く数 (0011) を補数で表現 → bù 2 của 0011. 0011 → đảo 1100 → +1 = 1101.",
+   wrong:["B: Sai vai trò (1010 là số bị trừ).","C: Không có quy tắc đó.","D: Shift là phép nhân/chia, không phải trừ."],
+   ref:"基礎理論 / 引き算手順"},
+
+  {d:"med",
+   q:"2進数 1010 (=10) − 0011 (=3) を2の補数で計算した結果はどれか（4ビット）。\nTính 1010 − 0011 bằng bù 2 (4 bit)?",
+   o:["0111 (=7)","1110 (=14)","1101","0011"],
+   a:0,
+   why:"0011 → bù 2 = 1101. 1010 + 1101 = 10111 (5 bit). Bỏ carry trái → 0111 = 7. ✓ Khớp 10−3=7.",
+   wrong:["B: Sai phép tính.","C: Đây là bù 2 của 0011, chưa cộng.","D: Bù 1 không đúng kết quả."],
+   ref:"基礎理論 / 引き算 calculation"},
+
+  {d:"med",
+   q:"8ビット符号付2進数 00000010 (+2) と 11111110 (−2) を加算すると結果はどれか。\nCộng +2 và −2 ở 8 bit?",
+   o:["00000000 (=0)","11111111 (=−1)","00000010","オーバーフロー"],
+   a:0,
+   why:"00000010 + 11111110 = 1 00000000 (9 bit). Bỏ carry → 00000000 = 0. Đúng vì 2 + (−2) = 0.",
+   wrong:["B: Tính nhầm.","C: Không cộng.","D: Không tràn, chỉ là carry bị bỏ."],
+   ref:"基礎理論 / 補数加算"},
+
+  {d:"med",
+   q:"なぜ「2の補数」は引き算回路を不要にできるのか。\nVì sao 2の補数 giúp loại bỏ mạch trừ?",
+   o:["引き算が「補数による加算」に置き換えられるから","2進数は最初から負の数を持っているから","CPU が自動で減算するから","補数は常にゼロだから"],
+   a:0,
+   why:"Slide: 引く数を補数で表現し足し算 → chỉ cần mạch cộng, không cần mạch trừ.",
+   wrong:["B: 2進số bản thân không có khái niệm âm.","C: Đó là tautology, không giải thích.","D: Sai."],
+   ref:"基礎理論 / 2の補数の利点"},
+
+  {d:"med",
+   q:"符号無8ビット2進数「11111111」は10進数でいくつか。\n11111111 (8 bit, không dấu) = ?",
+   o:["255","−1","127","−128"],
+   a:0,
+   why:"Bảng Slide: 符号無 11111111 = 255 = 2⁸−1.",
+   wrong:["B: Đó là signed.","C: 01111111.","D: 10000000 signed."],
+   ref:"基礎理論 / 符号無8ビット"},
+
+  {d:"med",
+   q:"2の補数表現で「ゼロ」は1つだけしかない理由として正しいものはどれか。\nVì sao bù 2 chỉ có 1 cách biểu diễn 0?",
+   o:["+0 と −0 を区別せず、00000000 のみが0となる","2進数では負の数が存在しないから","ビット反転すると常に0になるから","符号ビットは0だから"],
+   a:0,
+   why:"Bù 2 có ưu điểm là chỉ có 1 biểu diễn cho 0 (00000000). 1の補数 mới có +0 (00000000) và −0 (11111111).",
+   wrong:["B: Sai, bù 2 có biểu diễn số âm.","C: Sai logic.","D: Đó là tính chất của +0 thôi."],
+   ref:"基礎理論 / 2の補数の利点"},
+
+  // ====== KHÓ (12 câu) ======
+  {d:"hard",
+   q:"【平成23年・秋期】10進数 5.625 を符号付2進数（2の補数表現）で表すとどれか。\n[H23 thu] 5.625 ở 2進 có dấu (bù 2, kiểu cố định 4 bit nguyên + 4 bit thập phân)?",
+   o:["0101.1010","1010.0110","1010.0101","0101.0110"],
+   a:0,
+   why:"+5.625 = 5 + 0.625 = 0101.1010₂ (đúng). Số dương → biểu diễn trực tiếp không cần bù 2. Slide 練習(1).",
+   wrong:["B: Đó là −5.625 (bù 2 của 0101.1010).","C: Bù 1 chứ chưa +1.","D: Sai phần thập phân."],
+   ref:"基礎理論 / 平成23年・秋期 問2"},
+
+  {d:"hard",
+   q:"【平成23年・秋期】10進数 −5.625 を符号付2進数（2の補数表現）で表すとどれか。\n[H23 thu] −5.625 ở 2進 có dấu (bù 2)?",
+   o:["1010.0110","0101.1010","1010.0101","1010.1011"],
+   a:0,
+   why:"Slide 練習: +5.625 = 0101.1010 → ビット反転 1010.0101 (1の補数) → +1 (LSB) → 1010.0110 = −5.625.",
+   wrong:["B: Đó là +5.625.","C: Mới đảo bit, chưa +1.","D: Cộng nhầm vị trí."],
+   ref:"基礎理論 / 平成23年・秋期 問2"},
+
+  {d:"hard",
+   q:"10進数 0.625 を2進小数で表すとどれか。\n0.625 ở 2進 thập phân?",
+   o:["0.101","0.110","0.011","0.111"],
+   a:0,
+   why:"0.625×2=1.25(1), 0.25×2=0.5(0), 0.5×2=1.0(1) → 0.101.",
+   wrong:["B: 0.110₂ = 0.75.","C: 0.011₂ = 0.375.","D: 0.111₂ = 0.875."],
+   ref:"基礎理論 / 10進→2進 thập phân"},
+
+  {d:"hard",
+   q:"符号付8ビットで「10000000 + 11111111」を計算した結果はどれか（オーバーフロー無視）。\nCộng 10000000 + 11111111 (8 bit signed)?",
+   o:["01111111 (=+127)","11111111 (=−1)","00000000","10000001"],
+   a:0,
+   why:"10000000 + 11111111 = 1 01111111 (9 bit). Bỏ carry → 01111111 = +127. Về logic: −128 + (−1) = −129, nhưng vượt phạm vi → kết quả tràn về +127 (オーバーフロー).",
+   wrong:["B: 11111111 không phải kết quả phép cộng này.","C: Cộng sai.","D: Sai."],
+   ref:"基礎理論 / オーバーフロー"},
+
+  {d:"hard",
+   q:"次のうち、2の補数表現の「最大値」と「最小値」を絶対値で比較したものはどれか（n ビット）。\nSo sánh trị tuyệt đối max và min của bù 2 (n bit)?",
+   o:["|最小値| = |最大値| + 1","|最小値| = |最大値|","|最大値| = |最小値| + 1","両者は0"],
+   a:0,
+   why:"n bit signed: max = +2ⁿ⁻¹−1, min = −2ⁿ⁻¹. |min| − |max| = 1. VD 8 bit: |−128| − |+127| = 1.",
+   wrong:["B: Sai, lệch 1 do biểu diễn 0 chỉ có 1 cách (chiếm 1 slot dương).","C: Ngược chiều.","D: Sai hoàn toàn."],
+   ref:"基礎理論 / 2の補数範囲"},
+
+  {d:"hard",
+   q:"2進数「00010111」（=23）の8ビット2の補数表現はどれか。\nBù 2 (8 bit) của 23 (= 00010111)?",
+   o:["11101001","11101000","00010111","00010110"],
+   a:0,
+   why:"Đảo bit: 11101000 (= 1の補数), +1 → 11101001 = −23.",
+   wrong:["B: Đó là 1の補数, chưa +1.","C: Số gốc.","D: Số gốc −1, không phải bù."],
+   ref:"基礎理論 / bù 2 ví dụ"},
+
+  {d:"hard",
+   q:"符号付8ビット2進数「11101000」は10進数でいくつか（2の補数表現）。\n11101000 (8 bit, bù 2) = ?",
+   o:["−24","232","−23","−40"],
+   a:0,
+   why:"Slide ví dụ: 11101000 = −24. Kiểm: đảo bit 00010111 +1 = 00011000 = 24, nên 11101000 = −24.",
+   wrong:["B: 232 là cách hiểu unsigned.","C: Tính nhầm.","D: 40 = 00101000, không phải."],
+   ref:"基礎理論 / −24 Slide"},
+
+  {d:"hard",
+   q:"次のうち、1の補数表現の欠点として正しいものはどれか。\nNhược điểm của 1の補数 (vì sao máy tính chọn bù 2)?",
+   o:["+0 と −0 の 2 つの表現が存在する","負の数を表現できない","桁あふれしやすい","計算速度が遅い"],
+   a:0,
+   why:"1の補数: 00000000 = +0, 11111111 = −0 → 2 biểu diễn cho 0 → gây mơ hồ. Bù 2 khắc phục: chỉ 1 cách biểu diễn 0.",
+   wrong:["B: Có thể biểu diễn được.","C: Không phải nhược điểm cốt lõi.","D: Tốc độ không phải lý do chính."],
+   ref:"基礎理論 / 1の補数 vs 2の補数"},
+
+  {d:"hard",
+   q:"符号付4ビット2進数で「0101 + 0100」を計算した結果はどれか。算術的にオーバーフローかどうかも判断せよ。\nCộng 0101 + 0100 (signed 4 bit), có tràn không?",
+   o:["1001、オーバーフロー発生（+9 は 4 bit signed 範囲 −8〜+7 を超える）","1001、オーバーフロー無し","0110、正常","オーバーフロー、結果なし"],
+   a:0,
+   why:"5 + 4 = 9. Ở 4 bit signed (−8~+7), 9 vượt phạm vi → kết quả nhị phân 1001 nhưng theo signed = −7 (sai). Đây là オーバーフロー điển hình khi cộng 2 số dương ra bit dấu = 1.",
+   wrong:["B: Có tràn, không phải không.","C: Tính nhầm.","D: Vẫn có kết quả bit, chỉ là sai về mặt signed."],
+   ref:"基礎理論 / オーバーフロー判定"},
+
+  {d:"hard",
+   q:"次のうち、補数を使った引き算で「最後のキャリー（桁上がり）」を捨てる必要がある理由として正しいものはどれか。\nVì sao phải bỏ carry cuối trong phép trừ bằng bù?",
+   o:["補数を作ったとき桁上がりが既に組み込まれているため、結果のキャリーは余分になる","計算速度を上げるため","符号ビットを反転させるため","ゼロを表現するため"],
+   a:0,
+   why:"Bù 2 = 2ⁿ − x. Khi cộng (a + (2ⁿ−b)) = a−b+2ⁿ. Phần 2ⁿ chính là bit carry tràn ra ngoài → phải bỏ để lấy đúng a−b.",
+   wrong:["B: Không liên quan tốc độ.","C: Không phải mục đích.","D: Sai."],
+   ref:"基礎理論 / Carry trong bù 2"},
+
+  {d:"hard",
+   q:"符号付8ビット2進数で +100 と +50 を加算した結果はどれか。オーバーフローも考慮せよ。\nCộng +100 + +50 (8 bit signed)?",
+   o:["10010110、オーバーフロー（+150 は範囲 +127 を超える）","10010110、正常","01100100、正常","11111111、エラー"],
+   a:0,
+   why:"100 = 01100100, 50 = 00110010. Cộng = 10010110 (=150 unsigned). 150 > 127 → vượt phạm vi signed 8 bit → オーバーフロー. Bit dấu thành 1 dù 2 số dương.",
+   wrong:["B: Có tràn, không phải không.","C: Tổng sai.","D: Sai."],
+   ref:"基礎理論 / オーバーフロー dấu"},
+
+  {d:"hard",
+   q:"4ビットの2進数 1000 を「2の補数」と解釈した場合と「符号無」と解釈した場合の差はいくつか。\n4 bit 1000 hiểu theo bù 2 và unsigned khác nhau bao nhiêu?",
+   o:["差は 16（unsigned 8, signed −8）","差は 0","差は 1","差は 8"],
+   a:0,
+   why:"4 bit unsigned: 1000 = 8. 4 bit signed (bù 2): 1000 = −8. Hiệu = 8 − (−8) = 16 = 2⁴. Tổng quát n bit: hiệu = 2ⁿ khi bit dấu = 1.",
+   wrong:["B: Khác nhau.","C: Quá nhỏ.","D: Tính nhầm dấu."],
+   ref:"基礎理論 / unsigned vs signed"},
+];
+
+let cur=0, ans=new Array(Q.length).fill(null);
+
+function renderJump(){
+  const j=document.getElementById('jump'); j.innerHTML='';
+  Q.forEach((_,i)=>{
+    const b=document.createElement('button');
+    b.textContent=i+1;
+    if(ans[i]!==null){ b.className = ans[i]===Q[i].a ? 'done' : 'miss'; }
+    if(i===cur) b.className=(b.className+' cur').trim();
+    b.onclick=()=>{cur=i; render();};
+    j.appendChild(b);
+  });
+}
+
+function updateMeta(){
+  document.getElementById('cur').textContent=cur+1;
+  const done=ans.filter(x=>x!==null).length;
+  const ok=ans.filter((x,i)=>x!==null && x===Q[i].a).length;
+  document.getElementById('done').textContent=done;
+  document.getElementById('ok').textContent=ok;
+  document.getElementById('ng').textContent=done-ok;
+  document.getElementById('bar').style.width = (done/Q.length*100)+'%';
+}
+
+function render(){
+  document.getElementById('result').classList.add('hidden');
+  const q=Q[cur];
+  const dCls = q.d==='easy'?'d-easy':q.d==='med'?'d-med':'d-hard';
+  const dTxt = q.d==='easy'?'易 Dễ':q.d==='med'?'中 TB':'難 Khó';
+  const parts = q.q.split('\n');
+  const vi = parts[0], jp = parts[1]||'';
+  let html = `<div class="card">
+    <div class="qhead">
+      <span class="qnum">Câu ${cur+1}/40</span>
+      <span class="diff ${dCls}">${dTxt}</span>
+    </div>
+    <div class="qtext">${vi}<span class="jp">🇯🇵 ${jp}</span></div>
+    <div class="options">`;
+  const letters=['A','B','C','D'];
+  q.o.forEach((opt,i)=>{
+    let cls='opt';
+    if(ans[cur]!==null){
+      cls+=' locked disabled';
+      if(i===q.a) cls+=' correct';
+      else if(i===ans[cur]) cls+=' wrong';
+    }
+    html+=`<div class="${cls}" data-i="${i}"><span class="lbl">${letters[i]}.</span><span>${opt}</span></div>`;
+  });
+  html+=`</div>`;
+
+  if(ans[cur]!==null){
+    const correct=ans[cur]===q.a;
+    html+=`<button class="ghost" id="toggleEx" style="margin-top:14px">📖 ${correct?'Xem giải thích':'Xem giải thích chi tiết'}</button>
+    <div class="explain" id="ex">
+      <h4>Đáp án đúng: ${letters[q.a]}</h4>
+      <p><strong>Vì sao đúng:</strong> ${q.why}</p>
+      <p><strong>Vì sao các phương án còn lại sai:</strong></p>
+      ${q.wrong.map(w=>`<p style="margin-left:12px">• ${w}</p>`).join('')}
+      <p style="margin-top:8px;color:var(--muted);font-size:.88em"><strong>📌 FE Syllabus:</strong> ${q.ref}</p>
+    </div>`;
+  }
+
+  html+=`<div class="nav">
+    <button class="ghost" ${cur===0?'disabled':''} onclick="cur--;render()">← Câu trước</button>
+    ${cur===Q.length-1
+      ? `<button onclick="showResult()">✅ Nộp bài</button>`
+      : `<button onclick="cur++;render()">Câu tiếp →</button>`}
+  </div></div>`;
+  document.getElementById('quiz').innerHTML=html;
+
+  document.querySelectorAll('.opt:not(.locked)').forEach(el=>{
+    el.onclick=()=>{
+      ans[cur]=parseInt(el.dataset.i);
+      render();
+    };
+  });
+  const tg=document.getElementById('toggleEx');
+  if(tg) tg.onclick=()=>document.getElementById('ex').classList.toggle('show');
+
+  updateMeta(); renderJump();
+}
+
+function showResult(){
+  document.getElementById('quiz').innerHTML='';
+  const ok=ans.filter((x,i)=>x!==null && x===Q[i].a).length;
+  const pct=Math.round(ok/Q.length*100);
+  const buckets={easy:[0,0],med:[0,0],hard:[0,0]};
+  Q.forEach((q,i)=>{
+    buckets[q.d][1]++;
+    if(ans[i]===q.a) buckets[q.d][0]++;
+  });
+  let verdict, color;
+  if(pct>=80){verdict='🏆 Xuất sắc — vững 補数表現!'; color='var(--green)';}
+  else if(pct>=60){verdict='👍 Khá — đạt ngưỡng FE, ôn thêm vài chỗ.'; color='var(--accent)';}
+  else if(pct>=40){verdict='⚠️ Trung bình — luyện thêm phần bù 2 và phạm vi.'; color='var(--yellow)';}
+  else {verdict='💪 Cần cố gắng — học lại Slide 1 第3回 trước.'; color='var(--red)';}
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('result').innerHTML=`
+    <h2 style="margin-top:0">Kết quả</h2>
+    <div class="score">${ok} / 40</div>
+    <div style="color:var(--muted)">${pct}% đúng</div>
+    <div class="verdict" style="color:${color}">${verdict}</div>
+    <div class="bk">
+      <div class="bk-card"><div style="color:#7ee787">易 Dễ</div><div class="n">${buckets.easy[0]}/${buckets.easy[1]}</div></div>
+      <div class="bk-card"><div style="color:#e3b341">中 TB</div><div class="n">${buckets.med[0]}/${buckets.med[1]}</div></div>
+      <div class="bk-card"><div style="color:#ff7b72">難 Khó</div><div class="n">${buckets.hard[0]}/${buckets.hard[1]}</div></div>
+    </div>
+    <button onclick="reset()">🔁 Làm lại từ đầu</button>
+    <button class="ghost" onclick="cur=0;render()" style="margin-left:8px">📝 Xem lại từng câu</button>
+  `;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function reset(){
+  ans=new Array(Q.length).fill(null); cur=0; render();
+}
+
+render();
+</script>
+</body>
+</html>

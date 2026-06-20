@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE - 2進数の四則演算+シフト · Đề kiểm tra 40 câu</title>
+<style>
+:root{
+  --bg:#0f1419; --panel:#1a2027; --panel2:#232a33; --border:#2e3744;
+  --text:#e6edf3; --muted:#8b98a5; --accent:#58a6ff; --accent2:#a78bfa;
+  --green:#3fb950; --red:#f85149; --yellow:#d29922;
+  --green-bg:rgba(63,185,80,.18); --red-bg:rgba(248,81,73,.18);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.6;padding:16px}
+.wrap{max-width:880px;margin:0 auto}
+header{background:linear-gradient(135deg,#0c4a6e,#581c87);padding:20px;border-radius:12px;border:1px solid var(--border);margin-bottom:16px}
+h1{margin:0 0 6px;font-size:1.4em;color:#fff}
+.sub{color:#cbd5e1;font-size:.92em}
+.bar{height:8px;background:var(--panel2);border-radius:4px;overflow:hidden;margin-top:12px}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:width .3s}
+.meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:.9em;color:#cbd5e1;flex-wrap:wrap;gap:8px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.qhead{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.qnum{background:var(--accent);color:#0b1220;padding:4px 10px;border-radius:6px;font-weight:700;font-size:.9em}
+.diff{padding:3px 9px;border-radius:6px;font-size:.78em;font-weight:600}
+.d-easy{background:rgba(63,185,80,.2);color:#7ee787}
+.d-med{background:rgba(210,153,34,.2);color:#e3b341}
+.d-hard{background:rgba(248,81,73,.2);color:#ff7b72}
+.qtext{font-size:1.05em;margin-bottom:14px;white-space:pre-wrap}
+.qtext .jp{display:block;color:var(--muted);font-size:.92em;margin-top:6px;border-left:3px solid var(--border);padding-left:10px}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt{background:var(--panel2);border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;font-size:.98em}
+.opt:hover:not(.locked){background:#2d3540;border-color:var(--accent)}
+.opt.locked{cursor:default}
+.opt .lbl{font-weight:700;color:var(--accent);min-width:22px}
+.opt.correct{background:var(--green-bg);border-color:var(--green)}
+.opt.correct .lbl{color:var(--green)}
+.opt.wrong{background:var(--red-bg);border-color:var(--red)}
+.opt.wrong .lbl{color:var(--red)}
+.opt.disabled{opacity:.55}
+.explain{margin-top:14px;background:#11161d;border-left:4px solid var(--accent2);border-radius:6px;padding:14px;display:none}
+.explain.show{display:block}
+.explain h4{margin:0 0 8px;color:var(--accent2);font-size:1em}
+.explain p{margin:4px 0;font-size:.94em}
+.explain code{background:#0b1018;padding:1px 6px;border-radius:4px;color:#79c0ff;font-family:"SF Mono",Consolas,monospace}
+.nav{display:flex;gap:10px;justify-content:space-between;margin-top:14px}
+button{background:var(--accent);color:#0b1220;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;font-weight:600;font-size:.95em;font-family:inherit}
+button:hover{filter:brightness(1.1)}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.ghost{background:transparent;color:var(--text);border:1.5px solid var(--border)}
+button.ghost:hover{background:var(--panel2)}
+.qjump{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-top:14px}
+.qjump button{padding:6px 0;font-size:.82em;background:var(--panel2);color:var(--text);border:1px solid var(--border)}
+.qjump button.done{background:var(--green-bg);border-color:var(--green);color:#7ee787}
+.qjump button.miss{background:var(--red-bg);border-color:var(--red);color:#ff7b72}
+.qjump button.cur{outline:2px solid var(--accent)}
+.result{text-align:center;padding:30px 20px}
+.score{font-size:3em;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;margin:10px 0}
+.verdict{font-size:1.2em;margin:10px 0}
+.bk{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.bk-card{background:var(--panel2);border-radius:8px;padding:12px;border:1px solid var(--border)}
+.bk-card .n{font-size:1.5em;font-weight:700;margin:4px 0}
+.hidden{display:none}
+@media(max-width:600px){
+  .qjump{grid-template-columns:repeat(8,1fr)}
+  .bk{grid-template-columns:1fr}
+  h1{font-size:1.15em}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>➕➖✖️➗ 2進数の四則演算 + シフト · Đề 40 câu</h1>
+  <div class="sub">Slide 1 基礎理論 第3回・第4回 · 30 phút · IPA style</div>
+  <div class="bar"><div class="bar-fill" id="bar"></div></div>
+  <div class="meta">
+    <span>Câu <strong id="cur">1</strong> / 40</span>
+    <span>Đã làm: <strong id="done">0</strong> · Đúng: <strong id="ok" style="color:var(--green)">0</strong> · Sai: <strong id="ng" style="color:var(--red)">0</strong></span>
+  </div>
+</header>
+
+<div id="quiz"></div>
+<div id="result" class="card hidden result"></div>
+
+<div class="card">
+  <div style="font-size:.88em;color:var(--muted);margin-bottom:6px">Điều hướng nhanh</div>
+  <div class="qjump" id="jump"></div>
+</div>
+</div>
+
+<script>
+const Q = [
+  // ====== DỄ (12 câu) ======
+  {d:"easy",
+   q:"2進数の足し算では、足して「2」になったらどうなるか。\nTrong phép cộng 2進số, khi tổng bằng 2 thì xảy ra điều gì?",
+   o:["桁が繰り上がる (carry sang trái)","桁が下がる","結果が0になる","オーバーフローになる"],
+   a:0,
+   why:"Slide: 2進数の足し算では足して「2」になったら繰り上がる. 1+1=10₂ (viết 0, nhớ 1).",
+   wrong:["B: Không có khái niệm \"桁が下がる\".","C: Chỉ phần lưu lại = 0, nhưng có carry.","D: Carry bình thường, không phải overflow trừ khi tràn ngoài phạm vi."],
+   ref:"基礎理論 / 2進数の足し算"},
+
+  {d:"easy",
+   q:"2進数の引き算で、コンピュータが行う実際の処理は何か。\nMáy tính thực hiện phép trừ 2進số như thế nào?",
+   o:["引く数を2の補数で表現して足し算する","ビットを直接減算する","左シフトする","符号ビットを反転する"],
+   a:0,
+   why:"Slide: 引き算は負の数の足し算として考える. Lấy bù 2 của số trừ rồi cộng.",
+   wrong:["B: Máy tính không có mạch trừ trực tiếp.","C: Shift là phép nhân/chia.","D: Đảo bit dấu không cho ra phép trừ."],
+   ref:"基礎理論 / 2進数の引き算"},
+
+  {d:"easy",
+   q:"2進数を1ビット左にシフトすると、値は何倍になるか。\nDịch 1 bit sang trái thì giá trị thành mấy lần ban đầu?",
+   o:["2倍","1/2倍","4倍","変わらない"],
+   a:0,
+   why:"Slide: 桁が1つ左にずれると2倍. Cơ chế giống ×基数 trong 10進 (×10 khi dịch trái).",
+   wrong:["B: Đó là dịch phải.","C: Đó là dịch 2 bit (×4).","D: Có thay đổi."],
+   ref:"基礎理論 / シフト演算"},
+
+  {d:"easy",
+   q:"2進数を3ビット右にシフトした結果は元の値の何倍か。\nDịch 3 bit sang phải = ?",
+   o:["1/8 (2⁻³)倍","2³倍","3倍","1/3倍"],
+   a:0,
+   why:"Slide: 右にn個ずれると 2⁻ⁿ倍. n=3 → 2⁻³ = 1/8.",
+   wrong:["B: Đó là dịch trái.","C: Không phải tỉ lệ tuyến tính.","D: Sai cơ chế."],
+   ref:"基礎理論 / 右シフト"},
+
+  {d:"easy",
+   q:"論理シフトと算術シフトの最大の違いは何か。\nKhác biệt cốt lõi giữa 論理 và 算術 シフト là gì?",
+   o:["符号ビットを考慮するかどうか","シフト幅の上限","左右どちらにシフトできるか","計算速度"],
+   a:0,
+   why:"Slide: 論理シフトは符号を考慮せず, 算術シフトは符号を考慮する.",
+   wrong:["B: Cả hai đều không giới hạn shift.","C: Cả hai đều shift được trái/phải.","D: Tốc độ ngang nhau."],
+   ref:"基礎理論 / シフト2種類"},
+
+  {d:"easy",
+   q:"論理左シフトで空いたスペースには何を入れるか。\n論理左シフト, chỗ trống bên phải điền gì?",
+   o:["0","1","符号ビット","ランダムな値"],
+   a:0,
+   why:"Slide: 空いたスペースに0を詰める.",
+   wrong:["B: Không điền 1.","C: Đó là quy tắc của 算術右シフト.","D: Không tồn tại quy tắc này."],
+   ref:"基礎理論 / 論理左シフト"},
+
+  {d:"easy",
+   q:"算術右シフトで空いたスペース（左側）には何を入れるか。\n算術右シフト, chỗ trống bên trái điền gì?",
+   o:["符号ビット (sign bit)","0","1","直前の最上位ビットの反転"],
+   a:0,
+   why:"Slide: 算術右シフトは空いたスペースに符号ビットを入れる để bảo toàn dấu.",
+   wrong:["B: Đó là quy tắc của 論理右シフト.","C: Sai.","D: Không có quy tắc đó."],
+   ref:"基礎理論 / 算術右シフト"},
+
+  {d:"easy",
+   q:"右シフトではみ出したビットは何を表すか。\nBit trào ra bên phải khi dịch phải biểu thị gì?",
+   o:["割り算の余り","次のシフト用","桁上がり","オーバーフロー"],
+   a:0,
+   why:"Slide: はみ出た分は割り算の余りを表している.",
+   wrong:["B: Không có khái niệm \"shift kế tiếp\".","C: Carry là khái niệm của phép cộng.","D: Sai, không liên quan tràn."],
+   ref:"基礎理論 / 右シフト 余り"},
+
+  {d:"easy",
+   q:"左シフトを使って表現できる演算は何か。\nDịch trái dùng để thực hiện phép nào?",
+   o:["かけ算 (×)","割り算 (÷)","引き算","余り"],
+   a:0,
+   why:"Slide: 左シフト = かけ算 (nhân với lũy thừa 2).",
+   wrong:["B: Đó là dịch phải.","C: Trừ dùng bù 2 + cộng.","D:余り là kết quả phụ của dịch phải."],
+   ref:"基礎理論 / 左シフト"},
+
+  {d:"easy",
+   q:"論理左シフトで「1」がはみ出した場合、何が起きるか。\nKhi bit 1 trào ra ngoài trong 論理左シフト, điều gì xảy ra?",
+   o:["オーバーフロー (tràn số)","正常な結果","符号が変わる","計算が止まる"],
+   a:0,
+   why:"Slide: 論理シフトの場合は1がはみ出たらオーバーフロー.",
+   wrong:["B: Không bình thường, vì giá trị đã bị mất.","C: 論理シフト không xét dấu.","D: Vẫn tiếp tục, chỉ là kết quả sai."],
+   ref:"基礎理論 / オーバーフロー 論理"},
+
+  {d:"easy",
+   q:"10進数で「73.6」を1桁左にずらすと、いくつになるか。\nỞ 10進số, dịch 73.6 sang trái 1 chữ số = ?",
+   o:["736","7.36","73.6","7360"],
+   a:0,
+   why:"Slide ví dụ: 10進数を左に1つずらす = ×10 (cơ số). 73.6 × 10 = 736.",
+   wrong:["B: Đó là dịch phải 1 (×1/10).","C: Không đổi.","D: Dịch 2 chữ số."],
+   ref:"基礎理論 / シフト 10進"},
+
+  {d:"easy",
+   q:"なぜシフト演算が「2のべき乗のかけ算/割り算」と等しいのか。\nVì sao shift = nhân/chia lũy thừa 2?",
+   o:["2進数の基数が2だから","2進数は0と1しかないから","コンピュータが2ビットを使うから","2進数は速いから"],
+   a:0,
+   why:"Cơ chế: dịch 1 chỗ trong hệ n進 = ×n. 2進 có cơ số = 2 nên dịch 1 bit = ×2. Slide so sánh với 10進 (cơ số 10).",
+   wrong:["B: Đúng là chỉ 0 và 1 nhưng đó không phải lý do.","C: Sai.","D: Không liên quan tốc độ."],
+   ref:"基礎理論 / Lý do shift = ×2ⁿ"},
+
+  // ====== TB (16 câu) ======
+  {d:"med",
+   q:"2進数「1011 + 1101」の結果はどれか。\nTính 1011 + 1101 (2進)?",
+   o:["11000","10000","11100","10110"],
+   a:0,
+   why:"1011₂=11, 1101₂=13. Tổng=24=11000₂. Từng bit: 1+1=10(0,c1); 1+0+1=10(0,c1); 0+1+1=10(0,c1); 1+1+1=11(1,c1) → 11000.",
+   wrong:["B: 10000₂=16, tính nhầm.","C: 11100₂=28.","D: 10110₂=22."],
+   ref:"基礎理論 / 2進数加算"},
+
+  {d:"med",
+   q:"2進数「1100 − 0101」を2の補数で計算した結果は？\nTính 1100 − 0101 bằng bù 2 (4 bit)?",
+   o:["0111","1011","0100","1111"],
+   a:0,
+   why:"1100=12, 0101=5. Bù 2 của 0101: đảo 1010 +1 = 1011. 1100+1011=10111, bỏ carry → 0111=7. ✓ 12−5=7.",
+   wrong:["B: 1011 là bù 2 của 0101, chưa cộng.","C: 0100=4, tính sai.","D: 1111=15, sai."],
+   ref:"基礎理論 / 補数引き算"},
+
+  {d:"med",
+   q:"10進数42を8ビットで表すと「00101010」になる。これを2ビット左論理シフトした結果（10進数）はどれか。\n42 (=00101010) sau 2-bit logical left shift = ?",
+   o:["168","21","42","84"],
+   a:0,
+   why:"Slide ví dụ: 00101010 → 10101000 = 168. 42 × 4 = 168 ✓.",
+   wrong:["B: 21 = ÷2, ngược chiều.","C: 0 shift.","D: 42×2=84, mới 1 bit."],
+   ref:"基礎理論 / 論理左シフト ví dụ"},
+
+  {d:"med",
+   q:"10進数73 (= 01001001) を2ビット右論理シフトした結果（商）はどれか。\n73 (=01001001) sau 2-bit logical right shift, thương = ?",
+   o:["18","19","36","73"],
+   a:0,
+   why:"Slide: 73÷4 = 18 dư 1. 01001001 → 00010010 = 18. Phần trào 01 = số dư 1.",
+   wrong:["B: Tính nhầm.","C: 73÷2=36, mới 1 bit.","D: Không shift."],
+   ref:"基礎理論 / 論理右シフト ví dụ"},
+
+  {d:"med",
+   q:"10進数73を2ビット右シフトしたときの「余り」はいくつか。\n73 dịch phải 2 bit, phần dư = ?",
+   o:["1","2","3","0"],
+   a:0,
+   why:"Slide: はみ出た分は割り算の余り. 73 = 18×4 + 1. Phần trào ra là 01₂ = 1.",
+   wrong:["B: Sai phép tính.","C: Sai.","D: 73 không chia hết cho 4."],
+   ref:"基礎理論 / 右シフト 余り"},
+
+  {d:"med",
+   q:"符号付8ビット2進数で「11101000」 (= −24) を2ビット算術右シフトした結果はどれか。\n−24 (=11101000) sau 2-bit arithmetic right shift = ?",
+   o:["11111010 (= −6)","00111010","11101000","11000000"],
+   a:0,
+   why:"Slide: 11101000 → 11111010. Bit dấu =1 nên 2 chỗ trống trái điền 1. Kết quả = −6. −24÷4=−6 ✓.",
+   wrong:["B: Điền 0 (đó là 論理右シフト).","C: Không shift.","D: Sai biểu diễn."],
+   ref:"基礎理論 / 算術右シフト ví dụ Slide"},
+
+  {d:"med",
+   q:"符号付8ビット2進数で「11101000」 (= −24) を2ビット算術左シフトした結果（10進数）はどれか。\n−24 sau 2-bit arithmetic left shift = ?",
+   o:["−96","−6","96","−128"],
+   a:0,
+   why:"Slide: 11101000 → 10100000 = −96. −24×4=−96 ✓. Khác bit dấu không trào ra → không overflow.",
+   wrong:["B: Đó là dịch phải.","C: Mất dấu.","D: Sai."],
+   ref:"基礎理論 / 算術左シフト Slide"},
+
+  {d:"med",
+   q:"算術左シフトでオーバーフローが起こる条件として正しいものはどれか。\nĐiều kiện overflow của 算術左シフト?",
+   o:["符号ビットと異なる値がはみ出たとき","1がはみ出たとき","0がはみ出たとき","シフト幅が大きすぎるとき"],
+   a:0,
+   why:"Slide: 算術シフトの場合は符号ビットと異なる値がはみ出たらオーバーフロー.",
+   wrong:["B: Đó là 論理シフト.","C: Trào 0 chỉ overflow nếu khác bit dấu (số âm).","D: Không phải vấn đề chính."],
+   ref:"基礎理論 / 算術OF"},
+
+  {d:"med",
+   q:"x × 7 をシフト演算と加算で計算する正しい分解はどれか。\nPhân tích x × 7 bằng shift?",
+   o:["(x << 2) + (x << 1) + x","(x << 3) − x","(x << 7)","(x << 2) × 7"],
+   a:0,
+   why:"Slide: 7 = 4+2+1 = 2²+2¹+2⁰. x×7 = x×2² + x×2¹ + x×2⁰ = (x<<2) + (x<<1) + x.",
+   wrong:["B: Đúng về mặt toán (8x-x) nhưng không phải cách Slide trình bày.","C: x<<7 = x×128, sai hoàn toàn.","D: Trộn shift với nhân thường."],
+   ref:"基礎理論 / シフト × 7"},
+
+  {d:"med",
+   q:"10進数 5 (= 00000101) を2ビット左シフトしたあとの値はいくつか。\n5 dịch trái 2 bit = ?",
+   o:["20","10","2","40"],
+   a:0,
+   why:"5 × 2² = 5 × 4 = 20. 00000101 → 00010100 = 20.",
+   wrong:["B: Mới shift 1 bit.","C: Đó là dịch phải 1 bit.","D: Tính nhầm ×8."],
+   ref:"基礎理論 / 左シフト tính"},
+
+  {d:"med",
+   q:"論理右シフトで「正の数」と「負の数」を比較した場合、どちらが間違った結果になりやすいか。\n論理右シフト có thể cho kết quả sai với loại số nào?",
+   o:["負の数 (số âm)","正の数","ゼロ","奇数"],
+   a:0,
+   why:"論理右シフト điền 0 vào chỗ trống trái, khiến bit dấu bị mất. Số âm bị hiểu thành số dương rất lớn. Đó là lý do số âm cần 算術右シフト.",
+   wrong:["B: Số dương vẫn đúng vì bit dấu=0 vẫn là 0.","C: Zero shift cho 0.","D: Không liên quan chẵn lẻ."],
+   ref:"基礎理論 / 論理 vs 算術 右"},
+
+  {d:"med",
+   q:"2進数「1111」と「0001」を足した結果は何か。\nTính 1111 + 0001 (4 bit)?",
+   o:["10000 (5 bit, có carry)","1110","0000","1111"],
+   a:0,
+   why:"1+1=10 (c1); 1+0+1=10 (c1); ... → 10000. Trong 4 bit cố định nếu bỏ carry trào ra → 0000. Ngữ cảnh signed 4 bit: 1111=−1, 0001=+1, tổng=0 ✓.",
+   wrong:["B: Sai phép cộng.","C: Đó là kết quả khi bỏ carry trong ngữ cảnh 4 bit cố định.","D: Không cộng."],
+   ref:"基礎理論 / 加算 carry"},
+
+  {d:"med",
+   q:"2進数「101.1」を10進数に変換するといくつか。\n101.1₂ = ?",
+   o:["5.5","5.1","11.0","2.5"],
+   a:0,
+   why:"1×4 + 0×2 + 1×1 + 1×0.5 = 5.5.",
+   wrong:["B: Hiểu .1 là 0.1 (sai cơ số).","C: Bỏ dấu chấm.","D: Tính nhầm."],
+   ref:"基礎理論 / 2進→10進 thập phân"},
+
+  {d:"med",
+   q:"算術左シフトで空いたスペースには何を入れるか。\n算術左シフト chỗ trống điền gì?",
+   o:["0","符号ビット","1","直前のビット"],
+   a:0,
+   why:"Slide: 算術左シフトも空いたスペースに0を詰める. Chỉ có 算術右シフト mới điền bit dấu.",
+   wrong:["B: Chỉ đúng cho 算術右シフト.","C: Sai.","D: Không có quy tắc đó."],
+   ref:"基礎理論 / 算術左シフト"},
+
+  {d:"med",
+   q:"10進数 50 を2ビット左シフトすると何になるか。\n50 dịch trái 2 bit = ?",
+   o:["200","100","12","25"],
+   a:0,
+   why:"50 × 2² = 50 × 4 = 200.",
+   wrong:["B: Mới 1 bit.","C: Dịch phải 2 bit.","D: Dịch phải 1 bit."],
+   ref:"基礎理論 / 左シフト tính"},
+
+  {d:"med",
+   q:"次のうち、シフト演算の利点として正しいものはどれか。\nƯu điểm của shift là gì?",
+   o:["かけ算/割り算より高速にできる","符号を変更できる","小数の精度を上げる","オーバーフローを防げる"],
+   a:0,
+   why:"Shift chỉ cần dịch bit (1 chu kỳ CPU), nhanh hơn nhiều so với phép nhân/chia thông thường. Slide giới thiệu shift như cách \"tối ưu\".",
+   wrong:["B: Shift không đổi dấu (trừ overflow).","C: Không liên quan precision.","D: Ngược lại, shift có thể gây overflow."],
+   ref:"基礎理論 / シフトの利点"},
+
+  {d:"med",
+   q:"符号付8ビットで「10000000」 (= −128) を1ビット算術左シフトすると何が起きるか。\n−128 sau 1-bit arithmetic left shift?",
+   o:["オーバーフロー (符号ビットと異なる0がはみ出る)","−256","0","−64"],
+   a:0,
+   why:"−128 × 2 = −256, vượt phạm vi 8 bit signed (−128~+127). Theo Slide: bit khác bit dấu (=0) trào ra → overflow.",
+   wrong:["B: Vượt phạm vi, không thể biểu diễn.","C: Sai tính toán.","D: Đó là dịch phải."],
+   ref:"基礎理論 / 算術左OF"},
+
+  // ====== KHÓ (12 câu) ======
+  {d:"hard",
+   q:"符号付8ビット2進数で「11011110」 (= −34) を2ビット算術左シフトした結果、何が起きるか。\n−34 (=11011110) sau 2-bit arithmetic left shift?",
+   o:["オーバーフロー (符号ビットと異なる0がはみ出る)","正常に −136 が得られる","結果は +120","0 になる"],
+   a:0,
+   why:"Slide ví dụ: 11011110 → 10111000, nhưng bit 0 (khác bit dấu 1) trào ra trong quá trình → オーバーフロー. −34×4 = −136 vượt phạm vi (−128~+127).",
+   wrong:["B: Có overflow, không bình thường.","C: Sai tính toán.","D: Không phải 0."],
+   ref:"基礎理論 / 算術左OF Slide"},
+
+  {d:"hard",
+   q:"x = 00001100 (= 12) のとき、x を「6」倍にする最も効率的なシフトと加算の組み合わせはどれか。\nx = 12, cách shift+add hiệu quả nhất để tính x × 6?",
+   o:["(x << 2) + (x << 1)","(x << 3) − (x << 1)","(x << 6)","(x << 1) + (x << 1) + (x << 1)"],
+   a:0,
+   why:"6 = 4 + 2 = 2² + 2¹. x×6 = (x<<2) + (x<<1). Áp dụng đúng phương pháp Slide ví dụ ×7.",
+   wrong:["B: 8x−2x = 6x đúng nhưng phép trừ tốn hơn cộng.","C: x<<6 = x×64, sai.","D: x+x+x = 3x, sai."],
+   ref:"基礎理論 / シフト × 6"},
+
+  {d:"hard",
+   q:"2進数「01100100」 (= 100) を7倍したときの理論値は700だが、8ビット範囲では何が起きるか。\n100 × 7 ở 8 bit signed?",
+   o:["オーバーフロー (700 は +127 を超える)","正しく 700 と表現される","結果は −156 となり正常","結果は 44 となり正常"],
+   a:0,
+   why:"Slide đề cập: 1100100に7をかけたらそもそもオーバーフローになってしまい計算出来ませんでした. 700 > 127 (max signed 8 bit).",
+   wrong:["B: 8 bit không đủ chứa.","C: \"Normal\" sai.","D: Sai logic."],
+   ref:"基礎理論 / シフト × 7 OF Slide"},
+
+  {d:"hard",
+   q:"8ビット符号付2進数で +127 (= 01111111) を1ビット算術左シフトした結果は？\n+127 dịch trái 1 bit (signed 8 bit)?",
+   o:["オーバーフロー (符号ビットが0から1に変化)","254","−2","正常な +254"],
+   a:0,
+   why:"01111111 → 11111110. Bit MSB lẽ ra giữ 0 (số dương) nhưng giờ thành 1 → biểu diễn là −2. Bit khác bit dấu (=1) trào ra → オーバーフロー. 127×2=254 vượt +127.",
+   wrong:["B: Là cách hiểu unsigned, không phải signed.","C: Đó là kết quả bit nhưng KHÔNG \"normal\".","D: 254 vượt phạm vi signed 8 bit."],
+   ref:"基礎理論 / 算術OF dấu đổi"},
+
+  {d:"hard",
+   q:"2進数「00100011」(= 35) と「00010111」(= 23) を加算した結果はどれか。\nCộng 35 + 23 ở 2進?",
+   o:["00111010 (= 58)","01000000","00101011","00110010"],
+   a:0,
+   why:"35+23=58=00111010. Tính bit: 1+1=10, 1+1=10+c=11... cho đến 0+0+0=0. Kết quả 00111010.",
+   wrong:["B: 64, sai.","C: 43, sai.","D: 50, sai."],
+   ref:"基礎理論 / 加算"},
+
+  {d:"hard",
+   q:"右論理シフトと右算術シフトを「00010111」 (=23, 正の数) に行った場合、結果は？\nDịch phải logical vs arithmetic của +23 cho kết quả thế nào?",
+   o:["両者とも同じ (符号ビットが0だから)","論理は0、算術は1で詰める","結果は完全に異なる","論理シフトでオーバーフロー"],
+   a:0,
+   why:"Với số dương (bit dấu=0), cả 2 loại điền cùng 0 vào chỗ trống trái → kết quả giống nhau. Khác biệt chỉ xuất hiện với số âm.",
+   wrong:["B: Đúng cơ chế nhưng kết quả thực tế giống nhau vì sign bit=0.","C: Giống nhau.","D: Không liên quan OF."],
+   ref:"基礎理論 / 論理 vs 算術 (số dương)"},
+
+  {d:"hard",
+   q:"2進数 1.1 と 0.1 を足した結果（2進数）はどれか。\nTính 1.1₂ + 0.1₂?",
+   o:["10.0","1.2","11.0","1.1"],
+   a:0,
+   why:"1.1₂ = 1.5, 0.1₂ = 0.5. Tổng = 2.0 = 10.0₂. Kiểm bit: phần thập phân 1+1=10 (viết 0, nhớ 1 sang phần nguyên); phần nguyên 1+0+1=10 → 10.0.",
+   wrong:["B: \"2\" không tồn tại trong 2進.","C: 11.0₂=3.","D: Không cộng."],
+   ref:"基礎理論 / 加算 thập phân"},
+
+  {d:"hard",
+   q:"符号付8ビット 11111100 (= −4) を2ビット算術右シフトした結果はどれか。\n−4 sau 2-bit arithmetic right shift?",
+   o:["11111111 (= −1)","00111111 (= +63)","11111100 (= −4)","11000000 (= −64)"],
+   a:0,
+   why:"−4÷4 = −1. 11111100 → trào ra '00', chỗ trống điền 1 (bit dấu) → 11111111 = −1.",
+   wrong:["B: Đó là 論理右シフト (điền 0).","C: Không shift.","D: Sai hoàn toàn."],
+   ref:"基礎理論 / 算術右 số âm"},
+
+  {d:"hard",
+   q:"次のうち、シフト演算で表現できない演算はどれか。\nPhép nào KHÔNG thể thực hiện chỉ bằng shift?",
+   o:["x × 3 を1回のシフトで","x × 4 = x << 2","x ÷ 8 = x >> 3","x × 2 = x << 1"],
+   a:0,
+   why:"x×3 không phải lũy thừa 2 nên KHÔNG dùng 1 shift được. Cần phân tích: 3=2+1 → (x<<1)+x (2 thao tác).",
+   wrong:["B: 4=2² → 1 shift đủ.","C: 8=2³ → 1 shift đủ.","D: 2=2¹ → 1 shift đủ."],
+   ref:"基礎理論 / シフト 限界"},
+
+  {d:"hard",
+   q:"符号付8ビット 「01000000」 (= +64) を2ビット算術左シフトした結果は？\n+64 sau 2-bit arithmetic left shift?",
+   o:["オーバーフロー (符号ビットと異なる1がはみ出る)","00000000","+256","+128"],
+   a:0,
+   why:"01000000 → 00000000, nhưng bit 1 (khác bit dấu 0) trào ra → オーバーフロー. 64×4=256 vượt +127.",
+   wrong:["B: Là kết quả bit nhưng có overflow.","C: 256 vượt phạm vi 8 bit signed.","D: Đó là +64×2 (1 shift)."],
+   ref:"基礎理論 / 算術左OF dương"},
+
+  {d:"hard",
+   q:"シフト演算による割り算で、負の数を「論理右シフト」した場合、結果はどうなるか。\nDịch phải logical với số âm cho kết quả thế nào?",
+   o:["大きな正の数になり、本来の割り算と異なる","正しい商が得られる","符号が反転して負のまま小さくなる","オーバーフロー"],
+   a:0,
+   why:"論理右シフト điền 0 vào trái → bit dấu (lẽ ra =1) thành 0 → biểu diễn signed thành số dương rất lớn. VD: 11111110(−2) >> 1 logical = 01111111 = +127, không phải −1.",
+   wrong:["B: Sai, không bảo toàn dấu.","C: Mất dấu hoàn toàn.","D: Không tràn, chỉ sai kết quả."],
+   ref:"基礎理論 / 論理右 + số âm"},
+
+  {d:"hard",
+   q:"4ビットの符号付2進数で 「0111 + 0001」 を計算した結果は何か。\nCộng 0111 + 0001 (signed 4 bit)?",
+   o:["1000 (= −8, オーバーフロー)","1000 (= +8)","0110","0000"],
+   a:0,
+   why:"7+1=8. Bit: 0111+0001=1000. Ở 4 bit unsigned = 8, nhưng ở signed = −8. Cộng 2 số dương ra bit dấu=1 → オーバーフロー (vượt max +7).",
+   wrong:["B: 1000 signed 4 bit = −8 chứ không phải +8.","C: Sai phép cộng.","D: Sai hoàn toàn."],
+   ref:"基礎理論 / OF dương + dương"},
+];
+
+let cur=0, ans=new Array(Q.length).fill(null);
+
+function renderJump(){
+  const j=document.getElementById('jump'); j.innerHTML='';
+  Q.forEach((_,i)=>{
+    const b=document.createElement('button');
+    b.textContent=i+1;
+    if(ans[i]!==null){ b.className = ans[i]===Q[i].a ? 'done' : 'miss'; }
+    if(i===cur) b.className=(b.className+' cur').trim();
+    b.onclick=()=>{cur=i; render();};
+    j.appendChild(b);
+  });
+}
+
+function updateMeta(){
+  document.getElementById('cur').textContent=cur+1;
+  const done=ans.filter(x=>x!==null).length;
+  const ok=ans.filter((x,i)=>x!==null && x===Q[i].a).length;
+  document.getElementById('done').textContent=done;
+  document.getElementById('ok').textContent=ok;
+  document.getElementById('ng').textContent=done-ok;
+  document.getElementById('bar').style.width = (done/Q.length*100)+'%';
+}
+
+function render(){
+  document.getElementById('result').classList.add('hidden');
+  const q=Q[cur];
+  const dCls = q.d==='easy'?'d-easy':q.d==='med'?'d-med':'d-hard';
+  const dTxt = q.d==='easy'?'易 Dễ':q.d==='med'?'中 TB':'難 Khó';
+  const parts = q.q.split('\n');
+  const vi = parts[0], jp = parts[1]||'';
+  let html = `<div class="card">
+    <div class="qhead">
+      <span class="qnum">Câu ${cur+1}/40</span>
+      <span class="diff ${dCls}">${dTxt}</span>
+    </div>
+    <div class="qtext">${vi}<span class="jp">🇯🇵 ${jp}</span></div>
+    <div class="options">`;
+  const letters=['A','B','C','D'];
+  q.o.forEach((opt,i)=>{
+    let cls='opt';
+    if(ans[cur]!==null){
+      cls+=' locked disabled';
+      if(i===q.a) cls+=' correct';
+      else if(i===ans[cur]) cls+=' wrong';
+    }
+    html+=`<div class="${cls}" data-i="${i}"><span class="lbl">${letters[i]}.</span><span>${opt}</span></div>`;
+  });
+  html+=`</div>`;
+
+  if(ans[cur]!==null){
+    const correct=ans[cur]===q.a;
+    html+=`<button class="ghost" id="toggleEx" style="margin-top:14px">📖 ${correct?'Xem giải thích':'Xem giải thích chi tiết'}</button>
+    <div class="explain" id="ex">
+      <h4>Đáp án đúng: ${letters[q.a]}</h4>
+      <p><strong>Vì sao đúng:</strong> ${q.why}</p>
+      <p><strong>Vì sao các phương án còn lại sai:</strong></p>
+      ${q.wrong.map(w=>`<p style="margin-left:12px">• ${w}</p>`).join('')}
+      <p style="margin-top:8px;color:var(--muted);font-size:.88em"><strong>📌 FE Syllabus:</strong> ${q.ref}</p>
+    </div>`;
+  }
+
+  html+=`<div class="nav">
+    <button class="ghost" ${cur===0?'disabled':''} onclick="cur--;render()">← Câu trước</button>
+    ${cur===Q.length-1
+      ? `<button onclick="showResult()">✅ Nộp bài</button>`
+      : `<button onclick="cur++;render()">Câu tiếp →</button>`}
+  </div></div>`;
+  document.getElementById('quiz').innerHTML=html;
+
+  document.querySelectorAll('.opt:not(.locked)').forEach(el=>{
+    el.onclick=()=>{
+      ans[cur]=parseInt(el.dataset.i);
+      render();
+    };
+  });
+  const tg=document.getElementById('toggleEx');
+  if(tg) tg.onclick=()=>document.getElementById('ex').classList.toggle('show');
+
+  updateMeta(); renderJump();
+}
+
+function showResult(){
+  document.getElementById('quiz').innerHTML='';
+  const ok=ans.filter((x,i)=>x!==null && x===Q[i].a).length;
+  const pct=Math.round(ok/Q.length*100);
+  const buckets={easy:[0,0],med:[0,0],hard:[0,0]};
+  Q.forEach((q,i)=>{
+    buckets[q.d][1]++;
+    if(ans[i]===q.a) buckets[q.d][0]++;
+  });
+  let verdict, color;
+  if(pct>=80){verdict='🏆 Xuất sắc — vững 四則演算 + シフト!'; color='var(--green)';}
+  else if(pct>=60){verdict='👍 Khá — đạt ngưỡng FE, ôn thêm vài chỗ.'; color='var(--accent)';}
+  else if(pct>=40){verdict='⚠️ Trung bình — luyện thêm overflow và 算術シフト.'; color='var(--yellow)';}
+  else {verdict='💪 Cần cố gắng — học lại Slide 1 第3回・第4回 trước.'; color='var(--red)';}
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('result').innerHTML=`
+    <h2 style="margin-top:0">Kết quả</h2>
+    <div class="score">${ok} / 40</div>
+    <div style="color:var(--muted)">${pct}% đúng</div>
+    <div class="verdict" style="color:${color}">${verdict}</div>
+    <div class="bk">
+      <div class="bk-card"><div style="color:#7ee787">易 Dễ</div><div class="n">${buckets.easy[0]}/${buckets.easy[1]}</div></div>
+      <div class="bk-card"><div style="color:#e3b341">中 TB</div><div class="n">${buckets.med[0]}/${buckets.med[1]}</div></div>
+      <div class="bk-card"><div style="color:#ff7b72">難 Khó</div><div class="n">${buckets.hard[0]}/${buckets.hard[1]}</div></div>
+    </div>
+    <button onclick="reset()">🔁 Làm lại từ đầu</button>
+    <button class="ghost" onclick="cur=0;render()" style="margin-left:8px">📝 Xem lại từng câu</button>
+  `;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function reset(){
+  ans=new Array(Q.length).fill(null); cur=0; render();
+}
+
+render();
+</script>
+</body>
+</html>
