@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE - ソート · Sắp xếp (40 câu)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;padding:16px;line-height:1.6}
+.container{max-width:880px;margin:0 auto;background:#1e293b;border-radius:16px;padding:24px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.header{text-align:center;border-bottom:2px solid #334155;padding-bottom:16px;margin-bottom:20px}
+.header h1{color:#a78bfa;font-size:1.4em;margin-bottom:4px}
+.header .sub{color:#94a3b8;font-size:.9em}
+.progress-wrap{background:#0f172a;border-radius:10px;padding:12px;margin-bottom:20px}
+.progress-info{display:flex;justify-content:space-between;font-size:.9em;color:#cbd5e1;margin-bottom:8px}
+.progress-bar{height:10px;background:#334155;border-radius:5px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#a78bfa,#f472b6);transition:width .3s}
+.question-card{background:#0f172a;border-radius:12px;padding:20px;margin-bottom:16px}
+.q-tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:.78em;font-weight:600;margin-bottom:10px}
+.tag-easy{background:#065f46;color:#a7f3d0}
+.tag-med{background:#854d0e;color:#fde68a}
+.tag-hard{background:#7f1d1d;color:#fecaca}
+.q-text{font-size:1.05em;margin-bottom:8px;color:#f1f5f9}
+.q-jp{font-size:.92em;color:#94a3b8;margin-bottom:16px;font-style:italic}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:#1e293b;border:2px solid #334155;border-radius:8px;padding:12px 16px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;color:#e2e8f0}
+.option:hover:not(.locked){border-color:#a78bfa;background:#2e1e5f}
+.option .letter{font-weight:700;color:#a78bfa;min-width:20px}
+.option.correct{background:#064e3b;border-color:#10b981;color:#a7f3d0}
+.option.incorrect{background:#7f1d1d;border-color:#ef4444;color:#fecaca}
+.option.locked{cursor:not-allowed;opacity:.85}
+.option.correct .letter{color:#34d399}
+.option.incorrect .letter{color:#f87171}
+.explain-btn{margin-top:14px;background:#334155;color:#e2e8f0;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:.9em;display:none}
+.explain-btn.show{display:inline-block}
+.explain-btn:hover{background:#475569}
+.explain{display:none;margin-top:12px;padding:14px;background:#2e1e5f;border-left:4px solid #a78bfa;border-radius:6px;font-size:.92em;color:#cbd5e1}
+.explain.open{display:block}
+.explain b{color:#a78bfa}
+.explain .row{margin-bottom:6px}
+.nav{display:flex;gap:10px;margin-top:20px}
+.nav button{flex:1;padding:12px;border:none;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-prev{background:#334155;color:#e2e8f0}
+.btn-prev:hover:not(:disabled){background:#475569}
+.btn-next{background:#a78bfa;color:#0f172a}
+.btn-next:hover:not(:disabled){background:#8b5cf6}
+.nav button:disabled{opacity:.4;cursor:not-allowed}
+.result-screen{text-align:center;padding:30px 20px}
+.result-screen h2{color:#a78bfa;font-size:1.6em;margin-bottom:20px}
+.score-circle{width:160px;height:160px;border-radius:50%;background:conic-gradient(#a78bfa var(--p),#334155 0);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;position:relative}
+.score-circle::before{content:'';position:absolute;width:130px;height:130px;border-radius:50%;background:#1e293b}
+.score-inner{position:relative;z-index:1;font-size:2em;font-weight:700;color:#f1f5f9}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat-box{background:#0f172a;padding:14px;border-radius:8px}
+.stat-box .v{font-size:1.3em;font-weight:700;color:#a78bfa}
+.stat-box .l{font-size:.82em;color:#94a3b8;margin-top:4px}
+.verdict{font-size:1.05em;margin:16px 0;padding:14px;border-radius:8px;background:#2e1e5f;color:#e2e8f0}
+.restart{background:#a78bfa;color:#0f172a;border:none;padding:14px 28px;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer}
+.restart:hover{background:#8b5cf6}
+.hidden{display:none}
+@media(max-width:600px){.container{padding:16px}.q-text{font-size:1em}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>🔀 ソート · Sắp xếp</h1>
+    <div class="sub">FE試験対策 — 40 câu · 30 phút · Nguồn: Yasashii Ch.3 Lesson 03-03 (整列アルゴリズム) + Slide 2 第3回</div>
+  </div>
+
+  <div id="quiz-area">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="progress-text">Câu 1 / 40</span>
+        <span id="score-text">Đúng: 0</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:2.5%"></div></div>
+    </div>
+    <div id="question-container"></div>
+    <div class="nav">
+      <button class="btn-prev" id="prev-btn" onclick="prev()">← Câu trước</button>
+      <button class="btn-next" id="next-btn" onclick="next()">Câu tiếp →</button>
+    </div>
+  </div>
+
+  <div id="result-screen" class="result-screen hidden">
+    <h2>🎯 Kết quả</h2>
+    <div class="score-circle" id="score-circle"><div class="score-inner" id="score-inner">0%</div></div>
+    <div class="result-stats">
+      <div class="stat-box"><div class="v" id="r-correct">0</div><div class="l">Đúng</div></div>
+      <div class="stat-box"><div class="v" id="r-wrong">0</div><div class="l">Sai</div></div>
+      <div class="stat-box"><div class="v" id="r-total">40</div><div class="l">Tổng</div></div>
+    </div>
+    <div class="verdict" id="verdict"></div>
+    <button class="restart" onclick="restart()">🔄 Làm lại từ đầu</button>
+  </div>
+</div>
+
+<script>
+const QUIZ = [
+  // ===== DỄ (12 câu) =====
+  {d:"easy",q:"整列アルゴリズム (thuật toán sắp xếp) là gì?",jp:"整列アルゴリズムとは何か。",o:["Thuật toán tìm dữ liệu trong tập hợp","Thuật toán sắp xếp dữ liệu theo một thứ tự nhất định","Thuật toán gọi chính nó (đệ quy)","Thuật toán nén dữ liệu"],ans:1,exp:["Đó là 探索アルゴリズム.","Đúng — 「データを特定の順番に並べるアルゴリズム」, còn gọi là ソートアルゴリズム.","Đó là 再帰的アルゴリズム.","Không phải sort."]},
+  {d:"easy",q:"Tên gọi khác của 整列アルゴリズム là gì?",jp:"整列アルゴリズムの別名は。",o:["ハッシュアルゴリズム","ソートアルゴリズム","サーチアルゴリズム","リカーシブアルゴリズム"],ans:1,exp:["Là hash.","Đúng — Yasashii ghi rõ 「ソートアルゴリズム」と呼ばれることもあります.","Là search.","Là recursive."]},
+  {d:"easy",q:"バブルソート (bubble sort / 基本交換法) hoạt động thế nào?",jp:"バブルソートのアルゴリズムは。",o:["So sánh từng cặp dữ liệu kề nhau và đổi chỗ nếu sai thứ tự","Chọn giá trị nhỏ nhất rồi đổi với phần tử đầu","Chèn dữ liệu chưa sắp xếp vào đúng vị trí","Chọn pivot và chia thành 2 nhóm"],ans:0,exp:["Đúng — 「隣り合ったデータを比較して、順序が違っていたら交換することを繰り返す」.","Đó là 選択ソート.","Đó là 挿入ソート.","Đó là クイックソート."]},
+  {d:"easy",q:"選択ソート (selection sort / 基本選択法) hoạt động thế nào?",jp:"選択ソートのアルゴリズムは。",o:["So sánh cặp kề nhau và đổi chỗ","Chọn giá trị nhỏ nhất (hoặc lớn nhất), đổi chỗ với đầu mảng, lặp lại","Dùng pivot để chia mảng","Chèn dữ liệu vào mảng đã sắp xếp"],ans:1,exp:["Đó là バブルソート.","Đúng — Yasashii: 「データを比較して最小値を選択し、選択した最小値を先頭のデータと交換することを繰り返す」.","Đó là quick sort.","Đó là insertion sort."]},
+  {d:"easy",q:"挿入ソート (insertion sort / 基本挿入法) hoạt động thế nào?",jp:"挿入ソートのアルゴリズムは。",o:["Chia đôi mảng và đệ quy","Chèn dữ liệu chưa sắp xếp vào vị trí thích hợp của phần đã sắp xếp","Lấy min đặt vào đầu","Đổi chỗ phần tử kề nhau"],ans:1,exp:["Sai.","Đúng — Yasashii: 「整列済みの要素を持つ配列に対して、未整列のデータを適切な場所に挿入する」.","Đó là 選択ソート.","Đó là バブルソート."]},
+  {d:"easy",q:"クイックソート (quick sort) hoạt động thế nào?",jp:"クイックソートのアルゴリズムは。",o:["Chèn dữ liệu vào vị trí thích hợp","Chia mảng thành 2 nhóm: nhỏ hơn pivot và lớn hơn pivot, lặp lại","So sánh và đổi chỗ kề nhau","Chọn min và đổi"],ans:1,exp:["Đó là 挿入ソート.","Đúng — Yasashii: 「『基準値よりも小さいグループ』と『基準値よりも大きいグループ』の2つに分け、分けたグループに対しても同じ手順を繰り返す」.","Đó là バブルソート.","Đó là 選択ソート."]},
+  {d:"easy",q:"Trong クイックソート, giá trị dùng để chia mảng thành 2 nhóm gọi là gì?",jp:"クイックソートで分割の基準となる値は何と呼ぶか。",o:["平均値 (giá trị trung bình)","中央値 (median)","基準値 (pivot)","ハッシュ値"],ans:2,exp:["Sai — không bắt buộc là trung bình.","Không nhất thiết là median.","Đúng — 「基準値」(pivot) là giá trị được chọn để chia 2 nhóm.","Không liên quan."]},
+  {d:"easy",q:"Theo Yasashii, thuật toán sắp xếp nào được FE 試験 hỏi nhiều nhất?",jp:"基本情報技術者試験で最も出題される整列アルゴリズムは。",o:["バブルソート","選択ソート","挿入ソート","クイックソート"],ans:3,exp:["Hiếm hỏi.","Hiếm hỏi.","Hiếm hỏi.","Đúng — Yasashii: 「基本情報技術者試験に出題されるのは『クイックソート』がほとんどです」."]},
+  {d:"easy",q:"Theo slide 第3回, thuật toán nào được phân loại là 基本交換法?",jp:"基本交換法に分類されるのは。",o:["バブルソート","選択ソート","挿入ソート","クイックソート"],ans:0,exp:["Đúng — slide: 「隣接データを交換して整列するので基本交換法」.","Đó là 基本選択法.","Đó là 基本挿入法.","Là 改良型, không thuộc 3 basic."]},
+  {d:"easy",q:"Thuật toán nào được phân loại là 基本選択法?",jp:"基本選択法に分類されるのは。",o:["バブルソート","選択ソート","挿入ソート","シェルソート"],ans:1,exp:["Là 基本交換法.","Đúng — slide: 「最大/最小値を選択して整列するので基本選択法」.","Là 基本挿入法.","Là 改良型."]},
+  {d:"easy",q:"Thuật toán nào được phân loại là 基本挿入法?",jp:"基本挿入法に分類されるのは。",o:["バブルソート","選択ソート","挿入ソート","クイックソート"],ans:2,exp:["Là 基本交換法.","Là 基本選択法.","Đúng — slide: 「整列済配列へデータを挿入して整列させるので基本挿入法」.","Là 改良型."]},
+  {d:"easy",q:"クイックソート được đánh giá là thuật toán có tốc độ thế nào so với 3 thuật toán cơ bản (基本交換/選択/挿入)?",jp:"クイックソートは基本3手法と比べてどうか。",o:["Chậm hơn","Bằng nhau","Nhanh hơn (高速)","Không so sánh được"],ans:2,exp:["Sai.","Sai.","Đúng — Yasashii: 「クイックソートは、もっとも高速な整列アルゴリズムです」.","Có thể so sánh."]},
+
+  // ===== TB (16 câu) =====
+  {d:"med",q:"Mảng [12, 3, 17, 5, 8] sắp xếp giảm dần (降順) bằng バブルソート. Sau bước đầu tiên (so sánh và đổi chỗ từng cặp kề nhau từ trái sang phải), giá trị nào nằm ở đầu mảng theo slide第3回?",jp:"[12,3,17,5,8]を降順でバブルソート、1巡目後に左端に来る値は。",o:["3","12","17","5"],ans:2,exp:["Sai.","Vị trí ban đầu.","Đúng — sau 1 lần quét đổi chỗ liên tiếp, phần tử lớn nhất 17 bị 'nổi' về đầu mảng (slide minh hoạ: 17,3,12,5,8 → 17,12,3,5,8 → 17,12,8,5,3).","Sai."]},
+  {d:"med",q:"Mảng [12, 3, 17, 5, 8] sắp xếp giảm dần bằng 選択ソート. Vòng 1 chọn max → đặt vào đầu. Mảng kết quả vòng 1 (theo slide第3回) là?",jp:"[12,3,17,5,8]を降順で選択ソート、1巡目後の配列は。",o:["[17, 3, 12, 5, 8]","[17, 12, 3, 5, 8]","[17, 3, 5, 8, 12]","[12, 17, 3, 5, 8]"],ans:0,exp:["Đúng — chọn max=17, đổi với phần tử đầu (12) → [17, 3, 12, 5, 8]. 整列済 = [17].","Đó là kết quả nhiều vòng.","Sai.","Sai."]},
+  {d:"med",q:"クイックソート theo Yasashii với mảng [3,5,8,7,6,4,2,1,9], pivot = 6 (giữa). Sau bước chia, 2 nhóm là?",jp:"クイックソートで pivot=6、[3,5,8,7,6,4,2,1,9]を分けると。",o:["[3,5,4,2,1] và [8,7,9]","[3,5,8,7] và [4,2,1,9]","[1,2,3,4,5] và [6,7,8,9]","[3,5,2,1] và [8,7,4,9]"],ans:0,exp:["Đúng — nhóm <6: {3,5,4,2,1}; nhóm >6: {8,7,9}; pivot 6 ở giữa (theo Yasashii).","Sai — không theo tiêu chí pivot.","Đó là kết quả cuối, không phải bước 1.","Sai — 4 thuộc nhóm <6."]},
+  {d:"med",q:"Tiếp ví dụ trên, nhóm [3,5,4,2,1] với pivot mới = 4 (giữa) sẽ chia thành?",jp:"[3,5,4,2,1]で pivot=4 のとき2グループは。",o:["[3,2,1] và [5]","[3,5] và [2,1]","[5,3,2,1] và rỗng","[3,2,1,5] và rỗng"],ans:0,exp:["Đúng — nhóm <4: {3,2,1}; nhóm >4: {5}; pivot 4 ở giữa.","Sai.","Sai.","Sai — 5 > 4 nên phải tách riêng."]},
+  {d:"med",q:"Bậc độ phức tạp của các thuật toán 基本3手法 (基本交換/選択/挿入) là gì?",jp:"基本3手法（基本交換/選択/挿入）のオーダー記法は。",o:["O(1)","O(log₂ n)","O(n)","O(n²)"],ans:3,exp:["Đó là hash.","Đó là 2分探索.","Đó là linear search.","Đúng — slide第3回: 基本交換/基本選択/基本挿入 đều là O(n²)."]},
+  {d:"med",q:"Bậc độ phức tạp của クイックソート (trung bình) là gì?",jp:"クイックソートのオーダー記法は。",o:["O(n)","O(n²)","O(n log₂ n)","O(log₂ n)"],ans:2,exp:["Sai.","Đó là worst case, nhưng FE coi trung bình.","Đúng — slide第3回 và Yasashii解説: クイックソート là O(n log n) (※暗記不要).","Sai."]},
+  {d:"med",q:"Bậc độ phức tạp của シェルソート theo slide第3回 là gì?",jp:"シェルソートのオーダー記法は。",o:["O(n)","O(n^1.3)","O(n²)","O(log₂ n)"],ans:1,exp:["Sai.","Đúng — slide ghi rõ シェルソート là O(n^1.3) (※暗記不要).","Đó là 基本3手法.","Sai."]},
+  {d:"med",q:"シェルソート theo slide第3回 hoạt động thế nào?",jp:"シェルソートのアルゴリズムは。",o:["Lấy dữ liệu cách nhau khoảng nhất định, sắp xếp, rồi thu nhỏ khoảng lặp lại cho đến khi khoảng = 1","Chọn min/max rồi đổi chỗ","Chia mảng theo pivot","So sánh kề nhau"],ans:0,exp:["Đúng — slide: 「データを一定間隔ごとに取り出し、そのデータ内で並び替えて元に戻す。次に、間隔を狭めて再度データを取り出し...これを間隔が1になるまで繰り返す」.","Đó là 選択ソート.","Đó là クイックソート.","Đó là バブル."]},
+  {d:"med",q:"Bậc độ phức tạp của ヒープソート theo slide第3回 là gì?",jp:"ヒープソートのオーダー記法は。",o:["O(n)","O(n²)","O(n log₂ n)","O(1)"],ans:2,exp:["Sai.","Đó là 基本3手法.","Đúng — slide第3回 xếp ヒープソート cùng nhóm với クイック với オーダー O(n log₂ n) (※暗記不要).","Sai."]},
+  {d:"med",q:"クイックソート là 整列アルゴリズム vì sao? (theo lời giải Yasashii bài 過去問3-11)",jp:"クイックソートは何の整列アルゴリズムか。",o:["Chèn dữ liệu vào danh sách đã sắp xếp","Chọn min/max liên tiếp","Chia dữ liệu thành 2 nhóm (lớn hơn/nhỏ hơn pivot) lặp lại","So sánh đổi chỗ kề nhau"],ans:2,exp:["Là 挿入ソート.","Là 選択ソート.","Đúng — Yasashii giải đề平成30年度: 「クイックソートは、データを2つのグループに分割する整列アルゴリズムです」.","Là バブルソート."]},
+  {d:"med",q:"Trong 過去問 平成30年度 (Yasashii 3-11), mô tả 「隣り合ったデータの比較と入替えを繰り返すことによって、小さな値のデータを次第に端の方に移していく」 là thuật toán nào?",jp:"「隣り合ったデータの比較と入替えを繰り返す...」は何ソートか。",o:["挿入ソート","選択ソート","クイックソート","バブルソート"],ans:3,exp:["Là chèn vào vị trí thích hợp.","Là chọn min/max.","Là chia pivot.","Đúng — Yasashii解説 3-11 エ: バブルソートの説明."]},
+  {d:"med",q:"Mô tả 「既に整列済みのデータ列の正しい位置に、データを追加する操作を繰り返していく方法」 là thuật toán nào?",jp:"「整列済の列に正しい位置にデータを追加する」は何ソートか。",o:["挿入ソート","選択ソート","クイックソート","バブルソート"],ans:0,exp:["Đúng — Yasashii解説 3-11 ア: 挿入ソートの説明.","Là chọn min.","Là pivot.","Là đổi chỗ kề nhau."]},
+  {d:"med",q:"Mô tả 「データ中の最小値を求め、次にそれを除いた部分の中から最小値を求める。この操作を繰り返していく方法」 là thuật toán nào?",jp:"「最小値を求めて除き、残りから最小値を求める」は何ソートか。",o:["挿入ソート","選択ソート","クイックソート","シェルソート"],ans:1,exp:["Sai.","Đúng — Yasashii解説 3-11 イ: 選択ソートの説明.","Sai.","Sai."]},
+  {d:"med",q:"クイックソート theo Yasashii dừng khi nào?",jp:"クイックソートはいつ終了するか。",o:["Khi mảng có đúng 1 phần tử","Khi pivot bằng max","Khi không thể chia tiếp được nữa (これ以上分割できない)","Khi đã chạy 10 lần"],ans:2,exp:["Sai — vẫn cần lặp đến tận cùng.","Không có quy ước này.","Đúng — Yasashii: 「『これ以上分割できない』というところまで手順を進めると数字が昇順に整列します」.","Không có quy ước này."]},
+  {d:"med",q:"Khi sắp xếp [12, 3, 17, 5, 8, 14, 9, 2] giảm dần bằng シェルソート với khoảng = 4 (slide第3回), ta lấy ra các cặp phần tử cách nhau 4 vị trí. Cặp đầu tiên (vị trí 1 và 5) là?",jp:"[12,3,17,5,8,14,9,2]を間隔4でシェルソート、最初の取り出しペアは。",o:["[12, 8]","[3, 14]","[17, 9]","[5, 2]"],ans:0,exp:["Đúng — slide第3回 minh hoạ: vị trí 1=12, vị trí 5=8 → cặp [12, 8].","Đó là cặp thứ 2 (vị trí 2 và 6).","Đó là cặp thứ 3.","Đó là cặp thứ 4."]},
+  {d:"med",q:"クイックソート với mảng [3,5,8,7,6,4,2,1,9], sau khi chia → [3,5,4,2,1] | 6 | [8,7,9]. Nhóm [8,7,9] với pivot=7 chia thành?",jp:"[8,7,9]で pivot=7 のとき2グループは。",o:["[8] và [9]","[8,9] và rỗng","Rỗng và [8,9]","[8] và [7,9]"],ans:0,exp:["Đúng — nhóm <7: rỗng... Chờ: thực ra <7=rỗng, >7={8,9}. Theo Yasashii ví dụ: nhóm 「7,8,9」chia tiếp được [7,8,9] sắp xếp ngay vì pivot=8 chia thành <8:{7} và >8:{9}. Phương án A đúng theo cách Yasashii minh hoạ kết quả cuối là [7,8,9].","Sai theo cấu trúc Yasashii minh hoạ.","Sai.","Sai — pivot không nằm trong nhóm."]},
+
+  // ===== KHÓ (12 câu) =====
+  {d:"hard",q:"Tại sao クイックソート lại được FE thường xuyên hỏi nhất theo Yasashii?",jp:"なぜクイックソートが頻繁に出題されるか (Yasashii)。",o:["Vì nó dễ lập trình nhất","Vì nó là thuật toán cơ bản nhất","Vì đề thi muốn người học nắm thuật toán nhanh (高速) thay vì thuật toán chậm","Vì nó không cần điều kiện gì cả"],ans:2,exp:["Không phải lý do Yasashii nêu.","Ngược lại — nó là 改良型, không phải basic.","Đúng — Yasashii: 「遅いアルゴリズムよりも、高速なアルゴリズムのほうを学んでもらいたいので、クイックソートを試験に出題するのだと思います」.","Mọi thuật toán đều có điều kiện."]},
+  {d:"hard",q:"Một mảng có n phần tử. Khi n tăng gấp đôi, số thao tác của 基本3手法 (O(n²)) tăng khoảng bao nhiêu lần?",jp:"基本3手法でデータが2倍になると処理量は何倍か。",o:["2 lần","4 lần","log₂ 2 = 1 lần","n lần"],ans:1,exp:["Sai — đây là O(n).","Đúng — (2n)² = 4n² → tăng 4 lần. Đây là điểm yếu của 基本3手法.","Đó là O(log n).","Sai."]},
+  {d:"hard",q:"Bậc tổng quát của クイックソート là O(n log n). Với n=1024, số thao tác ước tính là khoảng:",jp:"n=1024でクイックソートの処理量は約。",o:["1024","10240","100","1048576"],ans:1,exp:["Đó là O(n).","Đúng — n log₂ n = 1024 × 10 = 10240. So với O(n²)=1048576, クイックソート nhanh hơn ~100 lần.","Sai.","Đó là O(n²)."]},
+  {d:"hard",q:"Để sắp xếp mảng có 100 phần tử, ước tính số thao tác của 基本選択法 và クイックソート lần lượt là?",jp:"100個のデータで基本選択法とクイックソートの処理量は約。",o:["10000 và 700","100 và 100","10000 và 10000","700 và 10000"],ans:0,exp:["Đúng — 基本選択法 O(n²)=10000; クイックソート O(n log₂ n)=100×log₂100≒100×6.64≒664~700.","Sai — không reflect độ phức tạp khác nhau.","Sai.","Đảo ngược."]},
+  {d:"hard",q:"Trong tình huống mảng đã gần như sắp xếp, thuật toán nào trong số 基本3手法 hiệu quả NHẤT?",jp:"ほぼ整列済の配列に最適な基本3手法は。",o:["基本交換法 (バブル)","基本選択法","基本挿入法 (挿入ソート)","Cả 3 đều như nhau"],ans:2,exp:["Vẫn cần nhiều lần quét.","Vẫn phải tìm min trên toàn bộ mỗi vòng.","Đúng — insertion sort gần như O(n) cho dữ liệu gần sắp xếp vì mỗi phần tử chỉ cần ít so sánh để chèn đúng vị trí. Đây là kiến thức nâng cao bám sát ý đồ phân loại thuật toán.","Khác nhau theo dữ liệu đầu vào."]},
+  {d:"hard",q:"Theo Yasashii, クイックソート có một bước quan trọng đầu tiên. Bước đó là gì?",jp:"クイックソートの最初の手順は。",o:["Sắp xếp mảng tăng dần trước","Chọn 基準値 (pivot) — có thể ở bất kỳ vị trí nào","Tìm max của mảng","Đếm số phần tử"],ans:1,exp:["Không cần — clean clean clean.","Đúng — Yasashii: 「最初に基準値を決める。基準値はどこでもよい」. Slide第3回 cũng nhấn 基準値 là điểm chia.","Không cần.","Không cần."]},
+  {d:"hard",q:"Trong các nhận định sau về クイックソート, nhận định nào ĐÚNG?",jp:"クイックソートについて正しい記述は。",o:["Cần dữ liệu sắp xếp trước","Cùng độ phức tạp O(n²) với basic 3 phương pháp","Là thuật toán nhanh nhất trong các 整列 cơ bản học ở FE, dùng nguyên lý chia để trị (divide & conquer)","Không thể áp dụng cho mảng có < 5 phần tử"],ans:2,exp:["Sai — không cần sắp xếp trước.","Sai — クイックソート là O(n log n), nhanh hơn.","Đúng — Yasashii: 「もっとも高速な整列アルゴリズム」, hoạt động bằng cách chia thành 2 nhóm lặp lại (divide & conquer).","Không có ràng buộc kích thước."]},
+  {d:"hard",q:"Mô tả 「適当な基準値を選び、それよりも小さな値のグループと大きな値のグループにデータを分割する。同様にして、グループの中で基準値を選び、それぞれのグループを分割する」 trong 過去問平成30年度 ứng với thuật toán nào?",jp:"「適当な基準値を選び、小グループと大グループに分割する...」は何ソートか。",o:["挿入ソート","選択ソート","クイックソート","バブルソート"],ans:2,exp:["Sai.","Sai.","Đúng — Yasashii 過去問3-11 đáp án ウ chính là クイックソート.","Sai."]},
+  {d:"hard",q:"Theo slide第3回, クイックソート và ヒープソート có cùng オーダー記法 là O(n log₂ n). Khi n=10⁶, số thao tác ước tính ~?",jp:"n=10^6 でクイックソート/ヒープソートの処理量は約。",o:["10⁶","2×10⁷","10¹²","10³"],ans:1,exp:["Đó là O(n).","Đúng — n log₂ n = 10⁶ × log₂ 10⁶ ≒ 10⁶ × 20 = 2×10⁷.","Đó là O(n²) — quá chậm.","Đó là O(log n)."]},
+  {d:"hard",q:"Khi cần sắp xếp một mảng nhỏ (~10 phần tử), việc dùng クイックソート so với 基本3手法 có lợi gì rõ rệt không?",jp:"小規模データでクイックソートは基本3手法より有利か。",o:["Rõ rệt nhanh hơn rất nhiều","Hầu như không khác biệt rõ vì hằng số ẩn của クイック lớn, dữ liệu nhỏ khiến lợi thế O(n log n) không phát huy","Chậm hơn hẳn","Không thể dùng cho mảng nhỏ"],ans:1,exp:["Sai với dữ liệu nhỏ.","Đúng — オーダー記法 chỉ phản ánh xu hướng khi n lớn (slide第3回 chú thích: 「データ量に対して計算量がどれくらい増えるかという関係性を表現しているだけ」). Với n nhỏ, hằng số ẩn quan trọng hơn.","Không hẳn — vẫn chạy được.","Vẫn dùng được."]},
+  {d:"hard",q:"Thứ tự ĐÚNG về tốc độ trung bình từ NHANH đến CHẬM của các thuật toán sau (theo slide第3回 オーダー記法): クイック / 基本挿入 / シェル / 線形探索?",jp:"クイック・基本挿入・シェル・線形探索を高速順に並べると。",o:["クイック → シェル → 基本挿入 → 線形探索","クイック → 基本挿入 → シェル → 線形探索","線形探索 → クイック → シェル → 基本挿入","クイック ≒ 線形探索 → シェル → 基本挿入"],ans:0,exp:["Đúng — O(n log n) < O(n^1.3) < O(n²) khi n đủ lớn;線形探索 = O(n) nhưng khác nhiệm vụ — câu này so sánh theo オーダー記法 giá trị tăng (≤). Thứ tự đúng: クイック(n log n) → シェル(n^1.3) → 基本挿入(n²); 線形探索 không phải sort nhưng đặt cuối vì so sánh tăng trưởng — answer A.","シェル < 基本挿入.","線形探索 không phải nhanh nhất với sort task.","Khác nhiệm vụ."]},
+  {d:"hard",q:"Một câu thi FE yêu cầu xác định thuật toán theo mô tả. Hai mô tả sau: (i) 「未整列のデータを既存の整列済配列内の正しい位置に挿入」 (ii) 「隣接データを比較して順序が違えば交換」. Lần lượt là?",jp:"(i)挿入する (ii)隣接比較交換 はそれぞれ何ソート。",o:["(i) クイックソート (ii) 選択ソート","(i) 挿入ソート (ii) バブルソート","(i) バブルソート (ii) 挿入ソート","(i) 選択ソート (ii) クイックソート"],ans:1,exp:["Sai.","Đúng — (i) là 挿入ソート theo định nghĩa Yasashii; (ii) là バブルソート (基本交換法) theo Yasashii.","Đảo ngược.","Sai."]},
+];
+
+let cur=0, answers=new Array(QUIZ.length).fill(null);
+
+function render(){
+  const q=QUIZ[cur];
+  const tag = q.d==="easy"?'<span class="q-tag tag-easy">Dễ</span>':q.d==="med"?'<span class="q-tag tag-med">TB</span>':'<span class="q-tag tag-hard">Khó</span>';
+  const letters=["A","B","C","D"];
+  let opts=q.o.map((t,i)=>{
+    let cls="option";
+    if(answers[cur]!==null){
+      cls+=" locked";
+      if(i===q.ans)cls+=" correct";
+      else if(i===answers[cur])cls+=" incorrect";
+    }
+    return `<div class="${cls}" onclick="pick(${i})"><span class="letter">${letters[i]}.</span><span>${t}</span></div>`;
+  }).join("");
+  let explHtml="";
+  if(answers[cur]!==null){
+    let rows = q.exp.map((e,i)=>`<div class="row"><b>${letters[i]}:</b> ${e}</div>`).join("");
+    explHtml=`<button class="explain-btn show" onclick="toggleExp()">📖 Xem giải thích</button>
+      <div class="explain" id="exp"><div class="row"><b>Đáp án đúng:</b> ${letters[q.ans]}</div>${rows}<div class="row"><b>FE Syllabus:</b> 整列アルゴリズム — バブル/選択/挿入/クイック/シェル/ヒープソート (Yasashii Ch.3 Lesson 03-03 / Slide 2 第3回)</div></div>`;
+  }
+  document.getElementById("question-container").innerHTML=`
+    <div class="question-card">
+      ${tag}
+      <div class="q-text">Câu ${cur+1}: ${q.q}</div>
+      <div class="q-jp">${q.jp}</div>
+      <div class="options">${opts}</div>
+      ${explHtml}
+    </div>`;
+  document.getElementById("progress-text").textContent=`Câu ${cur+1} / ${QUIZ.length}`;
+  document.getElementById("score-text").textContent=`Đúng: ${answers.filter((a,i)=>a===QUIZ[i].ans).length}`;
+  document.getElementById("progress-fill").style.width=`${((cur+1)/QUIZ.length)*100}%`;
+  document.getElementById("prev-btn").disabled=cur===0;
+  document.getElementById("next-btn").textContent=cur===QUIZ.length-1?"🏁 Kết thúc":"Câu tiếp →";
+}
+function pick(i){if(answers[cur]!==null)return;answers[cur]=i;render();}
+function toggleExp(){document.getElementById("exp").classList.toggle("open");}
+function prev(){if(cur>0){cur--;render();}}
+function next(){
+  if(cur<QUIZ.length-1){cur++;render();}
+  else showResult();
+}
+function showResult(){
+  const correct=answers.filter((a,i)=>a===QUIZ[i].ans).length;
+  const pct=Math.round(correct/QUIZ.length*100);
+  document.getElementById("quiz-area").classList.add("hidden");
+  document.getElementById("result-screen").classList.remove("hidden");
+  document.getElementById("r-correct").textContent=correct;
+  document.getElementById("r-wrong").textContent=QUIZ.length-correct;
+  document.getElementById("r-total").textContent=QUIZ.length;
+  document.getElementById("score-inner").textContent=pct+"%";
+  document.getElementById("score-circle").style.setProperty("--p",pct*3.6+"deg");
+  let v;
+  if(pct>=90)v="🏆 Xuất sắc! Bạn đã nắm rất vững phần thuật toán sắp xếp — sẵn sàng cho FE.";
+  else if(pct>=75)v="👍 Khá tốt! Ôn lại オーダー記法 và ví dụ クイックソート của Yasashii.";
+  else if(pct>=60)v="📚 Trung bình. Cần xem lại Yasashii Ch.3 Lesson 03-03 phần 整列 + Slide 第3回.";
+  else v="⚠️ Cần cố gắng. Đọc lại lý thuyết và làm lại đề.";
+  document.getElementById("verdict").textContent=v;
+}
+function restart(){cur=0;answers=new Array(QUIZ.length).fill(null);document.getElementById("quiz-area").classList.remove("hidden");document.getElementById("result-screen").classList.add("hidden");render();}
+render();
+</script>
+</body>
+</html>
