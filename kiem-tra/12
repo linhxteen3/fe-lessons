@@ -1,0 +1,213 @@
+
+12 kiemtra · HTML
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE - 基本アルゴリズム · Tìm kiếm (40 câu)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;padding:16px;line-height:1.6}
+.container{max-width:880px;margin:0 auto;background:#1e293b;border-radius:16px;padding:24px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.header{text-align:center;border-bottom:2px solid #334155;padding-bottom:16px;margin-bottom:20px}
+.header h1{color:#38bdf8;font-size:1.4em;margin-bottom:4px}
+.header .sub{color:#94a3b8;font-size:.9em}
+.progress-wrap{background:#0f172a;border-radius:10px;padding:12px;margin-bottom:20px}
+.progress-info{display:flex;justify-content:space-between;font-size:.9em;color:#cbd5e1;margin-bottom:8px}
+.progress-bar{height:10px;background:#334155;border-radius:5px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#38bdf8,#22d3ee);transition:width .3s}
+.question-card{background:#0f172a;border-radius:12px;padding:20px;margin-bottom:16px}
+.q-tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:.78em;font-weight:600;margin-bottom:10px}
+.tag-easy{background:#065f46;color:#a7f3d0}
+.tag-med{background:#854d0e;color:#fde68a}
+.tag-hard{background:#7f1d1d;color:#fecaca}
+.q-text{font-size:1.05em;margin-bottom:8px;color:#f1f5f9}
+.q-jp{font-size:.92em;color:#94a3b8;margin-bottom:16px;font-style:italic}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:#1e293b;border:2px solid #334155;border-radius:8px;padding:12px 16px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;color:#e2e8f0}
+.option:hover:not(.locked){border-color:#38bdf8;background:#1e3a5f}
+.option .letter{font-weight:700;color:#38bdf8;min-width:20px}
+.option.correct{background:#064e3b;border-color:#10b981;color:#a7f3d0}
+.option.incorrect{background:#7f1d1d;border-color:#ef4444;color:#fecaca}
+.option.locked{cursor:not-allowed;opacity:.85}
+.option.correct .letter{color:#34d399}
+.option.incorrect .letter{color:#f87171}
+.explain-btn{margin-top:14px;background:#334155;color:#e2e8f0;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:.9em;display:none}
+.explain-btn.show{display:inline-block}
+.explain-btn:hover{background:#475569}
+.explain{display:none;margin-top:12px;padding:14px;background:#1e3a5f;border-left:4px solid #38bdf8;border-radius:6px;font-size:.92em;color:#cbd5e1}
+.explain.open{display:block}
+.explain b{color:#38bdf8}
+.explain .row{margin-bottom:6px}
+.nav{display:flex;gap:10px;margin-top:20px}
+.nav button{flex:1;padding:12px;border:none;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-prev{background:#334155;color:#e2e8f0}
+.btn-prev:hover:not(:disabled){background:#475569}
+.btn-next{background:#38bdf8;color:#0f172a}
+.btn-next:hover:not(:disabled){background:#0ea5e9}
+.nav button:disabled{opacity:.4;cursor:not-allowed}
+.result-screen{text-align:center;padding:30px 20px}
+.result-screen h2{color:#38bdf8;font-size:1.6em;margin-bottom:20px}
+.score-circle{width:160px;height:160px;border-radius:50%;background:conic-gradient(#38bdf8 var(--p),#334155 0);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;position:relative}
+.score-circle::before{content:'';position:absolute;width:130px;height:130px;border-radius:50%;background:#1e293b}
+.score-inner{position:relative;z-index:1;font-size:2em;font-weight:700;color:#f1f5f9}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat-box{background:#0f172a;padding:14px;border-radius:8px}
+.stat-box .v{font-size:1.3em;font-weight:700;color:#38bdf8}
+.stat-box .l{font-size:.82em;color:#94a3b8;margin-top:4px}
+.verdict{font-size:1.05em;margin:16px 0;padding:14px;border-radius:8px;background:#1e3a5f;color:#e2e8f0}
+.restart{background:#38bdf8;color:#0f172a;border:none;padding:14px 28px;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer}
+.restart:hover{background:#0ea5e9}
+.hidden{display:none}
+@media(max-width:600px){.container{padding:16px}.q-text{font-size:1em}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>📘 基本アルゴリズム · Tìm kiếm</h1>
+    <div class="sub">FE試験対策 — 40 câu · 30 phút · Nguồn: Yasashii Ch.3 Lesson 03-03 + Slide 2 (第2-3回)</div>
+  </div>
+ 
+  <div id="quiz-area">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="progress-text">Câu 1 / 40</span>
+        <span id="score-text">Đúng: 0</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:2.5%"></div></div>
+    </div>
+    <div id="question-container"></div>
+    <div class="nav">
+      <button class="btn-prev" id="prev-btn" onclick="prev()">← Câu trước</button>
+      <button class="btn-next" id="next-btn" onclick="next()">Câu tiếp →</button>
+    </div>
+  </div>
+ 
+  <div id="result-screen" class="result-screen hidden">
+    <h2>🎯 Kết quả</h2>
+    <div class="score-circle" id="score-circle"><div class="score-inner" id="score-inner">0%</div></div>
+    <div class="result-stats">
+      <div class="stat-box"><div class="v" id="r-correct">0</div><div class="l">Đúng</div></div>
+      <div class="stat-box"><div class="v" id="r-wrong">0</div><div class="l">Sai</div></div>
+      <div class="stat-box"><div class="v" id="r-total">40</div><div class="l">Tổng</div></div>
+    </div>
+    <div class="verdict" id="verdict"></div>
+    <button class="restart" onclick="restart()">🔄 Làm lại từ đầu</button>
+  </div>
+</div>
+ 
+<script>
+const QUIZ = [
+  // ===== DỄ (12 câu) =====
+  {d:"easy",q:"Thuật toán tìm kiếm (探索アルゴリズム) là gì?",jp:"探索アルゴリズムとは何か。",o:["Thuật toán sắp xếp dữ liệu theo thứ tự nhất định","Thuật toán tìm ra dữ liệu cụ thể từ tập dữ liệu","Thuật toán gọi chính nó trong quá trình xử lý","Thuật toán nén dữ liệu"],ans:1,exp:["Sai — đó là 整列アルゴリズム (sort).","Đúng — 探索アルゴリズム là thuật toán để 「特定のデータを見つけ出す」.","Sai — đó là 再帰的アルゴリズム.","Sai — không liên quan."]},
+  {d:"easy",q:"Theo giáo trình Yasashii, có bao nhiêu loại thuật toán tìm kiếm chính được FE đề cập?",jp:"FEで出題される探索アルゴリズムは何種類か。",o:["2 loại","3 loại","4 loại","5 loại"],ans:1,exp:["Thiếu.","Đúng — 3 loại: 線形探索法、ハッシュ法、2分探索法.","Sai.","Sai."]},
+  {d:"easy",q:"線形探索法 (tìm kiếm tuyến tính) hoạt động thế nào?",jp:"線形探索法のアルゴリズムは。",o:["So sánh phần tử ở giữa danh sách với khoá tìm","So sánh tuần tự từng phần tử từ đầu mảng","Áp dụng hàm băm để tính địa chỉ","Chia đôi phạm vi tìm kiếm mỗi bước"],ans:1,exp:["Đó là 2分探索法.","Đúng — 「先頭のデータから順番に1つずつ照合する」.","Đó là ハッシュ法.","Đó là 2分探索法."]},
+  {d:"easy",q:"Điều kiện bắt buộc để dùng được 2分探索法 (binary search) là gì?",jp:"2分探索法を使う前提条件は。",o:["Dữ liệu phải là số nguyên","Dữ liệu phải được sắp xếp trước (昇順 hoặc 降順)","Dữ liệu phải nằm trong hash table","Dữ liệu phải có ít nhất 8 phần tử"],ans:1,exp:["Không yêu cầu kiểu dữ liệu.","Đúng — 特徴1: 「データを、あらかじめ整列させておく必要がある」.","Sai — đó là hash.","Không có ràng buộc kích thước."]},
+  {d:"easy",q:"ハッシュ法 sử dụng cái gì để xác định vị trí lưu dữ liệu?",jp:"ハッシュ法で格納場所を決めるのは何か。",o:["Hash value (ハッシュ値)","Số thứ tự trong mảng","Chỉ số trung vị","Độ dài chuỗi"],ans:0,exp:["Đúng — 「ハッシュ値によって格納場所を決める」.","Sai.","Sai.","Sai."]},
+  {d:"easy",q:"Hàm tính giá trị băm trong ハッシュ法 được gọi là gì?",jp:"ハッシュ値を計算する関数を何と呼ぶか。",o:["ハッシュ表 (hash table)","ハッシュ関数 (hash function)","ハッシュ値 (hash value)","ハッシュ衝突 (hash collision)"],ans:1,exp:["Đó là bảng băm.","Đúng — ハッシュ関数 nhận input và tính ra hash value.","Đó là kết quả đầu ra của hàm.","Đó là sự cố trùng vị trí."]},
+  {d:"easy",q:"Mảng dùng hash value làm chỉ số phần tử được gọi là gì?",jp:"ハッシュ値を要素番号に持つ配列を何と呼ぶか。",o:["ハッシュ関数","ハッシュ表","スタック","キュー"],ans:1,exp:["Là hàm tính hash.","Đúng — ハッシュ表 (hash table).","Cấu trúc LIFO.","Cấu trúc FIFO."]},
+  {d:"easy",q:"Nhược điểm chính của ハッシュ法 mà FE hay hỏi là gì?",jp:"基本情報技術者試験で問われるハッシュ法のデメリットは。",o:["Tốc độ chậm","Có khả năng xảy ra 衝突 (xung đột/collision)","Không dùng được cho số","Tốn nhiều bộ nhớ"],ans:1,exp:["Sai — ハッシュ法 nhanh O(1).","Đúng — 「ハッシュ法のデメリットは衝突が起こる可能性があること」.","Sai.","Không phải điểm bị hỏi."]},
+  {d:"easy",q:"Đặc trưng thứ 2 của 2分探索法 là gì?",jp:"2分探索法の特徴2は。",o:["So sánh tuần tự từng phần tử","Chia dữ liệu thành 2 phần khi tìm kiếm","Sử dụng hàm băm","Lặp lại đệ quy hàm chính nó"],ans:1,exp:["Đó là 線形探索法.","Đúng — 「データを、2つに分けながら探索する」.","Đó là ハッシュ法.","Đó là 再帰."]},
+  {d:"easy",q:"Khi giá trị input khác nhau nhưng cho ra cùng một hash value, hiện tượng đó gọi là gì?",jp:"異なる入力値が同じハッシュ値になる現象を何と言うか。",o:["シノニム / 衝突 (collision)","ハッシュ表","オーバーフロー","アンダーフロー"],ans:0,exp:["Đúng — 「入力値が異なるのにハッシュ値が同じ値になってしまうケース」 = 衝突 (シノニム).","Là cấu trúc lưu trữ.","Không liên quan.","Không liên quan."]},
+  {d:"easy",q:"Trong ví dụ FE Yasashii, hàm băm `x mod 10` áp dụng cho 32 cho ra hash value bằng bao nhiêu?",jp:"ハッシュ関数 x mod 10 で 32 のハッシュ値は。",o:["3","2","10","32"],ans:1,exp:["Sai.","Đúng — 32 ÷ 10 dư 2, nên ハッシュ値 = 2.","Sai.","Sai."]},
+  {d:"easy",q:"Trong các thuật toán tìm kiếm sau, cái nào KHÔNG bắt buộc sắp xếp trước?",jp:"事前整列が不要な探索アルゴリズムは。",o:["2分探索法","線形探索法","Cả 2分探索法 và ハッシュ法","Không có cái nào"],ans:1,exp:["Bắt buộc sắp xếp trước.","Đúng — 線形探索法 quét tuần tự, không cần sắp xếp.","2分探索法 cần sắp xếp.","Sai."]},
+ 
+  // ===== TB (16 câu) =====
+  {d:"med",q:"Trong mảng [1,2,3,4,5,6,7,8,9] đã sắp xếp tăng dần, dùng 2分探索法 để tìm 6, theo Yasashii thì phần tử ở giữa được chọn đầu tiên là phần tử thứ mấy?",jp:"Yasashiiの2分探索法の例で、最初の中央要素は何番目か。",o:["Thứ 3","Thứ 4","Thứ 5","Thứ 6"],ans:2,exp:["Sai.","Sai.","Đúng — (1+9)÷2 = 5, lấy phần tử thứ 5 (giá trị 5) so sánh với 6.","Sai."]},
+  {d:"med",q:"Sau bước 1 của ví dụ trên (so sánh 6 với phần tử thứ 5 là 5), phạm vi tìm kiếm tiếp theo là phần nào?",jp:"5と6を比較した後、次に探索する範囲は。",o:["Nửa trái (phần tử 1-4)","Nửa phải (phần tử 6-9)","Toàn bộ mảng","Dừng tìm kiếm"],ans:1,exp:["Sai — 6 > 5 nên không thể ở nửa trái.","Đúng — vì dữ liệu đã sắp xếp tăng dần, 6 nằm bên phải của 5.","Không hiệu quả.","Chưa tìm thấy."]},
+  {d:"med",q:"Tiếp tục ví dụ trên với phạm vi 6-9, trung điểm tính được là bao nhiêu (làm tròn)?",jp:"範囲6-9で中央要素の番号は ((6+9)÷2)。",o:["6","7","8","9"],ans:1,exp:["Sai.","Đúng — (6+9)÷2 = 7.5 ≒ 7 (có thể làm tròn lên hoặc xuống đều được).","Sai.","Sai."]},
+  {d:"med",q:"Trong ハッシュ法 với hàm `x mod 10`, hai giá trị 32 và 42 sẽ xảy ra hiện tượng gì?",jp:"x mod 10 で 32 と 42 のとき何が起こるか。",o:["Cả hai cho hash value khác nhau","Cả hai cho hash value bằng 2 → 衝突 (collision)","Cả hai không lưu được","Hàm trả về lỗi"],ans:1,exp:["Sai.","Đúng — 32 mod 10 = 2, 42 mod 10 = 2 → cùng vị trí → 衝突.","Sai.","Hàm vẫn chạy bình thường."]},
+  {d:"med",q:"Bậc độ phức tạp (オーダー記法) của 線形探索法 là gì?",jp:"線形探索法のオーダー記法は。",o:["O(1)","O(log₂n)","O(n)","O(n²)"],ans:2,exp:["Đó là ハッシュ法.","Đó là 2分探索法.","Đúng — duyệt tuần tự, n phần tử → O(n).","Sai."]},
+  {d:"med",q:"Bậc độ phức tạp của 2分探索法 là gì?",jp:"2分探索法のオーダー記法は。",o:["O(1)","O(log₂n)","O(n)","O(n²)"],ans:1,exp:["Đó là ハッシュ法.","Đúng — chia đôi mỗi bước → O(log₂n).","Đó là 線形探索法.","Sai."]},
+  {d:"med",q:"Bậc độ phức tạp lý tưởng (không xét xung đột) của ハッシュ法 là gì?",jp:"ハッシュ法のオーダー記法は。",o:["O(1)","O(log₂n)","O(n)","O(n log n)"],ans:0,exp:["Đúng — tính hash 1 lần, truy cập trực tiếp → O(1).","Sai.","Sai.","Sai."]},
+  {d:"med",q:"Với n phần tử đã sắp xếp, số lần so sánh tối đa của 2分探索法 xấp xỉ bằng?",jp:"n個のデータで2分探索法の最大比較回数は約。",o:["n","n/2","log₂n","√n"],ans:2,exp:["Đó là 線形.","Trung bình của 線形.","Đúng — mỗi bước cắt một nửa nên cần log₂n bước.","Sai."]},
+  {d:"med",q:"Trong ví dụ Yasashii, sau khi tìm thấy phạm vi còn lại là [6], so sánh phần tử với khoá 6 thì kết quả là gì?",jp:"残り[6]と探索対象6を比較するとどうなる。",o:["発見! (Tìm thấy)","Tiếp tục chia đôi","Báo lỗi","Quay về linear search"],ans:0,exp:["Đúng — phần tử bằng khoá → 発見! (tìm thấy).","Phạm vi đã thu lại còn 1.","Không có lỗi.","Không cần."]},
+  {d:"med",q:"Khi dữ liệu chưa được sắp xếp và cần tìm 1 giá trị, thuật toán phù hợp NHẤT là gì?",jp:"未整列データの探索に最適なアルゴリズムは。",o:["2分探索法","線形探索法","Quick sort sau đó binary search","Không thể tìm"],ans:1,exp:["Cần sắp xếp trước.","Đúng — 線形 không yêu cầu sắp xếp.","Tốn thêm O(n log n) cho việc sắp xếp — không hiệu quả nếu chỉ tìm 1 lần.","Sai."]},
+  {d:"med",q:"Theo Yasashii, hai thuật toán tìm kiếm mà FE 試験 hay hỏi nhất là gì?",jp:"FE試験で頻繁に出題される探索アルゴリズム2つは。",o:["線形探索法 và 2分探索法","ハッシュ法 và 2分探索法","線形探索法 và ハッシュ法","Cả 3"],ans:1,exp:["Sai.","Đúng — Yasashii ghi rõ 「ハッシュ法」と「2分探索法」が頻繁に出題されます.","Sai.","Không chính xác."]},
+  {d:"med",q:"Hàm băm còn được gọi với cách diễn đạt nào trong toán học?",jp:"ハッシュ関数の代表例は何の演算か。",o:["剰余 (mod / chia lấy dư)","階乗 (giai thừa)","総和 (tổng sigma)","平均 (trung bình)"],ans:0,exp:["Đúng — 代表的なハッシュ関数の1つに「剰余」があります.","Là 階乗 — dùng trong đệ quy.","Là 総和 — không phải hash.","Sai."]},
+  {d:"med",q:"Trong mảng đã sắp xếp 8 phần tử, 2分探索法 cần tối đa bao nhiêu lần so sánh để biết phần tử có/không?",jp:"8個のソート済みデータで2分探索法の最大比較回数は。",o:["2 lần","3 lần","4 lần","8 lần"],ans:1,exp:["Sai.","Đúng — log₂8 = 3.","Sai.","Đó là linear."]},
+  {d:"med",q:"Một mảng có 1024 phần tử đã sắp xếp. 2分探索法 tối đa bao nhiêu lần so sánh?",jp:"1024個のソート済みデータで2分探索法の最大比較回数は。",o:["10","20","32","1024"],ans:0,exp:["Đúng — log₂1024 = 10.","Sai.","Sai.","Đó là linear search."]},
+  {d:"med",q:"線形探索法 với 100 phần tử thì số lần so sánh trung bình là khoảng:",jp:"100個のデータで線形探索法の平均比較回数は約。",o:["50","100","log₂100 ≒ 7","10"],ans:0,exp:["Đúng — trung bình n/2 = 50 với giả định dữ liệu phân bố đều.","Đây là số lần so sánh tối đa (worst case).","Đó là 2分探索法.","Sai."]},
+  {d:"med",q:"Hash table có 10 ô (0-9). Lưu các giá trị 32, 78, 51 bằng hàm `x mod 10`. Hash value tương ứng lần lượt là?",jp:"x mod 10 で 32, 78, 51 のハッシュ値は。",o:["2, 8, 1","3, 7, 5","2, 7, 1","3, 8, 1"],ans:0,exp:["Đúng — 32 mod 10 = 2, 78 mod 10 = 8, 51 mod 10 = 1.","Sai.","Sai.","Sai."]},
+ 
+  // ===== KHÓ (12 câu) =====
+  {d:"hard",q:"Một mảng đã sắp xếp tăng dần có 1.000.000 phần tử. Để tìm 1 giá trị, số lần so sánh tối đa của 2分探索法 KHÔNG vượt quá:",jp:"100万個のソート済みデータで2分探索法の最大比較回数は。",o:["10","20","100","1000"],ans:1,exp:["Sai — log₂10⁶ ≒ 19.9 lớn hơn 10.","Đúng — log₂(10⁶) ≒ 19.93, tối đa 20 lần so sánh.","Sai.","Sai."]},
+  {d:"hard",q:"Khi xảy ra 衝突 trong ハッシュ法, hậu quả là gì?",jp:"ハッシュ法で衝突が起こるとどうなるか。",o:["Dữ liệu bị mất","Hiệu quả thuật toán giảm vì phải dùng phương pháp khác để giải quyết","Hash table tự động mở rộng","Phải dùng 2分探索法 thay thế"],ans:1,exp:["Không bị mất — cần xử lý đặc biệt.","Đúng — Yasashii: 「別の方法で衝突を解決しないといけないので、アルゴリズムの効率が落ちます」.","Không tự động.","Không liên quan."]},
+  {d:"hard",q:"Trong các nhận định sau về 2分探索法, nhận định nào ĐÚNG?",jp:"2分探索法について正しい記述は。",o:["Có thể dùng trực tiếp trên mảng chưa sắp xếp","Mỗi vòng lặp giảm phạm vi tìm kiếm xuống còn một nửa","Hiệu quả thấp hơn 線形探索法","Cần hash function"],ans:1,exp:["Cần sắp xếp trước.","Đúng — chia đôi mỗi bước → O(log₂n).","Ngược lại — 2分 hiệu quả hơn 線形.","Không cần."]},
+  {d:"hard",q:"Mảng có 16 phần tử đã sắp xếp. Nếu dữ liệu tăng gấp đôi (32 phần tử), số lần so sánh tối đa của 2分探索法 sẽ:",jp:"データが2倍になると2分探索法の最大比較回数は。",o:["Tăng gấp đôi","Tăng thêm 1 lần","Không đổi","Tăng gấp 4"],ans:1,exp:["Đó là 線形.","Đúng — log₂16 = 4, log₂32 = 5 → chỉ tăng 1.","Sai — vẫn tăng nhẹ.","Sai."]},
+  {d:"hard",q:"Trong tình huống nào việc dùng ハッシュ法 KHÔNG có lợi so với 線形探索法?",jp:"ハッシュ法が線形探索法より有利でない状況は。",o:["Khi cần tra cứu nhanh nhiều lần","Khi dữ liệu rất nhỏ và xung đột thường xuyên","Khi dữ liệu có thể chuyển thành hash value","Khi cần truy cập O(1) trung bình"],ans:1,exp:["Đó là điểm mạnh hash.","Đúng — với dữ liệu nhỏ và 衝突 (collision) nhiều, chi phí giải quyết xung đột làm giảm hiệu quả, có thể không tốt hơn linear.","Đó là tiền đề tốt cho hash.","Đó là điểm mạnh hash."]},
+  {d:"hard",q:"Cho mảng đã sắp xếp [3, 5, 7, 9, 11, 13, 15, 17, 19]. Khi dùng 2分探索法 tìm 11, sau lần so sánh đầu tiên với phần tử giữa, phạm vi tìm kiếm tiếp theo là?",jp:"[3,5,7,9,11,13,15,17,19]で11を2分探索。1回目比較後の範囲は。",o:["[3,5,7,9]","[13,15,17,19]","Tìm thấy ngay (11 nằm ở giữa)","[7,9,11,13]"],ans:2,exp:["Sai.","Sai.","Đúng — (1+9)÷2=5, phần tử thứ 5 là 11 = khoá → 発見! ngay lần đầu.","Sai."]},
+  {d:"hard",q:"Một bảng băm có 100 ô. Lưu 50 giá trị ngẫu nhiên với hàm `x mod 100`. Xác suất xảy ra ít nhất 1 衝突 sẽ:",jp:"100ます hash表に50個ランダム格納するとき衝突確率は。",o:["Rất thấp, gần 0%","Rất cao (gần 100%, theo nguyên lý birthday)","Đúng 50%","Bằng 0% nếu hash đều"],ans:1,exp:["Sai.","Đúng — theo birthday paradox, với 50 phần tử trên 100 ô, xác suất 衝突 gần như chắc chắn — đây chính là lý do 衝突 luôn là vấn đề thực tế của hash.","Sai.","Hash đều cũng không tránh được nếu input ngẫu nhiên — đây là bản chất xác suất."]},
+  {d:"hard",q:"Nhận định nào về tài liệu Yasashii là CHÍNH XÁC?",jp:"Yasashiiの記述で正しいのは。",o:["FE試験 yêu cầu thí sinh phải trình bày cách giải quyết 衝突 chi tiết","FE試験 chỉ hỏi điểm: hash có khả năng xảy ra 衝突, không hỏi cách giải quyết cụ thể","2分探索法 ít được FE hỏi hơn 線形探索法","ハッシュ法 không có nhược điểm"],ans:1,exp:["Sai.","Đúng — Yasashii: 「衝突を回避するための具体的な方法が問われることはありません」.","Sai — Yasashii nói 2分 và hash được hỏi nhiều nhất.","Sai — có 衝突."]},
+  {d:"hard",q:"Theo bảng オーダー記法 của 第2-3回 slide, khi n = 10000, lần lượt số lượng thao tác xấp xỉ cho 線形, 2分, hash là:",jp:"n=10000のとき、線形/2分/ハッシュの操作回数は。",o:["10000 / ≒14 / 1","10000 / 100 / 1","100 / 10 / 1","10000 / 10000 / 10000"],ans:0,exp:["Đúng — O(n)=10000, O(log₂10000)≒13.3 ≒14, O(1)=1.","Sai — log₂10000 ≠ 100.","Sai.","Sai."]},
+  {d:"hard",q:"Mảng [12, 3, 17, 5, 8, 14, 21, 6, 9, 1, 19] CHƯA sắp xếp. Muốn tìm 14, thuật toán nào áp dụng đúng và hiệu quả NHẤT cho 1 lần tìm?",jp:"未整列の配列で14を探すのに最適な方法は。",o:["2分探索法 trực tiếp","線形探索法","Sắp xếp xong rồi dùng 2分探索法","Hash với x mod 10"],ans:1,exp:["Không thể — 2分 cần sắp xếp trước.","Đúng — chỉ 1 lần tìm, linear duyệt tuần tự là O(n) hiệu quả, không cần tốn O(n log n) để sắp xếp.","Tốn thêm chi phí sắp xếp — không hiệu quả cho 1 lần tìm.","Cần xây hash table trước — không hợp lý cho 1 lần tìm."]},
+  {d:"hard",q:"Ưu điểm nổi bật nhất của ハッシュ法 so với 2分探索法 là gì?",jp:"ハッシュ法が2分探索法より優れている点は。",o:["Không yêu cầu dữ liệu sắp xếp trước, truy cập trung bình O(1)","Tốn ít bộ nhớ hơn","Không bao giờ thất bại","Đơn giản hơn để lập trình"],ans:0,exp:["Đúng — hash truy cập trực tiếp qua hash value, không cần sắp xếp; trung bình O(1) so với O(log₂n) của 2分.","Ngược lại — hash thường tốn thêm bộ nhớ cho bảng.","Có thể gặp 衝突.","Tuỳ implementation."]},
+  {d:"hard",q:"Trong bài thi FE, khi đề cho mảng 1.024 phần tử SORTED và hỏi số lần so sánh tối đa của linear vs binary search để xác định có/không có khoá, đáp án đúng là:",jp:"1024個のソート済みで線形/2分の最大比較回数は。",o:["線形: 1024, 2分: 10","線形: 512, 2分: 10","線形: 1024, 2分: 1024","線形: 10, 2分: 1024"],ans:0,exp:["Đúng — Linear tối đa duyệt hết 1024 phần tử. 2分: log₂1024 = 10 lần.","512 là trung bình của linear, không phải tối đa.","Sai — 2分 nhanh hơn nhiều.","Đảo ngược — sai."]},
+];
+ 
+let cur=0, answers=new Array(QUIZ.length).fill(null);
+ 
+function render(){
+  const q=QUIZ[cur];
+  const tag = q.d==="easy"?'<span class="q-tag tag-easy">Dễ</span>':q.d==="med"?'<span class="q-tag tag-med">TB</span>':'<span class="q-tag tag-hard">Khó</span>';
+  const letters=["A","B","C","D"];
+  let opts=q.o.map((t,i)=>{
+    let cls="option";
+    if(answers[cur]!==null){
+      cls+=" locked";
+      if(i===q.ans)cls+=" correct";
+      else if(i===answers[cur])cls+=" incorrect";
+    }
+    return `<div class="${cls}" onclick="pick(${i})"><span class="letter">${letters[i]}.</span><span>${t}</span></div>`;
+  }).join("");
+  let explHtml="";
+  if(answers[cur]!==null){
+    let rows = q.exp.map((e,i)=>`<div class="row"><b>${letters[i]}:</b> ${e}</div>`).join("");
+    explHtml=`<button class="explain-btn show" onclick="toggleExp()">📖 Xem giải thích</button>
+      <div class="explain" id="exp"><div class="row"><b>Đáp án đúng:</b> ${letters[q.ans]}</div>${rows}<div class="row"><b>FE Syllabus:</b> 探索アルゴリズム — 線形/2分/ハッシュ法 (Yasashii Ch.3 Lesson 03-03 / Slide 第2-3回)</div></div>`;
+  }
+  document.getElementById("question-container").innerHTML=`
+    <div class="question-card">
+      ${tag}
+      <div class="q-text">Câu ${cur+1}: ${q.q}</div>
+      <div class="q-jp">${q.jp}</div>
+      <div class="options">${opts}</div>
+      ${explHtml}
+    </div>`;
+  document.getElementById("progress-text").textContent=`Câu ${cur+1} / ${QUIZ.length}`;
+  document.getElementById("score-text").textContent=`Đúng: ${answers.filter((a,i)=>a===QUIZ[i].ans).length}`;
+  document.getElementById("progress-fill").style.width=`${((cur+1)/QUIZ.length)*100}%`;
+  document.getElementById("prev-btn").disabled=cur===0;
+  document.getElementById("next-btn").textContent=cur===QUIZ.length-1?"🏁 Kết thúc":"Câu tiếp →";
+}
+function pick(i){if(answers[cur]!==null)return;answers[cur]=i;render();}
+function toggleExp(){document.getElementById("exp").classList.toggle("open");}
+function prev(){if(cur>0){cur--;render();}}
+function next(){
+  if(cur<QUIZ.length-1){cur++;render();}
+  else showResult();
+}
+function showResult(){
+  const correct=answers.filter((a,i)=>a===QUIZ[i].ans).length;
+  const pct=Math.round(correct/QUIZ.length*100);
+  document.getElementById("quiz-area").classList.add("hidden");
+  document.getElementById("result-screen").classList.remove("hidden");
+  document.getElementById("r-correct").textContent=correct;
+  document.getElementById("r-wrong").textContent=QUIZ.length-correct;
+  document.getElementById("r-total").textContent=QUIZ.length;
+  document.getElementById("score-inner").textContent=pct+"%";
+  document.getElementById("score-circle").style.setProperty("--p",pct*3.6+"deg");
+  let v;
+  if(pct>=90)v="🏆 Xuất sắc! Bạn đã nắm rất vững phần thuật toán tìm kiếm — sẵn sàng cho FE.";
+  else if(pct>=75)v="👍 Khá tốt! Hãy ôn lại vài điểm còn nhầm về オーダー記法 và 衝突.";
+  else if(pct>=60)v="📚 Trung bình. Cần xem lại Yasashii Ch.3 Lesson 03-03 — đặc biệt 2分探索法 và ハッシュ法.";
+  else v="⚠️ Cần cố gắng. Hãy đọc lại lý thuyết và làm lại đề.";
+  document.getElementById("verdict").textContent=v;
+}
+function restart(){cur=0;answers=new Array(QUIZ.length).fill(null);document.getElementById("quiz-area").classList.remove("hidden");document.getElementById("result-screen").classList.add("hidden");render();}
+render();
+</script>
+</body>
+</html>
