@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE - メモリ・キャッシュ</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.7;padding:16px}
+.container{max-width:980px;margin:0 auto}
+header{text-align:center;padding:24px;background:linear-gradient(135deg,#1e293b,#7c2d12);border-radius:16px;margin-bottom:24px}
+header h1{color:#fdba74;font-size:1.6em;margin-bottom:6px}
+header .sub{color:#94a3b8;font-size:.92em}
+section{background:#1e293b;border-radius:14px;padding:22px;margin-bottom:20px;box-shadow:0 6px 24px rgba(0,0,0,.3)}
+section h2{color:#fdba74;font-size:1.3em;border-bottom:2px solid #c2410c;padding-bottom:8px;margin-bottom:14px}
+section h3{color:#fbbf24;font-size:1.08em;margin:14px 0 8px}
+p{margin-bottom:10px}
+ul{margin:8px 0 12px 22px}
+li{margin-bottom:5px}
+.lang-block{display:grid;grid-template-columns:1fr;gap:8px;margin:12px 0;background:#0f172a;border-radius:10px;padding:14px}
+.lang-block .l{padding:8px 10px;border-radius:8px;font-size:.95em}
+.l-jp{background:#451a03;border-left:4px solid #fdba74;color:#fed7aa}
+.l-vn{background:#1e3a5f;border-left:4px solid #38bdf8;color:#e0f2fe}
+.l-en{background:#1f2937;border-left:4px solid #fbbf24;color:#fef3c7}
+.formula{background:#7c2d12;color:#fed7aa;padding:14px;border-radius:10px;font-family:"Courier New",monospace;text-align:center;font-size:1em;margin:12px 0;border:1px solid #ea580c}
+.example-box{background:#0f172a;border:1px solid #475569;border-radius:10px;padding:14px;margin:12px 0}
+.example-box .label{display:inline-block;background:#fdba74;color:#0f172a;padding:3px 10px;border-radius:6px;font-weight:700;font-size:.85em;margin-bottom:8px}
+.step-line{font-family:"Courier New",monospace;background:#0f172a;padding:10px;border-radius:8px;color:#fdba74;text-align:center;font-size:.95em;margin:8px 0;overflow-x:auto}
+.ascii{background:#0f172a;padding:12px;border-radius:8px;font-family:"Courier New",monospace;font-size:.85em;color:#cbd5e1;white-space:pre;overflow-x:auto;margin:10px 0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92em;background:#0f172a;border-radius:8px;overflow:hidden}
+th,td{padding:10px;text-align:left;border-bottom:1px solid #334155}
+th{background:#c2410c;color:#fff}
+tr:hover td{background:#451a03}
+.flashcards-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.filter-btn{background:#334155;color:#e2e8f0;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.85em}
+.filter-btn.active{background:#fdba74;color:#0f172a;font-weight:700}
+.flashcard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.flashcard{background:#0f172a;border:2px solid #c2410c;border-radius:10px;padding:14px;min-height:120px;cursor:pointer;position:relative}
+.flashcard .cat{position:absolute;top:8px;right:8px;font-size:.7em;background:#c2410c;color:#fff;padding:2px 8px;border-radius:4px}
+.flashcard .front{color:#fdba74;font-weight:600}
+.flashcard .back{display:none;color:#fde68a;margin-top:8px;font-size:.88em}
+.flashcard.flipped .back{display:block}
+.flashcard.flipped{border-color:#fbbf24;background:#451a03}
+.quiz-q{background:#0f172a;border-radius:10px;padding:14px;margin:10px 0}
+.quiz-q .qt{color:#f1f5f9;margin-bottom:10px}
+.quiz-opt{display:block;background:#1e293b;border:2px solid #334155;border-radius:6px;padding:8px 12px;margin:6px 0;cursor:pointer;color:#e2e8f0;font-size:.93em}
+.quiz-opt:hover{border-color:#fdba74}
+.quiz-opt.correct{background:#064e3b;border-color:#10b981;color:#a7f3d0}
+.quiz-opt.wrong{background:#7f1d1d;border-color:#ef4444;color:#fecaca}
+.quiz-opt.locked{cursor:not-allowed}
+.quiz-exp{display:none;margin-top:8px;padding:10px;background:#1e3a5f;border-left:3px solid #38bdf8;border-radius:6px;font-size:.88em;color:#cbd5e1}
+.quiz-exp.open{display:block}
+.callout{background:#1e3a5f;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;margin:12px 0;font-size:.95em}
+.warn{background:#451a03;border-left:4px solid #fb923c;padding:12px;border-radius:8px;margin:12px 0;color:#fed7aa}
+.mindmap-wrap{background:#0f172a;border-radius:10px;padding:14px;overflow-x:auto;text-align:center}
+.mindmap-wrap svg{max-width:100%;height:auto}
+@media(max-width:600px){section{padding:16px}header h1{font-size:1.3em}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>💾 メモリ・キャッシュ</h1>
+  <div class="sub">FE試験対策・Yasashii Ch.4 Lesson 04-03 (さまざまな記憶装置) + Slide 3_ハードウェア 第6-7回</div>
+</header>
+
+<div class="warn">
+<b>📌 Lưu ý nguồn:</b> Chủ đề bạn ghi là "Yasashii Ch.4 Lesson 04-04", nhưng Lesson 04-04 thực tế là <b>入出力インタフェース</b> (USB/HDMI/daisy chain), không phải bộ nhớ. Nội dung <b>メモリ・キャッシュ</b> nằm ở <b>Lesson 04-03 さまざまな記憶装置</b>. Tài liệu này dùng nguồn đúng.
+</div>
+
+<!-- ============ PHẦN 1: LÝ THUYẾT ============ -->
+<section>
+  <h2>📘 Phần 1 — Tóm tắt lý thuyết</h2>
+
+  <h3>1.1. Phân cấp bộ nhớ (記憶装置の階層)</h3>
+  <div class="lang-block">
+    <div class="l l-jp">🇯🇵 コンピュータの記憶装置は左から右へ「処理速度が速く小容量」→「処理速度が遅く大容量」となる：CPU → キャッシュメモリ → 主記憶装置 → 補助記憶装置。</div>
+    <div class="l l-vn">🇻🇳 Bộ nhớ máy tính phân cấp theo tốc độ–dung lượng: <b>CPU → Cache → 主記憶 (RAM) → 補助記憶 (HDD/SSD)</b>. Càng gần CPU càng nhanh nhưng dung lượng nhỏ; càng xa CPU càng chậm nhưng dung lượng lớn.</div>
+    <div class="l l-en">🇬🇧 Memory hierarchy: CPU → cache → main memory → secondary storage. Closer = faster but smaller.</div>
+  </div>
+  <div class="ascii">[ CPU ] ⟷ [ キャッシュ ] ⟷ [ 主記憶装置 ] ⟷ [ 補助記憶装置 ]
+   ←─── 高速・小容量          低速・大容量 ───→</div>
+
+  <h3>1.2. RAM vs ROM (Slide 第6回)</h3>
+  <table>
+    <tr><th>種類</th><th>特徴</th><th>例</th></tr>
+    <tr><td>RAM</td><td>読み書き可能、電源OFFでデータ消失 (揮発性)</td><td>DRAM, SRAM</td></tr>
+    <tr><td>ROM</td><td>読み出し専用、電源OFFでもデータ保持 (不揮発性)</td><td>マスクROM, EPROM, EEPROM, フラッシュメモリ</td></tr>
+  </table>
+
+  <h3>1.3. DRAM vs SRAM (Slide 第6回)</h3>
+  <table>
+    <tr><th>項目</th><th>DRAM</th><th>SRAM</th></tr>
+    <tr><td>原理</td><td>コンデンサで電荷保持</td><td>フリップフロップ回路</td></tr>
+    <tr><td>リフレッシュ</td><td>必要 (定期的にデータ書き直し)</td><td>不要</td></tr>
+    <tr><td>速度</td><td>遅い</td><td>速い</td></tr>
+    <tr><td>容量</td><td>大きい</td><td>小さい</td></tr>
+    <tr><td>価格</td><td>安い</td><td>高い</td></tr>
+    <tr><td>主な用途</td><td>主記憶装置</td><td>キャッシュメモリ</td></tr>
+  </table>
+  <div class="lang-block">
+    <div class="l l-vn">🇻🇳 <b>SRAM</b> nhanh và đắt → dùng làm <b>キャッシュメモリ</b>. <b>DRAM</b> rẻ và dung lượng lớn → làm <b>主記憶</b> (RAM thông thường). DRAM cần "refresh" định kỳ vì điện tích trong tụ điện rò rỉ.</div>
+  </div>
+
+  <h3>1.4. ROMの種類</h3>
+  <table>
+    <tr><th>種類</th><th>説明</th></tr>
+    <tr><td>マスクROM</td><td>工場で書き込み、ユーザは書換え不可</td></tr>
+    <tr><td>EPROM</td><td>紫外線でデータ全消去後に書換え</td></tr>
+    <tr><td>EEPROM</td><td>電圧で部分消去可能</td></tr>
+    <tr><td>フラッシュメモリ</td><td>EEPROMの一種、ブロック単位で書換え (SSD/USBメモリ)</td></tr>
+  </table>
+
+  <h3>1.5. ⭐ キャッシュメモリ (Slide 第7回・Yasashii)</h3>
+  <div class="lang-block">
+    <div class="l l-jp">🇯🇵 キャッシュメモリとは、CPUと主記憶装置の間にある超高速の記憶装置。CPUは頻繁に使うデータをキャッシュに保存することで、処理の待ち時間を短縮する。</div>
+    <div class="l l-vn">🇻🇳 <b>キャッシュメモリ (cache memory)</b>: bộ nhớ siêu nhanh nằm giữa CPU và 主記憶, lưu các dữ liệu hay dùng để CPU không phải truy cập tới 主記憶 chậm. Mục đích: <b>埋める CPUと主記憶の速度差</b>.</div>
+    <div class="l l-en">🇬🇧 Cache memory sits between CPU and main memory, storing frequently-used data to reduce wait time.</div>
+  </div>
+  <div class="callout"><b>So sánh đời thực:</b> CPU như đầu bếp giỏi, 主記憶 như kho thực phẩm xa, キャッシュ như giá đồ ăn ngay bên cạnh bếp — bếp lấy từ giá gần nhanh hơn nhiều so với chạy ra kho.</div>
+
+  <h3>1.6. 多段キャッシュ (Multi-level cache)</h3>
+  <div class="lang-block">
+    <div class="l l-vn">🇻🇳 Cache được chia thành nhiều cấp để tăng tốc độ thêm: <b>内部キャッシュ (1次/2次 cache)</b> nằm trong CPU, <b>外部キャッシュ (3次 cache)</b> nằm ngoài CPU. Số càng nhỏ → càng nhanh & gần CPU.</div>
+  </div>
+  <div class="ascii">[ CPU ] → [ L1 ] → [ L2 ] → [ L3 ] → [ 主記憶 ]
+       高速・小容量              低速・大容量</div>
+
+  <h3>1.7. ⭐ ヒット率 (Hit rate)</h3>
+  <div class="lang-block">
+    <div class="l l-jp">🇯🇵 必要なデータがキャッシュメモリ上に配置されている確率を「ヒット率」という。一方、キャッシュ上にない確率は「1 − ヒット率」となる。</div>
+    <div class="l l-vn">🇻🇳 <b>ヒット率 (hit rate)</b> = xác suất dữ liệu CPU cần ĐANG NẰM SẴN trong cache. Còn lại "1 − ヒット率" là tỷ lệ phải đi đến 主記憶 (= ミス率/miss rate).</div>
+    <div class="l l-en">🇬🇧 Hit rate = probability that required data is in cache. Miss rate = 1 − hit rate.</div>
+  </div>
+
+  <h3>1.8. ⭐ 実効アクセス時間 (Effective Access Time — TRỌNG TÂM)</h3>
+  <div class="formula">実効アクセス時間 = キャッシュへのアクセス時間 × ヒット率<br>+ 主記憶へのアクセス時間 × (1 − ヒット率)</div>
+  <div class="lang-block">
+    <div class="l l-vn">🇻🇳 Đây là <b>công thức quan trọng nhất FE hay hỏi</b>. Yasashii: 「実効アクセス時間を計算する問題がとてもよく出題される」.</div>
+  </div>
+
+  <h3>1.9. ⭐ ライトスルー方式 vs ライトバック方式 (Write-through / Write-back)</h3>
+  <table>
+    <tr><th>方式</th><th>動作</th><th>メリット</th><th>デメリット</th></tr>
+    <tr><td><b>ライトスルー</b></td><td>キャッシュと主記憶の<b>両方</b>に同時に書き込む</td><td>制御がシンプル (いらないデータを追い出す制御不要)</td><td>毎回主記憶への書き込みが必要 → 遅い</td></tr>
+    <tr><td><b>ライトバック</b></td><td>普段はキャッシュだけに書き込み、データがキャッシュから<b>追い出される時</b>に主記憶へ書き込む</td><td>主記憶への書き込み回数が少ない → 速い</td><td>追い出し制御が複雑</td></tr>
+  </table>
+  <div class="lang-block">
+    <div class="l l-vn">🇻🇳 Điểm khác cốt lõi: <b>thời điểm ghi xuống 主記憶</b>. Write-through ghi <b>ngay lập tức</b>, write-back ghi <b>chỉ khi data bị "đẩy ra" khỏi cache</b>.</div>
+  </div>
+
+  <h3>1.10. メモリインタリーブ (Memory Interleaving)</h3>
+  <div class="lang-block">
+    <div class="l l-jp">🇯🇵 メモリインタリーブとは、CPUから主記憶装置へのアクセスを高速化するために、主記憶装置内部を複数のバンクに分割し、各バンクに並列にアクセスすること。</div>
+    <div class="l l-vn">🇻🇳 <b>メモリインタリーブ</b>: chia 主記憶 thành nhiều "bank" (ngăn), CPU truy cập <b>song song</b> các bank → giảm thời gian chờ. Đây là kỹ thuật tăng tốc khác bên cạnh cache.</div>
+  </div>
+</section>
+
+<!-- ============ PHẦN 2: VÍ DỤ ============ -->
+<section>
+  <h2>🧮 Phần 2 — Ví dụ minh hoạ</h2>
+
+  <h3>Ví dụ 2.1: Tính 実効アクセス時間 (Yasashii nguyên văn)</h3>
+  <div class="example-box">
+    <span class="label">問題 (Yasashii p.154)</span>
+    <ul>
+      <li>キャッシュへのアクセス時間: 20 ナノ秒</li>
+      <li>主記憶へのアクセス時間: 580 ナノ秒</li>
+      <li>ヒット率: 0.9</li>
+    </ul>
+    <div class="step-line">実効アクセス時間 = 20 × 0.9 + 580 × (1 − 0.9)</div>
+    <div class="step-line">= 18 + 58 = 76 ナノ秒</div>
+    <p><b>答え:</b> 76 ns</p>
+  </div>
+
+  <h3>Ví dụ 2.2: Tính ヒット率 ngược từ 実効アクセス時間 (Yasashii 過去問 4-12 style)</h3>
+  <div class="example-box">
+    <span class="label">問題 (Yasashii 解答 4-12)</span>
+    <p>キャッシュ 10 ns, 主記憶 60 ns, 実効アクセス時間 15 ns. Tìm ヒット率 x?</p>
+    <div class="step-line">15 = 10x + 60(1 − x)</div>
+    <div class="step-line">15 = 10x + 60 − 60x</div>
+    <div class="step-line">50x = 45 → x = 0.9</div>
+    <p><b>答え:</b> ヒット率 = 0.9 (90%)</p>
+  </div>
+
+  <h3>Ví dụ 2.3: So sánh ライトスルー vs ライトバック (Yasashii 過去問 4-13)</h3>
+  <div class="example-box">
+    <span class="label">問題</span>
+    <p>「データ書込み命令を実行したときに、キャッシュメモリと主記憶の両方を書き換える方式」 và 「キャッシュメモリだけを書き換えておき、主記憶の書き換えはキャッシュメモリから当該データが追い出されるときに行う方式」 — đây là 2 phương thức gì?</p>
+    <p><b>答え:</b></p>
+    <ul>
+      <li>2 phương thức là <b>ライトスルー方式</b> và <b>ライトバック方式</b></li>
+      <li>Khác nhau ở <b>thời điểm ghi xuống 主記憶</b>: 即時 vs キャッシュから追い出されるとき</li>
+    </ul>
+  </div>
+
+  <h3>Ví dụ 2.4: Khi ヒット率 thay đổi</h3>
+  <div class="example-box">
+    <span class="label">問題</span>
+    <p>キャッシュ 5 ns, 主記憶 100 ns. Tính 実効アクセス時間 với ヒット率 0.95 và 0.99.</p>
+    <div class="step-line">ヒット率 0.95: 5×0.95 + 100×0.05 = 4.75 + 5 = 9.75 ns</div>
+    <div class="step-line">ヒット率 0.99: 5×0.99 + 100×0.01 = 4.95 + 1 = 5.95 ns</div>
+    <p><b>Bài học:</b> Chỉ tăng ヒット率 từ 95% → 99% mà giảm thời gian ~39%. Đó là lý do tối ưu cache rất quan trọng.</p>
+  </div>
+
+  <h3>Ví dụ 2.5: メモリインタリーブ (Yasashii 過去問 4-14)</h3>
+  <div class="example-box">
+    <span class="label">問題</span>
+    <p>「各バンクを並列にアクセスする」 — kỹ thuật này là gì?</p>
+    <p><b>答え:</b> メモリインタリーブ. Yasashii: chia 主記憶 thành các バンク, CPU truy cập 並列 → tăng tốc.</p>
+  </div>
+</section>
+
+<!-- ============ PHẦN 3: FLASHCARD ============ -->
+<section>
+  <h2>🃏 Phần 3 — Flashcard</h2>
+  <p style="color:#94a3b8;font-size:.92em;margin-bottom:12px">Click thẻ để lật. Lọc theo nhóm:</p>
+  <div class="flashcards-controls">
+    <button class="filter-btn active" onclick="filterFlash('all',this)">Tất cả</button>
+    <button class="filter-btn" onclick="filterFlash('Memory',this)">メモリ種類</button>
+    <button class="filter-btn" onclick="filterFlash('Cache',this)">キャッシュ</button>
+    <button class="filter-btn" onclick="filterFlash('Write',this)">書き込み方式</button>
+    <button class="filter-btn" onclick="filterFlash('Speed',this)">高速化</button>
+  </div>
+  <div class="flashcard-grid" id="flashGrid"></div>
+</section>
+
+<!-- ============ PHẦN 4: QUIZ ============ -->
+<section>
+  <h2>✅ Phần 4 — Câu hỏi ôn tập (10 câu)</h2>
+  <div id="quizContainer"></div>
+</section>
+
+<!-- ============ PHẦN 5: MIND MAP SVG ============ -->
+<section>
+  <h2>🗺️ Phần 5 — Mind map</h2>
+  <div class="mindmap-wrap">
+    <svg viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg" style="font-family:system-ui,sans-serif">
+      <!-- Center -->
+      <ellipse cx="500" cy="350" rx="130" ry="50" fill="#c2410c" stroke="#fdba74" stroke-width="3"/>
+      <text x="500" y="345" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold">メモリ</text>
+      <text x="500" y="365" text-anchor="middle" fill="#fed7aa" font-size="14">・キャッシュ</text>
+
+      <!-- Branch 1: メモリ種類 (top-left) - blue -->
+      <path d="M 400 320 Q 270 220 170 130" stroke="#38bdf8" stroke-width="3" fill="none"/>
+      <rect x="50" y="100" width="200" height="60" rx="14" fill="#0ea5e9" stroke="#bae6fd" stroke-width="2"/>
+      <text x="150" y="125" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">メモリ種類</text>
+      <text x="150" y="145" text-anchor="middle" fill="#e0f2fe" font-size="12">(Slide 第6回)</text>
+      <path d="M 100 160 Q 70 200 50 240" stroke="#38bdf8" stroke-width="2" fill="none"/>
+      <rect x="10" y="240" width="100" height="36" rx="8" fill="#0369a1" stroke="#7dd3fc"/>
+      <text x="60" y="263" text-anchor="middle" fill="#fff" font-size="12">RAM (DRAM/SRAM)</text>
+      <path d="M 200 160 Q 220 200 240 240" stroke="#38bdf8" stroke-width="2" fill="none"/>
+      <rect x="195" y="240" width="100" height="36" rx="8" fill="#0369a1" stroke="#7dd3fc"/>
+      <text x="245" y="263" text-anchor="middle" fill="#fff" font-size="12">ROM (Flash)</text>
+
+      <!-- Branch 2: キャッシュ (top-right) - amber -->
+      <path d="M 600 320 Q 730 220 830 130" stroke="#fbbf24" stroke-width="3" fill="none"/>
+      <rect x="730" y="100" width="200" height="60" rx="14" fill="#d97706" stroke="#fde68a" stroke-width="2"/>
+      <text x="830" y="125" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">キャッシュメモリ</text>
+      <text x="830" y="145" text-anchor="middle" fill="#fef3c7" font-size="12">(Cache)</text>
+      <path d="M 780 160 Q 750 200 730 240" stroke="#fbbf24" stroke-width="2" fill="none"/>
+      <rect x="670" y="240" width="120" height="36" rx="8" fill="#92400e" stroke="#fde68a"/>
+      <text x="730" y="263" text-anchor="middle" fill="#fff" font-size="12">ヒット率</text>
+      <path d="M 880 160 Q 900 200 920 240" stroke="#fbbf24" stroke-width="2" fill="none"/>
+      <rect x="820" y="240" width="170" height="36" rx="8" fill="#92400e" stroke="#fde68a"/>
+      <text x="905" y="263" text-anchor="middle" fill="#fff" font-size="12">実効アクセス時間</text>
+
+      <!-- Branch 3: 書き込み (bottom-right) - pink -->
+      <path d="M 600 380 Q 730 480 830 570" stroke="#f472b6" stroke-width="3" fill="none"/>
+      <rect x="730" y="540" width="200" height="60" rx="14" fill="#be185d" stroke="#fbcfe8" stroke-width="2"/>
+      <text x="830" y="565" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">書き込み方式</text>
+      <text x="830" y="585" text-anchor="middle" fill="#fce7f3" font-size="12">(Write policies)</text>
+      <path d="M 780 600 Q 750 630 730 660" stroke="#f472b6" stroke-width="2" fill="none"/>
+      <rect x="650" y="650" width="160" height="36" rx="8" fill="#9d174d" stroke="#fbcfe8"/>
+      <text x="730" y="673" text-anchor="middle" fill="#fff" font-size="12">ライトスルー (即時)</text>
+      <path d="M 880 600 Q 900 630 920 660" stroke="#f472b6" stroke-width="2" fill="none"/>
+      <rect x="830" y="650" width="160" height="36" rx="8" fill="#9d174d" stroke="#fbcfe8"/>
+      <text x="910" y="673" text-anchor="middle" fill="#fff" font-size="12">ライトバック (追出時)</text>
+
+      <!-- Branch 4: 高速化 (bottom-left) - green -->
+      <path d="M 400 380 Q 270 480 170 570" stroke="#22c55e" stroke-width="3" fill="none"/>
+      <rect x="70" y="540" width="200" height="60" rx="14" fill="#15803d" stroke="#bbf7d0" stroke-width="2"/>
+      <text x="170" y="565" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">メモリ高速化</text>
+      <text x="170" y="585" text-anchor="middle" fill="#dcfce7" font-size="12">(Slide 第7回)</text>
+      <path d="M 120 600 Q 100 630 85 660" stroke="#22c55e" stroke-width="2" fill="none"/>
+      <rect x="20" y="650" width="130" height="36" rx="8" fill="#166534" stroke="#bbf7d0"/>
+      <text x="85" y="673" text-anchor="middle" fill="#fff" font-size="12">多段キャッシュ</text>
+      <path d="M 220 600 Q 250 630 270 660" stroke="#22c55e" stroke-width="2" fill="none"/>
+      <rect x="195" y="650" width="170" height="36" rx="8" fill="#166534" stroke="#bbf7d0"/>
+      <text x="280" y="673" text-anchor="middle" fill="#fff" font-size="12">メモリインタリーブ</text>
+    </svg>
+  </div>
+</section>
+
+</div>
+
+<script>
+const FLASH = [
+  {f:"RAM",b:"Random Access Memory — 読み書き可能、揮発性 (電源OFFで消失). 例: DRAM, SRAM.",cat:"Memory"},
+  {f:"ROM",b:"Read Only Memory — 読み出し専用、不揮発性. 例: マスクROM, EPROM, EEPROM, Flash.",cat:"Memory"},
+  {f:"DRAM",b:"Dynamic RAM — コンデンサで電荷保持、リフレッシュ必要、遅い・大容量・安価 → 主記憶装置.",cat:"Memory"},
+  {f:"SRAM",b:"Static RAM — フリップフロップ回路、リフレッシュ不要、高速・小容量・高価 → キャッシュメモリ.",cat:"Memory"},
+  {f:"フラッシュメモリ",b:"EEPROMの一種、ブロック単位で書換え可能、不揮発性. SSD・USBメモリで使用.",cat:"Memory"},
+  {f:"キャッシュメモリ",b:"CPUと主記憶の間にある超高速メモリ. 頻繁に使うデータを保存して処理待ち時間を短縮.",cat:"Cache"},
+  {f:"多段キャッシュ",b:"1次/2次/3次キャッシュなど階層化. 内部 (L1/L2 in CPU) と外部 (L3 outside) に分けてさらなる高速化.",cat:"Cache"},
+  {f:"ヒット率",b:"必要なデータがキャッシュメモリ上に配置されている確率. Hit率が高い = CPU処理効率高い.",cat:"Cache"},
+  {f:"実効アクセス時間",b:"キャッシュへの時間×ヒット率 + 主記憶への時間×(1−ヒット率). FE超頻出公式.",cat:"Cache"},
+  {f:"ライトスルー方式",b:"キャッシュと主記憶の両方に同時に書き込む. シンプルだが毎回主記憶書込みで遅い.",cat:"Write"},
+  {f:"ライトバック方式",b:"通常はキャッシュのみ書き込み、データ追い出し時のみ主記憶に書込み. 高速だが制御複雑.",cat:"Write"},
+  {f:"メモリインタリーブ",b:"主記憶を複数のバンクに分割し、並列アクセスして高速化する技術.",cat:"Speed"},
+];
+function renderFlash(filter='all'){
+  const g = document.getElementById('flashGrid');
+  g.innerHTML = FLASH.filter(f=>filter==='all'||f.cat===filter).map(f=>`
+    <div class="flashcard" data-cat="${f.cat}" onclick="this.classList.toggle('flipped')">
+      <div class="cat">${f.cat}</div>
+      <div class="front">${f.f}</div>
+      <div class="back">${f.b}</div>
+    </div>`).join('');
+}
+function filterFlash(cat,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFlash(cat);
+}
+renderFlash();
+
+const QUIZ = [
+  {q:"キャッシュメモリ nằm ở vị trí nào trong cấu trúc bộ nhớ?",o:["Giữa CPU và 主記憶装置","Giữa 主記憶 và 補助記憶","Bên trong 補助記憶","Bên ngoài máy tính"],ans:0,exp:"Yasashii: 「キャッシュメモリとは、CPUと主記憶装置の間にある超高速の記憶装置」."},
+  {q:"ヒット率 = 0.9 nghĩa là gì?",o:["90% lệnh chạy đúng","90% lần CPU cần dữ liệu, dữ liệu đã có sẵn trong cache","Cache đầy 90%","Cache có 90 phần tử"],ans:1,exp:"Yasashii: 「必要なデータがキャッシュメモリ上に配置されている確率」 = hit rate."},
+  {q:"Công thức 実効アクセス時間 đúng là?",o:["キャッシュ時間 + 主記憶時間","キャッシュ時間 × ヒット率 + 主記憶時間 × (1 − ヒット率)","キャッシュ時間 / ヒット率","(キャッシュ時間 + 主記憶時間) / 2"],ans:1,exp:"Yasashii p.154 nguyên văn: 実効アクセス時間 = キャッシュへのアクセス時間 × ヒット率 + 主記憶へのアクセス時間 × (1 − ヒット率)."},
+  {q:"キャッシュ 20ns, 主記憶 580ns, ヒット率 0.9. 実効アクセス時間 = ?",o:["60 ns","76 ns","100 ns","580 ns"],ans:1,exp:"20 × 0.9 + 580 × 0.1 = 18 + 58 = 76 ns (Yasashii p.154 ví dụ chính thức)."},
+  {q:"ライトスルー方式 hoạt động thế nào?",o:["Chỉ ghi vào cache","Ghi cả vào cache và 主記憶 cùng lúc","Ghi vào 主記憶 trước, cache sau","Không ghi gì"],ans:1,exp:"Yasashii: ライトスルー方式 = 「CPUがキャッシュにデータを書き込む際に、主記憶装置にも同じデータを書き込む方式」."},
+  {q:"ライトバック方式 ghi xuống 主記憶 KHI NÀO?",o:["Ngay khi CPU ghi vào cache","Khi dữ liệu bị đẩy ra (追い出される) khỏi cache","Mỗi giây 1 lần","Không bao giờ ghi xuống 主記憶"],ans:1,exp:"Yasashii: 「キャッシュメモリから当該データが追い出されるときに行う方式」."},
+  {q:"SRAM thường được dùng cho mục đích gì?",o:["主記憶装置","キャッシュメモリ","補助記憶装置","ROM"],ans:1,exp:"Slide 第6回: SRAM = 高速・小容量・高価 → キャッシュメモリ. DRAM mới dùng cho 主記憶."},
+  {q:"DRAM cần thực hiện thao tác gì định kỳ?",o:["Defragment","Refresh (定期的にデータを書き直す)","Format","Backup"],ans:1,exp:"DRAM dùng tụ điện, điện tích rò rỉ theo thời gian nên cần refresh định kỳ."},
+  {q:"メモリインタリーブ hoạt động thế nào?",o:["Chia cache thành nhiều cấp","Chia 主記憶 thành nhiều バンク (bank) và truy cập 並列","Ghi nén dữ liệu","Tăng クロック周波数"],ans:1,exp:"Yasashii: 「主記憶装置内部を複数のバンクに分割し、各バンクに並列にアクセスすること」."},
+  {q:"キャッシュ 10ns, 主記憶 60ns, 実効アクセス時間 15ns. Hit率 là?",o:["0.5","0.7","0.9","0.95"],ans:2,exp:"15 = 10x + 60(1−x) → 50x = 45 → x = 0.9 (Yasashii 解答 4-12 nguyên văn)."},
+];
+function renderQuiz(){
+  document.getElementById('quizContainer').innerHTML = QUIZ.map((q,idx)=>{
+    const L=["A","B","C","D"];
+    const opts = q.o.map((o,i)=>`<div class="quiz-opt" onclick="pickQ(${idx},${i},this)" data-i="${i}"><b>${L[i]}.</b> ${o}</div>`).join("");
+    return `<div class="quiz-q"><div class="qt"><b>Câu ${idx+1}:</b> ${q.q}</div>${opts}<div class="quiz-exp" id="exp-${idx}"><b>Đáp án ${L[q.ans]}:</b> ${q.exp}</div></div>`;
+  }).join('');
+}
+function pickQ(qi,oi,el){
+  const card = el.parentElement;
+  if(card.dataset.locked) return;
+  card.dataset.locked='1';
+  const q=QUIZ[qi];
+  card.querySelectorAll('.quiz-opt').forEach(o=>{
+    o.classList.add('locked');
+    const i=parseInt(o.dataset.i);
+    if(i===q.ans) o.classList.add('correct');
+    else if(i===oi) o.classList.add('wrong');
+  });
+  document.getElementById('exp-'+qi).classList.add('open');
+}
+renderQuiz();
+</script>
+</body>
+</html>
