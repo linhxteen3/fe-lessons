@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE - CPU高速化・パイプライン</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.7;padding:16px}
+.container{max-width:980px;margin:0 auto}
+header{text-align:center;padding:24px;background:linear-gradient(135deg,#1e293b,#312e81);border-radius:16px;margin-bottom:24px}
+header h1{color:#a5b4fc;font-size:1.6em;margin-bottom:6px}
+header .sub{color:#94a3b8;font-size:.92em}
+section{background:#1e293b;border-radius:14px;padding:22px;margin-bottom:20px;box-shadow:0 6px 24px rgba(0,0,0,.3)}
+section h2{color:#a5b4fc;font-size:1.3em;border-bottom:2px solid #4338ca;padding-bottom:8px;margin-bottom:14px}
+section h3{color:#fbbf24;font-size:1.08em;margin:14px 0 8px}
+section h4{color:#22d3ee;font-size:1em;margin:12px 0 6px}
+p{margin-bottom:10px}
+ul,ol{margin:8px 0 12px 22px}
+li{margin-bottom:5px}
+.lang-block{display:grid;grid-template-columns:1fr;gap:8px;margin:12px 0;background:#0f172a;border-radius:10px;padding:14px}
+.lang-block .l{padding:8px 10px;border-radius:8px;font-size:.95em}
+.l-jp{background:#1e1b4b;border-left:4px solid #f472b6;color:#fce7f3}
+.l-vn{background:#1e3a5f;border-left:4px solid #38bdf8;color:#e0f2fe}
+.l-en{background:#1f2937;border-left:4px solid #fbbf24;color:#fef3c7}
+.formula{background:#312e81;color:#e0e7ff;padding:14px;border-radius:10px;font-family:"Courier New",monospace;text-align:center;font-size:1.1em;margin:12px 0;border:1px solid #4f46e5}
+.example-box{background:#0f172a;border:1px solid #475569;border-radius:10px;padding:14px;margin:12px 0}
+.example-box .label{display:inline-block;background:#fbbf24;color:#0f172a;padding:3px 10px;border-radius:6px;font-weight:700;font-size:.85em;margin-bottom:8px}
+.step-line{font-family:"Courier New",monospace;background:#0f172a;padding:10px;border-radius:8px;color:#a5b4fc;text-align:center;font-size:.95em;margin:8px 0;overflow-x:auto}
+.ascii{background:#0f172a;padding:12px;border-radius:8px;font-family:"Courier New",monospace;font-size:.85em;color:#cbd5e1;white-space:pre;overflow-x:auto;margin:10px 0}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92em;background:#0f172a;border-radius:8px;overflow:hidden}
+th,td{padding:10px;text-align:left;border-bottom:1px solid #334155}
+th{background:#4338ca;color:#fff}
+tr:hover td{background:#1e3a5f}
+.flashcards-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.filter-btn{background:#334155;color:#e2e8f0;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.85em}
+.filter-btn.active{background:#a5b4fc;color:#0f172a;font-weight:700}
+.flashcard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.flashcard{background:#0f172a;border:2px solid #4338ca;border-radius:10px;padding:14px;min-height:120px;cursor:pointer;position:relative}
+.flashcard .cat{position:absolute;top:8px;right:8px;font-size:.7em;background:#4338ca;color:#fff;padding:2px 8px;border-radius:4px}
+.flashcard .front{color:#a5b4fc;font-weight:600}
+.flashcard .back{display:none;color:#fde68a;margin-top:8px;font-size:.88em}
+.flashcard.flipped .back{display:block}
+.flashcard.flipped{border-color:#fbbf24;background:#1e1b4b}
+.quiz-q{background:#0f172a;border-radius:10px;padding:14px;margin:10px 0}
+.quiz-q .qt{color:#f1f5f9;margin-bottom:10px}
+.quiz-opt{display:block;background:#1e293b;border:2px solid #334155;border-radius:6px;padding:8px 12px;margin:6px 0;cursor:pointer;color:#e2e8f0;font-size:.93em}
+.quiz-opt:hover{border-color:#a5b4fc}
+.quiz-opt.correct{background:#064e3b;border-color:#10b981;color:#a7f3d0}
+.quiz-opt.wrong{background:#7f1d1d;border-color:#ef4444;color:#fecaca}
+.quiz-opt.locked{cursor:not-allowed}
+.quiz-exp{display:none;margin-top:8px;padding:10px;background:#1e3a5f;border-left:3px solid #38bdf8;border-radius:6px;font-size:.88em;color:#cbd5e1}
+.quiz-exp.open{display:block}
+.mindmap-wrap{background:#0f172a;border-radius:10px;padding:14px;overflow-x:auto;text-align:center}
+.mindmap-wrap svg{max-width:100%;height:auto}
+.callout{background:#1e3a5f;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;margin:12px 0;font-size:.95em}
+.warn{background:#451a03;border-left:4px solid #fb923c;padding:12px;border-radius:8px;margin:12px 0;color:#fed7aa}
+@media(max-width:600px){section{padding:16px}header h1{font-size:1.3em}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>⚙️ CPU高速化・パイプライン</h1>
+  <div class="sub">FE試験対策・Yasashii Ch.4 Lesson 04-01/04-02 + Slide 3_ハードウェア 第3-5回</div>
+</header>
+
+<!-- ============ PHẦN 1: LÝ THUYẾT ============ -->
+<section>
+  <h2>📘 Phần 1 — Tóm tắt lý thuyết</h2>
+
+  <h3>1.1. CPU và クロック (xung nhịp)</h3>
+  <div class="lang-block">
+    <div class="l l-jp">🇯🇵 CPUは発振器が刻むテンポ（クロック）に合わせて命令を処理する。1秒間に発振器が刻むクロック数を「クロック周波数」といい、単位はHz（ヘルツ）。1クロック = 発振器がテンポを1回刻むこと。</div>
+    <div class="l l-vn">🇻🇳 CPU hoạt động đồng bộ với "nhịp" (clock) do bộ dao động (発振器) tạo ra. Số xung clock trong 1 giây gọi là <b>tần số xung nhịp (クロック周波数)</b>, đơn vị Hz. Tần số càng cao → CPU càng mạnh.</div>
+    <div class="l l-en">🇬🇧 CPU executes instructions in sync with the clock signal generated by an oscillator. The number of clock ticks per second is the <b>clock frequency</b> (Hz). Higher frequency = faster CPU.</div>
+  </div>
+  <div class="callout"><b>So sánh đời thực:</b> CPU như nhạc công, 発振器 như máy đếm nhịp (metronome). Mỗi tiếng "tích" là 1 クロック. Metronome đếm càng nhanh, nhạc công chơi càng nhanh.</div>
+
+  <h3>1.2. CPI (Clock Per Instruction)</h3>
+  <div class="lang-block">
+    <div class="l l-jp">🇯🇵 CPI（Clock Per Instruction）は1つの命令を実行するのに必要なクロック数。例：2クロック必要な命令は 2CPI。複雑な命令ほどCPI が大きくなる。</div>
+    <div class="l l-vn">🇻🇳 <b>CPI</b> = số clock cần thiết để thực thi 1 lệnh. Ví dụ: lệnh cần 2 clock → 2 CPI. Lệnh càng phức tạp, CPI càng lớn.</div>
+    <div class="l l-en">🇬🇧 <b>CPI</b> (Clock Per Instruction) = clocks required to execute one instruction. More complex = higher CPI.</div>
+  </div>
+
+  <h3>1.3. MIPS (Million Instructions Per Second)</h3>
+  <div class="lang-block">
+    <div class="l l-jp">🇯🇵 MIPS（Million Instructions Per Second）はCPUが1秒間に何百万個の命令を実行できるかを表す単位。2MIPS = 1秒間に200万個の命令を実行する。</div>
+    <div class="l l-vn">🇻🇳 <b>MIPS</b> = số triệu lệnh CPU xử lý được trong 1 giây. 2MIPS = 2 triệu lệnh/giây.</div>
+    <div class="l l-en">🇬🇧 <b>MIPS</b> = millions of instructions executed per second.</div>
+  </div>
+  <div class="formula">MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶</div>
+  <div class="formula">1秒に実行できる命令数 = クロック周波数 ÷ 1命令あたりのクロック数(CPI)</div>
+
+  <h3>1.4. 命令ミックス (Instruction Mix)</h3>
+  <div class="lang-block">
+    <div class="l l-jp">🇯🇵 命令の種類によって必要なCPIが異なるため、複数命令を処理する際は各命令のCPIを出現頻度で重み付け平均する。</div>
+    <div class="l l-vn">🇻🇳 Khác loại lệnh có CPI khác nhau, nên khi tính hiệu năng với nhiều loại lệnh, ta lấy <b>trung bình có trọng số theo tần suất xuất hiện</b>.</div>
+    <div class="l l-en">🇬🇧 Different instructions have different CPI; weighted average by frequency.</div>
+  </div>
+
+  <h3>1.5. 逐次制御方式 (Tuần tự — chậm)</h3>
+  <div class="lang-block">
+    <div class="l l-jp">🇯🇵 逐次制御方式ではCPUが1命令ずつ処理を行う。1つの命令が完了してから次の命令に移るので処理に時間がかかる。</div>
+    <div class="l l-vn">🇻🇳 <b>Xử lý tuần tự (逐次制御方式)</b>: CPU chỉ xử lý 1 lệnh tại 1 thời điểm, làm xong mới sang lệnh tiếp. Hiệu suất thấp.</div>
+    <div class="l l-en">🇬🇧 Sequential execution: one instruction at a time; finish before next.</div>
+  </div>
+  <div class="ascii">時間 →
+命令1: [F][D][E][W]
+命令2:             [F][D][E][W]
+命令3:                         [F][D][E][W]
+F=Fetch  D=Decode  E=Execute  W=Write back</div>
+
+  <h3>1.6. ⭐ パイプライン方式 (Pipeline — TRỌNG TÂM)</h3>
+  <div class="lang-block">
+    <div class="l l-jp">🇯🇵 パイプライン方式では命令を1つずつステージをずらして処理を行う。命令1がDecodeに進むと、命令2がFetchを開始する。並行処理することでCPUの高速化が可能。</div>
+    <div class="l l-vn">🇻🇳 <b>パイプライン (Pipeline)</b>: thực hiện song song nhiều lệnh bằng cách <b>lệch pha các giai đoạn (stage)</b>. Khi lệnh 1 sang stage Decode, lệnh 2 bắt đầu Fetch... Mỗi clock có 1 lệnh hoàn tất.</div>
+    <div class="l l-en">🇬🇧 <b>Pipeline</b>: instructions overlap by staggering stages. While instr.1 decodes, instr.2 fetches. Parallelism boosts throughput.</div>
+  </div>
+  <div class="ascii">時間 →
+命令1: [F][D][E][W]
+命令2:    [F][D][E][W]
+命令3:       [F][D][E][W]
+命令4:          [F][D][E][W]
+→ 各クロックで1命令完了 = 大幅な高速化</div>
+  <div class="callout"><b>Ví von:</b> giống dây chuyền lắp ráp xe hơi. Khi xe 1 đang sơn, xe 2 đang lắp ghế, xe 3 đang vào khung — mỗi công đoạn không đợi xe trước hoàn thành.</div>
+
+  <h3>1.7. 分岐予測 và 投機実行 (Branch prediction & Speculative execution)</h3>
+  <div class="lang-block">
+    <div class="l l-jp">🇯🇵 パイプライン方式では分岐処理命令に対して、分岐予測と投機実行で対応する。分岐結果を予測（分岐予測）し、予測を基に命令を実行（投機実行）する。</div>
+    <div class="l l-vn">🇻🇳 Khi gặp lệnh rẽ nhánh (if/jump), pipeline không biết trước đi nhánh nào → <b>dự đoán nhánh (分岐予測)</b> + <b>thực thi suy đoán (投機実行)</b> để không phải dừng pipeline. Nếu đoán sai thì huỷ kết quả.</div>
+    <div class="l l-en">🇬🇧 For branches, CPU predicts the path (<b>branch prediction</b>) and executes ahead (<b>speculative execution</b>); discards if wrong.</div>
+  </div>
+
+  <h3>1.8. スーパーパイプライン (Super pipeline)</h3>
+  <div class="lang-block">
+    <div class="l l-jp">🇯🇵 命令実行手順をさらに細分化することでパイプライン処理の効率を上げる方式。</div>
+    <div class="l l-vn">🇻🇳 <b>スーパーパイプライン</b>: <b>chia nhỏ thêm các stage</b> (5 stage → 10 stage) để mỗi stage nhanh hơn, tăng hiệu quả pipeline.</div>
+    <div class="l l-en">🇬🇧 <b>Super pipeline</b>: subdivides stages into smaller steps to improve throughput.</div>
+  </div>
+
+  <h3>1.9. スーパースカラ (Superscalar)</h3>
+  <div class="lang-block">
+    <div class="l l-jp">🇯🇵 パイプライン処理を複数もたせて同時に複数の命令を実行させる方式（パイプライン①、パイプライン②）。</div>
+    <div class="l l-vn">🇻🇳 <b>スーパースカラ</b>: dùng <b>nhiều pipeline song song</b> để cùng lúc xử lý nhiều lệnh khác nhau (ví dụ 2 pipeline → 2 lệnh hoàn tất mỗi clock).</div>
+    <div class="l l-en">🇬🇧 <b>Superscalar</b>: multiple pipelines in parallel, executing multiple instructions per cycle.</div>
+  </div>
+
+  <h3>1.10. CISC vs RISC (Triết lý thiết kế CPU)</h3>
+  <table>
+    <tr><th>項目</th><th>CISC</th><th>RISC</th></tr>
+    <tr><td>設計思想</td><td>命令が複雑</td><td>命令が単純</td></tr>
+    <tr><td>命令数</td><td>少ない行数で処理</td><td>命令を多く実行するが各命令高速</td></tr>
+    <tr><td>パイプライン</td><td>命令実行時間がバラバラで効率悪い</td><td>命令時間が均等 → パイプラインに最適</td></tr>
+    <tr><td>名前由来</td><td>Complex Instruction Set Computer</td><td>Reduced Instruction Set Computer</td></tr>
+  </table>
+  <div class="lang-block">
+    <div class="l l-vn">🇻🇳 <b>RISC</b> phù hợp với pipeline hơn vì thời gian thực thi mỗi lệnh đồng đều → các stage không bị "tắc nghẽn".</div>
+  </div>
+</section>
+
+<!-- ============ PHẦN 2: VÍ DỤ ============ -->
+<section>
+  <h2>🧮 Phần 2 — Ví dụ minh hoạ</h2>
+
+  <h3>Ví dụ 2.1: Tính クロック数 từ クロック周波数</h3>
+  <div class="example-box">
+    <span class="label">問題</span>
+    <p>CPU có クロック周波数 = 2.5 GHz. Hỏi 1 giây nó có bao nhiêu クロック?</p>
+    <div class="step-line">① 2.5 GHz = 2.5 × 10⁹ Hz = 25億回/秒</div>
+    <div class="step-line">② → 25億クロック/秒 (2.5ギガクロック)</div>
+    <p><b>答え:</b> 2.5 × 10⁹ クロック = 25億クロック (theo Yasashii)</p>
+  </div>
+
+  <h3>Ví dụ 2.2: Tính số lệnh/giây từ クロック周波数 và CPI</h3>
+  <div class="example-box">
+    <span class="label">問題</span>
+    <p>CPU 2.5 GHz, trung bình 1 lệnh cần 2 clock. Hỏi số lệnh/giây?</p>
+    <div class="step-line">クロック周波数 ÷ CPI = 25億 ÷ 2 = 12.5億個</div>
+    <p><b>答え:</b> 12.5 億 lệnh/giây = 1250 MIPS (theo Yasashii p.134)</p>
+  </div>
+
+  <h3>Ví dụ 2.3: Tính MIPS từ 平均命令実行時間</h3>
+  <div class="example-box">
+    <span class="label">問題 (FE 平成年度過去問風)</span>
+    <p>1 lệnh thực thi trung bình mất 20 nano-giây (20 × 10⁻⁹ giây). Tính MIPS.</p>
+    <div class="step-line">MIPS = 1秒 ÷ (20 × 10⁻⁹) × 10⁻⁶</div>
+    <div class="step-line">= (5 × 10⁷) × 10⁻⁶ = 50</div>
+    <p><b>答え:</b> 50 MIPS (theo Yasashii 過去問 4-3)</p>
+  </div>
+
+  <h3>Ví dụ 2.4: パイプライン tăng tốc bao nhiêu lần?</h3>
+  <div class="example-box">
+    <span class="label">問題</span>
+    <p>1 lệnh cần 4 stage (F-D-E-W), mỗi stage 1 clock. 逐次制御 xử lý 4 lệnh mất bao nhiêu clock? Pipeline mất bao nhiêu?</p>
+    <ul>
+      <li><b>逐次制御:</b> 4 lệnh × 4 clock = <b>16 clock</b></li>
+      <li><b>パイプライン:</b> 4 clock cho lệnh đầu + 3 clock cho 3 lệnh sau = <b>7 clock</b></li>
+    </ul>
+    <p><b>Tăng tốc:</b> ~16/7 ≒ 2.3 lần. Khi số lệnh lớn → tốc độ tiến gần 4 lần (= số stage).</p>
+  </div>
+
+  <h3>Ví dụ 2.5: 命令ミックス</h3>
+  <div class="example-box">
+    <span class="label">問題</span>
+    <p>3 loại lệnh có CPI và tần suất sau. Tính CPI trung bình:</p>
+    <table>
+      <tr><th>Loại lệnh</th><th>CPI</th><th>Tần suất</th></tr>
+      <tr><td>A</td><td>1</td><td>50%</td></tr>
+      <tr><td>B</td><td>2</td><td>30%</td></tr>
+      <tr><td>C</td><td>4</td><td>20%</td></tr>
+    </table>
+    <div class="step-line">CPI平均 = 1×0.5 + 2×0.3 + 4×0.2 = 0.5 + 0.6 + 0.8 = 1.9</div>
+    <p><b>答え:</b> CPI trung bình = 1.9</p>
+  </div>
+</section>
+
+<!-- ============ PHẦN 3: FLASHCARD ============ -->
+<section>
+  <h2>🃏 Phần 3 — Flashcard</h2>
+  <p style="color:#94a3b8;font-size:.92em;margin-bottom:12px">Click vào thẻ để xem mặt sau. Lọc theo nhóm:</p>
+  <div class="flashcards-controls">
+    <button class="filter-btn active" onclick="filterFlash('all',this)">Tất cả</button>
+    <button class="filter-btn" onclick="filterFlash('Hieu nang',this)">性能指標</button>
+    <button class="filter-btn" onclick="filterFlash('Pipeline',this)">パイプライン</button>
+    <button class="filter-btn" onclick="filterFlash('Architecture',this)">アーキテクチャ</button>
+  </div>
+  <div class="flashcard-grid" id="flashGrid"></div>
+</section>
+
+<!-- ============ PHẦN 4: QUIZ ============ -->
+<section>
+  <h2>✅ Phần 4 — Câu hỏi ôn tập (10 câu)</h2>
+  <div id="quizContainer"></div>
+</section>
+
+<!-- ============ PHẦN 5: MIND MAP SVG ============ -->
+<section>
+  <h2>🗺️ Phần 5 — Mind map</h2>
+  <div class="mindmap-wrap">
+    <svg viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg" style="font-family:system-ui,sans-serif">
+      <!-- Center -->
+      <ellipse cx="500" cy="350" rx="120" ry="50" fill="#4338ca" stroke="#a5b4fc" stroke-width="3"/>
+      <text x="500" y="345" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold">CPU</text>
+      <text x="500" y="365" text-anchor="middle" fill="#e0e7ff" font-size="14">高速化・パイプライン</text>
+
+      <!-- Branch 1: Hieu nang (top-left) - blue -->
+      <path d="M 410 320 Q 280 220 180 130" stroke="#38bdf8" stroke-width="3" fill="none"/>
+      <rect x="60" y="100" width="200" height="60" rx="14" fill="#0ea5e9" stroke="#bae6fd" stroke-width="2"/>
+      <text x="160" y="125" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">性能評価</text>
+      <text x="160" y="145" text-anchor="middle" fill="#e0f2fe" font-size="12">(Hieu nang)</text>
+      <!-- sub blue -->
+      <path d="M 110 160 Q 80 200 60 240" stroke="#38bdf8" stroke-width="2" fill="none"/>
+      <rect x="10" y="240" width="120" height="36" rx="8" fill="#0369a1" stroke="#7dd3fc"/>
+      <text x="70" y="263" text-anchor="middle" fill="#fff" font-size="12">クロック周波数</text>
+      <path d="M 160 160 Q 160 200 160 240" stroke="#38bdf8" stroke-width="2" fill="none"/>
+      <rect x="135" y="240" width="80" height="36" rx="8" fill="#0369a1" stroke="#7dd3fc"/>
+      <text x="175" y="263" text-anchor="middle" fill="#fff" font-size="12">CPI</text>
+      <path d="M 220 160 Q 250 200 270 240" stroke="#38bdf8" stroke-width="2" fill="none"/>
+      <rect x="225" y="240" width="90" height="36" rx="8" fill="#0369a1" stroke="#7dd3fc"/>
+      <text x="270" y="263" text-anchor="middle" fill="#fff" font-size="12">MIPS</text>
+
+      <!-- Branch 2: Pipeline (top-right) - amber -->
+      <path d="M 590 320 Q 720 220 820 130" stroke="#fbbf24" stroke-width="3" fill="none"/>
+      <rect x="720" y="100" width="200" height="60" rx="14" fill="#d97706" stroke="#fde68a" stroke-width="2"/>
+      <text x="820" y="125" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">パイプライン</text>
+      <text x="820" y="145" text-anchor="middle" fill="#fef3c7" font-size="12">(Pipeline)</text>
+      <!-- sub amber -->
+      <path d="M 770 160 Q 740 200 720 240" stroke="#fbbf24" stroke-width="2" fill="none"/>
+      <rect x="660" y="240" width="130" height="36" rx="8" fill="#92400e" stroke="#fde68a"/>
+      <text x="725" y="263" text-anchor="middle" fill="#fff" font-size="12">分岐予測</text>
+      <path d="M 820 160 Q 820 200 820 240" stroke="#fbbf24" stroke-width="2" fill="none"/>
+      <rect x="795" y="240" width="110" height="36" rx="8" fill="#92400e" stroke="#fde68a"/>
+      <text x="850" y="263" text-anchor="middle" fill="#fff" font-size="12">投機実行</text>
+      <path d="M 870 160 Q 900 200 920 240" stroke="#fbbf24" stroke-width="2" fill="none"/>
+      <rect x="910" y="240" width="80" height="36" rx="8" fill="#92400e" stroke="#fde68a"/>
+      <text x="950" y="263" text-anchor="middle" fill="#fff" font-size="12">逐次→並行</text>
+
+      <!-- Branch 3: Super (bottom-right) - pink -->
+      <path d="M 590 380 Q 720 480 820 570" stroke="#f472b6" stroke-width="3" fill="none"/>
+      <rect x="720" y="540" width="200" height="60" rx="14" fill="#be185d" stroke="#fbcfe8" stroke-width="2"/>
+      <text x="820" y="565" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">高速化拡張</text>
+      <text x="820" y="585" text-anchor="middle" fill="#fce7f3" font-size="12">(Super)</text>
+      <!-- sub pink -->
+      <path d="M 770 600 Q 740 630 720 660" stroke="#f472b6" stroke-width="2" fill="none"/>
+      <rect x="630" y="650" width="170" height="36" rx="8" fill="#9d174d" stroke="#fbcfe8"/>
+      <text x="715" y="673" text-anchor="middle" fill="#fff" font-size="12">スーパーパイプライン</text>
+      <path d="M 870 600 Q 900 630 920 660" stroke="#f472b6" stroke-width="2" fill="none"/>
+      <rect x="830" y="650" width="160" height="36" rx="8" fill="#9d174d" stroke="#fbcfe8"/>
+      <text x="910" y="673" text-anchor="middle" fill="#fff" font-size="12">スーパースカラ</text>
+
+      <!-- Branch 4: Architecture (bottom-left) - green -->
+      <path d="M 410 380 Q 280 480 180 570" stroke="#22c55e" stroke-width="3" fill="none"/>
+      <rect x="80" y="540" width="200" height="60" rx="14" fill="#15803d" stroke="#bbf7d0" stroke-width="2"/>
+      <text x="180" y="565" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">設計思想</text>
+      <text x="180" y="585" text-anchor="middle" fill="#dcfce7" font-size="12">(Architecture)</text>
+      <!-- sub green -->
+      <path d="M 130 600 Q 110 630 95 660" stroke="#22c55e" stroke-width="2" fill="none"/>
+      <rect x="40" y="650" width="120" height="36" rx="8" fill="#166534" stroke="#bbf7d0"/>
+      <text x="100" y="673" text-anchor="middle" fill="#fff" font-size="12">CISC (複雑)</text>
+      <path d="M 230 600 Q 250 630 270 660" stroke="#22c55e" stroke-width="2" fill="none"/>
+      <rect x="200" y="650" width="140" height="36" rx="8" fill="#166534" stroke="#bbf7d0"/>
+      <text x="270" y="673" text-anchor="middle" fill="#fff" font-size="12">RISC (単純→パイプライン)</text>
+    </svg>
+  </div>
+</section>
+
+</div>
+
+<script>
+// ===== Flashcards =====
+const FLASH = [
+  {f:"クロック周波数",b:"Số クロック/giây mà 発振器 phát ra; đơn vị Hz. Càng cao → CPU càng nhanh.",cat:"Hieu nang"},
+  {f:"1クロックに必要な時間",b:"= 1 ÷ クロック周波数. Ví dụ 2.5GHz → 0.4 nano-giây/clock.",cat:"Hieu nang"},
+  {f:"CPI",b:"Clock Per Instruction — số clock cần để thực thi 1 lệnh. Lệnh phức tạp = CPI lớn.",cat:"Hieu nang"},
+  {f:"MIPS",b:"Million Instructions Per Second — số triệu lệnh/giây. MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶.",cat:"Hieu nang"},
+  {f:"命令ミックス",b:"Tính CPI trung bình bằng cách lấy CPI của mỗi loại lệnh × tần suất (trọng số).",cat:"Hieu nang"},
+  {f:"逐次制御方式",b:"CPU xử lý 1 lệnh tại 1 thời điểm, làm xong mới sang lệnh tiếp. Chậm vì không tận dụng song song.",cat:"Pipeline"},
+  {f:"パイプライン方式",b:"Lệch pha các stage (F→D→E→W) để cùng lúc nhiều lệnh chạy ở stage khác nhau. CPU tăng tốc nhờ song song.",cat:"Pipeline"},
+  {f:"分岐予測 (Branch prediction)",b:"Khi gặp lệnh rẽ nhánh, CPU đoán đi nhánh nào để không phải dừng pipeline.",cat:"Pipeline"},
+  {f:"投機実行 (Speculative execution)",b:"Dựa trên dự đoán nhánh, CPU thực thi trước. Nếu sai → huỷ kết quả.",cat:"Pipeline"},
+  {f:"スーパーパイプライン",b:"Chia nhỏ các stage hiện có thành nhiều stage nhỏ hơn → tăng hiệu quả pipeline.",cat:"Architecture"},
+  {f:"スーパースカラ",b:"Có nhiều pipeline song song (パイプライン①, ②...) → cùng lúc hoàn thành nhiều lệnh mỗi clock.",cat:"Architecture"},
+  {f:"CISC",b:"Complex Instruction Set Computer — 1 lệnh xử lý phức tạp. Ít dòng lệnh nhưng thời gian lệnh không đồng đều.",cat:"Architecture"},
+  {f:"RISC",b:"Reduced Instruction Set Computer — lệnh đơn giản, thời gian đồng đều → phù hợp pipeline. Mỗi lệnh nhanh.",cat:"Architecture"},
+];
+function renderFlash(filter='all'){
+  const g = document.getElementById('flashGrid');
+  g.innerHTML = FLASH.filter(f=>filter==='all'||f.cat===filter).map((f,i)=>`
+    <div class="flashcard" data-cat="${f.cat}" onclick="this.classList.toggle('flipped')">
+      <div class="cat">${f.cat}</div>
+      <div class="front">${f.f}</div>
+      <div class="back">${f.b}</div>
+    </div>`).join('');
+}
+function filterFlash(cat,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFlash(cat);
+}
+renderFlash();
+
+// ===== Quiz =====
+const QUIZ = [
+  {q:"クロック周波数 2 GHz có nghĩa là gì?",o:["1 giây có 2 lệnh","1 giây có 2 tỷ クロック","1 lệnh cần 2 クロック","CPU có 2 lõi"],ans:1,exp:"2 GHz = 2 × 10⁹ Hz = 2 tỷ クロック/giây. Đây là số nhịp dao động, không phải số lệnh."},
+  {q:"Công thức MIPS chính xác là?",o:["MIPS = 平均命令実行時間 × 10⁻⁶","MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶","MIPS = クロック周波数 × CPI","MIPS = 1秒 × 平均命令実行時間"],ans:1,exp:"MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶ — theo Yasashii p.134."},
+  {q:"CPI là gì?",o:["Số clock cần để thực thi 1 lệnh","Số lệnh thực thi mỗi clock","Tần số xung nhịp","Tốc độ bus"],ans:0,exp:"CPI = Clock Per Instruction = số clock cần cho 1 lệnh."},
+  {q:"パイプライン方式 tăng tốc CPU bằng cách nào?",o:["Tăng クロック周波数","Lệch pha các stage để xử lý song song nhiều lệnh","Giảm số lệnh","Tăng kích thước cache"],ans:1,exp:"Pipeline tăng tốc nhờ song song các stage — khi lệnh 1 sang Decode thì lệnh 2 vào Fetch (slide第5回)."},
+  {q:"Vấn đề nào pipeline phải xử lý với lệnh rẽ nhánh?",o:["Không thể biết trước đi nhánh nào → dùng 分岐予測 + 投機実行","Pipeline tự động dừng vĩnh viễn","Phải reset toàn bộ CPU","Phải chuyển sang 逐次制御"],ans:0,exp:"Slide第5回: パイプライン方式では分岐処理命令に対して、分岐予測と投機実行で対応する."},
+  {q:"スーパースカラ là gì?",o:["Chia nhỏ stage để pipeline nhanh hơn","Có nhiều pipeline song song để cùng lúc xử lý nhiều lệnh","Tăng クロック周波数","Loại bỏ cache"],ans:1,exp:"スーパースカラ = nhiều pipeline song song. Khác với スーパーパイプライン (chia nhỏ stage)."},
+  {q:"CPU 1 GHz với CPI trung bình = 4 thì hiệu năng bao nhiêu MIPS?",o:["250","1000","4000","40"],ans:0,exp:"1秒の命令数 = クロック周波数 ÷ CPI = 10⁹ ÷ 4 = 2.5×10⁸ = 250 triệu = 250 MIPS."},
+  {q:"Vì sao RISC phù hợp với パイプライン hơn CISC?",o:["Vì RISC có nhiều thanh ghi hơn","Vì các lệnh RISC có thời gian thực thi đồng đều, các stage không bị tắc","Vì RISC chạy ở tần số cao hơn","Vì RISC không có lệnh rẽ nhánh"],ans:1,exp:"Slide第5回: RISC có 命令実行時間が均等 → パイプライン方式で効率よく命令を処理することが可能."},
+  {q:"4 lệnh, mỗi lệnh 4 stage 1 clock. Pipeline lý tưởng cần bao nhiêu clock?",o:["16","7","4","1"],ans:1,exp:"Pipeline: 4 clock cho lệnh 1 hoàn thành + 3 clock cho 3 lệnh sau (mỗi clock thêm 1 lệnh) = 7 clock. So với 逐次 16 clock."},
+  {q:"投機実行 (speculative execution) hoạt động thế nào?",o:["Thực thi lệnh sau khi biết chắc kết quả nhánh","Dựa vào dự đoán nhánh, thực thi trước; nếu sai thì huỷ","Thực thi nhiều lệnh cùng lúc","Đợi tất cả lệnh trước hoàn tất"],ans:1,exp:"投機実行 = thực thi suy đoán dựa trên 分岐予測. Sai thì roll back."},
+];
+function renderQuiz(){
+  document.getElementById('quizContainer').innerHTML = QUIZ.map((q,idx)=>{
+    const letters=["A","B","C","D"];
+    const opts = q.o.map((o,i)=>`<div class="quiz-opt" onclick="pickQ(${idx},${i},this)" data-i="${i}"><b>${letters[i]}.</b> ${o}</div>`).join("");
+    return `<div class="quiz-q">
+      <div class="qt"><b>Câu ${idx+1}:</b> ${q.q}</div>
+      ${opts}
+      <div class="quiz-exp" id="exp-${idx}"><b>Đáp án ${letters[q.ans]}:</b> ${q.exp}</div>
+    </div>`;
+  }).join('');
+}
+function pickQ(qi,oi,el){
+  const card = el.parentElement;
+  if(card.dataset.locked) return;
+  card.dataset.locked='1';
+  const q=QUIZ[qi];
+  card.querySelectorAll('.quiz-opt').forEach(o=>{
+    o.classList.add('locked');
+    const i=parseInt(o.dataset.i);
+    if(i===q.ans) o.classList.add('correct');
+    else if(i===oi) o.classList.add('wrong');
+  });
+  document.getElementById('exp-'+qi).classList.add('open');
+}
+renderQuiz();
+</script>
+</body>
+</html>
