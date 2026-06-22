@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE - CPU高速化・パイプライン (40 câu)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;padding:16px;line-height:1.6}
+.container{max-width:880px;margin:0 auto;background:#1e293b;border-radius:16px;padding:24px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.header{text-align:center;border-bottom:2px solid #334155;padding-bottom:16px;margin-bottom:20px}
+.header h1{color:#a5b4fc;font-size:1.4em;margin-bottom:4px}
+.header .sub{color:#94a3b8;font-size:.9em}
+.progress-wrap{background:#0f172a;border-radius:10px;padding:12px;margin-bottom:20px}
+.progress-info{display:flex;justify-content:space-between;font-size:.9em;color:#cbd5e1;margin-bottom:8px}
+.progress-bar{height:10px;background:#334155;border-radius:5px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#a5b4fc,#22d3ee);transition:width .3s}
+.question-card{background:#0f172a;border-radius:12px;padding:20px;margin-bottom:16px}
+.q-tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:.78em;font-weight:600;margin-bottom:10px}
+.tag-easy{background:#065f46;color:#a7f3d0}
+.tag-med{background:#854d0e;color:#fde68a}
+.tag-hard{background:#7f1d1d;color:#fecaca}
+.q-text{font-size:1.05em;margin-bottom:8px;color:#f1f5f9}
+.q-jp{font-size:.92em;color:#94a3b8;margin-bottom:16px;font-style:italic}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:#1e293b;border:2px solid #334155;border-radius:8px;padding:12px 16px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;color:#e2e8f0}
+.option:hover:not(.locked){border-color:#a5b4fc;background:#1e1b4b}
+.option .letter{font-weight:700;color:#a5b4fc;min-width:20px}
+.option.correct{background:#064e3b;border-color:#10b981;color:#a7f3d0}
+.option.incorrect{background:#7f1d1d;border-color:#ef4444;color:#fecaca}
+.option.locked{cursor:not-allowed;opacity:.85}
+.option.correct .letter{color:#34d399}
+.option.incorrect .letter{color:#f87171}
+.explain-btn{margin-top:14px;background:#334155;color:#e2e8f0;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:.9em;display:none}
+.explain-btn.show{display:inline-block}
+.explain-btn:hover{background:#475569}
+.explain{display:none;margin-top:12px;padding:14px;background:#1e1b4b;border-left:4px solid #a5b4fc;border-radius:6px;font-size:.92em;color:#cbd5e1}
+.explain.open{display:block}
+.explain b{color:#a5b4fc}
+.explain .row{margin-bottom:6px}
+.nav{display:flex;gap:10px;margin-top:20px}
+.nav button{flex:1;padding:12px;border:none;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-prev{background:#334155;color:#e2e8f0}
+.btn-prev:hover:not(:disabled){background:#475569}
+.btn-next{background:#a5b4fc;color:#0f172a}
+.btn-next:hover:not(:disabled){background:#818cf8}
+.nav button:disabled{opacity:.4;cursor:not-allowed}
+.result-screen{text-align:center;padding:30px 20px}
+.result-screen h2{color:#a5b4fc;font-size:1.6em;margin-bottom:20px}
+.score-circle{width:160px;height:160px;border-radius:50%;background:conic-gradient(#a5b4fc var(--p),#334155 0);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;position:relative}
+.score-circle::before{content:'';position:absolute;width:130px;height:130px;border-radius:50%;background:#1e293b}
+.score-inner{position:relative;z-index:1;font-size:2em;font-weight:700;color:#f1f5f9}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat-box{background:#0f172a;padding:14px;border-radius:8px}
+.stat-box .v{font-size:1.3em;font-weight:700;color:#a5b4fc}
+.stat-box .l{font-size:.82em;color:#94a3b8;margin-top:4px}
+.verdict{font-size:1.05em;margin:16px 0;padding:14px;border-radius:8px;background:#1e1b4b;color:#e2e8f0}
+.restart{background:#a5b4fc;color:#0f172a;border:none;padding:14px 28px;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer}
+.restart:hover{background:#818cf8}
+.hidden{display:none}
+@media(max-width:600px){.container{padding:16px}.q-text{font-size:1em}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>⚙️ CPU高速化・パイプライン</h1>
+    <div class="sub">FE試験対策 — 40 câu · 30 phút · Nguồn: Yasashii Ch.4 + Slide 3_ハードウェア 第3-5回</div>
+  </div>
+
+  <div id="quiz-area">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="progress-text">Câu 1 / 40</span>
+        <span id="score-text">Đúng: 0</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:2.5%"></div></div>
+    </div>
+    <div id="question-container"></div>
+    <div class="nav">
+      <button class="btn-prev" id="prev-btn" onclick="prev()">← Câu trước</button>
+      <button class="btn-next" id="next-btn" onclick="next()">Câu tiếp →</button>
+    </div>
+  </div>
+
+  <div id="result-screen" class="result-screen hidden">
+    <h2>🎯 Kết quả</h2>
+    <div class="score-circle" id="score-circle"><div class="score-inner" id="score-inner">0%</div></div>
+    <div class="result-stats">
+      <div class="stat-box"><div class="v" id="r-correct">0</div><div class="l">Đúng</div></div>
+      <div class="stat-box"><div class="v" id="r-wrong">0</div><div class="l">Sai</div></div>
+      <div class="stat-box"><div class="v" id="r-total">40</div><div class="l">Tổng</div></div>
+    </div>
+    <div class="verdict" id="verdict"></div>
+    <button class="restart" onclick="restart()">🔄 Làm lại từ đầu</button>
+  </div>
+</div>
+
+<script>
+const QUIZ = [
+  // ===== DỄ (12 câu) =====
+  {d:"easy",q:"クロック周波数 (clock frequency) là gì?",jp:"クロック周波数とは何か。",o:["Số lệnh CPU xử lý trong 1 giây","Số xung clock 発振器 tạo ra trong 1 giây","Số thanh ghi của CPU","Số lõi của CPU"],ans:1,exp:["Đó là MIPS.","Đúng — Yasashii: 「クロック数とは、発振器がテンポを刻む回数」, đơn vị Hz.","Không liên quan.","Không liên quan."]},
+  {d:"easy",q:"1 クロック (1 clock) là gì?",jp:"1クロックとは。",o:["1 lệnh hoàn tất","1 lần 発振器 đập 1 nhịp tempo","1 giây","1 byte dữ liệu"],ans:1,exp:["Sai.","Đúng — Yasashii: 「発振器が1回分のテンポを刻むことを1クロックといいます」.","Sai.","Sai."]},
+  {d:"easy",q:"Đơn vị của クロック周波数 là gì?",jp:"クロック周波数の単位は。",o:["MIPS","bps","Hz (ヘルツ)","CPI"],ans:2,exp:["Đó là đơn vị hiệu năng lệnh.","Đó là tốc độ bit.","Đúng — Hz = nhịp/giây.","CPI không phải đơn vị tần số."]},
+  {d:"easy",q:"CPI là viết tắt của gì?",jp:"CPIの意味は。",o:["CPU Per Instruction","Clock Per Instruction","Cycle Per Iteration","Computer Performance Index"],ans:1,exp:["Sai.","Đúng — Clock Per Instruction = số clock cần cho 1 lệnh.","Sai.","Sai."]},
+  {d:"easy",q:"MIPS là viết tắt của gì?",jp:"MIPSの意味は。",o:["Million Instructions Per Second","Mega Instructions Per Standard","Multi-Instruction Parallel System","Minimum Instructions Per Set"],ans:0,exp:["Đúng — Yasashii: 「Million Instructions Per Second」.","Sai.","Sai.","Sai."]},
+  {d:"easy",q:"2 MIPS có nghĩa là gì?",jp:"2MIPSの意味は。",o:["2 lệnh/giây","2 triệu lệnh/giây","2 nghìn lệnh/giây","2 tỷ lệnh/giây"],ans:1,exp:["Sai.","Đúng — Yasashii: 「2MIPSは『1秒間に200万個の命令を実行する』という意味」.","Sai.","Đó là GIPS."]},
+  {d:"easy",q:"逐次制御方式 (sequential control) là gì?",jp:"逐次制御方式とは。",o:["CPU xử lý 1 lệnh tại 1 thời điểm, làm xong mới sang lệnh tiếp","CPU xử lý nhiều lệnh cùng lúc","CPU dự đoán lệnh tiếp theo","CPU bỏ qua các lệnh chậm"],ans:0,exp:["Đúng — slide第5回: 「CPUが1命令ずつ処理を行うため、命令処理効率が悪い」.","Đó là pipeline.","Đó là 分岐予測.","Không có."]},
+  {d:"easy",q:"パイプライン方式 (pipeline) hoạt động cốt lõi thế nào?",jp:"パイプライン方式の基本動作は。",o:["Tăng クロック周波数","Lệch pha các stage để xử lý nhiều lệnh đồng thời","Bỏ qua lệnh chậm","Giảm số lệnh"],ans:1,exp:["Không phải.","Đúng — slide第5回: 「命令を1つずつステージをずらして処理を行う⇒並行処理することでCPUの高速化が可能」.","Không.","Không."]},
+  {d:"easy",q:"スーパーパイプライン khác パイプライン thông thường ở điểm nào?",jp:"スーパーパイプラインの特徴は。",o:["Chia nhỏ thêm các stage để tăng hiệu quả","Dùng nhiều pipeline song song","Bỏ qua phân tích lệnh","Chỉ chạy 1 lệnh tại 1 thời điểm"],ans:0,exp:["Đúng — slide第5回: 「命令実行手順を細分化することでパイプライン処理の効率を上げる」.","Đó là スーパースカラ.","Không.","Đó là 逐次."]},
+  {d:"easy",q:"スーパースカラ là gì?",jp:"スーパースカラとは。",o:["Chia stage nhỏ hơn","Có nhiều pipeline song song để xử lý nhiều lệnh cùng lúc","Chỉ có 1 pipeline","Không liên quan pipeline"],ans:1,exp:["Đó là スーパーパイプライン.","Đúng — slide第5回: 「パイプライン処理を複数もたせて同時に複数の命令を実行させる」.","Sai.","Sai."]},
+  {d:"easy",q:"CISC là viết tắt của gì?",jp:"CISCの意味は。",o:["Complex Instruction Set Computer","Common Instruction Set Computer","Compact Internal System Chip","Central Integrated System Core"],ans:0,exp:["Đúng — slide第5回: Complex Instruction Set Computer, 1つの命令で複雑な処理を実行する.","Sai.","Sai.","Sai."]},
+  {d:"easy",q:"RISC là viết tắt của gì?",jp:"RISCの意味は。",o:["Real-time Instruction Set Computer","Reduced Instruction Set Computer","Random Instruction Sequence Code","Recursive Internal System Control"],ans:1,exp:["Sai.","Đúng — slide第5回: Reduced Instruction Set Computer, 1つの命令で単純な処理を高速で実行する.","Sai.","Sai."]},
+
+  // ===== TB (16 câu) =====
+  {d:"med",q:"CPU クロック周波数 = 2.5 GHz. Số クロック CPU có trong 1 giây là?",jp:"2.5GHzのCPUの1秒間のクロック数は。",o:["2.5 triệu","2.5 tỷ (25億)","250 triệu","2.5 ngàn tỷ"],ans:1,exp:["Sai.","Đúng — Yasashii: 「2.5ギガクロック=25億クロック」 (1ギガ=10⁹).","Sai — đó là 0.25 tỷ.","Đó là THz."]},
+  {d:"med",q:"CPU 2.5 GHz, trung bình 1 lệnh cần 2 クロック. Số lệnh/giây là?",jp:"2.5GHz、平均2クロック/命令のCPUの1秒間の命令数は。",o:["5 億","12.5 億","25 億","50 億"],ans:1,exp:["Sai.","Đúng — Yasashii p.134: 25億クロック ÷ 2クロック/命令 = 12.5億個.","Đó là tổng số clock.","Sai."]},
+  {d:"med",q:"Công thức MIPS chính thức theo Yasashii là?",jp:"MIPSの公式は。",o:["MIPS = 平均命令実行時間 ÷ 1秒","MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶","MIPS = クロック周波数 × CPI","MIPS = 1秒 × CPI × 10⁻⁶"],ans:1,exp:["Đảo công thức.","Đúng — Yasashii p.134: 「MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶」.","Sai — CPI nằm mẫu, không phải nhân.","Sai."]},
+  {d:"med",q:"Yasashii 過去問 4-3: 1 lệnh thực thi trung bình 20 × 10⁻⁹ giây. MIPS là?",jp:"平均命令実行時間 20ns のとき MIPS は。",o:["20","50","200","500"],ans:1,exp:["Sai.","Đúng — MIPS = 1秒 ÷ (20×10⁻⁹) × 10⁻⁶ = 5×10⁷ × 10⁻⁶ = 50 MIPS (Yasashii 解答 4-3).","Sai.","Sai."]},
+  {d:"med",q:"CPU 1 GHz với CPI trung bình = 4. Hiệu năng tính bằng MIPS là?",jp:"1GHz、CPI=4のCPUのMIPSは。",o:["250","1000","4000","40"],ans:0,exp:["Đúng — số lệnh/giây = 10⁹ ÷ 4 = 2.5×10⁸ = 250 triệu → 250 MIPS.","Đó là khi CPI=1.","Sai.","Sai."]},
+  {d:"med",q:"CPU クロック周波数 = 4 GHz, CPI = 2. MIPS bằng bao nhiêu?",jp:"4GHz、CPI=2 のとき MIPS は。",o:["1000","2000","4000","8000"],ans:1,exp:["Sai.","Đúng — 4×10⁹ ÷ 2 = 2×10⁹ lệnh/giây = 2000 MIPS.","Đó là khi CPI=1.","Sai."]},
+  {d:"med",q:"1 クロックに必要な時間 (thời gian 1 clock) ở CPU 2 GHz là?",jp:"2GHzのCPUの1クロックの時間は。",o:["2 nano-giây","0.5 nano-giây","2 micro-giây","0.5 micro-giây"],ans:1,exp:["Sai.","Đúng — 1 ÷ 2×10⁹ = 0.5 × 10⁻⁹ giây = 0.5 ns. Slide第4回: 1クロックに必要な時間 = 1 ÷ クロック周波数.","Sai.","Sai."]},
+  {d:"med",q:"命令ミックス (instruction mix) dùng để làm gì?",jp:"命令ミックスの目的は。",o:["Trộn lệnh để bảo mật","Tính CPI trung bình bằng cách trọng số hoá CPI từng loại theo tần suất","Pha trộn dữ liệu","Đếm số lệnh"],ans:1,exp:["Không liên quan.","Đúng — slide第4回: 「各命令のCPIを出現頻度で重み付けする」.","Không.","Không phải mục đích chính."]},
+  {d:"med",q:"3 loại lệnh: A (CPI=1, 50%), B (CPI=2, 30%), C (CPI=4, 20%). CPI trung bình là?",jp:"A(CPI1,50%)、B(CPI2,30%)、C(CPI4,20%)の平均CPIは。",o:["1.5","1.9","2.0","2.5"],ans:1,exp:["Sai.","Đúng — 1×0.5 + 2×0.3 + 4×0.2 = 0.5+0.6+0.8 = 1.9.","Sai.","Sai."]},
+  {d:"med",q:"パイプライン方式 với lệnh rẽ nhánh (if/jump) gặp vấn đề gì? Cách giải quyết theo slide第5回?",jp:"パイプラインの分岐命令対策は。",o:["Tăng クロック周波数","Dừng pipeline vĩnh viễn","Dùng 分岐予測 + 投機実行","Bỏ qua lệnh rẽ nhánh"],ans:2,exp:["Không giải quyết được.","Hiệu suất thấp.","Đúng — slide第5回: 「分岐結果を予測（分岐予測）して、予測を基に命令を実行（投機実行）する」.","Không thể."]},
+  {d:"med",q:"投機実行 (speculative execution) là gì?",jp:"投機実行とは。",o:["Thực thi lệnh dựa trên dự đoán phân nhánh; nếu sai thì huỷ","Thực thi lệnh sau khi biết chắc kết quả","Thực thi đa luồng","Chạy CPU ở mức bảo mật cao"],ans:0,exp:["Đúng — slide第5回: dựa trên 分岐予測, CPU thực thi trước (投機 = speculative); sai thì roll back.","Đó là cách 逐次.","Khác khái niệm.","Không liên quan."]},
+  {d:"med",q:"Trong パイプライン 4 stage (F-D-E-W), khi lệnh 1 ở stage Decode thì lệnh 2 ở stage nào (lý tưởng)?",jp:"4ステージパイプラインで命令1がDecodeのとき命令2は。",o:["Fetch","Decode","Execute","Write back"],ans:0,exp:["Đúng — pipeline lệch 1 clock, nên khi lệnh 1 ở Decode thì lệnh 2 ở Fetch.","Cùng stage là không thể (chia sẻ tài nguyên).","Lệnh 2 chưa Fetch xong.","Còn quá sớm."]},
+  {d:"med",q:"Thực thi 4 lệnh, mỗi lệnh 4 stage 1 clock. パイプライン lý tưởng cần bao nhiêu clock?",jp:"4命令4ステージのパイプラインで必要なクロック数は。",o:["4","7","8","16"],ans:1,exp:["Đó là lệnh 1.","Đúng — 4 clock cho lệnh 1 hoàn tất + 3 clock cho 3 lệnh sau (mỗi clock thêm 1 lệnh hoàn tất) = 7 clock.","Sai.","Đó là 逐次制御 (4 × 4)."]},
+  {d:"med",q:"Cùng bài toán: 4 lệnh, 4 stage. 逐次制御 cần bao nhiêu clock?",jp:"4命令4ステージを逐次制御方式で実行すると。",o:["4","7","8","16"],ans:3,exp:["Đó là 1 lệnh.","Đó là pipeline.","Sai.","Đúng — 逐次制御 phải làm xong 1 lệnh (4 clock) mới sang lệnh tiếp: 4 × 4 = 16 clock."]},
+  {d:"med",q:"CISC theo slide第5回 đặc điểm chính là gì?",jp:"CISCの特徴は。",o:["1 lệnh xử lý phức tạp, ít dòng lệnh","Các lệnh đơn giản, thời gian đồng đều","Không có thanh ghi","Không hỗ trợ pipeline"],ans:0,exp:["Đúng — slide第5回: 「CPUに複雑な命令体系を持たせる、少ない行数の命令で処理を実行する」.","Đó là RISC.","Có chứ.","Có hỗ trợ nhưng kém hiệu quả hơn RISC."]},
+  {d:"med",q:"RISC vì sao phù hợp với パイプライン hơn CISC?",jp:"RISCがパイプラインに向く理由は。",o:["Vì có nhiều thanh ghi hơn","Vì thời gian thực thi mỗi lệnh đồng đều, stage không bị tắc","Vì クロック cao hơn","Vì không có lệnh rẽ nhánh"],ans:1,exp:["Không phải lý do chính theo slide.","Đúng — slide第5回: 「命令実行時間が均等になり、パイプライン方式で効率よく命令を処理することが可能」.","Không liên quan.","Vẫn có lệnh rẽ nhánh."]},
+
+  // ===== KHÓ (12 câu) =====
+  {d:"hard",q:"CPU 3 GHz, 1 lệnh load mất 5 clock, lệnh add mất 2 clock. Tỷ lệ load:add = 30%:70%. MIPS là bao nhiêu?",jp:"3GHz、load(5cl,30%)、add(2cl,70%)のときMIPSは。",o:["≈ 698","≈ 1034","≈ 1500","≈ 3000"],ans:1,exp:["Sai — đó là khi đảo tỷ lệ.","Đúng — CPI平均 = 5×0.3 + 2×0.7 = 1.5+1.4 = 2.9; MIPS = 3×10⁹ ÷ 2.9 ÷ 10⁶ ≒ 1034.","Sai.","Đó là khi CPI=1."]},
+  {d:"hard",q:"Với 100 lệnh và pipeline 5 stage 1 clock/stage, số clock lý tưởng?",jp:"100命令、5ステージパイプラインの必要クロック数は。",o:["100","104","500","105"],ans:1,exp:["Đó là pipeline N=stage.","Đúng — công thức pipeline lý tưởng: N + (số lệnh - 1) = 5 + 99 = 104 clock.","Đó là 逐次.","Sai."]},
+  {d:"hard",q:"Cùng dữ liệu trên, 逐次制御 cần bao nhiêu clock?",jp:"100命令を5ステージで逐次制御するとクロック数は。",o:["100","104","500","1000"],ans:2,exp:["Sai.","Đó là pipeline.","Đúng — 100 × 5 = 500 clock.","Sai."]},
+  {d:"hard",q:"Speedup (tỷ lệ tăng tốc) của pipeline so với 逐次 trong câu trên?",jp:"前問の高速化倍率は。",o:["≈ 1.0","≈ 2.4","≈ 4.8","≈ 5.0"],ans:2,exp:["Sai.","Sai.","Đúng — 500 ÷ 104 ≒ 4.8. Khi số lệnh đủ lớn, speedup tiến gần số stage = 5.","Chỉ đạt khi số lệnh → ∞."]},
+  {d:"hard",q:"Trong スーパースカラ với 2 pipeline song song lý tưởng, mỗi clock có tối đa bao nhiêu lệnh hoàn tất?",jp:"2パイプラインのスーパースカラで1クロック当たり完了命令数の上限は。",o:["0.5","1","2","4"],ans:2,exp:["Sai.","Đó là pipeline 1 cái.","Đúng — 2 pipeline song song → 2 lệnh hoàn tất mỗi clock (lý tưởng).","Cần 4 pipeline."]},
+  {d:"hard",q:"Khi 分岐予測 dự đoán SAI trong pipeline 5 stage, hậu quả là gì?",jp:"分岐予測が外れた場合の影響は。",o:["Không ảnh hưởng","Phải flush (huỷ) các lệnh đã 投機実行 và nạp lại đúng nhánh","CPU dừng vĩnh viễn","Toàn bộ chương trình lỗi"],ans:1,exp:["Có ảnh hưởng — mất cycle.","Đúng — kết quả 投機実行 phải bị huỷ, pipeline rỗng vài clock (penalty), nạp lại lệnh từ nhánh đúng.","Không.","Không, chỉ mất hiệu năng."]},
+  {d:"hard",q:"CPU A: 2 GHz, CPI=4. CPU B: 3 GHz, CPI=5. CPU nào có MIPS cao hơn?",jp:"A(2GHz,CPI4) vs B(3GHz,CPI5)、どちらが高MIPSか。",o:["A cao hơn","B cao hơn","Bằng nhau","Không tính được"],ans:1,exp:["Sai — A: 2×10⁹÷4 = 500 MIPS.","Đúng — A = 500 MIPS, B = 3×10⁹÷5 = 600 MIPS → B cao hơn dù CPI lớn hơn, vì クロック周波数 đủ bù.","Khác biệt rõ.","Tính được từ クロック周波数 ÷ CPI."]},
+  {d:"hard",q:"Vì sao tăng クロック周波数 quá cao không phải lúc nào cũng cải thiện hiệu năng?",jp:"クロック周波数を上げすぎる問題点は。",o:["Tăng nhiệt, tiêu thụ năng lượng và rò rỉ tín hiệu, gây giới hạn vật lý","CPU sẽ chạy chậm đi","Phần mềm sẽ bị lỗi","Không có vấn đề"],ans:0,exp:["Đúng — đây là lý do thực tế các CPU hiện đại tăng số lõi + pipeline thay vì chỉ tăng clock. (Yasashii nhấn 高速化 phải xét cả về パイプライン/設計).","Không, vẫn nhanh hơn nhưng có giới hạn.","Không.","Có vấn đề thực tế."]},
+  {d:"hard",q:"Pipeline lý tưởng với N stage thì speedup tối đa (số lệnh → ∞) so với 逐次 là?",jp:"理想的なNステージパイプラインの最大高速化倍率は。",o:["N²","N","log N","N/2"],ans:1,exp:["Sai.","Đúng — speedup tối đa = N. Ví dụ pipeline 5 stage → tối đa 5 lần (chỉ đạt khi vô hạn lệnh, không có hazard/branch miss).","Sai.","Sai."]},
+  {d:"hard",q:"スーパーパイプライン và スーパースカラ khác nhau cốt lõi ở điểm nào?",jp:"スーパーパイプラインとスーパースカラの違いは。",o:["スーパーパイプライン chia nhỏ stage; スーパースカラ tăng số pipeline","Giống nhau hoàn toàn","スーパーパイプライン không liên quan pipeline","Cả 2 đều giảm số lệnh"],ans:0,exp:["Đúng — slide第5回: 「命令実行手順を細分化（スーパーパイプライン）/ 複数パイプラインを使用（スーパースカラ）」.","Khác hẳn cơ chế.","Có liên quan trực tiếp.","Không liên quan."]},
+  {d:"hard",q:"Trong CPU CISC, lý do nào KHÔNG đúng?",jp:"CISCについて誤った記述は。",o:["1 lệnh có thể thực hiện thao tác phức tạp","Số dòng lệnh ít hơn so với RISC","Thời gian thực thi mỗi lệnh đồng đều, lý tưởng cho pipeline","Tên đầy đủ là Complex Instruction Set Computer"],ans:2,exp:["Đúng về CISC.","Đúng về CISC.","SAI — chính RISC có thời gian đồng đều, phù hợp pipeline (slide第5回); CISC ngược lại có thời gian không đều.","Đúng."]},
+  {d:"hard",q:"Một câu thi FE: 「パイプライン処理で1命令あたりの時間を更に短くするために、ステージ数を増やし各ステージの処理を簡素化する方式」 là gì?",jp:"「ステージ数を増やし各ステージの処理を簡素化する方式」は。",o:["スーパースカラ","スーパーパイプライン","CISC","逐次制御方式"],ans:1,exp:["Đó là nhiều pipeline song song.","Đúng — 「ステージ数を増やし簡素化」 = スーパーパイプライン (細分化).","Triết lý thiết kế, không phải kỹ thuật pipeline.","Ngược lại."]},
+];
+
+let cur=0, answers=new Array(QUIZ.length).fill(null);
+
+function render(){
+  const q=QUIZ[cur];
+  const tag = q.d==="easy"?'<span class="q-tag tag-easy">Dễ</span>':q.d==="med"?'<span class="q-tag tag-med">TB</span>':'<span class="q-tag tag-hard">Khó</span>';
+  const letters=["A","B","C","D"];
+  let opts=q.o.map((t,i)=>{
+    let cls="option";
+    if(answers[cur]!==null){
+      cls+=" locked";
+      if(i===q.ans)cls+=" correct";
+      else if(i===answers[cur])cls+=" incorrect";
+    }
+    return `<div class="${cls}" onclick="pick(${i})"><span class="letter">${letters[i]}.</span><span>${t}</span></div>`;
+  }).join("");
+  let explHtml="";
+  if(answers[cur]!==null){
+    let rows = q.exp.map((e,i)=>`<div class="row"><b>${letters[i]}:</b> ${e}</div>`).join("");
+    explHtml=`<button class="explain-btn show" onclick="toggleExp()">📖 Xem giải thích</button>
+      <div class="explain" id="exp"><div class="row"><b>Đáp án đúng:</b> ${letters[q.ans]}</div>${rows}<div class="row"><b>FE Syllabus:</b> プロセッサ・CPU性能評価・高速化 (Yasashii Ch.4 + Slide 3_ハードウェア 第3-5回)</div></div>`;
+  }
+  document.getElementById("question-container").innerHTML=`
+    <div class="question-card">
+      ${tag}
+      <div class="q-text">Câu ${cur+1}: ${q.q}</div>
+      <div class="q-jp">${q.jp}</div>
+      <div class="options">${opts}</div>
+      ${explHtml}
+    </div>`;
+  document.getElementById("progress-text").textContent=`Câu ${cur+1} / ${QUIZ.length}`;
+  document.getElementById("score-text").textContent=`Đúng: ${answers.filter((a,i)=>a===QUIZ[i].ans).length}`;
+  document.getElementById("progress-fill").style.width=`${((cur+1)/QUIZ.length)*100}%`;
+  document.getElementById("prev-btn").disabled=cur===0;
+  document.getElementById("next-btn").textContent=cur===QUIZ.length-1?"🏁 Kết thúc":"Câu tiếp →";
+}
+function pick(i){if(answers[cur]!==null)return;answers[cur]=i;render();}
+function toggleExp(){document.getElementById("exp").classList.toggle("open");}
+function prev(){if(cur>0){cur--;render();}}
+function next(){
+  if(cur<QUIZ.length-1){cur++;render();}
+  else showResult();
+}
+function showResult(){
+  const correct=answers.filter((a,i)=>a===QUIZ[i].ans).length;
+  const pct=Math.round(correct/QUIZ.length*100);
+  document.getElementById("quiz-area").classList.add("hidden");
+  document.getElementById("result-screen").classList.remove("hidden");
+  document.getElementById("r-correct").textContent=correct;
+  document.getElementById("r-wrong").textContent=QUIZ.length-correct;
+  document.getElementById("r-total").textContent=QUIZ.length;
+  document.getElementById("score-inner").textContent=pct+"%";
+  document.getElementById("score-circle").style.setProperty("--p",pct*3.6+"deg");
+  let v;
+  if(pct>=90)v="🏆 Xuất sắc! Bạn đã nắm rất vững CPU高速化・パイプライン.";
+  else if(pct>=75)v="👍 Khá tốt! Ôn lại công thức MIPS và phân biệt スーパーパイプライン/スーパースカラ.";
+  else if(pct>=60)v="📚 Trung bình. Cần xem lại Yasashii Ch.4 + Slide 第4-5回.";
+  else v="⚠️ Cần cố gắng. Đọc lại lý thuyết và làm lại đề.";
+  document.getElementById("verdict").textContent=v;
+}
+function restart(){cur=0;answers=new Array(QUIZ.length).fill(null);document.getElementById("quiz-area").classList.remove("hidden");document.getElementById("result-screen").classList.add("hidden");render();}
+render();
+</script>
+</body>
+</html>
