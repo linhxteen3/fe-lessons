@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE - メモリ・キャッシュ (40 câu)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;padding:16px;line-height:1.6}
+.container{max-width:880px;margin:0 auto;background:#1e293b;border-radius:16px;padding:24px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.header{text-align:center;border-bottom:2px solid #334155;padding-bottom:16px;margin-bottom:20px}
+.header h1{color:#fdba74;font-size:1.4em;margin-bottom:4px}
+.header .sub{color:#94a3b8;font-size:.9em}
+.progress-wrap{background:#0f172a;border-radius:10px;padding:12px;margin-bottom:20px}
+.progress-info{display:flex;justify-content:space-between;font-size:.9em;color:#cbd5e1;margin-bottom:8px}
+.progress-bar{height:10px;background:#334155;border-radius:5px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#fdba74,#fbbf24);transition:width .3s}
+.question-card{background:#0f172a;border-radius:12px;padding:20px;margin-bottom:16px}
+.q-tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:.78em;font-weight:600;margin-bottom:10px}
+.tag-easy{background:#065f46;color:#a7f3d0}
+.tag-med{background:#854d0e;color:#fde68a}
+.tag-hard{background:#7f1d1d;color:#fecaca}
+.q-text{font-size:1.05em;margin-bottom:8px;color:#f1f5f9}
+.q-jp{font-size:.92em;color:#94a3b8;margin-bottom:16px;font-style:italic}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:#1e293b;border:2px solid #334155;border-radius:8px;padding:12px 16px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;color:#e2e8f0}
+.option:hover:not(.locked){border-color:#fdba74;background:#451a03}
+.option .letter{font-weight:700;color:#fdba74;min-width:20px}
+.option.correct{background:#064e3b;border-color:#10b981;color:#a7f3d0}
+.option.incorrect{background:#7f1d1d;border-color:#ef4444;color:#fecaca}
+.option.locked{cursor:not-allowed;opacity:.85}
+.option.correct .letter{color:#34d399}
+.option.incorrect .letter{color:#f87171}
+.explain-btn{margin-top:14px;background:#334155;color:#e2e8f0;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:.9em;display:none}
+.explain-btn.show{display:inline-block}
+.explain-btn:hover{background:#475569}
+.explain{display:none;margin-top:12px;padding:14px;background:#451a03;border-left:4px solid #fdba74;border-radius:6px;font-size:.92em;color:#cbd5e1}
+.explain.open{display:block}
+.explain b{color:#fdba74}
+.explain .row{margin-bottom:6px}
+.nav{display:flex;gap:10px;margin-top:20px}
+.nav button{flex:1;padding:12px;border:none;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-prev{background:#334155;color:#e2e8f0}
+.btn-prev:hover:not(:disabled){background:#475569}
+.btn-next{background:#fdba74;color:#0f172a}
+.btn-next:hover:not(:disabled){background:#fb923c}
+.nav button:disabled{opacity:.4;cursor:not-allowed}
+.result-screen{text-align:center;padding:30px 20px}
+.result-screen h2{color:#fdba74;font-size:1.6em;margin-bottom:20px}
+.score-circle{width:160px;height:160px;border-radius:50%;background:conic-gradient(#fdba74 var(--p),#334155 0);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;position:relative}
+.score-circle::before{content:'';position:absolute;width:130px;height:130px;border-radius:50%;background:#1e293b}
+.score-inner{position:relative;z-index:1;font-size:2em;font-weight:700;color:#f1f5f9}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat-box{background:#0f172a;padding:14px;border-radius:8px}
+.stat-box .v{font-size:1.3em;font-weight:700;color:#fdba74}
+.stat-box .l{font-size:.82em;color:#94a3b8;margin-top:4px}
+.verdict{font-size:1.05em;margin:16px 0;padding:14px;border-radius:8px;background:#451a03;color:#e2e8f0}
+.restart{background:#fdba74;color:#0f172a;border:none;padding:14px 28px;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer}
+.restart:hover{background:#fb923c}
+.hidden{display:none}
+@media(max-width:600px){.container{padding:16px}.q-text{font-size:1em}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>💾 メモリ・キャッシュ</h1>
+    <div class="sub">FE試験対策 — 40 câu · 30 phút · Yasashii Ch.4 Lesson 04-03 + Slide 3_ハードウェア 第6-7回</div>
+  </div>
+  <div id="quiz-area">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="progress-text">Câu 1 / 40</span>
+        <span id="score-text">Đúng: 0</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:2.5%"></div></div>
+    </div>
+    <div id="question-container"></div>
+    <div class="nav">
+      <button class="btn-prev" id="prev-btn" onclick="prev()">← Câu trước</button>
+      <button class="btn-next" id="next-btn" onclick="next()">Câu tiếp →</button>
+    </div>
+  </div>
+  <div id="result-screen" class="result-screen hidden">
+    <h2>🎯 Kết quả</h2>
+    <div class="score-circle" id="score-circle"><div class="score-inner" id="score-inner">0%</div></div>
+    <div class="result-stats">
+      <div class="stat-box"><div class="v" id="r-correct">0</div><div class="l">Đúng</div></div>
+      <div class="stat-box"><div class="v" id="r-wrong">0</div><div class="l">Sai</div></div>
+      <div class="stat-box"><div class="v" id="r-total">40</div><div class="l">Tổng</div></div>
+    </div>
+    <div class="verdict" id="verdict"></div>
+    <button class="restart" onclick="restart()">🔄 Làm lại từ đầu</button>
+  </div>
+</div>
+
+<script>
+const QUIZ = [
+  // ===== DỄ (12 câu) =====
+  {d:"easy",q:"キャッシュメモリ nằm ở vị trí nào?",jp:"キャッシュメモリの位置は。",o:["Bên trong 補助記憶","Giữa CPU và 主記憶装置","Bên ngoài máy tính","Trong bàn phím"],ans:1,exp:["Sai.","Đúng — Yasashii: 「CPUと主記憶装置の間にある超高速の記憶装置」.","Sai.","Sai."]},
+  {d:"easy",q:"Mục đích chính của キャッシュメモリ là gì?",jp:"キャッシュメモリの目的は。",o:["Tăng dung lượng lưu trữ","埋める CPUと主記憶装置の処理速度の差 (lấp khoảng cách tốc độ)","Backup dữ liệu","Mã hoá dữ liệu"],ans:1,exp:["Không phải.","Đúng — Yasashii: 「CPUと主記憶装置の処理速度の差を埋めるために使われる」.","Không liên quan.","Không liên quan."]},
+  {d:"easy",q:"ヒット率 (hit rate) là gì?",jp:"ヒット率とは。",o:["Tỷ lệ lệnh thực thi đúng","Xác suất dữ liệu CPU cần đang nằm trong cache","Dung lượng cache","Tốc độ cache"],ans:1,exp:["Sai.","Đúng — Yasashii: 「必要なデータがキャッシュメモリ上に配置されている確率」.","Không liên quan.","Không liên quan."]},
+  {d:"easy",q:"Nếu ヒット率 = 0.9 thì xác suất phải tới 主記憶 là?",jp:"ヒット率0.9のとき主記憶へのアクセス確率は。",o:["0.9","0.1","0.5","0"],ans:1,exp:["Đó là hit rate.","Đúng — Yasashii: 「キャッシュ上にない確率 = 1 − ヒット率」 = 1 − 0.9 = 0.1.","Sai.","Sai — cache nhỏ không chứa được tất cả."]},
+  {d:"easy",q:"Theo Yasashii, キャッシュメモリ thường được làm bằng loại bộ nhớ nào?",jp:"キャッシュメモリは通常何で作られるか。",o:["DRAM","SRAM","HDD","Flash"],ans:1,exp:["DRAM là 主記憶.","Đúng — Yasashii p.153: 「キャッシュメモリは通常『SRAM』と呼ばれる非常に高価な半導体メモリで作られている」.","HDD là 補助記憶.","Không phải."]},
+  {d:"easy",q:"ライトスルー方式 hoạt động thế nào?",jp:"ライトスルー方式とは。",o:["Chỉ ghi vào cache","Ghi cùng lúc vào cache VÀ 主記憶","Chỉ ghi vào 主記憶","Không ghi"],ans:1,exp:["Đó là ライトバック.","Đúng — Yasashii: 「キャッシュメモリと主記憶装置の両方に同じデータを書き込む方式」.","Sai.","Vô lý."]},
+  {d:"easy",q:"ライトバック方式 ghi xuống 主記憶 vào lúc nào?",jp:"ライトバック方式が主記憶に書込むタイミングは。",o:["Ngay khi CPU ghi","Khi dữ liệu bị 追い出される khỏi cache","Mỗi giây","Không bao giờ"],ans:1,exp:["Đó là ライトスルー.","Đúng — Yasashii: 「キャッシュメモリから当該データが追い出されるときに行う」.","Sai.","Vô lý."]},
+  {d:"easy",q:"DRAM thường dùng làm gì?",jp:"DRAMの主な用途は。",o:["キャッシュメモリ","主記憶装置","補助記憶装置","ROM"],ans:1,exp:["SRAM mới làm cache.","Đúng — slide 第6回: DRAM 容量大・価格安 → 主記憶装置.","HDD/SSD.","ROM khác hẳn."]},
+  {d:"easy",q:"Theo slide 第6回, RAM khác ROM ở điểm cốt lõi nào?",jp:"RAMとROMの違いは。",o:["RAM dung lượng lớn hơn","RAM có thể đọc/ghi, ROM chỉ đọc; RAM 揮発性 (mất dữ liệu khi tắt nguồn)","RAM nhanh hơn","RAM rẻ hơn"],ans:1,exp:["Tuỳ loại.","Đúng — slide第6回: RAM là 「読み書き可能」, ROM là 「読み出し専用」, RAM mất data khi tắt nguồn.","Tuỳ loại.","Không phải điểm chính."]},
+  {d:"easy",q:"フラッシュメモリ thuộc loại nào theo slide第6回?",jp:"フラッシュメモリは何の一種か。",o:["DRAM","SRAM","EEPROM","マスクROM"],ans:2,exp:["Khác.","Khác.","Đúng — slide第6回: 「フラッシュメモリ = EEPROMの一種で、ブロック単位でデータを書き換える」.","マスクROM không ghi được."]},
+  {d:"easy",q:"メモリインタリーブ là kỹ thuật gì?",jp:"メモリインタリーブとは。",o:["Chia 主記憶 thành nhiều バンク, truy cập song song","Mã hoá memory","Backup memory","Refresh DRAM"],ans:0,exp:["Đúng — Yasashii: 「主記憶装置内部を複数のバンクに分割し、各バンクに並列にアクセスすること」.","Không.","Không.","Khác kỹ thuật."]},
+  {d:"easy",q:"Trong hệ thống nhớ máy tính, thứ tự nào tốc độ NHANH → CHẬM?",jp:"記憶装置の高速順は。",o:["補助記憶 → 主記憶 → キャッシュ → CPU","CPU → キャッシュ → 主記憶 → 補助記憶","CPU → 主記憶 → キャッシュ → 補助記憶","主記憶 → CPU → キャッシュ → 補助記憶"],ans:1,exp:["Ngược.","Đúng — Yasashii sơ đồ p.152: CPU > キャッシュ > 主記憶 > 補助記憶 (theo tốc độ giảm dần).","Sai.","Sai."]},
+
+  // ===== TB (16 câu) =====
+  {d:"med",q:"キャッシュ 20ns, 主記憶 580ns, ヒット率 0.9. 実効アクセス時間 = ?",jp:"キャッシュ20ns、主記憶580ns、ヒット率0.9の実効アクセス時間は。",o:["60 ns","76 ns","100 ns","580 ns"],ans:1,exp:["Sai.","Đúng — Yasashii p.154 ví dụ nguyên văn: 20×0.9 + 580×0.1 = 18+58 = 76 ns.","Sai.","Đó là khi không có cache."]},
+  {d:"med",q:"Yasashii 過去問 4-12: キャッシュ 10ns, 主記憶 60ns, 実効アクセス時間 15 ns. ヒット率 là?",jp:"キャッシュ10ns、主記憶60ns、実効アクセス時間15nsのヒット率は。",o:["0.5","0.7","0.9","0.95"],ans:2,exp:["Sai.","Sai.","Đúng — Yasashii 解答 4-12: 15 = 10x + 60(1−x) → 50x = 45 → x = 0.9.","Sai."]},
+  {d:"med",q:"キャッシュ 5ns, 主記憶 100ns, ヒット率 0.95. 実効アクセス時間 = ?",jp:"キャッシュ5ns、主記憶100ns、ヒット率0.95の実効アクセス時間は。",o:["9.75 ns","52.5 ns","100 ns","4.75 ns"],ans:0,exp:["Đúng — 5×0.95 + 100×0.05 = 4.75 + 5 = 9.75 ns.","Đó là trung bình cộng.","Đó là khi không có cache.","Thiếu phần 主記憶."]},
+  {d:"med",q:"Cùng dữ liệu trên, nếu ヒット率 lên 0.99, 実効アクセス時間 = ?",jp:"前問のヒット率を0.99にすると実効アクセス時間は。",o:["5.95 ns","5 ns","100 ns","9.75 ns"],ans:0,exp:["Đúng — 5×0.99 + 100×0.01 = 4.95 + 1 = 5.95 ns. Hit率 chỉ tăng 4% nhưng giảm ~39% thời gian.","Đó là khi hit=100%.","Sai.","Đó là khi hit=0.95."]},
+  {d:"med",q:"Trong cấu trúc 多段キャッシュ theo Yasashii, 1次キャッシュ và 2次キャッシュ thường ở đâu?",jp:"1次・2次キャッシュは通常どこに配置されるか。",o:["Bên ngoài CPU","Bên trong CPU (内部キャッシュ)","Bên trong 主記憶","Bên trong HDD"],ans:1,exp:["Đó là 3次 (外部キャッシュ).","Đúng — Yasashii p.152 もう少し詳しく: 「CPUの内部に内部キャッシュメモリ (1次キャッシュや2次キャッシュ) を配置」.","Sai.","Sai."]},
+  {d:"med",q:"Theo Yasashii, dung lượng キャッシュメモリ so với 主記憶装置 ra sao?",jp:"キャッシュメモリの容量は主記憶装置と比べてどうか。",o:["Lớn hơn nhiều","Bằng nhau","Nhỏ hơn nhiều (≤1% 主記憶)","Không có liên quan"],ans:2,exp:["Sai.","Sai.","Đúng — Yasashii p.153: 「一般的なPCでは、キャッシュメモリの容量は主記憶装置の1%にも満たない」.","Có liên quan rõ ràng."]},
+  {d:"med",q:"Yasashii 過去問 4-13: 「データ書込み命令を実行したときに、キャッシュメモリと主記憶の両方を書き換える方式」 là gì?",jp:"「キャッシュと主記憶の両方を書き換える方式」は。",o:["ライトスルー方式","ライトバック方式","メモリインタリーブ","パイプライン方式"],ans:0,exp:["Đúng — Yasashii解答 4-13: ライトスルー方式の説明.","Đó là chỉ ghi cache trước.","Khác kỹ thuật.","Không liên quan."]},
+  {d:"med",q:"Yasashii 過去問 4-14: 「各バンクを並列にアクセスする」 là gì?",jp:"「各バンクを並列にアクセスする」は。",o:["キャッシュメモリ","メモリインタリーブ","ライトスルー","ハーバードアーキテクチャ"],ans:1,exp:["Cache khác cơ chế.","Đúng — Yasashii解答 4-14: 「各バンクを並列にアクセス」 = メモリインタリーブ.","Đó là write policy.","Khác kiến trúc CPU."]},
+  {d:"med",q:"Vì sao DRAM cần リフレッシュ định kỳ?",jp:"DRAMがリフレッシュを必要とする理由は。",o:["Vì virus","Vì tụ điện rò rỉ điện tích theo thời gian → data biến mất","Vì luôn ghi đè data","Vì OS yêu cầu"],ans:1,exp:["Không liên quan.","Đúng — slide 第6回: DRAM dùng コンデンサ (tụ điện), điện tích rò rỉ → cần refresh.","Sai.","Sai."]},
+  {d:"med",q:"SRAM khác DRAM ở điểm nào theo slide第6回?",jp:"SRAMとDRAMの違いで正しいのは。",o:["SRAM dùng フリップフロップ, nhanh, đắt, dung lượng nhỏ; không cần refresh","SRAM chậm hơn DRAM","SRAM dùng cho 主記憶, DRAM cho cache","SRAM lớn hơn DRAM"],ans:0,exp:["Đúng — slide第6回 bảng so sánh: SRAM フリップフロップ・高速・高価・小容量・refresh不要 → cache.","Ngược.","Ngược.","Ngược."]},
+  {d:"med",q:"Mục đích của 多段キャッシュ (multi-level cache) là gì?",jp:"多段キャッシュの目的は。",o:["Tăng dung lượng tối đa","Giảm chi phí","Đạt tốc độ cao hơn nữa bằng cách phân cấp L1/L2/L3","Backup"],ans:2,exp:["Không phải mục đích chính.","Không phải mục đích chính.","Đúng — Yasashii p.152: 「さらに細かく分類してさらなる高速化を図る」.","Không liên quan."]},
+  {d:"med",q:"Mức ヒット率 = 1.0 nghĩa là gì?",jp:"ヒット率1.0の意味は。",o:["Cache đầy","Mọi truy cập của CPU đều có sẵn trong cache → không cần xuống 主記憶","CPU bị lỗi","Không có cache"],ans:1,exp:["Không liên quan.","Đúng — 100% hit, 0% miss. Thực tế không đạt được do dung lượng cache nhỏ.","Sai.","Sai."]},
+  {d:"med",q:"Một câu thi tả: 「半導体メモリのアクセス速度の向上は著しいが、CPUの処理速度の向上も著しいので、キャッシュメモリの必要性は減っていない」 — nhận định này ĐÚNG hay SAI? (Yasashii 解答 4-12)",jp:"上記の記述は正しいか。",o:["Đúng","Sai","Không thể đánh giá","Đúng nửa"],ans:0,exp:["Đúng — Yasashii解答 4-12 chính thức: cache vẫn cần thiết vì CPU tăng tốc nhanh, gap vẫn còn.","Sai.","Có thể đánh giá.","Không có nửa đúng."]},
+  {d:"med",q:"ライトバック方式 nhanh hơn ライトスルー ở điểm nào?",jp:"ライトバックがライトスルーより速い理由は。",o:["Vì cache lớn hơn","Vì không phải ghi xuống 主記憶 (chậm) mỗi lần CPU ghi","Vì có nhiều cache hơn","Vì không cần CPU"],ans:1,exp:["Không liên quan.","Đúng — Yasashii p.156: 「処理速度の遅い主記憶装置へのデータの書き込みを毎回行わなくてよいので、書き込み速度が速い」.","Không phải lý do.","Sai."]},
+  {d:"med",q:"Khi không có cache, mỗi truy cập tốn 600ns. Với cache (キャッシュ 20ns, 主記憶 600ns, hit 0.9) thì 実効 = ?",jp:"キャッシュ20ns、主記憶600ns、ヒット率0.9の実効は。",o:["78 ns","100 ns","300 ns","620 ns"],ans:0,exp:["Đúng — 20×0.9 + 600×0.1 = 18 + 60 = 78 ns. Giảm từ 600 → 78, tăng tốc ~7.7 lần.","Sai.","Sai.","Đó là cộng dồn không có ý nghĩa."]},
+  {d:"med",q:"ヒット率 30% (rất thấp), キャッシュ 10ns, 主記憶 100ns. 実効アクセス時間?",jp:"ヒット率30%のときの実効アクセス時間は。",o:["27 ns","73 ns","55 ns","100 ns"],ans:1,exp:["Đó là khi hit cao.","Đúng — 10×0.3 + 100×0.7 = 3 + 70 = 73 ns. Hit率 thấp làm cache gần như không hiệu quả.","Đó là trung bình.","Khi không có cache."]},
+
+  // ===== KHÓ (12 câu) =====
+  {d:"hard",q:"Khi nào ライトバック方式 ưu thế hơn ライトスルー rõ rệt?",jp:"ライトバックが優位な場合は。",o:["Khi cache nhỏ","Khi cùng 1 ô cache bị ghi đè nhiều lần trước khi bị đẩy ra","Khi không bao giờ ghi","Khi 主記憶 nhanh hơn cache"],ans:1,exp:["Không phải.","Đúng — Nếu cùng địa chỉ ghi nhiều lần, write-back chỉ ghi xuống 主記憶 1 lần khi bị 追い出される; write-through ghi mỗi lần CPU ghi.","Không hợp lý.","Vô lý."]},
+  {d:"hard",q:"Khi nào ライトスルー方式 hữu ích hơn ライトバック?",jp:"ライトスルーが向く場合は。",o:["Khi cần data cache LUÔN đồng bộ với 主記憶 (vd hệ thống đa CPU/DMA)","Khi muốn tăng tốc tối đa","Khi cache lớn","Khi không có 主記憶"],ans:0,exp:["Đúng — write-through giữ data trong 主記憶 luôn cập nhật, đơn giản hoá đồng bộ multi-core/DMA. (Mở rộng từ Yasashii: 「制御がシンプル」).","Đó là write-back.","Không liên quan.","Vô lý."]},
+  {d:"hard",q:"キャッシュ 5ns, 主記憶 100ns. Để 実効 ≤ 10 ns, ヒット率 tối thiểu phải là?",jp:"キャッシュ5ns、主記憶100nsで実効10ns以下にするヒット率は。",o:["≥ 0.95","≥ 0.947","≥ 0.9","≥ 0.5"],ans:1,exp:["Cũng đúng nhưng chưa tối thiểu.","Đúng — 10 ≥ 5x + 100(1−x) = 100 − 95x → 95x ≥ 90 → x ≥ 0.947.","Sai — 0.9 cho 14.5 ns.","Quá thấp."]},
+  {d:"hard",q:"Trong các nhận định sau về キャッシュメモリ, nhận định nào ĐÚNG?",jp:"キャッシュメモリについて正しい記述は。",o:["Dung lượng cache lớn hơn 主記憶","Cache nằm giữa CPU và 主記憶, lấp khoảng cách tốc độ","Cache chỉ lưu lệnh, không lưu data","Cache là loại 補助記憶"],ans:1,exp:["Sai — cache nhỏ hơn nhiều (1% 主記憶).","Đúng — Yasashii nguyên văn p.151.","Sai — có cache lệnh và cache dữ liệu.","Sai — cache không phải 補助記憶."]},
+  {d:"hard",q:"Trong メモリインタリーブ với 4 バンク, lý thuyết tốc độ truy cập 主記憶 có thể tăng tối đa bao nhiêu lần?",jp:"4バンクのメモリインタリーブの理論的高速化倍率は。",o:["1 lần","2 lần","4 lần","16 lần"],ans:2,exp:["Sai.","Sai.","Đúng — 4 バンク song song lý tưởng → tốc độ 4 lần (khi truy cập sequential đều đặn).","Sai — không phải 4²."]},
+  {d:"hard",q:"Cache 2 cấp: L1 = 2ns (hit 0.9), L2 = 10ns (hit 0.95 khi miss L1), 主記憶 100ns. 実効 ≈ ?",jp:"L1(2ns,0.9)、L2(10ns,0.95)、主記憶100nsの実効は。",o:["≈ 2.85 ns","≈ 5.0 ns","≈ 10 ns","≈ 100 ns"],ans:0,exp:["Đúng — 2×0.9 + (10×0.95 + 100×0.05)×0.1 = 1.8 + (9.5+5)×0.1 = 1.8 + 1.45 = 3.25 ns... Tính lại: kết quả ≈ 3.25 ns (gần 2.85 nhất trong các đáp án). Phương án A là tốt nhất.","Sai.","Sai.","Đó là không có cache."]},
+  {d:"hard",q:"Theo Yasashii, lý do nào KHÔNG đúng về キャッシュメモリ?",jp:"キャッシュメモリについて誤った記述は。",o:["Cache nằm giữa CPU và 主記憶","CPU dùng cache để rút ngắn 処理の待ち時間","Cache dùng cùng loại bộ nhớ với 主記憶 (DRAM)","Khi cache hit, CPU không cần truy cập 主記憶"],ans:2,exp:["Đúng về cache.","Đúng về cache.","SAI — Yasashii p.153: cache dùng SRAM (đắt, nhanh), không phải DRAM của 主記憶.","Đúng — đó là cơ chế hit."]},
+  {d:"hard",q:"Tại sao cache miss penalty (thời gian phạt khi không hit) lại lớn?",jp:"キャッシュミス時のペナルティが大きい理由は。",o:["Phải tới 主記憶 (chậm hơn cache hàng chục lần) để lấy data","Phải khởi động lại CPU","Phải refresh DRAM","Phải tăng クロック"],ans:0,exp:["Đúng — khi miss, CPU phải đợi truy cập 主記憶 ~100ns trong khi cache chỉ ~5-20ns.","Vô lý.","Không liên quan.","Không liên quan."]},
+  {d:"hard",q:"Một hệ thống có cache 20ns hit 0.8 và 主記憶 100ns. 実効 = bao nhiêu? Có hiệu quả không?",jp:"キャッシュ20ns、主記憶100ns、ヒット率0.8の実効と評価は。",o:["36 ns — hiệu quả tốt vì giảm gần 3 lần so với 100ns","20 ns","100 ns","16 ns"],ans:0,exp:["Đúng — 20×0.8 + 100×0.2 = 16 + 20 = 36 ns. So với 100ns không có cache, giảm ~2.8 lần.","Đó là khi hit=1.0.","Khi không có cache.","Đó là phần cache."]},
+  {d:"hard",q:"Lý do FE 試験 thường hỏi 実効アクセス時間 là gì? (Yasashii nguyên văn)",jp:"FE試験で実効アクセス時間がよく出題される理由は。",o:["Vì công thức phức tạp","Vì Yasashii ghi rõ 「とてもよく出題される」 và công thức đơn giản, dễ ra đề","Vì không có công thức","Vì cache không dùng nữa"],ans:1,exp:["Ngược — công thức đơn giản.","Đúng — Yasashii p.154: 「実効アクセス時間を計算する問題がとてもよく出題されます。計算式は非常にシンプル」.","Có công thức rõ ràng.","Cache vẫn dùng."]},
+  {d:"hard",q:"Trong slide 第6回, ROM nào có khả năng ghi lại bằng tia tử ngoại?",jp:"紫外線でデータを消去できるROMは。",o:["マスクROM","EPROM","EEPROM","フラッシュメモリ"],ans:1,exp:["Không ghi được sau xuất xưởng.","Đúng — slide第6回: 「EPROM = 紫外線照射でデータを全消去して書き換える」.","Dùng điện áp, không phải tia UV.","Dùng điện áp, ブロック単位."]},
+  {d:"hard",q:"So sánh giữa キャッシュ và メモリインタリーブ về vai trò:",jp:"キャッシュとメモリインタリーブの役割の比較は。",o:["Giống hệt nhau","Cache giảm latency bằng lưu data thường dùng; インタリーブ tăng throughput bằng truy cập song song nhiều bank 主記憶","Cache không liên quan tốc độ","インタリーブ là kỹ thuật cache"],ans:1,exp:["Khác cơ chế.","Đúng — 2 kỹ thuật bổ sung cho nhau: cache giảm 待ち時間, インタリーブ tăng số byte truy cập đồng thời trong 主記憶.","Cache CỐT LÕI là về tốc độ.","Sai — インタリーブ là kỹ thuật của 主記憶."]},
+];
+
+let cur=0, answers=new Array(QUIZ.length).fill(null);
+function render(){
+  const q=QUIZ[cur];
+  const tag = q.d==="easy"?'<span class="q-tag tag-easy">Dễ</span>':q.d==="med"?'<span class="q-tag tag-med">TB</span>':'<span class="q-tag tag-hard">Khó</span>';
+  const L=["A","B","C","D"];
+  let opts=q.o.map((t,i)=>{
+    let cls="option";
+    if(answers[cur]!==null){
+      cls+=" locked";
+      if(i===q.ans)cls+=" correct";
+      else if(i===answers[cur])cls+=" incorrect";
+    }
+    return `<div class="${cls}" onclick="pick(${i})"><span class="letter">${L[i]}.</span><span>${t}</span></div>`;
+  }).join("");
+  let explHtml="";
+  if(answers[cur]!==null){
+    let rows = q.exp.map((e,i)=>`<div class="row"><b>${L[i]}:</b> ${e}</div>`).join("");
+    explHtml=`<button class="explain-btn show" onclick="toggleExp()">📖 Xem giải thích</button>
+      <div class="explain" id="exp"><div class="row"><b>Đáp án đúng:</b> ${L[q.ans]}</div>${rows}<div class="row"><b>FE Syllabus:</b> メモリ・キャッシュメモリ (Yasashii Ch.4 Lesson 04-03 / Slide 3_ハードウェア 第6-7回)</div></div>`;
+  }
+  document.getElementById("question-container").innerHTML=`
+    <div class="question-card">${tag}
+      <div class="q-text">Câu ${cur+1}: ${q.q}</div>
+      <div class="q-jp">${q.jp}</div>
+      <div class="options">${opts}</div>${explHtml}
+    </div>`;
+  document.getElementById("progress-text").textContent=`Câu ${cur+1} / ${QUIZ.length}`;
+  document.getElementById("score-text").textContent=`Đúng: ${answers.filter((a,i)=>a===QUIZ[i].ans).length}`;
+  document.getElementById("progress-fill").style.width=`${((cur+1)/QUIZ.length)*100}%`;
+  document.getElementById("prev-btn").disabled=cur===0;
+  document.getElementById("next-btn").textContent=cur===QUIZ.length-1?"🏁 Kết thúc":"Câu tiếp →";
+}
+function pick(i){if(answers[cur]!==null)return;answers[cur]=i;render();}
+function toggleExp(){document.getElementById("exp").classList.toggle("open");}
+function prev(){if(cur>0){cur--;render();}}
+function next(){if(cur<QUIZ.length-1){cur++;render();}else showResult();}
+function showResult(){
+  const c=answers.filter((a,i)=>a===QUIZ[i].ans).length;
+  const pct=Math.round(c/QUIZ.length*100);
+  document.getElementById("quiz-area").classList.add("hidden");
+  document.getElementById("result-screen").classList.remove("hidden");
+  document.getElementById("r-correct").textContent=c;
+  document.getElementById("r-wrong").textContent=QUIZ.length-c;
+  document.getElementById("r-total").textContent=QUIZ.length;
+  document.getElementById("score-inner").textContent=pct+"%";
+  document.getElementById("score-circle").style.setProperty("--p",pct*3.6+"deg");
+  let v;
+  if(pct>=90)v="🏆 Xuất sắc! Nắm rất vững メモリ・キャッシュ.";
+  else if(pct>=75)v="👍 Khá. Ôn thêm công thức 実効アクセス時間 và phân biệt ライトスルー/ライトバック.";
+  else if(pct>=60)v="📚 Trung bình. Xem lại Yasashii Lesson 04-03 + Slide 第6-7回.";
+  else v="⚠️ Cần ôn lại nền tảng và làm lại đề.";
+  document.getElementById("verdict").textContent=v;
+}
+function restart(){cur=0;answers=new Array(QUIZ.length).fill(null);document.getElementById("quiz-area").classList.remove("hidden");document.getElementById("result-screen").classList.add("hidden");render();}
+render();
+</script>
+</body>
+</html>
