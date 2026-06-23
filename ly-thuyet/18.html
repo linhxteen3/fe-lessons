@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE - システム構成・稼働率 (MTBF/MTTR)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.7;padding:16px}
+.container{max-width:1000px;margin:0 auto}
+header{text-align:center;padding:24px;background:linear-gradient(135deg,#1e293b,#581c87);border-radius:16px;margin-bottom:24px}
+header h1{color:#c4b5fd;font-size:1.6em;margin-bottom:6px}
+header .sub{color:#94a3b8;font-size:.92em}
+section{background:#1e293b;border-radius:14px;padding:22px;margin-bottom:20px;box-shadow:0 6px 24px rgba(0,0,0,.3)}
+section h2{color:#c4b5fd;font-size:1.3em;border-bottom:2px solid #7c3aed;padding-bottom:8px;margin-bottom:14px}
+section h3{color:#fbbf24;font-size:1.1em;margin:18px 0 10px}
+section h4{color:#22d3ee;font-size:1em;margin:14px 0 6px}
+p{margin-bottom:10px}
+ul{margin:8px 0 12px 22px}
+li{margin-bottom:6px}
+.bilingual{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
+.bilingual > div{padding:14px;border-radius:10px;font-size:.95em}
+.jp{background:#1e1b4b;border-left:4px solid #c4b5fd;color:#ddd6fe}
+.vn{background:#0c4a6e;border-left:4px solid #38bdf8;color:#e0f2fe}
+.en{background:#1f2937;border-left:4px solid #fbbf24;color:#fef3c7;font-size:.88em;margin:8px 0;padding:10px 14px;border-radius:8px}
+.flag{font-weight:700;font-size:.85em;display:block;margin-bottom:6px;opacity:.8}
+.formula{background:#4c1d95;color:#ddd6fe;padding:16px;border-radius:10px;font-family:"Courier New",monospace;text-align:center;font-size:1.05em;margin:14px 0;border:1px solid #7c3aed}
+.example-box{background:#0f172a;border:1px solid #475569;border-radius:10px;padding:16px;margin:14px 0}
+.example-box .label{display:inline-block;background:#c4b5fd;color:#0f172a;padding:3px 10px;border-radius:6px;font-weight:700;font-size:.85em;margin-bottom:10px}
+.step-line{font-family:"Courier New",monospace;background:#0f172a;padding:10px;border-radius:8px;color:#c4b5fd;text-align:center;font-size:.95em;margin:8px 0;overflow-x:auto;border:1px solid #334155}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.93em;background:#0f172a;border-radius:8px;overflow:hidden}
+th,td{padding:10px;text-align:left;border-bottom:1px solid #334155;vertical-align:top}
+th{background:#7c3aed;color:#fff}
+tr:hover td{background:#1e1b4b}
+.flashcards-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.filter-btn{background:#334155;color:#e2e8f0;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.85em}
+.filter-btn.active{background:#c4b5fd;color:#0f172a;font-weight:700}
+.flashcard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.flashcard{background:#0f172a;border:2px solid #7c3aed;border-radius:10px;padding:14px;min-height:140px;cursor:pointer;position:relative}
+.flashcard .cat{position:absolute;top:8px;right:8px;font-size:.7em;background:#7c3aed;color:#fff;padding:2px 8px;border-radius:4px}
+.flashcard .front{color:#c4b5fd;font-weight:600}
+.flashcard .back{display:none;color:#fde68a;margin-top:8px;font-size:.88em}
+.flashcard.flipped .back{display:block}
+.flashcard.flipped{border-color:#fbbf24;background:#1e1b4b}
+.quiz-q{background:#0f172a;border-radius:10px;padding:16px;margin:12px 0}
+.quiz-q .qt-jp{color:#ddd6fe;margin-bottom:6px;font-size:1.02em}
+.quiz-q .qt-vn{color:#94a3b8;margin-bottom:12px;font-size:.9em;font-style:italic}
+.quiz-opt{display:block;background:#1e293b;border:2px solid #334155;border-radius:6px;padding:10px 14px;margin:6px 0;cursor:pointer;color:#e2e8f0;font-size:.93em}
+.quiz-opt:hover{border-color:#c4b5fd}
+.quiz-opt.correct{background:#064e3b;border-color:#10b981;color:#a7f3d0}
+.quiz-opt.wrong{background:#7f1d1d;border-color:#ef4444;color:#fecaca}
+.quiz-opt.locked{cursor:not-allowed}
+.quiz-exp{display:none;margin-top:10px;padding:12px;background:#1e3a5f;border-left:3px solid #38bdf8;border-radius:6px;font-size:.88em;color:#cbd5e1}
+.quiz-exp.open{display:block}
+.callout{background:#1e3a5f;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;margin:14px 0;font-size:.95em}
+.warn{background:#451a03;border-left:4px solid #fb923c;padding:12px;border-radius:8px;margin:12px 0;color:#fed7aa}
+.mindmap-wrap{background:#0f172a;border-radius:10px;padding:14px;overflow-x:auto;text-align:center}
+.mindmap-wrap svg{max-width:100%;height:auto}
+.ascii{background:#0f172a;padding:12px;border-radius:8px;font-family:"Courier New",monospace;font-size:.85em;color:#cbd5e1;white-space:pre;overflow-x:auto;margin:10px 0;border:1px solid #334155}
+.term{color:#fbbf24;font-weight:600}
+.term-jp{color:#c4b5fd;font-weight:600}
+@media(max-width:700px){.bilingual{grid-template-columns:1fr}section{padding:16px}header h1{font-size:1.3em}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>⚙️ システム構成・稼働率 (MTBF/MTTR)</h1>
+  <div class="sub">FE試験対策・Yasashii Ch.5 (全章) + Slide 5_システム構成要素 第1-3回</div>
+</header>
+
+<!-- ============ PHẦN 1: LÝ THUYẾT ============ -->
+<section>
+  <h2>📘 Phần 1 — Tóm tắt lý thuyết</h2>
+
+  <!-- 1.1 -->
+  <h3>1.1. システムとは・処理形態による分類 (Lesson 05-01)</h3>
+  <div class="bilingual">
+    <div class="jp">
+      <span class="flag">🇯🇵 日本語</span>
+      <b class="term-jp">システム</b>とは、これまで手作業で行っていた仕事を、コンピュータを使って自動化するための仕組みである。システムの処理形態は大きく <b class="term-jp">集中処理</b> と <b class="term-jp">分散処理</b> の2種類に分類される。<br><br>
+      <b class="term-jp">集中処理</b>：1台の大型コンピュータ（<b>ホストコンピュータ</b>）に複数の端末を接続し、端末から送られてくるすべての命令をその1台が処理する形態。<br><br>
+      <b class="term-jp">分散処理</b>：ネットワークでつながれた複数のコンピュータが、処理を分担して行うシステム。FE試験では分散処理に関する知識が問われる。
+    </div>
+    <div class="vn">
+      <span class="flag">🇻🇳 Tiếng Việt</span>
+      <b class="term">Hệ thống (システム)</b> là cơ chế tự động hoá những công việc trước đây làm thủ công bằng máy tính. Hệ thống được phân thành 2 loại: <b class="term">xử lý tập trung (集中処理)</b> và <b class="term">xử lý phân tán (分散処理)</b>.<br><br>
+      <b class="term">集中処理</b>: 1 máy tính lớn (ホストコンピュータ) xử lý mọi lệnh từ các terminal kết nối tới.<br><br>
+      <b class="term">分散処理</b>: nhiều máy tính nối qua mạng cùng chia sẻ xử lý. FE thường hỏi loại này.
+    </div>
+  </div>
+
+  <!-- 1.2 -->
+  <h3>1.2. 分散処理システムの3種類 (Lesson 05-01)</h3>
+  <div class="bilingual">
+    <div class="jp">
+      <span class="flag">🇯🇵 日本語</span>
+      <b class="term-jp">(1) クライアントサーバシステム</b>：サービスを利用する側を「クライアント」、サービスを提供する側を「サーバ」と呼ぶ。<br><br>
+      <b class="term-jp">(2) 3層クライアントサーバシステム</b>：プレゼンテーション層（画面表示）、アプリケーション層（業務処理）、データベース層（データ管理）の3層に分離した構成。<br><br>
+      <b class="term-jp">(3) Webシステム</b>：クライアント側のソフトウェアにWebブラウザを使い、HTTPで通信する。業務処理はサーバ側で実行し、クライアントはHTMLの記述に従って画面に表示する。
+    </div>
+    <div class="vn">
+      <span class="flag">🇻🇳 Tiếng Việt</span>
+      <b class="term">(1) Client-Server</b>: client = bên dùng dịch vụ, server = bên cung cấp.<br><br>
+      <b class="term">(2) 3-tier Client-Server</b>: chia 3 lớp — lớp giao diện (presentation), lớp ứng dụng (application/業務処理), lớp dữ liệu (database).<br><br>
+      <b class="term">(3) Webシステム</b>: client dùng browser, giao tiếp HTTP. Xử lý nghiệp vụ ở server, client chỉ hiển thị theo HTML.
+    </div>
+  </div>
+
+  <!-- 1.3 -->
+  <h3>1.3. ⭐ システムの二重化 (Slide 第1回 + Yasashii 過去問 5-2)</h3>
+  <div class="bilingual">
+    <div class="jp">
+      <span class="flag">🇯🇵 日本語</span>
+      業務上必要不可欠なシステムを停止させないため、複数のシステムを用意して信頼性を高める設計を <b class="term-jp">二重化</b>（冗長化）と呼ぶ。<br><br>
+      <b class="term-jp">デュアルシステム</b>：同じ処理を2組のシステムで<b>同時に</b>独立に行い、結果を照合する方式。1組が誤動作しても照合により検出可能。ただし処理能力は2倍にならない。<br><br>
+      <b class="term-jp">デュプレックスシステム</b>：同じ処理に対して2組のシステムを用意し、1組は処理中（<b>現用系</b>）、もう1組は<b>待機系</b>（予備）として待機する方式。現用系に障害が発生したら待機系へ切り替える。
+    </div>
+    <div class="vn">
+      <span class="flag">🇻🇳 Tiếng Việt</span>
+      <b class="term">Twin-hoá (二重化)</b>: chuẩn bị nhiều hệ thống để duy trì hoạt động ngay cả khi 1 cái hỏng — gọi là "redundancy" (冗長化).<br><br>
+      <b class="term">Dual System (デュアル)</b>: 2 hệ thống chạy <b>cùng lúc</b> độc lập, <b>so sánh kết quả</b>. Phát hiện lỗi qua so sánh. Lưu ý: năng lực xử lý KHÔNG tăng gấp đôi.<br><br>
+      <b class="term">Duplex System (デュプレックス)</b>: 1 hệ thống làm việc (現用系), 1 hệ thống chờ (待機系). Khi 現用 hỏng → chuyển sang 待機系.
+    </div>
+  </div>
+  <div class="en"><span class="flag">🇬🇧</span> Dual = 2 systems run in parallel and cross-check; Duplex = active + standby (failover).</div>
+
+  <!-- 1.4 -->
+  <h3>1.4. スタンバイ方式の種類 (Yasashii 過去問 5-3)</h3>
+  <div class="bilingual">
+    <div class="jp">
+      <span class="flag">🇯🇵 日本語</span>
+      <b class="term-jp">ホットスタンバイシステム</b>：待機系のコンピュータに、現用系と同一のオンライン処理プログラムを<b>あらかじめ起動</b>して待機させておく方式。現用系が故障したとき、<b>速やかに</b>待機系に切り替えて処理を続行できる。<br><br>
+      <b class="term-jp">コールドスタンバイシステム</b>：待機系には電源を入れず、<b>停止した状態</b>で待機させておく方式。故障時に待機系を起動してから切り替えるため、切替に時間がかかる。
+    </div>
+    <div class="vn">
+      <span class="flag">🇻🇳 Tiếng Việt</span>
+      <b class="term">Hot Standby</b>: máy 待機系 luôn <b>bật điện</b>, program đã được <b>khởi động sẵn</b>. Khi 現用系 hỏng → chuyển sang nhanh chóng (速やかに).<br><br>
+      <b class="term">Cold Standby</b>: máy 待機系 <b>tắt điện</b>, chỉ bật khi cần. Chuyển đổi tốn nhiều thời gian hơn.
+    </div>
+  </div>
+
+  <!-- 1.5 -->
+  <h3>1.5. シンクライアント (Slide 第1回)</h3>
+  <div class="bilingual">
+    <div class="jp">
+      <span class="flag">🇯🇵 日本語</span>
+      <b class="term-jp">シンクライアントシステム（Thin Client）</b>：クライアント端末の機能を必要最低限にとどめ、サーバ側でアプリの実行やデータの管理を行う方式。HDDやSSDを省き、Excel等もインストールしない。<br><br>
+      <b>最大のメリット</b>：PC端末を紛失しても情報が漏洩しない（データはサーバ側にあるため）。<br><br>
+      実現方法：<b class="term-jp">VDI</b>（自社サーバに仮想デスクトップを作成）、<b class="term-jp">DaaS</b>（外部事業者のクラウドに仮想デスクトップ作成）。
+    </div>
+    <div class="vn">
+      <span class="flag">🇻🇳 Tiếng Việt</span>
+      <b class="term">Thin Client</b>: máy client chỉ có chức năng tối thiểu, mọi xử lý + data đều ở server. Không có HDD/SSD, không cài Excel...<br><br>
+      <b>Ưu điểm lớn nhất</b>: <b>mất máy không lộ data</b> (data ở server).<br><br>
+      2 cách triển khai: <b class="term">VDI</b> (virtual desktop trên server công ty), <b class="term">DaaS</b> (virtual desktop trên cloud bên ngoài).
+    </div>
+  </div>
+
+  <!-- 1.6 -->
+  <h3>1.6. データのバックアップ方式 (Slide 第1回)</h3>
+  <div class="bilingual">
+    <div class="jp">
+      <span class="flag">🇯🇵 日本語</span>
+      <b class="term-jp">フルバックアップ</b>：対象となるデータを<b>全て</b>バックアップする方式。<br><br>
+      <b class="term-jp">差分バックアップ</b>：<b>フルバックアップ以降</b>に変更されたデータをバックアップする方式。<br><br>
+      <b class="term-jp">増分バックアップ</b>：<b>直前のバックアップ以降</b>に変更されたデータをバックアップする方式。
+    </div>
+    <div class="vn">
+      <span class="flag">🇻🇳 Tiếng Việt</span>
+      <b class="term">Full backup</b>: backup <b>toàn bộ</b> data mỗi lần.<br><br>
+      <b class="term">Differential (差分)</b>: backup data thay đổi <b>kể từ Full backup gần nhất</b>.<br><br>
+      <b class="term">Incremental (増分)</b>: backup data thay đổi <b>kể từ backup trước đó (bất kỳ loại)</b>.
+    </div>
+  </div>
+  <div class="callout"><b>📝 Phân biệt nhanh / 区別のコツ:</b> 差分 luôn so với <b>full</b>; 増分 luôn so với <b>backup trước đó</b>. Vì vậy 差分 tăng dần, 増分 cố định nhỏ.</div>
+
+  <!-- 1.7 -->
+  <h3>1.7. ⭐ RASIS — システムの評価指標 (Slide 第2回)</h3>
+  <div class="bilingual">
+    <div class="jp">
+      <span class="flag">🇯🇵 日本語</span>
+      <b class="term-jp">RASIS</b>とは、システムを評価する5つの指標の頭文字。
+      <ul>
+        <li><b>R</b>eliability（信頼性）：システムが安定して稼働し続けられること → <b>MTBFで評価</b></li>
+        <li><b>A</b>vailability（可用性）：使いたい時にいつでも使えること → <b>稼働率で評価</b></li>
+        <li><b>S</b>erviceability（保守性）：故障した時に早く復旧できること → <b>MTTRで評価</b></li>
+        <li><b>I</b>ntegrity（完全性）：データの正確性</li>
+        <li><b>S</b>ecurity（安全性）：セキュリティ</li>
+      </ul>
+    </div>
+    <div class="vn">
+      <span class="flag">🇻🇳 Tiếng Việt</span>
+      <b class="term">RASIS</b> là 5 chỉ số đánh giá hệ thống:
+      <ul>
+        <li><b>R</b>eliability (độ tin cậy): hệ thống chạy ổn định liên tục → đo bằng <b>MTBF</b></li>
+        <li><b>A</b>vailability (khả dụng): dùng được bất cứ lúc nào → đo bằng <b>稼働率</b></li>
+        <li><b>S</b>erviceability (bảo trì): sửa lỗi nhanh → đo bằng <b>MTTR</b></li>
+        <li><b>I</b>ntegrity (chính xác): tính đúng của data</li>
+        <li><b>S</b>ecurity (an toàn): bảo mật</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 1.8 -->
+  <h3>1.8. ⭐⭐ MTBF と MTTR (Slide 第2回 — トレンタム)</h3>
+  <div class="bilingual">
+    <div class="jp">
+      <span class="flag">🇯🇵 日本語</span>
+      <b class="term-jp">MTBF（Mean Time Between Failures）</b>：システムの故障と故障の間隔の平均時間（＝システムが正常に稼働している時間の平均）。<b>値が大きいほど信頼性が高い</b>。<br><br>
+      <b class="term-jp">MTTR（Mean Time To Repair）</b>：システムが故障した時に修理にかかる平均時間。<b>値が小さいほど修理が早く保守性が高い</b>。
+    </div>
+    <div class="vn">
+      <span class="flag">🇻🇳 Tiếng Việt</span>
+      <b class="term">MTBF</b> = thời gian trung bình <b>giữa các lần hỏng</b> (= thời gian hoạt động bình thường trung bình). MTBF càng <b>lớn</b> → tin cậy càng cao.<br><br>
+      <b class="term">MTTR</b> = thời gian trung bình để <b>sửa chữa</b> khi hỏng. MTTR càng <b>nhỏ</b> → bảo trì càng tốt.
+    </div>
+  </div>
+  <div class="formula">MTBF = (システムが稼働していた時間の合計) ÷ (故障した回数)<br>MTTR = (故障中の修理にかかった時間の合計) ÷ (故障した回数)</div>
+
+  <!-- 1.9 -->
+  <h3>1.9. ⭐ 稼働率（Availability）— Slide 第2回</h3>
+  <div class="bilingual">
+    <div class="jp">
+      <span class="flag">🇯🇵 日本語</span>
+      <b class="term-jp">稼働率</b>とは、システムの全運転時間のうち、システムが正常に稼働している時間の割合。MTBFとMTTRを使って次の式で求める：
+    </div>
+    <div class="vn">
+      <span class="flag">🇻🇳 Tiếng Việt</span>
+      <b class="term">稼働率 (Availability)</b> là tỷ lệ thời gian hệ thống chạy bình thường so với tổng thời gian. Tính bằng MTBF và MTTR theo công thức:
+    </div>
+  </div>
+  <div class="formula">稼働率 = MTBF / (MTBF + MTTR)<br>= 正常稼働時間 / (正常稼働時間 + 修理時間)</div>
+  <div class="ascii">時間軸の例:
+[ 稼働 200h ][ 修理 3h ][ 稼働 100h ][ 修理 1h ][ 稼働 150h ][ 修理 2h ]
+←──── 稼働時間の平均 = MTBF ────→   ←─── 修理時間の平均 = MTTR ───→</div>
+  <div class="bilingual">
+    <div class="jp">
+      <span class="flag">🇯🇵</span>
+      上の例：MTBF = (200+100+150)/3 = <b>150時間</b><br>
+      MTTR = (3+1+2)/3 = <b>2時間</b><br>
+      稼働率 = 150/(150+2) = 150/152 ≈ <b>0.987（98.7%）</b>
+    </div>
+    <div class="vn">
+      <span class="flag">🇻🇳</span>
+      Theo ví dụ trên: MTBF = (200+100+150)/3 = <b>150 giờ</b><br>
+      MTTR = (3+1+2)/3 = <b>2 giờ</b><br>
+      稼働率 = 150/152 ≈ <b>0.987 (98.7%)</b>
+    </div>
+  </div>
+
+  <!-- 1.10 -->
+  <h3>1.10. ⭐ 複数システムの稼働率 (Slide 第2回)</h3>
+  <div class="bilingual">
+    <div class="jp">
+      <span class="flag">🇯🇵 日本語</span>
+      複数のシステムから構成される場合、<b class="term-jp">直列システム</b>か<b class="term-jp">並列システム</b>かによって全体の稼働率が異なる。<br><br>
+      <b>直列システム</b>：システム全体が稼働するのは、システムAとシステムBの<b>両方</b>が稼働している時のみ。<br><br>
+      <b>並列システム</b>：システム全体が稼働するのは、システムAとシステムBの<b>少なくとも一方</b>が稼働している時。
+    </div>
+    <div class="vn">
+      <span class="flag">🇻🇳 Tiếng Việt</span>
+      Khi hệ thống được tạo từ nhiều hệ thống con, công thức tính稼働率 toàn bộ phụ thuộc vào cách ghép:<br><br>
+      <b>Series (直列)</b>: toàn hệ thống chỉ hoạt động khi <b>CẢ 2</b> (A AND B) đều ổn.<br><br>
+      <b>Parallel (並列)</b>: toàn hệ thống hoạt động khi <b>ÍT NHẤT 1</b> (A OR B) ổn. Hỏng khi cả 2 cùng hỏng.
+    </div>
+  </div>
+  <div class="formula">直列システムの稼働率 = A × B<br>並列システムの稼働率 = 1 − (1 − A)(1 − B)</div>
+  <div class="callout"><b>📝 直感的な理解 / Cách hiểu trực giác:</b> 直列 = AND → 掛け算 / nhân; 並列 = OR → 「両方とも壊れる確率」を1から引く / 1 trừ "cả hai cùng hỏng".</div>
+
+  <!-- 1.11 -->
+  <h3>1.11. 信頼性設計の用語 (Yasashii Lesson 05-02)</h3>
+  <table>
+    <tr><th>用語</th><th>🇯🇵 説明</th><th>🇻🇳 Giải thích</th></tr>
+    <tr>
+      <td><b class="term-jp">フォールトトレラント</b><br>(Fault Tolerant)</td>
+      <td>システムが部分的に故障しても、システム全体としては<b>必要な機能を維持する</b>設計。冗長化で対応。</td>
+      <td>Hỏng 1 phần nhưng toàn hệ thống vẫn duy trì chức năng cần thiết (dựa vào冗長化/redundancy).</td>
+    </tr>
+    <tr>
+      <td><b class="term-jp">フェールソフト</b><br>(Fail Soft)</td>
+      <td>障害が起きた時に、<b>性能が落ちても</b>システム全体は動作させる設計。限定動作を「縮退運転（フォールバック）」と呼ぶ。</td>
+      <td>Hỏng thì <b>giảm hiệu năng vẫn chạy</b>. Trạng thái vận hành hạn chế = 縮退運転 / fallback.</td>
+    </tr>
+    <tr>
+      <td><b class="term-jp">フェールセーフ</b><br>(Fail Safe)</td>
+      <td>障害が起きた時に、<b>システムを止めてでも安全を優先</b>させる設計。</td>
+      <td>Hỏng thì <b>dừng cũng được</b>, ưu tiên an toàn (vd robot công nghiệp dừng khi có người).</td>
+    </tr>
+    <tr>
+      <td><b class="term-jp">フールプルーフ</b><br>(Fool Proof)</td>
+      <td>人間が間違った使い方をしても、システムに異常が起こらないようにする設計。</td>
+      <td>Người dùng thao tác sai vẫn không gây lỗi hệ thống (vd lò vi sóng không nóng khi cửa hở).</td>
+    </tr>
+  </table>
+
+  <!-- 1.12 -->
+  <h3>1.12. ストライピング・ミラーリング (Yasashii Lesson 05-02)</h3>
+  <div class="bilingual">
+    <div class="jp">
+      <span class="flag">🇯🇵 日本語</span>
+      <b class="term-jp">ストライピング（RAID 0）</b>：データを分散して複数の磁気ディスクに書き込むことによって、<b>データ入出力の高速化</b>を図る方式。ディスクが1つでも壊れると動作しなくなる。<br><br>
+      <b class="term-jp">ミラーリング（RAID 1）</b>：複数のハードディスクに<b>同じデータ</b>を書き込むことによって、<b>システムの信頼性</b>を高める方式。同じディスク容量で比較した場合、保存できるデータ量はストライピングの半分。
+    </div>
+    <div class="vn">
+      <span class="flag">🇻🇳 Tiếng Việt</span>
+      <b class="term">Striping (RAID 0)</b>: phân tán data trên nhiều ổ đĩa → tăng tốc độ I/O. Nhưng 1 ổ hỏng = toàn bộ hỏng.<br><br>
+      <b class="term">Mirroring (RAID 1)</b>: ghi cùng data vào nhiều ổ → tăng độ tin cậy. Dung lượng hiệu dụng chỉ = 50% so với striping cùng tổng dung lượng.
+    </div>
+  </div>
+
+  <!-- 1.13 -->
+  <h3>1.13. システムの性能指標 (Yasashii Lesson 05-03)</h3>
+  <table>
+    <tr><th>指標</th><th>🇯🇵 説明</th><th>🇻🇳 Giải thích</th></tr>
+    <tr>
+      <td><b class="term-jp">スループット</b></td>
+      <td>コンピュータが<b>単位時間当たり</b>に処理する仕事の量。</td>
+      <td>Khối lượng công việc xử lý <b>trong 1 đơn vị thời gian</b>.</td>
+    </tr>
+    <tr>
+      <td><b class="term-jp">ターンアラウンドタイム</b></td>
+      <td>「入力 + 処理 + 出力」の<b>全工程</b>にかかる合計時間。</td>
+      <td>Tổng thời gian "input + xử lý + output" — toàn bộ quy trình.</td>
+    </tr>
+    <tr>
+      <td><b class="term-jp">レスポンスタイム<br>（応答時間）</b></td>
+      <td><b>処理だけ</b>にかかる時間。</td>
+      <td>Chỉ thời gian <b>xử lý</b> (không tính input/output).</td>
+    </tr>
+    <tr>
+      <td><b class="term-jp">ベンチマークテスト</b></td>
+      <td>使用目的に合わせて選定した<b>標準的なプログラムやデータ</b>を実行させ、システムの処理性能を測定するテスト。</td>
+      <td>Đo hiệu năng bằng cách chạy <b>chương trình/data chuẩn</b> phù hợp với mục đích sử dụng.</td>
+    </tr>
+  </table>
+
+  <!-- 1.14 -->
+  <h3>1.14. キャパシティプランニング (Yasashii Lesson 05-03)</h3>
+  <div class="bilingual">
+    <div class="jp">
+      <span class="flag">🇯🇵 日本語</span>
+      <b class="term-jp">キャパシティプランニング</b>とは、システムの稼働状況を継続的に評価して、システムに求められる処理能力を計画することである。処理能力を向上する必要がある場合、主に次の2手段を取る：<br><br>
+      <b class="term-jp">スケールアウト</b>：<b>サーバの台数を増やす</b>ことで、システム全体の処理能力を向上させる。<br><br>
+      <b class="term-jp">スケールアップ</b>：<b>個々のサーバの処理能力を向上させる</b>（CPUを高性能なものに換装、主記憶装置を増設等）。
+    </div>
+    <div class="vn">
+      <span class="flag">🇻🇳 Tiếng Việt</span>
+      <b class="term">Capacity Planning</b>: liên tục đánh giá tình trạng vận hành để lên kế hoạch năng lực xử lý cần thiết. Khi cần tăng năng lực:<br><br>
+      <b class="term">Scale Out</b>: tăng <b>số lượng server</b> để mở rộng năng lực tổng.<br><br>
+      <b class="term">Scale Up</b>: tăng <b>năng lực từng server</b> (đổi CPU mạnh hơn, thêm RAM...).
+    </div>
+  </div>
+</section>
+
+<!-- ============ PHẦN 2: VÍ DỤ ============ -->
+<section>
+  <h2>🧮 Phần 2 — 例題 / Ví dụ minh hoạ</h2>
+
+  <h3>例題 2.1: MTBF・MTTR・稼働率の計算 (Slide第2回 原文)</h3>
+  <div class="example-box">
+    <span class="label">問題 / Đề bài</span>
+    <div class="bilingual">
+      <div class="jp"><span class="flag">🇯🇵</span> あるシステムの稼働履歴は以下のとおりである：稼働 200h → 修理 3h → 稼働 100h → 修理 1h → 稼働 150h → 修理 2h。MTBF・MTTR・稼働率を求めよ。</div>
+      <div class="vn"><span class="flag">🇻🇳</span> Lịch sử vận hành: 稼働 200h → 修理 3h → 稼働 100h → 修理 1h → 稼働 150h → 修理 2h. Tính MTBF, MTTR, 稼働率.</div>
+    </div>
+    <div class="step-line">MTBF = (200+100+150) ÷ 3 = 150 時間</div>
+    <div class="step-line">MTTR = (3+1+2) ÷ 3 = 2 時間</div>
+    <div class="step-line">稼働率 = 150 ÷ (150+2) = 150/152 ≈ 0.987 (98.7%)</div>
+  </div>
+
+  <h3>例題 2.2: 直列システムの稼働率 (Slide第2回 原文)</h3>
+  <div class="example-box">
+    <span class="label">問題 / Đề bài</span>
+    <div class="bilingual">
+      <div class="jp"><span class="flag">🇯🇵</span> 稼働率0.9のシステムA と 稼働率0.9のシステムB を直列接続したときの全体の稼働率を求めよ。</div>
+      <div class="vn"><span class="flag">🇻🇳</span> Nối tuần tự A (0.9) và B (0.9). Tính稼働率 tổng.</div>
+    </div>
+    <div class="step-line">直列の稼働率 = A × B = 0.9 × 0.9 = 0.81 (81%)</div>
+    <div class="bilingual">
+      <div class="jp"><span class="flag">🇯🇵</span> 注：直列の稼働率は必ず各システム単体より<b>低くなる</b>（両方が稼働している必要があるため）。</div>
+      <div class="vn"><span class="flag">🇻🇳</span> Lưu ý: 稼働率 直列 luôn <b>thấp hơn</b> từng thành phần (vì cần CẢ 2 cùng ổn).</div>
+    </div>
+  </div>
+
+  <h3>例題 2.3: 並列システムの稼働率 (Slide第2回 原文)</h3>
+  <div class="example-box">
+    <span class="label">問題 / Đề bài</span>
+    <div class="bilingual">
+      <div class="jp"><span class="flag">🇯🇵</span> 同じくA=0.9、B=0.9を並列接続したときの全体の稼働率を求めよ。</div>
+      <div class="vn"><span class="flag">🇻🇳</span> Cùng A=0.9, B=0.9 nối song song. Tính稼働率 tổng.</div>
+    </div>
+    <div class="step-line">並列の稼働率 = 1 − (1−0.9)(1−0.9) = 1 − 0.01 = 0.99 (99%)</div>
+    <div class="bilingual">
+      <div class="jp"><span class="flag">🇯🇵</span> 注：並列の稼働率は必ず各システム単体より<b>高くなる</b>（少なくとも一方が稼働すれば全体が稼働するため）。これが冗長化で信頼性を高める理由。</div>
+      <div class="vn"><span class="flag">🇻🇳</span> Lưu ý: 稼働率 並列 luôn <b>cao hơn</b> từng thành phần (chỉ cần ÍT NHẤT 1 ổn). Đây là lý do dùng redundancy.</div>
+    </div>
+  </div>
+
+  <h3>例題 2.4: MTBFを逆算する問題</h3>
+  <div class="example-box">
+    <span class="label">問題 / Đề bài</span>
+    <div class="bilingual">
+      <div class="jp"><span class="flag">🇯🇵</span> あるシステムの稼働率は0.95、MTTRは5時間である。MTBFを求めよ。</div>
+      <div class="vn"><span class="flag">🇻🇳</span> 稼働率 = 0.95, MTTR = 5h. Tính MTBF.</div>
+    </div>
+    <div class="step-line">0.95 = MTBF / (MTBF + 5)</div>
+    <div class="step-line">0.95 (MTBF + 5) = MTBF → 0.95 MTBF + 4.75 = MTBF</div>
+    <div class="step-line">0.05 MTBF = 4.75 → MTBF = 95 時間</div>
+  </div>
+
+  <h3>例題 2.5: 直列+並列の組合せ</h3>
+  <div class="example-box">
+    <span class="label">問題 / Đề bài</span>
+    <div class="bilingual">
+      <div class="jp"><span class="flag">🇯🇵</span> システムA（稼働率0.9）を直列で、システムB（0.8）とシステムC（0.8）の並列群と接続する。全体の稼働率を求めよ。</div>
+      <div class="vn"><span class="flag">🇻🇳</span> A (0.9) nối tuần tự với nhóm B-C song song (B=0.8, C=0.8). Tính tổng.</div>
+    </div>
+    <div class="step-line">手順1: 並列BC = 1 − (1−0.8)² = 1 − 0.04 = 0.96</div>
+    <div class="step-line">手順2: A × BC = 0.9 × 0.96 = 0.864</div>
+  </div>
+
+  <h3>例題 2.6: Yasashii 過去問 5-2 (デュアル vs デュプレックス)</h3>
+  <div class="example-box">
+    <span class="label">過去問 / Đề thi cũ (平成31年度)</span>
+    <div class="bilingual">
+      <div class="jp"><span class="flag">🇯🇵</span> 冗長構成における<b>デュアルシステム</b>の説明として、適切なものはどれか。<br>
+        ア．2系統のシステムで並列処理をすることによって性能を上げる方式である。<br>
+        イ．2系統のシステムの負荷が均等になるように、処理を分散する方式である。<br>
+        ウ．現用系と待機系の2系統のシステムで構成され、現用系に障害が生じたときに、待機系が処理を受け継ぐ方式である。<br>
+        エ．一つの処理を2系統のシステムで独立に行い、結果を照合する方式である。
+      </div>
+      <div class="vn"><span class="flag">🇻🇳</span> Đáp án đúng: <b>エ</b>. デュアルシステム = 「2 hệ thống xử lý độc lập cùng 1 việc rồi so kết quả」. Lưu ý: ウ là デュプレックス (現用 + 待機, failover), không phải デュアル.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PHẦN 3: FLASHCARD ============ -->
+<section>
+  <h2>🃏 Phần 3 — フラッシュカード / Flashcard</h2>
+  <p style="color:#94a3b8;font-size:.92em;margin-bottom:12px">クリックでカードを裏返す / Click để lật. グループでフィルター可能 / Lọc theo nhóm:</p>
+  <div class="flashcards-controls">
+    <button class="filter-btn active" onclick="filterFlash('all',this)">全て / Tất cả</button>
+    <button class="filter-btn" onclick="filterFlash('Config',this)">システム構成</button>
+    <button class="filter-btn" onclick="filterFlash('Reliability',this)">信頼性設計</button>
+    <button class="filter-btn" onclick="filterFlash('MTBF',this)">MTBF/稼働率</button>
+    <button class="filter-btn" onclick="filterFlash('Performance',this)">性能指標</button>
+  </div>
+  <div class="flashcard-grid" id="flashGrid"></div>
+</section>
+
+<!-- ============ PHẦN 4: QUIZ ============ -->
+<section>
+  <h2>✅ Phần 4 — 確認テスト / Câu hỏi ôn tập (10 câu)</h2>
+  <div id="quizContainer"></div>
+</section>
+
+<!-- ============ PHẦN 5: MIND MAP ============ -->
+<section>
+  <h2>🗺️ Phần 5 — マインドマップ / Mind map</h2>
+  <div class="mindmap-wrap">
+    <svg viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg" style="font-family:system-ui,sans-serif">
+      <ellipse cx="500" cy="350" rx="140" ry="50" fill="#7c3aed" stroke="#c4b5fd" stroke-width="3"/>
+      <text x="500" y="345" text-anchor="middle" fill="#fff" font-size="17" font-weight="bold">システム構成</text>
+      <text x="500" y="365" text-anchor="middle" fill="#ddd6fe" font-size="13">稼働率・MTBF/MTTR</text>
+
+      <path d="M 395 320 Q 270 220 170 130" stroke="#38bdf8" stroke-width="3" fill="none"/>
+      <rect x="50" y="100" width="200" height="60" rx="14" fill="#0ea5e9"/>
+      <text x="150" y="125" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">システム構成</text>
+      <text x="150" y="145" text-anchor="middle" fill="#e0f2fe" font-size="11">第1回 + Lesson 05-01/02</text>
+      <path d="M 100 160 Q 80 200 70 240" stroke="#38bdf8" stroke-width="2" fill="none"/>
+      <rect x="10" y="240" width="120" height="36" rx="8" fill="#0369a1"/>
+      <text x="70" y="263" text-anchor="middle" fill="#fff" font-size="11">集中/分散処理</text>
+      <path d="M 200 160 Q 220 200 240 240" stroke="#38bdf8" stroke-width="2" fill="none"/>
+      <rect x="170" y="240" width="140" height="36" rx="8" fill="#0369a1"/>
+      <text x="240" y="263" text-anchor="middle" fill="#fff" font-size="11">デュアル/デュプレックス</text>
+
+      <path d="M 605 320 Q 730 220 830 130" stroke="#fbbf24" stroke-width="3" fill="none"/>
+      <rect x="730" y="100" width="200" height="60" rx="14" fill="#d97706"/>
+      <text x="830" y="125" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">RASIS</text>
+      <text x="830" y="145" text-anchor="middle" fill="#fef3c7" font-size="11">第2回</text>
+      <path d="M 770 160 Q 750 200 730 240" stroke="#fbbf24" stroke-width="2" fill="none"/>
+      <rect x="670" y="240" width="120" height="36" rx="8" fill="#92400e"/>
+      <text x="730" y="263" text-anchor="middle" fill="#fff" font-size="11">R = MTBF</text>
+      <path d="M 830 160 Q 830 200 830 240" stroke="#fbbf24" stroke-width="2" fill="none"/>
+      <rect x="780" y="240" width="100" height="36" rx="8" fill="#92400e"/>
+      <text x="830" y="263" text-anchor="middle" fill="#fff" font-size="11">A = 稼働率</text>
+      <path d="M 890 160 Q 910 200 930 240" stroke="#fbbf24" stroke-width="2" fill="none"/>
+      <rect x="890" y="240" width="100" height="36" rx="8" fill="#92400e"/>
+      <text x="940" y="263" text-anchor="middle" fill="#fff" font-size="11">S = MTTR</text>
+
+      <path d="M 605 380 Q 730 480 830 570" stroke="#f472b6" stroke-width="3" fill="none"/>
+      <rect x="730" y="540" width="200" height="60" rx="14" fill="#be185d"/>
+      <text x="830" y="565" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">複数システム</text>
+      <text x="830" y="585" text-anchor="middle" fill="#fce7f3" font-size="11">直列/並列</text>
+      <path d="M 770 600 Q 740 630 720 660" stroke="#f472b6" stroke-width="2" fill="none"/>
+      <rect x="650" y="650" width="140" height="36" rx="8" fill="#9d174d"/>
+      <text x="720" y="673" text-anchor="middle" fill="#fff" font-size="11">直列: A × B</text>
+      <path d="M 890 600 Q 910 630 930 660" stroke="#f472b6" stroke-width="2" fill="none"/>
+      <rect x="830" y="650" width="160" height="36" rx="8" fill="#9d174d"/>
+      <text x="910" y="673" text-anchor="middle" fill="#fff" font-size="11">並列: 1−(1−A)(1−B)</text>
+
+      <path d="M 395 380 Q 270 480 170 570" stroke="#22c55e" stroke-width="3" fill="none"/>
+      <rect x="50" y="540" width="200" height="60" rx="14" fill="#15803d"/>
+      <text x="150" y="565" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">信頼性設計</text>
+      <text x="150" y="585" text-anchor="middle" fill="#dcfce7" font-size="11">Lesson 05-02</text>
+      <path d="M 100 600 Q 80 630 70 660" stroke="#22c55e" stroke-width="2" fill="none"/>
+      <rect x="10" y="650" width="130" height="36" rx="8" fill="#166534"/>
+      <text x="75" y="673" text-anchor="middle" fill="#fff" font-size="11">フォールトトレラント</text>
+      <path d="M 200 600 Q 230 630 260 660" stroke="#22c55e" stroke-width="2" fill="none"/>
+      <rect x="160" y="650" width="170" height="36" rx="8" fill="#166534"/>
+      <text x="245" y="673" text-anchor="middle" fill="#fff" font-size="11">セーフ/ソフト/プルーフ</text>
+    </svg>
+  </div>
+</section>
+
+</div>
+
+<script>
+const FLASH = [
+  {jp:"集中処理",vn:"Xử lý tập trung",b_jp:"1台のホストコンピュータが端末からの全命令を処理する形態。",b_vn:"1 host xử lý mọi lệnh từ terminal.",cat:"Config"},
+  {jp:"分散処理",vn:"Xử lý phân tán",b_jp:"ネットワークでつながれた複数コンピュータが処理を分担する。",b_vn:"Nhiều máy qua mạng cùng chia việc.",cat:"Config"},
+  {jp:"3層クライアントサーバ",vn:"3-tier C/S",b_jp:"プレゼンテーション層・アプリケーション層・データベース層に分離。",b_vn:"3 lớp: presentation / application / database.",cat:"Config"},
+  {jp:"デュアルシステム",vn:"Dual System",b_jp:"2系統のシステムが同時に独立に処理し結果を照合。処理能力は2倍にならない。",b_vn:"2 hệ thống cùng chạy độc lập + so kết quả. Năng lực KHÔNG gấp đôi.",cat:"Config"},
+  {jp:"デュプレックスシステム",vn:"Duplex System",b_jp:"現用系と待機系の2系統。現用系障害時に待機系が処理を受け継ぐ。",b_vn:"現用系 + 待機系. Failover khi主系 hỏng.",cat:"Config"},
+  {jp:"ホットスタンバイ",vn:"Hot Standby",b_jp:"待機系は電源ON・プログラム起動済み。故障時 速やかに 切替。",b_vn:"待機系 luôn ON, program đã chạy sẵn. Chuyển đổi nhanh.",cat:"Config"},
+  {jp:"コールドスタンバイ",vn:"Cold Standby",b_jp:"待機系は電源OFF・停止状態で待機。切替に時間がかかる。",b_vn:"待機系 OFF, chỉ bật khi cần. Chuyển đổi chậm.",cat:"Config"},
+  {jp:"シンクライアント",vn:"Thin Client",b_jp:"クライアントは最低限の機能のみ、処理・データはサーバ側。紛失時に情報漏洩防止。",b_vn:"Client chỉ tối thiểu, mọi thứ ở server. Mất máy không lộ data.",cat:"Config"},
+  {jp:"フォールトトレラント",vn:"Fault Tolerant",b_jp:"部分故障してもシステム全体の必要機能を維持。冗長化で対応。",b_vn:"Hỏng 1 phần vẫn duy trì chức năng cần thiết (redundancy).",cat:"Reliability"},
+  {jp:"フェールソフト",vn:"Fail Soft",b_jp:"故障時、性能が落ちてもシステム動作続行（縮退運転/フォールバック）。",b_vn:"Hỏng thì giảm hiệu năng nhưng vẫn chạy (縮退運転).",cat:"Reliability"},
+  {jp:"フェールセーフ",vn:"Fail Safe",b_jp:"故障時、停止してでも安全を優先（例：ロボットアームの強制停止）。",b_vn:"Hỏng thì dừng cũng được, ưu tiên an toàn.",cat:"Reliability"},
+  {jp:"フールプルーフ",vn:"Fool Proof",b_jp:"人間が誤操作してもシステムに異常が起こらない設計（例：ドアが閉まらないと加熱しない電子レンジ）。",b_vn:"Người dùng thao tác sai cũng không gây lỗi hệ thống.",cat:"Reliability"},
+  {jp:"MTBF",vn:"Mean Time Between Failures",b_jp:"故障と故障の間隔の平均時間（=正常稼働時間の平均）。大きいほど信頼性高い。",b_vn:"Thời gian TB giữa các lần hỏng (= 稼働時間 TB). Lớn = tin cậy cao.",cat:"MTBF"},
+  {jp:"MTTR",vn:"Mean Time To Repair",b_jp:"故障した時に修理にかかる平均時間。小さいほど保守性高い。",b_vn:"Thời gian TB sửa khi hỏng. Nhỏ = bảo trì tốt.",cat:"MTBF"},
+  {jp:"稼働率",vn:"Availability",b_jp:"稼働率 = MTBF / (MTBF + MTTR)。使いたい時に使える時間の割合。",b_vn:"= MTBF/(MTBF+MTTR). Tỷ lệ thời gian dùng được.",cat:"MTBF"},
+  {jp:"直列稼働率",vn:"Series Availability",b_jp:"A × B。両方とも稼働している必要があり、各単体より低くなる。",b_vn:"= A×B. Cần CẢ 2, luôn thấp hơn từng cái.",cat:"MTBF"},
+  {jp:"並列稼働率",vn:"Parallel Availability",b_jp:"1 − (1−A)(1−B)。少なくとも一方が稼働、各単体より高くなる。",b_vn:"= 1−(1−A)(1−B). Chỉ cần 1 ổn, cao hơn từng cái.",cat:"MTBF"},
+  {jp:"スループット",vn:"Throughput",b_jp:"単位時間当たりに処理する仕事の量。",b_vn:"Khối lượng việc xử lý trong 1 đơn vị thời gian.",cat:"Performance"},
+  {jp:"ターンアラウンドタイム",vn:"Turnaround Time",b_jp:"入力+処理+出力の全工程にかかる合計時間。",b_vn:"Tổng thời gian input+xử lý+output.",cat:"Performance"},
+  {jp:"レスポンスタイム",vn:"Response Time",b_jp:"処理だけにかかる時間（応答時間）。",b_vn:"Chỉ thời gian xử lý.",cat:"Performance"},
+  {jp:"ベンチマークテスト",vn:"Benchmark Test",b_jp:"標準的なプログラム・データを使ってシステム性能を測定するテスト。",b_vn:"Đo hiệu năng bằng chương trình/data chuẩn.",cat:"Performance"},
+  {jp:"スケールアウト",vn:"Scale Out",b_jp:"サーバの台数を増やしてシステム全体の処理能力を向上。",b_vn:"Tăng số server.",cat:"Performance"},
+  {jp:"スケールアップ",vn:"Scale Up",b_jp:"個々のサーバの処理能力を向上（CPU換装等）。",b_vn:"Tăng năng lực từng server.",cat:"Performance"},
+];
+function renderFlash(filter='all'){
+  const g = document.getElementById('flashGrid');
+  g.innerHTML = FLASH.filter(f=>filter==='all'||f.cat===filter).map(f=>`
+    <div class="flashcard" data-cat="${f.cat}" onclick="this.classList.toggle('flipped')">
+      <div class="cat">${f.cat}</div>
+      <div class="front">🇯🇵 ${f.jp}<br><span style="font-size:.85em;color:#94a3b8">🇻🇳 ${f.vn}</span></div>
+      <div class="back">🇯🇵 ${f.b_jp}<br><br>🇻🇳 ${f.b_vn}</div>
+    </div>`).join('');
+}
+function filterFlash(cat,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFlash(cat);
+}
+renderFlash();
+
+const QUIZ = [
+  {jp:"MTBFの意味は何か。",vn:"MTBF nghĩa là gì?",
+   o_jp:["Mean Time Before Fix","Mean Time Between Failures（故障間隔の平均）","Maximum Time Before Failure","Median Time Between Functions"],
+   o_vn:["—","Thời gian TB giữa các lần hỏng","—","—"],
+   ans:1,
+   exp_jp:"Slide第2回：MTBF = 故障と故障の間隔の平均時間 = 正常稼働時間の平均。",
+   exp_vn:"MTBF = thời gian trung bình giữa các lần hỏng = thời gian hoạt động bình thường trung bình."},
+  {jp:"MTTRの意味は何か。",vn:"MTTR nghĩa là gì?",
+   o_jp:["Mean Time To Run","Mean Time To Repair（修理時間の平均）","Max Time To Restart","Median Time To Reset"],
+   o_vn:["—","Thời gian sửa trung bình","—","—"],
+   ans:1,
+   exp_jp:"Slide第2回：MTTR = 修理にかかる平均時間。小さいほど保守性が高い。",
+   exp_vn:"MTTR càng nhỏ → bảo trì càng tốt."},
+  {jp:"稼働率の公式として正しいものはどれか。",vn:"Công thức 稼働率 đúng là gì?",
+   o_jp:["MTBF / MTTR","MTBF /（MTBF + MTTR）","MTTR / MTBF","（MTBF + MTTR）/ MTBF"],
+   o_vn:["","","",""],
+   ans:1,
+   exp_jp:"Slide第2回：稼働率 = MTBF /（MTBF + MTTR）。",
+   exp_vn:"稼働率 = MTBF/(MTBF+MTTR), tỷ lệ thời gian dùng được."},
+  {jp:"あるシステムの稼働履歴：稼働200h→修理3h→稼働100h→修理1h→稼働150h→修理2h。MTBFはいくらか。",vn:"Với lịch sử trên, MTBF = ?",
+   o_jp:["150時間","100時間","450時間","6時間"],
+   o_vn:["","","",""],
+   ans:0,
+   exp_jp:"MTBF =（200+100+150）÷ 3 = 150時間（Slide第2回 原文）。",
+   exp_vn:"MTBF = (200+100+150)/3 = 150 giờ."},
+  {jp:"同じ稼働履歴の稼働率はおよそいくらか。",vn:"Cùng dữ liệu trên, 稼働率 ≈ ?",
+   o_jp:["0.987（98.7%）","0.5","0.81","0.95"],
+   o_vn:["","","",""],
+   ans:0,
+   exp_jp:"MTBF=150、MTTR=2 → 150/(150+2) = 150/152 ≈ 0.987。",
+   exp_vn:"150/152 ≈ 0.987 = 98.7%."},
+  {jp:"稼働率0.9のシステムA・Bを直列接続したときの全体の稼働率は。",vn:"A=0.9, B=0.9 nối tuần tự. 稼働率 tổng = ?",
+   o_jp:["1.8","0.81","0.99","0.45"],
+   o_vn:["","","",""],
+   ans:1,
+   exp_jp:"直列の稼働率 = A × B = 0.9 × 0.9 = 0.81。",
+   exp_vn:"Series = A×B = 0.81."},
+  {jp:"同じくA=0.9、B=0.9を並列接続したときの全体の稼働率は。",vn:"Cùng A=0.9, B=0.9 nối song song. 稼働率 tổng = ?",
+   o_jp:["0.81","0.99","0.9","1.0"],
+   o_vn:["","","",""],
+   ans:1,
+   exp_jp:"並列 = 1 −（1−0.9）（1−0.9）= 1 − 0.01 = 0.99。",
+   exp_vn:"Parallel = 1−0.01 = 0.99."},
+  {jp:"デュアルシステムの正しい説明はどれか。",vn:"デュアルシステム định nghĩa nào đúng?",
+   o_jp:["待機系は故障時のみ稼働","2系統で同時に処理し結果を照合する","1台で2倍速処理","完全シリアル処理"],
+   o_vn:["","","",""],
+   ans:1,
+   exp_jp:"Yasashii 過去問 5-2 解答 エ：「一つの処理を2系統で独立に行い結果を照合」。",
+   exp_vn:"2 hệ thống xử lý cùng lúc độc lập + so kết quả."},
+  {jp:"フールプルーフの説明として正しいのはどれか。",vn:"フールプルーフ là gì?",
+   o_jp:["故障時に安全停止","性能が落ちても動作続行","利用者が誤操作してもシステムに異常が起こらない","2系統で冗長化"],
+   o_vn:["","","",""],
+   ans:2,
+   exp_jp:"Yasashii Lesson 05-02 + 過去問 5-5：フールプルーフは利用者誤操作対策。",
+   exp_vn:"Người dùng thao tác sai cũng không gây lỗi."},
+  {jp:"単位時間当たりに処理する仕事の量を表す指標はどれか。",vn:"Chỉ số đo khối lượng việc xử lý/đơn vị thời gian?",
+   o_jp:["スループット","ターンアラウンドタイム","タイムスライス","レスポンスタイム"],
+   o_vn:["","","",""],
+   ans:0,
+   exp_jp:"Yasashii Lesson 05-03 + 過去問 5-8：スループット = 単位時間当たり処理量。",
+   exp_vn:"Throughput = work/time unit."},
+];
+function renderQuiz(){
+  document.getElementById('quizContainer').innerHTML = QUIZ.map((q,idx)=>{
+    const L=["ア","イ","ウ","エ"];
+    const opts = q.o_jp.map((o,i)=>{
+      const vn = q.o_vn[i] && q.o_vn[i]!=="" && q.o_vn[i]!=="—" ? `<br><span style="color:#94a3b8;font-size:.85em">🇻🇳 ${q.o_vn[i]}</span>` : "";
+      return `<div class="quiz-opt" onclick="pickQ(${idx},${i},this)" data-i="${i}"><b>${L[i]}.</b> ${o}${vn}</div>`;
+    }).join("");
+    return `<div class="quiz-q">
+      <div class="qt-jp"><b>第${idx+1}問:</b> ${q.jp}</div>
+      <div class="qt-vn">🇻🇳 Câu ${idx+1}: ${q.vn}</div>
+      ${opts}
+      <div class="quiz-exp" id="exp-${idx}">
+        <b>正解 ${L[q.ans]}：</b><br>
+        🇯🇵 ${q.exp_jp}<br>
+        🇻🇳 ${q.exp_vn}
+      </div>
+    </div>`;
+  }).join('');
+}
+function pickQ(qi,oi,el){
+  const card = el.parentElement;
+  if(card.dataset.locked) return;
+  card.dataset.locked='1';
+  const q=QUIZ[qi];
+  card.querySelectorAll('.quiz-opt').forEach(o=>{
+    o.classList.add('locked');
+    const i=parseInt(o.dataset.i);
+    if(i===q.ans) o.classList.add('correct');
+    else if(i===oi) o.classList.add('wrong');
+  });
+  document.getElementById('exp-'+qi).classList.add('open');
+}
+renderQuiz();
+</script>
+</body>
+</html>
