@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE - システム構成・稼働率 (40問)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;padding:16px;line-height:1.6}
+.container{max-width:900px;margin:0 auto;background:#1e293b;border-radius:16px;padding:24px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.header{text-align:center;border-bottom:2px solid #334155;padding-bottom:16px;margin-bottom:20px}
+.header h1{color:#c4b5fd;font-size:1.4em;margin-bottom:4px}
+.header .sub{color:#94a3b8;font-size:.9em}
+.progress-wrap{background:#0f172a;border-radius:10px;padding:12px;margin-bottom:20px}
+.progress-info{display:flex;justify-content:space-between;font-size:.9em;color:#cbd5e1;margin-bottom:8px}
+.progress-bar{height:10px;background:#334155;border-radius:5px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#c4b5fd,#f472b6);transition:width .3s}
+.question-card{background:#0f172a;border-radius:12px;padding:20px;margin-bottom:16px}
+.q-tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:.78em;font-weight:600;margin-bottom:10px}
+.tag-easy{background:#065f46;color:#a7f3d0}
+.tag-med{background:#854d0e;color:#fde68a}
+.tag-hard{background:#7f1d1d;color:#fecaca}
+.q-jp{font-size:1.05em;margin-bottom:6px;color:#ddd6fe}
+.q-vn{font-size:.92em;color:#94a3b8;margin-bottom:16px;font-style:italic}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:#1e293b;border:2px solid #334155;border-radius:8px;padding:12px 16px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;color:#e2e8f0}
+.option:hover:not(.locked){border-color:#c4b5fd;background:#1e1b4b}
+.option .letter{font-weight:700;color:#c4b5fd;min-width:24px}
+.option .text-jp{color:#ddd6fe}
+.option .text-vn{display:block;color:#94a3b8;font-size:.85em;margin-top:3px;font-style:italic}
+.option.correct{background:#064e3b;border-color:#10b981}
+.option.correct .text-jp{color:#a7f3d0}
+.option.incorrect{background:#7f1d1d;border-color:#ef4444}
+.option.incorrect .text-jp{color:#fecaca}
+.option.locked{cursor:not-allowed;opacity:.88}
+.option.correct .letter{color:#34d399}
+.option.incorrect .letter{color:#f87171}
+.explain-btn{margin-top:14px;background:#334155;color:#e2e8f0;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:.9em;display:none}
+.explain-btn.show{display:inline-block}
+.explain-btn:hover{background:#475569}
+.explain{display:none;margin-top:12px;padding:14px;background:#1e1b4b;border-left:4px solid #c4b5fd;border-radius:6px;font-size:.92em;color:#cbd5e1}
+.explain.open{display:block}
+.explain b{color:#c4b5fd}
+.explain .row{margin-bottom:8px}
+.explain .lang{margin-top:4px;padding-left:8px}
+.explain .lang-jp{border-left:3px solid #c4b5fd;color:#ddd6fe;padding:4px 0 4px 10px;margin:4px 0}
+.explain .lang-vn{border-left:3px solid #38bdf8;color:#cbd5e1;padding:4px 0 4px 10px;margin:4px 0;font-size:.92em}
+.nav{display:flex;gap:10px;margin-top:20px}
+.nav button{flex:1;padding:12px;border:none;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-prev{background:#334155;color:#e2e8f0}
+.btn-prev:hover:not(:disabled){background:#475569}
+.btn-next{background:#c4b5fd;color:#0f172a}
+.btn-next:hover:not(:disabled){background:#a78bfa}
+.nav button:disabled{opacity:.4;cursor:not-allowed}
+.result-screen{text-align:center;padding:30px 20px}
+.result-screen h2{color:#c4b5fd;font-size:1.6em;margin-bottom:20px}
+.score-circle{width:160px;height:160px;border-radius:50%;background:conic-gradient(#c4b5fd var(--p),#334155 0);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;position:relative}
+.score-circle::before{content:'';position:absolute;width:130px;height:130px;border-radius:50%;background:#1e293b}
+.score-inner{position:relative;z-index:1;font-size:2em;font-weight:700;color:#f1f5f9}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat-box{background:#0f172a;padding:14px;border-radius:8px}
+.stat-box .v{font-size:1.3em;font-weight:700;color:#c4b5fd}
+.stat-box .l{font-size:.82em;color:#94a3b8;margin-top:4px}
+.verdict{font-size:1.05em;margin:16px 0;padding:14px;border-radius:8px;background:#1e1b4b;color:#e2e8f0}
+.restart{background:#c4b5fd;color:#0f172a;border:none;padding:14px 28px;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer}
+.restart:hover{background:#a78bfa}
+.hidden{display:none}
+@media(max-width:600px){.container{padding:16px}.q-jp{font-size:1em}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>⚙️ システム構成・稼働率 (MTBF/MTTR)</h1>
+    <div class="sub">FE試験対策 — 40問 · 30分 · Yasashii Ch.5 + Slide 5_システム構成要素 第1-3回</div>
+  </div>
+  <div id="quiz-area">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="progress-text">第1問 / 40</span>
+        <span id="score-text">正解: 0</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:2.5%"></div></div>
+    </div>
+    <div id="question-container"></div>
+    <div class="nav">
+      <button class="btn-prev" id="prev-btn" onclick="prev()">← 前の問題</button>
+      <button class="btn-next" id="next-btn" onclick="next()">次の問題 →</button>
+    </div>
+  </div>
+  <div id="result-screen" class="result-screen hidden">
+    <h2>🎯 結果 / Kết quả</h2>
+    <div class="score-circle" id="score-circle"><div class="score-inner" id="score-inner">0%</div></div>
+    <div class="result-stats">
+      <div class="stat-box"><div class="v" id="r-correct">0</div><div class="l">正解 / Đúng</div></div>
+      <div class="stat-box"><div class="v" id="r-wrong">0</div><div class="l">不正解 / Sai</div></div>
+      <div class="stat-box"><div class="v" id="r-total">40</div><div class="l">合計 / Tổng</div></div>
+    </div>
+    <div class="verdict" id="verdict"></div>
+    <button class="restart" onclick="restart()">🔄 もう一度 / Làm lại</button>
+  </div>
+</div>
+
+<script>
+const QUIZ = [
+  // ===== DỄ (12 câu) =====
+  {d:"easy",
+   jp:"MTBFの意味として正しいものはどれか。",
+   vn:"MTBF có ý nghĩa gì?",
+   o_jp:["Mean Time Before Fix","Mean Time Between Failures（故障と故障の間隔の平均）","Maximum Time Before Failure","Median Time Between Functions"],
+   o_vn:["—","Thời gian trung bình giữa các lần hỏng","—","—"],
+   ans:1,
+   exp_jp:["誤り。","正解 — Slide第2回：MTBF = 故障と故障の間隔の平均時間 = 正常稼働時間の平均。","誤り。","誤り。"],
+   exp_vn:["Sai.","Đúng — MTBF = thời gian TB giữa các lần hỏng = 稼働時間 TB.","Sai.","Sai."]},
+
+  {d:"easy",
+   jp:"MTTRの意味として正しいものはどれか。",
+   vn:"MTTR có ý nghĩa gì?",
+   o_jp:["Mean Time To Run","Mean Time To Repair（修理にかかる平均時間）","Max Time To Restart","Median Time To Reset"],
+   o_vn:["—","Thời gian sửa trung bình","—","—"],
+   ans:1,
+   exp_jp:["誤り。","正解 — Slide第2回：MTTR = 修理にかかる平均時間。小さいほど保守性が高い。","誤り。","誤り。"],
+   exp_vn:["Sai.","Đúng — MTTR = thời gian sửa TB. Nhỏ → bảo trì tốt.","Sai.","Sai."]},
+
+  {d:"easy",
+   jp:"稼働率（Availability）の公式として正しいものはどれか。",
+   vn:"Công thức 稼働率 đúng là gì?",
+   o_jp:["MTBF / MTTR","MTBF /（MTBF + MTTR）","MTTR / MTBF","（MTBF + MTTR）/ MTBF"],
+   o_vn:["","","",""],
+   ans:1,
+   exp_jp:["誤り。","正解 — Slide第2回：稼働率 = MTBF /（MTBF + MTTR）。","これは故障率に近い。","誤り。"],
+   exp_vn:["Sai.","Đúng — Công thức chính thức.","Gần với tỷ lệ hỏng.","Sai."]},
+
+  {d:"easy",
+   jp:"RASISの「R」が表すものはどれか。",
+   vn:"Chữ R trong RASIS là gì?",
+   o_jp:["Reliability（信頼性）— MTBFで評価","Recovery","Replication","Refresh"],
+   o_vn:["Độ tin cậy","—","—","—"],
+   ans:0,
+   exp_jp:["正解 — Slide第2回：R = Reliability = システム安定稼働。評価指標 = MTBF。","誤り。","誤り。","誤り。"],
+   exp_vn:["Đúng — R = Reliability, đo bằng MTBF.","Sai.","Sai.","Sai."]},
+
+  {d:"easy",
+   jp:"集中処理の特徴として正しいものはどれか。",
+   vn:"Đặc điểm của 集中処理?",
+   o_jp:["複数の対等なコンピュータが処理を担当","1台の大型コンピュータ（ホストコンピュータ）が複数端末の全命令を処理","クラウドベース","P2P構成"],
+   o_vn:["—","1 host xử lý mọi lệnh từ terminal","—","—"],
+   ans:1,
+   exp_jp:["それは分散処理。","正解 — Yasashii Lesson 05-01：「1台の大型コンピュータに複数の端末を接続」, 大型コンピュータをホストコンピュータと呼ぶ。","誤り。","誤り。"],
+   exp_vn:["Đó là 分散処理.","Đúng — Định nghĩa nguyên văn Yasashii.","Sai.","Sai."]},
+
+  {d:"easy",
+   jp:"分散処理システムの3種類として、Yasashiiが挙げているものはどれか。",
+   vn:"3 loại 分散処理 mà Yasashii nêu là?",
+   o_jp:["クライアントサーバ・3層クライアントサーバ・Webシステム","集中・分散・並列","P2P・C/S・ハブ型","TCP・UDP・IP"],
+   o_vn:["","","",""],
+   ans:0,
+   exp_jp:["正解 — Yasashii Lesson 05-01：分散処理システムには「クライアントサーバ、3層クライアントサーバ、Webシステム」の3種類がある。","誤り。","誤り。","ネットワークプロトコルである。"],
+   exp_vn:["Đúng — Theo Yasashii.","Sai.","Sai.","Là giao thức mạng."]},
+
+  {d:"easy",
+   jp:"デュアルシステムとはどのような方式か。",
+   vn:"Dual System là gì?",
+   o_jp:["1台で2つの処理を行う","2系統のシステムで同時に処理し、結果を照合する","現用系と待機系で構成し、障害時に切替","クラウドバックアップ"],
+   o_vn:["","2 hệ thống chạy song song + so kết quả","","" ],
+   ans:1,
+   exp_jp:["誤り。","正解 — Yasashii 過去問 5-2 解答 エ：「一つの処理を2系統のシステムで独立に行い、結果を照合する方式」。","それはデュプレックスシステム。","誤り。"],
+   exp_vn:["Sai.","Đúng — 2 hệ thống độc lập + so kết quả.","Đó là デュプレックス.","Sai."]},
+
+  {d:"easy",
+   jp:"デュプレックスシステムとはどのような方式か。",
+   vn:"Duplex System là gì?",
+   o_jp:["2系統で同時並行処理","現用系と待機系の2系統で構成し、現用系障害時に待機系が処理を受け継ぐ","自動バックアップ","暗号化二重化"],
+   o_vn:["","現用系 + 待機系, failover","",""],
+   ans:1,
+   exp_jp:["それはデュアル。","正解 — Yasashii：デュプレックス = 「現用系と待機系の2系統。現用系に障害が生じたときに待機系が処理を受け継ぐ方式」。","誤り。","誤り。"],
+   exp_vn:["Đó là デュアル.","Đúng — Có 現用系 + 待機系, failover.","Sai.","Không liên quan."]},
+
+  {d:"easy",
+   jp:"フォールトトレラントシステムの説明として正しいものはどれか。",
+   vn:"Fault Tolerant là gì?",
+   o_jp:["故障しないように設計する","システムが部分的に故障しても、システム全体としては必要な機能を維持する","常時バックアップを取る","CPUを高速化する"],
+   o_vn:["","Hỏng 1 phần vẫn duy trì chức năng cần thiết","",""],
+   ans:1,
+   exp_jp:["それはフォールトアボイダンス。","正解 — Yasashii 過去問 5-4 解答 ア：「システムが部分的に故障しても、システム全体としては必要な機能を維持するシステム」。","別の概念。","別の概念。"],
+   exp_vn:["Đó là Fault Avoidance.","Đúng — Định nghĩa nguyên văn.","Khác khái niệm.","Khác."]},
+
+  {d:"easy",
+   jp:"フェールセーフの説明として正しいものはどれか。",
+   vn:"Fail Safe là gì?",
+   o_jp:["故障した時は安全を優先（システムを止めても良い）","故障しても性能が落ちても動作続行","故障しないように設計","自動復旧"],
+   o_vn:["Hỏng thì dừng, ưu tiên an toàn","","",""],
+   ans:0,
+   exp_jp:["正解 — Yasashii Lesson 05-02：フェールセーフ = 「障害が起きた時に、システムを止めてでも安全を優先させる設計」。","それはフェールソフト。","別の概念。","別の概念。"],
+   exp_vn:["Đúng — Dừng cũng được, ưu tiên an toàn.","Đó là Fail Soft.","Sai.","Khác khái niệm."]},
+
+  {d:"easy",
+   jp:"フェールソフトの説明として正しいものはどれか。",
+   vn:"Fail Soft là gì?",
+   o_jp:["故障時に完全停止","故障した時、性能が落ちてもシステム全体は動作させる（縮退運転/フォールバック）","誤操作対策","二重化"],
+   o_vn:["","Hỏng thì giảm hiệu năng vẫn chạy","",""],
+   ans:1,
+   exp_jp:["それはフェールセーフ。","正解 — Yasashii Lesson 05-02：「たとえ性能が落ちたとしても、システム全体は動作させる設計」。限定動作を縮退運転（フォールバック）と呼ぶ。","別の概念（フールプルーフ）。","別の概念。"],
+   exp_vn:["Đó là Fail Safe.","Đúng — Hỏng thì giảm hiệu năng vẫn chạy.","Khác.","Sai."]},
+
+  {d:"easy",
+   jp:"フールプルーフの説明として正しいものはどれか。",
+   vn:"Fool Proof là gì?",
+   o_jp:["故障時の安全停止","性能低下しても動作続行","利用者が誤った操作をしてもシステムに異常が起こらないようにする","複数CPU構成"],
+   o_vn:["","","Người dùng thao tác sai không gây lỗi",""],
+   ans:2,
+   exp_jp:["それはフェールセーフ。","それはフェールソフト。","正解 — Yasashii Lesson 05-02：「人間が間違った使い方をしても、システムに異常が起こらないようにする設計」。例：ドアを閉めないと加熱できない電子レンジ。","別の概念。"],
+   exp_vn:["Là Fail Safe.","Là Fail Soft.","Đúng — vd lò vi sóng không nóng khi cửa hở.","Sai."]},
+
+  // ===== TB (16 câu) =====
+  {d:"med",
+   jp:"あるシステムの稼働履歴は次のとおりである：稼働200h → 修理3h → 稼働100h → 修理1h → 稼働150h → 修理2h。MTBFはいくらか。",
+   vn:"Lịch sử vận hành: 200h-3h-100h-1h-150h-2h. MTBF = ?",
+   o_jp:["150 時間","100 時間","450 時間","6 時間"],
+   o_vn:["150 giờ","","",""],
+   ans:0,
+   exp_jp:["正解 — Slide第2回 原文：MTBF =（200+100+150）÷ 3 = 150時間。","誤り。","稼働時間の合計（÷3していない）。","故障回数の合計。"],
+   exp_vn:["Đúng — (200+100+150)/3 = 150.","Sai.","Là tổng稼働 chưa chia.","Là số lần."]},
+
+  {d:"med",
+   jp:"同じ稼働履歴のMTTRはいくらか。",
+   vn:"Cùng dữ liệu, MTTR = ?",
+   o_jp:["6 時間","2 時間","3 時間","1 時間"],
+   o_vn:["","2 giờ","",""],
+   ans:1,
+   exp_jp:["修理時間の合計（÷3していない）。","正解 — MTTR =（3+1+2）÷ 3 = 2時間。","回数を表す数。","最小修理時間。"],
+   exp_vn:["Là tổng 修理.","Đúng — (3+1+2)/3 = 2.","Là số lần.","Sai."]},
+
+  {d:"med",
+   jp:"同じ稼働履歴の稼働率はおよそいくらか。",
+   vn:"Cùng dữ liệu, 稼働率 ≈ ?",
+   o_jp:["0.987（98.7%）","0.5","0.81","0.95"],
+   o_vn:["≈ 98.7%","","",""],
+   ans:0,
+   exp_jp:["正解 — Slide第2回 原文：150/(150+2) = 150/152 ≈ 0.987。","誤り。","それは0.9×0.9の直列稼働率。","誤り。"],
+   exp_vn:["Đúng — 150/152 ≈ 0.987.","Sai.","Là直列 A×B = 0.9×0.9.","Sai."]},
+
+  {d:"med",
+   jp:"稼働率0.9のシステムA・Bを直列接続したとき、全体の稼働率はいくらか。",
+   vn:"A=0.9, B=0.9 nối tuần tự. 稼働率 tổng = ?",
+   o_jp:["1.8","0.81","0.99","0.45"],
+   o_vn:["","0.81","",""],
+   ans:1,
+   exp_jp:["確率値が1を超えるのは不適。","正解 — Slide第2回：直列 = A × B = 0.9 × 0.9 = 0.81。","それは並列の場合。","誤り。"],
+   exp_vn:["Không hợp lý (>1).","Đúng — 直列 = A×B.","Đó là 並列.","Sai."]},
+
+  {d:"med",
+   jp:"稼働率0.9のシステムA・Bを並列接続したとき、全体の稼働率はいくらか。",
+   vn:"A=0.9, B=0.9 nối song song. 稼働率 tổng = ?",
+   o_jp:["0.81","0.99","0.9","1.0"],
+   o_vn:["","0.99","",""],
+   ans:1,
+   exp_jp:["それは直列の場合。","正解 — Slide第2回：並列 = 1 −（1−0.9）（1−0.9）= 1 − 0.01 = 0.99。","個々の稼働率と同じになるのは無関係系のみ。","100%は到達できない。"],
+   exp_vn:["Đó là 直列.","Đúng — 1 − 0.01 = 0.99.","Sai.","Không đạt 100%."]},
+
+  {d:"med",
+   jp:"Yasashii過去問5-3：「コンピュータを2台用意しておき、現用系が故障したときは、現用系と同一のオンライン処理プログラムをあらかじめ起動して待機している待機系のコンピュータに速やかに切り替える」 — このシステムはどれか。",
+   vn:"Mô tả trên ứng với hệ thống nào?",
+   o_jp:["コールドスタンバイシステム","ホットスタンバイシステム","マルチプロセッサシステム","マルチユーザシステム"],
+   o_vn:["","Hot Standby","",""],
+   ans:1,
+   exp_jp:["待機系は電源OFF・停止状態。","正解 — Yasashii解答5-3 イ：ホットスタンバイ = 「待機系のコンピュータに同一のプログラムを起動済みで待機させ、故障時に速やかに切り替える」。","1システムに複数CPU。","複数ユーザの同時利用。"],
+   exp_vn:["待機系 OFF.","Đúng — Hot Standby, chuyển đổi nhanh.","Đa CPU.","Đa người dùng."]},
+
+  {d:"med",
+   jp:"コールドスタンバイシステムの特徴はどれか。",
+   vn:"Cold Standby đặc trưng?",
+   o_jp:["待機系を電源ON・プログラム起動済みで待機させる","待機系には電源を入れず、停止した状態で待機させる","2系統で完全同時並行処理","CPU を2つ搭載"],
+   o_vn:["","待機系 OFF, chờ ở trạng thái dừng","",""],
+   ans:1,
+   exp_jp:["それはホットスタンバイ。","正解 — Yasashii解答5-3：コールドスタンバイ = 「待機系には電源を入れず、停止した状態で待機させておくシステム」。","それはデュアル。","別の概念。"],
+   exp_vn:["Đó là Hot.","Đúng — Cold = OFF, chậm hơn khi chuyển.","Là Dual.","Khác."]},
+
+  {d:"med",
+   jp:"Yasashii過去問5-1：3層クライアントサーバ構成で実現したWebシステムの特徴として、適切なものはどれか。",
+   vn:"Đặc điểm 3-tier Web hệ thống đúng?",
+   o_jp:["HTMLで記述されたプログラムをサーバ側で動作させ、クライアントソフトはその結果を画面に表示","業務処理の変更のたびに、クライアント端末にアプリをインストール必要","業務処理はサーバ側で実行し、クライアントソフトはHTMLの記述に従って結果を画面に表示","クライアント端末にHTTP要求を待ち受けるサービスを常駐させる必要"],
+   o_vn:["","","Server xử lý nghiệp vụ, client (browser) hiển thị theo HTML",""],
+   ans:2,
+   exp_jp:["HTMLはクライアント側で動作する。","Webシステムは特別なクライアントソフトのインストール不要。","正解 — Yasashii解答5-1 ウ：「クライアントソフトにWebブラウザを使う」がWebシステムの特徴。","HTTP要求を待ち受けるのはサーバ。"],
+   exp_vn:["HTML chạy client.","Web không cần cài thêm.","Đúng — Client = browser, hiển thị HTML.","HTTP server 受信."]},
+
+  {d:"med",
+   jp:"Yasashii過去問5-8：コンピュータシステムによって単位時間当たりに処理される仕事の量を表す用語はどれか。",
+   vn:"Chỉ số đo work/time unit là gì?",
+   o_jp:["スループット","ターンアラウンドタイム","タイムスライス","レスポンスタイム"],
+   o_vn:["Throughput","","",""],
+   ans:0,
+   exp_jp:["正解 — Yasashii Lesson 05-03 + 解答5-8 ア：スループット = 単位時間当たり処理量。","入力～出力までの全工程の時間。","OSがCPUを割り当てる時間の単位。","処理だけにかかる時間（応答時間）。"],
+   exp_vn:["Đúng — Throughput = work/time.","Là tổng thời gian工程.","Khái niệm OS scheduling.","Là 応答時間."]},
+
+  {d:"med",
+   jp:"ターンアラウンドタイムとレスポンスタイムの違いとして正しいものはどれか。",
+   vn:"Khác nhau giữa Turnaround Time và Response Time?",
+   o_jp:["同じ意味","ターンアラウンド = 入力+処理+出力 の全工程; レスポンス = 処理だけにかかる時間","逆になっている","両方とも入力時間を表す"],
+   o_vn:["","Turnaround = toàn工程; Response = chỉ xử lý","",""],
+   ans:1,
+   exp_jp:["異なる概念。","正解 — Yasashii Lesson 05-03：ターンアラウンドは「入力+処理+出力」、レスポンスは「処理だけ」。","誤り。","誤り。"],
+   exp_vn:["Khác nhau.","Đúng — Turnaround tổng, Response chỉ xử lý.","Sai.","Sai."]},
+
+  {d:"med",
+   jp:"Yasashii過去問5-9：システムのスケールアウトに関する記述として、適切なものはどれか。",
+   vn:"スケールアウト đúng là?",
+   o_jp:["既存のシステムにサーバを追加導入することによって、システム全体の処理能力を向上させる","既存のサーバの一部又は全部をクラウドに再配置する","既存のサーバをより高性能なものと入れ替える","1つのサーバを複数サーバのように見せる"],
+   o_vn:["Tăng số server để mở rộng năng lực","","",""],
+   ans:0,
+   exp_jp:["正解 — Yasashii解答5-9 ア + Lesson 05-03：「サーバの台数を増やすことで、システム全体の処理能力を向上させること」。","クラウド移行の話。","それはスケールアップ。","仮想化の概念。"],
+   exp_vn:["Đúng — Tăng台数.","Là chuyển cloud.","Là スケールアップ.","Là virtualization."]},
+
+  {d:"med",
+   jp:"スケールアップとはどのような手段か。",
+   vn:"スケールアップ là gì?",
+   o_jp:["サーバの台数を増やす","個々のサーバの処理能力を向上させる（CPU高性能化、主記憶増設等）","クラウドからオンプレへ移行","データを暗号化する"],
+   o_vn:["","Tăng năng lực từng server","",""],
+   ans:1,
+   exp_jp:["それはスケールアウト。","正解 — Yasashii Lesson 05-03：「個々のサーバの処理能力を向上させることで、システム全体の処理能力を向上させる」。CPU換装や主記憶増設など。","別の概念。","別の概念。"],
+   exp_vn:["Là アウト.","Đúng — Tăng năng lực 1 server.","Khác.","Khác."]},
+
+  {d:"med",
+   jp:"Yasashii過去問5-10：ベンチマークテストの説明として、適切なものはどれか。",
+   vn:"Benchmark test đúng?",
+   o_jp:["監視プログラムによってシステムの稼働状態や資源の状況を測定する","使用目的に合わせて選定した標準的なプログラムを実行させ、システムの処理性能を測定する","モデルを作成して模擬的に実験するプログラムでシステム性能を評価する","プログラムを実行せず、机上で命令の出現回数等から性能を評価する"],
+   o_vn:["","Chạy chương trình chuẩn đo hiệu năng","",""],
+   ans:1,
+   exp_jp:["それはモニタリング。","正解 — Yasashii解答5-10 イ + Lesson 05-03：「使用目的に合わせて選定した標準的なプログラムやデータを使ってシステムの処理性能を測定」。","モンテカルロ法等の模擬実験。","静的解析（命令ミックス等）。"],
+   exp_vn:["Là monitoring.","Đúng — Chạy chương trình chuẩn.","Là mô phỏng.","Là phân tích tĩnh."]},
+
+  {d:"med",
+   jp:"ストライピング（RAID 0）の特徴として正しいものはどれか。",
+   vn:"Striping (RAID 0) đặc điểm?",
+   o_jp:["同じデータを複数のディスクに書き込む","データを分散して複数の磁気ディスクに書き込み、データ入出力の高速化を図る","パリティで信頼性を高める","データを圧縮する"],
+   o_vn:["","Phân tán data → tăng tốc I/O","",""],
+   ans:1,
+   exp_jp:["それはミラーリング。","正解 — Yasashii Lesson 05-02 + 過去問5-6 ア：「データを分散して複数の磁気ディスクに書き込むことによって、データ入出力の高速化を図る方式」。","RAID 5/6。","別の技術。"],
+   exp_vn:["Là ミラーリング.","Đúng — Phân tán.","Là RAID 5.","Khác."]},
+
+  {d:"med",
+   jp:"ミラーリング（RAID 1）の特徴として正しいものはどれか。",
+   vn:"Mirroring (RAID 1) đặc điểm?",
+   o_jp:["データを分散して書き込む","複数のハードディスクに同じデータを書き込み、システムの信頼性を高める","パリティのみで復元","データを圧縮する"],
+   o_vn:["","Cùng data nhiều ổ → tăng tin cậy","",""],
+   ans:1,
+   exp_jp:["それはストライピング。","正解 — Yasashii Lesson 05-02 + 過去問5-7：「複数のハードディスクに同じデータを書き込むことによって、システムの信頼性を高める方式」。","RAID 5。","別の技術。"],
+   exp_vn:["Là Striping.","Đúng — Cùng data nhiều ổ.","Là RAID 5.","Khác."]},
+
+  {d:"med",
+   jp:"シンクライアントシステムの主なメリットはどれか。",
+   vn:"Thin Client lợi điểm chính?",
+   o_jp:["処理速度が最も速い","PC端末を紛失しても情報が漏洩しない（データはサーバ側にあるため）","完全オフライン動作が可能","最も安価"],
+   o_vn:["","Mất máy không lộ data","",""],
+   ans:1,
+   exp_jp:["特に高速ではない。","正解 — Slide第1回：「PC端末を紛失しても情報が漏洩しない」が最大のメリット。HDDやSSDを省きデータはサーバに集中。","逆。ネットワーク必須。","コストは別の要素。"],
+   exp_vn:["Không phải nhanh nhất.","Đúng — Mất máy data vẫn ở server.","Ngược lại — cần network.","Không phải lợi điểm chính."]},
+
+  // ===== KHÓ (12 câu) =====
+  {d:"hard",
+   jp:"あるシステムの稼働率が0.95、MTTRが5時間のとき、MTBFはいくらか。",
+   vn:"稼働率=0.95, MTTR=5h. MTBF = ?",
+   o_jp:["95 時間","100 時間","19 時間","5 時間"],
+   o_vn:["95 giờ","","",""],
+   ans:0,
+   exp_jp:["正解 — 0.95 = MTBF/(MTBF+5) → 0.95(MTBF+5) = MTBF → 0.05 MTBF = 4.75 → MTBF = 95。","誤り（計算ミス）。","誤り。","それはMTTR。"],
+   exp_vn:["Đúng — Giải phương trình.","Sai.","Sai.","Là MTTR."]},
+
+  {d:"hard",
+   jp:"3つのシステム：A（稼働率0.9）を直列で、B（0.8）とC（0.8）の並列群と接続したとき、全体の稼働率はいくらか。",
+   vn:"A=0.9 nối tuần tự với (B=0.8 // C=0.8). Tính tổng.",
+   o_jp:["0.864","0.72","0.96","0.648"],
+   o_vn:["0.864","","",""],
+   ans:0,
+   exp_jp:["正解 — まずBC並列 = 1−(1−0.8)² = 1−0.04 = 0.96；次にA × BC = 0.9 × 0.96 = 0.864。","それはA×B×C全直列。","BCだけの稼働率。","誤り。"],
+   exp_vn:["Đúng — BC=0.96 → 0.9×0.96=0.864.","Là 3 nối tiếp.","Chỉ BC.","Sai."]},
+
+  {d:"hard",
+   jp:"MTBF=120h、MTTR=4hのシステムが、1年（8760時間）の間に停止すると見込まれる時間はおよそ何時間か。",
+   vn:"MTBF=120h, MTTR=4h, 1 năm 8760h. Tổng thời gian停止 ≈?",
+   o_jp:["約 282 時間","約 4 時間","約 120 時間","約 1 時間"],
+   o_vn:["≈ 282 giờ","","",""],
+   ans:0,
+   exp_jp:["正解 — 稼働率 = 120/124 ≈ 0.968 → 停止率 = 0.032 → 8760 × 0.032 ≈ 282時間。","それは1回の修理時間。","それはMTBF。","不適。"],
+   exp_vn:["Đúng — 0.968稼働 → 0.032停止 × 8760 ≈ 282.","Là 1 lần sửa.","Là MTBF.","Sai."]},
+
+  {d:"hard",
+   jp:"Yasashii過去問5-5：「装置が故障したときは、システムが安全に停止するようにして、被害を最小限に抑える」 — この設計はどれに該当するか。",
+   vn:"「Hỏng thì dừng an toàn」 — thiết kế nào?",
+   o_jp:["フェールソフト","フェールセーフ","フォールトトレラント","フールプルーフ"],
+   o_vn:["","Fail Safe","",""],
+   ans:1,
+   exp_jp:["フェールソフトは性能が落ちても動作続行。","正解 — Yasashii解答5-5：フェールセーフ = 「故障した時は安全第一」（システム停止して安全優先）。","冗長化による機能維持。","利用者誤操作対策。"],
+   exp_vn:["Là Soft.","Đúng — Fail Safe = 停止+安全.","Là Tolerant.","Là Fool Proof."]},
+
+  {d:"hard",
+   jp:"並列接続するシステム数を2から3に増やした場合（各稼働率0.9）、全体の稼働率はいくらか。",
+   vn:"3 hệ thống song song mỗi cái 0.9. 稼働率 tổng = ?",
+   o_jp:["0.729","0.99","0.999","0.81"],
+   o_vn:["","","0.999",""],
+   ans:2,
+   exp_jp:["それは直列3台の場合。","それは並列2台。","正解 — 1 − (1−0.9)³ = 1 − 0.001 = 0.999。冗長化を増やすと信頼性が急速に上がる。","直列2台。"],
+   exp_vn:["Là直列 3 ổ.","Là 並列 2 ổ.","Đúng — 1−0.001 = 0.999.","Là直列 2."]},
+
+  {d:"hard",
+   jp:"直列稼働率について正しい記述はどれか。",
+   vn:"Nhận định đúng về直列?",
+   o_jp:["個々の稼働率より必ず高くなる","個々の稼働率より必ず低くなる（両方が稼働している必要があるため）","個々の稼働率の平均となる","常に1.0となる"],
+   o_vn:["","Luôn thấp hơn từng cái","",""],
+   ans:1,
+   exp_jp:["逆。","正解 — 直列 = A × B ≤ min(A, B)。両方とも稼働している必要があるため、全体の稼働率は必ず単体より低くなる。","誤り。","誤り。"],
+   exp_vn:["Sai — ngược.","Đúng — Cần cả 2 → thấp hơn.","Sai.","Sai."]},
+
+  {d:"hard",
+   jp:"並列稼働率について正しい記述はどれか。",
+   vn:"Nhận định đúng về 並列?",
+   o_jp:["個々の稼働率と同じになる","個々の稼働率より低くなる","個々の稼働率より必ず高くなる（少なくとも一方が稼働すれば全体が稼働するため）","常に1.0になる"],
+   o_vn:["","","Luôn cao hơn từng cái",""],
+   ans:2,
+   exp_jp:["誤り。","逆。","正解 — 並列 = 1−(1−A)(1−B) ≥ max(A, B)。少なくとも一方が稼働すれば良いため、全体の稼働率は単体より必ず高くなる。これが冗長化で信頼性を高める理由。","無限冗長化＋完全独立でしか到達しない。"],
+   exp_vn:["Sai.","Sai — ngược.","Đúng — Cao hơn nhờ redundancy.","Chỉ với∞ redundancy."]},
+
+  {d:"hard",
+   jp:"フォールトトレラントとフォールトアボイダンスの違いとして正しいものはどれか。",
+   vn:"Tolerant vs Avoidance khác nhau ở đâu?",
+   o_jp:["同じ意味","トレラント = 故障の発生を許容し冗長化で対応; アボイダンス = そもそも故障を起こさないように設計","逆になっている","両方ともRAIDを使う"],
+   o_vn:["","Tolerant chấp nhận hỏng+redundancy; Avoidance không cho xảy ra","",""],
+   ans:1,
+   exp_jp:["異なるアプローチ。","正解 — Slide第2回（基本概念）：トレラント = 「問題が起きても大丈夫」、アボイダンス = 「そもそも故障を起こさない」。","誤り。","RAIDは1つの手段に過ぎない。"],
+   exp_vn:["Khác hẳn.","Đúng — 2 cách tiếp cận khác.","Sai.","Không bắt buộc."]},
+
+  {d:"hard",
+   jp:"差分バックアップと増分バックアップの違いとして正しいものはどれか。",
+   vn:"差分 vs 増分 backup khác nhau?",
+   o_jp:["同じ意味","差分 = 直前のフルバックアップ以降の変更データ; 増分 = 直前のバックアップ以降の変更データ","両方ともフルバックアップと同じ","逆になっている"],
+   o_vn:["","差分 = từ full gần nhất; 増分 = từ backup gần nhất","",""],
+   ans:1,
+   exp_jp:["異なる。","正解 — Slide第1回：差分 = フル以降の変更データ、増分 = 直前バックアップ以降の変更データ。","フルとは異なる。","誤り。"],
+   exp_vn:["Khác.","Đúng — 差分 từ full, 増分 từ backup gần nhất.","Khác.","Sai."]},
+
+  {d:"hard",
+   jp:"次のうち、デュアルシステムとは異なる「負荷分散システム」の説明はどれか。",
+   vn:"Mô tả nào là 負荷分散 (KHÔNG phải Dual)?",
+   o_jp:["一つの処理を2系統で独立に行い、結果を照合する","2系統のシステムの負荷が均等になるように、処理を分散する","現用系と待機系で構成し、障害時に切替","複数のCPUを1システムに搭載"],
+   o_vn:["","Phân bố tải đều giữa 2 hệ thống","",""],
+   ans:1,
+   exp_jp:["それはデュアル。","正解 — Yasashii過去問5-2 イ：負荷分散（ロードバランシング）= 「2系統のシステムの負荷が均等になるように処理を分散する方式」。デュアルとは異なる。","それはデュプレックス。","それはマルチプロセッサ。"],
+   exp_vn:["Là Dual.","Đúng — Load balancing.","Là Duplex.","Là Multi-processor."]},
+
+  {d:"hard",
+   jp:"RASIS の Availability（可用性）の評価指標として、Slide第2回で挙げているものはどれか。",
+   vn:"A của RASIS đo bằng gì?",
+   o_jp:["MTBF","MTTR","稼働率","スループット"],
+   o_vn:["","","稼働率",""],
+   ans:2,
+   exp_jp:["MTBFはR（信頼性）の指標。","MTTRはS（保守性）の指標。","正解 — Slide第2回：A（Availability）= 「使いたい時にいつでも使えること」、評価指標 = 稼働率。","それは性能指標。"],
+   exp_vn:["MTBF đo R.","MTTR đo S.","Đúng — 稼働率 đo A.","Là chỉ số hiệu năng."]},
+
+  {d:"hard",
+   jp:"MTBFを2倍にしたとき（MTTRは変えない）、稼働率はどう変化するか。",
+   vn:"MTBF gấp đôi (MTTR giữ nguyên), 稼働率 thay đổi ra sao?",
+   o_jp:["減少する","変わらない","増加する（1に近づくが2倍にはならない）","2倍になる"],
+   o_vn:["","","Tăng (tiệm cận 1, không gấp đôi)",""],
+   ans:2,
+   exp_jp:["誤り。","誤り。","正解 — 例：MTBF=100, MTTR=2なら稼働率=100/102≈0.980。MTBF=200にすると200/202≈0.990。増加するが2倍にはならず、1に近づく形になる。","線形比例ではない。"],
+   exp_vn:["Sai.","Sai.","Đúng — Tăng nhưng tiệm cận 1.","Không tỷ lệ tuyến tính."]},
+];
+
+let cur=0, answers=new Array(QUIZ.length).fill(null);
+function render(){
+  const q=QUIZ[cur];
+  const tag = q.d==="easy"?'<span class="q-tag tag-easy">易 / Dễ</span>':q.d==="med"?'<span class="q-tag tag-med">中 / TB</span>':'<span class="q-tag tag-hard">難 / Khó</span>';
+  const L=["ア","イ","ウ","エ"];
+  let opts=q.o_jp.map((t,i)=>{
+    let cls="option";
+    if(answers[cur]!==null){
+      cls+=" locked";
+      if(i===q.ans)cls+=" correct";
+      else if(i===answers[cur])cls+=" incorrect";
+    }
+    const vnText = q.o_vn[i] && q.o_vn[i]!=="" && q.o_vn[i]!=="—" ? `<span class="text-vn">🇻🇳 ${q.o_vn[i]}</span>` : "";
+    return `<div class="${cls}" onclick="pick(${i})"><span class="letter">${L[i]}.</span><span><span class="text-jp">${t}</span>${vnText}</span></div>`;
+  }).join("");
+  let explHtml="";
+  if(answers[cur]!==null){
+    let rows = q.exp_jp.map((e,i)=>{
+      const vn = q.exp_vn[i] || "";
+      return `<div class="row"><b>${L[i]}：</b><div class="lang-jp">🇯🇵 ${e}</div><div class="lang-vn">🇻🇳 ${vn}</div></div>`;
+    }).join("");
+    explHtml=`<button class="explain-btn show" onclick="toggleExp()">📖 解説を表示 / Xem giải thích</button>
+      <div class="explain" id="exp">
+        <div class="row"><b>正解：${L[q.ans]}</b></div>
+        ${rows}
+        <div class="row" style="margin-top:8px;border-top:1px solid #475569;padding-top:8px"><b>FE出題範囲：</b>システムの構成・信頼性（Yasashii Ch.5 / Slide 5 第1-3回）</div>
+      </div>`;
+  }
+  document.getElementById("question-container").innerHTML=`
+    <div class="question-card">${tag}
+      <div class="q-jp"><b>第${cur+1}問：</b>${q.jp}</div>
+      <div class="q-vn">🇻🇳 Câu ${cur+1}: ${q.vn}</div>
+      <div class="options">${opts}</div>${explHtml}
+    </div>`;
+  document.getElementById("progress-text").textContent=`第${cur+1}問 / ${QUIZ.length}`;
+  document.getElementById("score-text").textContent=`正解: ${answers.filter((a,i)=>a===QUIZ[i].ans).length}`;
+  document.getElementById("progress-fill").style.width=`${((cur+1)/QUIZ.length)*100}%`;
+  document.getElementById("prev-btn").disabled=cur===0;
+  document.getElementById("next-btn").textContent=cur===QUIZ.length-1?"🏁 終了 / Kết thúc":"次の問題 →";
+}
+function pick(i){if(answers[cur]!==null)return;answers[cur]=i;render();}
+function toggleExp(){document.getElementById("exp").classList.toggle("open");}
+function prev(){if(cur>0){cur--;render();}}
+function next(){if(cur<QUIZ.length-1){cur++;render();}else showResult();}
+function showResult(){
+  const c=answers.filter((a,i)=>a===QUIZ[i].ans).length;
+  const pct=Math.round(c/QUIZ.length*100);
+  document.getElementById("quiz-area").classList.add("hidden");
+  document.getElementById("result-screen").classList.remove("hidden");
+  document.getElementById("r-correct").textContent=c;
+  document.getElementById("r-wrong").textContent=QUIZ.length-c;
+  document.getElementById("r-total").textContent=QUIZ.length;
+  document.getElementById("score-inner").textContent=pct+"%";
+  document.getElementById("score-circle").style.setProperty("--p",pct*3.6+"deg");
+  let v;
+  if(pct>=90)v="🏆 素晴らしい！システム構成・稼働率をしっかり理解しています。/ Xuất sắc!";
+  else if(pct>=75)v="👍 良いペース。MTBF/MTTRの公式とフェール系の用語を復習しましょう。/ Khá tốt!";
+  else if(pct>=60)v="📚 普通。Yasashii Ch.5 + Slide第1-3回を見直しましょう。/ Trung bình.";
+  else v="⚠️ 基礎の復習が必要。もう一度挑戦してください。/ Cần ôn lại.";
+  document.getElementById("verdict").textContent=v;
+}
+function restart(){cur=0;answers=new Array(QUIZ.length).fill(null);document.getElementById("quiz-area").classList.remove("hidden");document.getElementById("result-screen").classList.add("hidden");render();}
+render();
+</script>
+</body>
+</html>
