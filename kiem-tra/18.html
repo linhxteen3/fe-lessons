@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE - 補助記憶+I/O・RAID (40 câu)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh;padding:16px;line-height:1.6}
+.container{max-width:880px;margin:0 auto;background:#1e293b;border-radius:16px;padding:24px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.header{text-align:center;border-bottom:2px solid #334155;padding-bottom:16px;margin-bottom:20px}
+.header h1{color:#6ee7b7;font-size:1.4em;margin-bottom:4px}
+.header .sub{color:#94a3b8;font-size:.9em}
+.progress-wrap{background:#0f172a;border-radius:10px;padding:12px;margin-bottom:20px}
+.progress-info{display:flex;justify-content:space-between;font-size:.9em;color:#cbd5e1;margin-bottom:8px}
+.progress-bar{height:10px;background:#334155;border-radius:5px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#6ee7b7,#22d3ee);transition:width .3s}
+.question-card{background:#0f172a;border-radius:12px;padding:20px;margin-bottom:16px}
+.q-tag{display:inline-block;padding:3px 10px;border-radius:6px;font-size:.78em;font-weight:600;margin-bottom:10px}
+.tag-easy{background:#065f46;color:#a7f3d0}
+.tag-med{background:#854d0e;color:#fde68a}
+.tag-hard{background:#7f1d1d;color:#fecaca}
+.q-text{font-size:1.05em;margin-bottom:8px;color:#f1f5f9}
+.q-jp{font-size:.92em;color:#94a3b8;margin-bottom:16px;font-style:italic}
+.options{display:flex;flex-direction:column;gap:10px}
+.option{background:#1e293b;border:2px solid #334155;border-radius:8px;padding:12px 16px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;color:#e2e8f0}
+.option:hover:not(.locked){border-color:#6ee7b7;background:#064e3b}
+.option .letter{font-weight:700;color:#6ee7b7;min-width:20px}
+.option.correct{background:#064e3b;border-color:#10b981;color:#a7f3d0}
+.option.incorrect{background:#7f1d1d;border-color:#ef4444;color:#fecaca}
+.option.locked{cursor:not-allowed;opacity:.85}
+.option.correct .letter{color:#34d399}
+.option.incorrect .letter{color:#f87171}
+.explain-btn{margin-top:14px;background:#334155;color:#e2e8f0;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:.9em;display:none}
+.explain-btn.show{display:inline-block}
+.explain-btn:hover{background:#475569}
+.explain{display:none;margin-top:12px;padding:14px;background:#064e3b;border-left:4px solid #6ee7b7;border-radius:6px;font-size:.92em;color:#cbd5e1}
+.explain.open{display:block}
+.explain b{color:#6ee7b7}
+.explain .row{margin-bottom:6px}
+.nav{display:flex;gap:10px;margin-top:20px}
+.nav button{flex:1;padding:12px;border:none;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-prev{background:#334155;color:#e2e8f0}
+.btn-prev:hover:not(:disabled){background:#475569}
+.btn-next{background:#6ee7b7;color:#0f172a}
+.btn-next:hover:not(:disabled){background:#34d399}
+.nav button:disabled{opacity:.4;cursor:not-allowed}
+.result-screen{text-align:center;padding:30px 20px}
+.result-screen h2{color:#6ee7b7;font-size:1.6em;margin-bottom:20px}
+.score-circle{width:160px;height:160px;border-radius:50%;background:conic-gradient(#6ee7b7 var(--p),#334155 0);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;position:relative}
+.score-circle::before{content:'';position:absolute;width:130px;height:130px;border-radius:50%;background:#1e293b}
+.score-inner{position:relative;z-index:1;font-size:2em;font-weight:700;color:#f1f5f9}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat-box{background:#0f172a;padding:14px;border-radius:8px}
+.stat-box .v{font-size:1.3em;font-weight:700;color:#6ee7b7}
+.stat-box .l{font-size:.82em;color:#94a3b8;margin-top:4px}
+.verdict{font-size:1.05em;margin:16px 0;padding:14px;border-radius:8px;background:#064e3b;color:#e2e8f0}
+.restart{background:#6ee7b7;color:#0f172a;border:none;padding:14px 28px;border-radius:8px;font-size:1em;font-weight:600;cursor:pointer}
+.restart:hover{background:#34d399}
+.hidden{display:none}
+@media(max-width:600px){.container{padding:16px}.q-text{font-size:1em}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>💽 補助記憶+I/O・RAID</h1>
+    <div class="sub">FE試験対策 — 40 câu · 30 phút · Yasashii Ch.4 Lesson 04-03/04/05 + Slide 3 第8-12回</div>
+  </div>
+  <div id="quiz-area">
+    <div class="progress-wrap">
+      <div class="progress-info">
+        <span id="progress-text">Câu 1 / 40</span>
+        <span id="score-text">Đúng: 0</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:2.5%"></div></div>
+    </div>
+    <div id="question-container"></div>
+    <div class="nav">
+      <button class="btn-prev" id="prev-btn" onclick="prev()">← Câu trước</button>
+      <button class="btn-next" id="next-btn" onclick="next()">Câu tiếp →</button>
+    </div>
+  </div>
+  <div id="result-screen" class="result-screen hidden">
+    <h2>🎯 Kết quả</h2>
+    <div class="score-circle" id="score-circle"><div class="score-inner" id="score-inner">0%</div></div>
+    <div class="result-stats">
+      <div class="stat-box"><div class="v" id="r-correct">0</div><div class="l">Đúng</div></div>
+      <div class="stat-box"><div class="v" id="r-wrong">0</div><div class="l">Sai</div></div>
+      <div class="stat-box"><div class="v" id="r-total">40</div><div class="l">Tổng</div></div>
+    </div>
+    <div class="verdict" id="verdict"></div>
+    <button class="restart" onclick="restart()">🔄 Làm lại từ đầu</button>
+  </div>
+</div>
+
+<script>
+const QUIZ = [
+  // ===== DỄ (12 câu) =====
+  {d:"easy",q:"補助記憶装置 đặc trưng khác 主記憶装置 ở điểm cốt lõi nào?",jp:"補助記憶装置と主記憶装置の主な違いは。",o:["Tốc độ nhanh hơn","Lưu data lâu dài (不揮発性), không mất khi tắt nguồn","Nằm trong CPU","Dùng SRAM"],ans:1,exp:["Ngược lại — 主記憶 nhanh hơn.","Đúng — Yasashii Lesson 04-03: 「データを長期的に保存する」, 主記憶 mất khi tắt nguồn.","Không.","Không — 補助記憶 không dùng SRAM."]},
+  {d:"easy",q:"HDD viết tắt của gì?",jp:"HDDの意味は。",o:["High Data Drive","Hard Disk Drive","Hybrid Digital Disc","High Density Disk"],ans:1,exp:["Sai.","Đúng — Yasashii: 「Hard Disk Drive」, 磁気ディスクを高速回転.","Sai.","Sai."]},
+  {d:"easy",q:"SSD viết tắt của gì và bản chất hoạt động?",jp:"SSDとは何か。",o:["Super Speed Disk – đĩa quay nhanh","Solid State Drive – dùng 半導体メモリ (フラッシュ)","Software System Disk – ổ ảo","Static Storage Device – RAM"],ans:1,exp:["Sai — không có đĩa quay.","Đúng — Yasashii: 「Solid State Drive、半導体メモリを使った補助記憶装置」.","Sai.","Sai — SSD lưu lâu dài, RAM volatile."]},
+  {d:"easy",q:"プラッタ trong HDD là gì?",jp:"プラッタとは。",o:["Đầu đọc/ghi","Cánh tay đọc","Đĩa từ tính dạng tròn","Cáp kết nối"],ans:2,exp:["Đó là 磁気ヘッド.","Đó là アクセスアーム.","Đúng — Slide第8回: プラッタ là circular magnetic disk record data.","Sai."]},
+  {d:"easy",q:"Đơn vị nhỏ nhất của プラッタ là gì?",jp:"プラッタの最小単位は。",o:["シリンダ","トラック","セクタ","クラスタ"],ans:2,exp:["Đó là nhiều track ghép lại.","Đó là 1 vòng sector.","Đúng — Slide第8回: 「プラッタを細かく区切った最小単位をセクタ」.","Không trong Yasashii/slide chính thức."]},
+  {d:"easy",q:"RAID 0 còn được gọi là?",jp:"RAID 0の別名は。",o:["ストライピング","ミラーリング","パリティ","シンクロナイズ"],ans:0,exp:["Đúng — Slide第9回: RAID 0 = ストライピング = phân tán data.","Là RAID 1.","Là RAID 5.","Không phải."]},
+  {d:"easy",q:"RAID 1 còn được gọi là?",jp:"RAID 1の別名は。",o:["ストライピング","ミラーリング","パリティ","アーカイブ"],ans:1,exp:["Là RAID 0.","Đúng — Slide第9回: RAID 1 = ミラーリング = ghi cùng data.","Là RAID 5.","Không phải."]},
+  {d:"easy",q:"RAID 5 sử dụng kỹ thuật gì cốt lõi?",jp:"RAID 5で使われる技術は。",o:["Chỉ stripping","Chỉ mirroring","Stripping + パリティ","Encryption"],ans:2,exp:["Sai.","Sai.","Đúng — Slide第9回: 「3台以上のHDDに分散してデータを書き込むと同時に、パリティを書き込む」.","Sai."]},
+  {d:"easy",q:"光ディスク nào có dung lượng LỚN NHẤT?",jp:"光ディスクで容量最大は。",o:["CD","DVD","BD (Blu-ray)","Tất cả bằng nhau"],ans:2,exp:["~700MB.","~17GB.","Đúng — Slide第10回: BD 405nm波長 → max 100GB.","Sai."]},
+  {d:"easy",q:"フラッシュメモリ là loại nào của ROM?",jp:"フラッシュメモリは何の一種か。",o:["DRAM","SRAM","EEPROM","マスクROM"],ans:2,exp:["Sai.","Sai.","Đúng — Slide第6回・第10回: フラッシュメモリ = EEPROMの一種, ブロック単位で書換え.","マスクROM không ghi được."]},
+  {d:"easy",q:"dpi dùng để đo gì của printer?",jp:"プリンタのdpiは何を表すか。",o:["Tốc độ in (trang/phút)","Số dot trên 1 inch — chất lượng","Số ký tự/giây","Trọng lượng máy"],ans:1,exp:["Đó là ppm.","Đúng — Yasashii Lesson 04-05: 「1インチあたりのドットの数を表す単位」.","Đó là cps.","Không liên quan."]},
+  {d:"easy",q:"デバイスドライバ là gì?",jp:"デバイスドライバとは。",o:["Phần cứng CPU","Phần mềm điều khiển 周辺機器 (thiết bị ngoại vi) từ PC","Cáp USB","Đĩa cứng"],ans:1,exp:["Không phải.","Đúng — Yasashii Lesson 04-04: 「PCに接続された周辺機器を制御するソフトウェア」.","Không.","Không."]},
+
+  // ===== TB (16 câu) =====
+  {d:"med",q:"HDD: 1 sector = 512 bytes, 1 track = 20 sectors, 1 cylinder = 60 tracks, 1500 cylinders. Tính 記憶容量.",jp:"上記のHDDの記憶容量は。",o:["≈ 30 MB","≈ 921.6 MB","≈ 30 GB","≈ 921.6 KB"],ans:1,exp:["Sai.","Đúng — Slide第8回: 512 × 20 × 60 × 1500 = 921,600,000 bytes ≈ 921.6 MB.","Sai.","Sai đơn vị."]},
+  {d:"med",q:"Ghi 700 bytes data vào HDD có 1 sector = 512 bytes. Số sector dùng và lãng phí?",jp:"700バイトを512バイト/セクタに書込む。",o:["1 sector, không lãng phí","2 sectors, lãng phí 324 bytes","2 sectors, lãng phí 188 bytes","3 sectors"],ans:1,exp:["Không đủ 1 sector.","Đúng — Slide第8回 nguyên văn: cần 2 sector (1024 bytes), lãng phí 1024 − 700 = 324 bytes.","Sai phép trừ.","Quá nhiều."]},
+  {d:"med",q:"HDD アクセス時間 gồm 3 thành phần nào?",jp:"HDDアクセス時間の3要素は。",o:["位置決め時間 + 回転待ち時間 + データ転送時間","クロック + CPI + MIPS","ヒット率 + ミス率 + 容量","読込 + 書込 + 削除"],ans:0,exp:["Đúng — Slide第9回: 「アクセス時間 = 位置決め時間 + 回転待ち時間 + データ転送時間」.","Đó là CPU.","Đó là cache.","Không phải định nghĩa chính thức."]},
+  {d:"med",q:"HDD quay 6,000 rpm. Tính 回転待ち時間 trung bình theo quy ước FE.",jp:"6,000rpmのHDDの平均回転待ち時間は。",o:["10 ms","5 ms","100 ms","20 ms"],ans:1,exp:["Đó là 1 vòng đầy.","Đúng — 6000 rpm = 100 vòng/giây → 1 vòng = 10ms → 1/2 vòng = 5ms (Slide第9回: 「プラッタが1/2回転する時間」).","Sai.","Sai."]},
+  {d:"med",q:"HDD quay 7,200 rpm. 回転待ち時間 trung bình ≈?",jp:"7,200rpmの平均回転待ち時間は。",o:["≈ 4.17 ms","≈ 8.33 ms","≈ 12.5 ms","≈ 7.2 ms"],ans:0,exp:["Đúng — 7200 rpm = 120 vòng/giây → 1 vòng ≈ 8.33ms → 1/2 ≈ 4.17ms.","Đó là 1 vòng đầy.","Sai.","Sai."]},
+  {d:"med",q:"Mô tả 「2台以上のHDDに、別々のデータを分散して書き込む」 — đây là RAID nào?",jp:"「2台以上のHDDに別々のデータを分散書込み」は。",o:["RAID 0 (ストライピング)","RAID 1 (ミラーリング)","RAID 5 (パリティ)","RAID 10"],ans:0,exp:["Đúng — Slide第9回 nguyên văn: ストライピング = 分散書込み → 処理速度向上.","Là cùng data nhiều ổ.","Cần parity.","Là combo."]},
+  {d:"med",q:"Mô tả 「2台以上のHDDに、同じデータを書き込む」 — đây là RAID nào?",jp:"「2台以上のHDDに同じデータを書込み」は。",o:["RAID 0","RAID 1","RAID 5","RAID 6"],ans:1,exp:["Là phân tán.","Đúng — Slide第9回: ミラーリング = 同じデータ → 信頼性向上.","Cần parity.","Phức tạp hơn."]},
+  {d:"med",q:"Mô tả 「3台以上のHDDに分散してデータを書き込むと同時に、パリティを書き込む」 — RAID nào?",jp:"「3台以上に分散書込み+パリティ」は。",o:["RAID 0","RAID 1","RAID 5","RAID 100"],ans:2,exp:["Không có parity.","Không phân tán.","Đúng — Slide第9回 nguyên văn: RAID 5 = 信頼性/処理速度向上.","Không phải."]},
+  {d:"med",q:"Light ディスク CD dùng レーザー波長 nào?",jp:"CDのレーザー波長は。",o:["405 nm","635 nm","780 nm","1550 nm"],ans:2,exp:["Đó là BD.","Đó là DVD.","Đúng — Slide第10回: CD = 780nm.","Không liên quan."]},
+  {d:"med",q:"DVD dùng レーザー波長 nào?",jp:"DVDのレーザー波長は。",o:["405 nm","635 nm","780 nm","100 nm"],ans:1,exp:["Đó là BD.","Đúng — Slide第10回: DVD = 635nm 赤色レーザー.","Đó là CD.","Sai."]},
+  {d:"med",q:"BD (Blu-ray) dùng レーザー波長 nào?",jp:"BDのレーザー波長は。",o:["405 nm 青/青紫","635 nm 赤","780 nm 赤外","1064 nm"],ans:0,exp:["Đúng — Slide第10回: BD = 405nm 青/青紫レーザー → 100GB.","Đó là DVD.","Đó là CD.","Sai."]},
+  {d:"med",q:"DVD-R thuộc loại 記憶方式 nào?",jp:"DVD-Rは何型か。",o:["再生専用型","追記型 (ghi 1 lần)","書換え型","暗号化型"],ans:1,exp:["Đó là DVD-ROM.","Đúng — Slide第10回: -R = 追記型 = 一度だけ書込み可能.","Đó là -RW.","Không có."]},
+  {d:"med",q:"OCR là gì?",jp:"OCRとは。",o:["Optical Character Reader — đọc chữ viết tay/in","Online Code Reader — đọc QR","Optical Cylinder Roller — in 3D","Object Computer Recognition"],ans:0,exp:["Đúng — Slide第11回: OCR = Optical Character Reader, đọc 手書き文字や印刷文字.","Sai.","Sai.","Sai."]},
+  {d:"med",q:"OMR là gì?",jp:"OMRとは。",o:["Optical Mark Reader — đọc mark sheet","Optical Memory Reader","Object Motion Recognition","Online Multi Recognition"],ans:0,exp:["Đúng — Slide第11回: OMR = Optical Mark Reader, đọc マークシート上で塗りつぶされた位置.","Sai.","Sai.","Sai."]},
+  {d:"med",q:"ディスプレイ nào tự phát sáng?",jp:"自ら発光するディスプレイは。",o:["液晶ディスプレイ","CRTディスプレイ","有機ELディスプレイ","白黒紙"],ans:2,exp:["Cần backlight.","Tia điện tử bắn vào phosphor — không phải tự bản thân display.","Đúng — Slide第11回: 有機EL = 「自ら発光して映像を表示する」.","Không phải display."]},
+  {d:"med",q:"レーザープリンタ thường được đánh giá bằng đơn vị tốc độ nào?",jp:"レーザープリンタの速度指標は。",o:["dpi","cps","ppm","rpm"],ans:2,exp:["Đó là chất lượng.","Đó là ドットインパクト.","Đúng — Slide第11回: ppm (page per minute) = レーザープリンタの性能評価で使用.","Đó là HDD."]},
+
+  // ===== KHÓ (12 câu) =====
+  {d:"hard",q:"HDD quay 5400 rpm, 位置決め時間 = 8ms, データ転送時間 = 2ms. Tính アクセス時間 trung bình.",jp:"5400rpm、位置決め8ms、転送2msのアクセス時間は。",o:["≈ 15.56 ms","≈ 20 ms","≈ 10 ms","≈ 5.56 ms"],ans:0,exp:["Đúng — 5400rpm=90vòng/s → 1 vòng=11.11ms → 1/2=5.56ms; tổng = 8+5.56+2 = 15.56ms.","Sai.","Thiếu seek time.","Đó chỉ là 回転待ち."]},
+  {d:"hard",q:"Nhược điểm chính của RAID 0?",jp:"RAID 0の欠点は。",o:["Tốc độ chậm","Không có冗長性 — 1 ổ hỏng thì TẤT CẢ data mất","Tốn nhiều dung lượng","Phải dùng >5 ổ"],ans:1,exp:["Ngược — nhanh nhất.","Đúng — RAID 0 chỉ phân tán không có dư thừa, 1 ổ hỏng kéo theo mất data của các phần phân tán.","Tận dụng 100% dung lượng — không tốn.","Chỉ cần 2+ ổ."]},
+  {d:"hard",q:"Nhược điểm chính của RAID 1?",jp:"RAID 1の欠点は。",o:["Hiệu suất dung lượng chỉ 50% (mỗi data ghi 2 lần)","Tốc độ chậm hơn HDD đơn","Không an toàn","Cần parity"],ans:0,exp:["Đúng — 2 ổ chứa cùng data nên dung lượng hiệu dụng chỉ 50%.","Đọc thậm chí có thể nhanh hơn.","Ngược lại — an toàn cao.","Không cần."]},
+  {d:"hard",q:"RAID 5 có ưu điểm hơn RAID 1 ở điểm nào?",jp:"RAID 5がRAID 1より優れている点は。",o:["Đơn giản hơn","Hiệu suất dung lượng cao hơn (chỉ tốn 1 ổ cho parity), cân bằng tốc độ + tin cậy","Không cần parity","Dùng ít ổ hơn"],ans:1,exp:["Phức tạp hơn.","Đúng — RAID 1 hiệu suất 50%; RAID 5 với N ổ hiệu suất (N−1)/N (3 ổ → 67%, 5 ổ → 80%). Vẫn an toàn 1 ổ hỏng.","Có parity.","Cần nhiều ổ hơn (3+)."]},
+  {d:"hard",q:"Một HDD: 1 sector 512B, 1 track 100 sector, 1 cylinder 8 track, 10,000 cylinder. Tính容量.",jp:"512B/セクタ、100セクタ/トラック、8トラック/シリンダ、10000シリンダの容量は。",o:["≈ 4 GB","≈ 400 MB","≈ 40 MB","≈ 4 TB"],ans:0,exp:["Đúng — 512 × 100 × 8 × 10000 = 4.096 × 10⁹ bytes ≈ 4 GB.","Sai.","Sai.","Sai đơn vị."]},
+  {d:"hard",q:"Theo Slide 第10回, quy luật波長–容量 của 光ディスク là gì?",jp:"光ディスクの波長と容量の関係は。",o:["波長 dài = 容量 lớn","波長 ngắn = 容量 lớn","Không liên quan","波長 và 容量 độc lập"],ans:1,exp:["Sai — ngược.","Đúng — Slide第10回 nguyên văn: 「波長: 短い」 = 容量 lớn. CD (780) < DVD (635) < BD (405) tương ứng dung lượng MB → GB → 100 GB.","Có liên quan rõ.","Sai."]},
+  {d:"hard",q:"In 1 inch dài bằng 96 dpi sẽ có bao nhiêu dot? In 1 inch² (vuông) bằng 96 dpi sẽ có bao nhiêu dot?",jp:"96dpiで1インチに何ドット、1インチ四方に何ドット。",o:["96 / 96","96 / 9216","9216 / 96","1 / 96"],ans:1,exp:["Sai — diện tích thì 96² = 9216.","Đúng — Yasashii Lesson 04-05 cảnh báo: dpi = số dot trên đường thẳng 1 inch. 1 inch² chứa 96 × 96 = 9216 dot.","Đảo ngược.","Sai."]},
+  {d:"hard",q:"12 ポイント của chữ ứng với kích thước thực bao nhiêu mm (Yasashii)?",jp:"12ポイントの大きさは何mmか。",o:["≈ 0.35 mm","≈ 4.2 mm","≈ 12 mm","≈ 1.2 mm"],ans:1,exp:["Đó là 1 ポイント.","Đúng — Yasashii Lesson 04-05: 1 ポイント = 1/72 inch ≈ 0.35mm; 12 ポイント = 12/72 inch ≈ 4.2mm.","Sai.","Sai."]},
+  {d:"hard",q:"Mô tả 「PCと1台目の周辺機器をつなぎ、次に1台目と2台目をつなぎ...」 là kỹ thuật gì?",jp:"周辺機器を数珠つなぎする方式は。",o:["パラレル接続","デイジーチェーン接続","スター接続","USBハブ接続"],ans:1,exp:["Là kiểu truyền song song.","Đúng — Yasashii Lesson 04-04 nguyên văn: 「PCと1台目の周辺機器をつなぎ、次に1台目と2台目をつなぐ」 = デイジーチェーン.","Là kiểu mạng hình sao.","Khác kiến trúc."]},
+  {d:"hard",q:"Nhược điểm của デイジーチェーン接続 là gì?",jp:"デイジーチェーン接続の欠点は。",o:["Cần hub","1本のケーブルをすべての周辺機器が共有するので、台数が増えると伝送速度が落ちる","Không thể nối >2 thiết bị","Phải có 無線"],ans:1,exp:["Không cần hub — đó là 利点.","Đúng — Yasashii Lesson 04-04: 「1本のケーブルをすべての周辺機器が共有するので、周辺機器が多くなると伝送速度が落ちる」.","Có thể nối nhiều.","Sai."]},
+  {d:"hard",q:"Trong các interface sau, cái nào là パラレル接続 cho 内蔵HDD?",jp:"内蔵HDD用のパラレル接続は。",o:["USB","IDE","Bluetooth","HDMI"],ans:1,exp:["シリアル.","Đúng — Slide第12回: 「IDE (Integrated Drive Electronics) = 内蔵HDD等とパソコンの接続方式」 (パラレル).","無線.","Khác mục đích."]},
+  {d:"hard",q:"SCSI khác IDE ở điểm cốt lõi nào?",jp:"SCSIとIDEの違いは。",o:["SCSI 用 内蔵HDD; IDE 用 外付","SCSI 用 外付HDD + デイジーチェーン (terminator); IDE 用 内蔵HDD","Cả 2 chỉ dùng cho USB","Hoàn toàn giống nhau"],ans:1,exp:["Ngược.","Đúng — Slide第12回: SCSI = 外付HDD, デイジーチェーン、ターミネータ; IDE = 内蔵HDD.","Sai.","Khác hẳn."]},
+];
+
+let cur=0, answers=new Array(QUIZ.length).fill(null);
+function render(){
+  const q=QUIZ[cur];
+  const tag = q.d==="easy"?'<span class="q-tag tag-easy">Dễ</span>':q.d==="med"?'<span class="q-tag tag-med">TB</span>':'<span class="q-tag tag-hard">Khó</span>';
+  const L=["A","B","C","D"];
+  let opts=q.o.map((t,i)=>{
+    let cls="option";
+    if(answers[cur]!==null){
+      cls+=" locked";
+      if(i===q.ans)cls+=" correct";
+      else if(i===answers[cur])cls+=" incorrect";
+    }
+    return `<div class="${cls}" onclick="pick(${i})"><span class="letter">${L[i]}.</span><span>${t}</span></div>`;
+  }).join("");
+  let explHtml="";
+  if(answers[cur]!==null){
+    let rows = q.exp.map((e,i)=>`<div class="row"><b>${L[i]}:</b> ${e}</div>`).join("");
+    explHtml=`<button class="explain-btn show" onclick="toggleExp()">📖 Xem giải thích</button>
+      <div class="explain" id="exp"><div class="row"><b>Đáp án đúng:</b> ${L[q.ans]}</div>${rows}<div class="row"><b>FE Syllabus:</b> 補助記憶装置・入出力・RAID (Yasashii Ch.4 Lesson 04-03/04/05 / Slide 3 第8-12回)</div></div>`;
+  }
+  document.getElementById("question-container").innerHTML=`
+    <div class="question-card">${tag}
+      <div class="q-text">Câu ${cur+1}: ${q.q}</div>
+      <div class="q-jp">${q.jp}</div>
+      <div class="options">${opts}</div>${explHtml}
+    </div>`;
+  document.getElementById("progress-text").textContent=`Câu ${cur+1} / ${QUIZ.length}`;
+  document.getElementById("score-text").textContent=`Đúng: ${answers.filter((a,i)=>a===QUIZ[i].ans).length}`;
+  document.getElementById("progress-fill").style.width=`${((cur+1)/QUIZ.length)*100}%`;
+  document.getElementById("prev-btn").disabled=cur===0;
+  document.getElementById("next-btn").textContent=cur===QUIZ.length-1?"🏁 Kết thúc":"Câu tiếp →";
+}
+function pick(i){if(answers[cur]!==null)return;answers[cur]=i;render();}
+function toggleExp(){document.getElementById("exp").classList.toggle("open");}
+function prev(){if(cur>0){cur--;render();}}
+function next(){if(cur<QUIZ.length-1){cur++;render();}else showResult();}
+function showResult(){
+  const c=answers.filter((a,i)=>a===QUIZ[i].ans).length;
+  const pct=Math.round(c/QUIZ.length*100);
+  document.getElementById("quiz-area").classList.add("hidden");
+  document.getElementById("result-screen").classList.remove("hidden");
+  document.getElementById("r-correct").textContent=c;
+  document.getElementById("r-wrong").textContent=QUIZ.length-c;
+  document.getElementById("r-total").textContent=QUIZ.length;
+  document.getElementById("score-inner").textContent=pct+"%";
+  document.getElementById("score-circle").style.setProperty("--p",pct*3.6+"deg");
+  let v;
+  if(pct>=90)v="🏆 Xuất sắc! Nắm rất vững 補助記憶・I/O・RAID.";
+  else if(pct>=75)v="👍 Khá. Ôn lại RAID 0/1/5 và các bước tính HDD アクセス時間.";
+  else if(pct>=60)v="📚 Trung bình. Xem lại Yasashii Lesson 04-03/04/05 + Slide第8-12回.";
+  else v="⚠️ Cần ôn lại nền tảng và làm lại đề.";
+  document.getElementById("verdict").textContent=v;
+}
+function restart(){cur=0;answers=new Array(QUIZ.length).fill(null);document.getElementById("quiz-area").classList.remove("hidden");document.getElementById("result-screen").classList.add("hidden");render();}
+render();
+</script>
+</body>
+</html>
