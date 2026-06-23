@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FE - 補助記憶+I/O・RAID</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.7;padding:16px}
+.container{max-width:980px;margin:0 auto}
+header{text-align:center;padding:24px;background:linear-gradient(135deg,#1e293b,#064e3b);border-radius:16px;margin-bottom:24px}
+header h1{color:#6ee7b7;font-size:1.6em;margin-bottom:6px}
+header .sub{color:#94a3b8;font-size:.92em}
+section{background:#1e293b;border-radius:14px;padding:22px;margin-bottom:20px;box-shadow:0 6px 24px rgba(0,0,0,.3)}
+section h2{color:#6ee7b7;font-size:1.3em;border-bottom:2px solid #047857;padding-bottom:8px;margin-bottom:14px}
+section h3{color:#fbbf24;font-size:1.08em;margin:14px 0 8px}
+p{margin-bottom:10px}
+ul{margin:8px 0 12px 22px}
+li{margin-bottom:5px}
+.lang-block{display:grid;grid-template-columns:1fr;gap:8px;margin:12px 0;background:#0f172a;border-radius:10px;padding:14px}
+.lang-block .l{padding:8px 10px;border-radius:8px;font-size:.95em}
+.l-jp{background:#064e3b;border-left:4px solid #6ee7b7;color:#a7f3d0}
+.l-vn{background:#1e3a5f;border-left:4px solid #38bdf8;color:#e0f2fe}
+.l-en{background:#1f2937;border-left:4px solid #fbbf24;color:#fef3c7}
+.formula{background:#064e3b;color:#a7f3d0;padding:14px;border-radius:10px;font-family:"Courier New",monospace;text-align:center;font-size:1em;margin:12px 0;border:1px solid #10b981}
+.example-box{background:#0f172a;border:1px solid #475569;border-radius:10px;padding:14px;margin:12px 0}
+.example-box .label{display:inline-block;background:#6ee7b7;color:#0f172a;padding:3px 10px;border-radius:6px;font-weight:700;font-size:.85em;margin-bottom:8px}
+.step-line{font-family:"Courier New",monospace;background:#0f172a;padding:10px;border-radius:8px;color:#6ee7b7;text-align:center;font-size:.95em;margin:8px 0;overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92em;background:#0f172a;border-radius:8px;overflow:hidden}
+th,td{padding:10px;text-align:left;border-bottom:1px solid #334155}
+th{background:#047857;color:#fff}
+tr:hover td{background:#064e3b}
+.flashcards-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.filter-btn{background:#334155;color:#e2e8f0;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.85em}
+.filter-btn.active{background:#6ee7b7;color:#0f172a;font-weight:700}
+.flashcard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.flashcard{background:#0f172a;border:2px solid #047857;border-radius:10px;padding:14px;min-height:120px;cursor:pointer;position:relative}
+.flashcard .cat{position:absolute;top:8px;right:8px;font-size:.7em;background:#047857;color:#fff;padding:2px 8px;border-radius:4px}
+.flashcard .front{color:#6ee7b7;font-weight:600}
+.flashcard .back{display:none;color:#fde68a;margin-top:8px;font-size:.88em}
+.flashcard.flipped .back{display:block}
+.flashcard.flipped{border-color:#fbbf24;background:#064e3b}
+.quiz-q{background:#0f172a;border-radius:10px;padding:14px;margin:10px 0}
+.quiz-q .qt{color:#f1f5f9;margin-bottom:10px}
+.quiz-opt{display:block;background:#1e293b;border:2px solid #334155;border-radius:6px;padding:8px 12px;margin:6px 0;cursor:pointer;color:#e2e8f0;font-size:.93em}
+.quiz-opt:hover{border-color:#6ee7b7}
+.quiz-opt.correct{background:#064e3b;border-color:#10b981;color:#a7f3d0}
+.quiz-opt.wrong{background:#7f1d1d;border-color:#ef4444;color:#fecaca}
+.quiz-opt.locked{cursor:not-allowed}
+.quiz-exp{display:none;margin-top:8px;padding:10px;background:#1e3a5f;border-left:3px solid #38bdf8;border-radius:6px;font-size:.88em;color:#cbd5e1}
+.quiz-exp.open{display:block}
+.callout{background:#1e3a5f;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;margin:12px 0;font-size:.95em}
+.warn{background:#451a03;border-left:4px solid #fb923c;padding:12px;border-radius:8px;margin:12px 0;color:#fed7aa}
+.mindmap-wrap{background:#0f172a;border-radius:10px;padding:14px;overflow-x:auto;text-align:center}
+.mindmap-wrap svg{max-width:100%;height:auto}
+.raid-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0}
+.raid-card{background:#0f172a;border-left:4px solid #6ee7b7;padding:14px;border-radius:8px}
+.raid-card .name{font-weight:700;color:#6ee7b7;font-size:1.05em;margin-bottom:6px}
+.raid-card .tag{display:inline-block;font-size:.75em;background:#047857;color:#fff;padding:2px 8px;border-radius:4px;margin-bottom:6px}
+@media(max-width:600px){section{padding:16px}header h1{font-size:1.3em}}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>💽 補助記憶 + I/O · RAID</h1>
+  <div class="sub">FE試験対策・Yasashii Ch.4 Lesson 04-03/04/05 + Slide 3_ハードウェア 第8-12回</div>
+</header>
+
+<div class="warn">
+<b>📌 Lưu ý nguồn:</b> Linh ghi "Yasashii Ch.4 Lesson 04-05" cho chủ đề <b>補助記憶+RAID</b>, nhưng Lesson 04-05 thực tế là <b>入出力装置</b> (display/printer/dpi). Nội dung HDD/SSD/補助記憶 nằm trong <b>Lesson 04-03 さまざまな記憶装置</b>, USB/デイジーチェーン/デバイスドライバ nằm trong <b>Lesson 04-04</b>. Tài liệu này dùng <b>cả 3 lesson (04-03, 04-04, 04-05)</b> để bao trùm đầy đủ chủ đề.
+</div>
+
+<section>
+  <h2>📘 Phần 1 — Tóm tắt lý thuyết</h2>
+
+  <h3>1.1. 主記憶 vs 補助記憶装置</h3>
+  <div class="lang-block">
+    <div class="l l-jp">🇯🇵 主記憶装置は電源OFFでデータ消失 (揮発性)、補助記憶装置はデータを長期保存 (不揮発性)。代表的な補助記憶: HDD, SSD, USBメモリ, 光ディスク, 磁気テープ.</div>
+    <div class="l l-vn">🇻🇳 <b>主記憶 (RAM)</b> mất dữ liệu khi tắt nguồn (揮発性); <b>補助記憶</b> lưu lâu dài (不揮発性). Loại: HDD, SSD, USB, đĩa quang, băng từ.</div>
+    <div class="l l-en">🇬🇧 Main memory: volatile. Secondary storage: non-volatile. Types: HDD, SSD, USB, optical disc, magnetic tape.</div>
+  </div>
+
+  <h3>1.2. HDD vs SSD (Yasashii Lesson 04-03)</h3>
+  <table>
+    <tr><th>項目</th><th>HDD</th><th>SSD</th></tr>
+    <tr><td>原理</td><td>磁気ディスク高速回転</td><td>半導体メモリ (フラッシュ)</td></tr>
+    <tr><td>速度</td><td>遅い</td><td>速い</td></tr>
+    <tr><td>耐衝撃</td><td>弱い (機械部品)</td><td>強い</td></tr>
+    <tr><td>音</td><td>うるさい</td><td>静か</td></tr>
+    <tr><td>価格</td><td>安い</td><td>高い</td></tr>
+  </table>
+
+  <h3>1.3. ⭐ ハードディスクの構造 (Slide 第8回)</h3>
+  <div class="lang-block">
+    <div class="l l-vn">🇻🇳 HDD gồm <b>アクセスアーム</b> (cánh tay đọc), <b>プラッタ</b> (đĩa từ), <b>磁気ヘッド</b> (đầu đọc/ghi). Đơn vị lưu trữ: <b>セクタ (sector)</b> = ô nhỏ nhất → <b>トラック (track)</b> = 1 vòng sector → <b>シリンダ (cylinder)</b> = các track xếp chồng dọc theo nhiều プラッタ.</div>
+  </div>
+
+  <h3>1.4. ⭐ 記憶容量の計算</h3>
+  <div class="formula">容量 = 1セクタのバイト数 × 1トラックのセクタ数 × 1シリンダのトラック数 × シリンダ数</div>
+  <div class="callout"><b>Ghi data trên セクタ:</b> Nếu 1 sector không đủ chứa, phải dùng nhiều sector. Phần dư của sector cuối bị lãng phí (700 bytes data → 2 sector 512 bytes → lãng phí 324 bytes).</div>
+
+  <h3>1.5. ⭐ アクセス時間 (Slide 第9回)</h3>
+  <div class="formula">アクセス時間 = 位置決め時間 + 回転待ち時間 + データ転送時間</div>
+  <ul>
+    <li><b>位置決め時間 (seek time):</b> アクセスアーム di chuyển đến シリンダ đích.</li>
+    <li><b>回転待ち時間:</b> プラッタ quay đến セクタ đích. <b>FE quy ước = thời gian quay 1/2 vòng</b> (trung bình max và min).</li>
+    <li><b>データ転送時間:</b> thời gian thực sự đọc/ghi dữ liệu.</li>
+  </ul>
+
+  <h3>1.6. フラグメンテーション・デフラグ</h3>
+  <div class="lang-block">
+    <div class="l l-vn">🇻🇳 <b>フラグメンテーション</b>: data HDD bị phân mảnh theo thời gian. <b>デフラグ</b>: dồn lại data thành khối liền mạch để truy cập nhanh.</div>
+  </div>
+
+  <h3>1.7. ⭐ RAID — TRỌNG TÂM FE (Slide 第9回)</h3>
+  <div class="lang-block">
+    <div class="l l-vn">🇻🇳 <b>RAID</b>: kết hợp nhiều HDD để tăng hiệu năng/độ tin cậy. 3 loại FE hay hỏi:</div>
+  </div>
+  <div class="raid-grid">
+    <div class="raid-card">
+      <div class="tag">処理速度向上</div>
+      <div class="name">RAID 0 — ストライピング</div>
+      <div>Chia data thành các phần, ghi <b>phân tán</b> trên 2+ ổ (mỗi ổ giữ phần khác nhau). Tăng tốc độ. <b>Không có dư thừa</b> — 1 ổ hỏng = mất hết.</div>
+    </div>
+    <div class="raid-card">
+      <div class="tag">信頼性向上</div>
+      <div class="name">RAID 1 — ミラーリング</div>
+      <div>Ghi <b>cùng data</b> vào 2+ ổ. 1 ổ hỏng vẫn còn ổ khác. Dung lượng hiệu dụng giảm 50%.</div>
+    </div>
+    <div class="raid-card">
+      <div class="tag">速度+信頼性</div>
+      <div class="name">RAID 5 — パリティ</div>
+      <div><b>3+ ổ cứng</b>. Ghi phân tán + <b>パリティ (parity)</b> để khôi phục khi 1 ổ hỏng. Cân bằng tốt nhất.</div>
+    </div>
+  </div>
+
+  <h3>1.8. その他補助記憶装置 (Slide 第10回)</h3>
+  <table>
+    <tr><th>種類</th><th>レーザー波長</th><th>容量</th></tr>
+    <tr><td>CD</td><td>780 nm (赤外)</td><td>~700 MB</td></tr>
+    <tr><td>DVD</td><td>635 nm (赤色)</td><td>~17 GB</td></tr>
+    <tr><td>BD (Blu-ray)</td><td>405 nm (青/青紫)</td><td>~100 GB</td></tr>
+  </table>
+  <div class="callout"><b>Quy luật:</b> <b>波長 ngắn = 容量 lớn</b>. CD → DVD → BD.</div>
+  <p><b>記憶方式 3 loại:</b> 再生専用型 (chỉ đọc: CD-ROM/DVD-ROM/BD-ROM), 追記型 (ghi 1 lần: CD-R/DVD-R), 書換え型 (ghi nhiều lần: CD-RW/DVD-RW/DVD-RAM).</p>
+  <p><b>Khác:</b> 光磁気ディスク (磁気 ghi, レーザー đọc), 磁気テープ (backup dung lượng lớn), フラッシュメモリ/SDカード/USBメモリ (EEPROM, 電気的).</p>
+
+  <h3>1.9. 入出力装置 (Slide 第11回・Yasashii Lesson 04-05)</h3>
+  <p><b>入力装置:</b></p>
+  <ul>
+    <li><b>ポインティングデバイス:</b> マウス, トラックパッド, タッチパネル, タブレット</li>
+    <li><b>読取装置:</b> スキャナ (ảnh), <b>OCR</b> (chữ — Optical Character Reader), <b>OMR</b> (mark sheet), バーコードリーダー</li>
+  </ul>
+  <p><b>出力装置・ディスプレイ:</b></p>
+  <ul>
+    <li><b>CRTディスプレイ:</b> tia điện tử bắn vào phosphor — cồng kềnh, tốn điện</li>
+    <li><b>液晶ディスプレイ:</b> không tự phát sáng → cần backlight hoặc ánh sáng ngoài</li>
+    <li><b>有機ELディスプレイ:</b> tự phát sáng từ hợp chất hữu cơ khi có điện</li>
+    <li><b>プラズマディスプレイ:</b> phát sáng từ khí放電</li>
+  </ul>
+  <p><b>出力装置・プリンタ:</b></p>
+  <ul>
+    <li><b>レーザープリンタ:</b> dùng laser — chất lượng cao, im lặng, văn phòng</li>
+    <li><b>インクジェット:</b> phun mực — rẻ, gia đình</li>
+    <li><b>ドットインパクト:</b> đập kim qua ribbon — to tiếng, có thể in giấy carbon</li>
+    <li><b>3Dプリンタ:</b> 熱溶解積層方式 in 3D</li>
+  </ul>
+
+  <h3>1.10. プリンタ性能指標</h3>
+  <table>
+    <tr><th>指標</th><th>意味</th><th>用途</th></tr>
+    <tr><td><b>dpi</b> (dot per inch)</td><td>số dot/inch — <b>chất lượng</b></td><td>1 inch = 2.54cm</td></tr>
+    <tr><td><b>cps</b> (character per second)</td><td>ký tự/giây — <b>tốc độ</b></td><td>ドットインパクト</td></tr>
+    <tr><td><b>ppm</b> (page per minute)</td><td>trang/phút — <b>tốc độ</b></td><td>レーザー</td></tr>
+  </table>
+  <div class="callout"><b>⚠️ Yasashii nhấn:</b> dpi là số dot trên đường thẳng 1 inch (1 chiều), <b>KHÔNG phải</b> số dot trong diện tích 1 inch².</div>
+
+  <h3>1.11. ポイント (kích thước chữ)</h3>
+  <p>1 ポイント = 1/72 inch ≈ 0.35mm. Vd 12 ポイント = 12/72 inch ≈ 4.2mm (kích thước chữ hình vuông).</p>
+
+  <h3>1.12. 入出力インターフェース (Slide 第12回・Yasashii Lesson 04-04)</h3>
+  <table>
+    <tr><th>分類</th><th>例</th><th>特徴</th></tr>
+    <tr><td>パラレル</td><td>IDE (内蔵HDD), SCSI (外付HDD・デイジーチェーン)</td><td>nhiều bit cùng lúc</td></tr>
+    <tr><td>シリアル</td><td>USB (USB 3.0 = 5Gbps), IEEE 1394, SATA</td><td>1 bit/lần; chuẩn hiện đại</td></tr>
+    <tr><td>無線</td><td>Bluetooth, IrDA, NFC</td><td>không dây</td></tr>
+  </table>
+  <p><b>デイジーチェーン接続:</b> nối 数珠つなぎ các thiết bị. Ưu: không cần hub, gọn dây. Nhược: nhiều thiết bị → tốc độ giảm. SCSI dùng デイジーチェーン + ターミネータ ở cuối.</p>
+  <p><b>デバイスドライバ:</b> phần mềm điều khiển 周辺機器 từ PC, tự cài khi cắm.</p>
+</section>
+
+<section>
+  <h2>🧮 Phần 2 — Ví dụ minh hoạ</h2>
+
+  <h3>Ví dụ 2.1: Tính HDD 記憶容量 (Slide 第8回 nguyên văn)</h3>
+  <div class="example-box">
+    <span class="label">問題</span>
+    <p>1セクタ=512バイト, 1トラック=20セクタ, 1シリンダ=60トラック, シリンダ数=1,500. 記憶容量 = ?</p>
+    <div class="step-line">512 × 20 × 60 × 1,500 = 921,600,000 バイト ≈ 921.6 MB</div>
+  </div>
+
+  <h3>Ví dụ 2.2: Lãng phí セクタ (Slide 第8回 nguyên văn)</h3>
+  <div class="example-box">
+    <span class="label">問題</span>
+    <p>1 セクタ = 512 bytes. Ghi 700 bytes. Cần bao nhiêu sector? Lãng phí?</p>
+    <div class="step-line">Cần 2 sector (1024 bytes). Lãng phí 1024 − 700 = 324 bytes</div>
+  </div>
+
+  <h3>Ví dụ 2.3: 回転待ち時間</h3>
+  <div class="example-box">
+    <span class="label">問題</span>
+    <p>HDD quay 6,000 rpm. Tính 回転待ち時間 trung bình.</p>
+    <div class="step-line">6,000 rpm = 100 vòng/giây = 1 vòng = 10 ms</div>
+    <div class="step-line">回転待ち時間 = 1/2 vòng = 5 ms (theo quy ước FE)</div>
+  </div>
+
+  <h3>Ví dụ 2.4: Chọn RAID phù hợp</h3>
+  <div class="example-box">
+    <span class="label">問題</span>
+    <ul>
+      <li>Cần <b>tốc độ tối đa</b>, không quan tâm tin cậy → <b>RAID 0</b></li>
+      <li>Cần <b>độ tin cậy cao nhất</b>, chấp nhận giảm dung lượng 50% → <b>RAID 1</b></li>
+      <li>Cần <b>cân bằng</b> (có 3+ ổ) → <b>RAID 5</b></li>
+    </ul>
+  </div>
+
+  <h3>Ví dụ 2.5: Tính dpi (Yasashii Lesson 04-05)</h3>
+  <div class="example-box">
+    <span class="label">問題</span>
+    <p>Máy in 600 dpi. Hỏi trên 1 inch (2.54 cm) có bao nhiêu dot?</p>
+    <div class="step-line">Đúng nghĩa định: 600 dot/inch → trên đường thẳng 2.54 cm có 600 dot</div>
+  </div>
+</section>
+
+<section>
+  <h2>🃏 Phần 3 — Flashcard</h2>
+  <div class="flashcards-controls">
+    <button class="filter-btn active" onclick="filterFlash('all',this)">Tất cả</button>
+    <button class="filter-btn" onclick="filterFlash('HDD',this)">HDD構造</button>
+    <button class="filter-btn" onclick="filterFlash('RAID',this)">RAID</button>
+    <button class="filter-btn" onclick="filterFlash('Storage',this)">補助記憶</button>
+    <button class="filter-btn" onclick="filterFlash('IO',this)">入出力</button>
+  </div>
+  <div class="flashcard-grid" id="flashGrid"></div>
+</section>
+
+<section>
+  <h2>✅ Phần 4 — Câu hỏi ôn tập (10 câu)</h2>
+  <div id="quizContainer"></div>
+</section>
+
+<section>
+  <h2>🗺️ Phần 5 — Mind map</h2>
+  <div class="mindmap-wrap">
+    <svg viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg" style="font-family:system-ui,sans-serif">
+      <ellipse cx="500" cy="350" rx="140" ry="50" fill="#047857" stroke="#6ee7b7" stroke-width="3"/>
+      <text x="500" y="345" text-anchor="middle" fill="#fff" font-size="17" font-weight="bold">補助記憶 + I/O</text>
+      <text x="500" y="365" text-anchor="middle" fill="#d1fae5" font-size="13">RAID</text>
+
+      <path d="M 395 320 Q 270 220 170 130" stroke="#38bdf8" stroke-width="3" fill="none"/>
+      <rect x="50" y="100" width="200" height="60" rx="14" fill="#0ea5e9" stroke="#bae6fd"/>
+      <text x="150" y="125" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">HDD構造</text>
+      <text x="150" y="145" text-anchor="middle" fill="#e0f2fe" font-size="11">セクタ/トラック/シリンダ</text>
+      <path d="M 100 160 Q 80 200 70 240" stroke="#38bdf8" stroke-width="2" fill="none"/>
+      <rect x="10" y="240" width="120" height="36" rx="8" fill="#0369a1"/>
+      <text x="70" y="263" text-anchor="middle" fill="#fff" font-size="11">アクセス時間</text>
+      <path d="M 200 160 Q 220 200 240 240" stroke="#38bdf8" stroke-width="2" fill="none"/>
+      <rect x="170" y="240" width="120" height="36" rx="8" fill="#0369a1"/>
+      <text x="230" y="263" text-anchor="middle" fill="#fff" font-size="11">フラグ/デフラグ</text>
+
+      <path d="M 605 320 Q 730 220 830 130" stroke="#fbbf24" stroke-width="3" fill="none"/>
+      <rect x="730" y="100" width="200" height="60" rx="14" fill="#d97706" stroke="#fde68a"/>
+      <text x="830" y="125" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">RAID</text>
+      <text x="830" y="145" text-anchor="middle" fill="#fef3c7" font-size="11">複数HDDで高速/信頼性</text>
+      <path d="M 760 160 Q 730 200 700 240" stroke="#fbbf24" stroke-width="2" fill="none"/>
+      <rect x="650" y="240" width="110" height="36" rx="8" fill="#92400e"/>
+      <text x="705" y="263" text-anchor="middle" fill="#fff" font-size="11">RAID0 速度</text>
+      <path d="M 830 160 Q 830 200 830 240" stroke="#fbbf24" stroke-width="2" fill="none"/>
+      <rect x="775" y="240" width="120" height="36" rx="8" fill="#92400e"/>
+      <text x="835" y="263" text-anchor="middle" fill="#fff" font-size="11">RAID1 信頼性</text>
+      <path d="M 900 160 Q 920 200 940 240" stroke="#fbbf24" stroke-width="2" fill="none"/>
+      <rect x="900" y="240" width="90" height="36" rx="8" fill="#92400e"/>
+      <text x="945" y="263" text-anchor="middle" fill="#fff" font-size="11">RAID5 両方</text>
+
+      <path d="M 605 380 Q 730 480 830 570" stroke="#f472b6" stroke-width="3" fill="none"/>
+      <rect x="730" y="540" width="200" height="60" rx="14" fill="#be185d" stroke="#fbcfe8"/>
+      <text x="830" y="565" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">その他補助記憶</text>
+      <text x="830" y="585" text-anchor="middle" fill="#fce7f3" font-size="11">光ディスク/SSD</text>
+      <path d="M 770 600 Q 740 630 710 660" stroke="#f472b6" stroke-width="2" fill="none"/>
+      <rect x="640" y="650" width="140" height="36" rx="8" fill="#9d174d"/>
+      <text x="710" y="673" text-anchor="middle" fill="#fff" font-size="11">CD/DVD/BD 波長↓</text>
+      <path d="M 890 600 Q 920 630 940 660" stroke="#f472b6" stroke-width="2" fill="none"/>
+      <rect x="850" y="650" width="140" height="36" rx="8" fill="#9d174d"/>
+      <text x="920" y="673" text-anchor="middle" fill="#fff" font-size="11">SSD フラッシュ</text>
+
+      <path d="M 395 380 Q 270 480 170 570" stroke="#22c55e" stroke-width="3" fill="none"/>
+      <rect x="50" y="540" width="200" height="60" rx="14" fill="#15803d" stroke="#bbf7d0"/>
+      <text x="150" y="565" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">入出力</text>
+      <text x="150" y="585" text-anchor="middle" fill="#dcfce7" font-size="11">装置・インターフェース</text>
+      <path d="M 100 600 Q 80 630 70 660" stroke="#22c55e" stroke-width="2" fill="none"/>
+      <rect x="10" y="650" width="140" height="36" rx="8" fill="#166534"/>
+      <text x="80" y="673" text-anchor="middle" fill="#fff" font-size="11">プリンタ dpi/ppm</text>
+      <path d="M 200 600 Q 230 630 260 660" stroke="#22c55e" stroke-width="2" fill="none"/>
+      <rect x="170" y="650" width="140" height="36" rx="8" fill="#166534"/>
+      <text x="240" y="673" text-anchor="middle" fill="#fff" font-size="11">USB/SCSI/デイジー</text>
+    </svg>
+  </div>
+</section>
+</div>
+
+<script>
+const FLASH = [
+  {f:"プラッタ",b:"HDDの円盤状の磁気ディスク。データを記録する。",cat:"HDD"},
+  {f:"セクタ",b:"プラッタを区切った最小単位。通常512バイトなど。",cat:"HDD"},
+  {f:"トラック",b:"セクタが1周集まった同心円状の領域。",cat:"HDD"},
+  {f:"シリンダ",b:"複数プラッタの同じ位置のトラックを縦に並べたもの。",cat:"HDD"},
+  {f:"アクセス時間",b:"位置決め時間 + 回転待ち時間 + データ転送時間。",cat:"HDD"},
+  {f:"回転待ち時間",b:"FE quy ước = thời gian quay 1/2 vòng (平均).",cat:"HDD"},
+  {f:"フラグメンテーション",b:"Data HDD bị phân mảnh theo thời gian. デフラグで解消.",cat:"HDD"},
+  {f:"RAID 0 (ストライピング)",b:"2+ HDDに分散書込み = 高速化. 冗長性なし.",cat:"RAID"},
+  {f:"RAID 1 (ミラーリング)",b:"2+ HDDに同じデータ = 信頼性向上. 容量効率50%.",cat:"RAID"},
+  {f:"RAID 5 (パリティ)",b:"3+ HDDに分散+パリティ. 速度と信頼性のバランス.",cat:"RAID"},
+  {f:"SSD",b:"フラッシュメモリベース. 高速・静か・耐衝撃 but 高価.",cat:"Storage"},
+  {f:"CD/DVD/BD",b:"レーザー波長 CD=780nm > DVD=635nm > BD=405nm. 波長↓ = 容量↑.",cat:"Storage"},
+  {f:"光磁気ディスク",b:"磁気で書込、レーザーで読込のハイブリッド.",cat:"Storage"},
+  {f:"フラッシュメモリ",b:"EEPROMの一種. 電気的に読み書き. SD/USB.",cat:"Storage"},
+  {f:"dpi",b:"dot per inch. 1インチ(2.54cm)あたりのドット数. 品質指標.",cat:"IO"},
+  {f:"ppm",b:"page per minute. レーザープリンタの速度指標.",cat:"IO"},
+  {f:"cps",b:"character per second. ドットインパクトプリンタの速度指標.",cat:"IO"},
+  {f:"USB 3.0",b:"シリアルインターフェース. 最大5Gbps、USB 2.0と互換.",cat:"IO"},
+  {f:"デイジーチェーン",b:"周辺機器を数珠つなぎに接続. ハブ不要、台数増で速度低下.",cat:"IO"},
+  {f:"デバイスドライバ",b:"PCに接続した周辺機器を制御するソフトウェア.",cat:"IO"},
+  {f:"OCR / OMR",b:"OCR = 文字読取. OMR = マークシート読取.",cat:"IO"},
+  {f:"IDE / SCSI",b:"パラレル接続規格. IDE=内蔵HDD, SCSI=外付HDDデイジーチェーン.",cat:"IO"},
+];
+function renderFlash(filter='all'){
+  const g = document.getElementById('flashGrid');
+  g.innerHTML = FLASH.filter(f=>filter==='all'||f.cat===filter).map(f=>`
+    <div class="flashcard" data-cat="${f.cat}" onclick="this.classList.toggle('flipped')">
+      <div class="cat">${f.cat}</div><div class="front">${f.f}</div><div class="back">${f.b}</div>
+    </div>`).join('');
+}
+function filterFlash(cat,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderFlash(cat);
+}
+renderFlash();
+
+const QUIZ = [
+  {q:"プラッタを最小単位に区切ったものは?",o:["シリンダ","トラック","セクタ","ヘッド"],ans:2,exp:"Slide 第8回: セクタ = 最小単位 → トラック (1周) → シリンダ (縦並び)."},
+  {q:"HDD のアクセス時間 = ?",o:["位置決め時間 のみ","位置決め時間 + 回転待ち時間 + データ転送時間","クロック × CPI","ヒット率 × アクセス時間"],ans:1,exp:"Slide 第9回: アクセス時間 = 位置決め時間 + 回転待ち時間 + データ転送時間."},
+  {q:"6,000 rpm の HDD の平均回転待ち時間は?",o:["10 ms","5 ms","100 ms","1 ms"],ans:1,exp:"6,000 rpm = 100 vòng/giây → 1 vòng=10ms → 1/2 = 5ms."},
+  {q:"RAID 0 の特徴は?",o:["ミラーリング = 信頼性向上","ストライピング = 処理速度向上","パリティ = 速度+信頼性","暗号化"],ans:1,exp:"Slide第9回: RAID 0 = ストライピング = 2+台に分散 = 速度向上. 冗長性なし."},
+  {q:"RAID 1 の特徴は?",o:["分散書込み","同じデータをミラーリング = 信頼性向上","パリティのみ","暗号化"],ans:1,exp:"Slide第9回: RAID 1 = ミラーリング = 同じデータを2+台に書込み = 信頼性向上."},
+  {q:"光ディスクで容量が一番大きいのは?",o:["CD (780nm)","DVD (635nm)","BD (405nm)","全て同じ"],ans:2,exp:"Slide第10回: 波長↓ = 容量↑. BD 405nm = max 100GB."},
+  {q:"SSD の特徴で正しいのは?",o:["磁気で書込","フラッシュメモリ使用、衝撃強い、高価","回転部品で読み書き","HDDより大容量で安い"],ans:1,exp:"Slide第10回: SSD = フラッシュメモリ内蔵 = 衝撃強い・静か・速い・高価."},
+  {q:"プリンタの dpi の意味は?",o:["1分当たりページ数","1秒当たり文字数","1インチ当たりドット数 (品質)","ドラム回転速度"],ans:2,exp:"Yasashii Lesson 04-05: dpi = dot per inch. 品質指標."},
+  {q:"デイジーチェーン接続の特徴は?",o:["ハブが必要","数珠つなぎ、配線すっきり、台数増で速度低下","無線専用","HDD専用"],ans:1,exp:"Yasashii Lesson 04-04: 数珠つなぎ、ハブ不要、台数増で速度低下."},
+  {q:"デバイスドライバとは?",o:["CPU","周辺機器を制御するソフトウェア","通信プロトコル","補助記憶装置"],ans:1,exp:"Yasashii Lesson 04-04: 「PCに接続された周辺機器を制御するソフトウェア」."},
+];
+function renderQuiz(){
+  document.getElementById('quizContainer').innerHTML = QUIZ.map((q,idx)=>{
+    const L=["A","B","C","D"];
+    const opts = q.o.map((o,i)=>`<div class="quiz-opt" onclick="pickQ(${idx},${i},this)" data-i="${i}"><b>${L[i]}.</b> ${o}</div>`).join("");
+    return `<div class="quiz-q"><div class="qt"><b>Câu ${idx+1}:</b> ${q.q}</div>${opts}<div class="quiz-exp" id="exp-${idx}"><b>Đáp án ${L[q.ans]}:</b> ${q.exp}</div></div>`;
+  }).join('');
+}
+function pickQ(qi,oi,el){
+  const card = el.parentElement;
+  if(card.dataset.locked) return;
+  card.dataset.locked='1';
+  const q=QUIZ[qi];
+  card.querySelectorAll('.quiz-opt').forEach(o=>{
+    o.classList.add('locked');
+    const i=parseInt(o.dataset.i);
+    if(i===q.ans) o.classList.add('correct');
+    else if(i===oi) o.classList.add('wrong');
+  });
+  document.getElementById('exp-'+qi).classList.add('open');
+}
+renderQuiz();
+</script>
+</body>
+</html>
