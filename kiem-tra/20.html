@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FE 模擬試験 — 基本ソフトウェア・OS・タスク管理 (40問)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Space+Mono&family=Syne:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1419;--panel:#1a2029;--panel2:#222a35;--border:#2e3845;
+  --text:#e8ecf1;--muted:#9aa6b4;--accent:#7dd3fc;--accent2:#fbbf24;
+  --ok:#22c55e;--err:#ef4444;
+  --easy:#86efac;--med:#fbbf24;--hard:#fda4af;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,"Noto Sans JP",sans-serif;line-height:1.6}
+.wrap{max-width:900px;margin:0 auto;padding:18px}
+header{background:linear-gradient(135deg,#1e3a5f,#0f1419);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px}
+header h1{font-family:'Syne',sans-serif;margin:0 0 4px;font-size:22px;color:#fff}
+header .sub{color:var(--muted);font-size:13px}
+.progbar{height:8px;background:var(--panel2);border-radius:4px;overflow:hidden;margin-top:10px}
+.progbar > div{height:100%;background:var(--accent);width:0%;transition:width .3s}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0;font-size:13px;color:var(--muted)}
+.jumpgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;background:var(--panel);padding:8px;border-radius:10px;margin-bottom:12px;border:1px solid var(--border)}
+.jbtn{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 0;border-radius:5px;cursor:pointer;font-size:12px}
+.jbtn.cur{background:var(--accent);color:#0f1419;font-weight:700}
+.jbtn.ok{background:#14532d;border-color:var(--ok)}
+.jbtn.ng{background:#4a1414;border-color:var(--err)}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px}
+.qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.qno{font-family:'Syne',sans-serif;font-size:18px;color:var(--accent)}
+.diff{font-size:12px;padding:3px 10px;border-radius:12px;font-weight:700}
+.diff.easy{background:#14532d;color:var(--easy)}
+.diff.med{background:#3a2c0a;color:var(--med)}
+.diff.hard{background:#3a1f24;color:var(--hard)}
+.qtext{font-size:15px;margin:8px 0 12px;white-space:pre-wrap}
+.qtext .jp{color:#cbd5e1;font-size:13.5px;display:block;margin-top:6px;padding-top:6px;border-top:1px dashed var(--border)}
+.opt{background:#0f1419;border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:6px 0;cursor:pointer;font-size:14.5px;display:flex;gap:10px;align-items:start}
+.opt:hover{border-color:var(--accent)}
+.opt .lab{font-weight:700;color:var(--accent2);min-width:20px}
+.opt.correct{background:#14532d;border-color:var(--ok)}
+.opt.wrong{background:#4a1414;border-color:var(--err)}
+.opt.locked{cursor:default}
+.expl{margin-top:10px;padding:12px;background:#0a0e13;border-radius:10px;font-size:13.5px;border-left:3px solid var(--accent);display:none}
+.expl.show{display:block}
+.expl h5{margin:0 0 6px;color:var(--accent);font-size:13px;font-family:'Syne',sans-serif}
+.expl ul{margin:6px 0;padding-left:18px}
+.nav{display:flex;justify-content:space-between;gap:8px;margin-top:14px}
+.nav button{flex:1;background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:10px;border-radius:8px;cursor:pointer;font-size:14px}
+.nav button:hover{border-color:var(--accent)}
+.nav button:disabled{opacity:.4;cursor:not-allowed}
+.result{text-align:center;padding:30px 20px}
+.result h2{font-family:'Syne',sans-serif;font-size:28px;color:var(--accent2);margin:0 0 14px}
+.score{font-size:60px;font-family:'Syne',sans-serif;color:var(--accent);margin:10px 0}
+.breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}
+.bd{background:var(--panel2);padding:10px;border-radius:8px}
+.bd .lbl{font-size:11px;color:var(--muted);text-transform:uppercase}
+.bd .val{font-size:20px;font-weight:700;margin-top:4px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>FE 模擬試験 — 基本ソフトウェア・OS・タスク管理</h1>
+  <div class="sub">40 câu · 30 phút · Yasashii Ch.6 Lesson 06-01 + Slide 第1-2回</div>
+  <div class="progbar"><div id="pbar"></div></div>
+  <div class="toolbar"><span id="prog">Câu 1 / 40</span><span>·</span><span id="dist">Dễ 12 · TB 16 · Khó 12</span></div>
+</header>
+
+<div class="jumpgrid" id="jumpgrid"></div>
+
+<div id="quiz"></div>
+
+<div id="resultPanel" class="card result hidden">
+  <h2 id="rTitle">Hoàn thành!</h2>
+  <div class="score" id="rScore">0 / 40</div>
+  <div id="rPct" style="font-size:18px;color:var(--muted)"></div>
+  <div id="rComment" style="margin-top:14px;font-size:15px"></div>
+  <div class="breakdown" id="rBreakdown"></div>
+  <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+    <button onclick="reviewMistakes()" style="background:var(--accent);color:#0f1419;border:0;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer">📝 Xem câu sai</button>
+    <button onclick="restart()" style="background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:10px 18px;border-radius:8px;cursor:pointer">🔄 Làm lại</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+const QUIZ=[
+// ====== EASY 12 ======
+{d:"easy",q:"OS (Operating System) đóng vai trò gì giữa ứng dụng và phần cứng?",jp:"OSはアプリケーションソフトウェアとハードウェアの間で何の役割を果たすか。",opts:["Thay thế phần cứng","Trung gian (架け橋) giữa app và phần cứng","Chỉ chạy ứng dụng","Là 1 loại ứng dụng"],ans:1,why:"OS = phần mềm trung gian giữa app và hardware (アプリケーションとハードウェアの架け橋).",no:["A: OS không thay thế phần cứng","C: OS không chỉ chạy app — còn quản lý tài nguyên","D: OS là 基本ソフトウェア, không phải app"],fe:"FE Syllabus — ソフトウェア / OS"},
+{d:"easy",q:"Đâu KHÔNG phải là OS?",jp:"次のうちOSではないものはどれか。",opts:["Windows","macOS","Android","Excel"],ans:3,why:"Excel là 応用ソフトウェア (ứng dụng), không phải OS.",no:["A,B,C: đều là OS phổ biến (PC, smartphone)"],fe:"FE — OSの種類"},
+{d:"easy",q:"GUI là giao diện giữa OS và đối tượng nào?",jp:"GUIはOSと何のインターフェースか。",opts:["OS ↔ ứng dụng","OS ↔ người dùng","OS ↔ phần cứng","CPU ↔ RAM"],ans:1,why:"GUI = Graphical User Interface, giao diện OS với người dùng (icon, cửa sổ).",no:["A: đó là API","C: là driver","D: không liên quan"],fe:"FE — UI"},
+{d:"easy",q:"ジョブ (Job) là đơn vị do ai đưa ra?",jp:"ジョブはだれが出す命令の単位か。",opts:["OS đưa cho CPU","Người dùng đưa cho máy tính","CPU đưa cho RAM","Compiler"],ans:1,why:"ジョブ = đơn vị công việc người dùng yêu cầu. タスク mới là OS đưa cho CPU.",no:["A: đó là タスク","C: không phải","D: không liên quan"],fe:"FE — ジョブとタスク"},
+{d:"easy",q:"タスク là đơn vị do ai đưa ra?",jp:"タスクはだれが出す命令の単位か。",opts:["Người dùng","OS đưa cho CPU","Phần cứng","Mạng"],ans:1,why:"タスク (プロセス) = đơn vị lệnh OS đưa cho CPU. 1 ジョブ được chia thành nhiều タスク.",no:["A: là ジョブ","C,D: không phải"],fe:"FE — ジョブとタスク"},
+{d:"easy",q:"Đâu là 3 trạng thái của task?",jp:"タスクが取る3つの状態はどれか。",opts:["実行可能・実行・待ち","起動・実行・停止","作成・実行・破棄","アイドル・実行・割込み"],ans:0,why:"3 trạng thái chuẩn: 実行可能 (Ready), 実行 (Running), 待ち (Wait).",no:["B,C,D: chỉ là cách phát biểu sai/không chuẩn"],fe:"FE — タスクの状態遷移"},
+{d:"easy",q:"Spooling sử dụng thiết bị nào làm trung gian?",jp:"スプーリングで仲介に使う装置はどれか。",opts:["Cache CPU","RAM","Bộ nhớ phụ HDD/SSD","Register"],ans:2,why:"スプーリング chèn 補助記憶装置 (HDD) giữa CPU và I/O chậm.",no:["A: cache khác","B: chính là vấn đề chứ không trung gian","D: register quá nhỏ"],fe:"FE — スプーリング"},
+{d:"easy",q:"Multitask thực hiện nhờ cơ chế nào?",jp:"マルチタスクはどのような仕組みで実現されるか。",opts:["1 core chạy thật sự song song","OS chuyển nhanh giữa các task","Tăng tốc CPU","Tăng RAM"],ans:1,why:"1 core CPU chỉ chạy 1 task tại 1 thời điểm. Multitask = OS chuyển nhanh task → trông như song song.",no:["A: sai về kiến trúc 1 core","C,D: không tạo multitask"],fe:"FE — マルチタスク"},
+{d:"easy",q:"ディスパッチ (Dispatch) là hành động gì?",jp:"ディスパッチとは何か。",opts:["Tạo task","OS chuyển task từ 実行可能 sang 実行","Hủy task","Ghi log"],ans:1,why:"Dispatch = OS cấp quyền dùng CPU, chuyển task từ Ready → Running.",no:["A: là tạo task","C: là 消滅","D: không liên quan"],fe:"FE — タスク管理"},
+{d:"easy",q:"Round Robin thuộc loại scheduling nào?",jp:"ラウンドロビン方式は何方式か。",opts:["ノンプリエンプティブ","プリエンプティブ","FIFO","LIFO"],ans:1,why:"Round Robin: hết quantum bị tước CPU → preemptive.",no:["A: không phải","C: FIFO là 到着順","D: LIFO không có trong scheduling chuẩn"],fe:"FE — スケジューリング"},
+{d:"easy",q:"スループット (Throughput) đo cái gì?",jp:"スループットは何を表すか。",opts:["Bộ nhớ trống","Lượng công việc xử lý / đơn vị thời gian","Tốc độ mạng","Số core"],ans:1,why:"Throughput = lượng job/task hoàn tất trong 1 đơn vị thời gian. Spooling và multiprogramming đều tăng throughput.",no:["A,C,D: chỉ tiêu khác"],fe:"FE — 性能指標"},
+{d:"easy",q:"Phần mềm gồm mấy lớp lớn theo Yasashii?",jp:"ソフトウェアは大きくいくつに分けられるか。",opts:["2 (基本・応用)","3 (基本・ミドルウェア・応用)","4","5"],ans:1,why:"3 lớp: 基本ソフトウェア, ミドルウェア, 応用ソフトウェア.",no:["A: thiếu middleware","C,D: không đúng"],fe:"FE — ソフトウェア構成"},
+// ====== MEDIUM 16 ======
+{d:"med",q:"Khi task ưu tiên cao xuất hiện, task hiện tại bị tước CPU. Đây là phương thức nào?",jp:"優先度の高いタスクが発生したとき現在のタスクからCPUの使用権を横取りする方式はどれか。",opts:["ノンプリエンプティブ","プリエンプティブ","到着順","FIFO"],ans:1,why:"Preemptive = OS có thể 横取り (chiếm đoạt) CPU của task ưu tiên thấp.",no:["A: không tước CPU","C,D: không dùng priority"],fe:"FE — プリエンプティブ"},
+{d:"med",q:"バッファ và スプーリング khác nhau ở điểm cốt lõi nào?",jp:"バッファとスプーリングの本質的な違いは何か。",opts:["Buffer là khái niệm chung về bù chênh tốc độ; spooling là kỹ thuật dùng bộ nhớ phụ giữa CPU và I/O chậm","Đồng nghĩa","Buffer chỉ dùng cho mạng","Spooling chỉ cho RAM"],ans:0,why:"Buffer là khái niệm chung (緩衝記憶装置). Spooling là kỹ thuật cụ thể dùng HDD trung gian giữa CPU và máy in.",no:["B: không đồng nghĩa","C,D: định nghĩa sai"],fe:"FE — バッファ / スプーリング"},
+{d:"med",q:"Task chuyển từ 実行 sang 待ち khi nào?",jp:"タスクが実行状態から待ち状態に移るのはいつか。",opts:["Khi hết quantum","Khi cần I/O","Khi task mới được tạo","Khi tăng priority"],ans:1,why:"待ち state = chờ I/O hoàn tất. Hết quantum thì về 実行可能 chứ không phải 待ち.",no:["A: về 実行可能","C: vào 実行可能","D: không có chuyển nào như vậy"],fe:"FE — タスク状態遷移"},
+{d:"med",q:"Page fault (ページフォールト) thuộc loại interrupt nào?",jp:"ページフォールトはどの種類の割込みか。",opts:["タイマ割込み (外部)","プログラム割込み (内部)","入出力割込み (外部)","SVC割込み (内部)"],ans:1,why:"Page fault = lệnh không xử lý được tại địa chỉ → プログラム割込み (internal).",no:["A,C: external","D: SVC là yêu cầu I/O từ chương trình"],fe:"FE — 割込み処理"},
+{d:"med",q:"Khi chương trình chia cho 0, loại interrupt nào phát sinh?",jp:"プログラムが0で除算したときに発生する割込みはどれか。",opts:["タイマ","プログラム割込み (内部)","機械チェック","コンソール"],ans:1,why:"0除算 là lệnh bất hợp lệ → プログラム割込み (internal interrupt).",no:["A: timeout","C: lỗi hardware","D: người dùng can thiệp"],fe:"FE — 内部割込み"},
+{d:"med",q:"Sắp xếp đúng dòng chảy spooling khi in:",jp:"スプーリング時の正しいデータフローはどれか。",opts:["CPU → Printer trực tiếp","CPU → 補助記憶装置 → Printer","Printer → CPU → 補助記憶装置","Printer → CPU"],ans:1,why:"Spooling: CPU ghi nhanh xuống HDD; printer đọc dần từ HDD theo tốc độ riêng.",no:["A: không có spooling","C,D: ngược chiều"],fe:"FE — スプーリング"},
+{d:"med",q:"優先度順方式 (preemptive) khác (non-preemptive) ở điểm nào?",jp:"プリエンプティブとノンプリエンプティブの優先度順方式の違いは何か。",opts:["Preemptive: tước CPU của task thấp khi task cao xuất hiện","Cùng nhau","Non-preemptive nhanh hơn","Preemptive bỏ qua priority"],ans:0,why:"Preemptive có thể tước CPU giữa chừng. Non-preemptive thì phải chờ task hiện tại xong.",no:["B: khác nhau","C: tùy ngữ cảnh","D: vẫn dùng priority"],fe:"FE — スケジューリング"},
+{d:"med",q:"Trong round robin với quantum = 2ms, có task A=5ms, B=3ms, C=4ms (đều đến cùng lúc), task nào kết thúc cuối cùng?",jp:"クォンタム2msのラウンドロビンでA=5ms, B=3ms, C=4msが同時に到着したとき最後に終わるタスクは。",opts:["A","B","C","Cùng lúc"],ans:0,why:"Thứ tự: A2-B2-C2-A2-B1-C2-A1 → C xong ở t=10, A xong ở t=11. Vậy A xong cuối.",no:["B: xong sớm nhất (t=7)","C: xong t=10","D: không cùng"],fe:"FE — ラウンドロビン (tính toán)"},
+{d:"med",q:"Cơ chế nào tạo nên マルチプログラミング?",jp:"マルチプログラミングを成立させる仕組みは何か。",opts:["Tăng số CPU","Khi 1 task chờ I/O, CPU làm task khác","Tăng clock CPU","Phân chia RAM"],ans:1,why:"Multiprogramming: tận dụng thời gian CPU rảnh (trong khi task khác chờ I/O) để chạy task khác → tăng utilization.",no:["A,C: không phải multiprogramming","D: không trực tiếp"],fe:"FE — マルチプログラミング"},
+{d:"med",q:"OS chuyển task từ 実行可能 sang 実行 gọi là?",jp:"OSがタスクを実行可能状態から実行状態に移すことを何というか。",opts:["スプーリング","ディスパッチ","スループット","インタラプト"],ans:1,why:"Dispatch = giao quyền CPU. Còn lại là khái niệm khác.",no:["A: kỹ thuật I/O","C: chỉ tiêu hiệu năng","D: ngắt"],fe:"FE — ディスパッチ"},
+{d:"med",q:"Khi I/O hoàn tất, OS phát sinh loại interrupt gì?",jp:"入出力処理が終了したときに発生する割込みは。",opts:["内部割込み","入出力割込み (外部)","プログラム割込み","SVC"],ans:1,why:"I/O hoàn tất hoặc trục trặc → 入出力割込み, là external interrupt.",no:["A: nội bộ chương trình","C: lệnh bất hợp lệ","D: yêu cầu I/O"],fe:"FE — 外部割込み"},
+{d:"med",q:"SVC (Supervisor Call) interrupt được dùng để làm gì?",jp:"SVC割込みは何のために使われるか。",opts:["Báo lỗi hardware","Chương trình yêu cầu OS làm I/O","Tăng priority","Phân RAM"],ans:1,why:"SVC = lệnh chương trình gọi OS thực hiện I/O hoặc dịch vụ hệ thống.",no:["A: 機械チェック","C,D: không phải SVC"],fe:"FE — SVC割込み"},
+{d:"med",q:"Phương thức nào KHÔNG cần OS quản lý quyền dùng CPU?",jp:"OSがCPU使用権を管理しない方式はどれか。",opts:["プリエンプティブ","ラウンドロビン","ノンプリエンプティブ","タイマ駆動"],ans:2,why:"Non-preemptive: task tự giữ và tự trả CPU. OS không can thiệp.",no:["A,B,D: đều cần OS can thiệp"],fe:"FE — ノンプリエンプティブ"},
+{d:"med",q:"Cache memory bù chênh lệch tốc độ giữa cặp nào?",jp:"キャッシュメモリはどの2装置の速度差を補うか。",opts:["RAM ↔ HDD","CPU ↔ 主記憶 (RAM)","HDD ↔ SSD","CPU ↔ Network"],ans:1,why:"Cache nằm giữa CPU và RAM, bù chênh CPU rất nhanh ↔ RAM chậm hơn.",no:["A: là disk cache","C: không liên quan","D: không"],fe:"FE — バッファ / キャッシュ"},
+{d:"med",q:"Trong tasks A đến t=0 (cần 6ms), B đến t=1 (cần 2ms), dùng SJF non-preemptive, ai xong trước?",jp:"A=6ms(t=0), B=2ms(t=1)に到着、非プリエンプティブSJFで先に終わるのは。",opts:["A xong tại t=6","B xong tại t=8","A xong tại t=2","B xong tại t=3"],ans:0,why:"Non-preemptive: A bắt đầu tại t=0 chạy đến hết t=6. B đến t=1 nhưng phải chờ. A xong t=6, sau đó B chạy t=6→8.",no:["B: B xong t=8","C: A cần 6ms","D: B phải chờ A"],fe:"FE — SJF / scheduling"},
+{d:"med",q:"タイマ割込み là loại interrupt gì và xảy ra khi nào?",jp:"タイマ割込みはどの種類の割込みで、いつ発生するか。",opts:["内部 — khi divide by zero","外部 — khi hết thời gian định trước","内部 — khi gọi I/O","外部 — khi hỏng phần cứng"],ans:1,why:"Timer interrupt là external, xảy ra khi quantum hết → OS giành lại CPU.",no:["A: nội bộ chương trình","C: SVC","D: 機械チェック"],fe:"FE — 外部割込み"},
+// ====== HARD 12 ======
+{d:"hard",q:"Lý do gốc rễ cần ジョブ管理 là gì? (theo Yasashii)",jp:"ジョブ管理が必要な根本的な理由は何か (やさしい解説より)。",opts:["RAM hết","CPU và các hardware khác có tốc độ chênh lệch lớn","Mạng chậm","CPU đa nhân"],ans:1,why:"Yasashii nêu rõ: CPUとその他のハードウェアの処理速度が大幅に異なるから.",no:["A: là vấn đề bộ nhớ","C: không phải lý do chính","D: ngược lại"],fe:"FE — ジョブ管理"},
+{d:"hard",q:"Phát biểu nào về マルチタスク là CHÍNH XÁC?",jp:"マルチタスクに関する正しい記述はどれか。",opts:["1 core CPU chạy nhiều task song song thật","CPU đa lõi mới làm được multitask","OS chuyển task nhanh, người dùng cảm giác chạy đồng thời, thực ra 1 core 1 lúc 1 task","Multitask không cần OS"],ans:2,why:"Yasashii: CPUの1つのコアは一度に1つの作業しか実行できない. Multitask do OS thực hiện.",no:["A: sai về cơ chế 1 core","B: 1 core vẫn multitask được","D: cần OS"],fe:"FE — マルチタスク"},
+{d:"hard",q:"3 task A,B,C có CPU 1ms - I/O 2ms - CPU 1ms (lặp). Multiprogramming. Trong khoảng thời gian nào CPU rảnh?",jp:"3タスクA,B,CがCPU1ms→I/O2ms→CPU1msのパターンでマルチプログラミング実行。CPUが遊休する瞬間はいつか。",opts:["Không bao giờ rảnh","Khi tất cả 3 task đều đang ở 待ち状態 cùng lúc","Khi 1 task ở 待ち","Luôn rảnh"],ans:1,why:"CPU chỉ rảnh khi KHÔNG task nào ở 実行 — tức tất cả đang ở 待ち hoặc 終了. Câu hỏi mô phỏng đề H30秋 問16.",no:["A: có thể rảnh","C: vẫn có 2 task chạy được","D: thường bận"],fe:"FE — マルチプログラミング (H30秋 問16)"},
+{d:"hard",q:"Round Robin có quantum = 1ms. Task A=3ms đến t=0, B=2ms đến t=0. Task B xong khi nào?",jp:"クォンタム1ms。A=3ms(t=0), B=2ms(t=0)。Bが完了する時刻は。",opts:["t=2","t=3","t=4","t=5"],ans:2,why:"Thứ tự: A(0-1)→B(1-2)→A(2-3)→B(3-4)→ B xong (đã chạy 2ms). t=4.",no:["A: chỉ 1 slice","B: A chưa cho B đủ","D: tính dư"],fe:"FE — ラウンドロビン"},
+{d:"hard",q:"Phát biểu nào về preemptive là KHÔNG ĐÚNG?",jp:"プリエンプティブに関する誤った記述はどれか。",opts:["OS quản lý quyền dùng CPU","Có thể tước CPU của task ưu tiên thấp","Task tự quyết định khi nào trả CPU","Round Robin là một dạng preemptive"],ans:2,why:"Task tự quyết định trả CPU là đặc trưng của NON-preemptive, không phải preemptive.",no:["A,B,D: đều đúng"],fe:"FE — プリエンプティブ"},
+{d:"hard",q:"Trong scheduling priority preemptive, task X (priority 3) đang chạy. Task Y (priority 5) vào Ready. Điều gì xảy ra?",jp:"優先度順プリエンプティブで実行中タスクX(優先度3)に優先度5のYが実行可能になる。何が起きるか。",opts:["X tiếp tục đến xong rồi Y chạy","X bị đẩy về 実行可能, Y vào 実行","Y chờ X","Lỗi"],ans:1,why:"Priority cao hơn → preemptive tước CPU → X về Ready, Y dispatch.",no:["A: là non-preemptive","C: ngược lại","D: không có lỗi"],fe:"FE — プリエンプティブ priority"},
+{d:"hard",q:"Trong sơ đồ trạng thái task, mũi tên ⑤ 待ち → 実行可能 xảy ra khi nào?",jp:"タスク状態遷移図の⑤(待ち→実行可能)はいつ起きるか。",opts:["Khi task được tạo","Khi I/O hoàn tất","Khi cần I/O","Khi task chạy xong"],ans:1,why:"待ち = chờ I/O. Khi I/O xong, task quay về Ready để chờ CPU.",no:["A: là ①","C: là ④","D: là ⑥"],fe:"FE — 状態遷移"},
+{d:"hard",q:"Đâu là cặp ĐÚNG về phân loại interrupt?",jp:"割込みの分類で正しい組合せはどれか。",opts:["タイマ — 内部","SVC — 外部","プログラム割込み — 内部, 入出力割込み — 外部","機械チェック — 内部"],ans:2,why:"プログラム割込み(0除算, overflow, page fault) thuộc internal. 入出力割込み thuộc external.",no:["A: タイマ là external","B: SVC là internal","D: 機械チェック là external"],fe:"FE — 割込み分類"},
+{d:"hard",q:"Một spooler print job nhận file 100MB, máy in 1MB/s, CPU ghi file 200MB/s. Hỏi CPU bận với job in này trong bao lâu?",jp:"100MBの印刷ジョブを200MB/sでHDDに書き込み、印刷は1MB/s。CPUがこのジョブで拘束される時間は。",opts:["100s","1s","0.5s","100MB/s"],ans:2,why:"CPU chỉ cần ghi 100MB ÷ 200MB/s = 0.5s xuống HDD. Sau đó CPU giải phóng (đó chính là lợi ích spooling). Máy in mất 100s nhưng độc lập với CPU.",no:["A: là thời gian in (printer)","B: tính sai","D: là đơn vị"],fe:"FE — スプーリング tính toán"},
+{d:"hard",q:"Trong tasks: A=4ms, B=1ms, C=2ms (đến cùng lúc, SJF non-preemptive). Thời gian chờ trung bình (平均待ち時間)?",jp:"A=4ms, B=1ms, C=2ms同時到着。SJF非プリエンプティブでの平均待ち時間は。",opts:["1ms","(0+1+3)/3 ≈ 1.33ms","2ms","3ms"],ans:1,why:"SJF: B(1)→C(2)→A(4). B chờ 0, C chờ 1, A chờ 1+2=3. Trung bình = (0+1+3)/3 = 1.33ms.",no:["A: chỉ 1 task","C: tính trung bình sai","D: nếu là FCFS"],fe:"FE — SJF tính toán"},
+{d:"hard",q:"Phát biểu nào về ノンプリエンプティブ là ĐÚNG?",jp:"ノンプリエンプティブに関する正しい記述はどれか。",opts:["OS có thể tước CPU bất cứ lúc nào","Quyền CPU do task quản lý, OSの役割がよりシンプルになる","Luôn nhanh hơn preemptive","Đòi hỏi CPU đa lõi"],ans:1,why:"Yasashii: ノンプリエンプティブではCPUの使用権をOSが管理しないため、OSの役割がよりシンプルになる.",no:["A: là preemptive","C: phản hồi kém hơn","D: không liên quan"],fe:"FE — ノンプリエンプティブ"},
+{d:"hard",q:"Nếu OS có scheduling ưu tiên cao + preemptive, nhưng task ưu tiên thấp luôn bị task cao xen ngang, hiện tượng có thể xảy ra là?",jp:"優先度プリエンプティブで低優先度タスクが常に高優先度に横取りされ続けると起きる現象は。",opts:["デッドロック","スタベーション (starvation) — task thấp không bao giờ được chạy","ディスパッチ","スプーリング"],ans:1,why:"Starvation: task ưu tiên thấp mãi không có cơ hội chạy do task cao liên tục được ưu tiên.",no:["A: deadlock là chờ tài nguyên vòng tròn","C: là hành động cấp CPU","D: không liên quan"],fe:"FE — スケジューリング (starvation)"}
+];
+
+let cur=0;const ans=new Array(QUIZ.length).fill(null);
+const quiz=document.getElementById('quiz');
+const jumpgrid=document.getElementById('jumpgrid');
+
+// build jump
+QUIZ.forEach((_,i)=>{
+  const b=document.createElement('button');b.className='jbtn';b.textContent=i+1;
+  b.onclick=()=>{cur=i;render()};
+  jumpgrid.appendChild(b);
+});
+
+function render(){
+  if(cur>=QUIZ.length){showResult();return}
+  document.getElementById('resultPanel').classList.add('hidden');
+  const q=QUIZ[cur];
+  const dmap={easy:'Dễ',med:'TB',hard:'Khó'};
+  quiz.innerHTML=`
+  <div class="card">
+    <div class="qhead">
+      <div class="qno">Câu ${cur+1} / 40</div>
+      <span class="diff ${q.d}">${dmap[q.d]}</span>
+    </div>
+    <div class="qtext">${q.q}<span class="jp">🇯🇵 ${q.jp}</span></div>
+    ${q.opts.map((o,j)=>`<div class="opt" data-j="${j}"><span class="lab">${'アイウエ'[j]}</span><span>${o}</span></div>`).join('')}
+    <div class="expl" id="expl">
+      <h5>📖 Giải thích</h5>
+      <div><b>Đáp án đúng:</b> ${'アイウエ'[q.ans]}. ${q.opts[q.ans]}</div>
+      <div style="margin-top:6px"><b>Tại sao đúng:</b> ${q.why}</div>
+      <div style="margin-top:6px"><b>Tại sao các đáp án còn lại sai:</b><ul>${q.no.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+      <div style="margin-top:6px;color:var(--accent2)"><b>Liên hệ FE:</b> ${q.fe}</div>
+    </div>
+    <div class="nav">
+      <button onclick="prev()" ${cur===0?'disabled':''}>◀ Câu trước</button>
+      <button onclick="next()">${cur===QUIZ.length-1?'Kết thúc ✓':'Câu tiếp ▶'}</button>
+    </div>
+  </div>`;
+  // lock if answered
+  if(ans[cur]!==null){
+    const opts=quiz.querySelectorAll('.opt');
+    opts.forEach(o=>o.classList.add('locked'));
+    opts[ans[cur]].classList.add(ans[cur]===q.ans?'correct':'wrong');
+    if(ans[cur]!==q.ans)opts[q.ans].classList.add('correct');
+    document.getElementById('expl').classList.add('show');
+  }
+  quiz.querySelectorAll('.opt').forEach(o=>{
+    o.addEventListener('click',()=>{
+      if(ans[cur]!==null)return;
+      const j=+o.dataset.j;ans[cur]=j;
+      const opts=quiz.querySelectorAll('.opt');
+      opts.forEach(x=>x.classList.add('locked'));
+      if(j===q.ans)o.classList.add('correct');
+      else{o.classList.add('wrong');opts[q.ans].classList.add('correct')}
+      document.getElementById('expl').classList.add('show');
+      updateJump();updateProg();
+    });
+  });
+  updateJump();updateProg();
+}
+function prev(){if(cur>0){cur--;render()}}
+function next(){if(cur<QUIZ.length-1){cur++;render()}else showResult()}
+function updateJump(){
+  jumpgrid.querySelectorAll('.jbtn').forEach((b,i)=>{
+    b.className='jbtn';
+    if(i===cur)b.classList.add('cur');
+    if(ans[i]!==null)b.classList.add(ans[i]===QUIZ[i].ans?'ok':'ng');
+  });
+}
+function updateProg(){
+  const done=ans.filter(a=>a!==null).length;
+  document.getElementById('prog').textContent=`Câu ${cur+1} / 40 — đã làm ${done}`;
+  document.getElementById('pbar').style.width=(done/40*100)+'%';
+}
+function showResult(){
+  const total=ans.filter(a=>a!==null).length;
+  const correct=ans.filter((a,i)=>a===QUIZ[i].ans).length;
+  const pct=Math.round(correct/QUIZ.length*100);
+  document.getElementById('rScore').textContent=`${correct} / 40`;
+  document.getElementById('rPct').textContent=`Tỷ lệ đúng: ${pct}% (đã làm ${total}/40)`;
+  let cm;
+  if(pct>=80)cm='🎉 Xuất sắc! Sẵn sàng cho 科目A!';
+  else if(pct>=60)cm='👍 Khá tốt. Ôn lại các câu sai để chắc kiến thức.';
+  else cm='💪 Cần cố gắng. Quay lại đọc lý thuyết và làm lại.';
+  document.getElementById('rComment').textContent=cm;
+  const bd={easy:[0,0],med:[0,0],hard:[0,0]};
+  QUIZ.forEach((q,i)=>{bd[q.d][1]++;if(ans[i]===q.ans)bd[q.d][0]++});
+  document.getElementById('rBreakdown').innerHTML=
+    ['easy','med','hard'].map(d=>{
+      const lbl={easy:'Dễ',med:'TB',hard:'Khó'}[d];
+      return `<div class="bd"><div class="lbl">${lbl}</div><div class="val" style="color:var(--${d==='med'?'med':d})">${bd[d][0]}/${bd[d][1]}</div></div>`;
+    }).join('');
+  quiz.innerHTML='';
+  document.getElementById('resultPanel').classList.remove('hidden');
+}
+function restart(){ans.fill(null);cur=0;render()}
+function reviewMistakes(){
+  const first=ans.findIndex((a,i)=>a!==null&&a!==QUIZ[i].ans);
+  if(first===-1){alert('Bạn không có câu sai nào! 🎉');return}
+  cur=first;render();window.scrollTo({top:0,behavior:'smooth'});
+}
+render();
+</script>
+</body>
+</html>
