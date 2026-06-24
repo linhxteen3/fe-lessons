@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FE — 基本ソフトウェア・OS・タスク管理</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Space+Mono:wght@400;700&family=Syne:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1419;--panel:#1a2029;--panel2:#222a35;--border:#2e3845;
+  --text:#e8ecf1;--muted:#9aa6b4;--accent:#7dd3fc;--accent2:#fbbf24;
+  --jp:#fda4af;--vn:#86efac;--en:#93c5fd;
+  --ok:#22c55e;--err:#ef4444;--warn:#f59e0b;
+  --c1:#7dd3fc;--c2:#fbbf24;--c3:#a78bfa;--c4:#86efac;--c5:#fda4af;--c6:#fb923c;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.65;padding:0}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 18px 80px}
+header.top{padding:28px 22px;border-radius:16px;background:linear-gradient(135deg,#1e3a5f,#0f1419);border:1px solid var(--border);margin-bottom:22px}
+header.top h1{font-family:'Syne',sans-serif;font-size:30px;margin:0 0 6px;color:#fff}
+header.top .sub{color:var(--muted);font-size:14px}
+header.top .badges{margin-top:10px}
+.badge{display:inline-block;background:#2e3845;padding:4px 10px;border-radius:20px;font-size:12px;margin-right:6px;color:#cbd5e1}
+h2.sec{font-family:'Syne',sans-serif;font-size:24px;margin:30px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--accent);color:#fff}
+h3{font-size:18px;color:var(--accent);margin:20px 0 10px;font-family:'Syne',sans-serif}
+h4{font-size:15px;color:var(--accent2);margin:14px 0 8px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px;margin:14px 0}
+.lang-block{padding:12px 14px;border-radius:10px;margin:8px 0;border-left:4px solid;font-size:14.5px}
+.lang-jp{background:#3a1f24;border-color:var(--jp)}
+.lang-vn{background:#1c3a23;border-color:var(--vn)}
+.lang-en{background:#1c2c4a;border-color:var(--en)}
+.lang-block .lbl{font-weight:700;font-size:12px;letter-spacing:.5px;display:block;margin-bottom:4px;opacity:.85}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+th,td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);color:var(--accent)}
+code,.mono{font-family:'Space Mono',monospace;background:#0a0e13;padding:2px 6px;border-radius:4px;color:#fbbf24;font-size:13px}
+.ascii{background:#0a0e13;padding:14px;border-radius:8px;font-family:'Space Mono',monospace;font-size:13px;white-space:pre;overflow-x:auto;color:#cbd5e1;line-height:1.5;border:1px solid var(--border)}
+.tip{background:#3a2c0a;border-left:4px solid var(--warn);padding:10px 14px;border-radius:8px;margin:10px 0;font-size:14px}
+.tip b{color:var(--warn)}
+.example{background:#0e2434;border-left:4px solid var(--accent);padding:12px 14px;border-radius:8px;margin:10px 0}
+.example .lbl{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.5px;margin-bottom:6px;display:block}
+.flash-controls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px}
+.filter-btn{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:18px;cursor:pointer;font-size:13px}
+.filter-btn.active{background:var(--accent);color:#0f1419;border-color:var(--accent)}
+.flashgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.flash{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;min-height:110px;transition:transform .15s}
+.flash:hover{transform:translateY(-2px);border-color:var(--accent)}
+.flash .front{font-weight:700;color:var(--accent2);font-size:15px}
+.flash .back{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);font-size:13.5px;color:#cbd5e1}
+.flash.flipped .back{display:block}
+.flash .cat{display:inline-block;font-size:10px;background:#2e3845;padding:2px 6px;border-radius:8px;margin-top:6px;color:var(--muted)}
+.quiz-q{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:14px;margin:10px 0}
+.quiz-q .qtxt{font-weight:700;margin-bottom:8px}
+.opt{display:block;background:#0f1419;border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:6px 0;cursor:pointer;font-size:14px}
+.opt:hover{border-color:var(--accent)}
+.opt.correct{background:#14532d;border-color:var(--ok);color:#bbf7d0}
+.opt.wrong{background:#4a1414;border-color:var(--err);color:#fecaca}
+.opt.locked{cursor:default}
+.expl{margin-top:8px;padding:10px;background:#0a0e13;border-radius:8px;font-size:13.5px;color:#cbd5e1;display:none}
+.expl.show{display:block}
+.mindmap-wrap{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px;overflow-x:auto}
+svg.mindmap{display:block;margin:0 auto;width:100%;height:auto;max-width:1080px}
+.flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0;font-family:'Space Mono',monospace;font-size:13px}
+.flow .node{background:var(--panel2);border:1px solid var(--accent);padding:6px 10px;border-radius:6px}
+.flow .arr{color:var(--accent2);font-weight:700}
+.warn-box{background:#3a1f24;border:2px solid var(--err);border-radius:10px;padding:12px 16px;margin:10px 0;color:#fecaca}
+ul{padding-left:22px}
+li{margin:4px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <h1>基本ソフトウェア・OS・タスク管理</h1>
+  <div class="sub">Phần mềm cơ bản — Hệ điều hành — Quản lý Job &amp; Task</div>
+  <div class="badges">
+    <span class="badge">Yasashii Ch.6 — Lesson 06-01</span>
+    <span class="badge">Slide 4_ソフトウェア 第1回・第2回</span>
+    <span class="badge">FE Syllabus — テクノロジ系 / コンピュータシステム</span>
+  </div>
+</header>
+
+<!-- ===================== PHẦN 1 — LÝ THUYẾT ===================== -->
+<h2 class="sec">① Tóm tắt lý thuyết</h2>
+
+<div class="card">
+<h3>1.1 Cấu trúc phần mềm — ソフトウェアの構成</h3>
+
+<div class="lang-block lang-jp"><span class="lbl">🇯🇵 日本語</span>
+ソフトウェアは「<b>基本ソフトウェア</b>」「<b>ミドルウェア</b>」「<b>応用ソフトウェア（アプリケーション）</b>」の3つで構成される。基本ソフトウェアの代表が<b>OS</b>であり、アプリケーションとハードウェアの間を仲介するソフトウェアである。
+</div>
+<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+Phần mềm (ソフトウェア) gồm <b>3 loại</b>: phần mềm cơ bản (基本ソフトウェア), middleware (ミドルウェア), phần mềm ứng dụng (応用ソフトウェア). Đại diện của phần mềm cơ bản là <b>OS (Operating System)</b> — phần mềm trung gian giữa ứng dụng và phần cứng.
+</div>
+<div class="lang-block lang-en"><span class="lbl">🇬🇧 English</span>
+Software has three layers: <b>basic software</b> (OS + utilities), <b>middleware</b>, and <b>application software</b>. The OS sits between applications and hardware as an intermediary.
+</div>
+
+<div class="ascii">
+[ユーザー User] ⇄ [アプリ App] ⇄ [OS] ⇄ [ハードウェア Hardware / CPU]
+                  ↑__________ソフトウェア Software __________↑
+</div>
+
+<h4>Các OS phổ biến — 代表的なOS</h4>
+<ul>
+<li><b>Windows</b> — OS PC phổ biến nhất thế giới (世界で最も普及)</li>
+<li><b>macOS</b> — OS của máy Mac</li>
+<li><b>UNIX / Linux</b> — dùng cho server, workstation</li>
+<li><b>iOS</b> — iPhone</li>
+<li><b>Android</b> — smartphone</li>
+</ul>
+
+<h4>Giao diện của OS — OSとのインターフェース</h4>
+<table>
+<tr><th>用語 Term</th><th>意味 Ý nghĩa</th></tr>
+<tr><td><b>GUI</b> (Graphical User Interface)</td><td>Giao diện giữa <b>OS ↔ người dùng</b> (icon, cửa sổ, chuột)</td></tr>
+<tr><td><b>API</b> (Application Programming Interface)</td><td>Giao diện giữa <b>OS ↔ ứng dụng</b> — tập hàm để app gọi dịch vụ của OS</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>1.2 4 chức năng chính của OS — OSの4つの機能</h3>
+
+<div class="lang-block lang-jp"><span class="lbl">🇯🇵 日本語</span>
+基本情報技術者試験で出題されるOSの主な機能は <b>(1) ジョブ管理 (2) タスク管理 (3) 記憶管理 (4) データ管理</b> の4つ。
+</div>
+<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+OS có 4 chức năng chính cần nhớ cho kỳ thi FE: <b>(1) Quản lý Job (2) Quản lý Task (3) Quản lý bộ nhớ (4) Quản lý dữ liệu</b>.
+</div>
+
+<table>
+<tr><th>Chức năng</th><th>Đối tượng quản lý</th><th>Ý nghĩa</th></tr>
+<tr><td>ジョブ管理 Job</td><td>Đơn vị công việc <b>người dùng</b> yêu cầu</td><td>Quản lý <b>thứ tự thực hiện</b> các job</td></tr>
+<tr><td>タスク管理 Task</td><td>Đơn vị lệnh <b>OS</b> đưa cho CPU</td><td>Quản lý thứ tự thực hiện các task (tiến trình)</td></tr>
+<tr><td>記憶管理 Memory</td><td>Bộ nhớ chính / ảo</td><td>Sử dụng hiệu quả bộ nhớ</td></tr>
+<tr><td>データ管理 Data</td><td>File, thư mục</td><td>Quản lý file/folder</td></tr>
+</table>
+
+<div class="tip"><b>📌 Lưu ý quan trọng:</b> <code>ジョブ (Job)</code> = lệnh do <b>người dùng</b> đưa ra (in tài liệu, copy file…). <code>タスク (Task / プロセス)</code> = lệnh do <b>OS</b> đưa cho <b>CPU</b>. Một job được OS chia nhỏ thành nhiều task.</div>
+</div>
+
+<div class="card">
+<h3>1.3 Job管理 — Quản lý Job</h3>
+
+<div class="lang-block lang-jp"><span class="lbl">🇯🇵 日本語</span>
+ジョブ管理は<b>ジョブの実行順序</b>を管理する。なぜ必要か：<b>CPUとその他のハードウェアの処理速度が大幅に異なる</b>から。たとえば印刷ジョブの場合、プリンターはCPUよりはるかに遅いので、OSがジョブを管理して、待ち時間中にCPUを他の処理に使わせる。
+</div>
+<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+Job管理 quản lý <b>thứ tự thực hiện job</b>. Lý do cần thiết: <b>tốc độ CPU và các thiết bị khác khác nhau rất lớn</b>. Ví dụ in tài liệu — máy in chậm hơn CPU nhiều lần. Nếu không có quản lý, CPU sẽ phải <b>chờ</b> (待ち状態). OS quản lý job để trong lúc chờ, CPU làm việc khác → <b>tận dụng CPU</b>.
+</div>
+<div class="lang-block lang-en"><span class="lbl">🇬🇧 English</span>
+Job management controls the execution order of jobs. Because the CPU is far faster than I/O devices (printers, etc.), the OS schedules jobs so the CPU never sits idle waiting for slow devices.
+</div>
+
+<h4>スプーリング (Spooling)</h4>
+<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+Kỹ thuật <b>chèn ổ đĩa phụ (補助記憶装置) trung gian</b> giữa CPU và thiết bị I/O chậm. CPU ghi dữ liệu xuất ra ổ đĩa rồi chuyển sang task khác; thiết bị I/O đọc từ ổ đĩa theo tốc độ riêng của nó.
+</div>
+<div class="ascii">
+Không spooling:  [CPU] ───────► [Printer] (CPU chờ máy in)
+
+Có spooling:     [CPU] ──► [補助記憶装置 HDD] ──► [Printer]
+                  CPU giải phóng ngay → chạy job khác
+                  → スループット (throughput) tăng
+</div>
+
+<h4>バッファ (Buffer)</h4>
+<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+Bộ nhớ <b>tạm thời</b> để <b>bù đắp chênh lệch tốc độ</b> giữa 2 thiết bị (緩衝記憶装置). Ví dụ:
+<ul>
+<li><b>Cache memory (キャッシュメモリ)</b> — bù chênh lệch CPU ↔ bộ nhớ chính</li>
+<li><b>Disk cache (ディスクキャッシュ)</b> — bù chênh lệch bộ nhớ chính ↔ HDD</li>
+</ul>
+</div>
+
+<div class="tip"><b>🎯 Hay thi:</b> Tính <b>thời gian xử lý ジョブ</b> dựa vào sơ đồ thời gian CPU/printer (kiểu bài tập tính スループット).</div>
+</div>
+
+<div class="card">
+<h3>1.4 Task管理 — Quản lý Task</h3>
+
+<div class="lang-block lang-jp"><span class="lbl">🇯🇵 日本語</span>
+タスク管理は<b>タスクの実行順序</b>を管理する。タスクとは「OSがCPUに出す命令の単位」。
+</div>
+<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+Task管理 quản lý <b>thứ tự thực hiện các task</b>. Task = đơn vị lệnh OS đưa cho CPU (còn gọi là プロセス / process).
+</div>
+
+<h4>マルチタスク (Multitask)</h4>
+<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+Kỹ thuật <b>chuyển đổi nhanh giữa nhiều task</b> sao cho <b>người dùng cảm thấy như đang chạy đồng thời</b>. <b>Thực tế 1 core CPU chỉ chạy 1 task tại 1 thời điểm</b> (CPUの1つのコアは一度に1つの作業しか実行できない). Multitask được thực hiện do <b>OS điều khiển CPU</b>, không phải CPU tự làm.
+</div>
+<div class="ascii">
+Single task:  [────A────][────B────][────C────]   (xong A mới sang B)
+Multitask:    [A][B][C][A][B][C][A][B][C]         (chia nhỏ, đan xen → ảo giác đồng thời)
+</div>
+
+<h4>3 trạng thái của Task — タスクの3つの状態</h4>
+<table>
+<tr><th>状態 State</th><th>Ý nghĩa</th></tr>
+<tr><td><b>実行可能状態 (Ready)</b></td><td>Sẵn sàng chạy, đang chờ được cấp CPU</td></tr>
+<tr><td><b>実行状態 (Running)</b></td><td>Đang được CPU thực thi</td></tr>
+<tr><td><b>待ち状態 (Wait / Blocked)</b></td><td>Đang chờ I/O hoàn tất</td></tr>
+</table>
+
+<h4>Chuyển trạng thái — 状態遷移</h4>
+<div class="ascii">
+① タスクの生成 ──► [実行可能 Ready]
+                       │  ② ディスパッチ (dispatch)
+                       │  ▼
+                  [実行 Running]  ── ⑥ ──► タスクの消滅 destroy
+                    │  ▲     │
+                  ③│  │⑤   │④
+                    ▼  │     ▼
+                [待ち Wait] ◄┘
+</div>
+<ul>
+<li><b>① 生成 → 実行可能</b>: Task được tạo, vào hàng chờ Ready.</li>
+<li><b>② 実行可能 → 実行</b>: OS cấp quyền dùng CPU → gọi là <code>ディスパッチ (dispatch)</code>.</li>
+<li><b>③ 実行 → 実行可能</b>: Task ưu tiên cao hơn xuất hiện (preemptive) → task hiện tại trả lại Ready.</li>
+<li><b>④ 実行 → 待ち</b>: Task cần I/O → vào Wait, CPU làm task khác.</li>
+<li><b>⑤ 待ち → 実行可能</b>: I/O xong → quay lại Ready.</li>
+<li><b>⑥ 実行 → 消滅</b>: Task chạy xong → biến mất.</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>1.5 Preemptive vs Non-preemptive — プリエンプティブとノンプリエンプティブ</h3>
+
+<table>
+<tr><th>Phương thức</th><th>Ai quản lý quyền dùng CPU?</th><th>Ý nghĩa</th></tr>
+<tr><td><b>プリエンプティブ Preemptive</b> ("横取り" = chiếm đoạt)</td><td><b>OS</b> quản lý</td><td>Khi task ưu tiên cao xuất hiện, OS <b>tước</b> quyền CPU của task ưu tiên thấp và giao cho task cao. <b>Chủ lưu hiện nay.</b></td></tr>
+<tr><td><b>ノンプリエンプティブ Non-preemptive</b></td><td><b>Task</b> quản lý</td><td>Task giữ CPU đến khi tự xong, rồi mới trả lại OS. OS đơn giản hơn nhưng phản hồi kém.</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>1.6 Task Scheduling — タスクスケジューリング</h3>
+
+<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+Scheduling = <b>quy tắc chọn task nào trong Ready để cấp CPU</b>.
+</div>
+
+<table>
+<tr><th>Phương thức</th><th>Mô tả</th><th>Loại</th></tr>
+<tr><td><b>到着順 (FCFS)</b></td><td>Task đến trước chạy trước (FIFO)</td><td>Non-preemptive</td></tr>
+<tr><td><b>処理時間順 (SJF)</b></td><td>Task có thời gian xử lý ngắn nhất chạy trước</td><td>Non-preemptive</td></tr>
+<tr><td><b>優先度順 (Priority) — preemptive</b></td><td>Task ưu tiên cao chạy trước; nếu task cao xuất hiện giữa chừng → tước CPU</td><td>Preemptive</td></tr>
+<tr><td><b>優先度順 (Priority) — non-preemptive</b></td><td>Task ưu tiên cao chạy trước; nhưng không tước CPU của task đang chạy</td><td>Non-preemptive</td></tr>
+<tr><td><b>ラウンドロビン (Round Robin)</b></td><td>Mỗi task được cấp một <b>quantum (time slice)</b> cố định, hết slice thì chuyển</td><td>Preemptive</td></tr>
+</table>
+
+<div class="tip"><b>💡 Mẹo nhớ:</b> <b>Round Robin</b> và <b>Priority-preemptive</b> đều là preemptive. <b>到着順</b> và <b>処理時間順</b> là non-preemptive.</div>
+</div>
+
+<div class="card">
+<h3>1.7 Multiprogramming &amp; 割込み処理</h3>
+
+<h4>マルチプログラミング</h4>
+<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+Trong khi CPU rảnh (chờ I/O), gán task khác cho CPU → trông như đang chạy nhiều chương trình song song. Đây là <b>cơ chế hiện thực hóa multitask</b>.
+</div>
+
+<h4>割込み処理 (Interrupt) — IPA hay hỏi</h4>
+<table>
+<tr><th>Loại</th><th>Tên</th><th>Nguyên nhân</th></tr>
+<tr><td rowspan="2"><b>内部割込み Internal</b><br>(do chương trình)</td><td>プログラム割込み</td><td>Lệnh bất hợp lệ: chia cho 0, overflow, page fault</td></tr>
+<tr><td>SVC割込み (Supervisor Call)</td><td>Chương trình yêu cầu OS làm I/O</td></tr>
+<tr><td rowspan="4"><b>外部割込み External</b><br>(ngoài chương trình)</td><td>機械チェック割込み</td><td>Lỗi nguồn / hỏng phần cứng</td></tr>
+<tr><td>タイマ割込み</td><td>Hết time quantum → bị ngắt</td></tr>
+<tr><td>コンソール割込み</td><td>Người dùng can thiệp</td></tr>
+<tr><td>入出力割込み</td><td>I/O hoàn tất hoặc dừng</td></tr>
+</table>
+</div>
+
+<!-- ===================== PHẦN 2 — VÍ DỤ ===================== -->
+<h2 class="sec">② Ví dụ minh hoạ</h2>
+
+<div class="card">
+<h3>Ví dụ 1: Spooling — In tài liệu</h3>
+<div class="example"><span class="lbl">Tình huống</span>
+Bạn nhấn "In" một file Word 50 trang. Máy in chậm, in mất 5 phút. CPU thì xử lý gói tin in chỉ mất 0.5 giây.
+</div>
+<ul>
+<li><b>Không spooling:</b> CPU phải bám theo máy in 5 phút, không làm được việc khác.</li>
+<li><b>Có spooling:</b> CPU ghi dữ liệu in xuống <b>HDD (補助記憶装置)</b> trong 0.5s → giải phóng ngay → bạn vẫn tiếp tục soạn Word, lướt web. Máy in lấy dữ liệu từ HDD và in dần.</li>
+</ul>
+<div class="flow"><span class="node">CPU</span><span class="arr">→</span><span class="node">HDD (spool)</span><span class="arr">→</span><span class="node">Printer</span></div>
+</div>
+
+<div class="card">
+<h3>Ví dụ 2: Bài tập tính マルチプログラミング (平成30年・秋期 問16)</h3>
+<div class="example"><span class="lbl">Đề bài</span>
+Có 3 task A, B, C. Mỗi task có 1 phần CPU và 1 phần I/O. Hãy tính thời gian rảnh CPU (遊休時間) khi chạy multiprogramming.
+</div>
+<div class="ascii">
+Time:    1   2   3   4   5   6   7   8   9  10
+Task A: [CPU][I/O][I/O]
+Task B:      [CPU][CPU][I/O]
+Task C:                [CPU][CPU][I/O][I/O]
+
+→ Khi tất cả task đang ở 待ち状態 (I/O) cùng lúc → CPU rảnh
+→ 遊休時間 = các slot không có task nào ở 実行状態
+</div>
+<p>Slide đề cập đáp án: <b>遊休時間 = 3 ミリ秒</b> với cấu hình ví dụ.</p>
+</div>
+
+<div class="card">
+<h3>Ví dụ 3: Round Robin với quantum = 2ms</h3>
+<div class="ascii">
+Task A cần 5ms, B cần 3ms, C cần 4ms. Quantum = 2ms.
+
+Time  : 0──2──4──6──8──10──12
+Slot  : [A][B][C][A][B][C][A]
+                          └ A xong (5ms)
+A đã chạy 2+2+1=5 ✓ → consume hết
+B đã chạy 2+1=3 ✓
+C đã chạy 2+2=4 ✓
+</div>
+</div>
+
+<div class="card">
+<h3>Ví dụ 4: Preemptive với priority</h3>
+<div class="example"><span class="lbl">Tình huống</span>
+Task X (low priority) đang chạy. Task Y (high priority) đột nhiên xuất hiện ở Ready.
+</div>
+<ul>
+<li><b>Preemptive:</b> OS tước CPU khỏi X → X về <b>実行可能</b> → Y vào <b>実行</b>.</li>
+<li><b>Non-preemptive:</b> Y phải <b>chờ X xong</b> mới được CPU.</li>
+</ul>
+</div>
+
+<!-- ===================== PHẦN 3 — FLASHCARD ===================== -->
+<h2 class="sec">③ Flashcard — Click để lật</h2>
+
+<div class="flash-controls">
+  <button class="filter-btn active" data-cat="all">Tất cả</button>
+  <button class="filter-btn" data-cat="os">OS cơ bản</button>
+  <button class="filter-btn" data-cat="job">Job 管理</button>
+  <button class="filter-btn" data-cat="task">Task 管理</button>
+  <button class="filter-btn" data-cat="sched">Scheduling</button>
+  <button class="filter-btn" data-cat="int">割込み</button>
+</div>
+
+<div class="flashgrid" id="flashgrid">
+  <div class="flash" data-cat="os"><div class="front">OS (オペレーティングシステム) là gì?</div><div class="back">Phần mềm cơ bản trung gian giữa <b>ứng dụng và phần cứng</b>. Ví dụ: Windows, macOS, Linux, iOS, Android.<div class="cat">OS</div></div></div>
+  <div class="flash" data-cat="os"><div class="front">GUI vs API</div><div class="back"><b>GUI</b>: OS ↔ người dùng (icon, cửa sổ). <b>API</b>: OS ↔ ứng dụng (tập hàm).<div class="cat">OS</div></div></div>
+  <div class="flash" data-cat="os"><div class="front">4 chức năng chính của OS</div><div class="back">(1) ジョブ管理 (2) タスク管理 (3) 記憶管理 (4) データ管理<div class="cat">OS</div></div></div>
+  <div class="flash" data-cat="job"><div class="front">ジョブ vs タスク</div><div class="back"><b>ジョブ</b> = lệnh do <b>người dùng</b> ra cho máy. <b>タスク</b> = lệnh do <b>OS</b> ra cho CPU. 1 job được chia thành nhiều task.<div class="cat">Job</div></div></div>
+  <div class="flash" data-cat="job"><div class="front">Tại sao cần Job管理?</div><div class="back">CPU và các thiết bị khác có <b>tốc độ chênh lệch lớn</b>. Job管理 giúp CPU không phải chờ → tận dụng CPU.<div class="cat">Job</div></div></div>
+  <div class="flash" data-cat="job"><div class="front">スプーリング (Spooling)</div><div class="back">Kỹ thuật trung gian dữ liệu giữa CPU và thiết bị I/O chậm <b>thông qua ổ đĩa phụ (補助記憶装置)</b>. Tăng <b>スループット throughput</b>.<div class="cat">Job</div></div></div>
+  <div class="flash" data-cat="job"><div class="front">バッファ (Buffer)</div><div class="back">Bộ nhớ <b>tạm thời</b> bù đắp chênh lệch tốc độ. VD: cache memory (CPU↔RAM), disk cache (RAM↔HDD).<div class="cat">Job</div></div></div>
+  <div class="flash" data-cat="job"><div class="front">スループット (Throughput)</div><div class="back">Lượng công việc CPU xử lý được trong 1 đơn vị thời gian. Spooling và multiprogramming đều tăng throughput.<div class="cat">Job</div></div></div>
+  <div class="flash" data-cat="task"><div class="front">マルチタスク (Multitask)</div><div class="back">Chuyển đổi nhanh giữa nhiều task để <b>trông như đang chạy đồng thời</b>. Thực tế 1 core chạy 1 task tại 1 thời điểm.<div class="cat">Task</div></div></div>
+  <div class="flash" data-cat="task"><div class="front">3 trạng thái của Task</div><div class="back"><b>実行可能 (Ready)</b>, <b>実行 (Running)</b>, <b>待ち (Wait)</b>.<div class="cat">Task</div></div></div>
+  <div class="flash" data-cat="task"><div class="front">ディスパッチ (Dispatch)</div><div class="back">OS chuyển task từ <b>実行可能 → 実行</b> bằng cách cấp quyền dùng CPU.<div class="cat">Task</div></div></div>
+  <div class="flash" data-cat="task"><div class="front">実行 → 待ち</div><div class="back">Xảy ra khi task cần <b>I/O</b>. OS đẩy task vào <b>待ち状態</b> và cho CPU làm task khác.<div class="cat">Task</div></div></div>
+  <div class="flash" data-cat="task"><div class="front">プリエンプティブ (Preemptive)</div><div class="back"><b>OS</b> quản lý quyền dùng CPU. Có thể <b>tước</b> CPU của task ưu tiên thấp khi task cao xuất hiện. Chủ lưu hiện nay.<div class="cat">Task</div></div></div>
+  <div class="flash" data-cat="task"><div class="front">ノンプリエンプティブ</div><div class="back"><b>Task</b> tự quản lý CPU. Chỉ trả CPU khi xong việc. OS đơn giản hơn.<div class="cat">Task</div></div></div>
+  <div class="flash" data-cat="sched"><div class="front">到着順方式 (FCFS)</div><div class="back">Task đến Ready trước chạy trước. Non-preemptive.<div class="cat">Sched</div></div></div>
+  <div class="flash" data-cat="sched"><div class="front">処理時間順方式 (SJF)</div><div class="back">Task có thời gian xử lý ngắn nhất chạy trước.<div class="cat">Sched</div></div></div>
+  <div class="flash" data-cat="sched"><div class="front">優先度順方式</div><div class="back">Cấp ưu tiên cho từng task, chạy theo ưu tiên. Có 2 biến thể: preemptive và non-preemptive.<div class="cat">Sched</div></div></div>
+  <div class="flash" data-cat="sched"><div class="front">ラウンドロビン (Round Robin)</div><div class="back">Mỗi task được cấp 1 <b>time quantum cố định</b>, hết quantum thì chuyển task khác. Preemptive.<div class="cat">Sched</div></div></div>
+  <div class="flash" data-cat="int"><div class="front">内部割込み 例</div><div class="back">プログラム割込み (chia cho 0, overflow, page fault) và SVC割込み (yêu cầu I/O từ OS).<div class="cat">Int</div></div></div>
+  <div class="flash" data-cat="int"><div class="front">外部割込み 例</div><div class="back">機械チェック (lỗi HW), タイマ (hết quantum), コンソール (người dùng), 入出力 (I/O xong).<div class="cat">Int</div></div></div>
+  <div class="flash" data-cat="int"><div class="front">マルチプログラミング</div><div class="back">Trong khi 1 task chờ I/O, CPU làm task khác → thực hiện multitask. Tăng utilization của CPU.<div class="cat">Int</div></div></div>
+</div>
+
+<!-- ===================== PHẦN 4 — QUIZ ===================== -->
+<h2 class="sec">④ Câu hỏi ôn tập (10 câu, tự chấm)</h2>
+<div id="quizbox"></div>
+
+<!-- ===================== PHẦN 5 — MIND MAP ===================== -->
+<h2 class="sec">⑤ Mind Map</h2>
+<div class="mindmap-wrap">
+<svg class="mindmap" viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .mtext{font-family:'Noto Sans JP',sans-serif;font-size:13px;fill:#0f1419;font-weight:700}
+      .mctext{font-family:'Noto Sans JP',sans-serif;font-size:15px;fill:#fff;font-weight:800}
+      .mstext{font-family:'Noto Sans JP',sans-serif;font-size:11.5px;fill:#0f1419}
+      .lk{fill:none;stroke-width:2}
+    </style>
+  </defs>
+
+  <!-- Center -->
+  <ellipse cx="550" cy="360" rx="120" ry="55" fill="#7dd3fc" stroke="#0ea5e9" stroke-width="3"/>
+  <text x="550" y="357" text-anchor="middle" class="mctext">OS</text>
+  <text x="550" y="378" text-anchor="middle" class="mctext" style="font-size:12px">基本ソフトウェア</text>
+
+  <!-- Branch 1: Job (top-left) -->
+  <path class="lk" d="M 460 320 C 380 270, 280 240, 200 200" stroke="#fbbf24"/>
+  <rect x="80" y="170" width="160" height="40" rx="8" fill="#fbbf24"/>
+  <text x="160" y="195" text-anchor="middle" class="mtext">ジョブ管理 Job</text>
+  <!-- sub -->
+  <path class="lk" d="M 160 210 C 160 240, 60 245, 60 270" stroke="#fbbf24"/>
+  <rect x="10" y="270" width="100" height="30" rx="6" fill="#fde68a"/>
+  <text x="60" y="290" text-anchor="middle" class="mstext">スプーリング</text>
+  <path class="lk" d="M 160 210 C 160 250, 180 270, 180 300" stroke="#fbbf24"/>
+  <rect x="125" y="305" width="110" height="30" rx="6" fill="#fde68a"/>
+  <text x="180" y="325" text-anchor="middle" class="mstext">バッファ</text>
+  <path class="lk" d="M 160 210 C 160 230, 280 250, 280 270" stroke="#fbbf24"/>
+  <rect x="245" y="270" width="110" height="30" rx="6" fill="#fde68a"/>
+  <text x="300" y="290" text-anchor="middle" class="mstext">スループット</text>
+
+  <!-- Branch 2: Task (left) -->
+  <path class="lk" d="M 430 370 C 350 380, 250 390, 180 400" stroke="#a78bfa"/>
+  <rect x="20" y="385" width="160" height="40" rx="8" fill="#a78bfa"/>
+  <text x="100" y="410" text-anchor="middle" class="mtext">タスク管理 Task</text>
+  <path class="lk" d="M 100 425 C 100 445, 50 460, 50 475" stroke="#a78bfa"/>
+  <rect x="0" y="478" width="115" height="28" rx="6" fill="#c4b5fd"/>
+  <text x="58" y="496" text-anchor="middle" class="mstext">3状態</text>
+  <path class="lk" d="M 100 425 C 100 450, 140 465, 140 480" stroke="#a78bfa"/>
+  <rect x="80" y="483" width="120" height="28" rx="6" fill="#c4b5fd"/>
+  <text x="140" y="501" text-anchor="middle" class="mstext">ディスパッチ</text>
+  <path class="lk" d="M 100 425 C 100 460, 220 480, 220 500" stroke="#a78bfa"/>
+  <rect x="165" y="505" width="120" height="28" rx="6" fill="#c4b5fd"/>
+  <text x="225" y="523" text-anchor="middle" class="mstext">マルチタスク</text>
+
+  <!-- Branch 3: Scheduling (bottom-left) -->
+  <path class="lk" d="M 480 400 C 420 470, 350 540, 280 580" stroke="#86efac"/>
+  <rect x="160" y="580" width="200" height="40" rx="8" fill="#86efac"/>
+  <text x="260" y="605" text-anchor="middle" class="mtext">スケジューリング</text>
+  <path class="lk" d="M 260 620 C 260 640, 80 655, 80 670" stroke="#86efac"/>
+  <rect x="20" y="670" width="110" height="28" rx="6" fill="#bbf7d0"/>
+  <text x="75" y="688" text-anchor="middle" class="mstext">到着順</text>
+  <path class="lk" d="M 260 620 C 260 640, 175 660, 175 670" stroke="#86efac"/>
+  <rect x="138" y="670" width="105" height="28" rx="6" fill="#bbf7d0"/>
+  <text x="190" y="688" text-anchor="middle" class="mstext">処理時間順</text>
+  <path class="lk" d="M 260 620 C 260 645, 290 665, 290 675" stroke="#86efac"/>
+  <rect x="252" y="670" width="110" height="28" rx="6" fill="#bbf7d0"/>
+  <text x="307" y="688" text-anchor="middle" class="mstext">優先度順</text>
+  <path class="lk" d="M 260 620 C 260 640, 410 660, 410 675" stroke="#86efac"/>
+  <rect x="370" y="670" width="140" height="28" rx="6" fill="#bbf7d0"/>
+  <text x="440" y="688" text-anchor="middle" class="mstext">ラウンドロビン</text>
+
+  <!-- Branch 4: Preemptive (bottom-right) -->
+  <path class="lk" d="M 620 400 C 680 470, 760 540, 820 580" stroke="#fb923c"/>
+  <rect x="740" y="580" width="200" height="40" rx="8" fill="#fb923c"/>
+  <text x="840" y="605" text-anchor="middle" class="mtext">CPU割当方式</text>
+  <path class="lk" d="M 840 620 C 840 640, 770 660, 770 675" stroke="#fb923c"/>
+  <rect x="700" y="670" width="150" height="28" rx="6" fill="#fed7aa"/>
+  <text x="775" y="688" text-anchor="middle" class="mstext">プリエンプティブ</text>
+  <path class="lk" d="M 840 620 C 840 640, 940 660, 940 675" stroke="#fb923c"/>
+  <rect x="865" y="670" width="180" height="28" rx="6" fill="#fed7aa"/>
+  <text x="955" y="688" text-anchor="middle" class="mstext">ノンプリエンプティブ</text>
+
+  <!-- Branch 5: 割込み (right) -->
+  <path class="lk" d="M 670 370 C 760 380, 870 390, 940 400" stroke="#fda4af"/>
+  <rect x="920" y="385" width="160" height="40" rx="8" fill="#fda4af"/>
+  <text x="1000" y="410" text-anchor="middle" class="mtext">割込み Interrupt</text>
+  <path class="lk" d="M 1000 425 C 1000 450, 950 465, 950 480" stroke="#fda4af"/>
+  <rect x="895" y="483" width="115" height="28" rx="6" fill="#fecdd3"/>
+  <text x="952" y="501" text-anchor="middle" class="mstext">内部割込み</text>
+  <path class="lk" d="M 1000 425 C 1000 450, 1050 465, 1050 480" stroke="#fda4af"/>
+  <rect x="990" y="483" width="115" height="28" rx="6" fill="#fecdd3"/>
+  <text x="1047" y="501" text-anchor="middle" class="mstext">外部割込み</text>
+
+  <!-- Branch 6: software (top-right) -->
+  <path class="lk" d="M 640 320 C 720 270, 820 240, 900 200" stroke="#93c5fd"/>
+  <rect x="820" y="170" width="200" height="40" rx="8" fill="#93c5fd"/>
+  <text x="920" y="195" text-anchor="middle" class="mtext">ソフトウェア構成</text>
+  <path class="lk" d="M 920 210 C 920 240, 820 250, 820 270" stroke="#93c5fd"/>
+  <rect x="765" y="270" width="120" height="30" rx="6" fill="#bfdbfe"/>
+  <text x="825" y="290" text-anchor="middle" class="mstext">基本ソフトウェア</text>
+  <path class="lk" d="M 920 210 C 920 240, 920 260, 920 280" stroke="#93c5fd"/>
+  <rect x="870" y="280" width="105" height="30" rx="6" fill="#bfdbfe"/>
+  <text x="922" y="300" text-anchor="middle" class="mstext">ミドルウェア</text>
+  <path class="lk" d="M 920 210 C 920 230, 1020 260, 1020 290" stroke="#93c5fd"/>
+  <rect x="965" y="290" width="120" height="30" rx="6" fill="#bfdbfe"/>
+  <text x="1025" y="310" text-anchor="middle" class="mstext">応用ソフトウェア</text>
+</svg>
+</div>
+
+</div>
+
+<script>
+// Flashcard flip
+document.querySelectorAll('.flash').forEach(c=>{
+  c.addEventListener('click',()=>c.classList.toggle('flipped'));
+});
+// Filter
+document.querySelectorAll('.filter-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    const cat=b.dataset.cat;
+    document.querySelectorAll('.flash').forEach(f=>{
+      f.style.display=(cat==='all'||f.dataset.cat===cat)?'':'none';
+    });
+  });
+});
+
+// Quiz
+const QUIZ=[
+{q:"OS có bao nhiêu chức năng chính được FE quan tâm?",opts:["2 (ジョブ・タスク)","3 (ジョブ・タスク・記憶)","4 (ジョブ・タスク・記憶・データ)","5"],ans:2,e:"FE Syllabus liệt kê 4 chức năng: ジョブ管理, タスク管理, 記憶管理, データ管理."},
+{q:"ジョブ là đơn vị do ai đưa ra?",opts:["OS đưa cho CPU","Người dùng đưa cho máy tính","CPU đưa cho I/O","Compiler tạo ra"],ans:1,e:"ジョブ = đơn vị công việc do người dùng yêu cầu. タスク = do OS đưa cho CPU."},
+{q:"Spooling sử dụng thiết bị nào làm trung gian?",opts:["Cache CPU","Bộ nhớ chính (RAM)","Bộ nhớ phụ (HDD/SSD)","Register"],ans:2,e:"Spooling chèn 補助記憶装置 (HDD) giữa CPU và thiết bị I/O chậm."},
+{q:"Phương thức nào KHÔNG phải preemptive?",opts:["ラウンドロビン","優先度順 (preemptive)","到着順","タイマ割込みベース"],ans:2,e:"到着順 (FCFS) là non-preemptive — task đã chạy thì chạy đến xong."},
+{q:"Khi nào task chuyển từ 実行 sang 待ち?",opts:["Khi hết quantum","Khi cần I/O","Khi tạo task mới","Khi tăng priority"],ans:1,e:"待ち状態 = đang chờ I/O. Hết quantum thì sang Ready chứ không phải Wait."},
+{q:"ディスパッチ là hành động gì?",opts:["Tạo task mới","OS chuyển task từ 実行可能 sang 実行","Hủy task","Lưu task xuống HDD"],ans:1,e:"Dispatch = OS cấp quyền dùng CPU cho task đang ở Ready."},
+{q:"Page fault thuộc loại interrupt nào?",opts:["外部割込み (タイマ)","内部割込み (プログラム割込み)","SVC割込み","入出力割込み"],ans:1,e:"Page fault là lệnh không xử lý được → プログラム割込み (internal)."},
+{q:"Multitask trên 1 core CPU hoạt động thế nào?",opts:["Thực sự chạy song song nhiều task","OS chuyển nhanh task để trông như song song","Mỗi task có 1 core riêng","Dùng GPU song song"],ans:1,e:"1 core chỉ chạy 1 task tại 1 thời điểm. OS chuyển nhanh để cảm giác song song."},
+{q:"Buffer khác Spooling ở điểm nào?",opts:["Buffer là phần mềm, spooling là phần cứng","Buffer dùng bộ nhớ tạm; spooling dùng HDD trung gian giữa CPU và I/O chậm","Hai từ đồng nghĩa","Buffer chỉ dùng cho mạng"],ans:1,e:"Buffer là bộ nhớ tạm bù chênh tốc độ chung. Spooling là kỹ thuật cụ thể dùng HDD giữa CPU và máy in."},
+{q:"Quantum trong Round Robin nghĩa là gì?",opts:["Ưu tiên cao nhất","Khoảng thời gian cố định mỗi task được dùng CPU","Số core CPU","Bộ nhớ task chiếm"],ans:1,e:"Round Robin chia thời gian thành các quantum đều, mỗi task chạy đúng 1 quantum rồi nhường."}
+];
+const box=document.getElementById('quizbox');
+QUIZ.forEach((q,i)=>{
+  const div=document.createElement('div');div.className='quiz-q';
+  div.innerHTML=`<div class="qtxt">Câu ${i+1}. ${q.q}</div>`+
+  q.opts.map((o,j)=>`<div class="opt" data-i="${i}" data-j="${j}">${String.fromCharCode(65+j)}. ${o}</div>`).join('')+
+  `<div class="expl" id="e${i}"><b>Giải thích:</b> ${q.e}</div>`;
+  box.appendChild(div);
+});
+document.querySelectorAll('.opt').forEach(o=>{
+  o.addEventListener('click',()=>{
+    const i=+o.dataset.i,j=+o.dataset.j;
+    const opts=document.querySelectorAll(`.opt[data-i="${i}"]`);
+    if([...opts].some(x=>x.classList.contains('locked')))return;
+    opts.forEach(x=>x.classList.add('locked'));
+    if(j===QUIZ[i].ans)o.classList.add('correct');
+    else{o.classList.add('wrong');opts[QUIZ[i].ans].classList.add('correct');}
+    document.getElementById('e'+i).classList.add('show');
+  });
+});
+</script>
+</body>
+</html>
