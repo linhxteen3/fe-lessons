@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FE 模擬試験 — 実記憶・仮想記憶 (ページング) (40問)</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Space+Mono&family=Syne:wght@700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1419;--panel:#1a2029;--panel2:#222a35;--border:#2e3845;
+  --text:#e8ecf1;--muted:#9aa6b4;--accent:#7dd3fc;--accent2:#fbbf24;
+  --ok:#22c55e;--err:#ef4444;
+  --easy:#86efac;--med:#fbbf24;--hard:#fda4af;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,"Noto Sans JP",sans-serif;line-height:1.6}
+.wrap{max-width:900px;margin:0 auto;padding:18px}
+header{background:linear-gradient(135deg,#1e3a5f,#0f1419);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px}
+header h1{font-family:'Syne',sans-serif;margin:0 0 4px;font-size:22px;color:#fff}
+header .sub{color:var(--muted);font-size:13px}
+.progbar{height:8px;background:var(--panel2);border-radius:4px;overflow:hidden;margin-top:10px}
+.progbar > div{height:100%;background:var(--accent);width:0%;transition:width .3s}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0;font-size:13px;color:var(--muted)}
+.jumpgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;background:var(--panel);padding:8px;border-radius:10px;margin-bottom:12px;border:1px solid var(--border)}
+.jbtn{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 0;border-radius:5px;cursor:pointer;font-size:12px}
+.jbtn.cur{background:var(--accent);color:#0f1419;font-weight:700}
+.jbtn.ok{background:#14532d;border-color:var(--ok)}
+.jbtn.ng{background:#4a1414;border-color:var(--err)}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px}
+.qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.qno{font-family:'Syne',sans-serif;font-size:18px;color:var(--accent)}
+.diff{font-size:12px;padding:3px 10px;border-radius:12px;font-weight:700}
+.diff.easy{background:#14532d;color:var(--easy)}
+.diff.med{background:#3a2c0a;color:var(--med)}
+.diff.hard{background:#3a1f24;color:var(--hard)}
+.qtext{font-size:15px;margin:8px 0 12px;white-space:pre-wrap}
+.qtext .jp{color:#cbd5e1;font-size:13.5px;display:block;margin-top:6px;padding-top:6px;border-top:1px dashed var(--border)}
+.opt{background:#0f1419;border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:6px 0;cursor:pointer;font-size:14.5px;display:flex;gap:10px;align-items:start}
+.opt:hover{border-color:var(--accent)}
+.opt .lab{font-weight:700;color:var(--accent2);min-width:20px}
+.opt.correct{background:#14532d;border-color:var(--ok)}
+.opt.wrong{background:#4a1414;border-color:var(--err)}
+.opt.locked{cursor:default}
+.expl{margin-top:10px;padding:12px;background:#0a0e13;border-radius:10px;font-size:13.5px;border-left:3px solid var(--accent);display:none}
+.expl.show{display:block}
+.expl h5{margin:0 0 6px;color:var(--accent);font-size:13px;font-family:'Syne',sans-serif}
+.expl ul{margin:6px 0;padding-left:18px}
+.nav{display:flex;justify-content:space-between;gap:8px;margin-top:14px}
+.nav button{flex:1;background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:10px;border-radius:8px;cursor:pointer;font-size:14px}
+.nav button:hover{border-color:var(--accent)}
+.nav button:disabled{opacity:.4;cursor:not-allowed}
+.result{text-align:center;padding:30px 20px}
+.result h2{font-family:'Syne',sans-serif;font-size:28px;color:var(--accent2);margin:0 0 14px}
+.score{font-size:60px;font-family:'Syne',sans-serif;color:var(--accent);margin:10px 0}
+.breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}
+.bd{background:var(--panel2);padding:10px;border-radius:8px}
+.bd .lbl{font-size:11px;color:var(--muted);text-transform:uppercase}
+.bd .val{font-size:20px;font-weight:700;margin-top:4px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>FE 模擬試験 — 実記憶・仮想記憶 (ページング)</h1>
+  <div class="sub">40 câu · 30 phút · Yasashii Ch.6 (p.203-208) + Slide 第3-4回</div>
+  <div class="progbar"><div id="pbar"></div></div>
+  <div class="toolbar"><span id="prog">Câu 1 / 40</span><span>·</span><span id="dist">Dễ 12 · TB 16 · Khó 12</span></div>
+</header>
+
+<div class="jumpgrid" id="jumpgrid"></div>
+
+<div id="quiz"></div>
+
+<div id="resultPanel" class="card result hidden">
+  <h2 id="rTitle">Hoàn thành!</h2>
+  <div class="score" id="rScore">0 / 40</div>
+  <div id="rPct" style="font-size:18px;color:var(--muted)"></div>
+  <div id="rComment" style="margin-top:14px;font-size:15px"></div>
+  <div class="breakdown" id="rBreakdown"></div>
+  <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+    <button onclick="reviewMistakes()" style="background:var(--accent);color:#0f1419;border:0;padding:10px 18px;border-radius:8px;font-weight:700;cursor:pointer">📝 Xem câu sai</button>
+    <button onclick="restart()" style="background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:10px 18px;border-radius:8px;cursor:pointer">🔄 Làm lại</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+const QUIZ=[
+// ===== EASY 12 =====
+{d:"easy",q:"記憶管理 (memory management) trong OS chia làm 2 loại lớn nào?",jp:"OSの記憶管理は大きく何に分けられるか。",opts:["Cache + Register","主記憶管理 と 仮想記憶管理","Stack + Heap","HDD + SSD"],ans:1,why:"記憶管理 = 主記憶 (実記憶) + 仮想記憶 quản lý.",no:["A: cache là phần cứng nội bộ","C: ngôn ngữ lập trình","D: thiết bị lưu trữ"],fe:"FE — 記憶管理"},
+{d:"easy",q:"Ý nghĩa của 固定区画方式 là gì?",jp:"固定区画方式の意味はどれか。",opts:["RAM chia vùng kích thước cố định trước","RAM chia khi nạp","Không chia","Chia theo page固定長"],ans:0,why:"Fixed partition: chia trước thành các vùng kích thước cố định.",no:["B: là 可変区画","C: sai","D: là paging"],fe:"FE — 実記憶管理"},
+{d:"easy",q:"フラグメンテーション được khắc phục bằng kỹ thuật gì?",jp:"フラグメンテーションを解消する方法は。",opts:["スプーリング","メモリコンパクション","ページング","ガーベージコレクション"],ans:1,why:"Memory compaction = dồn các chương trình lại tạo vùng trống liên tục.",no:["A: I/O","C: kỹ thuật khác","D: cho memory leak"],fe:"FE — フラグメンテーション"},
+{d:"easy",q:"オーバーレイ方式 dùng khi chương trình so với RAM ra sao?",jp:"オーバーレイ方式はプログラムサイズが主記憶に対してどんなときに使うか。",opts:["Nhỏ hơn","Bằng","Lớn hơn RAM","Không liên quan"],ans:2,why:"Overlay: khi 主記憶容量以上のプログラム → chia segment nạp luân phiên.",no:["A,B,D: không có vấn đề cần overlay"],fe:"FE — オーバーレイ"},
+{d:"easy",q:"スワッピング (swapping) là gì?",jp:"スワッピングとは何か。",opts:["Đẩy chương trình từ RAM ↔ HDD khi cần","Sao lưu","In ấn","Phân mảnh"],ans:0,why:"Swap-out: RAM→HDD; Swap-in: HDD→RAM. Dùng khi ngắt ưu tiên cao.",no:["B: backup","C,D: không liên quan"],fe:"FE — スワッピング"},
+{d:"easy",q:"メモリリーク là gì?",jp:"メモリリークとは何か。",opts:["RAM đầy hoàn toàn","Vùng không dùng nhưng không được giải phóng","Pin cạn","Disk hỏng"],ans:1,why:"Memory leak = vùng nhớ không dùng nhưng không được giải phóng, do bug.",no:["A,C,D: không phải"],fe:"FE — メモリリーク"},
+{d:"easy",q:"ガーベージコレクション (GC) làm gì?",jp:"ガーベージコレクションは何をするか。",opts:["Phân vùng RAM","Giải phóng vùng nhớ không còn dùng","Sao chép page","Tạo virtual memory"],ans:1,why:"GC tự động thu hồi vùng nhớ không dùng → giảm memory leak.",no:["A,C,D: chức năng khác"],fe:"FE — ガーベージコレクション"},
+{d:"easy",q:"仮想記憶 (virtual memory) cho phép điều gì?",jp:"仮想記憶があると何が可能か。",opts:["Chương trình lớn hơn RAM vẫn chạy được","CPU nhanh hơn","Disk nhỏ hơn","Bỏ luôn RAM"],ans:0,why:"Virtual memory: dùng 1 phần HDD như RAM → chương trình > RAM thật vẫn chạy.",no:["B: không liên quan","C,D: vẫn cần RAM/disk"],fe:"FE — 仮想記憶"},
+{d:"easy",q:"ページング方式 chia bộ nhớ thành đơn vị gì?",jp:"ページング方式はメモリをどのような単位で分けるか。",opts:["可変長セグメント","ページ (固定長)","区画 (可変長)","ファイル"],ans:1,why:"Paging chia thành PAGE kích thước CỐ ĐỊNH bằng nhau.",no:["A: là segmentation","C: không phải","D: không"],fe:"FE — ページング"},
+{d:"easy",q:"ページフォールト là gì?",jp:"ページフォールトとは何か。",opts:["Lỗi page table","Interrupt khi page cần không có trong 実記憶","Disk crash","CPU dừng"],ans:1,why:"Page fault = interrupt khi page cần không có trong RAM thật → trigger page-in.",no:["A: không chính xác","C,D: không"],fe:"FE — ページフォールト"},
+{d:"easy",q:"ページイン là hướng truyền dữ liệu nào?",jp:"ページインはどの方向か。",opts:["RAM → HDD","HDD (補助記憶) → RAM (実記憶)","CPU → RAM","Cache → RAM"],ans:1,why:"Page-IN: nạp page từ 補助記憶 vào 実記憶.",no:["A: là page-out","C,D: không phải"],fe:"FE — ページイン"},
+{d:"easy",q:"LRU là viết tắt của gì?",jp:"LRUの正式名称は。",opts:["Last Random Used","Least Recently Used","Least Required Unit","Largest Reserved Unit"],ans:1,why:"LRU = Least Recently Used = page lâu nhất chưa được tham chiếu.",no:["A,C,D: sai"],fe:"FE — LRU"},
+
+// ===== MEDIUM 16 =====
+{d:"med",q:"Theo Yasashii, FE chủ yếu hỏi thuật toán page replacement nào?",jp:"基本情報技術者試験で主に出題される置換アルゴリズムは。",opts:["FIFO","LRU","LFU","LIFO"],ans:1,why:"Yasashii ghi rõ: 基本情報技術者試験に出題されるのは主にLRU.",no:["A,C,D: ít được hỏi hơn"],fe:"FE — LRU"},
+{d:"med",q:"Sự khác biệt cốt lõi giữa segmentation và paging?",jp:"セグメンテーションとページングの本質的違いは。",opts:["Segment 可変長, Page 固定長","Cùng nhau","Segment dùng cho RAM, Page dùng cho HDD","Paging chậm hơn"],ans:0,why:"Segment = đơn vị 可変長 (kích thước thay đổi). Page = 固定長 (cố định).",no:["B: khác nhau","C: cả 2 đều dùng cho virtual mem","D: tùy"],fe:"FE — Segmentation vs Paging"},
+{d:"med",q:"Số dòng của ページテーブル bằng cái gì?",jp:"ページテーブルの行の総数は何に等しいか。",opts:["Số page trong 実記憶","Số page trong 仮想記憶","Số CPU","Số segment"],ans:1,why:"Mỗi page trong virtual memory có 1 dòng trong page table → số dòng = số page ảo.",no:["A: chỉ là cột vật lý","C,D: không phải"],fe:"FE — ページテーブル"},
+{d:"med",q:"Thứ tự đúng khi page fault xảy ra (Yasashii):",jp:"ページフォールト発生時の流れの正しい順序は。",opts:["ページイン → ページアウト → ページテーブル","ページテーブル参照 → ページフォールト → 置換決定 → ページアウト → ページイン","ページアウト → ページイン → 終了","直接実記憶アクセス"],ans:1,why:"Yasashii: 仮想記憶アクセス → ページテーブル参照 → ページフォールト → 置換ページ決定 → ページアウト → ページイン.",no:["A: sai thứ tự","C: thiếu fault","D: không xảy ra"],fe:"FE — ページング動作"},
+{d:"med",q:"動的アドレス変換機構 (DAT/MMU) làm gì?",jp:"動的アドレス変換機構の役割は。",opts:["Tạo page mới","Chuyển 仮想アドレス → 物理アドレス","Quản lý disk","Tăng tốc CPU"],ans:1,why:"DAT/MMU = phần cứng chuyển địa chỉ ảo thành địa chỉ vật lý runtime.",no:["A,C,D: chức năng khác"],fe:"FE — DAT/MMU"},
+{d:"med",q:"Tại sao 可変区画方式 lại sinh ra フラグメンテーション?",jp:"可変区画方式でなぜフラグメンテーションが発生するか。",opts:["RAM quá lớn","Khi chương trình kết thúc rời rạc → để lại các ô trống xen kẽ","CPU chậm","Page table sai"],ans:1,why:"Khi chương trình kết thúc và giải phóng không theo thứ tự, RAM bị xen kẽ giữa vùng trống và vùng dùng.",no:["A,C,D: không phải nguyên nhân"],fe:"FE — フラグメンテーション"},
+{d:"med",q:"Bảng tham chiếu — A(0:00,0:05,9), B(0:02,0:03,4), C(0:03,0:07,2). FIFO chọn đẩy ra page nào?",jp:"A(読込0:00,最終参照0:05,回数9), B(0:02,0:03,4), C(0:03,0:07,2)。FIFOで追い出されるのは。",opts:["A","B","C","B và C"],ans:0,why:"FIFO: đẩy page vào sớm nhất → A (0:00).",no:["B: thuộc LRU","C: thuộc LFU","D: chỉ 1 page"],fe:"FE — FIFO (Yasashii ví dụ)"},
+{d:"med",q:"Cùng bảng trên, LRU chọn đẩy ra page nào?",jp:"同じ表でLRUが追い出すページは。",opts:["A (0:05)","B (0:03)","C (0:07)","Không xác định"],ans:1,why:"LRU = lâu nhất không tham chiếu. So 0:05 (A), 0:03 (B), 0:07 (C) → B là cũ nhất → đẩy B.",no:["A: gần đây hơn B","C: gần đây nhất","D: xác định được"],fe:"FE — LRU (Yasashii ví dụ)"},
+{d:"med",q:"Cùng bảng trên, LFU chọn đẩy ra page nào?",jp:"LFUが追い出すページは。",opts:["A (9 lần)","B (4 lần)","C (2 lần)","Tất cả"],ans:2,why:"LFU = ít tham chiếu nhất → C (2 lần).",no:["A: nhiều nhất","B: trung bình","D: chỉ 1"],fe:"FE — LFU (Yasashii ví dụ)"},
+{d:"med",q:"スラッシング xảy ra do nguyên nhân gốc nào?",jp:"スラッシングの根本原因は。",opts:["RAM cấp cho chương trình quá nhỏ","CPU quá nhanh","Disk quá nhanh","Page table lớn"],ans:0,why:"Yasashii: 割り当てられる実記憶の容量が小さいときに、ページアウトとページインが頻繁に起こる現象.",no:["B,C,D: không phải"],fe:"FE — スラッシング"},
+{d:"med",q:"Hậu quả chính của thrashing với hệ thống là gì?",jp:"スラッシングが起きるとシステムにどんな影響があるか。",opts:["CPU tăng nhiệt","スループット toàn hệ thống giảm","Disk nhanh hơn","Không ảnh hưởng"],ans:1,why:"Yasashii: スラッシングが発生するとコンピュータ全体のスループットが低下します.",no:["A: không phải","C: ngược lại","D: ảnh hưởng nặng"],fe:"FE — スラッシング ảnh hưởng"},
+{d:"med",q:"オーバーレイ方式 chia chương trình thành đơn vị gọi là?",jp:"オーバーレイ方式でプログラムを何に分けるか。",opts:["ページ","セグメント","ジョブ","タスク"],ans:1,why:"Overlay chia thành セグメント (segment) và nạp luân phiên.",no:["A: là paging","C,D: không phải"],fe:"FE — オーバーレイ"},
+{d:"med",q:"仮想アドレス được dịch sang 物理アドレス bằng cấu trúc nào?",jp:"仮想アドレスを物理アドレスに対応付けるものは。",opts:["スケジューラ","ページテーブル","TLB cache (補助)","プロセス制御ブロック"],ans:1,why:"Page table: 2 cột tương ứng 仮想アドレス ↔ 物理アドレス. (TLB là cache của page table, nhưng cấu trúc chính là page table.)",no:["A: cho task","C: chỉ là cache","D: cho task"],fe:"FE — ページテーブル"},
+{d:"med",q:"Truy cập page A có 仮想アドレス 1 ánh xạ vào 物理アドレス 2. CPU sẽ:",jp:"仮想アドレス1のページAが物理アドレス2に対応する。CPUはどう動くか。",opts:["Truy cập trực tiếp 実記憶 ô 1","Tra page table dòng 1 → đọc 実記憶 ô 2","Bỏ qua page table","Tạo page mới"],ans:1,why:"CPU dùng 仮想アドレス 1 tra page table → tìm 物理アドレス 2 → truy cập RAM ô 2.",no:["A: bỏ qua page table","C: cần tra","D: page đã có"],fe:"FE — CPU access page"},
+{d:"med",q:"Khi nào cần thực hiện ページアウト trước khi ページイン?",jp:"ページアウトをページインの前に実行するのはどんな場合か。",opts:["Page mới nhỏ hơn","実記憶 còn chỗ trống","実記憶 đã đầy","Page table rỗng"],ans:2,why:"Khi RAM thật đã đầy, phải page-out 1 page cũ để có chỗ → mới page-in được.",no:["A: không liên quan","B: không cần out","D: không xảy ra"],fe:"FE — ページイン/アウト"},
+{d:"med",q:"フラグメンテーション khác メモリリーク ở điểm nào?",jp:"フラグメンテーションとメモリリークの違いは。",opts:["Cùng nghĩa","Fragmentation = ô trống rời rạc; Leak = vùng không trả lại do bug","Fragmentation chỉ xảy ra với SSD","Leak chỉ xảy ra với HDD"],ans:1,why:"Hai vấn đề khác nhau: Fragmentation = RAM bị mảnh vụn; Memory leak = vùng nhớ không được trả lại OS do bug.",no:["A,C,D: sai"],fe:"FE — フラグメント vs リーク"},
+
+// ===== HARD 12 =====
+{d:"hard",q:"3 frames, chuỗi truy cập '1 2 1 1 3 2 3 3 4'. RAM ban đầu chứa {1,2,3}. Khi page 4 tới và dùng FIFO, page nào bị đẩy ra?",jp:"3フレーム、参照列1 2 1 1 3 2 3 3 4。FIFOで4が来たとき追い出されるページは。",opts:["1","2","3","4"],ans:0,why:"FIFO: page 1 vào sớm nhất (bước 1) → đẩy ra trước.",no:["B: vào bước 2","C: vào bước 5","D: page mới"],fe:"FE — FIFO (Slide example)"},
+{d:"hard",q:"Cùng chuỗi '1 2 1 1 3 2 3 3 4'. Dùng LIFO khi page 4 tới, đẩy ra page nào?",jp:"同じ参照列、LIFOで追い出されるページは。",opts:["1","2","3","4"],ans:2,why:"LIFO: page vào muộn nhất (3, vào bước 5) → đẩy ra.",no:["A: vào sớm nhất","B: trung bình","D: page mới"],fe:"FE — LIFO (Slide)"},
+{d:"hard",q:"Cùng chuỗi. LRU khi page 4 tới, đẩy ra page nào?",jp:"同じ参照列、LRUで追い出されるページは。",opts:["1","2","3","Không xác định"],ans:0,why:"Tham chiếu cuối: page 1 ở bước 4, page 2 ở bước 6, page 3 ở bước 8. Page 1 lâu nhất không dùng → đẩy 1.",no:["B: gần đây hơn 1","C: vừa dùng","D: tính được"],fe:"FE — LRU (Slide)"},
+{d:"hard",q:"Cùng chuỗi. LFU khi page 4 tới, đẩy ra page nào? (Đếm số tham chiếu)",jp:"同じ参照列、LFUで追い出されるページは。参照回数で判定。",opts:["1 (3 lần)","2 (2 lần)","3 (3 lần)","Đồng đều"],ans:1,why:"Đếm: page 1 → 3 lần (bước 1,3,4), page 2 → 2 lần (bước 2,6), page 3 → 3 lần (bước 5,7,8). Ít nhất là page 2.",no:["A,C: nhiều hơn","D: không đồng đều"],fe:"FE — LFU (Slide)"},
+{d:"hard",q:"Nếu RAM 8KB, page size 1KB, virtual address space 32KB → page table cần bao nhiêu dòng?",jp:"RAM 8KB, ページサイズ 1KB, 仮想アドレス空間 32KB のとき、ページテーブルの行数は。",opts:["8","16","32","64"],ans:2,why:"Số dòng page table = số page trong 仮想記憶 = 32KB / 1KB = 32 dòng.",no:["A: là số frame thực","B,D: tính sai"],fe:"FE — ページテーブル size"},
+{d:"hard",q:"Khi spawn nhiều process cùng chạy → mỗi process được cấp ít page → page-in/out liên tục → throughput giảm. Hiện tượng này là?",jp:"プロセスを多く起動→各プロセスに少ない実記憶→ページイン/アウト頻発→スループット低下、この現象は。",opts:["デッドロック","スラッシング","スワッピング","スプーリング"],ans:1,why:"Đây chính là thrashing — định nghĩa kinh điển của Yasashii.",no:["A: deadlock là chờ vòng tròn","C: là 1 lần đẩy ra","D: I/O kỹ thuật"],fe:"FE — スラッシング"},
+{d:"hard",q:"Khi áp dụng メモリコンパクション, OS phải làm gì với địa chỉ chương trình?",jp:"メモリコンパクション実施時、OSはプログラムのアドレスをどうする必要があるか。",opts:["Giữ nguyên","Cập nhật lại (vì chương trình bị dời chỗ)","Xóa","Không liên quan đến địa chỉ"],ans:1,why:"Compaction dời chương trình → địa chỉ vật lý thay đổi → OS phải cập nhật bảng dịch địa chỉ (page table / base register).",no:["A,C,D: sai về cơ chế"],fe:"FE — メモリコンパクション cơ chế"},
+{d:"hard",q:"Bảng tham chiếu (Yasashii): A(0:00,0:05,9), B(0:02,0:03,4), C(0:03,0:07,2). Áp dụng LRU và LFU cùng lúc — kết quả CÓ KHÁC NHAU không?",jp:"Yasashiiの表でLRUとLFUを適用した結果は同じか異なるか。",opts:["Cùng đẩy A","Cùng đẩy B","Khác: LRU đẩy B, LFU đẩy C","Cùng đẩy C"],ans:2,why:"LRU đẩy B (0:03 cũ nhất). LFU đẩy C (2 lần ít nhất). Khác nhau → quan trọng cho FE.",no:["A,B,D: không đúng"],fe:"FE — LRU vs LFU"},
+{d:"hard",q:"Phát biểu nào về thrashing là KHÔNG đúng?",jp:"スラッシングについて誤った記述はどれか。",opts:["Là hiện tượng page-in/out liên tục","Làm giảm throughput","Tăng RAM thường giúp giảm thrashing","Là một kỹ thuật tốt nên áp dụng"],ans:3,why:"Thrashing là HIỆN TƯỢNG XẤU cần tránh, không phải kỹ thuật.",no:["A,B,C: đều đúng"],fe:"FE — スラッシング"},
+{d:"hard",q:"Trong segmentation, segment có đặc tính kích thước thế nào?",jp:"セグメンテーション方式におけるセグメントのサイズは。",opts:["固定長 (cố định)","可変長 (thay đổi)","Luôn 4KB","Luôn 1MB"],ans:1,why:"Segment = đơn vị 可変長 (thay đổi theo logic của chương trình: code, data, stack...).",no:["A: là paging","C,D: không quy định cứng"],fe:"FE — セグメンテーション"},
+{d:"hard",q:"スワッピング và ページング khác nhau cơ bản ở điểm nào?",jp:"スワッピングとページングの基本的違いは。",opts:["Swap đẩy CẢ chương trình; paging đẩy từng page","Cùng nhau","Swap không dùng HDD","Paging không dùng HDD"],ans:0,why:"Swapping di chuyển toàn bộ process; paging chỉ di chuyển từng page nhỏ → linh hoạt hơn.",no:["B: khác","C,D: cả 2 đều dùng"],fe:"FE — スワップ vs ページング"},
+{d:"hard",q:"Khi 4 process cùng chạy trên RAM 1GB, mỗi process trung bình cần 400MB. OS dùng virtual memory. Hiện tượng nào dễ xảy ra?",jp:"1GBのRAMで400MB必要なプロセスを4つ動かす→仮想記憶を多用→何が起きやすいか。",opts:["Compaction tự động","Thrashing","Disk speedup","RAM tự mở rộng"],ans:1,why:"Tổng cần 1.6GB nhưng RAM 1GB → working set > RAM → page-in/out liên tục → thrashing.",no:["A: không tự động","C,D: không xảy ra"],fe:"FE — スラッシング tình huống"}
+];
+
+let cur=0;const ans=new Array(QUIZ.length).fill(null);
+const quiz=document.getElementById('quiz');
+const jumpgrid=document.getElementById('jumpgrid');
+
+QUIZ.forEach((_,i)=>{
+  const b=document.createElement('button');b.className='jbtn';b.textContent=i+1;
+  b.onclick=()=>{cur=i;render()};
+  jumpgrid.appendChild(b);
+});
+
+function render(){
+  if(cur>=QUIZ.length){showResult();return}
+  document.getElementById('resultPanel').classList.add('hidden');
+  const q=QUIZ[cur];
+  const dmap={easy:'Dễ',med:'TB',hard:'Khó'};
+  quiz.innerHTML=`
+  <div class="card">
+    <div class="qhead">
+      <div class="qno">Câu ${cur+1} / 40</div>
+      <span class="diff ${q.d}">${dmap[q.d]}</span>
+    </div>
+    <div class="qtext">${q.q}<span class="jp">🇯🇵 ${q.jp}</span></div>
+    ${q.opts.map((o,j)=>`<div class="opt" data-j="${j}"><span class="lab">${'アイウエ'[j]}</span><span>${o}</span></div>`).join('')}
+    <div class="expl" id="expl">
+      <h5>📖 Giải thích</h5>
+      <div><b>Đáp án đúng:</b> ${'アイウエ'[q.ans]}. ${q.opts[q.ans]}</div>
+      <div style="margin-top:6px"><b>Tại sao đúng:</b> ${q.why}</div>
+      <div style="margin-top:6px"><b>Tại sao các đáp án còn lại sai:</b><ul>${q.no.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+      <div style="margin-top:6px;color:var(--accent2)"><b>Liên hệ FE:</b> ${q.fe}</div>
+    </div>
+    <div class="nav">
+      <button onclick="prev()" ${cur===0?'disabled':''}>◀ Câu trước</button>
+      <button onclick="next()">${cur===QUIZ.length-1?'Kết thúc ✓':'Câu tiếp ▶'}</button>
+    </div>
+  </div>`;
+  if(ans[cur]!==null){
+    const opts=quiz.querySelectorAll('.opt');
+    opts.forEach(o=>o.classList.add('locked'));
+    opts[ans[cur]].classList.add(ans[cur]===q.ans?'correct':'wrong');
+    if(ans[cur]!==q.ans)opts[q.ans].classList.add('correct');
+    document.getElementById('expl').classList.add('show');
+  }
+  quiz.querySelectorAll('.opt').forEach(o=>{
+    o.addEventListener('click',()=>{
+      if(ans[cur]!==null)return;
+      const j=+o.dataset.j;ans[cur]=j;
+      const opts=quiz.querySelectorAll('.opt');
+      opts.forEach(x=>x.classList.add('locked'));
+      if(j===q.ans)o.classList.add('correct');
+      else{o.classList.add('wrong');opts[q.ans].classList.add('correct')}
+      document.getElementById('expl').classList.add('show');
+      updateJump();updateProg();
+    });
+  });
+  updateJump();updateProg();
+}
+function prev(){if(cur>0){cur--;render()}}
+function next(){if(cur<QUIZ.length-1){cur++;render()}else showResult()}
+function updateJump(){
+  jumpgrid.querySelectorAll('.jbtn').forEach((b,i)=>{
+    b.className='jbtn';
+    if(i===cur)b.classList.add('cur');
+    if(ans[i]!==null)b.classList.add(ans[i]===QUIZ[i].ans?'ok':'ng');
+  });
+}
+function updateProg(){
+  const done=ans.filter(a=>a!==null).length;
+  document.getElementById('prog').textContent=`Câu ${cur+1} / 40 — đã làm ${done}`;
+  document.getElementById('pbar').style.width=(done/40*100)+'%';
+}
+function showResult(){
+  const total=ans.filter(a=>a!==null).length;
+  const correct=ans.filter((a,i)=>a===QUIZ[i].ans).length;
+  const pct=Math.round(correct/QUIZ.length*100);
+  document.getElementById('rScore').textContent=`${correct} / 40`;
+  document.getElementById('rPct').textContent=`Tỷ lệ đúng: ${pct}% (đã làm ${total}/40)`;
+  let cm;
+  if(pct>=80)cm='🎉 Xuất sắc! Sẵn sàng cho 科目A!';
+  else if(pct>=60)cm='👍 Khá tốt. Ôn lại các câu sai để chắc kiến thức.';
+  else cm='💪 Cần cố gắng. Quay lại đọc lý thuyết và làm lại.';
+  document.getElementById('rComment').textContent=cm;
+  const bd={easy:[0,0],med:[0,0],hard:[0,0]};
+  QUIZ.forEach((q,i)=>{bd[q.d][1]++;if(ans[i]===q.ans)bd[q.d][0]++});
+  document.getElementById('rBreakdown').innerHTML=
+    ['easy','med','hard'].map(d=>{
+      const lbl={easy:'Dễ',med:'TB',hard:'Khó'}[d];
+      return `<div class="bd"><div class="lbl">${lbl}</div><div class="val" style="color:var(--${d==='med'?'med':d})">${bd[d][0]}/${bd[d][1]}</div></div>`;
+    }).join('');
+  quiz.innerHTML='';
+  document.getElementById('resultPanel').classList.remove('hidden');
+}
+function restart(){ans.fill(null);cur=0;render()}
+function reviewMistakes(){
+  const first=ans.findIndex((a,i)=>a!==null&&a!==QUIZ[i].ans);
+  if(first===-1){alert('Bạn không có câu sai nào! 🎉');return}
+  cur=first;render();window.scrollTo({top:0,behavior:'smooth'});
+}
+render();
+</script>
+</body>
+</html>
