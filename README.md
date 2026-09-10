@@ -1,45 +1,44 @@
-#  FE Exam Study Notes & Materials (基本情報技術者試験)
+# FE Lessons — 基本情報技術者試験 学習進捗トラッカー
 
+個人の学習効率を高めるために、独学で開発したWebアプリケーションです。基本情報技術者試験（FE）の受験対策として、日々の学習内容と進捗状況を一元管理する目的で制作しました。
 
-
-###  Giới thiệu
-Chào mừng bạn đến với repo **fe-lessons**! Đây là nơi tổng hợp và chia sẻ tài liệu, bài tập thực hành phục vụ cho quá trình ôn thi chứng chỉ **FE (Fundamental Information Technology Engineer Examination)**.
-
-Nội dung được biên soạn và tổng hợp từ các giáo trình chính thức, sách tham khảo uy tín và tài liệu học tập từ trung tâm đào tạo chuyên ngành, nhằm đảm bảo tính chính xác và độ tin cậy cao.
-
-### Mục tiêu
-- **Hỗ trợ học tập:** Giúp mình và đồng đội dễ dàng theo dõi, trao đổi và ôn luyện kiến thức FE hàng ngày.
-- **Chia sẻ cộng đồng:** Cung cấp nguồn tài liệu đã qua kiểm chứng cho các bạn đang trong quá trình chuẩn bị cho kỳ thi FE.
-
-Chúc bạn có một trải nghiệm học tập hiệu quả và đạt kết quả cao trong kỳ thi! 
+**🔗 デモ:** https://linhxteen3.github.io/fe-lessons/
 
 ---
 
-## 🇯🇵 日本語
+## 開発の背景
 
-### 概要
-**fe-lessons** リポジトリへようこそ！
-本リポジトリは、**基本情報技術者試験（FE）**の合格を目指し、学習資料や演習問題をまとめて共有するためのスペースです。
+FE試験の範囲は多岐にわたり、市販の参考書や学習サイトだけでは、自分がどの分野をどこまで理解できているかを可視化することが困難でした。そこで、学習内容を自分自身で整理し、進捗を可視化できるツールを自ら開発することにしました。あくまで個人利用を前提に設計しているため、UIや機能は自分の学習スタイルに最適化されています。
 
-掲載している内容は、信頼性の高い専門書のほか、ITスクール等の教材をベースに整理・検証したものであり、正確な知識の習得を目的としています。
+## 主な機能
 
-###  目的
-- **効率的な学習:** 仲間と一緒に進捗を管理し、復習や知識の定着をスムーズに行うため。
-- **コミュニティへの貢献:** FE試験の合格を目指す学習者の皆様に、信頼できる学習リソースを提供するため。
+- **学習トラッカー**：各レッスンの完了状況を記録し、「全て／完了／未着手」でフィルタリング表示
+- **進捗の可視化**：完了済みレッスン数をリアルタイムに集計（例：`○ / ○ 完了`）
+- **理論パート**：各分野の要点をまとめたレッスンコンテンツ
+- **演習パート**：各レッスンに対応した40問形式の確認テスト
+- **検索・絞り込み**：条件に合致しないレッスンは表示から除外し、必要な内容にすぐアクセス可能
 
-皆様の学習が実り ok 多きものとなり、試験で成果を発揮できるよう応援しています！ 
+## 技術構成
+
+| 項目 | 内容 |
+|---|---|
+| フロントエンド | HTML / CSS / JavaScript |
+| データ管理 | JSON（`lessons.json`）でレッスン内容を外部管理し、動的に描画 |
+| ホスティング | GitHub Pages |
+| 開発手法 | UI・機能実装をAIツール（Claude Code等）と協働して開発。学習コンテンツの整理においても、AIを活用して情報を一定の構成フォーマットへ整理したが、AIによる誤情報の生成（ハルシネーション）を防ぐため、検証済みの教材・参考書のみを情報源として明示的に指定した |
+
+## 学習コンテンツについて
+
+レッスンの本文はベトナム語で記述しています。これは、まず母語で概念を正確に理解したうえで、日本語での試験本番に応用するという、自分にとって最も効率的な学習プロセスを反映したものです。
+
+内容の整理にあたっては、市販の参考書やスクール教材など**検証済みの情報源のみ**をAIに与え、一定のフォーマットへ再構成する形で作業を進めました。AIに知識の生成そのものを委ねるのではなく、出典が明確な情報を正確に構造化する用途に限定して活用することで、誤情報（ハルシネーション）の混入を防いでいます。
+
+## 今後の改善予定
+
+- `lessons.json` の本番反映（現在デモ環境では一部サンプルデータで表示）
+- UIの日本語対応（主要な操作部分のラベル多言語化）
+- 演習問題の解答解説機能の追加
 
 ---
 
-## English
-
-###  Overview
-Welcome to **fe-lessons**! This repository is dedicated to collecting, organizing, and sharing study materials and practice exercises for the **Fundamental Information Technology Engineer Examination (FE)**.
-
-The content is compiled from accredited textbooks and verified training center materials to ensure accuracy and high educational quality.
-
-### Objectives
-- **Collaborative Learning:** To streamline daily study, review, and progress tracking with learning partners.
-- **Community Sharing:** To offer a reliable, verified study resource for candidates preparing for the FE exam.
-
-Wishing you a productive learning journey and success in your FE exam! 
+*このリポジトリは学習用個人プロジェクトです。フィードバック・ご指摘歓迎します。*
