@@ -1,0 +1,534 @@
+/**
+ * Brilliant.org Design System for FE Lessons
+ * Colors: White/Off-white canvas, Deep Black (#191919), Brilliant Green (#22C55E), Brilliant Blue (#4F46E5)
+ * Tactile 3D Cards & Buttons: 2px solid border with 4px solid bottom border, translateY(2px) on active.
+ */
+
+:root {
+  --br-bg: #FFFFFF;
+  --br-canvas: #F9FAFB;
+  --br-surface: #FFFFFF;
+  --br-surface-alt: #F3F4F6;
+  --br-border: #E5E7EB;
+  --br-border-press: #D1D5DB;
+  --br-border-hover: #CBD5E1;
+  --br-border-dark: #191919;
+  
+  --br-text: #111827;
+  --br-text-secondary: #4B5563;
+  --br-text-muted: #6B7280;
+  --br-text-subtle: #9CA3AF;
+  
+  /* Primary Brilliant Accents */
+  --br-black: #191919;
+  --br-black-press: #000000;
+  --br-green: #22C55E;
+  --br-green-dark: #16A34A;
+  --br-green-bg: #F0FDF4;
+  --br-green-border: #BBF7D0;
+  
+  --br-blue: #4F46E5;
+  --br-blue-alt: #2563EB;
+  --br-blue-dark: #3730A3;
+  --br-blue-bg: #EEF2FF;
+  --br-blue-border: #C7D2FE;
+  
+  --br-red: #EF4444;
+  --br-red-dark: #DC2626;
+  --br-red-bg: #FEF2F2;
+  --br-red-border: #FECACA;
+  
+  --br-yellow: #F59E0B;
+  --br-yellow-dark: #D97706;
+  --br-yellow-bg: #FFFBEB;
+  --br-yellow-border: #FDE68A;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "DM Mono", Menlo, Consolas, monospace;
+}
+
+/* ── UNIVERSAL RESETS & OVERRIDES (Clears legacy dark/paper styles) ── */
+html {
+  scroll-behavior: smooth;
+  color-scheme: light !important;
+}
+
+body {
+  background-color: var(--br-canvas) !important;
+  background-image: none !important;
+  color: var(--br-text) !important;
+  font-family: var(--font-sans) !important;
+  line-height: 1.65 !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Remove paper grain textures from old templates */
+body::before, body::after {
+  display: none !important;
+}
+
+a {
+  color: var(--br-blue);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* ── TOP PROGRESS BAR (Bite-Sized Flow) ── */
+.br-progress-track {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 6px;
+  background: var(--br-border);
+  z-index: 1000;
+  overflow: hidden;
+}
+.br-progress-bar {
+  height: 100%;
+  background: var(--br-green);
+  width: 0%;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0 4px 4px 0;
+}
+
+/* ── TACTILE 3D CARDS ── */
+.br-card,
+.card,
+.row,
+section,
+section.part,
+.part,
+.truth-card,
+.nav-panel,
+.example,
+.tip,
+.warn,
+.callout,
+.breakdown-card,
+.bk-card,
+.tri,
+.lang-block,
+.fc,
+header.hero,
+.hero,
+.container {
+  background: #FFFFFF !important;
+  border: 2px solid var(--br-border) !important;
+  border-bottom: 4px solid var(--br-border-press) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03) !important;
+  color: var(--br-text) !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.br-card:hover,
+.row:hover,
+.card:hover {
+  border-color: var(--br-border-hover) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* ── TACTILE 3D BUTTONS ── */
+.br-btn,
+.btn,
+.toggle-btn,
+.chip,
+.qnav-btn,
+.nav-cell,
+.tab,
+.explain-btn,
+.quicknav-toggle,
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-sans) !important;
+  font-weight: 700 !important;
+  border: 2px solid var(--br-border) !important;
+  border-bottom: 4px solid var(--br-border-press) !important;
+  border-radius: 12px !important;
+  background: #FFFFFF !important;
+  color: var(--br-text) !important;
+  cursor: pointer !important;
+  padding: 9px 18px !important;
+  transition: transform 0.08s ease, border-bottom-width 0.08s ease, background-color 0.12s ease !important;
+  user-select: none !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+}
+
+.br-btn:hover,
+.btn:hover,
+button:hover,
+.chip:hover,
+.qnav-btn:hover {
+  border-color: var(--br-border-hover) !important;
+  background: var(--br-canvas) !important;
+}
+
+.br-btn:active,
+.btn:active,
+.toggle-btn:active,
+.chip:active,
+.qnav-btn:active,
+.nav-cell:active,
+button:active {
+  transform: translateY(2px) !important;
+  border-bottom-width: 2px !important;
+}
+
+/* Primary Brilliant Black Tactile Button ("Tiếp tục" / Continue / Next) */
+.br-btn-primary,
+.btn-primary,
+.btn-next,
+#nextBtn,
+.actions .btn[data-t="theory"],
+.btn-continue {
+  background: var(--br-black) !important;
+  color: #FFFFFF !important;
+  border: 2px solid var(--br-black) !important;
+  border-bottom: 4px solid var(--br-black-press) !important;
+}
+.br-btn-primary:hover,
+.btn-primary:hover,
+.btn-next:hover,
+#nextBtn:hover,
+.actions .btn[data-t="theory"]:hover {
+  background: #2D2D2D !important;
+  border-color: #2D2D2D !important;
+}
+.br-btn-primary:active,
+.btn-primary:active,
+.btn-next:active,
+#nextBtn:active {
+  transform: translateY(2px) !important;
+  border-bottom-width: 2px !important;
+}
+
+/* Brilliant Green Tactile Button (Complete / Success) */
+.br-btn-green,
+.toggle-btn.p0 {
+  background: var(--br-green) !important;
+  color: #FFFFFF !important;
+  border: 2px solid var(--br-green) !important;
+  border-bottom: 4px solid var(--br-green-dark) !important;
+}
+.br-btn-green:hover,
+.toggle-btn.p0:hover {
+  background: var(--br-green-dark) !important;
+}
+.br-btn-green:active,
+.toggle-btn.p0:active {
+  transform: translateY(2px) !important;
+  border-bottom-width: 2px !important;
+}
+
+/* Disabled state */
+.btn:disabled,
+button:disabled,
+.btn[disabled] {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  transform: none !important;
+  border-bottom-width: 4px !important;
+}
+
+/* ── TACTILE 3D QUIZ OPTIONS ── */
+.option,
+.opt,
+.choice {
+  background: #FFFFFF !important;
+  border: 2px solid var(--br-border) !important;
+  border-bottom: 4px solid var(--br-border-press) !important;
+  border-radius: 14px !important;
+  color: var(--br-text) !important;
+  padding: 14px 18px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  transition: all 0.1s ease !important;
+  user-select: none !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+}
+
+.option:hover:not(.disabled):not(.locked),
+.opt:hover:not(.locked) {
+  border-color: #93C5FD !important;
+  background: #F8FAFC !important;
+}
+
+.option:active:not(.disabled):not(.locked),
+.opt:active:not(.locked) {
+  transform: translateY(2px) !important;
+  border-bottom-width: 2px !important;
+}
+
+/* Selected state (Blue highlight) */
+.option.selected,
+.opt.selected {
+  border-color: var(--br-blue) !important;
+  border-bottom-color: var(--br-blue-dark) !important;
+  background: var(--br-blue-bg) !important;
+  color: #312E81 !important;
+}
+
+/* Correct state (Green tactile) */
+.option.correct,
+.opt.correct,
+.qnav-btn.answered.right,
+.qjump button.done {
+  border-color: var(--br-green) !important;
+  border-bottom-color: var(--br-green-dark) !important;
+  background: var(--br-green-bg) !important;
+  color: #15803D !important;
+  font-weight: 600 !important;
+}
+.option.correct .letter,
+.opt.correct .lbl {
+  background: var(--br-green) !important;
+  color: #FFFFFF !important;
+}
+
+/* Wrong state (Red tactile) */
+.option.wrong,
+.opt.wrong,
+.qnav-btn.answered.wrong,
+.qjump button.miss {
+  border-color: var(--br-red) !important;
+  border-bottom-color: var(--br-red-dark) !important;
+  background: var(--br-red-bg) !important;
+  color: #B91C1C !important;
+}
+.option.wrong .letter,
+.opt.wrong .lbl {
+  background: var(--br-red) !important;
+  color: #FFFFFF !important;
+}
+
+/* ── STREAK COMPONENT (⚡) ── */
+.br-streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 99px;
+  background: var(--br-yellow-bg);
+  border: 2px solid var(--br-yellow-border);
+  border-bottom: 4px solid var(--br-yellow);
+  color: var(--br-yellow-dark);
+  font-weight: 700;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: transform 0.08s ease, border-bottom-width 0.08s ease;
+  user-select: none;
+}
+.br-streak-badge:active {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+}
+.br-streak-fire {
+  font-size: 16px;
+  animation: pulse-fire 1.5s ease-in-out infinite alternate;
+}
+@keyframes pulse-fire {
+  from { transform: scale(1); }
+  to { transform: scale(1.18); }
+}
+
+/* ── ROBOT TUTOR (Gia sư Robot Mascot + Speech Bubble) ── */
+.br-tutor {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin: 22px 0;
+  padding: 16px 20px;
+  background: var(--br-green-bg);
+  border: 2px solid var(--br-green-border);
+  border-bottom: 4px solid #86EFAC;
+  border-radius: 16px;
+  box-shadow: 0 2px 6px rgba(34, 197, 94, 0.06);
+}
+.br-tutor-mascot {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+}
+.br-tutor-bubble {
+  flex: 1;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #14532D;
+}
+.br-tutor-bubble b, .br-tutor-bubble strong {
+  color: #052E16;
+}
+.br-tutor-title {
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #16A34A;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── LEARNING TOOLBAR (fe-toolbar in site.js) ── */
+.fe-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 2px solid var(--br-border);
+  font: 600 13.5px var(--font-sans);
+}
+.fe-toolbar a, .fe-toolbar button {
+  min-height: 38px;
+  padding: 6px 14px !important;
+  font-size: 13px !important;
+}
+
+/* ── TYPOGRAPHY & SECTIONS ── */
+h1, h2, h3, h4, .hero-title, .title, .part-title {
+  color: var(--br-text) !important;
+  font-family: var(--font-sans) !important;
+  letter-spacing: -0.02em !important;
+  font-weight: 700 !important;
+}
+
+/* Tri-language block styling */
+.lang-block, .tri {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 20px !important;
+}
+.lang-row, .tri .lang {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  line-height: 1.6;
+  font-size: 14.5px;
+}
+.lang-row .label, .tri .lang span {
+  font-weight: 700;
+  font-size: 12px;
+  min-width: 90px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--br-surface-alt);
+  color: var(--br-text-secondary);
+}
+.lang-row.jp .label { background: #FEE2E2; color: #991B1B; }
+.lang-row.vn .label { background: #DCFCE7; color: #166534; }
+.lang-row.en .label { background: #DBEAFE; color: #1E40AF; }
+
+/* Callout & Hint */
+.callout, .tip, .warn {
+  padding: 16px 20px !important;
+  margin: 18px 0 !important;
+}
+.callout .head, .tip .head, .warn .head {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.callout { background: var(--br-blue-bg) !important; border-color: var(--br-blue-border) !important; }
+.tip { background: var(--br-yellow-bg) !important; border-color: var(--br-yellow-border) !important; }
+.warn { background: var(--br-red-bg) !important; border-color: var(--br-red-border) !important; }
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #FFFFFF !important;
+  font-size: 14px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--br-border);
+}
+th, td {
+  padding: 10px 14px;
+  border: 1px solid var(--br-border) !important;
+  color: var(--br-text) !important;
+}
+th {
+  background: var(--br-surface-alt) !important;
+  font-weight: 700 !important;
+}
+
+/* Code blocks */
+code, pre, .ascii, .box {
+  font-family: var(--font-mono) !important;
+  background: var(--br-surface-alt) !important;
+  color: #1F2937 !important;
+  border-radius: 8px;
+}
+code {
+  padding: 2px 6px;
+  font-size: 0.9em;
+}
+pre, .ascii, .box {
+  padding: 14px 18px;
+  border: 1px solid var(--br-border);
+  overflow-x: auto;
+}
+
+/* Flashcards */
+.fc {
+  cursor: pointer;
+  min-height: 160px;
+  padding: 20px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: transform 0.15s ease, border-color 0.15s ease !important;
+}
+.fc:hover {
+  transform: translateY(-2px) !important;
+  border-color: var(--br-blue-alt) !important;
+}
+
+/* Explanation Accordion */
+.explain {
+  background: var(--br-surface-alt) !important;
+  border: 2px solid var(--br-border) !important;
+  border-left: 6px solid var(--br-blue) !important;
+  border-radius: 10px !important;
+  padding: 16px 20px !important;
+  margin-top: 14px;
+  color: var(--br-text) !important;
+}
+
+/* Navigation Jump Grid in Quizzes */
+.qjump, .nav-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+}
+.qjump button, .nav-cell, .qnav-btn {
+  padding: 8px 0 !important;
+  font-size: 12px !important;
+  font-family: var(--font-mono) !important;
+}
+.nav-cell.current, .qjump button.cur, .qnav-btn.current {
+  border-color: var(--br-black) !important;
+  background: var(--br-black) !important;
+  color: #FFFFFF !important;
+}

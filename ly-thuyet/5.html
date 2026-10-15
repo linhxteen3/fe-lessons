@@ -1,58 +1,44 @@
-
-AND/OR/NOT/XOR.html
-
-Trang
-1
-/
-1
-100%
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>論理演算 & 半加算器 — FE Study Notes</title>
+<title>論理演算 & 半加算器 — FE Study Notes (Brilliant Style)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;800&family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;1,9..144,500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;800&family=DM+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/brilliant.css">
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/site.js"></script>
+<script src="../assets/brilliant.js"></script>
 <style>
 :root{
-  --ink:#1a1410;
-  --paper:#f5efe4;
-  --paper-warm:#ede4d3;
-  --vermilion:#c2410c;
-  --vermilion-soft:#e8a87c;
-  --indigo:#1e3a5f;
-  --gold:#b8860b;
-  --moss:#5c6b3a;
-  --rule:rgba(26,20,16,.18);
-  --hi:#fef3c7;
-  --shadow-paper: 0 1px 0 rgba(255,255,255,.5) inset, 0 0 0 1px rgba(26,20,16,.06), 0 14px 30px -16px rgba(26,20,16,.18);
+  --ink:#111827;
+  --paper:#ffffff;
+  --paper-warm:#f9fafb;
+  --vermilion:#191919;
+  --vermilion-soft:#e5e7eb;
+  --indigo:#4f46e5;
+  --gold:#f59e0b;
+  --moss:#22c55e;
+  --rule:#e5e7eb;
+  --hi:#eff6ff;
+  --shadow-paper: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 *{box-sizing:border-box; margin:0; padding:0}
 html{scroll-behavior:smooth}
 body{
-  font-family:'Fraunces', 'Shippori Mincho', Georgia, serif;
-  background:var(--paper);
+  font-family:var(--font-sans);
+  background:var(--br-canvas);
   color:var(--ink);
   line-height:1.7;
   font-size:16px;
-  background-image:
-    radial-gradient(circle at 20% 10%, rgba(194,65,12,.05), transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(30,58,95,.04), transparent 50%);
   min-height:100vh;
 }
 
-/* Paper grain texture */
 body::before{
-  content:'';
-  position:fixed; inset:0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  pointer-events:none;
-  opacity:.5;
-  z-index:1;
-  mix-blend-mode:multiply;
+  display:none !important;
 }
 main{position:relative; z-index:2}
 

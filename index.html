@@ -3,63 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FE 学習 — Tài liệu học</title>
+<title>FE Master — Học tập & Luyện thi FE (Brilliant Style)</title>
 <link rel="stylesheet" href="assets/home.css">
 <link rel="stylesheet" href="assets/site.css">
 <script src="assets/site.js"></script>
+<script src="assets/brilliant.js"></script>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- HERO HEADER -->
+  <!-- TOP NAVIGATION BAR -->
+  <header class="top-nav">
+    <a href="index.html" class="brand">
+      <div class="brand-logo" id="brandLogo"></div>
+      <span>FE Master</span>
+      <span class="brand-badge">IPA Syllabus</span>
+    </a>
+    <div class="nav-stats">
+      <div class="br-streak-badge" id="streakBadge" title="Chuỗi ngày học liên tục">
+        <span class="br-streak-fire">⚡</span>
+        <span id="streakCount">1</span> Ngày
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO HEADER & PROGRESS -->
   <div class="hero">
     <div class="hero-left">
       <div class="eyebrow">FE Syllabus · 学習トラッカー</div>
-      <div class="hero-title">Tài liệu học FE <span class="soft">／ 教材</span></div>
+      <div class="hero-title">Tài liệu học FE <span class="soft">／ 教材 & Luyện thi</span></div>
+      <p style="color:var(--br-text-secondary);font-size:14px;margin-top:4px">Học theo phương pháp tương tác <b>Learn by Doing</b> từng bước nhỏ</p>
     </div>
     <div class="hero-right">
-      <div>
+      <div class="prog-container">
         <div class="prog-big" id="pnum">0 / 0</div>
         <div class="prog-small">bài đã xong</div>
+      </div>
+      <div class="prog-bar-mini">
+        <div class="prog-bar-mini-fill" id="progBarFill" style="width:0%"></div>
       </div>
       <div class="phase-sum" id="phaseSum"></div>
     </div>
   </div>
 
-  <div class="banner" id="banner">
-    <span>ⓘ</span>
-    <div><b>Đang xem bản mẫu.</b> Khi đưa <code>lessons.json</code> lên GitHub Pages, danh sách thật sẽ hiện và bài học mở ngay trong trang.</div>
+  <!-- ROBOT TUTOR WELCOMING BANNER -->
+  <div class="br-tutor" id="tutorBanner">
+    <div class="br-tutor-mascot" id="tutorMascot"></div>
+    <div class="br-tutor-bubble">
+      <div class="br-tutor-title">⚡ GIA SƯ ROBOT FE</div>
+      <div>Chào mừng bạn! Mỗi bài học đều có phần <b>Đọc lý thuyết</b> giải thích trực quan và <b>40 câu kiểm tra trắc nghiệm</b> phản hồi tức thì. Hãy chọn một bài bên dưới để bắt đầu luyện tập ngay nhé!</div>
+    </div>
   </div>
 
-  <!-- CONTROLS -->
+  <div class="banner" id="banner" style="display:none">
+    <span>ⓘ</span>
+    <div><b>Đang xem bản mẫu.</b> Khi đưa <code>lessons.json</code> lên GitHub Pages, danh sách bài học đầy đủ sẽ hiển thị.</div>
+  </div>
+
+  <!-- CONTROLS & SEARCH -->
   <div class="controls">
     <div class="search">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-      <input id="q" type="search" placeholder="Tìm theo chủ đề hoặc số thứ tự…" aria-label="Tìm bài học">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="q" type="search" placeholder="Tìm theo chủ đề hoặc số thứ tự bài học…" aria-label="Tìm bài học">
     </div>
     <div class="chips" role="group" aria-label="Lọc theo trạng thái">
       <button class="chip" data-f="all" aria-pressed="true">Tất cả</button>
-      <button class="chip" data-f="p4"  aria-pressed="false">Đã xong</button>
-      <button class="chip" data-f="p0"  aria-pressed="false">Chưa bắt đầu</button>
+      <button class="chip" data-f="p4"  aria-pressed="false">✓ Đã xong</button>
+      <button class="chip" data-f="p0"  aria-pressed="false">○ Chưa bắt đầu</button>
     </div>
   </div>
 
+  <!-- LESSON LIST (TACTILE 3D CARDS) -->
   <ol class="spine" id="list"></ol>
-  <div class="empty" id="empty" style="display:none">Không có bài nào khớp.</div>
+  <div class="empty" id="empty" style="display:none">Không tìm thấy bài học nào phù hợp.</div>
 </div>
 
-<!-- READING PANE -->
+<!-- READING PANE (SLIDE-OUT DRAWER) -->
 <div class="pane" id="pane" role="dialog" aria-modal="true" aria-label="Bài học">
   <div class="pane-inner">
     <div class="pane-head">
       <span class="pstt" id="pPstt"></span>
       <span class="ptopic" id="pTopic"></span>
-      <a id="pNew" href="#" target="_blank" rel="noopener" title="Mở tab mới">↗ Tab mới</a>
-      <button class="close" id="pClose" aria-label="Đóng">✕</button>
+      <a id="pNew" href="#" target="_blank" rel="noopener" title="Mở trong tab mới">↗ Tab mới</a>
+      <button class="close br-btn" id="pClose" aria-label="Đóng">✕</button>
     </div>
     <div class="tabs">
-      <button class="tab" id="tabTheory" aria-selected="true">Lý thuyết</button>
-      <button class="tab" id="tabTest"   aria-selected="false">Kiểm tra 40 câu</button>
+      <button class="tab" id="tabTheory" aria-selected="true">📖 Lý thuyết</button>
+      <button class="tab" id="tabTest"   aria-selected="false">📝 Kiểm tra 40 câu</button>
     </div>
     <iframe id="frame" title="Nội dung bài học"></iframe>
     <div class="pane-placeholder" id="placeholder" style="display:none"></div>
