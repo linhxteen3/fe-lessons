@@ -40,19 +40,19 @@
 
   .options{display:flex; flex-direction:column; gap:8px}
   .option{background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:12px 16px; cursor:pointer; transition:all .15s; display:flex; align-items:flex-start; gap:10px; user-select:none;}
-  .option:hover:not(.locked){border-color:var(--accent); background:#222a39}
+  .option:hover:not(.locked){border-color:var(--accent); background:#f2f4f7}
   .option .key{flex:none; width:26px; height:26px; border-radius:50%; background:var(--border); display:grid; place-items:center; font-weight:700; font-size:.85rem;}
   .option .body{flex:1}
   .option.correct{background:rgba(34,197,94,.12); border-color:var(--green)}
-  .option.correct .key{background:var(--green); color:#fff}
+  .option.correct .key{background:var(--green); color:#474747}
   .option.wrong{background:rgba(239,68,68,.12); border-color:var(--red)}
-  .option.wrong .key{background:var(--red); color:#fff}
+  .option.wrong .key{background:var(--red); color:#474747}
   .option.locked{cursor:not-allowed; opacity:.85}
   .option.locked:hover{border-color:var(--border)}
   .option.correct.locked, .option.wrong.locked{opacity:1}
 
   .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px}
-  button{background:var(--accent); color:#fff; border:0; border-radius:10px; padding:10px 18px; font-size:.95rem; font-weight:600; cursor:pointer; transition:opacity .15s, transform .05s;}
+  button{background:var(--accent); color:#474747; border:0; border-radius:10px; padding:10px 18px; font-size:.95rem; font-weight:600; cursor:pointer; transition:opacity .15s, transform .05s;}
   button:hover:not(:disabled){opacity:.9}
   button:active:not(:disabled){transform:translateY(1px)}
   button:disabled{opacity:.4; cursor:not-allowed}
@@ -65,7 +65,7 @@
   .explanation p{margin:6px 0; font-size:.92rem}
   .explanation .label{color:var(--accent2); font-weight:600}
   .explanation .topic{margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); font-size:.85rem; color:var(--muted);}
-  .formula{background:#0d1119; padding:8px 12px; border-radius:6px; display:inline-block; font-family:"SFMono-Regular",Consolas,monospace; font-size:.9em; margin:4px 0}
+  .formula{background:#f2f4f8; padding:8px 12px; border-radius:6px; display:inline-block; font-family:"SFMono-Regular",Consolas,monospace; font-size:.9em; margin:4px 0}
 
   .result{text-align:center; padding:36px 24px}
   .result h2{margin:0 0 12px; font-size:1.6rem; color:var(--accent2)}
@@ -93,6 +93,7 @@
 <link rel="stylesheet" href="../assets/site.css">
 <script src="../assets/site.js"></script>
 <script src="../assets/brilliant.js"></script>
+<link rel="stylesheet" href="../assets/learning.css">
 </head>
 <body>
 <div class="container">

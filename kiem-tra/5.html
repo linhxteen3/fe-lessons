@@ -87,9 +87,9 @@ header .meta span{background:#fff; border:1px solid var(--border); padding:3px 1
   transition: all .15s;
 }
 .qnav-btn:hover{background:var(--primary-soft); border-color:var(--primary)}
-.qnav-btn.current{background:var(--primary); color:#fff; border-color:var(--primary)}
-.qnav-btn.answered.right{background:var(--correct); color:#fff; border-color:var(--correct)}
-.qnav-btn.answered.wrong{background:var(--wrong); color:#fff; border-color:var(--wrong)}
+.qnav-btn.current{background:var(--primary); color:#474747; border-color:var(--primary)}
+.qnav-btn.answered.right{background:var(--correct); color:#474747; border-color:var(--correct)}
+.qnav-btn.answered.wrong{background:var(--wrong); color:#474747; border-color:var(--wrong)}
 
 main{padding:28px}
 .question-card{display:none}
@@ -105,7 +105,7 @@ main{padding:28px}
 .q-text{font-size:17px; font-weight:600; margin-bottom:18px; line-height:1.55}
 .q-text code{background:#f3f0e8; padding:2px 7px; border-radius:4px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size:.95em}
 .q-pre{
-  background:#1a1a1a; color:#fef3c7;
+  background:#f5f5f5; color:#866f13;
   padding:14px 18px; border-radius:8px;
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   font-size:14px; margin:10px 0 18px; white-space:pre; overflow-x:auto; line-height:1.5;
@@ -126,10 +126,10 @@ main{padding:28px}
 }
 .option .text{flex:1; line-height:1.5}
 .option.correct{background:var(--correct-bg); border-color:var(--correct); color:#14532d}
-.option.correct .letter{background:var(--correct); color:#fff}
+.option.correct .letter{background:var(--correct); color:#474747}
 .option.correct::after{content:'✓'; color:var(--correct); font-weight:700; font-size:20px; margin-left:auto}
 .option.wrong{background:var(--wrong-bg); border-color:var(--wrong); color:#991b1b}
-.option.wrong .letter{background:var(--wrong); color:#fff}
+.option.wrong .letter{background:var(--wrong); color:#474747}
 .option.wrong::after{content:'✗'; color:var(--wrong); font-weight:700; font-size:20px; margin-left:auto}
 .option.disabled{cursor:not-allowed; opacity:.85}
 
@@ -140,7 +140,7 @@ main{padding:28px}
   cursor:pointer; transition:all .15s; font-family:inherit;
 }
 .explain-btn.show{display:inline-block}
-.explain-btn:hover{background:var(--primary); color:#fff}
+.explain-btn:hover{background:var(--primary); color:#474747}
 
 .explain{
   display:none; margin-top:14px; background:#fcfaf3;
@@ -154,7 +154,7 @@ main{padding:28px}
 .explain code{background:#e5dfd0; padding:1px 6px; border-radius:3px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size:.92em}
 .explain .lbl{
   display:inline-block; font-size:11px; font-weight:700; letter-spacing:.08em;
-  padding:2px 8px; background:var(--primary); color:#fff;
+  padding:2px 8px; background:var(--primary); color:#474747;
   border-radius:4px; margin-right:6px; text-transform:uppercase;
 }
 .explain .lbl.bad{background:var(--wrong)}
@@ -170,8 +170,8 @@ main{padding:28px}
 }
 .btn-prev{background:#f3f0e8; color:var(--ink); border:1px solid var(--border)}
 .btn-prev:hover:not(:disabled){background:#e5dfd0}
-.btn-next{background:var(--primary); color:#fff}
-.btn-next:hover:not(:disabled){background:#1e2f6b}
+.btn-next{background:var(--primary); color:#474747}
+.btn-next:hover:not(:disabled){background:#f0f2f9}
 .btn:disabled{opacity:.4; cursor:not-allowed}
 
 .result{display:none; text-align:center; padding:20px 0}
@@ -210,8 +210,8 @@ main{padding:28px}
   cursor:pointer; transition:transform .1s;
 }
 .summary-cell:hover{transform:scale(1.1)}
-.summary-cell.ok{background:var(--correct); color:#fff}
-.summary-cell.no{background:var(--wrong); color:#fff}
+.summary-cell.ok{background:var(--correct); color:#474747}
+.summary-cell.no{background:var(--wrong); color:#474747}
 
 .breakdown{
   display:grid; grid-template-columns:repeat(3,1fr); gap:10px;
@@ -227,8 +227,8 @@ main{padding:28px}
 .bd-card.tb .val{color:#92400e}
 .bd-card.kho .val{color:#991b1b}
 
-.btn-restart{background:var(--accent); color:#fff; padding:13px 32px; font-size:15px}
-.btn-restart:hover{background:#9a3308}
+.btn-restart{background:var(--accent); color:#474747; padding:13px 32px; font-size:15px}
+.btn-restart:hover{background:#f9f3f0}
 
 @media (max-width:600px){
   body{padding:10px}
@@ -247,6 +247,7 @@ main{padding:28px}
   .breakdown{grid-template-columns:1fr}
 }
 </style>
+<link rel="stylesheet" href="../assets/learning.css">
 </head>
 <body>
 

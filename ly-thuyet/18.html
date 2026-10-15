@@ -6,63 +6,64 @@
 <title>FE - 補助記憶+I/O・RAID</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.7;padding:16px}
+body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;background:#f0f3f9;color:#344965;line-height:1.7;padding:16px}
 .container{max-width:980px;margin:0 auto}
 header{text-align:center;padding:24px;background:linear-gradient(135deg,#1e293b,#064e3b);border-radius:16px;margin-bottom:24px}
-header h1{color:#6ee7b7;font-size:1.6em;margin-bottom:6px}
-header .sub{color:#94a3b8;font-size:.92em}
-section{background:#1e293b;border-radius:14px;padding:22px;margin-bottom:20px;box-shadow:0 6px 24px rgba(0,0,0,.3)}
-section h2{color:#6ee7b7;font-size:1.3em;border-bottom:2px solid #047857;padding-bottom:8px;margin-bottom:14px}
+header h1{color:#168358;font-size:1.6em;margin-bottom:6px}
+header .sub{color:#394556;font-size:.92em}
+section{background:#f1f4f8;border-radius:14px;padding:22px;margin-bottom:20px;box-shadow:0 6px 24px rgba(0,0,0,.3)}
+section h2{color:#168358;font-size:1.3em;border-bottom:2px solid #047857;padding-bottom:8px;margin-bottom:14px}
 section h3{color:#fbbf24;font-size:1.08em;margin:14px 0 8px}
 p{margin-bottom:10px}
 ul{margin:8px 0 12px 22px}
 li{margin-bottom:5px}
-.lang-block{display:grid;grid-template-columns:1fr;gap:8px;margin:12px 0;background:#0f172a;border-radius:10px;padding:14px}
+.lang-block{display:grid;grid-template-columns:1fr;gap:8px;margin:12px 0;background:#f0f3f9;border-radius:10px;padding:14px}
 .lang-block .l{padding:8px 10px;border-radius:8px;font-size:.95em}
-.l-jp{background:#064e3b;border-left:4px solid #6ee7b7;color:#a7f3d0}
-.l-vn{background:#1e3a5f;border-left:4px solid #38bdf8;color:#e0f2fe}
-.l-en{background:#1f2937;border-left:4px solid #fbbf24;color:#fef3c7}
-.formula{background:#064e3b;color:#a7f3d0;padding:14px;border-radius:10px;font-family:"Courier New",monospace;text-align:center;font-size:1em;margin:12px 0;border:1px solid #10b981}
-.example-box{background:#0f172a;border:1px solid #475569;border-radius:10px;padding:14px;margin:12px 0}
+.l-jp{background:#f0f9f7;border-left:4px solid #6ee7b7;color:#138651}
+.l-vn{background:#f0f4f9;border-left:4px solid #38bdf8;color:#135886}
+.l-en{background:#f2f4f8;border-left:4px solid #fbbf24;color:#866f13}
+.formula{background:#f0f9f7;color:#138651;padding:14px;border-radius:10px;font-family:"Courier New",monospace;text-align:center;font-size:1em;margin:12px 0;border:1px solid #10b981}
+.example-box{background:#f0f3f9;border:1px solid #475569;border-radius:10px;padding:14px;margin:12px 0}
 .example-box .label{display:inline-block;background:#6ee7b7;color:#0f172a;padding:3px 10px;border-radius:6px;font-weight:700;font-size:.85em;margin-bottom:8px}
-.step-line{font-family:"Courier New",monospace;background:#0f172a;padding:10px;border-radius:8px;color:#6ee7b7;text-align:center;font-size:.95em;margin:8px 0;overflow-x:auto}
-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92em;background:#0f172a;border-radius:8px;overflow:hidden}
+.step-line{font-family:"Courier New",monospace;background:#f0f3f9;padding:10px;border-radius:8px;color:#168358;text-align:center;font-size:.95em;margin:8px 0;overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92em;background:#f0f3f9;border-radius:8px;overflow:hidden}
 th,td{padding:10px;text-align:left;border-bottom:1px solid #334155}
-th{background:#047857;color:#fff}
-tr:hover td{background:#064e3b}
+th{background:#f0f9f7;color:#474747}
+tr:hover td{background:#f0f9f7}
 .flashcards-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-.filter-btn{background:#334155;color:#e2e8f0;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.85em}
+.filter-btn{background:#f2f4f7;color:#344965;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.85em}
 .filter-btn.active{background:#6ee7b7;color:#0f172a;font-weight:700}
 .flashcard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-.flashcard{background:#0f172a;border:2px solid #047857;border-radius:10px;padding:14px;min-height:120px;cursor:pointer;position:relative}
-.flashcard .cat{position:absolute;top:8px;right:8px;font-size:.7em;background:#047857;color:#fff;padding:2px 8px;border-radius:4px}
-.flashcard .front{color:#6ee7b7;font-weight:600}
-.flashcard .back{display:none;color:#fde68a;margin-top:8px;font-size:.88em}
+.flashcard{background:#f0f3f9;border:2px solid #047857;border-radius:10px;padding:14px;min-height:120px;cursor:pointer;position:relative}
+.flashcard .cat{position:absolute;top:8px;right:8px;font-size:.7em;background:#f0f9f7;color:#474747;padding:2px 8px;border-radius:4px}
+.flashcard .front{color:#168358;font-weight:600}
+.flashcard .back{display:none;color:#866f13;margin-top:8px;font-size:.88em}
 .flashcard.flipped .back{display:block}
-.flashcard.flipped{border-color:#fbbf24;background:#064e3b}
-.quiz-q{background:#0f172a;border-radius:10px;padding:14px;margin:10px 0}
-.quiz-q .qt{color:#f1f5f9;margin-bottom:10px}
-.quiz-opt{display:block;background:#1e293b;border:2px solid #334155;border-radius:6px;padding:8px 12px;margin:6px 0;cursor:pointer;color:#e2e8f0;font-size:.93em}
+.flashcard.flipped{border-color:#fbbf24;background:#f0f9f7}
+.quiz-q{background:#f0f3f9;border-radius:10px;padding:14px;margin:10px 0}
+.quiz-q .qt{color:#2e4d6b;margin-bottom:10px}
+.quiz-opt{display:block;background:#f1f4f8;border:2px solid #334155;border-radius:6px;padding:8px 12px;margin:6px 0;cursor:pointer;color:#344965;font-size:.93em}
 .quiz-opt:hover{border-color:#6ee7b7}
-.quiz-opt.correct{background:#064e3b;border-color:#10b981;color:#a7f3d0}
-.quiz-opt.wrong{background:#7f1d1d;border-color:#ef4444;color:#fecaca}
+.quiz-opt.correct{background:#f0f9f7;border-color:#10b981;color:#138651}
+.quiz-opt.wrong{background:#f9f0f0;border-color:#ef4444;color:#861313}
 .quiz-opt.locked{cursor:not-allowed}
-.quiz-exp{display:none;margin-top:8px;padding:10px;background:#1e3a5f;border-left:3px solid #38bdf8;border-radius:6px;font-size:.88em;color:#cbd5e1}
+.quiz-exp{display:none;margin-top:8px;padding:10px;background:#f0f4f9;border-left:3px solid #38bdf8;border-radius:6px;font-size:.88em;color:#384b61}
 .quiz-exp.open{display:block}
-.callout{background:#1e3a5f;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;margin:12px 0;font-size:.95em}
-.warn{background:#451a03;border-left:4px solid #fb923c;padding:12px;border-radius:8px;margin:12px 0;color:#fed7aa}
-.mindmap-wrap{background:#0f172a;border-radius:10px;padding:14px;overflow-x:auto;text-align:center}
+.callout{background:#f0f4f9;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;margin:12px 0;font-size:.95em}
+.warn{background:#f9f3f0;border-left:4px solid #fb923c;padding:12px;border-radius:8px;margin:12px 0;color:#865113}
+.mindmap-wrap{background:#f0f3f9;border-radius:10px;padding:14px;overflow-x:auto;text-align:center}
 .mindmap-wrap svg{max-width:100%;height:auto}
 .raid-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0}
-.raid-card{background:#0f172a;border-left:4px solid #6ee7b7;padding:14px;border-radius:8px}
-.raid-card .name{font-weight:700;color:#6ee7b7;font-size:1.05em;margin-bottom:6px}
-.raid-card .tag{display:inline-block;font-size:.75em;background:#047857;color:#fff;padding:2px 8px;border-radius:4px;margin-bottom:6px}
+.raid-card{background:#f0f3f9;border-left:4px solid #6ee7b7;padding:14px;border-radius:8px}
+.raid-card .name{font-weight:700;color:#168358;font-size:1.05em;margin-bottom:6px}
+.raid-card .tag{display:inline-block;font-size:.75em;background:#f0f9f7;color:#474747;padding:2px 8px;border-radius:4px;margin-bottom:6px}
 @media(max-width:600px){section{padding:16px}header h1{font-size:1.3em}}
 </style>
 <link rel="stylesheet" href="../assets/brilliant.css">
 <link rel="stylesheet" href="../assets/site.css">
 <script src="../assets/site.js"></script>
 <script src="../assets/brilliant.js"></script>
+<link rel="stylesheet" href="../assets/learning.css">
 </head>
 <body>
 <div class="container">

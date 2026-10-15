@@ -95,7 +95,7 @@
   .def.or { border-left-color:var(--a6); }
 
   /* FORMULA */
-  .formula { background:#060912; border:1px solid var(--a1); border-radius:.5rem; padding:.85rem 1.1rem; font-family:'JetBrains Mono',monospace; font-size:.95rem; color:var(--a4); margin:.65rem 0; text-align:center; }
+  .formula { background:#f0f3f9; border:1px solid var(--a1); border-radius:.5rem; padding:.85rem 1.1rem; font-family:'JetBrains Mono',monospace; font-size:.95rem; color:var(--a4); margin:.65rem 0; text-align:center; }
 
   /* TABLE */
   .tw { overflow-x:auto; margin:.65rem 0; }
@@ -106,13 +106,13 @@
   tr:hover td { background:rgba(96,165,250,.04); }
 
   /* DIAGRAM / CODE */
-  .diagram { background:#060912; border:1px solid var(--border); border-radius:.55rem; padding:1.1rem; margin:.65rem 0; font-family:'JetBrains Mono',monospace; font-size:.8rem; color:var(--a2); line-height:2; overflow-x:auto; white-space:pre; }
-  .code { font-family:'JetBrains Mono',monospace; font-size:.82rem; background:#060912; border:1px solid var(--border); border-radius:.5rem; padding:1rem; margin:.65rem 0; overflow-x:auto; color:var(--text); line-height:1.8; }
+  .diagram { background:#f0f3f9; border:1px solid var(--border); border-radius:.55rem; padding:1.1rem; margin:.65rem 0; font-family:'JetBrains Mono',monospace; font-size:.8rem; color:var(--a2); line-height:2; overflow-x:auto; white-space:pre; }
+  .code { font-family:'JetBrains Mono',monospace; font-size:.82rem; background:#f0f3f9; border:1px solid var(--border); border-radius:.5rem; padding:1rem; margin:.65rem 0; overflow-x:auto; color:var(--text); line-height:1.8; }
   .kw { color:var(--a1); } .cmt { color:var(--dim); font-style:italic; }
   .str { color:var(--a4); } .fn { color:var(--a3); }
 
   /* FLOWCHART SVG container */
-  .fc-wrap { background:#060912; border:1px solid var(--border); border-radius:.6rem; padding:1.2rem; margin:.8rem 0; overflow-x:auto; display:flex; justify-content:center; }
+  .fc-wrap { background:#f0f3f9; border:1px solid var(--border); border-radius:.6rem; padding:1.2rem; margin:.8rem 0; overflow-x:auto; display:flex; justify-content:center; }
 
   /* HIGHLIGHT */
   .hl { color:var(--a4); font-weight:700; }
@@ -163,6 +163,7 @@
 <link rel="stylesheet" href="../assets/site.css">
 <script src="../assets/site.js"></script>
 <script src="../assets/brilliant.js"></script>
+<link rel="stylesheet" href="../assets/learning.css">
 </head>
 <body>
 
@@ -973,10 +974,10 @@ f(x): <span class="kw">if</span> x ≤ 1 <span class="kw">then return</span> 1
 <script>
 function sw(id){
   document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   const idx=['theory','flowchart','example','flash','quiz','mindmap'].indexOf(id);
-  document.querySelectorAll('nav button')[idx].classList.add('active');
+  document.querySelectorAll('#nav button')[idx].classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 function ans(el,res){

@@ -165,7 +165,7 @@
 
   /* ---- FORMULA ---- */
   .formula {
-    background: #0a0f20;
+    background:#f0f2f9;
     border: 1px solid var(--accent1);
     border-radius: .5rem;
     padding: 1rem 1.25rem;
@@ -198,7 +198,7 @@
 
   /* ---- DIAGRAM ---- */
   .diagram {
-    background: #080c18;
+    background:#f0f3f9;
     border: 1px solid var(--border);
     border-radius: .6rem;
     padding: 1.25rem;
@@ -343,7 +343,7 @@
 
   /* ---- EXAMPLE CALC ---- */
   .calc-box {
-    background: #080c18;
+    background:#f0f3f9;
     border: 1px solid var(--accent2);
     border-radius: .6rem;
     padding: 1.1rem 1.25rem;
@@ -372,6 +372,7 @@
 <link rel="stylesheet" href="../assets/site.css">
 <script src="../assets/site.js"></script>
 <script src="../assets/brilliant.js"></script>
+<link rel="stylesheet" href="../assets/learning.css">
 </head>
 <body>
 
@@ -1095,10 +1096,10 @@
         <thead><tr><th>Nhánh</th><th>Màu</th><th>Nội dung</th></tr></thead>
         <tbody>
           <tr><td>機械学習</td><td style="color:#00d4aa">■ Teal</td><td>Machine Learning: Học có/không giám sát</td></tr>
-          <tr><td>ディープラーニング</td><td style="color:#a855f7">■ Purple</td><td>Deep Learning: NN nhiều lớp, mô phỏng não</td></tr>
-          <tr><td>確率</td><td style="color:#ffd93d">■ Yellow</td><td>Xác suất: 0~1, tổng = 1</td></tr>
-          <tr><td>期待値</td><td style="color:#ff6b6b">■ Red</td><td>Kỳ vọng: Σ(giá trị × P)</td></tr>
-          <tr><td>AI活用例</td><td style="color:#6bcb77">■ Green</td><td>Ứng dụng AI thực tế</td></tr>
+          <tr><td>ディープラーニング</td><td style="color:#4e1386">■ Purple</td><td>Deep Learning: NN nhiều lớp, mô phỏng não</td></tr>
+          <tr><td>確率</td><td style="color:#866f13">■ Yellow</td><td>Xác suất: 0~1, tổng = 1</td></tr>
+          <tr><td>期待値</td><td style="color:#861313">■ Red</td><td>Kỳ vọng: Σ(giá trị × P)</td></tr>
+          <tr><td>AI活用例</td><td style="color:#287131">■ Green</td><td>Ứng dụng AI thực tế</td></tr>
           <tr><td>ニューラルネットワーク</td><td style="color:#f97316">■ Orange</td><td>Mạng nơ-ron, nền tảng Deep Learning</td></tr>
         </tbody>
       </table>
@@ -1111,10 +1112,10 @@
 <script>
 function switchTab(id) {
   document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#mainnav button').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   const idx = ['theory','example','flash','quiz','mindmap'].indexOf(id);
-  document.querySelectorAll('nav button')[idx].classList.add('active');
+  document.querySelectorAll('#mainnav button')[idx].classList.add('active');
   window.scrollTo({top: 0, behavior:'smooth'});
 }
 
