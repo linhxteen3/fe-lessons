@@ -1,0 +1,25 @@
+/* Shared palette comes after each retained lesson layout. */
+:root[data-theme="dark"] {
+  color-scheme:dark;
+  --bg:#0f1419;--surface:#161c24;--surface2:#1e2733;--bg-2:#161c24;--bg-3:#1e2733;
+  --border:#344152;--ink:#e8eef5;--ink2:#b4c0ce;--ink3:#a0adbb;--text:#e8eef5;--text-dim:#b4c0ce;
+  --primary:#a5a0ff;--primary-light:#252442;--primary-mid:#5d579a;
+  --p0-ink:#b4c0ce;--p0-bg:#1e2733;--p0-border:#344152;
+  --p4-ink:#68e0ad;--p4-bg:#14352b;--p4-border:#2b7157;
+}
+:root[data-theme="light"] {
+  color-scheme:light;
+  --bg:#f7f8fc;--surface:#fff;--surface2:#edf1f7;--bg-2:#fff;--bg-3:#edf1f7;
+  --border:#d7dee8;--ink:#172130;--ink2:#526176;--ink3:#526176;--text:#172130;--text-dim:#526176;
+  --accent:#b13b13;--accent-2:#087c76;--jp:#765000;--vn:#166348;--en:#7043a2;--ok:#127445;--ng:#ba2835;
+  --primary:#4f46e5;--primary-light:#eef2ff;--primary-mid:#c7d2fe;
+  --shadow:0 4px 16px #17213012;
+}
+html[data-theme] body {background:var(--bg);color:var(--text);}
+.fe-toolbar {display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 20px;background:var(--surface);border-bottom:1px solid var(--border);font:500 14px system-ui,sans-serif;}
+.fe-toolbar a,.fe-toolbar button {display:inline-flex;align-items:center;min-height:40px;padding:8px 12px;border:1px solid var(--border);border-radius:9px;background:var(--surface2);color:var(--ink);text-decoration:none;cursor:pointer;font:inherit;}
+.fe-toolbar a:hover,.fe-toolbar button:hover {border-color:var(--primary);}
+.fe-toolbar :focus-visible {outline:3px solid var(--primary);outline-offset:3px;}
+[data-theme="light"] header.hero {background:linear-gradient(135deg,#fff,#edf1f7);}
+[data-theme="light"] .lang-block,[data-theme="light"] pre {background:var(--bg-3);}
+@media(max-width:600px){.fe-toolbar{padding:10px;gap:6px}.fe-toolbar a,.fe-toolbar button{font-size:12px;padding:8px}.wrap{padding-left:14px;padding-right:14px}}

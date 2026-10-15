@@ -1,10 +1,73 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FE - 2進数の四則演算+シフト · Đề kiểm tra 40 câu</title>
-<link rel="stylesheet" href="../assets/common.css">
+<style>
+:root{
+  --bg:#0f1419; --panel:#1a2027; --panel2:#232a33; --border:#2e3744;
+  --text:#e6edf3; --muted:#8b98a5; --accent:#58a6ff; --accent2:#a78bfa;
+  --green:#3fb950; --red:#f85149; --yellow:#d29922;
+  --green-bg:rgba(63,185,80,.18); --red-bg:rgba(248,81,73,.18);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.6;padding:16px}
+.wrap{max-width:880px;margin:0 auto}
+header{background:linear-gradient(135deg,#0c4a6e,#581c87);padding:20px;border-radius:12px;border:1px solid var(--border);margin-bottom:16px}
+h1{margin:0 0 6px;font-size:1.4em;color:#fff}
+.sub{color:#cbd5e1;font-size:.92em}
+.bar{height:8px;background:var(--panel2);border-radius:4px;overflow:hidden;margin-top:12px}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;transition:width .3s}
+.meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:.9em;color:#cbd5e1;flex-wrap:wrap;gap:8px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px}
+.qhead{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.qnum{background:var(--accent);color:#0b1220;padding:4px 10px;border-radius:6px;font-weight:700;font-size:.9em}
+.diff{padding:3px 9px;border-radius:6px;font-size:.78em;font-weight:600}
+.d-easy{background:rgba(63,185,80,.2);color:#7ee787}
+.d-med{background:rgba(210,153,34,.2);color:#e3b341}
+.d-hard{background:rgba(248,81,73,.2);color:#ff7b72}
+.qtext{font-size:1.05em;margin-bottom:14px;white-space:pre-wrap}
+.qtext .jp{display:block;color:var(--muted);font-size:.92em;margin-top:6px;border-left:3px solid var(--border);padding-left:10px}
+.options{display:flex;flex-direction:column;gap:8px}
+.opt{background:var(--panel2);border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;cursor:pointer;transition:all .15s;display:flex;align-items:flex-start;gap:10px;font-size:.98em}
+.opt:hover:not(.locked){background:#2d3540;border-color:var(--accent)}
+.opt.locked{cursor:default}
+.opt .lbl{font-weight:700;color:var(--accent);min-width:22px}
+.opt.correct{background:var(--green-bg);border-color:var(--green)}
+.opt.correct .lbl{color:var(--green)}
+.opt.wrong{background:var(--red-bg);border-color:var(--red)}
+.opt.wrong .lbl{color:var(--red)}
+.opt.disabled{opacity:.55}
+.explain{margin-top:14px;background:#11161d;border-left:4px solid var(--accent2);border-radius:6px;padding:14px;display:none}
+.explain.show{display:block}
+.explain h4{margin:0 0 8px;color:var(--accent2);font-size:1em}
+.explain p{margin:4px 0;font-size:.94em}
+.explain code{background:#0b1018;padding:1px 6px;border-radius:4px;color:#79c0ff;font-family:"SF Mono",Consolas,monospace}
+.nav{display:flex;gap:10px;justify-content:space-between;margin-top:14px}
+button{background:var(--accent);color:#0b1220;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;font-weight:600;font-size:.95em;font-family:inherit}
+button:hover{filter:brightness(1.1)}
+button:disabled{opacity:.4;cursor:not-allowed}
+button.ghost{background:transparent;color:var(--text);border:1.5px solid var(--border)}
+button.ghost:hover{background:var(--panel2)}
+.qjump{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin-top:14px}
+.qjump button{padding:6px 0;font-size:.82em;background:var(--panel2);color:var(--text);border:1px solid var(--border)}
+.qjump button.done{background:var(--green-bg);border-color:var(--green);color:#7ee787}
+.qjump button.miss{background:var(--red-bg);border-color:var(--red);color:#ff7b72}
+.qjump button.cur{outline:2px solid var(--accent)}
+.result{text-align:center;padding:30px 20px}
+.score{font-size:3em;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;margin:10px 0}
+.verdict{font-size:1.2em;margin:10px 0}
+.bk{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.bk-card{background:var(--panel2);border-radius:8px;padding:12px;border:1px solid var(--border)}
+.bk-card .n{font-size:1.5em;font-weight:700;margin:4px 0}
+.hidden{display:none}
+@media(max-width:600px){
+  .qjump{grid-template-columns:repeat(8,1fr)}
+  .bk{grid-template-columns:1fr}
+  h1{font-size:1.15em}
+}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -481,6 +544,5 @@ function reset(){
 
 render();
 </script>
-<script src="../assets/common.js"></script>
 </body>
 </html>

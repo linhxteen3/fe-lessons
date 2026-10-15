@@ -1,11 +1,190 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>5大装置・CPU基本 — Tài liệu lý thuyết FE</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Space+Mono:wght@400;700&family=Syne:wght@600;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/common.css">
+<style>
+:root{
+  --bg:#0e1117;
+  --panel:#161b22;
+  --panel-2:#1c2330;
+  --line:#2a3142;
+  --text:#e6edf3;
+  --muted:#8b949e;
+  --accent:#ff8c42;
+  --accent-2:#f0b76b;
+  --jp:#9ec5fe;
+  --vn:#a7e3a7;
+  --en:#f1b0e1;
+  --good:#3fb950;
+  --bad:#f85149;
+  --warn:#d29922;
+  --code:#f0b76b;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:'Noto Sans JP','Space Mono',system-ui,-apple-system,sans-serif;line-height:1.7;font-size:15.5px}
+.wrap{max-width:1080px;margin:0 auto;padding:32px 22px 60px}
+header.hero{
+  background:linear-gradient(135deg,#1c2330 0%,#161b22 100%);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:34px 28px;
+  margin-bottom:30px;
+}
+header.hero h1{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:30px;
+  margin:0 0 10px;
+  letter-spacing:.5px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+header.hero .subtitle{color:var(--muted);font-size:14px;margin:0}
+header.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+header.hero .meta span{
+  background:var(--panel-2);border:1px solid var(--line);
+  padding:5px 12px;border-radius:999px;font-size:12.5px;color:var(--muted);
+  font-family:'Space Mono',monospace;
+}
+
+h2.section{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:22px;
+  margin:38px 0 18px;padding:10px 0 10px 16px;
+  border-left:5px solid var(--accent);
+  background:linear-gradient(90deg,rgba(255,140,66,.08),transparent);
+}
+h3.sub{
+  font-family:'Syne',sans-serif;font-weight:600;font-size:18px;
+  margin:26px 0 12px;color:var(--accent-2);
+}
+h4.sub2{font-size:16px;margin:18px 0 8px;color:var(--text)}
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:18px 20px;
+  margin:14px 0;
+}
+.card.warn{border-color:rgba(210,153,34,.4);background:rgba(210,153,34,.05)}
+.card.tip{border-color:rgba(63,185,80,.35);background:rgba(63,185,80,.05)}
+
+.tri{display:grid;grid-template-columns:1fr;gap:10px;margin:12px 0}
+.tri .lang{
+  background:var(--panel-2);border:1px solid var(--line);
+  border-radius:10px;padding:12px 14px;
+}
+.tri .lang.jp{border-left:3px solid var(--jp)}
+.tri .lang.vn{border-left:3px solid var(--vn)}
+.tri .lang.en{border-left:3px solid var(--en)}
+.tri .lang .flag{font-size:12px;font-weight:700;letter-spacing:.5px;display:inline-block;margin-bottom:6px;font-family:'Space Mono',monospace}
+.tri .lang.jp .flag{color:var(--jp)}
+.tri .lang.vn .flag{color:var(--vn)}
+.tri .lang.en .flag{color:var(--en)}
+
+.kw{color:var(--accent);font-weight:700}
+.term{font-family:'Space Mono',monospace;background:rgba(255,140,66,.12);padding:2px 6px;border-radius:4px;color:var(--accent-2);font-size:.92em}
+.formula{
+  background:var(--panel-2);border:1px solid var(--line);border-radius:8px;
+  padding:14px 16px;text-align:center;font-family:'Space Mono',monospace;
+  margin:12px 0;font-size:15px;
+}
+.formula .num{display:inline-block;border-bottom:2px solid var(--accent);padding-bottom:4px;margin-bottom:4px}
+
+table{width:100%;border-collapse:collapse;margin:12px 0;background:var(--panel-2);border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+table th,table td{padding:10px 12px;border:1px solid var(--line);text-align:left;font-size:14px;vertical-align:top}
+table th{background:rgba(255,140,66,.10);color:var(--accent-2);font-weight:700;font-family:'Syne',sans-serif}
+table td code{font-family:'Space Mono',monospace;color:var(--code);font-size:13px}
+
+.ascii{
+  background:#0a0d12;border:1px solid var(--line);border-radius:10px;
+  padding:14px;font-family:'Space Mono',monospace;font-size:12.5px;
+  white-space:pre;overflow-x:auto;line-height:1.5;color:var(--accent-2);
+}
+ul.clean{padding-left:22px;margin:8px 0}
+ul.clean li{margin:5px 0}
+.steps{counter-reset:s;list-style:none;padding:0;margin:14px 0}
+.steps li{
+  counter-increment:s;position:relative;
+  background:var(--panel-2);border:1px solid var(--line);border-radius:10px;
+  padding:14px 16px 14px 60px;margin:10px 0;
+}
+.steps li::before{
+  content:counter(s);position:absolute;left:14px;top:14px;
+  width:32px;height:32px;border-radius:50%;
+  background:var(--accent);color:#0e1117;font-weight:800;
+  display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;
+}
+
+/* Flashcards */
+.fc-controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.fc-btn{
+  background:var(--panel-2);border:1px solid var(--line);color:var(--muted);
+  padding:7px 14px;border-radius:999px;cursor:pointer;font-size:13px;
+  font-family:'Space Mono',monospace;transition:.15s;
+}
+.fc-btn:hover{color:var(--text);border-color:var(--accent)}
+.fc-btn.active{background:var(--accent);color:#0e1117;border-color:var(--accent);font-weight:700}
+.fc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:14px}
+.flashcard{
+  background:var(--panel-2);border:1px solid var(--line);border-radius:12px;
+  padding:18px;min-height:140px;cursor:pointer;position:relative;
+  transition:.18s;display:flex;flex-direction:column;justify-content:center;
+}
+.flashcard:hover{border-color:var(--accent);transform:translateY(-2px)}
+.flashcard .cat{
+  position:absolute;top:10px;right:12px;font-size:10.5px;
+  color:var(--muted);font-family:'Space Mono',monospace;
+}
+.flashcard .front,.flashcard .back{display:none}
+.flashcard.show-front .front,.flashcard.show-back .back{display:block}
+.flashcard .front .q{font-family:'Syne',sans-serif;font-size:17px;font-weight:600;color:var(--accent-2)}
+.flashcard .front .hint{margin-top:8px;font-size:11.5px;color:var(--muted);font-family:'Space Mono',monospace}
+.flashcard .back .a{font-size:14px;line-height:1.6}
+.flashcard .back .jp-mini{color:var(--jp);font-size:12.5px;display:block;margin-top:6px}
+
+/* Practice */
+.qbox{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.qbox .q-title{font-weight:700;color:var(--accent-2);font-family:'Syne',sans-serif;margin-bottom:8px}
+.qbox .opts{list-style:none;padding:0;margin:10px 0}
+.qbox .opts li{
+  padding:9px 14px;margin:6px 0;border:1px solid var(--line);border-radius:8px;
+  cursor:pointer;background:var(--panel-2);font-size:14px;transition:.15s;
+}
+.qbox .opts li:hover{border-color:var(--accent)}
+.qbox .opts li.correct{background:rgba(63,185,80,.18);border-color:var(--good);color:#bff5c5}
+.qbox .opts li.wrong{background:rgba(248,81,73,.15);border-color:var(--bad);color:#ffb8b3}
+.qbox .opts li.locked{cursor:not-allowed;opacity:.85}
+.qbox .explain{
+  display:none;margin-top:10px;padding:10px 12px;background:var(--panel-2);
+  border-left:3px solid var(--accent);border-radius:6px;font-size:13.5px;color:var(--muted)
+}
+.qbox.answered .explain{display:block}
+.qbox .explain b{color:var(--accent-2)}
+
+/* Mindmap */
+.mind-wrap{background:#0a0d12;border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:14px;overflow-x:auto}
+.mind-wrap svg{display:block;width:100%;height:auto;min-width:780px}
+
+footer{
+  margin-top:50px;padding:20px;text-align:center;
+  color:var(--muted);font-size:12px;font-family:'Space Mono',monospace;
+  border-top:1px solid var(--line);
+}
+
+@media (max-width:680px){
+  .wrap{padding:18px 14px 40px}
+  header.hero h1{font-size:24px}
+  h2.section{font-size:19px}
+  .tri{grid-template-columns:1fr}
+  .formula{font-size:13px}
+}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -858,6 +1037,5 @@ document.querySelectorAll('.qbox').forEach(box=>{
   });
 });
 </script>
-<script src="../assets/common.js"></script>
 </body>
 </html>

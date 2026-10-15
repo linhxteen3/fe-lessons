@@ -1,10 +1,86 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FE 03-04 · 基本アルゴリズム · ソート (Sắp xếp)</title>
-<link rel="stylesheet" href="../assets/common.css">
+<style>
+:root{
+  --bg:#0f1419; --bg2:#161b22; --bg3:#1c232c;
+  --fg:#e6edf3; --fg2:#9ba9b8; --muted:#6e7681;
+  --accent:#ff7b54; --accent2:#ffb26b; --accent3:#76c7c0;
+  --c-jp:#ff9aa2; --c-vn:#a8e6cf; --c-en:#b5cdfb;
+  --line:rgba(255,255,255,0.08);
+  --ok:#4ade80; --ng:#f87171;
+  --b-bub:#76c7c0; --b-sel:#ffb26b; --b-ins:#c084fc; --b-quick:#f87171; --b-other:#9ba9b8;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP","Helvetica Neue",sans-serif;
+  --mono:"Space Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);line-height:1.65}
+.wrap{max-width:1100px;margin:0 auto;padding:32px 22px 80px}
+header.hero{background:linear-gradient(135deg,#1a2128 0%,#0f1419 100%);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:28px}
+header.hero .tag{display:inline-block;background:var(--accent);color:#0f1419;padding:3px 10px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:.5px}
+header.hero h1{margin:10px 0 6px;font-size:28px;line-height:1.3}
+header.hero p.sub{margin:0;color:var(--fg2);font-size:14px}
+h2.section{font-size:22px;margin:40px 0 18px;padding-left:14px;border-left:5px solid var(--accent)}
+h3{font-size:18px;margin:24px 0 10px;color:var(--accent2)}
+h4{font-size:15px;margin:16px 0 8px;color:var(--accent3)}
+.lang{margin:10px 0;padding:12px 14px;border-radius:10px;border-left:4px solid;background:var(--bg2);font-size:14.5px}
+.lang.jp{border-color:var(--c-jp)}
+.lang.vn{border-color:var(--c-vn)}
+.lang.en{border-color:var(--c-en)}
+.lang .flag{font-weight:700;font-size:13px;letter-spacing:.5px;margin-bottom:4px;display:block;opacity:.9}
+.lang.jp .flag{color:var(--c-jp)}
+.lang.vn .flag{color:var(--c-vn)}
+.lang.en .flag{color:var(--c-en)}
+.box{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:18px;margin:14px 0}
+.box.bub{border-left:4px solid var(--b-bub)}
+.box.sel{border-left:4px solid var(--b-sel)}
+.box.ins{border-left:4px solid var(--b-ins)}
+.box.quick{border-left:4px solid var(--b-quick)}
+.box.other{border-left:4px solid var(--b-other)}
+pre,code.block{background:#0a0e13;border:1px solid var(--line);border-radius:8px;padding:14px;font-family:var(--mono);font-size:13px;color:#cfe;overflow-x:auto;white-space:pre}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{padding:10px 12px;border:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:#1f262e;color:var(--accent2);font-weight:600}
+tr:nth-child(even) td{background:rgba(255,255,255,0.02)}
+.badge{display:inline-block;padding:2px 8px;border-radius:5px;font-size:12px;font-weight:600}
+.b-jp{background:#3a1f24;color:var(--c-jp)}
+.b-vn{background:#1f3a2c;color:var(--c-vn)}
+.b-en{background:#1f2a3a;color:var(--c-en)}
+.fc-wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:14px 0}
+.fc{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:18px;min-height:130px;cursor:pointer;position:relative;transition:transform .15s}
+.fc:hover{transform:translateY(-2px);border-color:var(--accent)}
+.fc .back{display:none;color:var(--fg2);font-size:14px;margin-top:8px;border-top:1px dashed var(--line);padding-top:10px}
+.fc.flipped .back{display:block}
+.fc .cat{position:absolute;top:8px;right:10px;font-size:11px;padding:2px 7px;border-radius:4px;background:#2a323b;color:var(--fg2)}
+.fc .q{font-weight:700;font-size:15px;color:var(--accent2);margin-bottom:6px}
+.fc-filters{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.fc-filters button{background:var(--bg3);border:1px solid var(--line);color:var(--fg);padding:6px 12px;border-radius:20px;cursor:pointer;font-size:13px}
+.fc-filters button.active{background:var(--accent);color:#0f1419;border-color:var(--accent)}
+.quiz-q{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:18px;margin:14px 0}
+.quiz-q .stem{font-weight:600;margin-bottom:10px}
+.quiz-q .opts label{display:block;padding:8px 12px;margin:6px 0;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-size:14px;transition:background .15s}
+.quiz-q .opts label:hover{background:var(--bg3)}
+.quiz-q.locked .opts label{cursor:default;pointer-events:none}
+.quiz-q .opts label.correct{background:rgba(74,222,128,0.15);border-color:var(--ok)}
+.quiz-q .opts label.incorrect{background:rgba(248,113,113,0.15);border-color:var(--ng)}
+.quiz-q .exp{display:none;margin-top:12px;padding:12px;background:#0a0e13;border-radius:8px;font-size:13.5px;color:var(--fg2)}
+.quiz-q.locked .exp{display:block}
+.quiz-result{margin-top:16px;padding:16px;background:linear-gradient(135deg,#1a2a3a,#1a3a2a);border-radius:12px;text-align:center;font-size:18px;font-weight:700;display:none}
+.btn{background:var(--accent);color:#0f1419;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px}
+.btn:hover{background:var(--accent2)}
+.ascii{font-family:var(--mono);font-size:12.5px;line-height:1.5;color:#bce}
+.note{background:#241f1a;border:1px solid #4a3a2a;border-radius:8px;padding:12px;font-size:13.5px;color:#fdc}
+.note b{color:var(--accent2)}
+.mindmap{background:#0a0e13;border:1px solid var(--line);border-radius:12px;padding:14px;overflow-x:auto;margin:18px 0}
+.mindmap svg{display:block;margin:0 auto;max-width:100%;height:auto}
+ul.clean{margin:6px 0 6px 22px;padding:0}
+ul.clean li{margin:4px 0}
+.complexity{display:inline-block;background:#1a1f25;border:1px solid var(--line);padding:2px 8px;border-radius:5px;font-family:var(--mono);color:var(--accent3);font-size:12.5px}
+@media(max-width:600px){header.hero h1{font-size:22px}}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -254,7 +330,27 @@ Bước 4: lấy 8 → chèn vào [17, 12, 5, 3]
 <div class="mindmap">
 <svg viewBox="0 0 1150 760" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, sans-serif">
   <defs>
-    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+      .center{fill:#ff7b54;stroke:#0f1419;stroke-width:2}
+      .ctext{fill:#0f1419;font-weight:700;font-size:18px;text-anchor:middle}
+      .btext{fill:#0f1419;font-weight:600;font-size:13px;text-anchor:middle}
+      .stext{fill:#e6edf3;font-size:12px;text-anchor:middle}
+      .l-bub{stroke:#76c7c0;stroke-width:2.5;fill:none}
+      .l-sel{stroke:#ffb26b;stroke-width:2.5;fill:none}
+      .l-ins{stroke:#c084fc;stroke-width:2.5;fill:none}
+      .l-q{stroke:#f87171;stroke-width:2.5;fill:none}
+      .l-o{stroke:#9ba9b8;stroke-width:2.5;fill:none}
+      .b-bub{fill:#76c7c0}
+      .b-sel{fill:#ffb26b}
+      .b-ins{fill:#c084fc}
+      .b-q{fill:#f87171}
+      .b-o{fill:#9ba9b8}
+      .s-bub{fill:#2d4a48}
+      .s-sel{fill:#4a3a2a}
+      .s-ins{fill:#3a2d4a}
+      .s-q{fill:#4a2a2a}
+      .s-o{fill:#2a323b}
+    </style>
   </defs>
 
   <!-- Center -->
@@ -463,6 +559,5 @@ function gradeQuiz(){
   res.scrollIntoView({behavior:'smooth'});
 }
 </script>
-<script src="../assets/common.js"></script>
 </body>
 </html>

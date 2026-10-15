@@ -1,11 +1,72 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>FE — 基本ソフトウェア・OS・タスク管理</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Space+Mono:wght@400;700&family=Syne:wght@600;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/common.css">
+<style>
+:root{
+  --bg:#0f1419;--panel:#1a2029;--panel2:#222a35;--border:#2e3845;
+  --text:#e8ecf1;--muted:#9aa6b4;--accent:#7dd3fc;--accent2:#fbbf24;
+  --jp:#fda4af;--vn:#86efac;--en:#93c5fd;
+  --ok:#22c55e;--err:#ef4444;--warn:#f59e0b;
+  --c1:#7dd3fc;--c2:#fbbf24;--c3:#a78bfa;--c4:#86efac;--c5:#fda4af;--c6:#fb923c;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.65;padding:0}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 18px 80px}
+header.top{padding:28px 22px;border-radius:16px;background:linear-gradient(135deg,#1e3a5f,#0f1419);border:1px solid var(--border);margin-bottom:22px}
+header.top h1{font-family:'Syne',sans-serif;font-size:30px;margin:0 0 6px;color:#fff}
+header.top .sub{color:var(--muted);font-size:14px}
+header.top .badges{margin-top:10px}
+.badge{display:inline-block;background:#2e3845;padding:4px 10px;border-radius:20px;font-size:12px;margin-right:6px;color:#cbd5e1}
+h2.sec{font-family:'Syne',sans-serif;font-size:24px;margin:30px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--accent);color:#fff}
+h3{font-size:18px;color:var(--accent);margin:20px 0 10px;font-family:'Syne',sans-serif}
+h4{font-size:15px;color:var(--accent2);margin:14px 0 8px}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px;margin:14px 0}
+.lang-block{padding:12px 14px;border-radius:10px;margin:8px 0;border-left:4px solid;font-size:14.5px}
+.lang-jp{background:#3a1f24;border-color:var(--jp)}
+.lang-vn{background:#1c3a23;border-color:var(--vn)}
+.lang-en{background:#1c2c4a;border-color:var(--en)}
+.lang-block .lbl{font-weight:700;font-size:12px;letter-spacing:.5px;display:block;margin-bottom:4px;opacity:.85}
+table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
+th,td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--panel2);color:var(--accent)}
+code,.mono{font-family:'Space Mono',monospace;background:#0a0e13;padding:2px 6px;border-radius:4px;color:#fbbf24;font-size:13px}
+.ascii{background:#0a0e13;padding:14px;border-radius:8px;font-family:'Space Mono',monospace;font-size:13px;white-space:pre;overflow-x:auto;color:#cbd5e1;line-height:1.5;border:1px solid var(--border)}
+.tip{background:#3a2c0a;border-left:4px solid var(--warn);padding:10px 14px;border-radius:8px;margin:10px 0;font-size:14px}
+.tip b{color:var(--warn)}
+.example{background:#0e2434;border-left:4px solid var(--accent);padding:12px 14px;border-radius:8px;margin:10px 0}
+.example .lbl{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.5px;margin-bottom:6px;display:block}
+.flash-controls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px}
+.filter-btn{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:18px;cursor:pointer;font-size:13px}
+.filter-btn.active{background:var(--accent);color:#0f1419;border-color:var(--accent)}
+.flashgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.flash{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;min-height:110px;transition:transform .15s}
+.flash:hover{transform:translateY(-2px);border-color:var(--accent)}
+.flash .front{font-weight:700;color:var(--accent2);font-size:15px}
+.flash .back{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);font-size:13.5px;color:#cbd5e1}
+.flash.flipped .back{display:block}
+.flash .cat{display:inline-block;font-size:10px;background:#2e3845;padding:2px 6px;border-radius:8px;margin-top:6px;color:var(--muted)}
+.quiz-q{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:14px;margin:10px 0}
+.quiz-q .qtxt{font-weight:700;margin-bottom:8px}
+.opt{display:block;background:#0f1419;border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:6px 0;cursor:pointer;font-size:14px}
+.opt:hover{border-color:var(--accent)}
+.opt.correct{background:#14532d;border-color:var(--ok);color:#bbf7d0}
+.opt.wrong{background:#4a1414;border-color:var(--err);color:#fecaca}
+.opt.locked{cursor:default}
+.expl{margin-top:8px;padding:10px;background:#0a0e13;border-radius:8px;font-size:13.5px;color:#cbd5e1;display:none}
+.expl.show{display:block}
+.mindmap-wrap{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px;overflow-x:auto}
+svg.mindmap{display:block;margin:0 auto;width:100%;height:auto;max-width:1080px}
+.flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0;font-family:'Space Mono',monospace;font-size:13px}
+.flow .node{background:var(--panel2);border:1px solid var(--accent);padding:6px 10px;border-radius:6px}
+.flow .arr{color:var(--accent2);font-weight:700}
+.warn-box{background:#3a1f24;border:2px solid var(--err);border-radius:10px;padding:12px 16px;margin:10px 0;color:#fecaca}
+ul{padding-left:22px}
+li{margin:4px 0}
+</style>
 </head>
 <body>
 <div class="wrap">
@@ -315,7 +376,12 @@ Task X (low priority) đang chạy. Task Y (high priority) đột nhiên xuất 
 <div class="mindmap-wrap">
 <svg class="mindmap" viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <link rel="stylesheet" href="../assets/common.css">
+    <style>
+      .mtext{font-family:'Noto Sans JP',sans-serif;font-size:13px;fill:#0f1419;font-weight:700}
+      .mctext{font-family:'Noto Sans JP',sans-serif;font-size:15px;fill:#fff;font-weight:800}
+      .mstext{font-family:'Noto Sans JP',sans-serif;font-size:11.5px;fill:#0f1419}
+      .lk{fill:none;stroke-width:2}
+    </style>
   </defs>
 
   <!-- Center -->
@@ -459,6 +525,5 @@ document.querySelectorAll('.opt').forEach(o=>{
   });
 });
 </script>
-<script src="../assets/common.js"></script>
 </body>
 </html>
