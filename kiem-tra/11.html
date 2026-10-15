@@ -1,94 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FE Exam — データ構造: Stack, Queue, Tree (40 câu chuyên sâu)</title>
-<style>
-  :root{
-    --bg:#0f1218; --card:#171c26; --card2:#1f2632; --accent:#4f8cff; --accent2:#6cd4ff;
-    --green:#22c55e; --red:#ef4444; --amber:#fbbf24;
-    --text:#e6e9ef; --muted:#9aa3b2; --border:#2a3140;
-    --easy:#22c55e; --mid:#fbbf24; --hard:#ef4444;
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0; padding:20px; font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans JP",sans-serif;
-    background:linear-gradient(135deg,#0f1218 0%,#141a26 100%); color:var(--text); min-height:100vh;
-    line-height:1.6;
-  }
-  .container{max-width:880px; margin:0 auto;}
-  header{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:20px 24px; margin-bottom:16px;}
-  h1{margin:0 0 6px; font-size:1.35rem; color:var(--accent2)}
-  .subtitle{color:var(--muted); font-size:.9rem; margin:0}
-  .meta{display:flex; gap:14px; flex-wrap:wrap; margin-top:10px; font-size:.85rem; color:var(--muted)}
-  .meta span{background:var(--card2); padding:4px 10px; border-radius:8px; border:1px solid var(--border)}
-
-  .progress-wrap{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 16px; margin-bottom:14px;}
-  .progress-info{display:flex; justify-content:space-between; font-size:.9rem; margin-bottom:8px}
-  .progress-bar{height:8px; background:var(--card2); border-radius:99px; overflow:hidden}
-  .progress-fill{height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0; transition:width .3s}
-
-  .card{background:var(--card); border:1px solid var(--border); border-radius:16px; padding:22px 24px; margin-bottom:14px;}
-  .difficulty{display:inline-block; padding:2px 10px; border-radius:99px; font-size:.78rem; font-weight:600; margin-bottom:10px;}
-  .diff-easy{background:rgba(34,197,94,.15); color:var(--easy); border:1px solid rgba(34,197,94,.4)}
-  .diff-mid{background:rgba(251,191,36,.15); color:var(--mid); border:1px solid rgba(251,191,36,.4)}
-  .diff-hard{background:rgba(239,68,68,.15); color:var(--hard); border:1px solid rgba(239,68,68,.4)}
-
-  .question{font-size:1.02rem; margin:0 0 16px; white-space:pre-wrap}
-  .question .ja{display:block; color:var(--muted); font-size:.88rem; margin-top:6px; padding-left:8px; border-left:2px solid var(--border)}
-
-  .options{display:flex; flex-direction:column; gap:8px}
-  .option{background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:12px 16px; cursor:pointer; transition:all .15s; display:flex; align-items:flex-start; gap:10px; user-select:none;}
-  .option:hover:not(.locked){border-color:var(--accent); background:#222a39}
-  .option .key{flex:none; width:26px; height:26px; border-radius:50%; background:var(--border); display:grid; place-items:center; font-weight:700; font-size:.85rem;}
-  .option .body{flex:1}
-  .option.correct{background:rgba(34,197,94,.12); border-color:var(--green)}
-  .option.correct .key{background:var(--green); color:#fff}
-  .option.wrong{background:rgba(239,68,68,.12); border-color:var(--red)}
-  .option.wrong .key{background:var(--red); color:#fff}
-  .option.locked{cursor:not-allowed; opacity:.85}
-  .option.locked:hover{border-color:var(--border)}
-  .option.correct.locked, .option.wrong.locked{opacity:1}
-
-  .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:18px}
-  button{background:var(--accent); color:#fff; border:0; border-radius:10px; padding:10px 18px; font-size:.95rem; font-weight:600; cursor:pointer; transition:opacity .15s, transform .05s;}
-  button:hover:not(:disabled){opacity:.9}
-  button:active:not(:disabled){transform:translateY(1px)}
-  button:disabled{opacity:.4; cursor:not-allowed}
-  button.secondary{background:var(--card2); color:var(--text); border:1px solid var(--border)}
-  button.amber{background:var(--amber); color:#1a1a1a}
-
-  .explanation{margin-top:14px; padding:14px 16px; border-radius:10px; background:var(--card2); border-left:3px solid var(--accent2); display:none;}
-  .explanation.show{display:block}
-  .explanation h4{margin:0 0 8px; font-size:.95rem; color:var(--accent2)}
-  .explanation p{margin:6px 0; font-size:.92rem}
-  .explanation .label{color:var(--accent2); font-weight:600}
-  .explanation .topic{margin-top:10px; padding-top:10px; border-top:1px dashed var(--border); font-size:.85rem; color:var(--muted);}
-
-  .result{text-align:center; padding:36px 24px}
-  .result h2{margin:0 0 12px; font-size:1.6rem; color:var(--accent2)}
-  .score-big{font-size:3rem; font-weight:800; color:var(--accent); margin:14px 0 6px}
-  .score-pct{font-size:1.1rem; color:var(--muted); margin-bottom:14px}
-  .verdict{font-size:1.05rem; margin:14px 0 22px; padding:14px; border-radius:12px}
-  .v-excellent{background:rgba(34,197,94,.12); color:var(--green)}
-  .v-good{background:rgba(251,191,36,.12); color:var(--amber)}
-  .v-needs-work{background:rgba(239,68,68,.12); color:var(--red)}
-  .breakdown{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:18px 0; text-align:left;}
-  .breakdown-item{background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:12px;}
-  .breakdown-item .lbl{font-size:.8rem; color:var(--muted)}
-  .breakdown-item .val{font-size:1.3rem; font-weight:700; margin-top:4px}
-
-  code{background:var(--card2); padding:1px 6px; border-radius:4px; font-family:"SFMono-Regular",Consolas,monospace; font-size:.9em}
-  .tree-art{background:#0d1119; padding:10px 14px; border-radius:6px; font-family:"SFMono-Regular",Consolas,monospace; font-size:.88em; color:var(--accent2); display:inline-block; margin:6px 0; white-space:pre; line-height:1.4}
-
-  @media(max-width:600px){
-    body{padding:12px}
-    .card{padding:16px 18px}
-    h1{font-size:1.15rem}
-    .breakdown{grid-template-columns:1fr}
-  }
-</style>
+<link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
 <div class="container">
@@ -1052,5 +968,6 @@ function renderResult(){
 render();
 updateProgress();
 </script>
+<script src="../assets/common.js"></script>
 </body>
 </html>

@@ -3,341 +3,740 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FE 学習 — Tài liệu học</title>
+<title>FE 学習 — Tài liệu học & Luyện thi</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@600;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/common.css">
 <style>
-:root {
-  --bg: #F7F8FC;
-  --surface: #FFFFFF;
-  --surface2: #F0F2FA;
-  --border: #E4E6F0;
-  --ink: #111827;
-  --ink2: #6B7280;
-  --ink3: #9CA3AF;
-  --primary: #4F46E5;
-  --primary-light: #EEF2FF;
-  --primary-mid: #C7D2FE;
+/* ── INDEX-SPECIFIC OVERRIDES ── */
+body { padding-top: 0; }
 
-  --p0-ink: #9CA3AF; --p0-bg: #F3F4F6; --p0-border: #E5E7EB;
-  --p1-ink: #3B82F6; --p1-bg: #EFF6FF; --p1-border: #BFDBFE;
-  --p2-ink: #F59E0B; --p2-bg: #FFFBEB; --p2-border: #FDE68A;
-  --p3-ink: #8B5CF6; --p3-bg: #F5F3FF; --p3-border: #DDD6FE;
-  --p4-ink: #10B981; --p4-bg: #ECFDF5; --p4-border: #A7F3D0;
+.idx-wrap { max-width: 960px; margin: 0 auto; padding: 32px 20px 100px; }
 
-  --mono: ui-monospace, "SF Mono", "IBM Plex Mono", Menlo, monospace;
-  --sans: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Noto Sans JP", system-ui, sans-serif;
-  --radius: 14px;
-  --shadow: 0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.06);
+/* ── HERO DASHBOARD ── */
+.dash-hero {
+  background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 32px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  position: relative;
+  overflow: hidden;
+}
+.dash-hero::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  right: -15%;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(255,107,53,0.1) 0%, transparent 70%);
+  pointer-events: none;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0 }
-html, body { background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.55; -webkit-font-smoothing: antialiased }
-a { color: inherit }
+.dash-left { position: relative; z-index: 1; }
+.dash-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.dash-title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.2;
+  color: var(--text);
+}
+.dash-title .soft {
+  color: var(--text-dim);
+  font-weight: 400;
+  font-size: 22px;
+}
+.dash-subtitle {
+  font-size: 13.5px;
+  color: var(--text-dim);
+  margin-top: 10px;
+  line-height: 1.5;
+}
 
-.wrap { max-width: 900px; margin: 0 auto; padding: 40px 20px 100px }
+.dash-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  min-width: 200px;
+  position: relative;
+  z-index: 1;
+}
+.prog-ring {
+  position: relative;
+  width: 90px;
+  height: 90px;
+}
+.prog-ring svg {
+  transform: rotate(-90deg);
+  width: 90px;
+  height: 90px;
+}
+.prog-ring circle {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+.prog-ring .ring-bg { stroke: var(--bg-3); }
+.prog-ring .ring-fg {
+  stroke: var(--accent);
+  transition: stroke-dashoffset 0.8s ease;
+}
+.prog-ring .ring-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.prog-ring .pct-num {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+.prog-ring .pct-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: .1em;
+  margin-top: 2px;
+}
 
-/* ── HEADER ── */
-.hero { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 20px; box-shadow: var(--shadow); display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap }
-.hero-left {}
-.eyebrow { font-family: var(--mono); font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--primary); font-weight: 600; margin-bottom: 6px }
-.hero-title { font-size: 26px; font-weight: 700; letter-spacing: -.02em; line-height: 1.2 }
-.hero-title .soft { color: var(--ink2); font-weight: 400 }
-.hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 14px; min-width: 180px }
+.prog-detail {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 700;
+  text-align: right;
+}
+.prog-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 400;
+  margin-top: 2px;
+}
 
-.prog-big   { font-family: var(--mono); font-size: 22px; font-weight: 700; line-height: 1 }
-.prog-small { font-size: 12px; color: var(--ink2); margin-top: 2px }
+.phase-sum {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.ps-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 99px;
+  border: 1px solid;
+}
+.ps-chip.p4 { color: var(--p4-ink); background: var(--p4-bg); border-color: var(--p4-border); }
+.ps-chip.p0 { color: var(--p0-ink); background: var(--p0-bg); border-color: var(--p0-border); }
+.ps-chip .dot { width: 6px; height: 6px; border-radius: 99px; background: currentColor; }
 
-/* phase chips summary */
-.phase-sum { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end }
-.ps-chip { display: flex; align-items: center; gap: 5px; font-size: 11.5px; font-family: var(--mono); font-weight: 600; padding: 4px 10px; border-radius: 99px; border: 1px solid }
-.ps-chip.p4 { color: var(--p4-ink); background: var(--p4-bg); border-color: var(--p4-border) }
-.ps-chip.p3 { color: var(--p3-ink); background: var(--p3-bg); border-color: var(--p3-border) }
-.ps-chip.p2 { color: var(--p2-ink); background: var(--p2-bg); border-color: var(--p2-border) }
-.ps-chip.p1 { color: var(--p1-ink); background: var(--p1-bg); border-color: var(--p1-border) }
-.ps-chip.p0 { color: var(--p0-ink); background: var(--p0-bg); border-color: var(--p0-border) }
-.ps-chip .dot { width: 6px; height: 6px; border-radius: 99px; background: currentColor }
-
-/* ── BANNER ── */
-.banner { display: none; gap: 10px; align-items: flex-start; background: var(--primary-light); border: 1px solid var(--primary-mid); color: #3730A3; padding: 12px 16px; border-radius: 10px; font-size: 13.5px; margin-bottom: 18px }
-.banner.show { display: flex }
+/* ── QUIZ STATS BAR ── */
+.stats-bar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.stat-icon {
+  font-size: 20px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-3);
+  border-radius: 8px;
+}
+.stat-info { flex: 1; }
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-top: 3px;
+}
 
 /* ── CONTROLS ── */
-.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 16px }
-.search { flex: 1; min-width: 220px; position: relative }
-.search input { width: 100%; padding: 10px 14px 10px 38px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); font: inherit; font-size: 14px; color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.04) }
-.search input::placeholder { color: var(--ink3) }
-.search input:focus { outline: 2px solid var(--primary); outline-offset: 1px; border-color: transparent }
-.search svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--ink3) }
-.chips { display: flex; gap: 6px; flex-wrap: wrap }
-.chip { font: inherit; font-size: 13px; padding: 7px 14px; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); color: var(--ink2); cursor: pointer; font-weight: 500; transition: all .15s }
-.chip:hover { border-color: var(--primary); color: var(--primary) }
-.chip[aria-pressed="true"] { background: var(--primary); color: #fff; border-color: var(--primary) }
+.idx-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.idx-search {
+  flex: 1;
+  min-width: 220px;
+  position: relative;
+}
+.idx-search input {
+  width: 100%;
+  padding: 10px 14px 10px 38px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-2);
+  font: inherit;
+  font-size: 14px;
+  color: var(--text);
+  box-shadow: 0 1px 2px rgba(0,0,0,.1);
+  transition: border-color 0.15s;
+}
+.idx-search input::placeholder { color: var(--text-dim); opacity: 0.6; }
+.idx-search input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+.idx-search svg {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dim);
+}
+.idx-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.idx-chip {
+  font: inherit;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  padding: 7px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-dim);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all .15s;
+  letter-spacing: 0.02em;
+}
+.idx-chip:hover { border-color: var(--accent); color: var(--accent); }
+.idx-chip[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
 
 /* ── LESSON LIST ── */
-.spine { list-style: none; display: flex; flex-direction: column; gap: 8px }
+.spine { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 
-.row { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; display: grid; grid-template-columns: 48px 1fr auto; gap: 16px; align-items: center; transition: box-shadow .15s, border-color .15s }
-.row:hover { box-shadow: var(--shadow); border-color: var(--primary-mid) }
+.row {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  transition: box-shadow .15s, border-color .15s;
+}
+.row:hover { box-shadow: var(--shadow); border-color: rgba(255,107,53,0.3); }
 
-.stt { font-family: var(--mono); font-size: 18px; font-weight: 700; color: var(--primary); text-align: right; font-variant-numeric: tabular-nums; opacity: .7 }
+.stt {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--accent);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  opacity: .7;
+}
 
-.meta { min-width: 0 }
-.topic { font-weight: 600; font-size: 15px; word-break: break-word; line-height: 1.4 }
-.row-foot { display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap }
+.r-meta { min-width: 0; }
+.r-topic { font-weight: 600; font-size: 15px; word-break: break-word; line-height: 1.4; color: var(--text); }
+.row-foot { display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
 
-/* phase badge */
-.badge { display: inline-flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 11px; letter-spacing: .03em; padding: 4px 10px; border-radius: 99px; font-weight: 700; border: 1px solid; flex-shrink: 0 }
-.badge.p0 { color: var(--p0-ink); background: var(--p0-bg); border-color: var(--p0-border) }
-.badge.p1 { color: var(--p1-ink); background: var(--p1-bg); border-color: var(--p1-border) }
-.badge.p2 { color: var(--p2-ink); background: var(--p2-bg); border-color: var(--p2-border) }
-.badge.p3 { color: var(--p3-ink); background: var(--p3-bg); border-color: var(--p3-border) }
-.badge.p4 { color: var(--p4-ink); background: var(--p4-bg); border-color: var(--p4-border) }
-.badge .dot { width: 6px; height: 6px; border-radius: 99px; background: currentColor }
+.r-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .03em;
+  padding: 4px 10px;
+  border-radius: 99px;
+  font-weight: 700;
+  border: 1px solid;
+  flex-shrink: 0;
+}
+.r-badge.p0 { color: var(--p0-ink); background: var(--p0-bg); border-color: var(--p0-border); }
+.r-badge.p4 { color: var(--p4-ink); background: var(--p4-bg); border-color: var(--p4-border); }
+.r-badge .dot { width: 6px; height: 6px; border-radius: 99px; background: currentColor; }
 
-.toggle-btn { font: inherit; font-size: 12px; font-weight: 600; padding: 4px 11px; border-radius: 99px; cursor: pointer; border: 1px solid; transition: all .12s }
-.toggle-btn.p0 { background: var(--p4-bg); color: var(--p4-ink); border-color: var(--p4-border) }
-.toggle-btn.p0:hover { background: var(--p4-ink); color: #fff; border-color: var(--p4-ink) }
-.toggle-btn.p4 { background: var(--p0-bg); color: var(--p0-ink); border-color: var(--p0-border) }
-.toggle-btn.p4:hover { background: var(--p0-ink); color: #fff; border-color: var(--p0-ink) }
+.quiz-score-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(78,205,196,0.1);
+  color: var(--accent-2);
+  border: 1px solid rgba(78,205,196,0.25);
+}
 
-/* action buttons */
-.actions { display: flex; gap: 8px; flex-shrink: 0 }
-.btn { font: inherit; font-size: 13px; padding: 8px 14px; border-radius: 9px; border: 1px solid var(--primary-mid); background: var(--primary-light); color: var(--primary); cursor: pointer; white-space: nowrap; font-weight: 600; transition: all .12s }
-.btn:hover { background: var(--primary); color: #fff; border-color: var(--primary) }
-.btn[disabled] { border-color: var(--border); color: var(--ink3); background: var(--surface); cursor: not-allowed }
+.toggle-btn {
+  font: inherit;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 99px;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all .12s;
+}
+.toggle-btn.p0 { background: var(--p4-bg); color: var(--p4-ink); border-color: var(--p4-border); }
+.toggle-btn.p0:hover { background: var(--p4-ink); color: #fff; border-color: var(--p4-ink); }
+.toggle-btn.p4 { background: var(--p0-bg); color: var(--p0-ink); border-color: var(--p0-border); }
+.toggle-btn.p4:hover { background: var(--p0-ink); color: #fff; border-color: var(--p0-ink); }
 
-.empty { text-align: center; color: var(--ink2); padding: 56px 0; font-size: 15px }
+.actions { display: flex; gap: 8px; flex-shrink: 0; }
+.r-btn {
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-3);
+  color: var(--text-dim);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .12s;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.r-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.r-btn[disabled] { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
 
-/* ── READING PANE ── */
-.pane { position: fixed; inset: 0; background: rgba(17,24,39,.45); display: none; z-index: 50; backdrop-filter: blur(2px) }
-.pane.open { display: block }
-.pane-inner { position: absolute; top: 0; right: 0; bottom: 0; width: min(880px,100%); background: var(--surface); display: flex; flex-direction: column; box-shadow: -16px 0 48px rgba(0,0,0,.14) }
-.pane-head { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 1px solid var(--border) }
-.pane-head .pstt { font-family: var(--mono); font-weight: 700; color: var(--primary); background: var(--primary-light); padding: 3px 9px; border-radius: 6px; font-size: 13px }
-.pane-head .ptopic { font-weight: 600; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px }
-.pane-head a, .pane-head button { font: inherit; font-size: 13px; border: 1px solid var(--border); background: var(--surface); border-radius: 8px; padding: 7px 12px; cursor: pointer; color: var(--ink); text-decoration: none; font-weight: 500; transition: all .12s }
-.pane-head a:hover, .pane-head button:hover { background: var(--surface2) }
-.pane-head .close { font-size: 16px; line-height: 1; padding: 7px 11px }
-.tabs { display: flex; gap: 2px; padding: 12px 20px 0; border-bottom: 1px solid var(--border) }
-.tab { font: inherit; font-size: 13.5px; padding: 8px 16px; border: none; background: none; color: var(--ink2); cursor: pointer; border-bottom: 2px solid transparent; font-weight: 500; margin-bottom: -1px; transition: color .12s }
-.tab[aria-selected="true"] { color: var(--primary); border-bottom-color: var(--primary) }
-iframe { flex: 1; width: 100%; border: 0; background: #fff }
-.pane-placeholder { flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--ink2); padding: 40px; font-size: 14.5px; line-height: 1.7 }
+.empty-state {
+  text-align: center;
+  color: var(--text-dim);
+  padding: 56px 0;
+  font-size: 15px;
+}
 
 /* ── TOAST ── */
-.toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(12px); background: #111827; color: #fff; padding: 10px 22px; border-radius: 99px; font-size: 13.5px; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; z-index: 200; white-space: nowrap; box-shadow: 0 4px 16px rgba(0,0,0,.2) }
-.toast.show { opacity: 1; transform: translateX(-50%) translateY(0) }
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: var(--bg-3);
+  color: var(--text);
+  padding: 10px 22px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-family: var(--font-mono);
+  opacity: 0;
+  transition: opacity .2s, transform .2s;
+  pointer-events: none;
+  z-index: 200;
+  white-space: nowrap;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── FOOTER ── */
+.idx-footer {
+  text-align: center;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  letter-spacing: 0.05em;
+}
+.idx-footer a { color: var(--accent); text-decoration: none; }
+.idx-footer a:hover { text-decoration: underline; }
 
 @media (max-width: 640px) {
-  .hero { padding: 20px }
-  .row { grid-template-columns: 36px 1fr; gap: 12px }
-  .actions { grid-column: 1 / -1; justify-content: flex-start }
-  .hero-title { font-size: 21px }
-  .prog-big { font-size: 18px }
+  .idx-wrap { padding: 20px 12px 80px; }
+  .dash-hero { padding: 22px 18px; flex-direction: column; align-items: flex-start; }
+  .dash-right { align-items: flex-start; flex-direction: row; gap: 16px; }
+  .dash-title { font-size: 22px; }
+  .dash-title .soft { font-size: 17px; }
+  .row { grid-template-columns: 36px 1fr; gap: 12px; }
+  .actions { grid-column: 1 / -1; justify-content: flex-start; }
+  .stats-bar { grid-template-columns: 1fr 1fr; }
 }
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="idx-wrap">
 
-  <!-- HERO HEADER -->
-  <div class="hero">
-    <div class="hero-left">
-      <div class="eyebrow">FE Syllabus · 学習トラッカー</div>
-      <div class="hero-title">Tài liệu học FE <span class="soft">／ 教材</span></div>
+  <!-- ═══ HERO DASHBOARD ═══ -->
+  <div class="dash-hero">
+    <div class="dash-left">
+      <div class="dash-eyebrow">FE Syllabus · 学習トラッカー</div>
+      <div class="dash-title">
+        Tài liệu học FE <span class="soft">／ 基本情報技術者</span>
+      </div>
+      <p class="dash-subtitle">Học lý thuyết, luyện đề 40 câu, ôn flashcards — tất cả tiến độ được lưu tự động.</p>
     </div>
-    <div class="hero-right">
+    <div class="dash-right">
+      <div class="prog-ring">
+        <svg viewBox="0 0 90 90">
+          <circle class="ring-bg" cx="45" cy="45" r="38"/>
+          <circle class="ring-fg" id="ringFg" cx="45" cy="45" r="38"
+            stroke-dasharray="238.76"
+            stroke-dashoffset="238.76"/>
+        </svg>
+        <div class="ring-text">
+          <span class="pct-num" id="pctNum">0%</span>
+          <span class="pct-label">HOÀN THÀNH</span>
+        </div>
+      </div>
       <div>
-        <div class="prog-big" id="pnum">0 / 0</div>
-        <div class="prog-small">bài đã xong</div>
+        <div class="prog-detail" id="progDetail">0 / 0</div>
+        <div class="prog-sub">bài đã xong</div>
       </div>
       <div class="phase-sum" id="phaseSum"></div>
     </div>
   </div>
 
-  <div class="banner" id="banner">
-    <span>ⓘ</span>
-    <div><b>Đang xem bản mẫu.</b> Khi đưa <code>lessons.json</code> lên GitHub Pages, danh sách thật sẽ hiện và bài học mở ngay trong trang.</div>
+  <!-- ═══ STATS BAR ═══ -->
+  <div class="stats-bar" id="statsBar">
+    <div class="stat-card">
+      <div class="stat-icon">📚</div>
+      <div class="stat-info">
+        <div class="stat-num" id="statLessons">0</div>
+        <div class="stat-label">Tổng bài học</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-info">
+        <div class="stat-num" id="statDone">0</div>
+        <div class="stat-label">Đã hoàn thành</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📝</div>
+      <div class="stat-info">
+        <div class="stat-num" id="statQuiz">0</div>
+        <div class="stat-label">Lần làm quiz</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-info">
+        <div class="stat-num" id="statAvg">—</div>
+        <div class="stat-label">Điểm TB quiz</div>
+      </div>
+    </div>
   </div>
 
-  <!-- CONTROLS -->
-  <div class="controls">
-    <div class="search">
+  <!-- ═══ CONTROLS ═══ -->
+  <div class="idx-controls">
+    <div class="idx-search">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
       <input id="q" type="search" placeholder="Tìm theo chủ đề hoặc số thứ tự…" aria-label="Tìm bài học">
     </div>
-    <div class="chips" role="group" aria-label="Lọc theo trạng thái">
-      <button class="chip" data-f="all" aria-pressed="true">Tất cả</button>
-      <button class="chip" data-f="p4"  aria-pressed="false">Đã xong</button>
-      <button class="chip" data-f="p0"  aria-pressed="false">Chưa bắt đầu</button>
+    <div class="idx-chips" role="group" aria-label="Lọc theo trạng thái">
+      <button class="idx-chip" data-f="all" aria-pressed="true">Tất cả</button>
+      <button class="idx-chip" data-f="done" aria-pressed="false">✓ Đã xong</button>
+      <button class="idx-chip" data-f="todo" aria-pressed="false">○ Chưa làm</button>
     </div>
   </div>
 
+  <!-- ═══ LESSON LIST ═══ -->
   <ol class="spine" id="list"></ol>
-  <div class="empty" id="empty" style="display:none">Không có bài nào khớp.</div>
-</div>
+  <div class="empty-state" id="empty" style="display:none">Không có bài nào khớp.</div>
 
-<!-- READING PANE -->
-<div class="pane" id="pane" role="dialog" aria-modal="true" aria-label="Bài học">
-  <div class="pane-inner">
-    <div class="pane-head">
-      <span class="pstt" id="pPstt"></span>
-      <span class="ptopic" id="pTopic"></span>
-      <a id="pNew" href="#" target="_blank" rel="noopener" title="Mở tab mới">↗ Tab mới</a>
-      <button class="close" id="pClose" aria-label="Đóng">✕</button>
-    </div>
-    <div class="tabs">
-      <button class="tab" id="tabTheory" aria-selected="true">Lý thuyết</button>
-      <button class="tab" id="tabTest"   aria-selected="false">Kiểm tra 40 câu</button>
-    </div>
-    <iframe id="frame" title="Nội dung bài học"></iframe>
-    <div class="pane-placeholder" id="placeholder" style="display:none"></div>
-  </div>
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="idx-footer">
+    FE 学習 Tracker — Dữ liệu tiến độ lưu trên trình duyệt ·
+    <a href="#" id="exportBtn">Xuất dữ liệu</a> ·
+    <a href="#" id="importBtn">Nhập dữ liệu</a> ·
+    <a href="#" id="clearBtn">Xoá tiến độ</a>
+  </footer>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<!-- Hidden file input for import -->
+<input type="file" id="importFile" accept=".json" style="display:none">
+
+<script src="assets/common.js"></script>
 <script>
-const PHASES = {
-  p0: { label:"Chưa bắt đầu", short:"Chưa" },
-  p4: { label:"Đã xong",      short:"Xong"  },
-};
-const PHASE_ORDER = ["p0","p4"];
+/* ═══════════════════════════════════════════════════════════
+   INDEX PAGE - Dashboard Logic
+   ═══════════════════════════════════════════════════════════ */
 
-const SAMPLE = {
-  lessons:[
-    {stt:1,  topic:"n進数の概念 · Khái niệm hệ cơ số n",   theory:"ly-thuyet/1.html",  test:"kiem-tra/1.html",  status:"p4"},
-    {stt:2,  topic:"基数変換 · Chuyển đổi cơ số",          theory:"ly-thuyet/2.html",  test:"kiem-tra/2.html",  status:"p4"},
-    {stt:6,  topic:"論理回路 · Mạch logic",                 theory:"ly-thuyet/6.html",  test:"kiem-tra/6.html",  status:"p4"},
-    {stt:13, topic:"ソート · Sắp xếp",                     theory:"ly-thuyet/13.html", test:"kiem-tra/13.html", status:"p0"},
-    {stt:14, topic:"OOP+UML + 過去問 Ch.3",                 theory:null, test:null, status:"p0"},
-    {stt:15, topic:"5大装置・CPU基本",                      theory:null, test:null, status:"p0"},
-  ]
-};
+const CIRC = 2 * Math.PI * 38; // circumference of progress ring
 
-let DATA = [], filter = "all", query = "", sampleMode = false, cur = null, curTab = "theory";
+let DATA = [], filterMode = "all", searchQuery = "";
 const $ = s => document.querySelector(s);
 
-function migrate(s){
-  if(s==="done"||s==="p4"||s==="p3"||s==="p2"||s==="p1") return "p4";
-  return "p0";
-}
-
-async function load(){
-  try{
-    const r = await fetch("./lessons.json", {cache:"no-store"});
-    if(!r.ok) throw 0;
+// ── Load lessons.json ──
+async function loadData() {
+  try {
+    const r = await fetch("./lessons.json", { cache: "no-store" });
+    if (!r.ok) throw new Error("HTTP " + r.status);
     const j = await r.json();
-    DATA = (j.lessons||[]).map(l=>({...l, status:migrate(l.status)}));
-  }catch{
-    DATA = SAMPLE.lessons.map(l=>({...l, status:migrate(l.status)}));
-    sampleMode = true; $("#banner").classList.add("show");
+    DATA = (j.lessons || []).map(l => ({
+      ...l,
+      // Merge localStorage progress
+      _progress: (typeof FEProgress !== 'undefined') ? FEProgress.get(l.stt) : null
+    }));
+  } catch (e) {
+    console.warn("Could not load lessons.json:", e);
+    DATA = [];
   }
-  DATA.sort((a,b)=>a.stt-b.stt);
-  render(); updateProgress();
+  DATA.sort((a, b) => a.stt - b.stt);
+  render();
+  updateDashboard();
+  updateStats();
 }
 
-function updateProgress(){
-  const tot = DATA.length;
-  const cnt = {}; PHASE_ORDER.forEach(p=>cnt[p]=0);
-  DATA.forEach(l=>cnt[l.status]=(cnt[l.status]||0)+1);
-  const d4 = cnt.p4||0;
-  const pct = tot ? Math.round(d4/tot*100) : 0;
-
-  $("#pnum").textContent = d4 + " / " + tot;
-  const sum = $("#phaseSum");
-  sum.innerHTML = `
-    <div class="ps-chip p4"><span class="dot"></span>${cnt.p4||0} Đã xong</div>
-    <div class="ps-chip p0"><span class="dot"></span>${cnt.p0||0} Chưa bắt đầu</div>`;
+// ── Get effective status (localStorage overrides JSON) ──
+function getStatus(l) {
+  if (l._progress && l._progress.status === 'done') return 'done';
+  // Legacy: JSON says "done"
+  if (l.status === 'done' || l.status === 'p4' || l.status === 'p3' || l.status === 'p2' || l.status === 'p1') return 'done';
+  return 'todo';
 }
 
-function render(){
-  const q = query.trim().toLowerCase();
-  const rows = DATA.filter(l=>{
-    if(filter!=="all" && l.status!==filter) return false;
-    if(q && !((l.topic||"").toLowerCase().includes(q)||String(l.stt).includes(q))) return false;
+// ── Check if lesson HTML files exist ──
+function hasTheory(l) {
+  return !!(l.theory);
+}
+function hasTest(l) {
+  return !!(l.test);
+}
+
+// ── Update dashboard progress ring ──
+function updateDashboard() {
+  const total = DATA.length;
+  const done = DATA.filter(l => getStatus(l) === 'done').length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+
+  // Progress ring
+  const offset = CIRC - (pct / 100) * CIRC;
+  $("#ringFg").setAttribute("stroke-dashoffset", offset);
+  $("#pctNum").textContent = pct + "%";
+  $("#progDetail").textContent = done + " / " + total;
+
+  // Phase chips
+  const todo = total - done;
+  $("#phaseSum").innerHTML = `
+    <div class="ps-chip p4"><span class="dot"></span>${done} Xong</div>
+    <div class="ps-chip p0"><span class="dot"></span>${todo} Chưa</div>`;
+}
+
+// ── Update stats bar from localStorage ──
+function updateStats() {
+  const total = DATA.length;
+  const done = DATA.filter(l => getStatus(l) === 'done').length;
+  $("#statLessons").textContent = total;
+  $("#statDone").textContent = done;
+
+  if (typeof FEProgress !== 'undefined') {
+    const stats = FEProgress.getStats();
+    $("#statQuiz").textContent = stats.totalQuizAttempts || 0;
+    $("#statAvg").textContent = stats.averageScore ? (stats.averageScore + "%") : "—";
+  }
+}
+
+// ── Render lesson list ──
+function render() {
+  const q = searchQuery.trim().toLowerCase();
+  const rows = DATA.filter(l => {
+    const st = getStatus(l);
+    if (filterMode === "done" && st !== "done") return false;
+    if (filterMode === "todo" && st !== "todo") return false;
+    if (q && !((l.topic || "").toLowerCase().includes(q) || String(l.stt).includes(q))) return false;
     return true;
   });
-  const list = $("#list"), empty = $("#empty");
+
+  const list = $("#list");
   list.innerHTML = "";
-  empty.style.display = rows.length ? "none" : "block";
-  for(const l of rows){
-    const idx = PHASE_ORDER.indexOf(l.status);
-    const ph  = PHASES[l.status] || PHASES.p0;
-    const li  = document.createElement("li");
+  $("#empty").style.display = rows.length ? "none" : "block";
+
+  for (const l of rows) {
+    const st = getStatus(l);
+    const stLabel = st === "done" ? "Đã xong" : "Chưa bắt đầu";
+    const stClass = st === "done" ? "p4" : "p0";
+    const li = document.createElement("li");
     li.className = "row";
+
+    // Check for quiz score from localStorage
+    let quizBadge = "";
+    if (l._progress && l._progress.quizScore !== null && l._progress.quizScore !== undefined) {
+      quizBadge = `<span class="quiz-score-badge">📝 ${l._progress.quizScore}/${l._progress.quizTotal}</span>`;
+    }
+
     li.innerHTML = `
-      <div class="stt">${String(l.stt).padStart(2,"0")}</div>
-      <div class="meta">
-        <div class="topic"></div>
+      <div class="stt">${String(l.stt).padStart(2, "0")}</div>
+      <div class="r-meta">
+        <div class="r-topic"></div>
         <div class="row-foot">
-          <span class="badge ${l.status}"><span class="dot"></span>${ph.label}</span>
-          <button class="toggle-btn ${l.status}" data-stt="${l.stt}">${l.status==="p4"?"↩ Đánh dấu chưa xong":"✓ Đánh dấu đã xong"}</button>
+          <span class="r-badge ${stClass}"><span class="dot"></span>${stLabel}</span>
+          ${quizBadge}
+          <button class="toggle-btn ${stClass}" data-stt="${l.stt}">
+            ${st === "done" ? "↩ Đánh dấu chưa xong" : "✓ Đánh dấu đã xong"}
+          </button>
         </div>
       </div>
       <div class="actions">
-        <button class="btn" data-t="theory" ${l.theory?"":"disabled"}>Lý thuyết</button>
-        <button class="btn" data-t="test"   ${l.test?"":"disabled"}>Kiểm tra</button>
+        <a class="r-btn" href="${l.theory || '#'}" ${hasTheory(l) ? '' : 'disabled'}>📖 Lý thuyết</a>
+        <a class="r-btn" href="${l.test || '#'}" ${hasTest(l) ? '' : 'disabled'}>📝 Kiểm tra</a>
       </div>`;
-    li.querySelector(".topic").textContent = l.topic || "(chưa có chủ đề)";
-    li.querySelectorAll("button[data-t]").forEach(b=>{ if(!b.disabled) b.onclick = ()=>openPane(l,b.dataset.t) });
-    li.querySelector(".toggle-btn").onclick = ()=>toggleStatus(l);
+
+    // Set topic text safely
+    li.querySelector(".r-topic").textContent = l.topic || "(chưa có chủ đề)";
+
+    // Toggle status handler
+    li.querySelector(".toggle-btn").onclick = () => toggleStatus(l);
+
     list.appendChild(li);
   }
 }
 
-function toggleStatus(l){
-  l.status = l.status === "p4" ? "p0" : "p4";
-  render(); updateProgress();
-  showToast(`Bài ${String(l.stt).padStart(2,"0")} → ${PHASES[l.status].label}`);
+// ── Toggle lesson status ──
+function toggleStatus(l) {
+  const currentSt = getStatus(l);
+  const newSt = currentSt === "done" ? "todo" : "done";
+
+  // Save to localStorage
+  if (typeof FEProgress !== 'undefined') {
+    FEProgress.setStatus(l.stt, newSt);
+    l._progress = FEProgress.get(l.stt);
+  }
+
+  render();
+  updateDashboard();
+  updateStats();
+  showToast(`Bài ${String(l.stt).padStart(2, "0")} → ${newSt === "done" ? "Đã xong ✓" : "Chưa bắt đầu"}`);
 }
 
-let toastT;
-function showToast(msg){
-  const t=$("#toast"); t.textContent=msg; t.classList.add("show");
-  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("show"),2200);
+// ── Toast ──
+let toastTimer;
+function showToast(msg) {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2200);
 }
 
-function openPane(l, tab){
-  cur=l; curTab=(tab==="test"&&l.test)?"test":(l.theory?"theory":"test");
-  $("#pPstt").textContent=String(l.stt).padStart(2,"0");
-  $("#pTopic").textContent=l.topic||"";
-  $("#tabTheory").style.display=l.theory?"":"none";
-  $("#tabTest").style.display=l.test?"":"none";
-  $("#pane").classList.add("open");
-  document.body.style.overflow="hidden";
-  showTab(curTab);
-}
-function showTab(tab){
-  curTab=tab;
-  $("#tabTheory").setAttribute("aria-selected",tab==="theory");
-  $("#tabTest").setAttribute("aria-selected",tab==="test");
-  const src=tab==="theory"?cur.theory:cur.test;
-  $("#pNew").href=src||"#";
-  const frame=$("#frame"),ph=$("#placeholder");
-  if(sampleMode){ frame.style.display="none"; ph.style.display="flex"; ph.textContent="Bản mẫu — nội dung bài sẽ hiển thị sau khi deploy lên GitHub Pages."; }
-  else{ ph.style.display="none"; frame.style.display="block"; frame.src=src; }
-}
-function closePane(){
-  $("#pane").classList.remove("open");
-  document.body.style.overflow="";
-  $("#frame").src="about:blank"; cur=null;
-}
-
-$("#tabTheory").onclick=()=>showTab("theory");
-$("#tabTest").onclick=()=>showTab("test");
-$("#pClose").onclick=closePane;
-$("#pane").onclick=e=>{ if(e.target.id==="pane") closePane() };
-document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePane() });
-$("#q").addEventListener("input",e=>{ query=e.target.value; render() });
-document.querySelectorAll(".chip").forEach(c=>{
-  c.onclick=()=>{
-    filter=c.dataset.f;
-    document.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x===c));
+// ── Filter chips ──
+document.querySelectorAll(".idx-chip").forEach(c => {
+  c.onclick = () => {
+    filterMode = c.dataset.f;
+    document.querySelectorAll(".idx-chip").forEach(x => x.setAttribute("aria-pressed", x === c));
     render();
   };
 });
 
-load();
+// ── Search ──
+$("#q").addEventListener("input", e => {
+  searchQuery = e.target.value;
+  render();
+});
+
+// ── Export/Import/Clear ──
+$("#exportBtn").onclick = (e) => {
+  e.preventDefault();
+  if (typeof FEProgress === 'undefined') return;
+  const data = FEProgress.export();
+  const blob = new Blob([data], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "fe-progress-" + new Date().toISOString().slice(0, 10) + ".json";
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast("✓ Đã xuất dữ liệu tiến độ");
+};
+
+$("#importBtn").onclick = (e) => {
+  e.preventDefault();
+  $("#importFile").click();
+};
+
+$("#importFile").onchange = (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      if (typeof FEProgress !== 'undefined') {
+        FEProgress.import(reader.result);
+        // Refresh progress data
+        DATA.forEach(l => { l._progress = FEProgress.get(l.stt); });
+        render();
+        updateDashboard();
+        updateStats();
+        showToast("✓ Đã nhập dữ liệu tiến độ thành công");
+      }
+    } catch (err) {
+      showToast("✕ Lỗi: File không hợp lệ");
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = "";
+};
+
+$("#clearBtn").onclick = (e) => {
+  e.preventDefault();
+  if (!confirm("Bạn có chắc muốn xoá toàn bộ tiến độ học tập?")) return;
+  if (typeof FEProgress !== 'undefined') {
+    FEProgress.clear();
+    DATA.forEach(l => { l._progress = FEProgress.get(l.stt); });
+    render();
+    updateDashboard();
+    updateStats();
+    showToast("✓ Đã xoá toàn bộ tiến độ");
+  }
+};
+
+// ── Keyboard shortcuts ──
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+  if (e.key === "/") { e.preventDefault(); $("#q").focus(); }
+});
+
+// ── INIT ──
+loadData();
 </script>
 </body>
 </html>

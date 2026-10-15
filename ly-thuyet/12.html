@@ -1,76 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FE 03-03 · 基本アルゴリズム · 探索 (Tìm kiếm)</title>
-<style>
-:root{
-  --bg:#0f1115; --panel:#171a21; --panel2:#1f2330; --border:#2a2f3d;
-  --text:#e8ecf3; --muted:#a0a8b8; --accent:#ff8c5a;
-  --jp:#ffd56b; --vn:#7ee787; --en:#79c0ff;
-  --linear:#ff8c5a; --hash:#c792ea; --binary:#7ee787;
-  --correct:#3fb950; --wrong:#f85149; --warn:#d29922;
-  --code:#0b0e13;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Syne','Space Mono','Noto Sans JP',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;padding:24px;max-width:1100px;margin:0 auto}
-h1{font-size:28px;color:var(--accent);margin-bottom:8px;border-bottom:2px solid var(--accent);padding-bottom:12px}
-h2{font-size:22px;color:var(--accent);margin:32px 0 12px;padding:8px 12px;background:var(--panel);border-left:4px solid var(--accent);border-radius:4px}
-h3{font-size:18px;color:var(--jp);margin:20px 0 8px}
-h4{font-size:16px;color:var(--en);margin:14px 0 6px}
-.meta{color:var(--muted);font-size:13px;margin-bottom:24px}
-.lang{margin:8px 0;padding:10px 14px;border-radius:6px;background:var(--panel);border-left:3px solid var(--border)}
-.lang.jp{border-left-color:var(--jp)}
-.lang.vn{border-left-color:var(--vn)}
-.lang.en{border-left-color:var(--en)}
-.lang .tag{font-weight:bold;font-size:13px;display:block;margin-bottom:4px}
-.lang.jp .tag{color:var(--jp)}
-.lang.vn .tag{color:var(--vn)}
-.lang.en .tag{color:var(--en)}
-.box{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:16px;margin:14px 0}
-.box.linear{border-left:4px solid var(--linear)}
-.box.hash{border-left:4px solid var(--hash)}
-.box.binary{border-left:4px solid var(--binary)}
-pre{background:var(--code);border:1px solid var(--border);border-radius:6px;padding:12px;overflow-x:auto;font-family:'Space Mono',monospace;font-size:13px;color:#d4d4d4;margin:10px 0}
-table{width:100%;border-collapse:collapse;margin:12px 0;background:var(--panel);border-radius:6px;overflow:hidden}
-th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);font-size:14px;vertical-align:top}
-th{background:var(--panel2);color:var(--accent);font-weight:bold}
-tr:last-child td{border-bottom:none}
-ul,ol{margin:8px 0 8px 24px}
-li{margin:4px 0}
-code{background:var(--code);padding:2px 6px;border-radius:3px;font-family:'Space Mono',monospace;font-size:13px;color:var(--jp)}
-.flashcard-controls{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
-.btn{background:var(--panel2);color:var(--text);border:1px solid var(--border);padding:8px 14px;border-radius:6px;cursor:pointer;font-family:inherit;font-size:13px;transition:all 0.2s}
-.btn:hover{background:var(--accent);color:#000}
-.btn.active{background:var(--accent);color:#000;border-color:var(--accent)}
-.flashcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin:14px 0}
-.flashcard{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:16px;min-height:140px;cursor:pointer;position:relative;transition:transform 0.2s,border-color 0.2s}
-.flashcard:hover{transform:translateY(-2px);border-color:var(--accent)}
-.flashcard .front,.flashcard .back{font-size:14px}
-.flashcard .back{display:none;color:var(--vn)}
-.flashcard.flipped .front{display:none}
-.flashcard.flipped .back{display:block}
-.flashcard .cat{position:absolute;top:8px;right:10px;font-size:11px;padding:2px 8px;border-radius:10px;background:var(--panel2);color:var(--muted)}
-.flashcard.cat-linear .cat{background:var(--linear);color:#000}
-.flashcard.cat-hash .cat{background:var(--hash);color:#000}
-.flashcard.cat-binary .cat{background:var(--binary);color:#000}
-.quiz-q{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:14px;margin:12px 0}
-.quiz-q .qtext{font-weight:bold;margin-bottom:10px;color:var(--jp)}
-.quiz-q .opt{display:block;padding:8px 12px;margin:4px 0;background:var(--panel2);border:1px solid var(--border);border-radius:5px;cursor:pointer;font-size:14px}
-.quiz-q .opt:hover{border-color:var(--accent)}
-.quiz-q .opt.correct{background:rgba(63,185,80,0.2);border-color:var(--correct);color:var(--correct)}
-.quiz-q .opt.wrong{background:rgba(248,81,73,0.2);border-color:var(--wrong);color:var(--wrong)}
-.quiz-q .opt.locked{cursor:not-allowed}
-.quiz-q .explain{display:none;margin-top:10px;padding:10px;background:var(--panel2);border-left:3px solid var(--accent);border-radius:4px;font-size:13px;color:var(--muted)}
-.quiz-q.answered .explain{display:block}
-.score{margin:16px 0;padding:14px;background:var(--panel2);border-radius:8px;text-align:center;font-size:18px;color:var(--accent);font-weight:bold}
-.ascii{font-family:'Space Mono',monospace;font-size:12px;white-space:pre;background:var(--code);padding:14px;border-radius:6px;overflow-x:auto;color:#d4d4d4;line-height:1.4}
-.note{background:rgba(255,140,90,0.1);border-left:3px solid var(--accent);padding:10px 14px;border-radius:4px;margin:10px 0;font-size:13px;color:var(--muted)}
-.exam-tip{background:rgba(63,185,80,0.1);border:1px solid var(--correct);border-radius:6px;padding:10px 14px;margin:10px 0;font-size:13px}
-.exam-tip strong{color:var(--correct)}
-svg{max-width:100%;height:auto;display:block;margin:14px auto;background:var(--panel);border-radius:8px;border:1px solid var(--border)}
-</style>
+<link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
 
@@ -379,5 +313,6 @@ document.querySelectorAll('.opt').forEach(opt=>{
 });
 </script>
 
+<script src="../assets/common.js"></script>
 </body>
 </html>

@@ -1,109 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Đề kiểm tra 40 câu — 5大装置・CPU基本 (FE)</title>
-<style>
-:root{
-  --bg:#0e1117; --panel:#161b22; --panel-2:#1c2330; --line:#2a3142;
-  --text:#e6edf3; --muted:#8b949e; --accent:#ff8c42; --accent-2:#f0b76b;
-  --good:#3fb950; --bad:#f85149; --easy:#3fb950; --mid:#d29922; --hard:#f85149;
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
-  font-family:system-ui,-apple-system,'Segoe UI','Noto Sans JP',sans-serif;line-height:1.65;font-size:15.5px}
-.wrap{max-width:860px;margin:0 auto;padding:24px 18px 60px}
-
-header.hero{background:linear-gradient(135deg,#1c2330,#161b22);border:1px solid var(--line);
-  border-radius:16px;padding:26px 24px;margin-bottom:20px}
-header.hero h1{font-size:24px;margin:0 0 8px;
-  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
-header.hero p{margin:4px 0;color:var(--muted);font-size:13.5px}
-.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.badges span{background:var(--panel-2);border:1px solid var(--line);padding:4px 11px;border-radius:999px;font-size:12px;color:var(--muted)}
-
-/* progress */
-.topbar{position:sticky;top:0;z-index:20;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);margin-bottom:16px}
-.progress-info{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:var(--muted);margin-bottom:8px}
-.progress-track{height:7px;background:var(--panel-2);border-radius:999px;overflow:hidden}
-.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .3s}
-
-/* jump grid */
-.jump{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;margin:14px 0}
-.jump button{aspect-ratio:1;border:1px solid var(--line);background:var(--panel-2);color:var(--muted);
-  border-radius:7px;cursor:pointer;font-size:12px;font-weight:600;transition:.12s;padding:0}
-.jump button:hover{border-color:var(--accent)}
-.jump button.current{outline:2px solid var(--accent);color:var(--text)}
-.jump button.correct{background:rgba(63,185,80,.25);border-color:var(--good);color:#bff5c5}
-.jump button.wrong{background:rgba(248,81,73,.22);border-color:var(--bad);color:#ffb8b3}
-
-/* question */
-.qcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;display:none}
-.qcard.active{display:block}
-.qmeta{display:flex;gap:8px;align-items:center;margin-bottom:12px}
-.tag{font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:999px}
-.tag.easy{background:rgba(63,185,80,.15);color:var(--easy);border:1px solid var(--easy)}
-.tag.mid{background:rgba(210,153,34,.15);color:var(--mid);border:1px solid var(--mid)}
-.tag.hard{background:rgba(248,81,73,.15);color:var(--hard);border:1px solid var(--hard)}
-.qnum{font-size:12.5px;color:var(--muted)}
-.qcat{font-size:11.5px;color:var(--muted);margin-left:auto}
-.qtext{font-size:16px;font-weight:600;margin-bottom:14px;line-height:1.6}
-.qtext .jp{display:block;color:var(--accent-2);font-size:14px;font-weight:500;margin-top:4px}
-.qextra{background:#0a0d12;border:1px solid var(--line);border-radius:8px;padding:12px;
-  font-family:'Space Mono',ui-monospace,monospace;font-size:13px;white-space:pre;overflow-x:auto;margin-bottom:14px;color:var(--accent-2)}
-
-.opts{list-style:none;padding:0;margin:0}
-.opts li{padding:12px 16px;margin:8px 0;border:1px solid var(--line);border-radius:10px;
-  cursor:pointer;background:var(--panel-2);transition:.13s;display:flex;gap:10px;align-items:flex-start}
-.opts li:hover{border-color:var(--accent)}
-.opts li .key{font-weight:700;color:var(--accent-2);flex-shrink:0}
-.opts li.correct{background:rgba(63,185,80,.16);border-color:var(--good)}
-.opts li.wrong{background:rgba(248,81,73,.14);border-color:var(--bad)}
-.opts li.locked{cursor:default}
-.opts li.locked:hover{border-color:var(--line)}
-.opts li.correct.locked{border-color:var(--good)}
-.opts li.wrong.locked{border-color:var(--bad)}
-
-.explain{display:none;margin-top:16px;padding:14px 16px;background:var(--panel-2);border-left:3px solid var(--accent);border-radius:8px;font-size:14px}
-.explain.show{display:block}
-.explain .row{margin:6px 0}
-.explain .lab{color:var(--accent);font-weight:700}
-.explain .fe{color:var(--muted);font-size:13px;font-style:italic;margin-top:8px}
-
-.nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
-.nav button{flex:1;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel-2);
-  color:var(--text);cursor:pointer;font-size:14px;font-weight:600;transition:.13s}
-.nav button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
-.nav button:disabled{opacity:.4;cursor:not-allowed}
-.nav button.primary{background:var(--accent);color:#0e1117;border-color:var(--accent)}
-
-/* results */
-.results{display:none;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:32px;text-align:center}
-.results.show{display:block}
-.results h2{font-size:26px;margin:0 0 6px}
-.score-big{font-size:54px;font-weight:800;margin:10px 0;
-  background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.score-sub{color:var(--muted);font-size:15px}
-.verdict{font-size:18px;font-weight:700;margin:16px 0;padding:12px;border-radius:10px}
-.breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}
-.bd-item{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:16px 10px}
-.bd-item .t{font-size:12.5px;color:var(--muted);margin-bottom:6px}
-.bd-item .v{font-size:22px;font-weight:800}
-.restart{margin-top:18px;padding:13px 30px;border-radius:10px;border:none;
-  background:var(--accent);color:#0e1117;font-weight:700;cursor:pointer;font-size:15px}
-.restart:hover{filter:brightness(1.08)}
-
-footer{margin-top:40px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:18px}
-
-@media(max-width:600px){
-  .wrap{padding:16px 12px 40px}
-  header.hero h1{font-size:20px}
-  .jump{grid-template-columns:repeat(8,1fr)}
-  .breakdown{grid-template-columns:1fr}
-  .qtext{font-size:15px}
-}
-</style>
+<link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
 <div class="wrap">
@@ -520,5 +421,6 @@ function restartQuiz(){
 buildQuiz();
 updateProgress();
 </script>
+<script src="../assets/common.js"></script>
 </body>
 </html>

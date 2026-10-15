@@ -1,63 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>FE 模擬試験 — 基本ソフトウェア・OS・タスク管理 (40問)</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Space+Mono&family=Syne:wght@700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#0f1419;--panel:#1a2029;--panel2:#222a35;--border:#2e3845;
-  --text:#e8ecf1;--muted:#9aa6b4;--accent:#7dd3fc;--accent2:#fbbf24;
-  --ok:#22c55e;--err:#ef4444;
-  --easy:#86efac;--med:#fbbf24;--hard:#fda4af;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,"Noto Sans JP",sans-serif;line-height:1.6}
-.wrap{max-width:900px;margin:0 auto;padding:18px}
-header{background:linear-gradient(135deg,#1e3a5f,#0f1419);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px}
-header h1{font-family:'Syne',sans-serif;margin:0 0 4px;font-size:22px;color:#fff}
-header .sub{color:var(--muted);font-size:13px}
-.progbar{height:8px;background:var(--panel2);border-radius:4px;overflow:hidden;margin-top:10px}
-.progbar > div{height:100%;background:var(--accent);width:0%;transition:width .3s}
-.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0;font-size:13px;color:var(--muted)}
-.jumpgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:4px;background:var(--panel);padding:8px;border-radius:10px;margin-bottom:12px;border:1px solid var(--border)}
-.jbtn{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 0;border-radius:5px;cursor:pointer;font-size:12px}
-.jbtn.cur{background:var(--accent);color:#0f1419;font-weight:700}
-.jbtn.ok{background:#14532d;border-color:var(--ok)}
-.jbtn.ng{background:#4a1414;border-color:var(--err)}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:12px}
-.qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px}
-.qno{font-family:'Syne',sans-serif;font-size:18px;color:var(--accent)}
-.diff{font-size:12px;padding:3px 10px;border-radius:12px;font-weight:700}
-.diff.easy{background:#14532d;color:var(--easy)}
-.diff.med{background:#3a2c0a;color:var(--med)}
-.diff.hard{background:#3a1f24;color:var(--hard)}
-.qtext{font-size:15px;margin:8px 0 12px;white-space:pre-wrap}
-.qtext .jp{color:#cbd5e1;font-size:13.5px;display:block;margin-top:6px;padding-top:6px;border-top:1px dashed var(--border)}
-.opt{background:#0f1419;border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:6px 0;cursor:pointer;font-size:14.5px;display:flex;gap:10px;align-items:start}
-.opt:hover{border-color:var(--accent)}
-.opt .lab{font-weight:700;color:var(--accent2);min-width:20px}
-.opt.correct{background:#14532d;border-color:var(--ok)}
-.opt.wrong{background:#4a1414;border-color:var(--err)}
-.opt.locked{cursor:default}
-.expl{margin-top:10px;padding:12px;background:#0a0e13;border-radius:10px;font-size:13.5px;border-left:3px solid var(--accent);display:none}
-.expl.show{display:block}
-.expl h5{margin:0 0 6px;color:var(--accent);font-size:13px;font-family:'Syne',sans-serif}
-.expl ul{margin:6px 0;padding-left:18px}
-.nav{display:flex;justify-content:space-between;gap:8px;margin-top:14px}
-.nav button{flex:1;background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:10px;border-radius:8px;cursor:pointer;font-size:14px}
-.nav button:hover{border-color:var(--accent)}
-.nav button:disabled{opacity:.4;cursor:not-allowed}
-.result{text-align:center;padding:30px 20px}
-.result h2{font-family:'Syne',sans-serif;font-size:28px;color:var(--accent2);margin:0 0 14px}
-.score{font-size:60px;font-family:'Syne',sans-serif;color:var(--accent);margin:10px 0}
-.breakdown{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}
-.bd{background:var(--panel2);padding:10px;border-radius:8px}
-.bd .lbl{font-size:11px;color:var(--muted);text-transform:uppercase}
-.bd .val{font-size:20px;font-weight:700;margin-top:4px}
-.hidden{display:none}
-</style>
+<link rel="stylesheet" href="../assets/common.css">
 </head>
 <body>
 <div class="wrap">
@@ -235,5 +183,6 @@ function reviewMistakes(){
 }
 render();
 </script>
+<script src="../assets/common.js"></script>
 </body>
 </html>
