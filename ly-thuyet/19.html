@@ -1,82 +1,84 @@
-﻿<!DOCTYPE html>
-<html lang="vi">
+<!DOCTYPE html>
+<html lang="vi" data-theme="light" data-lang="dual">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FE - システム構成・稼働率 (MTBF/MTTR)</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;background:#f0f3f9;color:#344965;line-height:1.7;padding:16px}
-.container{max-width:1000px;margin:0 auto}
-header{text-align:center;padding:24px;background:linear-gradient(135deg,#1e293b,#581c87);border-radius:16px;margin-bottom:24px}
-header h1{color:#2b1386;font-size:1.6em;margin-bottom:6px}
-header .sub{color:#394556;font-size:.92em}
-section{background:#f1f4f8;border-radius:14px;padding:22px;margin-bottom:20px;box-shadow:0 6px 24px rgba(0,0,0,.3)}
-section h2{color:#2b1386;font-size:1.3em;border-bottom:2px solid #7c3aed;padding-bottom:8px;margin-bottom:14px}
-section h3{color:#fbbf24;font-size:1.1em;margin:18px 0 10px}
-section h4{color:#22d3ee;font-size:1em;margin:14px 0 6px}
-p{margin-bottom:10px}
-ul{margin:8px 0 12px 22px}
-li{margin-bottom:6px}
-.bilingual{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0}
-.bilingual > div{padding:14px;border-radius:10px;font-size:.95em}
-.jp{background:#f1f0f9;border-left:4px solid #c4b5fd;color:#271386}
-.vn{background:#f0f6f9;border-left:4px solid #38bdf8;color:#135886}
-.en{background:#f2f4f8;border-left:4px solid #fbbf24;color:#866f13;font-size:.88em;margin:8px 0;padding:10px 14px;border-radius:8px}
-.flag{font-weight:700;font-size:.85em;display:block;margin-bottom:6px;opacity:.8}
-.formula{background:#4c1d95;color:#271386;padding:16px;border-radius:10px;font-family:"Courier New",monospace;text-align:center;font-size:1.05em;margin:14px 0;border:1px solid #7c3aed}
-.example-box{background:#f0f3f9;border:1px solid #475569;border-radius:10px;padding:16px;margin:14px 0}
-.example-box .label{display:inline-block;background:#c4b5fd;color:#0f172a;padding:3px 10px;border-radius:6px;font-weight:700;font-size:.85em;margin-bottom:10px}
-.step-line{font-family:"Courier New",monospace;background:#f0f3f9;padding:10px;border-radius:8px;color:#2b1386;text-align:center;font-size:.95em;margin:8px 0;overflow-x:auto;border:1px solid #334155}
-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.93em;background:#f0f3f9;border-radius:8px;overflow:hidden}
-th,td{padding:10px;text-align:left;border-bottom:1px solid #334155;vertical-align:top}
-th{background:#7c3aed;color:#474747}
-tr:hover td{background:#f1f0f9}
-.flashcards-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-.filter-btn{background:#f2f4f7;color:#344965;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.85em}
-.filter-btn.active{background:#c4b5fd;color:#0f172a;font-weight:700}
-.flashcard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
-.flashcard{background:#f0f3f9;border:2px solid #7c3aed;border-radius:10px;padding:14px;min-height:140px;cursor:pointer;position:relative}
-.flashcard .cat{position:absolute;top:8px;right:8px;font-size:.7em;background:#7c3aed;color:#474747;padding:2px 8px;border-radius:4px}
-.flashcard .front{color:#2b1386;font-weight:600}
-.flashcard .back{display:none;color:#866f13;margin-top:8px;font-size:.88em}
-.flashcard.flipped .back{display:block}
-.flashcard.flipped{border-color:#fbbf24;background:#f1f0f9}
-.quiz-q{background:#f0f3f9;border-radius:10px;padding:16px;margin:12px 0}
-.quiz-q .qt-jp{color:#271386;margin-bottom:6px;font-size:1.02em}
-.quiz-q .qt-vn{color:#394556;margin-bottom:12px;font-size:.9em;font-style:italic}
-.quiz-opt{display:block;background:#f1f4f8;border:2px solid #334155;border-radius:6px;padding:10px 14px;margin:6px 0;cursor:pointer;color:#344965;font-size:.93em}
-.quiz-opt:hover{border-color:#c4b5fd}
-.quiz-opt.correct{background:#f0f9f7;border-color:#10b981;color:#138651}
-.quiz-opt.wrong{background:#f9f0f0;border-color:#ef4444;color:#861313}
-.quiz-opt.locked{cursor:not-allowed}
-.quiz-exp{display:none;margin-top:10px;padding:12px;background:#f0f4f9;border-left:3px solid #38bdf8;border-radius:6px;font-size:.88em;color:#384b61}
-.quiz-exp.open{display:block}
-.callout{background:#f0f4f9;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;margin:14px 0;font-size:.95em}
-.warn{background:#f9f3f0;border-left:4px solid #fb923c;padding:12px;border-radius:8px;margin:12px 0;color:#865113}
-.mindmap-wrap{background:#f0f3f9;border-radius:10px;padding:14px;overflow-x:auto;text-align:center}
-.mindmap-wrap svg{max-width:100%;height:auto}
-.ascii{background:#f0f3f9;padding:12px;border-radius:8px;font-family:"Courier New",monospace;font-size:.85em;color:#384b61;white-space:pre;overflow-x:auto;margin:10px 0;border:1px solid #334155}
-.term{color:#fbbf24;font-weight:600}
-.term-jp{color:#2b1386;font-weight:600}
-@media(max-width:700px){.bilingual{grid-template-columns:1fr}section{padding:16px}header h1{font-size:1.3em}}
-</style>
-<link rel="stylesheet" href="../assets/brilliant.css">
-<link rel="stylesheet" href="../assets/site.css">
-<script src="../assets/site.js"></script>
-<script src="../assets/brilliant.js"></script>
-<link rel="stylesheet" href="../assets/learning.css">
+<title>Bài 19: システム構成・稼働率 (MTBF/MTTR) — FE Master</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/reader.css">
 </head>
 <body>
-<div class="container">
-<header>
-  <h1>⚙️ システム構成・稼働率 (MTBF/MTTR)</h1>
-  <div class="sub">FE試験対策・Yasashii Ch.5 (全章) + Slide 5_システム構成要素 第1-3回</div>
+
+<!-- Reading Progress Bar -->
+<div class="reading-progress-track">
+  <div class="reading-progress-bar" id="readingProgress"></div>
+</div>
+
+<!-- Minimal Sticky Top Header -->
+<header class="site-header">
+  <div class="header-container">
+    <div class="header-left">
+      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
+        <span class="text-ja">← ロードマップ</span>
+        <span class="text-vi">← Lộ trình</span>
+      </a>
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
+        <span class="sep">/</span>
+        <span>Mục tiêu 3</span>
+        <span class="sep">/</span>
+        <span class="current">Bài 19</span>
+      </nav>
+    </div>
+    <div class="header-right">
+      <div class="lang-selector">
+        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
+        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
+        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
+      </div>
+      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
+        <span id="zenIcon">📖</span>
+        <span id="zenText">Zen</span>
+      </button>
+      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
+        <span id="themeIcon">◐</span>
+      </button>
+    </div>
+  </div>
 </header>
+
+<!-- Main Two-Column Reader Layout -->
+<div class="page-container">
+
+  <!-- Left Content Column -->
+  <main class="main-content">
+
+    <div class="lesson-header">
+      <div class="lesson-meta-bar">
+        <span class="badge-lesson">BÀI 19 · CƠ SỞ LÝ THUYẾT</span>
+        <span class="badge-tag">MỤC TIÊU 3</span>
+        <span class="badge-tag">TRỌNG TÂM 科目A</span>
+      </div>
+      <h1 class="lesson-title">
+        システム構成・稼働率 (MTBF/MTTR)
+      </h1>
+      <div class="lesson-stats">
+        <span>⏱ ~30-45 phút đọc</span>
+        <span>·</span>
+        <span>Active Recall & Flashcards</span>
+      </div>
+    </div>
+
+    <!-- Lesson Content Body -->
+    <div class="lesson-body">
+
+
 
 <!-- ============ PHẦN 1: LÝ THUYẾT ============ -->
 <section>
-  <h2>📘 Phần 1 — Tóm tắt lý thuyết</h2>
+  <h2 id="part-1">📘 Phần 1 — Tóm tắt lý thuyết</h2>
 
   <!-- 1.1 -->
   <h3>1.1. システムとは・処理形態による分類 (Lesson 05-01)</h3>
@@ -360,7 +362,7 @@ tr:hover td{background:#f1f0f9}
 
 <!-- ============ PHẦN 2: VÍ DỤ ============ -->
 <section>
-  <h2>🧮 Phần 2 — 例題 / Ví dụ minh hoạ</h2>
+  <h2 id="part-2">🧮 Phần 2 — 例題 / Ví dụ minh hoạ</h2>
 
   <h3>例題 2.1: MTBF・MTTR・稼働率の計算 (Slide第2回 原文)</h3>
   <div class="example-box">
@@ -442,7 +444,7 @@ tr:hover td{background:#f1f0f9}
 
 <!-- ============ PHẦN 3: FLASHCARD ============ -->
 <section>
-  <h2>🃏 Phần 3 — フラッシュカード / Flashcard</h2>
+  <h2 id="part-3">🃏 Phần 3 — フラッシュカード / Flashcard</h2>
   <p style="color:#394556;font-size:.92em;margin-bottom:12px">クリックでカードを裏返す / Click để lật. グループでフィルター可能 / Lọc theo nhóm:</p>
   <div class="flashcards-controls">
     <button class="filter-btn active" onclick="filterFlash('all',this)">全て / Tất cả</button>
@@ -456,72 +458,91 @@ tr:hover td{background:#f1f0f9}
 
 <!-- ============ PHẦN 4: QUIZ ============ -->
 <section>
-  <h2>✅ Phần 4 — 確認テスト / Câu hỏi ôn tập (10 câu)</h2>
+  <h2 id="part-4">✅ Phần 4 — 確認テスト / Câu hỏi ôn tập (10 câu)</h2>
   <div id="quizContainer"></div>
 </section>
 
-<!-- ============ PHẦN 5: MIND MAP ============ -->
-<section>
-  <h2>🗺️ Phần 5 — マインドマップ / Mind map</h2>
-  <div class="mindmap-wrap">
-    <svg viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg" style="font-family:system-ui,sans-serif">
-      <ellipse cx="500" cy="350" rx="140" ry="50" fill="#7c3aed" stroke="#c4b5fd" stroke-width="3"/>
-      <text x="500" y="345" text-anchor="middle" fill="#fff" font-size="17" font-weight="bold">システム構成</text>
-      <text x="500" y="365" text-anchor="middle" fill="#ddd6fe" font-size="13">稼働率・MTBF/MTTR</text>
 
-      <path d="M 395 320 Q 270 220 170 130" stroke="#38bdf8" stroke-width="3" fill="none"/>
-      <rect x="50" y="100" width="200" height="60" rx="14" fill="#0ea5e9"/>
-      <text x="150" y="125" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">システム構成</text>
-      <text x="150" y="145" text-anchor="middle" fill="#e0f2fe" font-size="11">第1回 + Lesson 05-01/02</text>
-      <path d="M 100 160 Q 80 200 70 240" stroke="#38bdf8" stroke-width="2" fill="none"/>
-      <rect x="10" y="240" width="120" height="36" rx="8" fill="#0369a1"/>
-      <text x="70" y="263" text-anchor="middle" fill="#fff" font-size="11">集中/分散処理</text>
-      <path d="M 200 160 Q 220 200 240 240" stroke="#38bdf8" stroke-width="2" fill="none"/>
-      <rect x="170" y="240" width="140" height="36" rx="8" fill="#0369a1"/>
-      <text x="240" y="263" text-anchor="middle" fill="#fff" font-size="11">デュアル/デュプレックス</text>
+    </div>
 
-      <path d="M 605 320 Q 730 220 830 130" stroke="#fbbf24" stroke-width="3" fill="none"/>
-      <rect x="730" y="100" width="200" height="60" rx="14" fill="#d97706"/>
-      <text x="830" y="125" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">RASIS</text>
-      <text x="830" y="145" text-anchor="middle" fill="#fef3c7" font-size="11">第2回</text>
-      <path d="M 770 160 Q 750 200 730 240" stroke="#fbbf24" stroke-width="2" fill="none"/>
-      <rect x="670" y="240" width="120" height="36" rx="8" fill="#92400e"/>
-      <text x="730" y="263" text-anchor="middle" fill="#fff" font-size="11">R = MTBF</text>
-      <path d="M 830 160 Q 830 200 830 240" stroke="#fbbf24" stroke-width="2" fill="none"/>
-      <rect x="780" y="240" width="100" height="36" rx="8" fill="#92400e"/>
-      <text x="830" y="263" text-anchor="middle" fill="#fff" font-size="11">A = 稼働率</text>
-      <path d="M 890 160 Q 910 200 930 240" stroke="#fbbf24" stroke-width="2" fill="none"/>
-      <rect x="890" y="240" width="100" height="36" rx="8" fill="#92400e"/>
-      <text x="940" y="263" text-anchor="middle" fill="#fff" font-size="11">S = MTTR</text>
+    <!-- Footer Navigation & Lesson Completion -->
+    <footer class="lesson-footer-nav">
+      <div class="completion-card">
+        <div>
+          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
+            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
+            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
+          </div>
+          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
+            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
+            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
+          </div>
+        </div>
+        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
+      </div>
 
-      <path d="M 605 380 Q 730 480 830 570" stroke="#f472b6" stroke-width="3" fill="none"/>
-      <rect x="730" y="540" width="200" height="60" rx="14" fill="#be185d"/>
-      <text x="830" y="565" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">複数システム</text>
-      <text x="830" y="585" text-anchor="middle" fill="#fce7f3" font-size="11">直列/並列</text>
-      <path d="M 770 600 Q 740 630 720 660" stroke="#f472b6" stroke-width="2" fill="none"/>
-      <rect x="650" y="650" width="140" height="36" rx="8" fill="#9d174d"/>
-      <text x="720" y="673" text-anchor="middle" fill="#fff" font-size="11">直列: A × B</text>
-      <path d="M 890 600 Q 910 630 930 660" stroke="#f472b6" stroke-width="2" fill="none"/>
-      <rect x="830" y="650" width="160" height="36" rx="8" fill="#9d174d"/>
-      <text x="910" y="673" text-anchor="middle" fill="#fff" font-size="11">並列: 1−(1−A)(1−B)</text>
+      <div class="footer-nav-buttons">
+        
+        <a href="18.html" class="nav-link-card prev">
+          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
+          <span class="nav-target">
+            <span class="text-ja">レッスン 18</span>
+            <span class="text-vi">Bài học 18</span>
+          </span>
+        </a>
+        
+        <a href="20.html" class="nav-link-card next">
+          <span class="nav-dir">BÀI TIẾP THEO / NEXT →</span>
+          <span class="nav-target">
+            <span class="text-ja">レッスン 20</span>
+            <span class="text-vi">Bài học 20</span>
+          </span>
+        </a>
+      </div>
+    </footer>
 
-      <path d="M 395 380 Q 270 480 170 570" stroke="#22c55e" stroke-width="3" fill="none"/>
-      <rect x="50" y="540" width="200" height="60" rx="14" fill="#15803d"/>
-      <text x="150" y="565" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">信頼性設計</text>
-      <text x="150" y="585" text-anchor="middle" fill="#dcfce7" font-size="11">Lesson 05-02</text>
-      <path d="M 100 600 Q 80 630 70 660" stroke="#22c55e" stroke-width="2" fill="none"/>
-      <rect x="10" y="650" width="130" height="36" rx="8" fill="#166534"/>
-      <text x="75" y="673" text-anchor="middle" fill="#fff" font-size="11">フォールトトレラント</text>
-      <path d="M 200 600 Q 230 630 260 660" stroke="#22c55e" stroke-width="2" fill="none"/>
-      <rect x="160" y="650" width="170" height="36" rx="8" fill="#166534"/>
-      <text x="245" y="673" text-anchor="middle" fill="#fff" font-size="11">セーフ/ソフト/プルーフ</text>
-    </svg>
-  </div>
-</section>
+  </main>
+
+  <!-- Right Sticky Sidebar -->
+  <aside class="sticky-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span class="text-ja">目次 (TOC)</span>
+        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
+      </div>
+      <nav>
+        <ul class="toc-list" id="tocList">
+
+          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+  
+          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+  
+          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+  
+          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
+  
+        </ul>
+      </nav>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="text-ja">クイック復習</span>
+        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
+      </div>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
+        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
+        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
+      </p>
+    </div>
+  </aside>
 
 </div>
 
 <script>
+
 const FLASH = [
   {jp:"集中処理",vn:"Xử lý tập trung",b_jp:"1台のホストコンピュータが端末からの全命令を処理する形態。",b_vn:"1 host xử lý mọi lệnh từ terminal.",cat:"Config"},
   {jp:"分散処理",vn:"Xử lý phân tán",b_jp:"ネットワークでつながれた複数コンピュータが処理を分担する。",b_vn:"Nhiều máy qua mạng cùng chia việc.",cat:"Config"},
@@ -658,6 +679,8 @@ function pickQ(qi,oi,el){
   document.getElementById('exp-'+qi).classList.add('open');
 }
 renderQuiz();
+
 </script>
+<script src="../assets/reader.js"></script>
 </body>
 </html>

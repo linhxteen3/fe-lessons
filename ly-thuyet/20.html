@@ -1,93 +1,84 @@
-﻿<!DOCTYPE html>
-<html lang="vi">
+<!DOCTYPE html>
+<html lang="vi" data-theme="light" data-lang="dual">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>FE — 基本ソフトウェア・OS・タスク管理</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Space+Mono:wght@400;700&family=Syne:wght@600;800&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#0f1419;--panel:#1a2029;--panel2:#222a35;--border:#2e3845;
-  --text:#e8ecf1;--muted:#9aa6b4;--accent:#7dd3fc;--accent2:#fbbf24;
-  --jp:#fda4af;--vn:#86efac;--en:#93c5fd;
-  --ok:#22c55e;--err:#ef4444;--warn:#f59e0b;
-  --c1:#7dd3fc;--c2:#fbbf24;--c3:#a78bfa;--c4:#86efac;--c5:#fda4af;--c6:#fb923c;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.65;padding:0}
-.wrap{max-width:1100px;margin:0 auto;padding:24px 18px 80px}
-header.top{padding:28px 22px;border-radius:16px;background:linear-gradient(135deg,#1e3a5f,#0f1419);border:1px solid var(--border);margin-bottom:22px}
-header.top h1{font-family:'Syne',sans-serif;font-size:30px;margin:0 0 6px;color:#474747}
-header.top .sub{color:var(--muted);font-size:14px}
-header.top .badges{margin-top:10px}
-.badge{display:inline-block;background:#f3f5f7;padding:4px 10px;border-radius:20px;font-size:12px;margin-right:6px;color:#384b61}
-h2.sec{font-family:'Syne',sans-serif;font-size:24px;margin:30px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--accent);color:#474747}
-h3{font-size:18px;color:var(--accent);margin:20px 0 10px;font-family:'Syne',sans-serif}
-h4{font-size:15px;color:var(--accent2);margin:14px 0 8px}
-.card{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px;margin:14px 0}
-.lang-block{padding:12px 14px;border-radius:10px;margin:8px 0;border-left:4px solid;font-size:14.5px}
-.lang-jp{background:#f8f2f3;border-color:var(--jp)}
-.lang-vn{background:#f1f8f3;border-color:var(--vn)}
-.lang-en{background:#f0f3f9;border-color:var(--en)}
-.lang-block .lbl{font-weight:700;font-size:12px;letter-spacing:.5px;display:block;margin-bottom:4px;opacity:.85}
-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px}
-th,td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top}
-th{background:var(--panel2);color:var(--accent)}
-code,.mono{font-family:'Space Mono',monospace;background:#f2f4f8;padding:2px 6px;border-radius:4px;color:#fbbf24;font-size:13px}
-.ascii{background:#f2f4f8;padding:14px;border-radius:8px;font-family:'Space Mono',monospace;font-size:13px;white-space:pre;overflow-x:auto;color:#384b61;line-height:1.5;border:1px solid var(--border)}
-.tip{background:#f9f7f0;border-left:4px solid var(--warn);padding:10px 14px;border-radius:8px;margin:10px 0;font-size:14px}
-.tip b{color:var(--warn)}
-.example{background:#f0f6f9;border-left:4px solid var(--accent);padding:12px 14px;border-radius:8px;margin:10px 0}
-.example .lbl{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.5px;margin-bottom:6px;display:block}
-.flash-controls{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 16px}
-.filter-btn{background:var(--panel2);border:1px solid var(--border);color:var(--text);padding:6px 12px;border-radius:18px;cursor:pointer;font-size:13px}
-.filter-btn.active{background:var(--accent);color:#0f1419;border-color:var(--accent)}
-.flashgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
-.flash{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;min-height:110px;transition:transform .15s}
-.flash:hover{transform:translateY(-2px);border-color:var(--accent)}
-.flash .front{font-weight:700;color:var(--accent2);font-size:15px}
-.flash .back{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);font-size:13.5px;color:#384b61}
-.flash.flipped .back{display:block}
-.flash .cat{display:inline-block;font-size:10px;background:#f3f5f7;padding:2px 6px;border-radius:8px;margin-top:6px;color:var(--muted)}
-.quiz-q{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:14px;margin:10px 0}
-.quiz-q .qtxt{font-weight:700;margin-bottom:8px}
-.opt{display:block;background:#f2f5f7;border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:6px 0;cursor:pointer;font-size:14px}
-.opt:hover{border-color:var(--accent)}
-.opt.correct{background:#f0f9f4;border-color:var(--ok);color:#13863b}
-.opt.wrong{background:#f9f0f0;border-color:var(--err);color:#861313}
-.opt.locked{cursor:default}
-.expl{margin-top:8px;padding:10px;background:#f2f4f8;border-radius:8px;font-size:13.5px;color:#384b61;display:none}
-.expl.show{display:block}
-.mindmap-wrap{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:10px;overflow-x:auto}
-svg.mindmap{display:block;margin:0 auto;width:100%;height:auto;max-width:1080px}
-.flow{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0;font-family:'Space Mono',monospace;font-size:13px}
-.flow .node{background:var(--panel2);border:1px solid var(--accent);padding:6px 10px;border-radius:6px}
-.flow .arr{color:var(--accent2);font-weight:700}
-.warn-box{background:#f8f2f3;border:2px solid var(--err);border-radius:10px;padding:12px 16px;margin:10px 0;color:#861313}
-ul{padding-left:22px}
-li{margin:4px 0}
-</style>
-<link rel="stylesheet" href="../assets/brilliant.css">
-<link rel="stylesheet" href="../assets/site.css">
-<script src="../assets/site.js"></script>
-<script src="../assets/brilliant.js"></script>
-<link rel="stylesheet" href="../assets/learning.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 20: FE — FE Master</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/reader.css">
 </head>
 <body>
-<div class="wrap">
 
-<header class="top">
-  <h1>基本ソフトウェア・OS・タスク管理</h1>
-  <div class="sub">Phần mềm cơ bản — Hệ điều hành — Quản lý Job &amp; Task</div>
-  <div class="badges">
-    <span class="badge">Yasashii Ch.6 — Lesson 06-01</span>
-    <span class="badge">Slide 4_ソフトウェア 第1回・第2回</span>
-    <span class="badge">FE Syllabus — テクノロジ系 / コンピュータシステム</span>
+<!-- Reading Progress Bar -->
+<div class="reading-progress-track">
+  <div class="reading-progress-bar" id="readingProgress"></div>
+</div>
+
+<!-- Minimal Sticky Top Header -->
+<header class="site-header">
+  <div class="header-container">
+    <div class="header-left">
+      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
+        <span class="text-ja">← ロードマップ</span>
+        <span class="text-vi">← Lộ trình</span>
+      </a>
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
+        <span class="sep">/</span>
+        <span>Mục tiêu 3</span>
+        <span class="sep">/</span>
+        <span class="current">Bài 20</span>
+      </nav>
+    </div>
+    <div class="header-right">
+      <div class="lang-selector">
+        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
+        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
+        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
+      </div>
+      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
+        <span id="zenIcon">📖</span>
+        <span id="zenText">Zen</span>
+      </button>
+      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
+        <span id="themeIcon">◐</span>
+      </button>
+    </div>
   </div>
 </header>
 
+<!-- Main Two-Column Reader Layout -->
+<div class="page-container">
+
+  <!-- Left Content Column -->
+  <main class="main-content">
+
+    <div class="lesson-header">
+      <div class="lesson-meta-bar">
+        <span class="badge-lesson">BÀI 20 · CƠ SỞ LÝ THUYẾT</span>
+        <span class="badge-tag">MỤC TIÊU 3</span>
+        <span class="badge-tag">TRỌNG TÂM 科目A</span>
+      </div>
+      <h1 class="lesson-title">
+        FE
+      </h1>
+      <div class="lesson-stats">
+        <span>⏱ ~30-45 phút đọc</span>
+        <span>·</span>
+        <span>Active Recall & Flashcards</span>
+      </div>
+    </div>
+
+    <!-- Lesson Content Body -->
+    <div class="lesson-body">
+
+
+
+
 <!-- ===================== PHẦN 1 — LÝ THUYẾT ===================== -->
-<h2 class="sec">① Tóm tắt lý thuyết</h2>
+<h2 id="part-1" class="sec">① Tóm tắt lý thuyết</h2>
 
 <div class="card">
 <h3>1.1 Cấu trúc phần mềm — ソフトウェアの構成</h3>
@@ -280,7 +271,7 @@ Trong khi CPU rảnh (chờ I/O), gán task khác cho CPU → trông như đang 
 </div>
 
 <!-- ===================== PHẦN 2 — VÍ DỤ ===================== -->
-<h2 class="sec">② Ví dụ minh hoạ</h2>
+<h2 id="part-2" class="sec">② Ví dụ minh hoạ</h2>
 
 <div class="card">
 <h3>Ví dụ 1: Spooling — In tài liệu</h3>
@@ -337,7 +328,7 @@ Task X (low priority) đang chạy. Task Y (high priority) đột nhiên xuất 
 </div>
 
 <!-- ===================== PHẦN 3 — FLASHCARD ===================== -->
-<h2 class="sec">③ Flashcard — Click để lật</h2>
+<h2 id="part-3" class="sec">③ Flashcard — Click để lật</h2>
 
 <div class="flash-controls">
   <button class="filter-btn active" data-cat="all">Tất cả</button>
@@ -373,114 +364,90 @@ Task X (low priority) đang chạy. Task Y (high priority) đột nhiên xuất 
 </div>
 
 <!-- ===================== PHẦN 4 — QUIZ ===================== -->
-<h2 class="sec">④ Câu hỏi ôn tập (10 câu, tự chấm)</h2>
+<h2 id="part-4" class="sec">④ Câu hỏi ôn tập (10 câu, tự chấm)</h2>
 <div id="quizbox"></div>
 
-<!-- ===================== PHẦN 5 — MIND MAP ===================== -->
-<h2 class="sec">⑤ Mind Map</h2>
-<div class="mindmap-wrap">
-<svg class="mindmap" viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <style>
-      .mtext{font-family:'Noto Sans JP',sans-serif;font-size:13px;fill:#0f1419;font-weight:700}
-      .mctext{font-family:'Noto Sans JP',sans-serif;font-size:15px;fill:#fff;font-weight:800}
-      .mstext{font-family:'Noto Sans JP',sans-serif;font-size:11.5px;fill:#0f1419}
-      .lk{fill:none;stroke-width:2}
-    </style>
-  </defs>
 
-  <!-- Center -->
-  <ellipse cx="550" cy="360" rx="120" ry="55" fill="#7dd3fc" stroke="#0ea5e9" stroke-width="3"/>
-  <text x="550" y="357" text-anchor="middle" class="mctext">OS</text>
-  <text x="550" y="378" text-anchor="middle" class="mctext" style="font-size:12px">基本ソフトウェア</text>
+    </div>
 
-  <!-- Branch 1: Job (top-left) -->
-  <path class="lk" d="M 460 320 C 380 270, 280 240, 200 200" stroke="#fbbf24"/>
-  <rect x="80" y="170" width="160" height="40" rx="8" fill="#fbbf24"/>
-  <text x="160" y="195" text-anchor="middle" class="mtext">ジョブ管理 Job</text>
-  <!-- sub -->
-  <path class="lk" d="M 160 210 C 160 240, 60 245, 60 270" stroke="#fbbf24"/>
-  <rect x="10" y="270" width="100" height="30" rx="6" fill="#fde68a"/>
-  <text x="60" y="290" text-anchor="middle" class="mstext">スプーリング</text>
-  <path class="lk" d="M 160 210 C 160 250, 180 270, 180 300" stroke="#fbbf24"/>
-  <rect x="125" y="305" width="110" height="30" rx="6" fill="#fde68a"/>
-  <text x="180" y="325" text-anchor="middle" class="mstext">バッファ</text>
-  <path class="lk" d="M 160 210 C 160 230, 280 250, 280 270" stroke="#fbbf24"/>
-  <rect x="245" y="270" width="110" height="30" rx="6" fill="#fde68a"/>
-  <text x="300" y="290" text-anchor="middle" class="mstext">スループット</text>
+    <!-- Footer Navigation & Lesson Completion -->
+    <footer class="lesson-footer-nav">
+      <div class="completion-card">
+        <div>
+          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
+            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
+            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
+          </div>
+          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
+            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
+            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
+          </div>
+        </div>
+        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
+      </div>
 
-  <!-- Branch 2: Task (left) -->
-  <path class="lk" d="M 430 370 C 350 380, 250 390, 180 400" stroke="#a78bfa"/>
-  <rect x="20" y="385" width="160" height="40" rx="8" fill="#a78bfa"/>
-  <text x="100" y="410" text-anchor="middle" class="mtext">タスク管理 Task</text>
-  <path class="lk" d="M 100 425 C 100 445, 50 460, 50 475" stroke="#a78bfa"/>
-  <rect x="0" y="478" width="115" height="28" rx="6" fill="#c4b5fd"/>
-  <text x="58" y="496" text-anchor="middle" class="mstext">3状態</text>
-  <path class="lk" d="M 100 425 C 100 450, 140 465, 140 480" stroke="#a78bfa"/>
-  <rect x="80" y="483" width="120" height="28" rx="6" fill="#c4b5fd"/>
-  <text x="140" y="501" text-anchor="middle" class="mstext">ディスパッチ</text>
-  <path class="lk" d="M 100 425 C 100 460, 220 480, 220 500" stroke="#a78bfa"/>
-  <rect x="165" y="505" width="120" height="28" rx="6" fill="#c4b5fd"/>
-  <text x="225" y="523" text-anchor="middle" class="mstext">マルチタスク</text>
+      <div class="footer-nav-buttons">
+        
+        <a href="19.html" class="nav-link-card prev">
+          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
+          <span class="nav-target">
+            <span class="text-ja">レッスン 19</span>
+            <span class="text-vi">Bài học 19</span>
+          </span>
+        </a>
+        
+        <a href="21.html" class="nav-link-card next">
+          <span class="nav-dir">BÀI TIẾP THEO / NEXT →</span>
+          <span class="nav-target">
+            <span class="text-ja">レッスン 21</span>
+            <span class="text-vi">Bài học 21</span>
+          </span>
+        </a>
+      </div>
+    </footer>
 
-  <!-- Branch 3: Scheduling (bottom-left) -->
-  <path class="lk" d="M 480 400 C 420 470, 350 540, 280 580" stroke="#86efac"/>
-  <rect x="160" y="580" width="200" height="40" rx="8" fill="#86efac"/>
-  <text x="260" y="605" text-anchor="middle" class="mtext">スケジューリング</text>
-  <path class="lk" d="M 260 620 C 260 640, 80 655, 80 670" stroke="#86efac"/>
-  <rect x="20" y="670" width="110" height="28" rx="6" fill="#bbf7d0"/>
-  <text x="75" y="688" text-anchor="middle" class="mstext">到着順</text>
-  <path class="lk" d="M 260 620 C 260 640, 175 660, 175 670" stroke="#86efac"/>
-  <rect x="138" y="670" width="105" height="28" rx="6" fill="#bbf7d0"/>
-  <text x="190" y="688" text-anchor="middle" class="mstext">処理時間順</text>
-  <path class="lk" d="M 260 620 C 260 645, 290 665, 290 675" stroke="#86efac"/>
-  <rect x="252" y="670" width="110" height="28" rx="6" fill="#bbf7d0"/>
-  <text x="307" y="688" text-anchor="middle" class="mstext">優先度順</text>
-  <path class="lk" d="M 260 620 C 260 640, 410 660, 410 675" stroke="#86efac"/>
-  <rect x="370" y="670" width="140" height="28" rx="6" fill="#bbf7d0"/>
-  <text x="440" y="688" text-anchor="middle" class="mstext">ラウンドロビン</text>
+  </main>
 
-  <!-- Branch 4: Preemptive (bottom-right) -->
-  <path class="lk" d="M 620 400 C 680 470, 760 540, 820 580" stroke="#fb923c"/>
-  <rect x="740" y="580" width="200" height="40" rx="8" fill="#fb923c"/>
-  <text x="840" y="605" text-anchor="middle" class="mtext">CPU割当方式</text>
-  <path class="lk" d="M 840 620 C 840 640, 770 660, 770 675" stroke="#fb923c"/>
-  <rect x="700" y="670" width="150" height="28" rx="6" fill="#fed7aa"/>
-  <text x="775" y="688" text-anchor="middle" class="mstext">プリエンプティブ</text>
-  <path class="lk" d="M 840 620 C 840 640, 940 660, 940 675" stroke="#fb923c"/>
-  <rect x="865" y="670" width="180" height="28" rx="6" fill="#fed7aa"/>
-  <text x="955" y="688" text-anchor="middle" class="mstext">ノンプリエンプティブ</text>
+  <!-- Right Sticky Sidebar -->
+  <aside class="sticky-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span class="text-ja">目次 (TOC)</span>
+        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
+      </div>
+      <nav>
+        <ul class="toc-list" id="tocList">
 
-  <!-- Branch 5: 割込み (right) -->
-  <path class="lk" d="M 670 370 C 760 380, 870 390, 940 400" stroke="#fda4af"/>
-  <rect x="920" y="385" width="160" height="40" rx="8" fill="#fda4af"/>
-  <text x="1000" y="410" text-anchor="middle" class="mtext">割込み Interrupt</text>
-  <path class="lk" d="M 1000 425 C 1000 450, 950 465, 950 480" stroke="#fda4af"/>
-  <rect x="895" y="483" width="115" height="28" rx="6" fill="#fecdd3"/>
-  <text x="952" y="501" text-anchor="middle" class="mstext">内部割込み</text>
-  <path class="lk" d="M 1000 425 C 1000 450, 1050 465, 1050 480" stroke="#fda4af"/>
-  <rect x="990" y="483" width="115" height="28" rx="6" fill="#fecdd3"/>
-  <text x="1047" y="501" text-anchor="middle" class="mstext">外部割込み</text>
+          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+  
+          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+  
+          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+  
+          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
+  
+        </ul>
+      </nav>
+    </div>
 
-  <!-- Branch 6: software (top-right) -->
-  <path class="lk" d="M 640 320 C 720 270, 820 240, 900 200" stroke="#93c5fd"/>
-  <rect x="820" y="170" width="200" height="40" rx="8" fill="#93c5fd"/>
-  <text x="920" y="195" text-anchor="middle" class="mtext">ソフトウェア構成</text>
-  <path class="lk" d="M 920 210 C 920 240, 820 250, 820 270" stroke="#93c5fd"/>
-  <rect x="765" y="270" width="120" height="30" rx="6" fill="#bfdbfe"/>
-  <text x="825" y="290" text-anchor="middle" class="mstext">基本ソフトウェア</text>
-  <path class="lk" d="M 920 210 C 920 240, 920 260, 920 280" stroke="#93c5fd"/>
-  <rect x="870" y="280" width="105" height="30" rx="6" fill="#bfdbfe"/>
-  <text x="922" y="300" text-anchor="middle" class="mstext">ミドルウェア</text>
-  <path class="lk" d="M 920 210 C 920 230, 1020 260, 1020 290" stroke="#93c5fd"/>
-  <rect x="965" y="290" width="120" height="30" rx="6" fill="#bfdbfe"/>
-  <text x="1025" y="310" text-anchor="middle" class="mstext">応用ソフトウェア</text>
-</svg>
-</div>
+    <div class="sidebar-card">
+      <div class="sidebar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="text-ja">クイック復習</span>
+        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
+      </div>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
+        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
+        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
+      </p>
+    </div>
+  </aside>
 
 </div>
 
 <script>
+
 // Flashcard flip
 document.querySelectorAll('.flash').forEach(c=>{
   c.addEventListener('click',()=>c.classList.toggle('flipped'));
@@ -529,6 +496,8 @@ document.querySelectorAll('.opt').forEach(o=>{
     document.getElementById('e'+i).classList.add('show');
   });
 });
+
 </script>
+<script src="../assets/reader.js"></script>
 </body>
 </html>

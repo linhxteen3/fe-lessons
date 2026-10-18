@@ -1,211 +1,84 @@
-﻿<!DOCTYPE html>
-<html lang="vi">
+<!DOCTYPE html>
+<html lang="vi" data-theme="light" data-lang="dual">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>5大装置・CPU基本 — Tài liệu lý thuyết FE</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Space+Mono:wght@400;700&family=Syne:wght@600;800&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#0e1117;
-  --panel:#161b22;
-  --panel-2:#1c2330;
-  --line:#2a3142;
-  --text:#e6edf3;
-  --muted:#8b949e;
-  --accent:#ff8c42;
-  --accent-2:#f0b76b;
-  --jp:#9ec5fe;
-  --vn:#a7e3a7;
-  --en:#f1b0e1;
-  --good:#3fb950;
-  --bad:#f85149;
-  --warn:#d29922;
-  --code:#f0b76b;
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:'Noto Sans JP','Space Mono',system-ui,-apple-system,sans-serif;line-height:1.7;font-size:15.5px}
-.wrap{max-width:1080px;margin:0 auto;padding:32px 22px 60px}
-header.hero{
-  background:linear-gradient(135deg,#1c2330 0%,#161b22 100%);
-  border:1px solid var(--line);
-  border-radius:18px;
-  padding:34px 28px;
-  margin-bottom:30px;
-}
-header.hero h1{
-  font-family:'Syne',sans-serif;
-  font-weight:800;
-  font-size:30px;
-  margin:0 0 10px;
-  letter-spacing:.5px;
-  background:linear-gradient(90deg,var(--accent),var(--accent-2));
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-}
-header.hero .subtitle{color:var(--muted);font-size:14px;margin:0}
-header.hero .meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-header.hero .meta span{
-  background:var(--panel-2);border:1px solid var(--line);
-  padding:5px 12px;border-radius:999px;font-size:12.5px;color:var(--muted);
-  font-family:'Space Mono',monospace;
-}
-
-h2.section{
-  font-family:'Syne',sans-serif;font-weight:800;font-size:22px;
-  margin:38px 0 18px;padding:10px 0 10px 16px;
-  border-left:5px solid var(--accent);
-  background:linear-gradient(90deg,rgba(255,140,66,.08),transparent);
-}
-h3.sub{
-  font-family:'Syne',sans-serif;font-weight:600;font-size:18px;
-  margin:26px 0 12px;color:var(--accent-2);
-}
-h4.sub2{font-size:16px;margin:18px 0 8px;color:var(--text)}
-
-.card{
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:18px 20px;
-  margin:14px 0;
-}
-.card.warn{border-color:rgba(210,153,34,.4);background:rgba(210,153,34,.05)}
-.card.tip{border-color:rgba(63,185,80,.35);background:rgba(63,185,80,.05)}
-
-.tri{display:grid;grid-template-columns:1fr;gap:10px;margin:12px 0}
-.tri .lang{
-  background:var(--panel-2);border:1px solid var(--line);
-  border-radius:10px;padding:12px 14px;
-}
-.tri .lang.jp{border-left:3px solid var(--jp)}
-.tri .lang.vn{border-left:3px solid var(--vn)}
-.tri .lang.en{border-left:3px solid var(--en)}
-.tri .lang .flag{font-size:12px;font-weight:700;letter-spacing:.5px;display:inline-block;margin-bottom:6px;font-family:'Space Mono',monospace}
-.tri .lang.jp .flag{color:var(--jp)}
-.tri .lang.vn .flag{color:var(--vn)}
-.tri .lang.en .flag{color:var(--en)}
-
-.kw{color:var(--accent);font-weight:700}
-.term{font-family:'Space Mono',monospace;background:rgba(255,140,66,.12);padding:2px 6px;border-radius:4px;color:var(--accent-2);font-size:.92em}
-.formula{
-  background:var(--panel-2);border:1px solid var(--line);border-radius:8px;
-  padding:14px 16px;text-align:center;font-family:'Space Mono',monospace;
-  margin:12px 0;font-size:15px;
-}
-.formula .num{display:inline-block;border-bottom:2px solid var(--accent);padding-bottom:4px;margin-bottom:4px}
-
-table{width:100%;border-collapse:collapse;margin:12px 0;background:var(--panel-2);border-radius:10px;overflow:hidden;border:1px solid var(--line)}
-table th,table td{padding:10px 12px;border:1px solid var(--line);text-align:left;font-size:14px;vertical-align:top}
-table th{background:rgba(255,140,66,.10);color:var(--accent-2);font-weight:700;font-family:'Syne',sans-serif}
-table td code{font-family:'Space Mono',monospace;color:var(--code);font-size:13px}
-
-.ascii{
-  background:#f2f4f8;border:1px solid var(--line);border-radius:10px;
-  padding:14px;font-family:'Space Mono',monospace;font-size:12.5px;
-  white-space:pre;overflow-x:auto;line-height:1.5;color:var(--accent-2);
-}
-ul.clean{padding-left:22px;margin:8px 0}
-ul.clean li{margin:5px 0}
-.steps{counter-reset:s;list-style:none;padding:0;margin:14px 0}
-.steps li{
-  counter-increment:s;position:relative;
-  background:var(--panel-2);border:1px solid var(--line);border-radius:10px;
-  padding:14px 16px 14px 60px;margin:10px 0;
-}
-.steps li::before{
-  content:counter(s);position:absolute;left:14px;top:14px;
-  width:32px;height:32px;border-radius:50%;
-  background:var(--accent);color:#0e1117;font-weight:800;
-  display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;
-}
-
-/* Flashcards */
-.fc-controls{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
-.fc-btn{
-  background:var(--panel-2);border:1px solid var(--line);color:var(--muted);
-  padding:7px 14px;border-radius:999px;cursor:pointer;font-size:13px;
-  font-family:'Space Mono',monospace;transition:.15s;
-}
-.fc-btn:hover{color:var(--text);border-color:var(--accent)}
-.fc-btn.active{background:var(--accent);color:#0e1117;border-color:var(--accent);font-weight:700}
-.fc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-top:14px}
-.flashcard{
-  background:var(--panel-2);border:1px solid var(--line);border-radius:12px;
-  padding:18px;min-height:140px;cursor:pointer;position:relative;
-  transition:.18s;display:flex;flex-direction:column;justify-content:center;
-}
-.flashcard:hover{border-color:var(--accent);transform:translateY(-2px)}
-.flashcard .cat{
-  position:absolute;top:10px;right:12px;font-size:10.5px;
-  color:var(--muted);font-family:'Space Mono',monospace;
-}
-.flashcard .front,.flashcard .back{display:none}
-.flashcard.show-front .front,.flashcard.show-back .back{display:block}
-.flashcard .front .q{font-family:'Syne',sans-serif;font-size:17px;font-weight:600;color:var(--accent-2)}
-.flashcard .front .hint{margin-top:8px;font-size:11.5px;color:var(--muted);font-family:'Space Mono',monospace}
-.flashcard .back .a{font-size:14px;line-height:1.6}
-.flashcard .back .jp-mini{color:var(--jp);font-size:12.5px;display:block;margin-top:6px}
-
-/* Practice */
-.qbox{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
-.qbox .q-title{font-weight:700;color:var(--accent-2);font-family:'Syne',sans-serif;margin-bottom:8px}
-.qbox .opts{list-style:none;padding:0;margin:10px 0}
-.qbox .opts li{
-  padding:9px 14px;margin:6px 0;border:1px solid var(--line);border-radius:8px;
-  cursor:pointer;background:var(--panel-2);font-size:14px;transition:.15s;
-}
-.qbox .opts li:hover{border-color:var(--accent)}
-.qbox .opts li.correct{background:rgba(63,185,80,.18);border-color:var(--good);color:#158421}
-.qbox .opts li.wrong{background:rgba(248,81,73,.15);border-color:var(--bad);color:#861b13}
-.qbox .opts li.locked{cursor:not-allowed;opacity:.85}
-.qbox .explain{
-  display:none;margin-top:10px;padding:10px 12px;background:var(--panel-2);
-  border-left:3px solid var(--accent);border-radius:6px;font-size:13.5px;color:var(--muted)
-}
-.qbox.answered .explain{display:block}
-.qbox .explain b{color:var(--accent-2)}
-
-/* Mindmap */
-.mind-wrap{background:#f2f4f8;border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:14px;overflow-x:auto}
-.mind-wrap svg{display:block;width:100%;height:auto;min-width:780px}
-
-footer{
-  margin-top:50px;padding:20px;text-align:center;
-  color:var(--muted);font-size:12px;font-family:'Space Mono',monospace;
-  border-top:1px solid var(--line);
-}
-
-@media (max-width:680px){
-  .wrap{padding:18px 14px 40px}
-  header.hero h1{font-size:24px}
-  h2.section{font-size:19px}
-  .tri{grid-template-columns:1fr}
-  .formula{font-size:13px}
-}
-</style>
-<link rel="stylesheet" href="../assets/brilliant.css">
-<link rel="stylesheet" href="../assets/site.css">
-<script src="../assets/site.js"></script>
-<script src="../assets/brilliant.js"></script>
-<link rel="stylesheet" href="../assets/learning.css">
+<title>Bài 15: 5大装置・CPU基本 — FE Master</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/reader.css">
 </head>
 <body>
-<div class="wrap">
 
-<header class="hero">
-  <h1>第4章 — 五大装置・CPU基本</h1>
-  <p class="subtitle">Năm thiết bị chính &amp; Cơ bản về CPU · Five Core Devices &amp; CPU Fundamentals</p>
-  <div class="meta">
-    <span>📘 Yasashii Ch.4 Lesson 04-01 + 04-02</span>
-    <span>🎴 Slide 3_ハードウェア 第1-2回</span>
-    <span>🎯 FE試験 — テクノロジ系</span>
+<!-- Reading Progress Bar -->
+<div class="reading-progress-track">
+  <div class="reading-progress-bar" id="readingProgress"></div>
+</div>
+
+<!-- Minimal Sticky Top Header -->
+<header class="site-header">
+  <div class="header-container">
+    <div class="header-left">
+      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
+        <span class="text-ja">← ロードマップ</span>
+        <span class="text-vi">← Lộ trình</span>
+      </a>
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
+        <span class="sep">/</span>
+        <span>Mục tiêu 3</span>
+        <span class="sep">/</span>
+        <span class="current">Bài 15</span>
+      </nav>
+    </div>
+    <div class="header-right">
+      <div class="lang-selector">
+        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
+        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
+        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
+      </div>
+      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
+        <span id="zenIcon">📖</span>
+        <span id="zenText">Zen</span>
+      </button>
+      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
+        <span id="themeIcon">◐</span>
+      </button>
+    </div>
   </div>
 </header>
 
+<!-- Main Two-Column Reader Layout -->
+<div class="page-container">
+
+  <!-- Left Content Column -->
+  <main class="main-content">
+
+    <div class="lesson-header">
+      <div class="lesson-meta-bar">
+        <span class="badge-lesson">BÀI 15 · CƠ SỞ LÝ THUYẾT</span>
+        <span class="badge-tag">MỤC TIÊU 3</span>
+        <span class="badge-tag">TRỌNG TÂM 科目A</span>
+      </div>
+      <h1 class="lesson-title">
+        5大装置・CPU基本
+      </h1>
+      <div class="lesson-stats">
+        <span>⏱ ~30-45 phút đọc</span>
+        <span>·</span>
+        <span>Active Recall & Flashcards</span>
+      </div>
+    </div>
+
+    <!-- Lesson Content Body -->
+    <div class="lesson-body">
+
+
+
+
 <!-- ===================== PART 1: THEORY ===================== -->
-<h2 class="section">📖 Phần 1 — Tóm tắt lý thuyết</h2>
+<h2 id="part-1" class="section">📖 Phần 1 — Tóm tắt lý thuyết</h2>
 
 <!-- 1.1 五大装置 -->
 <h3 class="sub">1.1 Năm thiết bị chính của máy tính (五大装置)</h3>
@@ -558,7 +431,7 @@ MIPS = (1 giây ÷ Thời gian thực thi trung bình mỗi lệnh) × 10⁻⁶
 </div>
 
 <!-- ===================== PART 2: EXAMPLES ===================== -->
-<h2 class="section">💡 Phần 2 — Ví dụ minh họa</h2>
+<h2 id="part-2" class="section">💡 Phần 2 — Ví dụ minh họa</h2>
 
 <div class="card">
 <h4 class="sub2">Ví dụ 1 — Phân biệt 5大装置</h4>
@@ -625,7 +498,7 @@ MIPS = (1 giây ÷ Thời gian thực thi trung bình mỗi lệnh) × 10⁻⁶
 </div>
 
 <!-- ===================== PART 3: FLASHCARDS ===================== -->
-<h2 class="section">🎴 Phần 3 — Flashcard (Click để lật)</h2>
+<h2 id="part-3" class="section">🎴 Phần 3 — Flashcard (Click để lật)</h2>
 
 <div class="fc-controls">
   <button class="fc-btn active" data-cat="all">Tất cả</button>
@@ -773,7 +646,7 @@ MIPS = (1 giây ÷ Thời gian thực thi trung bình mỗi lệnh) × 10⁻⁶
 </div>
 
 <!-- ===================== PART 4: QUIZ ===================== -->
-<h2 class="section">📝 Phần 4 — Câu hỏi ôn tập (8 câu)</h2>
+<h2 id="part-4" class="section">📝 Phần 4 — Câu hỏi ôn tập (8 câu)</h2>
 
 <div class="qbox" data-correct="2">
   <div class="q-title">Câu 1. CPUは「五大装置」のうち、どの装置を担当しているか？</div>
@@ -864,139 +737,93 @@ MIPS = (1 giây ÷ Thời gian thực thi trung bình mỗi lệnh) × 10⁻⁶
   <div class="explain"><b>Đáp án: ③</b><br>MIPS = Million Instructions Per Second. 2 MIPS = 2 triệu lệnh / giây. Từ đây tính được 平均命令実行時間 = 0.5 μs = 500 ns.</div>
 </div>
 
-<!-- ===================== PART 5: MINDMAP ===================== -->
-<h2 class="section">🗺️ Phần 5 — Mind map tổng quan</h2>
 
-<div class="mind-wrap">
-<svg viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg" font-family="'Syne', system-ui" font-size="13">
-  <!-- background subtle grid -->
-  <defs>
-    <linearGradient id="gCenter" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ff8c42"/><stop offset="100%" stop-color="#f0b76b"/>
-    </linearGradient>
-  </defs>
 
-  <!-- center -->
-  <ellipse cx="550" cy="360" rx="115" ry="55" fill="url(#gCenter)" stroke="#ff8c42" stroke-width="2"/>
-  <text x="550" y="355" text-anchor="middle" fill="#0e1117" font-weight="800" font-size="17">5大装置</text>
-  <text x="550" y="375" text-anchor="middle" fill="#0e1117" font-weight="700" font-size="14">CPU基本</text>
-
-  <!-- Branch 1: 五大装置 (top-left, blue) -->
-  <path d="M 460 330 Q 340 220 230 170" fill="none" stroke="#9ec5fe" stroke-width="2.5"/>
-  <rect x="120" y="135" width="220" height="42" rx="10" fill="#1c2330" stroke="#9ec5fe" stroke-width="2"/>
-  <text x="230" y="161" text-anchor="middle" fill="#9ec5fe" font-weight="700" font-size="14">五大装置</text>
-
-  <!-- Branch 1 leaves -->
-  <path d="M 220 177 Q 120 220 80 250" fill="none" stroke="#9ec5fe" stroke-width="1.8"/>
-  <rect x="20" y="240" width="130" height="32" rx="8" fill="#1c2330" stroke="#9ec5fe" stroke-width="1.4"/>
-  <text x="85" y="261" text-anchor="middle" fill="#9ec5fe" font-size="12">制御装置</text>
-
-  <path d="M 230 177 Q 165 235 145 290" fill="none" stroke="#9ec5fe" stroke-width="1.8"/>
-  <rect x="80" y="280" width="130" height="32" rx="8" fill="#1c2330" stroke="#9ec5fe" stroke-width="1.4"/>
-  <text x="145" y="301" text-anchor="middle" fill="#9ec5fe" font-size="12">演算装置</text>
-
-  <path d="M 240 177 Q 210 250 220 320" fill="none" stroke="#9ec5fe" stroke-width="1.8"/>
-  <rect x="155" y="312" width="130" height="32" rx="8" fill="#1c2330" stroke="#9ec5fe" stroke-width="1.4"/>
-  <text x="220" y="333" text-anchor="middle" fill="#9ec5fe" font-size="12">記憶装置</text>
-
-  <path d="M 280 177 Q 280 100 215 80" fill="none" stroke="#9ec5fe" stroke-width="1.8"/>
-  <rect x="150" y="68" width="130" height="32" rx="8" fill="#1c2330" stroke="#9ec5fe" stroke-width="1.4"/>
-  <text x="215" y="89" text-anchor="middle" fill="#9ec5fe" font-size="12">入力装置</text>
-
-  <path d="M 320 145 Q 340 90 350 70" fill="none" stroke="#9ec5fe" stroke-width="1.8"/>
-  <rect x="290" y="55" width="130" height="32" rx="8" fill="#1c2330" stroke="#9ec5fe" stroke-width="1.4"/>
-  <text x="355" y="76" text-anchor="middle" fill="#9ec5fe" font-size="12">出力装置</text>
-
-  <!-- Branch 2: ノイマン型 (top-right, pink) -->
-  <path d="M 640 330 Q 760 220 880 170" fill="none" stroke="#f1b0e1" stroke-width="2.5"/>
-  <rect x="775" y="135" width="220" height="42" rx="10" fill="#1c2330" stroke="#f1b0e1" stroke-width="2"/>
-  <text x="885" y="161" text-anchor="middle" fill="#f1b0e1" font-weight="700" font-size="14">ノイマン型</text>
-
-  <path d="M 870 177 Q 870 220 890 245" fill="none" stroke="#f1b0e1" stroke-width="1.8"/>
-  <rect x="800" y="238" width="190" height="32" rx="8" fill="#1c2330" stroke="#f1b0e1" stroke-width="1.4"/>
-  <text x="895" y="259" text-anchor="middle" fill="#f1b0e1" font-size="12">プログラム内蔵方式</text>
-
-  <path d="M 900 177 Q 940 230 950 270" fill="none" stroke="#f1b0e1" stroke-width="1.8"/>
-  <rect x="855" y="278" width="190" height="32" rx="8" fill="#1c2330" stroke="#f1b0e1" stroke-width="1.4"/>
-  <text x="950" y="299" text-anchor="middle" fill="#f1b0e1" font-size="12">逐次制御方式</text>
-
-  <!-- Branch 3: レジスタ (left, green) -->
-  <path d="M 440 380 Q 280 460 180 500" fill="none" stroke="#a7e3a7" stroke-width="2.5"/>
-  <rect x="80" y="475" width="200" height="42" rx="10" fill="#1c2330" stroke="#a7e3a7" stroke-width="2"/>
-  <text x="180" y="501" text-anchor="middle" fill="#a7e3a7" font-weight="700" font-size="14">レジスタ</text>
-
-  <path d="M 90 510 Q 35 540 30 580" fill="none" stroke="#a7e3a7" stroke-width="1.8"/>
-  <rect x="0" y="572" width="180" height="32" rx="8" fill="#1c2330" stroke="#a7e3a7" stroke-width="1.4"/>
-  <text x="90" y="593" text-anchor="middle" fill="#a7e3a7" font-size="12">プログラムカウンタ</text>
-
-  <path d="M 160 517 Q 130 580 150 620" fill="none" stroke="#a7e3a7" stroke-width="1.8"/>
-  <rect x="65" y="615" width="180" height="32" rx="8" fill="#1c2330" stroke="#a7e3a7" stroke-width="1.4"/>
-  <text x="155" y="636" text-anchor="middle" fill="#a7e3a7" font-size="12">命令レジスタ</text>
-
-  <path d="M 230 517 Q 270 580 270 620" fill="none" stroke="#a7e3a7" stroke-width="1.8"/>
-  <rect x="180" y="612" width="180" height="32" rx="8" fill="#1c2330" stroke="#a7e3a7" stroke-width="1.4"/>
-  <text x="270" y="633" text-anchor="middle" fill="#a7e3a7" font-size="12">汎用レジスタ</text>
-
-  <path d="M 280 510 Q 340 540 360 570" fill="none" stroke="#a7e3a7" stroke-width="1.8"/>
-  <rect x="290" y="563" width="180" height="32" rx="8" fill="#1c2330" stroke="#a7e3a7" stroke-width="1.4"/>
-  <text x="380" y="584" text-anchor="middle" fill="#a7e3a7" font-size="12">アキュムレーター</text>
-
-  <!-- Branch 4: 性能指標 (bottom, orange) -->
-  <path d="M 550 415 Q 550 510 550 555" fill="none" stroke="#ff8c42" stroke-width="2.5"/>
-  <rect x="450" y="550" width="200" height="42" rx="10" fill="#1c2330" stroke="#ff8c42" stroke-width="2"/>
-  <text x="550" y="576" text-anchor="middle" fill="#ff8c42" font-weight="700" font-size="14">性能指標</text>
-
-  <path d="M 465 590 Q 440 630 425 670" fill="none" stroke="#ff8c42" stroke-width="1.8"/>
-  <rect x="350" y="660" width="150" height="32" rx="8" fill="#1c2330" stroke="#ff8c42" stroke-width="1.4"/>
-  <text x="425" y="681" text-anchor="middle" fill="#ff8c42" font-size="12">クロック周波数</text>
-
-  <path d="M 550 592 Q 550 640 550 670" fill="none" stroke="#ff8c42" stroke-width="1.8"/>
-  <rect x="475" y="660" width="150" height="32" rx="8" fill="#1c2330" stroke="#ff8c42" stroke-width="1.4"/>
-  <text x="550" y="681" text-anchor="middle" fill="#ff8c42" font-size="12">MIPS</text>
-
-  <path d="M 635 590 Q 660 630 675 670" fill="none" stroke="#ff8c42" stroke-width="1.8"/>
-  <rect x="600" y="660" width="150" height="32" rx="8" fill="#1c2330" stroke="#ff8c42" stroke-width="1.4"/>
-  <text x="675" y="681" text-anchor="middle" fill="#ff8c42" font-size="12">コア</text>
-
-  <!-- Branch 5: 命令実行 (right, yellow) -->
-  <path d="M 660 380 Q 820 460 920 500" fill="none" stroke="#d29922" stroke-width="2.5"/>
-  <rect x="820" y="475" width="200" height="42" rx="10" fill="#1c2330" stroke="#d29922" stroke-width="2"/>
-  <text x="920" y="501" text-anchor="middle" fill="#d29922" font-weight="700" font-size="14">命令実行手順</text>
-
-  <path d="M 840 517 Q 800 555 770 575" fill="none" stroke="#d29922" stroke-width="1.8"/>
-  <rect x="690" y="568" width="160" height="32" rx="8" fill="#1c2330" stroke="#d29922" stroke-width="1.4"/>
-  <text x="770" y="589" text-anchor="middle" fill="#d29922" font-size="12">フェッチ</text>
-
-  <path d="M 920 517 Q 920 565 920 605" fill="none" stroke="#d29922" stroke-width="1.8"/>
-  <rect x="845" y="603" width="160" height="32" rx="8" fill="#1c2330" stroke="#d29922" stroke-width="1.4"/>
-  <text x="925" y="624" text-anchor="middle" fill="#d29922" font-size="12">デコード</text>
-
-  <path d="M 1000 517 Q 1030 570 1015 620" fill="none" stroke="#d29922" stroke-width="1.8"/>
-  <rect x="945" y="640" width="155" height="32" rx="8" fill="#1c2330" stroke="#d29922" stroke-width="1.4"/>
-  <text x="1023" y="661" text-anchor="middle" fill="#d29922" font-size="12">実行 (Execute)</text>
-
-  <!-- Branch 6: アドレス指定 + 割込み (top-center small) -->
-  <path d="M 550 305 Q 550 240 550 200" fill="none" stroke="#ffb8b3" stroke-width="2.5"/>
-  <rect x="440" y="168" width="220" height="34" rx="10" fill="#1c2330" stroke="#ffb8b3" stroke-width="2"/>
-  <text x="550" y="190" text-anchor="middle" fill="#ffb8b3" font-weight="700" font-size="13">アドレス指定 / 割込み</text>
-
-  <path d="M 455 202 Q 425 240 425 270" fill="none" stroke="#ffb8b3" stroke-width="1.6"/>
-  <rect x="355" y="265" width="150" height="28" rx="8" fill="#1c2330" stroke="#ffb8b3" stroke-width="1.3"/>
-  <text x="430" y="284" text-anchor="middle" fill="#ffb8b3" font-size="11">直接/間接</text>
-
-  <path d="M 640 202 Q 680 235 680 270" fill="none" stroke="#ffb8b3" stroke-width="1.6"/>
-  <rect x="605" y="265" width="150" height="28" rx="8" fill="#1c2330" stroke="#ffb8b3" stroke-width="1.3"/>
-  <text x="680" y="284" text-anchor="middle" fill="#ffb8b3" font-size="11">内部/外部 割込み</text>
-</svg>
 </div>
 
-<footer>
-📘 Tài liệu bám sát 100% Yasashii Ch.4 Lesson 04-01, 04-02 + Slide 3_ハードウェア 第1-2回 · FE試験対策 · v1.0
-</footer>
+
+
+
+    </div>
+
+    <!-- Footer Navigation & Lesson Completion -->
+    <footer class="lesson-footer-nav">
+      <div class="completion-card">
+        <div>
+          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
+            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
+            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
+          </div>
+          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
+            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
+            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
+          </div>
+        </div>
+        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
+      </div>
+
+      <div class="footer-nav-buttons">
+        
+        <a href="13.html" class="nav-link-card prev">
+          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
+          <span class="nav-target">
+            <span class="text-ja">レッスン 13</span>
+            <span class="text-vi">Bài học 13</span>
+          </span>
+        </a>
+        
+        <a href="16.html" class="nav-link-card next">
+          <span class="nav-dir">BÀI TIẾP THEO / NEXT →</span>
+          <span class="nav-target">
+            <span class="text-ja">レッスン 16</span>
+            <span class="text-vi">Bài học 16</span>
+          </span>
+        </a>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Right Sticky Sidebar -->
+  <aside class="sticky-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span class="text-ja">目次 (TOC)</span>
+        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
+      </div>
+      <nav>
+        <ul class="toc-list" id="tocList">
+
+          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+  
+          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+  
+          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+  
+          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
+  
+        </ul>
+      </nav>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="text-ja">クイック復習</span>
+        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
+      </div>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
+        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
+        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
+      </p>
+    </div>
+  </aside>
 
 </div>
 
 <script>
+
 // Flashcard flip
 document.querySelectorAll('.flashcard').forEach(card=>{
   card.addEventListener('click',()=>{
@@ -1041,6 +868,8 @@ document.querySelectorAll('.qbox').forEach(box=>{
     });
   });
 });
+
 </script>
+<script src="../assets/reader.js"></script>
 </body>
 </html>

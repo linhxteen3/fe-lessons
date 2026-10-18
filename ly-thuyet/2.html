@@ -1,146 +1,86 @@
-﻿<!DOCTYPE html>
-<html lang="vi">
+<!DOCTYPE html>
+<html lang="vi" data-theme="light" data-lang="dual">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>STT 2 — 基数変換 · Chuyển đổi cơ số</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@600;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#0f1419; --bg-2:#161c24; --bg-3:#1e2733; --border:#2a3441;
-  --text:#e8eef5; --text-dim:#a0adbb;
-  --accent:#ff6b35; --accent-2:#4ecdc4;
-  --jp:#f7d794; --vn:#a8e6cf; --en:#c7a8e6;
-  --ok:#3ddc97; --ng:#ff5a5f;
-  --font-jp:"Noto Sans JP",system-ui,sans-serif;
-  --font-mono:"Space Mono",ui-monospace,monospace;
-  --font-display:"Syne","Noto Sans JP",sans-serif;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--font-jp);line-height:1.7;min-height:100vh}
-.wrap{max-width:1100px;margin:0 auto;padding:24px 20px 80px}
-header.hero{background:linear-gradient(135deg,#1e2733 0%,#0f1419 100%);border:1px solid var(--border);border-radius:16px;padding:32px 28px;margin-bottom:28px;position:relative;overflow:hidden}
-header.hero::before{content:"";position:absolute;top:-50%;right:-20%;width:400px;height:400px;background:radial-gradient(circle,rgba(255,107,53,0.12) 0%,transparent 70%)}
-.tag{display:inline-block;font-family:var(--font-mono);font-size:11px;color:var(--accent);border:1px solid var(--accent);padding:3px 10px;border-radius:20px;letter-spacing:0.1em;margin-bottom:14px}
-h1.title{font-family:var(--font-display);font-weight:800;font-size:2.4rem;line-height:1.2;margin-bottom:8px}
-.subtitle{color:var(--text-dim);font-size:1.05rem;margin-bottom:18px}
-.meta{display:flex;flex-wrap:wrap;gap:10px;font-family:var(--font-mono);font-size:12px;color:var(--text-dim)}
-.meta span{background:var(--bg-3);padding:5px 12px;border-radius:6px}
-nav.toc{background:var(--bg-2);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:28px}
-nav.toc h3{font-family:var(--font-display);font-size:0.9rem;letter-spacing:0.15em;color:var(--accent-2);margin-bottom:12px}
-nav.toc ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
-nav.toc a{color:var(--text);text-decoration:none;font-size:0.92rem;padding:6px 10px;border-radius:6px;display:block;border-left:2px solid transparent}
-nav.toc a:hover{background:var(--bg-3);border-left-color:var(--accent)}
-section.part{background:var(--bg-2);border:1px solid var(--border);border-radius:14px;padding:28px 26px;margin-bottom:24px}
-h2.part-title{font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:var(--text);border-bottom:2px solid var(--accent);padding-bottom:10px;margin-bottom:22px}
-h2.part-title .num{font-family:var(--font-mono);color:var(--accent);font-size:1.1rem;margin-right:10px}
-h3.sub{font-family:var(--font-display);font-size:1.2rem;color:var(--accent-2);margin-top:24px;margin-bottom:12px;padding-left:14px;border-left:4px solid var(--accent-2)}
-h4.sub2{font-family:var(--font-display);font-size:1.02rem;color:var(--jp);margin-top:16px;margin-bottom:10px}
-.lang-block{display:grid;gap:10px;margin:14px 0}
-.lang-row{background:var(--bg-3);border-radius:10px;padding:14px 18px;border-left:4px solid var(--border)}
-.lang-row.jp{border-left-color:var(--jp)}
-.lang-row.vn{border-left-color:var(--vn)}
-.lang-row.en{border-left-color:var(--en)}
-.lang-row .label{font-family:var(--font-mono);font-size:11px;letter-spacing:0.1em;color:var(--text-dim);margin-bottom:4px;display:block}
-.lang-row.jp .label{color:var(--jp)}
-.lang-row.vn .label{color:var(--vn)}
-.lang-row.en .label{color:var(--en)}
-.lang-row .content{font-size:0.97rem}
-ul.bullets{margin:10px 0 10px 22px}
-ul.bullets li{margin-bottom:6px}
-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:0.92rem;background:var(--bg-3);border-radius:8px;overflow:hidden}
-th,td{padding:10px 14px;border:1px solid var(--border);text-align:left;vertical-align:top}
-th{background:var(--bg);color:var(--accent-2);font-family:var(--font-display);font-weight:600}
-tr:hover td{background:rgba(255,107,53,0.05)}
-.callout{background:linear-gradient(90deg,rgba(78,205,196,0.08) 0%,transparent 100%);border-left:4px solid var(--accent-2);padding:14px 18px;border-radius:8px;margin:16px 0}
-.callout.warn{background:linear-gradient(90deg,rgba(255,107,53,0.1) 0%,transparent 100%);border-left-color:var(--accent)}
-.callout .head{font-family:var(--font-display);font-weight:700;color:var(--accent-2);margin-bottom:6px;font-size:0.92rem;letter-spacing:0.05em}
-.callout.warn .head{color:var(--accent)}
-.ascii{background:#f2f4f8;color:var(--accent-2);font-family:var(--font-mono);font-size:0.85rem;padding:14px 18px;border-radius:8px;overflow-x:auto;white-space:pre;line-height:1.5;margin:12px 0;border:1px solid var(--border)}
-.example-box{background:var(--bg-3);border:1px dashed var(--accent);border-radius:10px;padding:16px 20px;margin:14px 0}
-.example-box .ex-tag{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:0.15em;margin-bottom:8px;display:inline-block;background:rgba(255,107,53,0.1);padding:3px 10px;border-radius:4px}
-.example-box .step{margin:8px 0;padding-left:18px;border-left:2px solid var(--border)}
-.example-box .step b{color:var(--accent-2)}
-.fc-filter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
-.fc-filter button{background:var(--bg-3);color:var(--text-dim);border:1px solid var(--border);padding:7px 14px;border-radius:20px;cursor:pointer;font-family:var(--font-mono);font-size:12px;transition:all 0.2s}
-.fc-filter button.active{background:var(--accent);color:#474747;border-color:var(--accent)}
-.fc-filter button:hover:not(.active){border-color:var(--accent);color:var(--text)}
-.fc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
-.fc-card{background:var(--bg-3);border:1px solid var(--border);border-radius:12px;padding:18px 18px;min-height:140px;cursor:pointer;display:flex;flex-direction:column;justify-content:center;position:relative;transition:transform 0.2s,border-color 0.2s}
-.fc-card:hover{border-color:var(--accent);transform:translateY(-2px)}
-.fc-card .fc-cat{position:absolute;top:8px;right:10px;font-family:var(--font-mono);font-size:10px;color:var(--text-dim);background:var(--bg);padding:2px 8px;border-radius:10px}
-.fc-card .fc-front{font-family:var(--font-display);font-weight:600;font-size:1.05rem;color:var(--jp);text-align:center}
-.fc-card .fc-back{display:none;font-size:0.92rem;line-height:1.6}
-.fc-card.flipped .fc-front{display:none}
-.fc-card.flipped .fc-back{display:block}
-.fc-card .hint{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-family:var(--font-mono);font-size:9px;color:var(--text-dim);letter-spacing:0.1em}
-.quiz-q{background:var(--bg-3);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px}
-.quiz-q .qnum{font-family:var(--font-mono);font-size:12px;color:var(--accent);letter-spacing:0.1em;margin-bottom:6px}
-.quiz-q .qtext{font-size:1rem;margin-bottom:14px;font-weight:500}
-.quiz-q .opts{display:grid;gap:8px}
-.quiz-q .opt{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 14px;cursor:pointer;font-size:0.94rem;transition:all 0.15s;display:flex;align-items:center;gap:10px}
-.quiz-q .opt:hover:not(.locked){border-color:var(--accent);background:var(--bg-3)}
-.quiz-q .opt .ltr{font-family:var(--font-mono);font-weight:700;color:var(--accent);min-width:20px}
-.quiz-q .opt.correct{background:rgba(61,220,151,0.15);border-color:var(--ok);color:var(--ok)}
-.quiz-q .opt.correct .ltr{color:var(--ok)}
-.quiz-q .opt.wrong{background:rgba(255,90,95,0.12);border-color:var(--ng);color:var(--ng)}
-.quiz-q .opt.wrong .ltr{color:var(--ng)}
-.quiz-q.locked .opt{cursor:default}
-.quiz-q .expl{display:none;margin-top:14px;padding:12px 14px;background:var(--bg);border-left:3px solid var(--accent-2);border-radius:6px;font-size:0.9rem;line-height:1.65}
-.quiz-q.locked .expl{display:block}
-.quiz-q .expl b{color:var(--accent-2)}
-#quiz-result{background:linear-gradient(135deg,var(--bg-3) 0%,var(--bg) 100%);border:2px solid var(--accent);border-radius:14px;padding:24px;text-align:center;margin-top:20px;display:none}
-#quiz-result.show{display:block}
-#quiz-result .score{font-family:var(--font-display);font-size:3rem;font-weight:800;color:var(--accent);margin:10px 0}
-#quiz-result .verdict{font-size:1.1rem;color:var(--text-dim);margin-bottom:14px}
-.btn{background:var(--accent);color:#474747;border:none;padding:10px 22px;border-radius:8px;font-family:var(--font-mono);cursor:pointer;font-size:13px;letter-spacing:0.1em;font-weight:700}
-.btn:hover{background:#ff7f4f}
-.mindmap-wrap{background:#f2f4f8;border-radius:12px;padding:16px;overflow-x:auto;border:1px solid var(--border)}
-.mindmap-wrap svg{max-width:100%;height:auto;display:block;margin:0 auto}
-footer{text-align:center;color:var(--text-dim);font-family:var(--font-mono);font-size:11px;margin-top:32px;padding-top:24px;border-top:1px solid var(--border)}
-@media(max-width:640px){
-  .wrap{padding:16px 12px 60px}
-  h1.title{font-size:1.7rem}
-  header.hero{padding:22px 18px}
-  section.part{padding:20px 16px}
-  nav.toc ul{grid-template-columns:1fr}
-  .fc-grid{grid-template-columns:1fr}
-}
-</style>
-<link rel="stylesheet" href="../assets/brilliant.css">
-<link rel="stylesheet" href="../assets/site.css">
-<script src="../assets/site.js"></script>
-<script src="../assets/brilliant.js"></script>
-<link rel="stylesheet" href="../assets/learning.css">
+<title>Bài 02:  — FE Master</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/reader.css">
 </head>
 <body>
-<div class="wrap">
 
-<header class="hero">
-  <div class="tag">STT 02 · Tuần 1 · Ch.1 基礎理論①</div>
-  <h1 class="title">基数変換<br><span style="color:var(--accent);font-size:1.4rem">Chuyển đổi cơ số</span></h1>
-  <p class="subtitle">桁の重み + 指数, n進数 ↔ 10進数, 2 ↔ 8/16進数</p>
-  <div class="meta">
-    <span>📘 Yasashii Ch.1 Lesson 01-03, 01-04</span>
-    <span>🎬 Slide 1_基礎理論 第2回</span>
-    <span>⏱ ~70 phút</span>
+<!-- Reading Progress Bar -->
+<div class="reading-progress-track">
+  <div class="reading-progress-bar" id="readingProgress"></div>
+</div>
+
+<!-- Minimal Sticky Top Header -->
+<header class="site-header">
+  <div class="header-container">
+    <div class="header-left">
+      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
+        <span class="text-ja">← ロードマップ</span>
+        <span class="text-vi">← Lộ trình</span>
+      </a>
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
+        <span class="sep">/</span>
+        <span>Mục tiêu 1</span>
+        <span class="sep">/</span>
+        <span class="current">Bài 02</span>
+      </nav>
+    </div>
+    <div class="header-right">
+      <div class="lang-selector">
+        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
+        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
+        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
+      </div>
+      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
+        <span id="zenIcon">📖</span>
+        <span id="zenText">Zen</span>
+      </button>
+      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
+        <span id="themeIcon">◐</span>
+      </button>
+    </div>
   </div>
 </header>
 
-<nav class="toc">
-  <h3>▸ MỤC LỤC</h3>
-  <ul>
-    <li><a href="#p1">① Tóm tắt lý thuyết</a></li>
-    <li><a href="#p2">② Ví dụ minh hoạ</a></li>
-    <li><a href="#p3">③ Flashcards</a></li>
-    <li><a href="#p4">④ Quiz 10 câu</a></li>
-    <li><a href="#p5">⑤ Mind map</a></li>
-  </ul>
-</nav>
+<!-- Main Two-Column Reader Layout -->
+<div class="page-container">
+
+  <!-- Left Content Column -->
+  <main class="main-content">
+
+    <div class="lesson-header">
+      <div class="lesson-meta-bar">
+        <span class="badge-lesson">BÀI 02 · CƠ SỞ LÝ THUYẾT</span>
+        <span class="badge-tag">MỤC TIÊU 1</span>
+        <span class="badge-tag">TRỌNG TÂM 科目A</span>
+      </div>
+      <h1 class="lesson-title">
+        
+      </h1>
+      <div class="lesson-stats">
+        <span>⏱ ~30-45 phút đọc</span>
+        <span>·</span>
+        <span>Active Recall & Flashcards</span>
+      </div>
+    </div>
+
+    <!-- Lesson Content Body -->
+    <div class="lesson-body">
+
+
+
+
+
 
 <section class="part" id="p1">
-<h2 class="part-title"><span class="num">①</span>Tóm tắt lý thuyết</h2>
+<h2 id="part-1" class="part-title"><span class="num">①</span>Tóm tắt lý thuyết</h2>
 
 <h3 class="sub">1.1 桁の重み + 指数 · Trọng số hàng và Số mũ</h3>
 
@@ -312,7 +252,7 @@ Ghép: 10進 701.78125 = 16進 2BD.C8</div>
 </section>
 
 <section class="part" id="p2">
-<h2 class="part-title"><span class="num">②</span>Ví dụ minh hoạ</h2>
+<h2 id="part-2" class="part-title"><span class="num">②</span>Ví dụ minh hoạ</h2>
 
 <div class="example-box">
 <span class="ex-tag">VÍ DỤ 1 · 2進数 → 10進数 (số nguyên)</span>
@@ -400,7 +340,7 @@ Ghép: 10進 701.78125 = 16進 2BD.C8</div>
 </section>
 
 <section class="part" id="p3">
-<h2 class="part-title"><span class="num">③</span>Flashcards · Click để lật</h2>
+<h2 id="part-3" class="part-title"><span class="num">③</span>Flashcards · Click để lật</h2>
 
 <div class="fc-filter" id="fcFilter">
   <button class="active" data-cat="all">Tất cả</button>
@@ -414,7 +354,7 @@ Ghép: 10進 701.78125 = 16進 2BD.C8</div>
 </section>
 
 <section class="part" id="p4">
-<h2 class="part-title"><span class="num">④</span>Quiz ôn tập · 10 câu tự chấm</h2>
+<h2 id="part-4" class="part-title"><span class="num">④</span>Quiz ôn tập · 10 câu tự chấm</h2>
 <p style="color:var(--text-dim);font-size:0.9rem;margin-bottom:18px">Chọn 1 đáp án. Sau khi chọn sẽ tự khoá — xanh = đúng, đỏ = sai, kèm giải thích.</p>
 <div id="quizArea"></div>
 <div id="quiz-result">
@@ -425,110 +365,91 @@ Ghép: 10進 701.78125 = 16進 2BD.C8</div>
 </div>
 </section>
 
-<section class="part" id="p5">
-<h2 class="part-title"><span class="num">⑤</span>Mind map tổng kết</h2>
-<div class="mindmap-wrap">
-<svg viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans JP, system-ui, sans-serif">
-  <defs>
-    <style>
-      .center{fill:#ff6b35;stroke:#fff;stroke-width:2}
-      .branch{stroke-width:2.5;fill:none}
-      .b1{stroke:#4ecdc4}.b2{stroke:#f7d794}.b3{stroke:#a8e6cf}.b4{stroke:#c7a8e6}
-      .node1{fill:#4ecdc4}.node2{fill:#f7d794}.node3{fill:#a8e6cf}.node4{fill:#c7a8e6}
-      .leaf1{fill:#2a5d5a}.leaf2{fill:#6b5a32}.leaf3{fill:#3a6051}.leaf4{fill:#5a426b}
-      text{fill:#0f1419;font-weight:600;font-size:13px}
-      .leaf-text{fill:#e8eef5;font-size:11px;font-weight:500}
-      .center-text{fill:#fff;font-size:16px;font-weight:800}
-    </style>
-  </defs>
 
-  <ellipse cx="550" cy="360" rx="105" ry="55" class="center"/>
-  <text x="550" y="355" text-anchor="middle" class="center-text">基数変換</text>
-  <text x="550" y="378" text-anchor="middle" class="center-text" font-size="12">Chuyen doi co so</text>
 
-  <path class="branch b1" d="M 460 320 Q 350 250 230 200"/>
-  <rect x="120" y="170" width="180" height="50" rx="10" class="node1"/>
-  <text x="210" y="190" text-anchor="middle">n進数 to 10進数</text>
-  <text x="210" y="208" text-anchor="middle" font-size="11">Nhan x Trong so</text>
 
-  <path class="branch b1" d="M 210 220 Q 180 250 130 280"/>
-  <rect x="40" y="265" width="160" height="32" rx="6" class="leaf1"/>
-  <text x="120" y="285" text-anchor="middle" class="leaf-text">CT: d x n^k</text>
 
-  <path class="branch b1" d="M 210 220 Q 220 270 235 320"/>
-  <rect x="160" y="305" width="180" height="32" rx="6" class="leaf1"/>
-  <text x="250" y="325" text-anchor="middle" class="leaf-text">16進: A-F to 10-15</text>
 
-  <path class="branch b1" d="M 210 220 Q 100 220 50 150"/>
-  <rect x="10" y="120" width="160" height="32" rx="6" class="leaf1"/>
-  <text x="90" y="140" text-anchor="middle" class="leaf-text">Cong tat ca tich</text>
+    </div>
 
-  <path class="branch b2" d="M 460 400 Q 350 480 230 540"/>
-  <rect x="120" y="515" width="190" height="50" rx="10" class="node2"/>
-  <text x="215" y="535" text-anchor="middle">10進数 to 2/16進</text>
-  <text x="215" y="553" text-anchor="middle" font-size="11">Chia / Nhan</text>
+    <!-- Footer Navigation & Lesson Completion -->
+    <footer class="lesson-footer-nav">
+      <div class="completion-card">
+        <div>
+          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
+            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
+            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
+          </div>
+          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
+            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
+            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
+          </div>
+        </div>
+        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
+      </div>
 
-  <path class="branch b2" d="M 215 565 Q 180 600 130 630"/>
-  <rect x="40" y="615" width="180" height="32" rx="6" class="leaf2"/>
-  <text x="130" y="635" text-anchor="middle" class="leaf-text">Phan nguyen: chia, du</text>
+      <div class="footer-nav-buttons">
+        
+        <a href="1.html" class="nav-link-card prev">
+          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
+          <span class="nav-target">
+            <span class="text-ja">レッスン 01</span>
+            <span class="text-vi">Bài học 01</span>
+          </span>
+        </a>
+        
+        <a href="3.html" class="nav-link-card next">
+          <span class="nav-dir">BÀI TIẾP THEO / NEXT →</span>
+          <span class="nav-target">
+            <span class="text-ja">レッスン 03</span>
+            <span class="text-vi">Bài học 03</span>
+          </span>
+        </a>
+      </div>
+    </footer>
 
-  <path class="branch b2" d="M 215 565 Q 250 620 280 660"/>
-  <rect x="200" y="645" width="190" height="32" rx="6" class="leaf2"/>
-  <text x="295" y="665" text-anchor="middle" class="leaf-text">Thap phan: nhan, du</text>
+  </main>
 
-  <path class="branch b2" d="M 215 565 Q 100 540 50 480"/>
-  <rect x="10" y="465" width="160" height="32" rx="6" class="leaf2"/>
-  <text x="90" y="485" text-anchor="middle" class="leaf-text">He 16: 10-15 to A-F</text>
+  <!-- Right Sticky Sidebar -->
+  <aside class="sticky-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span class="text-ja">目次 (TOC)</span>
+        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
+      </div>
+      <nav>
+        <ul class="toc-list" id="tocList">
 
-  <path class="branch b3" d="M 640 320 Q 750 250 870 200"/>
-  <rect x="780" y="170" width="180" height="50" rx="10" class="node3"/>
-  <text x="870" y="190" text-anchor="middle">2 to 8 / 16進</text>
-  <text x="870" y="208" text-anchor="middle" font-size="11">Gom nhom bit</text>
+          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+  
+          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+  
+          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+  
+          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
+  
+        </ul>
+      </nav>
+    </div>
 
-  <path class="branch b3" d="M 870 220 Q 920 260 970 290"/>
-  <rect x="905" y="275" width="170" height="32" rx="6" class="leaf3"/>
-  <text x="990" y="295" text-anchor="middle" class="leaf-text">2 to 8: nhom 3 bit</text>
-
-  <path class="branch b3" d="M 870 220 Q 1000 230 1060 170"/>
-  <rect x="970" y="140" width="120" height="32" rx="6" class="leaf3"/>
-  <text x="1030" y="160" text-anchor="middle" class="leaf-text">2^3 = 8</text>
-
-  <path class="branch b3" d="M 870 220 Q 900 280 920 340"/>
-  <rect x="845" y="325" width="170" height="32" rx="6" class="leaf3"/>
-  <text x="930" y="345" text-anchor="middle" class="leaf-text">2 to 16: nhom 4 bit</text>
-
-  <path class="branch b3" d="M 870 220 Q 800 160 750 110"/>
-  <rect x="685" y="80" width="160" height="32" rx="6" class="leaf3"/>
-  <text x="765" y="100" text-anchor="middle" class="leaf-text">2^4 = 16</text>
-
-  <path class="branch b4" d="M 640 400 Q 760 480 880 540"/>
-  <rect x="790" y="515" width="180" height="50" rx="10" class="node4"/>
-  <text x="880" y="535" text-anchor="middle">Khai niem nen</text>
-  <text x="880" y="553" text-anchor="middle" font-size="11">桁の重み + 指数</text>
-
-  <path class="branch b4" d="M 880 565 Q 920 600 980 630"/>
-  <rect x="900" y="615" width="160" height="32" rx="6" class="leaf4"/>
-  <text x="980" y="635" text-anchor="middle" class="leaf-text">a^0=1, a^-n=1/a^n</text>
-
-  <path class="branch b4" d="M 880 565 Q 820 610 770 660"/>
-  <rect x="690" y="645" width="170" height="32" rx="6" class="leaf4"/>
-  <text x="775" y="665" text-anchor="middle" class="leaf-text">Trong so: n^k / n^-k</text>
-
-  <path class="branch b4" d="M 880 565 Q 1000 530 1060 470"/>
-  <rect x="960" y="455" width="130" height="32" rx="6" class="leaf4"/>
-  <text x="1025" y="475" text-anchor="middle" class="leaf-text">Meo: vong qua 2進</text>
-
-</svg>
-</div>
-</section>
-
-<footer>
-  Tai lieu ly thuyet · STT 2 · 基数変換 · Yasashii Ch.1 (Lesson 01-03, 01-04) + Slide 1 第2回
-</footer>
+    <div class="sidebar-card">
+      <div class="sidebar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="text-ja">クイック復習</span>
+        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
+      </div>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
+        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
+        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
+      </p>
+    </div>
+  </aside>
 
 </div>
 
 <script>
+
 const FLASHCARDS = [
   {cat:"concept", front:"基数変換 là gì?", back:"Đổi cách biểu diễn số từ hệ n này sang hệ n khác (vd: 2進数 ↔ 10進数). FE tập trung 4 hệ: 2, 8, 10, 16."},
   {cat:"concept", front:"桁の重み (place weight)", back:"Giá trị của mỗi hàng. Tổng giá trị 1 số = Σ (chữ số × trọng số). Trong n進数, hàng thứ k bên trái dấu chấm có trọng số n^k."},
@@ -710,6 +631,8 @@ function resetQuiz(){
 }
 
 renderQuiz();
+
 </script>
+<script src="../assets/reader.js"></script>
 </body>
 </html>

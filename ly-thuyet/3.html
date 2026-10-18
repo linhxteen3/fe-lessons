@@ -1,104 +1,87 @@
-﻿<!DOCTYPE html>
-<html lang="vi">
+<!DOCTYPE html>
+<html lang="vi" data-theme="light" data-lang="dual">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FE - 負の2進数 · Số âm nhị phân</title>
-<style>
-:root{
-  --bg:#0f1419; --panel:#1a2027; --panel2:#232a33; --border:#2e3744;
-  --text:#e6edf3; --muted:#8b98a5;
-  --accent:#58a6ff; --accent2:#a78bfa; --pink:#f778ba;
-  --green:#3fb950; --red:#f85149; --yellow:#d29922; --orange:#ff8e3c;
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;line-height:1.65;padding:16px}
-.wrap{max-width:960px;margin:0 auto}
-header{background:linear-gradient(135deg,#1f2937 0%,#312e81 50%,#581c87 100%);padding:28px;border-radius:14px;border:1px solid var(--border);margin-bottom:20px;text-align:center}
-header h1{margin:0;font-size:1.8em}
-header .sub{color:#384b61;margin-top:6px;font-size:.95em}
-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:20px;position:sticky;top:0;background:var(--bg);padding:10px;z-index:10;border-bottom:1px solid var(--border)}
-nav a{color:var(--accent);text-decoration:none;background:var(--panel);padding:6px 12px;border-radius:6px;border:1px solid var(--border);font-size:.9em}
-nav a:hover{background:var(--panel2);border-color:var(--accent)}
-section{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:18px}
-h2{color:var(--accent);border-bottom:2px solid var(--accent);padding-bottom:8px;margin-top:0;font-size:1.35em}
-h3{color:var(--accent2);margin-top:22px;font-size:1.1em}
-h4{color:var(--pink);margin-top:16px;font-size:1em}
-.tri{background:var(--panel2);border-left:4px solid var(--accent);padding:12px 16px;margin:12px 0;border-radius:6px}
-.tri .lang{display:block;margin:4px 0;font-size:.97em}
-.tri .jp{color:#135086}
-.tri .vi{color:#188121}
-.tri .en{color:#856414}
-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.93em}
-th,td{border:1px solid var(--border);padding:8px 10px;text-align:center}
-th{background:var(--panel2);color:var(--accent2)}
-td.neg{color:var(--red);font-weight:600}
-td.pos{color:var(--green);font-weight:600}
-code{background:#f1f4f9;padding:2px 6px;border-radius:4px;color:#135086;font-family:"SF Mono",Consolas,monospace;font-size:.92em}
-.box{background:#f2f4f7;border:1px solid var(--border);border-radius:8px;padding:14px;margin:12px 0;font-family:"SF Mono",Consolas,monospace;font-size:.95em;overflow-x:auto;white-space:pre}
-.tip{background:rgba(210,153,34,.12);border-left:4px solid var(--yellow);padding:12px 16px;margin:12px 0;border-radius:6px}
-.warn{background:rgba(248,81,73,.12);border-left:4px solid var(--red);padding:12px 16px;margin:12px 0;border-radius:6px}
-.flow{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;margin:14px 0}
-.flow .node{background:var(--panel2);border:2px solid var(--accent);padding:10px 16px;border-radius:8px;font-weight:600}
-.flow .arr{color:var(--accent);font-size:1.5em}
-.example{background:linear-gradient(135deg,#1a2027,#1f2937);border:1px solid var(--accent);border-radius:10px;padding:16px;margin:14px 0}
-.example h4{margin-top:0;color:var(--accent)}
-.step{background:var(--panel2);padding:10px 14px;border-radius:6px;margin:8px 0;border-left:3px solid var(--accent2)}
-.step .n{display:inline-block;background:var(--accent2);color:#0b1220;font-weight:700;border-radius:50%;width:22px;height:22px;line-height:22px;text-align:center;margin-right:8px;font-size:.85em}
-/* Flashcards */
-.fc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
-.fc{background:var(--panel2);border:1.5px solid var(--border);border-radius:10px;padding:0;cursor:pointer;min-height:160px;position:relative;transition:transform .15s, border-color .15s}
-.fc:hover{transform:translateY(-2px);border-color:var(--accent)}
-.fc-side{padding:16px;display:none;font-size:.92em}
-.fc.show-front .fc-front{display:block}
-.fc.show-back .fc-back{display:block}
-.fc-front{color:var(--accent);font-weight:600}
-.fc-front .h{font-size:.78em;color:var(--muted);font-weight:400;margin-bottom:8px;letter-spacing:1px}
-.fc-back{color:var(--text)}
-.fc-back .h{font-size:.78em;color:var(--green);margin-bottom:8px;letter-spacing:1px}
-.fc-back .jp{color:#135086;margin-top:6px;font-size:.88em}
-/* Quiz */
-.qz{background:var(--panel2);border-radius:8px;padding:14px;margin:12px 0;border:1px solid var(--border)}
-.qz-q{font-weight:600;margin-bottom:10px}
-.qz-opt{padding:8px 12px;background:var(--panel);border:1px solid var(--border);border-radius:6px;cursor:pointer;margin:6px 0;display:block;font-size:.94em}
-.qz-opt:hover:not(.locked){border-color:var(--accent)}
-.qz-opt.ok{background:rgba(63,185,80,.2);border-color:var(--green);color:#188121}
-.qz-opt.ng{background:rgba(248,81,73,.2);border-color:var(--red);color:#861a13}
-.qz-opt.locked{cursor:default}
-.qz-exp{margin-top:10px;font-size:.9em;color:var(--muted);display:none;background:#f2f4f7;padding:10px;border-radius:6px;border-left:3px solid var(--accent2)}
-.qz-exp.show{display:block}
-@media(max-width:600px){
-  header h1{font-size:1.35em}
-  body{padding:10px}
-  section{padding:16px}
-  nav{font-size:.8em;position:static}
-}
-</style>
-<link rel="stylesheet" href="../assets/brilliant.css">
-<link rel="stylesheet" href="../assets/site.css">
-<script src="../assets/site.js"></script>
-<script src="../assets/brilliant.js"></script>
-<link rel="stylesheet" href="../assets/learning.css">
+<title>Bài 03: 負の2進数 · Số âm nhị phân — FE Master</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/reader.css">
 </head>
 <body>
-<div class="wrap">
 
-<header>
-  <h1>➖ 負の2進数 · Số âm nhị phân</h1>
-  <div class="sub">Yasashii (補数 không có ở Ch.1) ・Nguồn chính: <strong>Slide 1 基礎理論 第3回</strong></div>
+<!-- Reading Progress Bar -->
+<div class="reading-progress-track">
+  <div class="reading-progress-bar" id="readingProgress"></div>
+</div>
+
+<!-- Minimal Sticky Top Header -->
+<header class="site-header">
+  <div class="header-container">
+    <div class="header-left">
+      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
+        <span class="text-ja">← ロードマップ</span>
+        <span class="text-vi">← Lộ trình</span>
+      </a>
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
+        <span class="sep">/</span>
+        <span>Mục tiêu 1</span>
+        <span class="sep">/</span>
+        <span class="current">Bài 03</span>
+      </nav>
+    </div>
+    <div class="header-right">
+      <div class="lang-selector">
+        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
+        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
+        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
+      </div>
+      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
+        <span id="zenIcon">📖</span>
+        <span id="zenText">Zen</span>
+      </button>
+      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
+        <span id="themeIcon">◐</span>
+      </button>
+    </div>
+  </div>
 </header>
 
-<nav>
-  <a href="#p1">① Lý thuyết</a>
-  <a href="#p2">② Ví dụ</a>
-  <a href="#p3">③ Flashcard</a>
-  <a href="#p4">④ Câu hỏi ôn tập</a>
-  <a href="#p5">⑤ Mind map</a>
-</nav>
+<!-- Main Two-Column Reader Layout -->
+<div class="page-container">
+
+  <!-- Left Content Column -->
+  <main class="main-content">
+
+    <div class="lesson-header">
+      <div class="lesson-meta-bar">
+        <span class="badge-lesson">BÀI 03 · CƠ SỞ LÝ THUYẾT</span>
+        <span class="badge-tag">MỤC TIÊU 1</span>
+        <span class="badge-tag">TRỌNG TÂM 科目A</span>
+      </div>
+      <h1 class="lesson-title">
+        負の2進数 · Số âm nhị phân
+      </h1>
+      <div class="lesson-stats">
+        <span>⏱ ~30-45 phút đọc</span>
+        <span>·</span>
+        <span>Active Recall & Flashcards</span>
+      </div>
+    </div>
+
+    <!-- Lesson Content Body -->
+    <div class="lesson-body">
+
+
+
+
+
 
 <!-- ============ PHẦN 1: LÝ THUYẾT ============ -->
 <section id="p1">
-<h2>📘 Phần 1 — Tóm tắt lý thuyết</h2>
+<h2 id="part-1">📘 Phần 1 — Tóm tắt lý thuyết</h2>
 
 <h3>1.1. Vì sao cần biểu diễn số âm trong 2進数?</h3>
 <div class="tri">
@@ -209,7 +192,7 @@ Tổng quát với <strong>n bit</strong>: signed = <code>−2ⁿ⁻¹ ~ 2ⁿ⁻
 
 <!-- ============ PHẦN 2: VÍ DỤ MINH HỌA ============ -->
 <section id="p2">
-<h2>📐 Phần 2 — Ví dụ minh họa</h2>
+<h2 id="part-2">📐 Phần 2 — Ví dụ minh họa</h2>
 
 <h3>Ví dụ 1 — Tạo bù 2 của <code>1100101</code> (7 bit)</h3>
 <div class="example">
@@ -275,7 +258,7 @@ Bước 3: +1            0 0 1 1 0 1 1   ← 2の補数 ✓
 
 <!-- ============ PHẦN 3: FLASHCARD ============ -->
 <section id="p3">
-<h2>🎴 Phần 3 — Flashcard (Click để lật)</h2>
+<h2 id="part-3">🎴 Phần 3 — Flashcard (Click để lật)</h2>
 <p style="color:var(--muted);font-size:.92em">10 thẻ. Click vào mỗi thẻ để xem mặt sau.</p>
 <div class="fc-grid" id="fcg">
 <!-- generated by JS -->
@@ -284,84 +267,91 @@ Bước 3: +1            0 0 1 1 0 1 1   ← 2の補数 ✓
 
 <!-- ============ PHẦN 4: ÔN TẬP ============ -->
 <section id="p4">
-<h2>📝 Phần 4 — 8 câu ôn tập (tự kiểm tra)</h2>
+<h2 id="part-4">📝 Phần 4 — 8 câu ôn tập (tự kiểm tra)</h2>
 <div id="quiz"></div>
 </section>
 
-<!-- ============ PHẦN 5: MIND MAP ============ -->
-<section id="p5">
-<h2>🗺️ Phần 5 — Mind map</h2>
-<svg viewBox="0 0 1100 700" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;background:#0b1018;border-radius:10px;border:1px solid var(--border)">
-  <defs>
-    <style>
-      .lbl{font-family:system-ui,sans-serif;font-size:14px;fill:#e6edf3;font-weight:600}
-      .lbl-sm{font-family:system-ui,sans-serif;font-size:12px;fill:#cbd5e1}
-      .lbl-c{font-family:system-ui,sans-serif;font-size:18px;fill:#fff;font-weight:700}
-    </style>
-  </defs>
 
-  <!-- Center -->
-  <ellipse cx="550" cy="350" rx="120" ry="55" fill="#a78bfa" stroke="#fff" stroke-width="2"/>
-  <text x="550" y="345" text-anchor="middle" class="lbl-c">負の2進数</text>
-  <text x="550" y="365" text-anchor="middle" class="lbl-sm" style="fill:#fff">So am nhi phan</text>
+    </div>
 
-  <!-- Branch 1: 符号ビット (top-left, blue) -->
-  <path d="M 470 320 Q 350 250 230 200" stroke="#58a6ff" stroke-width="3" fill="none"/>
-  <rect x="100" y="170" width="200" height="60" rx="10" fill="#58a6ff" stroke="#fff" stroke-width="1.5"/>
-  <text x="200" y="195" text-anchor="middle" class="lbl">符号ビット</text>
-  <text x="200" y="215" text-anchor="middle" class="lbl-sm" style="fill:#0b1018">Bit dau</text>
-  <!-- subnodes -->
-  <path d="M 200 230 Q 200 270 130 290" stroke="#58a6ff" stroke-width="2" fill="none"/>
-  <rect x="40" y="280" width="170" height="40" rx="8" fill="#1e3a8a" stroke="#58a6ff"/>
-  <text x="125" y="305" text-anchor="middle" class="lbl-sm" style="fill:#fff">0 = 正 (duong)</text>
-  <path d="M 200 230 Q 240 280 220 320" stroke="#58a6ff" stroke-width="2" fill="none"/>
-  <rect x="135" y="320" width="170" height="40" rx="8" fill="#1e3a8a" stroke="#58a6ff"/>
-  <text x="220" y="345" text-anchor="middle" class="lbl-sm" style="fill:#fff">1 = 負 (am)</text>
+    <!-- Footer Navigation & Lesson Completion -->
+    <footer class="lesson-footer-nav">
+      <div class="completion-card">
+        <div>
+          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
+            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
+            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
+          </div>
+          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
+            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
+            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
+          </div>
+        </div>
+        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
+      </div>
 
-  <!-- Branch 2: 補数 (top-right, pink) -->
-  <path d="M 630 320 Q 750 250 870 200" stroke="#f778ba" stroke-width="3" fill="none"/>
-  <rect x="800" y="170" width="200" height="60" rx="10" fill="#f778ba" stroke="#fff" stroke-width="1.5"/>
-  <text x="900" y="195" text-anchor="middle" class="lbl">補数 (Bu)</text>
-  <text x="900" y="215" text-anchor="middle" class="lbl-sm" style="fill:#0b1018">Complement</text>
-  <path d="M 900 230 Q 900 270 970 290" stroke="#f778ba" stroke-width="2" fill="none"/>
-  <rect x="900" y="280" width="180" height="40" rx="8" fill="#831843" stroke="#f778ba"/>
-  <text x="990" y="305" text-anchor="middle" class="lbl-sm" style="fill:#fff">nの補数 (carry)</text>
-  <path d="M 900 230 Q 860 280 880 320" stroke="#f778ba" stroke-width="2" fill="none"/>
-  <rect x="800" y="320" width="180" height="40" rx="8" fill="#831843" stroke="#f778ba"/>
-  <text x="890" y="345" text-anchor="middle" class="lbl-sm" style="fill:#fff">n-1の補数 (max)</text>
+      <div class="footer-nav-buttons">
+        
+        <a href="2.html" class="nav-link-card prev">
+          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
+          <span class="nav-target">
+            <span class="text-ja">レッスン 02</span>
+            <span class="text-vi">Bài học 02</span>
+          </span>
+        </a>
+        
+        <a href="4.html" class="nav-link-card next">
+          <span class="nav-dir">BÀI TIẾP THEO / NEXT →</span>
+          <span class="nav-target">
+            <span class="text-ja">レッスン 04</span>
+            <span class="text-vi">Bài học 04</span>
+          </span>
+        </a>
+      </div>
+    </footer>
 
-  <!-- Branch 3: 2の補数の作り方 (bottom-left, green) -->
-  <path d="M 470 380 Q 350 460 230 510" stroke="#3fb950" stroke-width="3" fill="none"/>
-  <rect x="100" y="490" width="220" height="60" rx="10" fill="#3fb950" stroke="#fff" stroke-width="1.5"/>
-  <text x="210" y="515" text-anchor="middle" class="lbl">2の補数の作り方</text>
-  <text x="210" y="535" text-anchor="middle" class="lbl-sm" style="fill:#0b1018">Cach tao bu 2</text>
-  <path d="M 210 550 Q 210 590 130 600" stroke="#3fb950" stroke-width="2" fill="none"/>
-  <rect x="30" y="590" width="170" height="40" rx="8" fill="#14532d" stroke="#3fb950"/>
-  <text x="115" y="615" text-anchor="middle" class="lbl-sm" style="fill:#fff">B1: bit dao (反転)</text>
-  <path d="M 210 550 Q 260 600 240 640" stroke="#3fb950" stroke-width="2" fill="none"/>
-  <rect x="155" y="640" width="170" height="40" rx="8" fill="#14532d" stroke="#3fb950"/>
-  <text x="240" y="665" text-anchor="middle" class="lbl-sm" style="fill:#fff">B2: +1</text>
+  </main>
 
-  <!-- Branch 4: 引き算 (bottom-right, orange) -->
-  <path d="M 630 380 Q 750 460 870 510" stroke="#ff8e3c" stroke-width="3" fill="none"/>
-  <rect x="800" y="490" width="220" height="60" rx="10" fill="#ff8e3c" stroke="#fff" stroke-width="1.5"/>
-  <text x="910" y="515" text-anchor="middle" class="lbl">引き算 (Tru)</text>
-  <text x="910" y="535" text-anchor="middle" class="lbl-sm" style="fill:#0b1018">= cong bu 2</text>
-  <path d="M 910 550 Q 910 600 980 610" stroke="#ff8e3c" stroke-width="2" fill="none"/>
-  <rect x="890" y="600" width="190" height="40" rx="8" fill="#7c2d12" stroke="#ff8e3c"/>
-  <text x="985" y="625" text-anchor="middle" class="lbl-sm" style="fill:#fff">Bo carry tran ngoai</text>
-  <path d="M 910 550 Q 860 600 880 640" stroke="#ff8e3c" stroke-width="2" fill="none"/>
-  <rect x="790" y="640" width="190" height="40" rx="8" fill="#7c2d12" stroke="#ff8e3c"/>
-  <text x="885" y="665" text-anchor="middle" class="lbl-sm" style="fill:#fff">8 bit: -128 ~ +127</text>
+  <!-- Right Sticky Sidebar -->
+  <aside class="sticky-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span class="text-ja">目次 (TOC)</span>
+        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
+      </div>
+      <nav>
+        <ul class="toc-list" id="tocList">
 
-  <!-- Top label -->
-  <text x="550" y="40" text-anchor="middle" style="font-family:system-ui;font-size:16px;fill:#8b98a5">FE - 基礎理論 - 符号と補数</text>
-</svg>
-</section>
+          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+  
+          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+  
+          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+  
+          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
+  
+        </ul>
+      </nav>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="text-ja">クイック復習</span>
+        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
+      </div>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
+        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
+        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
+      </p>
+    </div>
+  </aside>
 
 </div>
 
 <script>
+
 // ============ FLASHCARDS ============
 const FC = [
   {f:"符号ビット (sign bit)", b:"Bit ngoài cùng bên trái của 2進số. 0=正 (dương), 1=負 (âm).", jp:"2進数の一番最初のビットを符号として扱う"},
@@ -423,6 +413,8 @@ Q.forEach((q,i)=>{
   });
   qz.appendChild(wrap);
 });
+
 </script>
+<script src="../assets/reader.js"></script>
 </body>
 </html>

@@ -1,73 +1,80 @@
-﻿<!DOCTYPE html>
-<html lang="vi">
+<!DOCTYPE html>
+<html lang="vi" data-theme="light" data-lang="dual">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FE - メモリ・キャッシュ</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,-apple-system,"Segoe UI","Noto Sans JP",sans-serif;background:#f0f3f9;color:#344965;line-height:1.7;padding:16px}
-.container{max-width:980px;margin:0 auto}
-header{text-align:center;padding:24px;background:linear-gradient(135deg,#1e293b,#7c2d12);border-radius:16px;margin-bottom:24px}
-header h1{color:#864e13;font-size:1.6em;margin-bottom:6px}
-header .sub{color:#394556;font-size:.92em}
-section{background:#f1f4f8;border-radius:14px;padding:22px;margin-bottom:20px;box-shadow:0 6px 24px rgba(0,0,0,.3)}
-section h2{color:#864e13;font-size:1.3em;border-bottom:2px solid #c2410c;padding-bottom:8px;margin-bottom:14px}
-section h3{color:#fbbf24;font-size:1.08em;margin:14px 0 8px}
-p{margin-bottom:10px}
-ul{margin:8px 0 12px 22px}
-li{margin-bottom:5px}
-.lang-block{display:grid;grid-template-columns:1fr;gap:8px;margin:12px 0;background:#f0f3f9;border-radius:10px;padding:14px}
-.lang-block .l{padding:8px 10px;border-radius:8px;font-size:.95em}
-.l-jp{background:#f9f3f0;border-left:4px solid #fdba74;color:#865113}
-.l-vn{background:#f0f4f9;border-left:4px solid #38bdf8;color:#135886}
-.l-en{background:#f2f4f8;border-left:4px solid #fbbf24;color:#866f13}
-.formula{background:#f9f3f0;color:#865113;padding:14px;border-radius:10px;font-family:"Courier New",monospace;text-align:center;font-size:1em;margin:12px 0;border:1px solid #ea580c}
-.example-box{background:#f0f3f9;border:1px solid #475569;border-radius:10px;padding:14px;margin:12px 0}
-.example-box .label{display:inline-block;background:#fdba74;color:#0f172a;padding:3px 10px;border-radius:6px;font-weight:700;font-size:.85em;margin-bottom:8px}
-.step-line{font-family:"Courier New",monospace;background:#f0f3f9;padding:10px;border-radius:8px;color:#864e13;text-align:center;font-size:.95em;margin:8px 0;overflow-x:auto}
-.ascii{background:#f0f3f9;padding:12px;border-radius:8px;font-family:"Courier New",monospace;font-size:.85em;color:#384b61;white-space:pre;overflow-x:auto;margin:10px 0}
-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:.92em;background:#f0f3f9;border-radius:8px;overflow:hidden}
-th,td{padding:10px;text-align:left;border-bottom:1px solid #334155}
-th{background:#c2410c;color:#474747}
-tr:hover td{background:#f9f3f0}
-.flashcards-controls{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-.filter-btn{background:#f2f4f7;color:#344965;border:none;padding:6px 14px;border-radius:6px;cursor:pointer;font-size:.85em}
-.filter-btn.active{background:#fdba74;color:#0f172a;font-weight:700}
-.flashcard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
-.flashcard{background:#f0f3f9;border:2px solid #c2410c;border-radius:10px;padding:14px;min-height:120px;cursor:pointer;position:relative}
-.flashcard .cat{position:absolute;top:8px;right:8px;font-size:.7em;background:#c2410c;color:#474747;padding:2px 8px;border-radius:4px}
-.flashcard .front{color:#864e13;font-weight:600}
-.flashcard .back{display:none;color:#866f13;margin-top:8px;font-size:.88em}
-.flashcard.flipped .back{display:block}
-.flashcard.flipped{border-color:#fbbf24;background:#f9f3f0}
-.quiz-q{background:#f0f3f9;border-radius:10px;padding:14px;margin:10px 0}
-.quiz-q .qt{color:#2e4d6b;margin-bottom:10px}
-.quiz-opt{display:block;background:#f1f4f8;border:2px solid #334155;border-radius:6px;padding:8px 12px;margin:6px 0;cursor:pointer;color:#344965;font-size:.93em}
-.quiz-opt:hover{border-color:#fdba74}
-.quiz-opt.correct{background:#f0f9f7;border-color:#10b981;color:#138651}
-.quiz-opt.wrong{background:#f9f0f0;border-color:#ef4444;color:#861313}
-.quiz-opt.locked{cursor:not-allowed}
-.quiz-exp{display:none;margin-top:8px;padding:10px;background:#f0f4f9;border-left:3px solid #38bdf8;border-radius:6px;font-size:.88em;color:#384b61}
-.quiz-exp.open{display:block}
-.callout{background:#f0f4f9;border-left:4px solid #38bdf8;padding:12px;border-radius:8px;margin:12px 0;font-size:.95em}
-.warn{background:#f9f3f0;border-left:4px solid #fb923c;padding:12px;border-radius:8px;margin:12px 0;color:#865113}
-.mindmap-wrap{background:#f0f3f9;border-radius:10px;padding:14px;overflow-x:auto;text-align:center}
-.mindmap-wrap svg{max-width:100%;height:auto}
-@media(max-width:600px){section{padding:16px}header h1{font-size:1.3em}}
-</style>
-<link rel="stylesheet" href="../assets/brilliant.css">
-<link rel="stylesheet" href="../assets/site.css">
-<script src="../assets/site.js"></script>
-<script src="../assets/brilliant.js"></script>
-<link rel="stylesheet" href="../assets/learning.css">
+<title>Bài 17: メモリ・キャッシュ — FE Master</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/reader.css">
 </head>
 <body>
-<div class="container">
-<header>
-  <h1>💾 メモリ・キャッシュ</h1>
-  <div class="sub">FE試験対策・Yasashii Ch.4 Lesson 04-03 (さまざまな記憶装置) + Slide 3_ハードウェア 第6-7回</div>
+
+<!-- Reading Progress Bar -->
+<div class="reading-progress-track">
+  <div class="reading-progress-bar" id="readingProgress"></div>
+</div>
+
+<!-- Minimal Sticky Top Header -->
+<header class="site-header">
+  <div class="header-container">
+    <div class="header-left">
+      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
+        <span class="text-ja">← ロードマップ</span>
+        <span class="text-vi">← Lộ trình</span>
+      </a>
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
+        <span class="sep">/</span>
+        <span>Mục tiêu 3</span>
+        <span class="sep">/</span>
+        <span class="current">Bài 17</span>
+      </nav>
+    </div>
+    <div class="header-right">
+      <div class="lang-selector">
+        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
+        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
+        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
+      </div>
+      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
+        <span id="zenIcon">📖</span>
+        <span id="zenText">Zen</span>
+      </button>
+      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
+        <span id="themeIcon">◐</span>
+      </button>
+    </div>
+  </div>
 </header>
+
+<!-- Main Two-Column Reader Layout -->
+<div class="page-container">
+
+  <!-- Left Content Column -->
+  <main class="main-content">
+
+    <div class="lesson-header">
+      <div class="lesson-meta-bar">
+        <span class="badge-lesson">BÀI 17 · CƠ SỞ LÝ THUYẾT</span>
+        <span class="badge-tag">MỤC TIÊU 3</span>
+        <span class="badge-tag">TRỌNG TÂM 科目A</span>
+      </div>
+      <h1 class="lesson-title">
+        メモリ・キャッシュ
+      </h1>
+      <div class="lesson-stats">
+        <span>⏱ ~30-45 phút đọc</span>
+        <span>·</span>
+        <span>Active Recall & Flashcards</span>
+      </div>
+    </div>
+
+    <!-- Lesson Content Body -->
+    <div class="lesson-body">
+
+
 
 <div class="warn">
 <b>📌 Lưu ý nguồn:</b> Chủ đề bạn ghi là "Yasashii Ch.4 Lesson 04-04", nhưng Lesson 04-04 thực tế là <b>入出力インタフェース</b> (USB/HDMI/daisy chain), không phải bộ nhớ. Nội dung <b>メモリ・キャッシュ</b> nằm ở <b>Lesson 04-03 さまざまな記憶装置</b>. Tài liệu này dùng nguồn đúng.
@@ -75,7 +82,7 @@ tr:hover td{background:#f9f3f0}
 
 <!-- ============ PHẦN 1: LÝ THUYẾT ============ -->
 <section>
-  <h2>📘 Phần 1 — Tóm tắt lý thuyết</h2>
+  <h2 id="part-1">📘 Phần 1 — Tóm tắt lý thuyết</h2>
 
   <h3>1.1. Phân cấp bộ nhớ (記憶装置の階層)</h3>
   <div class="lang-block">
@@ -163,7 +170,7 @@ tr:hover td{background:#f9f3f0}
 
 <!-- ============ PHẦN 2: VÍ DỤ ============ -->
 <section>
-  <h2>🧮 Phần 2 — Ví dụ minh hoạ</h2>
+  <h2 id="part-2">🧮 Phần 2 — Ví dụ minh hoạ</h2>
 
   <h3>Ví dụ 2.1: Tính 実効アクセス時間 (Yasashii nguyên văn)</h3>
   <div class="example-box">
@@ -218,7 +225,7 @@ tr:hover td{background:#f9f3f0}
 
 <!-- ============ PHẦN 3: FLASHCARD ============ -->
 <section>
-  <h2>🃏 Phần 3 — Flashcard</h2>
+  <h2 id="part-3">🃏 Phần 3 — Flashcard</h2>
   <p style="color:#394556;font-size:.92em;margin-bottom:12px">Click thẻ để lật. Lọc theo nhóm:</p>
   <div class="flashcards-controls">
     <button class="filter-btn active" onclick="filterFlash('all',this)">Tất cả</button>
@@ -232,74 +239,91 @@ tr:hover td{background:#f9f3f0}
 
 <!-- ============ PHẦN 4: QUIZ ============ -->
 <section>
-  <h2>✅ Phần 4 — Câu hỏi ôn tập (10 câu)</h2>
+  <h2 id="part-4">✅ Phần 4 — Câu hỏi ôn tập (10 câu)</h2>
   <div id="quizContainer"></div>
 </section>
 
-<!-- ============ PHẦN 5: MIND MAP SVG ============ -->
-<section>
-  <h2>🗺️ Phần 5 — Mind map</h2>
-  <div class="mindmap-wrap">
-    <svg viewBox="0 0 1000 700" xmlns="http://www.w3.org/2000/svg" style="font-family:system-ui,sans-serif">
-      <!-- Center -->
-      <ellipse cx="500" cy="350" rx="130" ry="50" fill="#c2410c" stroke="#fdba74" stroke-width="3"/>
-      <text x="500" y="345" text-anchor="middle" fill="#fff" font-size="18" font-weight="bold">メモリ</text>
-      <text x="500" y="365" text-anchor="middle" fill="#fed7aa" font-size="14">・キャッシュ</text>
 
-      <!-- Branch 1: メモリ種類 (top-left) - blue -->
-      <path d="M 400 320 Q 270 220 170 130" stroke="#38bdf8" stroke-width="3" fill="none"/>
-      <rect x="50" y="100" width="200" height="60" rx="14" fill="#0ea5e9" stroke="#bae6fd" stroke-width="2"/>
-      <text x="150" y="125" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">メモリ種類</text>
-      <text x="150" y="145" text-anchor="middle" fill="#e0f2fe" font-size="12">(Slide 第6回)</text>
-      <path d="M 100 160 Q 70 200 50 240" stroke="#38bdf8" stroke-width="2" fill="none"/>
-      <rect x="10" y="240" width="100" height="36" rx="8" fill="#0369a1" stroke="#7dd3fc"/>
-      <text x="60" y="263" text-anchor="middle" fill="#fff" font-size="12">RAM (DRAM/SRAM)</text>
-      <path d="M 200 160 Q 220 200 240 240" stroke="#38bdf8" stroke-width="2" fill="none"/>
-      <rect x="195" y="240" width="100" height="36" rx="8" fill="#0369a1" stroke="#7dd3fc"/>
-      <text x="245" y="263" text-anchor="middle" fill="#fff" font-size="12">ROM (Flash)</text>
+    </div>
 
-      <!-- Branch 2: キャッシュ (top-right) - amber -->
-      <path d="M 600 320 Q 730 220 830 130" stroke="#fbbf24" stroke-width="3" fill="none"/>
-      <rect x="730" y="100" width="200" height="60" rx="14" fill="#d97706" stroke="#fde68a" stroke-width="2"/>
-      <text x="830" y="125" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">キャッシュメモリ</text>
-      <text x="830" y="145" text-anchor="middle" fill="#fef3c7" font-size="12">(Cache)</text>
-      <path d="M 780 160 Q 750 200 730 240" stroke="#fbbf24" stroke-width="2" fill="none"/>
-      <rect x="670" y="240" width="120" height="36" rx="8" fill="#92400e" stroke="#fde68a"/>
-      <text x="730" y="263" text-anchor="middle" fill="#fff" font-size="12">ヒット率</text>
-      <path d="M 880 160 Q 900 200 920 240" stroke="#fbbf24" stroke-width="2" fill="none"/>
-      <rect x="820" y="240" width="170" height="36" rx="8" fill="#92400e" stroke="#fde68a"/>
-      <text x="905" y="263" text-anchor="middle" fill="#fff" font-size="12">実効アクセス時間</text>
+    <!-- Footer Navigation & Lesson Completion -->
+    <footer class="lesson-footer-nav">
+      <div class="completion-card">
+        <div>
+          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
+            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
+            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
+          </div>
+          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
+            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
+            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
+          </div>
+        </div>
+        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
+      </div>
 
-      <!-- Branch 3: 書き込み (bottom-right) - pink -->
-      <path d="M 600 380 Q 730 480 830 570" stroke="#f472b6" stroke-width="3" fill="none"/>
-      <rect x="730" y="540" width="200" height="60" rx="14" fill="#be185d" stroke="#fbcfe8" stroke-width="2"/>
-      <text x="830" y="565" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">書き込み方式</text>
-      <text x="830" y="585" text-anchor="middle" fill="#fce7f3" font-size="12">(Write policies)</text>
-      <path d="M 780 600 Q 750 630 730 660" stroke="#f472b6" stroke-width="2" fill="none"/>
-      <rect x="650" y="650" width="160" height="36" rx="8" fill="#9d174d" stroke="#fbcfe8"/>
-      <text x="730" y="673" text-anchor="middle" fill="#fff" font-size="12">ライトスルー (即時)</text>
-      <path d="M 880 600 Q 900 630 920 660" stroke="#f472b6" stroke-width="2" fill="none"/>
-      <rect x="830" y="650" width="160" height="36" rx="8" fill="#9d174d" stroke="#fbcfe8"/>
-      <text x="910" y="673" text-anchor="middle" fill="#fff" font-size="12">ライトバック (追出時)</text>
+      <div class="footer-nav-buttons">
+        
+        <a href="16.html" class="nav-link-card prev">
+          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
+          <span class="nav-target">
+            <span class="text-ja">レッスン 16</span>
+            <span class="text-vi">Bài học 16</span>
+          </span>
+        </a>
+        
+        <a href="18.html" class="nav-link-card next">
+          <span class="nav-dir">BÀI TIẾP THEO / NEXT →</span>
+          <span class="nav-target">
+            <span class="text-ja">レッスン 18</span>
+            <span class="text-vi">Bài học 18</span>
+          </span>
+        </a>
+      </div>
+    </footer>
 
-      <!-- Branch 4: 高速化 (bottom-left) - green -->
-      <path d="M 400 380 Q 270 480 170 570" stroke="#22c55e" stroke-width="3" fill="none"/>
-      <rect x="70" y="540" width="200" height="60" rx="14" fill="#15803d" stroke="#bbf7d0" stroke-width="2"/>
-      <text x="170" y="565" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">メモリ高速化</text>
-      <text x="170" y="585" text-anchor="middle" fill="#dcfce7" font-size="12">(Slide 第7回)</text>
-      <path d="M 120 600 Q 100 630 85 660" stroke="#22c55e" stroke-width="2" fill="none"/>
-      <rect x="20" y="650" width="130" height="36" rx="8" fill="#166534" stroke="#bbf7d0"/>
-      <text x="85" y="673" text-anchor="middle" fill="#fff" font-size="12">多段キャッシュ</text>
-      <path d="M 220 600 Q 250 630 270 660" stroke="#22c55e" stroke-width="2" fill="none"/>
-      <rect x="195" y="650" width="170" height="36" rx="8" fill="#166534" stroke="#bbf7d0"/>
-      <text x="280" y="673" text-anchor="middle" fill="#fff" font-size="12">メモリインタリーブ</text>
-    </svg>
-  </div>
-</section>
+  </main>
+
+  <!-- Right Sticky Sidebar -->
+  <aside class="sticky-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span class="text-ja">目次 (TOC)</span>
+        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
+      </div>
+      <nav>
+        <ul class="toc-list" id="tocList">
+
+          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+  
+          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+  
+          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+  
+          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
+  
+        </ul>
+      </nav>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="text-ja">クイック復習</span>
+        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
+      </div>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
+        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
+        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
+      </p>
+    </div>
+  </aside>
 
 </div>
 
 <script>
+
 const FLASH = [
   {f:"RAM",b:"Random Access Memory — 読み書き可能、揮発性 (電源OFFで消失). 例: DRAM, SRAM.",cat:"Memory"},
   {f:"ROM",b:"Read Only Memory — 読み出し専用、不揮発性. 例: マスクROM, EPROM, EEPROM, Flash.",cat:"Memory"},
@@ -363,6 +387,8 @@ function pickQ(qi,oi,el){
   document.getElementById('exp-'+qi).classList.add('open');
 }
 renderQuiz();
+
 </script>
+<script src="../assets/reader.js"></script>
 </body>
 </html>

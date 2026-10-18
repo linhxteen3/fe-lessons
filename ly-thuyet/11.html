@@ -1,66 +1,79 @@
-﻿<!DOCTYPE html>
-<html lang="vi">
+<!DOCTYPE html>
+<html lang="vi" data-theme="light" data-lang="dual">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>データ構造 — Stack / Queue / Tree(木構造)| Yasashii Ch.3 Lesson 03-01</title>
-<style>
-:root{
-  --bg:#0f1115; --panel:#161a22; --panel2:#1d2230; --line:#2a3142;
-  --txt:#e6e8ee; --mute:#9aa3b2; --accent:#f59e0b; --accent2:#22d3ee;
-  --jp:#fb7185; --vi:#facc15; --en:#34d399; --ok:#22c55e; --bad:#ef4444;
-  --card:#1a1f2a;
-}
-*{box-sizing:border-box}
-body{margin:0;padding:24px;background:var(--bg);color:var(--txt);
-  font-family:system-ui,"Noto Sans JP",sans-serif;line-height:1.6;max-width:1100px;margin:0 auto}
-h1{font-family:Syne,system-ui,sans-serif;font-size:28px;margin:0 0 6px;color:var(--accent)}
-h2{font-family:Syne,system-ui,sans-serif;color:var(--accent2);border-bottom:2px solid var(--line);padding-bottom:8px;margin-top:36px}
-h3{color:var(--accent);margin-top:24px}
-h4{color:var(--accent2);margin:14px 0 6px}
-.sub{color:var(--mute);font-size:14px;margin-bottom:24px}
-.lang{padding:10px 14px;border-left:4px solid var(--line);margin:8px 0;background:var(--panel);border-radius:6px}
-.jp{border-color:var(--jp)} .vi{border-color:var(--vi)} .en{border-color:var(--en)}
-.lang .tag{font-family:"Space Mono",monospace;font-size:12px;color:var(--mute);display:block;margin-bottom:4px}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px;margin:14px 0}
-.callout{background:var(--panel2);border-left:4px solid var(--accent);padding:12px 16px;border-radius:6px;margin:12px 0}
-.callout b{color:var(--accent)}
-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;background:var(--panel)}
-th,td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}
-th{background:var(--panel2);color:var(--accent2)}
-code,.mono{font-family:"Space Mono",monospace;background:#f2f4f8;padding:1px 6px;border-radius:4px;color:var(--accent)}
-.ascii{font-family:"Space Mono",monospace;background:#f2f4f8;padding:14px;border-radius:8px;
-  white-space:pre;overflow-x:auto;font-size:13px;color:var(--accent2);border:1px solid var(--line)}
-.flash{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin:14px 0}
-.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;min-height:120px;
-  display:flex;align-items:center;justify-content:center;text-align:center;transition:border-color .2s;user-select:none}
-.card:hover{border-color:var(--accent)}
-.card .front{font-weight:700;color:var(--accent2);font-size:15px}
-.card .back{display:none;color:var(--txt);font-size:14px}
-.card.flip .front{display:none}
-.card.flip .back{display:block}
-.quiz-q{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;margin:10px 0}
-.quiz-q .opts label{display:block;padding:8px 10px;margin:4px 0;background:var(--card);border:1px solid var(--line);border-radius:6px;cursor:pointer}
-.quiz-q .opts label:hover{border-color:var(--accent)}
-.quiz-q .opts input{margin-right:8px}
-.quiz-q .ans{display:none;margin-top:10px;padding:10px;background:#f0f9f5;border-left:3px solid var(--ok);border-radius:4px;color:var(--ok);font-size:14px}
-.quiz-q.show .ans{display:block}
-button{background:var(--accent);color:#0a0d12;border:none;padding:8px 16px;border-radius:6px;font-weight:700;cursor:pointer;font-family:inherit}
-button:hover{background:#fbbf24}
-.tags span{display:inline-block;background:var(--panel2);color:var(--accent2);padding:2px 8px;border-radius:4px;font-size:12px;margin-right:6px;font-family:"Space Mono",monospace}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:700px){.grid2{grid-template-columns:1fr}}
-.stack-vis,.queue-vis{font-family:"Space Mono",monospace;background:#f2f4f8;border:1px solid var(--line);border-radius:8px;padding:14px;text-align:center}
-.box{display:inline-block;border:1px solid var(--accent);background:var(--panel2);padding:8px 14px;margin:2px;border-radius:4px;min-width:60px}
-.arrow{color:var(--accent);font-weight:700;margin:0 6px}
-</style>
-<link rel="stylesheet" href="../assets/brilliant.css">
-<link rel="stylesheet" href="../assets/site.css">
-<script src="../assets/site.js"></script>
-<script src="../assets/brilliant.js"></script>
-<link rel="stylesheet" href="../assets/learning.css">
+<title>Bài 11: データ構造 — FE Master</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/reader.css">
 </head>
 <body>
+
+<!-- Reading Progress Bar -->
+<div class="reading-progress-track">
+  <div class="reading-progress-bar" id="readingProgress"></div>
+</div>
+
+<!-- Minimal Sticky Top Header -->
+<header class="site-header">
+  <div class="header-container">
+    <div class="header-left">
+      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
+        <span class="text-ja">← ロードマップ</span>
+        <span class="text-vi">← Lộ trình</span>
+      </a>
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
+        <span class="sep">/</span>
+        <span>Mục tiêu 2</span>
+        <span class="sep">/</span>
+        <span class="current">Bài 11</span>
+      </nav>
+    </div>
+    <div class="header-right">
+      <div class="lang-selector">
+        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
+        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
+        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
+      </div>
+      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
+        <span id="zenIcon">📖</span>
+        <span id="zenText">Zen</span>
+      </button>
+      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
+        <span id="themeIcon">◐</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Main Two-Column Reader Layout -->
+<div class="page-container">
+
+  <!-- Left Content Column -->
+  <main class="main-content">
+
+    <div class="lesson-header">
+      <div class="lesson-meta-bar">
+        <span class="badge-lesson">BÀI 11 · CƠ SỞ LÝ THUYẾT</span>
+        <span class="badge-tag">MỤC TIÊU 2</span>
+        <span class="badge-tag">TRỌNG TÂM 科目A</span>
+      </div>
+      <h1 class="lesson-title">
+        データ構造
+      </h1>
+      <div class="lesson-stats">
+        <span>⏱ ~30-45 phút đọc</span>
+        <span>·</span>
+        <span>Active Recall & Flashcards</span>
+      </div>
+    </div>
+
+    <!-- Lesson Content Body -->
+    <div class="lesson-body">
+
 
 <h1>データ構造 — Stack / Queue / Tree(木構造)</h1>
 <div class="sub">📘 Yasashii Ch.3 Lesson 03-01 · データ構造の種類 (スタック・キュー・木構造)
@@ -72,7 +85,7 @@ button:hover{background:#fbbf24}
 </div>
 
 <!-- ============ PHẦN 1 ============ -->
-<h2>📚 Phần 1 — Tóm tắt lý thuyết</h2>
+<h2 id="part-1">📚 Phần 1 — Tóm tắt lý thuyết</h2>
 
 <h3>0. データ構造 là gì?</h3>
 <div class="lang jp"><span class="tag">🇯🇵 日本語</span>
@@ -243,7 +256,7 @@ Sai vì:
 </table>
 
 <!-- ============ PHẦN 2 ============ -->
-<h2>💡 Phần 2 — Ví dụ minh hoạ</h2>
+<h2 id="part-2">💡 Phần 2 — Ví dụ minh hoạ</h2>
 
 <h3>Ví dụ 1 — Stack: dãy thao tác push/pop</h3>
 <div class="panel">
@@ -299,85 +312,97 @@ Bước 6: dequeue   → [C, D]            ← lấy B
 </table>
 
 <!-- ============ PHẦN 3 FLASHCARD ============ -->
-<h2>🎴 Phần 3 — Flashcard (bấm để lật)</h2>
+<h2 id="part-3">🎴 Phần 3 — Flashcard (bấm để lật)</h2>
 <p style="color:var(--mute);font-size:14px">Click vào thẻ để xem mặt sau. Click lần nữa để quay lại.</p>
 <div class="flash" id="flash"></div>
 
 <!-- ============ PHẦN 4 QUIZ ============ -->
-<h2>📝 Phần 4 — Câu hỏi ôn tập (10 câu)</h2>
+<h2 id="part-4">📝 Phần 4 — Câu hỏi ôn tập (10 câu)</h2>
 <p style="color:var(--mute);font-size:14px">Chọn đáp án rồi bấm "Hiện đáp án" cuối trang.</p>
 <div id="quiz"></div>
 <div style="margin:16px 0"><button onclick="showAllAns()">✅ Hiện toàn bộ đáp án</button></div>
 
-<!-- ============ PHẦN 5 MIND MAP SVG ============ -->
-<h2>🗺️ Phần 5 — Mind Map (SVG)</h2>
-<div class="panel" style="background:#fff;padding:8px">
-<svg viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:system-ui,'Noto Sans JP',sans-serif">
-  <!-- center -->
-  <ellipse cx="550" cy="360" rx="120" ry="55" fill="#f59e0b" stroke="#92400e" stroke-width="2"/>
-  <text x="550" y="355" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1a1a">データ構造</text>
-  <text x="550" y="378" text-anchor="middle" font-size="13" fill="#1a1a1a">Stack/Queue/Tree</text>
 
-  <!-- branch 1 STACK (red) -->
-  <path d="M 480 330 Q 320 220 200 150" stroke="#ef4444" stroke-width="3" fill="none"/>
-  <rect x="80" y="120" width="200" height="60" rx="12" fill="#ef4444" stroke="#991b1b" stroke-width="2"/>
-  <text x="180" y="145" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">スタック (Stack)</text>
-  <text x="180" y="165" text-anchor="middle" font-size="13" fill="#fff">LIFO / 後入れ先出し</text>
-  <!-- stack children -->
-  <path d="M 180 180 Q 100 200 60 240" stroke="#ef4444" stroke-width="2" fill="none"/>
-  <rect x="10" y="240" width="120" height="36" rx="8" fill="#fca5a5" stroke="#ef4444"/>
-  <text x="70" y="263" text-anchor="middle" font-size="12" fill="#7f1d1d">push / pop</text>
-  <path d="M 180 180 Q 200 220 220 250" stroke="#ef4444" stroke-width="2" fill="none"/>
-  <rect x="150" y="250" width="140" height="36" rx="8" fill="#fca5a5" stroke="#ef4444"/>
-  <text x="220" y="273" text-anchor="middle" font-size="12" fill="#7f1d1d">chồng sách 📚</text>
+    </div>
 
-  <!-- branch 2 QUEUE (green) -->
-  <path d="M 480 390 Q 320 500 200 580" stroke="#22c55e" stroke-width="3" fill="none"/>
-  <rect x="80" y="560" width="200" height="60" rx="12" fill="#22c55e" stroke="#166534" stroke-width="2"/>
-  <text x="180" y="585" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">キュー (Queue)</text>
-  <text x="180" y="605" text-anchor="middle" font-size="13" fill="#fff">FIFO / 先入れ先出し</text>
-  <path d="M 180 620 Q 100 640 60 670" stroke="#22c55e" stroke-width="2" fill="none"/>
-  <rect x="10" y="670" width="150" height="36" rx="8" fill="#86efac" stroke="#22c55e"/>
-  <text x="85" y="693" text-anchor="middle" font-size="12" fill="#14532d">enqueue / dequeue</text>
-  <path d="M 180 620 Q 230 650 260 680" stroke="#22c55e" stroke-width="2" fill="none"/>
-  <rect x="190" y="680" width="140" height="36" rx="8" fill="#86efac" stroke="#22c55e"/>
-  <text x="260" y="703" text-anchor="middle" font-size="12" fill="#14532d">hàng chờ 🛒</text>
+    <!-- Footer Navigation & Lesson Completion -->
+    <footer class="lesson-footer-nav">
+      <div class="completion-card">
+        <div>
+          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
+            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
+            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
+          </div>
+          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
+            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
+            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
+          </div>
+        </div>
+        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
+      </div>
 
-  <!-- branch 3 TREE (blue) -->
-  <path d="M 620 330 Q 780 220 900 150" stroke="#3b82f6" stroke-width="3" fill="none"/>
-  <rect x="820" y="120" width="200" height="60" rx="12" fill="#3b82f6" stroke="#1e3a8a" stroke-width="2"/>
-  <text x="920" y="145" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">木構造 (Tree)</text>
-  <text x="920" y="165" text-anchor="middle" font-size="13" fill="#fff">階層構造</text>
-  <!-- tree children -->
-  <path d="M 920 180 Q 970 220 990 260" stroke="#3b82f6" stroke-width="2" fill="none"/>
-  <rect x="930" y="260" width="160" height="36" rx="8" fill="#93c5fd" stroke="#3b82f6"/>
-  <text x="1010" y="283" text-anchor="middle" font-size="12" fill="#1e3a8a">根 / 節 / 葉</text>
-  <path d="M 920 180 Q 870 220 850 260" stroke="#3b82f6" stroke-width="2" fill="none"/>
-  <rect x="770" y="260" width="160" height="36" rx="8" fill="#93c5fd" stroke="#3b82f6"/>
-  <text x="850" y="283" text-anchor="middle" font-size="12" fill="#1e3a8a">親 / 子 / 子孫</text>
-  <path d="M 920 180 Q 940 240 960 300" stroke="#3b82f6" stroke-width="2" fill="none"/>
-  <rect x="880" y="300" width="120" height="36" rx="8" fill="#93c5fd" stroke="#3b82f6"/>
-  <text x="940" y="323" text-anchor="middle" font-size="12" fill="#1e3a8a">n分木</text>
+      <div class="footer-nav-buttons">
+        
+        <a href="10.html" class="nav-link-card prev">
+          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
+          <span class="nav-target">
+            <span class="text-ja">レッスン 10</span>
+            <span class="text-vi">Bài học 10</span>
+          </span>
+        </a>
+        
+        <a href="12.html" class="nav-link-card next">
+          <span class="nav-dir">BÀI TIẾP THEO / NEXT →</span>
+          <span class="nav-target">
+            <span class="text-ja">レッスン 12</span>
+            <span class="text-vi">Bài học 12</span>
+          </span>
+        </a>
+      </div>
+    </footer>
 
-  <!-- branch 4 BST (purple) -->
-  <path d="M 620 390 Q 780 500 900 580" stroke="#a855f7" stroke-width="3" fill="none"/>
-  <rect x="820" y="560" width="220" height="60" rx="12" fill="#a855f7" stroke="#581c87" stroke-width="2"/>
-  <text x="930" y="585" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">2分探索木 (BST)</text>
-  <text x="930" y="605" text-anchor="middle" font-size="12" fill="#fff">左子孫 &lt; 親 &lt; 右子孫</text>
-  <path d="M 930 620 Q 870 650 850 680" stroke="#a855f7" stroke-width="2" fill="none"/>
-  <rect x="770" y="680" width="160" height="36" rx="8" fill="#d8b4fe" stroke="#a855f7"/>
-  <text x="850" y="703" text-anchor="middle" font-size="12" fill="#581c87">tìm kiếm nhanh</text>
-  <path d="M 930 620 Q 990 650 1010 680" stroke="#a855f7" stroke-width="2" fill="none"/>
-  <rect x="930" y="680" width="160" height="36" rx="8" fill="#d8b4fe" stroke="#a855f7"/>
-  <text x="1010" y="703" text-anchor="middle" font-size="12" fill="#581c87">子孫 (not just 子)</text>
-</svg>
-</div>
+  </main>
 
-<div style="margin-top:30px;padding:14px;background:var(--panel2);border-radius:8px;color:var(--mute);font-size:13px">
-📖 Nguồn: 「いちばんやさしい基本情報技術者」(Yasashii) — 第3章 アルゴリズムとプログラミング, Lesson 03-01「データ構造」(pp.80–88).
+  <!-- Right Sticky Sidebar -->
+  <aside class="sticky-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span class="text-ja">目次 (TOC)</span>
+        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
+      </div>
+      <nav>
+        <ul class="toc-list" id="tocList">
+
+          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+  
+          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+  
+          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+  
+          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
+  
+        </ul>
+      </nav>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="text-ja">クイック復習</span>
+        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
+      </div>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
+        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
+        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
+      </p>
+    </div>
+  </aside>
+
 </div>
 
 <script>
+
 // =============== FLASHCARDS ===============
 const flashData = [
  ["スタック (Stack) とは?","Cấu trúc dữ liệu LIFO — 後入れ先出し. Phần tử nhập sau lấy ra trước. Hình ảnh: chồng sách."],
@@ -448,7 +473,8 @@ quizData.forEach((it,i)=>{
   quizEl.appendChild(d);
 });
 function showAllAns(){document.querySelectorAll('.quiz-q').forEach(q=>q.classList.add('show'));}
-</script>
 
+</script>
+<script src="../assets/reader.js"></script>
 </body>
 </html>

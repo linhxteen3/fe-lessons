@@ -1,399 +1,83 @@
-﻿<!DOCTYPE html>
-<html lang="vi">
+<!DOCTYPE html>
+<html lang="vi" data-theme="light" data-lang="dual">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI + 確率 (Xác suất) — Tài liệu học FE</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Be+Vietnam+Pro:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
-
-  :root {
-    --bg: #0d0f1a;
-    --surface: #141728;
-    --surface2: #1c2035;
-    --border: #2a2e4a;
-    --accent1: #7c6ff7;   /* purple */
-    --accent2: #00d4aa;   /* teal */
-    --accent3: #ff6b6b;   /* red */
-    --accent4: #ffd93d;   /* yellow */
-    --accent5: #6bcb77;   /* green */
-    --text: #e8eaf6;
-    --text-dim: #7a7f9a;
-    --jp: #a5b4fc;
-    --vi: #6ee7b7;
-    --en: #fde68a;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Be Vietnam Pro', 'Noto Sans JP', sans-serif;
-    line-height: 1.7;
-    min-height: 100vh;
-  }
-
-  /* ---- HEADER ---- */
-  header {
-    background: linear-gradient(135deg, #1a1040 0%, #0d2040 50%, #0d1a30 100%);
-    padding: 3rem 2rem 2rem;
-    text-align: center;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-    overflow: hidden;
-  }
-  header::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 30% 50%, rgba(124,111,247,0.15) 0%, transparent 60%),
-                radial-gradient(ellipse at 70% 50%, rgba(0,212,170,0.1) 0%, transparent 60%);
-  }
-  header h1 {
-    font-size: clamp(1.8rem, 4vw, 3rem);
-    font-weight: 700;
-    background: linear-gradient(90deg, var(--accent1), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    position: relative;
-  }
-  header p {
-    color: var(--text-dim);
-    margin-top: .5rem;
-    font-size: .95rem;
-    position: relative;
-  }
-  .badge-row {
-    display: flex; flex-wrap: wrap; gap: .5rem;
-    justify-content: center; margin-top: 1rem; position: relative;
-  }
-  .badge {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: .25rem .75rem;
-    font-size: .78rem;
-    color: var(--text-dim);
-  }
-
-  /* ---- NAV TABS ---- */
-  nav {
-    position: sticky;
-    top: 0; z-index: 100;
-    background: rgba(13,15,26,0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    display: flex; flex-wrap: wrap;
-    overflow-x: auto;
-    padding: 0 1rem;
-  }
-  nav button {
-    background: none; border: none; cursor: pointer;
-    color: var(--text-dim);
-    padding: .9rem 1.1rem;
-    font-size: .85rem;
-    font-family: inherit;
-    border-bottom: 2px solid transparent;
-    white-space: nowrap;
-    transition: color .2s, border-color .2s;
-  }
-  nav button:hover { color: var(--text); }
-  nav button.active { color: var(--accent1); border-bottom-color: var(--accent1); }
-
-  /* ---- MAIN ---- */
-  main { max-width: 980px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
-  section { display: none; }
-  section.active { display: block; }
-
-  /* ---- TYPOGRAPHY ---- */
-  h2 {
-    font-size: 1.5rem; font-weight: 700;
-    margin-bottom: 1.5rem;
-    display: flex; align-items: center; gap: .6rem;
-  }
-  h2 .icon {
-    width: 2rem; height: 2rem; border-radius: .4rem;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem; flex-shrink: 0;
-  }
-  h3 { font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 .6rem; color: var(--accent2); }
-
-  /* ---- CARDS ---- */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: .75rem;
-    padding: 1.5rem;
-    margin-bottom: 1.25rem;
-  }
-  .card-title {
-    font-size: 1rem; font-weight: 700;
-    margin-bottom: 1rem;
-    padding-bottom: .6rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* ---- LANG BLOCKS ---- */
-  .lang-block { margin-bottom: 1rem; }
-  .lang-label {
-    display: inline-flex; align-items: center; gap: .35rem;
-    font-size: .72rem; font-weight: 700;
-    border-radius: 4px; padding: .15rem .5rem;
-    margin-bottom: .4rem;
-    letter-spacing: .05em;
-  }
-  .lang-jp { background: rgba(165,180,252,0.15); color: var(--jp); border: 1px solid rgba(165,180,252,0.3); }
-  .lang-vi { background: rgba(110,231,183,0.15); color: var(--vi); border: 1px solid rgba(110,231,183,0.3); }
-  .lang-en { background: rgba(253,230,138,0.15); color: var(--en); border: 1px solid rgba(253,230,138,0.3); }
-  .lang-content { font-size: .92rem; color: var(--text); padding-left: .5rem; }
-
-  /* ---- DEFINITION BOX ---- */
-  .def-box {
-    background: var(--surface2);
-    border-left: 3px solid var(--accent1);
-    border-radius: 0 .5rem .5rem 0;
-    padding: .9rem 1rem;
-    margin: .75rem 0;
-    font-size: .9rem;
-  }
-  .def-box.teal { border-left-color: var(--accent2); }
-  .def-box.red { border-left-color: var(--accent3); }
-  .def-box.yellow { border-left-color: var(--accent4); }
-  .def-box.green { border-left-color: var(--accent5); }
-
-  /* ---- FORMULA ---- */
-  .formula {
-    background:#f0f2f9;
-    border: 1px solid var(--accent1);
-    border-radius: .5rem;
-    padding: 1rem 1.25rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 1rem;
-    color: var(--accent4);
-    margin: .75rem 0;
-    text-align: center;
-    letter-spacing: .03em;
-  }
-
-  /* ---- TABLE ---- */
-  .tbl-wrap { overflow-x: auto; margin: .75rem 0; }
-  table { width: 100%; border-collapse: collapse; font-size: .87rem; }
-  th {
-    background: rgba(124,111,247,0.2);
-    color: var(--accent1);
-    padding: .6rem .9rem;
-    text-align: left;
-    font-weight: 600;
-    border-bottom: 2px solid var(--accent1);
-  }
-  td {
-    padding: .55rem .9rem;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-  }
-  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
-  tr:hover td { background: rgba(124,111,247,0.05); }
-
-  /* ---- DIAGRAM ---- */
-  .diagram {
-    background:#f0f3f9;
-    border: 1px solid var(--border);
-    border-radius: .6rem;
-    padding: 1.25rem;
-    margin: .75rem 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: .82rem;
-    color: var(--accent2);
-    line-height: 1.9;
-    overflow-x: auto;
-    white-space: pre;
-  }
-
-  /* ---- FLASHCARD ---- */
-  .flashcard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1rem;
-  }
-  .flashcard {
-    perspective: 600px;
-    height: 160px;
-    cursor: pointer;
-  }
-  .flashcard-inner {
-    position: relative;
-    width: 100%; height: 100%;
-    transform-style: preserve-3d;
-    transition: transform .55s cubic-bezier(.4,0,.2,1);
-  }
-  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
-  .fc-front, .fc-back {
-    position: absolute; inset: 0;
-    border-radius: .65rem;
-    backface-visibility: hidden;
-    display: flex; flex-direction: column;
-    justify-content: center; align-items: center;
-    text-align: center;
-    padding: 1rem;
-  }
-  .fc-front {
-    background: var(--surface);
-    border: 1px solid var(--border);
-  }
-  .fc-back {
-    background: linear-gradient(135deg, #1a1040, #0d2040);
-    border: 1px solid var(--accent1);
-    transform: rotateY(180deg);
-    font-size: .85rem;
-    color: var(--text);
-  }
-  .fc-term {
-    font-size: 1rem; font-weight: 700;
-    color: var(--accent1);
-  }
-  .fc-sub {
-    font-size: .75rem; color: var(--text-dim); margin-top: .25rem;
-  }
-  .fc-hint {
-    font-size: .7rem; color: var(--text-dim);
-    margin-top: auto; padding-top: .5rem;
-  }
-
-  /* ---- QUIZ ---- */
-  .quiz-item { margin-bottom: 2rem; }
-  .quiz-q {
-    font-weight: 600; margin-bottom: .75rem;
-    padding: .9rem 1rem;
-    background: var(--surface);
-    border-radius: .5rem;
-    border-left: 3px solid var(--accent4);
-  }
-  .quiz-options { display: flex; flex-direction: column; gap: .45rem; }
-  .quiz-opt {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: .4rem;
-    padding: .55rem .9rem;
-    cursor: pointer;
-    font-size: .9rem;
-    transition: border-color .2s, background .2s;
-  }
-  .quiz-opt:hover { border-color: var(--accent1); background: rgba(124,111,247,0.08); }
-  .quiz-opt.correct { border-color: var(--accent5); background: rgba(107,203,119,0.15); }
-  .quiz-opt.wrong { border-color: var(--accent3); background: rgba(255,107,107,0.1); }
-  .quiz-explain {
-    display: none; margin-top: .75rem;
-    padding: .8rem 1rem;
-    background: rgba(0,212,170,0.08);
-    border: 1px solid rgba(0,212,170,0.25);
-    border-radius: .4rem;
-    font-size: .85rem;
-    color: var(--vi);
-  }
-  .quiz-explain.show { display: block; }
-
-  /* ---- AI TREE ---- */
-  .ai-tree {
-    display: flex; flex-direction: column; gap: 1rem;
-  }
-  .tree-node {
-    border-radius: .6rem;
-    overflow: hidden;
-    border: 1px solid var(--border);
-  }
-  .tree-head {
-    padding: .75rem 1rem;
-    font-weight: 700;
-    display: flex; align-items: center; gap: .5rem;
-  }
-  .tree-body {
-    padding: .75rem 1rem;
-    font-size: .88rem;
-    background: var(--surface2);
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: .5rem;
-  }
-  @media (max-width: 600px) { .tree-body { grid-template-columns: 1fr; } }
-  .tree-child {
-    background: rgba(255,255,255,0.04);
-    border-radius: .4rem;
-    padding: .5rem .75rem;
-    border-left: 3px solid;
-  }
-  .tree-child-title { font-weight: 600; font-size: .88rem; }
-  .tree-child-desc { font-size: .8rem; color: var(--text-dim); margin-top: .2rem; }
-
-  /* ---- HIGHLIGHT ---- */
-  .hl { color: var(--accent4); font-weight: 700; }
-  .hl-teal { color: var(--accent2); font-weight: 600; }
-  .hl-purple { color: var(--accent1); font-weight: 600; }
-  .tag {
-    display: inline-block;
-    background: rgba(124,111,247,0.15);
-    border: 1px solid rgba(124,111,247,0.3);
-    color: var(--accent1);
-    border-radius: 4px;
-    padding: .05rem .4rem;
-    font-size: .75rem;
-    margin-right: .25rem;
-  }
-  .tag.exam { background: rgba(255,107,107,0.15); border-color: rgba(255,107,107,.3); color: var(--accent3); }
-
-  /* ---- EXAMPLE CALC ---- */
-  .calc-box {
-    background:#f0f3f9;
-    border: 1px solid var(--accent2);
-    border-radius: .6rem;
-    padding: 1.1rem 1.25rem;
-    margin: .75rem 0;
-    font-size: .88rem;
-  }
-  .calc-step {
-    display: flex; gap: .75rem; margin-bottom: .5rem;
-    align-items: baseline;
-  }
-  .step-num {
-    flex-shrink: 0;
-    width: 1.4rem; height: 1.4rem;
-    border-radius: 50%;
-    background: var(--accent2);
-    color: #0a0f1a;
-    font-weight: 700; font-size: .7rem;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .step-text { font-size: .86rem; }
-
-  /* ---- MINDMAP placeholder ---- */
-  .mindmap-container { width: 100%; overflow-x: auto; }
-</style>
-<link rel="stylesheet" href="../assets/brilliant.css">
-<link rel="stylesheet" href="../assets/site.css">
-<script src="../assets/site.js"></script>
-<script src="../assets/brilliant.js"></script>
-<link rel="stylesheet" href="../assets/learning.css">
+<title>Bài 09: AI + 確率 (Xác suất) — FE Master</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/reader.css">
 </head>
 <body>
 
-<header>
-  <h1>🤖 AI + 確率 (Xác suất)</h1>
-  <p>Tài liệu học tập toàn diện — Kỳ thi FE / IT Passport</p>
-  <div class="badge-row">
-    <span class="badge">📚 Yasashii Ch.2 Lesson 02-05</span>
-    <span class="badge">📚 Yasashii Ch.20 Lesson 20-03</span>
-    <span class="badge">📘 Slide 第10回 基礎理論</span>
-    <span class="badge">🇯🇵 日本語 | 🇻🇳 Tiếng Việt | 🇬🇧 English</span>
+<!-- Reading Progress Bar -->
+<div class="reading-progress-track">
+  <div class="reading-progress-bar" id="readingProgress"></div>
+</div>
+
+<!-- Minimal Sticky Top Header -->
+<header class="site-header">
+  <div class="header-container">
+    <div class="header-left">
+      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
+        <span class="text-ja">← ロードマップ</span>
+        <span class="text-vi">← Lộ trình</span>
+      </a>
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
+        <span class="sep">/</span>
+        <span>Mục tiêu 1</span>
+        <span class="sep">/</span>
+        <span class="current">Bài 09</span>
+      </nav>
+    </div>
+    <div class="header-right">
+      <div class="lang-selector">
+        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
+        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
+        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
+      </div>
+      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
+        <span id="zenIcon">📖</span>
+        <span id="zenText">Zen</span>
+      </button>
+      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
+        <span id="themeIcon">◐</span>
+      </button>
+    </div>
   </div>
 </header>
 
-<nav id="mainnav">
-  <button class="active" onclick="switchTab('theory')">📖 Lý thuyết</button>
-  <button onclick="switchTab('example')">💡 Ví dụ</button>
-  <button onclick="switchTab('flash')">🃏 Flashcard</button>
-  <button onclick="switchTab('quiz')">✏️ Câu hỏi</button>
-  <button onclick="switchTab('mindmap')">🗺️ Mind Map</button>
-</nav>
+<!-- Main Two-Column Reader Layout -->
+<div class="page-container">
+
+  <!-- Left Content Column -->
+  <main class="main-content">
+
+    <div class="lesson-header">
+      <div class="lesson-meta-bar">
+        <span class="badge-lesson">BÀI 09 · CƠ SỞ LÝ THUYẾT</span>
+        <span class="badge-tag">MỤC TIÊU 1</span>
+        <span class="badge-tag">TRỌNG TÂM 科目A</span>
+      </div>
+      <h1 class="lesson-title">
+        AI + 確率 (Xác suất)
+      </h1>
+      <div class="lesson-stats">
+        <span>⏱ ~30-45 phút đọc</span>
+        <span>·</span>
+        <span>Active Recall & Flashcards</span>
+      </div>
+    </div>
+
+    <!-- Lesson Content Body -->
+    <div class="lesson-body">
+
+
+
+
+
 
 <main>
 
@@ -401,7 +85,7 @@
      PHẦN 1: LÝ THUYẾT
 =============================== -->
 <section id="theory" class="active">
-  <h2><span class="icon" style="background:rgba(124,111,247,0.2);color:var(--accent1)">📖</span> Phần 1 — Tóm tắt Lý thuyết</h2>
+  <h2 id="part-1"><span class="icon" style="background:rgba(124,111,247,0.2);color:var(--accent1)">📖</span> Phần 1 — Tóm tắt Lý thuyết</h2>
 
   <!-- AI -->
   <div class="card">
@@ -645,7 +329,7 @@
      PHẦN 2: VÍ DỤ MINH HỌA
 =============================== -->
 <section id="example">
-  <h2><span class="icon" style="background:rgba(0,212,170,0.2);color:var(--accent2)">💡</span> Phần 2 — Ví dụ Minh họa</h2>
+  <h2 id="part-2"><span class="icon" style="background:rgba(0,212,170,0.2);color:var(--accent2)">💡</span> Phần 2 — Ví dụ Minh họa</h2>
 
   <!-- AI Examples -->
   <div class="card">
@@ -742,7 +426,7 @@
      PHẦN 3: FLASHCARD
 =============================== -->
 <section id="flash">
-  <h2><span class="icon" style="background:rgba(255,107,107,0.2);color:var(--accent3)">🃏</span> Phần 3 — Flashcard</h2>
+  <h2 id="part-3"><span class="icon" style="background:rgba(255,107,107,0.2);color:var(--accent3)">🃏</span> Phần 3 — Flashcard</h2>
   <p style="color:var(--text-dim);margin-bottom:1.5rem;font-size:.88rem">👆 Nhấn vào thẻ để lật xem đáp án</p>
 
   <div class="flashcard-grid">
@@ -894,7 +578,7 @@
      PHẦN 4: CÂU HỎI ÔN TẬP
 =============================== -->
 <section id="quiz">
-  <h2><span class="icon" style="background:rgba(255,217,61,0.2);color:var(--accent4)">✏️</span> Phần 4 — Câu hỏi Ôn tập</h2>
+  <h2 id="part-4"><span class="icon" style="background:rgba(255,217,61,0.2);color:var(--accent4)">✏️</span> Phần 4 — Câu hỏi Ôn tập</h2>
 
   <div class="quiz-item">
     <div class="quiz-q">Q1. AIにおける機械学習の説明として、最も適切なものはどれか。<br><span style="color:var(--text-dim);font-size:.82rem">(Mô tả đúng nhất về Machine Learning trong AI là gì?)</span></div>
@@ -968,153 +652,97 @@
 <!-- ==============================
      PHẦN 5: MIND MAP
 =============================== -->
-<section id="mindmap">
-  <h2><span class="icon" style="background:rgba(107,203,119,0.2);color:var(--accent5)">🗺️</span> Phần 5 — Mind Map</h2>
 
-  <div class="mindmap-container">
-    <svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;font-family:'Be Vietnam Pro',sans-serif;">
-      <defs>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-      </defs>
-
-      <!-- Background -->
-      <rect width="960" height="600" fill="#0d0f1a" rx="12"/>
-
-      <!-- ===== CENTER NODE ===== -->
-      <ellipse cx="480" cy="300" rx="90" ry="50" fill="#3730a3" stroke="#7c6ff7" stroke-width="2.5" filter="url(#glow)"/>
-      <text x="480" y="294" text-anchor="middle" fill="white" font-size="13" font-weight="700">AI + 確率</text>
-      <text x="480" y="312" text-anchor="middle" fill="#c7d2fe" font-size="10">Xác suất trong AI</text>
-
-      <!-- ===== BRANCH 1: 機械学習 (left-up) ===== -->
-      <!-- Bezier curve -->
-      <path d="M 395 275 C 320 240, 260 200, 195 185" stroke="#00d4aa" stroke-width="2" fill="none"/>
-      <!-- Box -->
-      <rect x="80" y="158" width="115" height="54" rx="10" fill="#0f2a24" stroke="#00d4aa" stroke-width="1.8"/>
-      <text x="137" y="181" text-anchor="middle" fill="#00d4aa" font-size="12" font-weight="700">機械学習</text>
-      <text x="137" y="197" text-anchor="middle" fill="#6ee7b7" font-size="9.5">Machine Learning</text>
-      <!-- children -->
-      <path d="M 80 175 C 50 155, 20 130, 15 115" stroke="#00d4aa" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
-      <rect x="-45" y="95" width="60" height="40" rx="6" fill="#0f2a24" stroke="#00d4aa" stroke-width="1"/>
-      <text x="-15" y="111" text-anchor="middle" fill="#6ee7b7" font-size="9">教師あり</text>
-      <text x="-15" y="124" text-anchor="middle" fill="#4ade80" font-size="8">有ラベル</text>
-
-      <path d="M 80 195 C 50 200, 20 205, 15 205" stroke="#00d4aa" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
-      <rect x="-45" y="185" width="60" height="40" rx="6" fill="#0f2a24" stroke="#00d4aa" stroke-width="1"/>
-      <text x="-15" y="201" text-anchor="middle" fill="#6ee7b7" font-size="9">教師なし</text>
-      <text x="-15" y="214" text-anchor="middle" fill="#4ade80" font-size="8">無ラベル</text>
-
-      <!-- ===== BRANCH 2: ディープラーニング (left-down) ===== -->
-      <path d="M 395 320 C 320 350, 260 380, 195 390" stroke="#a855f7" stroke-width="2" fill="none"/>
-      <rect x="80" y="363" width="115" height="54" rx="10" fill="#1a0d2e" stroke="#a855f7" stroke-width="1.8"/>
-      <text x="137" y="386" text-anchor="middle" fill="#a855f7" font-size="11.5" font-weight="700">ディープ</text>
-      <text x="137" y="400" text-anchor="middle" fill="#a855f7" font-size="11.5" font-weight="700">ラーニング</text>
-
-      <path d="M 80 375 C 50 365, 20 350, 10 340" stroke="#a855f7" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
-      <rect x="-55" y="318" width="65" height="40" rx="6" fill="#1a0d2e" stroke="#a855f7" stroke-width="1"/>
-      <text x="-22" y="334" text-anchor="middle" fill="#d8b4fe" font-size="9">多層NN</text>
-      <text x="-22" y="347" text-anchor="middle" fill="#d8b4fe" font-size="8">脳を模倣</text>
-
-      <path d="M 80 400 C 50 410, 20 420, 10 425" stroke="#a855f7" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
-      <rect x="-55" y="405" width="65" height="40" rx="6" fill="#1a0d2e" stroke="#a855f7" stroke-width="1"/>
-      <text x="-22" y="421" text-anchor="middle" fill="#d8b4fe" font-size="9">画像認識</text>
-      <text x="-22" y="434" text-anchor="middle" fill="#d8b4fe" font-size="8">音声認識</text>
-
-      <!-- ===== BRANCH 3: 確率 (right-up) ===== -->
-      <path d="M 565 275 C 640 240, 705 200, 770 185" stroke="#ffd93d" stroke-width="2" fill="none"/>
-      <rect x="770" y="158" width="110" height="54" rx="10" fill="#2a2000" stroke="#ffd93d" stroke-width="1.8"/>
-      <text x="825" y="181" text-anchor="middle" fill="#ffd93d" font-size="13" font-weight="700">確率</text>
-      <text x="825" y="197" text-anchor="middle" fill="#fde68a" font-size="9.5">Probability</text>
-
-      <path d="M 880 175 C 905 155, 930 130, 945 115" stroke="#ffd93d" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
-      <rect x="945" y="95" width="60" height="40" rx="6" fill="#2a2000" stroke="#ffd93d" stroke-width="1"/>
-      <text x="975" y="111" text-anchor="middle" fill="#fde68a" font-size="9">0～1の値</text>
-      <text x="975" y="124" text-anchor="middle" fill="#fde68a" font-size="8">合計=1</text>
-
-      <path d="M 880 195 C 905 200, 930 205, 945 205" stroke="#ffd93d" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
-      <rect x="945" y="185" width="60" height="40" rx="6" fill="#2a2000" stroke="#ffd93d" stroke-width="1"/>
-      <text x="975" y="201" text-anchor="middle" fill="#fde68a" font-size="9">サイコロ</text>
-      <text x="975" y="214" text-anchor="middle" fill="#fde68a" font-size="8">各1/6</text>
-
-      <!-- ===== BRANCH 4: 期待値 (right-down) ===== -->
-      <path d="M 565 320 C 640 355, 705 380, 770 390" stroke="#ff6b6b" stroke-width="2" fill="none"/>
-      <rect x="770" y="363" width="110" height="54" rx="10" fill="#2a0d0d" stroke="#ff6b6b" stroke-width="1.8"/>
-      <text x="825" y="386" text-anchor="middle" fill="#ff6b6b" font-size="13" font-weight="700">期待値</text>
-      <text x="825" y="402" text-anchor="middle" fill="#fca5a5" font-size="9.5">Expected Value</text>
-
-      <path d="M 880 375 C 905 365, 930 350, 945 340" stroke="#ff6b6b" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
-      <rect x="945" y="318" width="60" height="40" rx="6" fill="#2a0d0d" stroke="#ff6b6b" stroke-width="1"/>
-      <text x="975" y="334" text-anchor="middle" fill="#fca5a5" font-size="9">Σ(値×P)</text>
-      <text x="975" y="347" text-anchor="middle" fill="#fca5a5" font-size="8">平均値</text>
-
-      <path d="M 880 400 C 905 410, 930 420, 945 425" stroke="#ff6b6b" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
-      <rect x="945" y="405" width="60" height="40" rx="6" fill="#2a0d0d" stroke="#ff6b6b" stroke-width="1"/>
-      <text x="975" y="421" text-anchor="middle" fill="#fca5a5" font-size="9">利益最大化</text>
-      <text x="975" y="434" text-anchor="middle" fill="#fca5a5" font-size="8">仕入最適化</text>
-
-      <!-- ===== BRANCH 5: AI活用例 (top) ===== -->
-      <path d="M 480 252 C 480 210, 480 175, 480 150" stroke="#6bcb77" stroke-width="2" fill="none"/>
-      <rect x="410" y="100" width="140" height="50" rx="10" fill="#0d2014" stroke="#6bcb77" stroke-width="1.8"/>
-      <text x="480" y="122" text-anchor="middle" fill="#6bcb77" font-size="12" font-weight="700">AI活用例</text>
-      <text x="480" y="139" text-anchor="middle" fill="#86efac" font-size="9">スパム/画像/音声</text>
-
-      <path d="M 420 100 C 380 80, 340 65, 310 55" stroke="#6bcb77" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
-      <rect x="230" y="33" width="80" height="34" rx="6" fill="#0d2014" stroke="#6bcb77" stroke-width="1"/>
-      <text x="270" y="48" text-anchor="middle" fill="#86efac" font-size="8.5">工場ロボット</text>
-      <text x="270" y="60" text-anchor="middle" fill="#86efac" font-size="8">自己学習</text>
-
-      <path d="M 540 100 C 580 80, 620 65, 650 55" stroke="#6bcb77" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
-      <rect x="650" y="33" width="80" height="34" rx="6" fill="#0d2014" stroke="#6bcb77" stroke-width="1"/>
-      <text x="690" y="48" text-anchor="middle" fill="#86efac" font-size="8.5">医療診断</text>
-      <text x="690" y="60" text-anchor="middle" fill="#86efac" font-size="8">Deep Learning</text>
-
-      <!-- ===== BRANCH 6: NN (bottom) ===== -->
-      <path d="M 480 348 C 480 390, 480 425, 480 450" stroke="#f97316" stroke-width="2" fill="none"/>
-      <rect x="400" y="450" width="160" height="54" rx="10" fill="#2a1500" stroke="#f97316" stroke-width="1.8"/>
-      <text x="480" y="473" text-anchor="middle" fill="#f97316" font-size="11.5" font-weight="700">ニューラル</text>
-      <text x="480" y="490" text-anchor="middle" fill="#f97316" font-size="11.5" font-weight="700">ネットワーク</text>
-
-      <path d="M 420 500 C 370 520, 330 530, 290 535" stroke="#f97316" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
-      <rect x="215" y="519" width="75" height="32" rx="6" fill="#2a1500" stroke="#f97316" stroke-width="1"/>
-      <text x="252" y="533" text-anchor="middle" fill="#fdba74" font-size="9">脳を模倣</text>
-      <text x="252" y="545" text-anchor="middle" fill="#fdba74" font-size="8">ニューロン</text>
-
-      <path d="M 540 500 C 590 520, 630 530, 670 535" stroke="#f97316" stroke-width="1.2" fill="none" stroke-dasharray="3,2"/>
-      <rect x="670" y="519" width="75" height="32" rx="6" fill="#2a1500" stroke="#f97316" stroke-width="1"/>
-      <text x="707" y="533" text-anchor="middle" fill="#fdba74" font-size="9">多層構造</text>
-      <text x="707" y="545" text-anchor="middle" fill="#fdba74" font-size="8">→Deep学習</text>
-
-    </svg>
-  </div>
-
-  <div class="card" style="margin-top:1.5rem">
-    <div class="card-title">📝 Chú thích Mind Map</div>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>Nhánh</th><th>Màu</th><th>Nội dung</th></tr></thead>
-        <tbody>
-          <tr><td>機械学習</td><td style="color:#00d4aa">■ Teal</td><td>Machine Learning: Học có/không giám sát</td></tr>
-          <tr><td>ディープラーニング</td><td style="color:#4e1386">■ Purple</td><td>Deep Learning: NN nhiều lớp, mô phỏng não</td></tr>
-          <tr><td>確率</td><td style="color:#866f13">■ Yellow</td><td>Xác suất: 0~1, tổng = 1</td></tr>
-          <tr><td>期待値</td><td style="color:#861313">■ Red</td><td>Kỳ vọng: Σ(giá trị × P)</td></tr>
-          <tr><td>AI活用例</td><td style="color:#287131">■ Green</td><td>Ứng dụng AI thực tế</td></tr>
-          <tr><td>ニューラルネットワーク</td><td style="color:#f97316">■ Orange</td><td>Mạng nơ-ron, nền tảng Deep Learning</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
 
 </main>
 
+
+
+    </div>
+
+    <!-- Footer Navigation & Lesson Completion -->
+    <footer class="lesson-footer-nav">
+      <div class="completion-card">
+        <div>
+          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
+            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
+            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
+          </div>
+          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
+            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
+            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
+          </div>
+        </div>
+        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
+      </div>
+
+      <div class="footer-nav-buttons">
+        
+        <a href="8.html" class="nav-link-card prev">
+          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
+          <span class="nav-target">
+            <span class="text-ja">レッスン 08</span>
+            <span class="text-vi">Bài học 08</span>
+          </span>
+        </a>
+        
+        <a href="10.html" class="nav-link-card next">
+          <span class="nav-dir">BÀI TIẾP THEO / NEXT →</span>
+          <span class="nav-target">
+            <span class="text-ja">レッスン 10</span>
+            <span class="text-vi">Bài học 10</span>
+          </span>
+        </a>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Right Sticky Sidebar -->
+  <aside class="sticky-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span class="text-ja">目次 (TOC)</span>
+        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
+      </div>
+      <nav>
+        <ul class="toc-list" id="tocList">
+
+          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+  
+          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+  
+          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+  
+          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
+  
+        </ul>
+      </nav>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="sidebar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="text-ja">クイック復習</span>
+        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
+      </div>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
+        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
+        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
+      </p>
+    </div>
+  </aside>
+
+</div>
+
 <script>
+
 function switchTab(id) {
   document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('#mainnav button').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  const idx = ['theory','example','flash','quiz','mindmap'].indexOf(id);
+  const idx = ['theory','example','flash','quiz'].indexOf(id);
   document.querySelectorAll('#mainnav button')[idx].classList.add('active');
   window.scrollTo({top: 0, behavior:'smooth'});
 }
@@ -1135,6 +763,8 @@ function answer(el, result) {
     o.style.cursor = 'default';
   });
 }
+
 </script>
+<script src="../assets/reader.js"></script>
 </body>
 </html>
