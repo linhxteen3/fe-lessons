@@ -1108,21 +1108,7 @@ ul.bullet-list li {
   margin: 8px 0;
 }
 
-/* Mind Map */
-.mindmap-box {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-light);
-  border-radius: 12px;
-  padding: 24px;
-  overflow-x: auto;
-  box-shadow: var(--shadow-sm);
-}
-.mindmap-box svg {
-  width: 100%;
-  height: auto;
-  min-width: 700px;
-  display: block;
-}
+
 
 /* Footer Navigation */
 .lesson-footer-nav {
@@ -1890,96 +1876,7 @@ ul.bullet-list li {
       </div>
     </section>
 
-    <!-- ===================================================================
-         PHẦN 5: SƠ ĐỒ TƯ DUY (MIND MAP)
-         =================================================================== -->
-    <section class="content-section" id="sec-5">
-      <h2 class="section-heading">
-        <span class="num-badge">⑤</span>
-        <span class="text-ja">マインドマップ (Mind Map)</span>
-        <span class="text-vi">Sơ đồ tư duy tổng kết</span>
-      </h2>
 
-      <div class="mindmap-box">
-        <svg viewBox="0 0 1100 720" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <style>
-              .mm-center { fill: #4F46E5; stroke: #C7D2FE; stroke-width: 3; }
-              .mm-branch { stroke-width: 2.5; fill: none; }
-              .mm-b1 { stroke: #0284C7; }
-              .mm-b2 { stroke: #D97706; }
-              .mm-b3 { stroke: #16A34A; }
-              .mm-b4 { stroke: #9333EA; }
-              .mm-node1 { fill: #E0F2FE; stroke: #0284C7; stroke-width: 1.5; }
-              .mm-node2 { fill: #FEF3C7; stroke: #D97706; stroke-width: 1.5; }
-              .mm-node3 { fill: #DCFCE7; stroke: #16A34A; stroke-width: 1.5; }
-              .mm-node4 { fill: #F3E8FF; stroke: #9333EA; stroke-width: 1.5; }
-              .mm-leaf1 { fill: #0369A1; }
-              .mm-leaf2 { fill: #B45309; }
-              .mm-leaf3 { fill: #15803D; }
-              .mm-leaf4 { fill: #7E22CE; }
-              .mm-text-dark { fill: #0F172A; font-weight: 700; font-size: 13px; font-family: Inter, sans-serif; }
-              .mm-leaf-text { fill: #FFFFFF; font-size: 11.5px; font-weight: 600; font-family: Inter, sans-serif; }
-              .mm-center-title { fill: #FFFFFF; font-size: 17px; font-weight: 800; font-family: 'Plus Jakarta Sans', sans-serif; }
-              .mm-center-sub { fill: #E0E7FF; font-size: 12px; font-weight: 500; font-family: Inter, sans-serif; }
-            </style>
-          </defs>
-
-          <!-- Center Node -->
-          <ellipse class="mm-center" cx="550" cy="360" rx="110" ry="58"></ellipse>
-          <text class="mm-center-title" text-anchor="middle" x="550" y="355">n進数の概念</text>
-          <text class="mm-center-sub" text-anchor="middle" x="550" y="378">Hệ cơ số n</text>
-
-          <!-- Branch 1: Bit & Byte (Top-Left) -->
-          <path class="mm-branch mm-b1" d="M 450 320 Q 340 240 220 190"></path>
-          <rect class="mm-node1" x="110" y="165" width="180" height="50" rx="10"></rect>
-          <text class="mm-text-dark" text-anchor="middle" x="200" y="187">Bit & Byte (ビット/バイト)</text>
-          <text class="mm-text-dark" font-size="11" fill="#475569" text-anchor="middle" x="200" y="204">データの最小単位</text>
-          <path class="mm-branch mm-b1" d="M 200 215 Q 160 255 120 280"></path>
-          <rect class="mm-leaf1" x="30" y="265" width="140" height="32" rx="6"></rect>
-          <text class="mm-leaf-text" text-anchor="middle" x="100" y="285">1 bit = 0 または 1</text>
-          <path class="mm-branch mm-b1" d="M 200 215 Q 220 270 240 320"></path>
-          <rect class="mm-leaf1" x="160" y="305" width="160" height="32" rx="6"></rect>
-          <text class="mm-leaf-text" text-anchor="middle" x="240" y="325">1 byte = 8 bit (2⁸=256)</text>
-
-          <!-- Branch 2: Data Units (Bottom-Left) -->
-          <path class="mm-branch mm-b2" d="M 460 400 Q 340 480 230 540"></path>
-          <rect class="mm-node2" x="110" y="515" width="190" height="50" rx="10"></rect>
-          <text class="mm-text-dark" text-anchor="middle" x="205" y="537">接頭辞 / Tiền tố</text>
-          <text class="mm-text-dark" font-size="11" fill="#475569" text-anchor="middle" x="205" y="554">T, G, M, k / m, μ, n, p</text>
-          <path class="mm-branch mm-b2" d="M 205 565 Q 160 610 120 635"></path>
-          <rect class="mm-leaf2" x="30" y="620" width="150" height="32" rx="6"></rect>
-          <text class="mm-leaf-text" text-anchor="middle" x="105" y="640">大: T=10¹², G=10⁹</text>
-          <path class="mm-branch mm-b2" d="M 205 565 Q 260 615 290 655"></path>
-          <rect class="mm-leaf2" x="200" y="645" width="170" height="32" rx="6"></rect>
-          <text class="mm-leaf-text" text-anchor="middle" x="285" y="665">小: m=10⁻³, p=10⁻¹²</text>
-
-          <!-- Branch 3: Base Systems (Top-Right) -->
-          <path class="mm-branch mm-b3" d="M 650 320 Q 760 240 880 190"></path>
-          <rect class="mm-node3" x="780" y="165" width="180" height="50" rx="10"></rect>
-          <text class="mm-text-dark" text-anchor="middle" x="870" y="187">基数 / Cơ số</text>
-          <text class="mm-text-dark" font-size="11" fill="#475569" text-anchor="middle" x="870" y="204">10進数 / 2進数 / 16進数</text>
-          <path class="mm-branch mm-b3" d="M 870 215 Q 920 255 970 285"></path>
-          <rect class="mm-leaf3" x="890" y="270" width="170" height="32" rx="6"></rect>
-          <text class="mm-leaf-text" text-anchor="middle" x="975" y="290">2進数: 0, 1 (いちぜろ)</text>
-          <path class="mm-branch mm-b3" d="M 870 215 Q 890 280 910 330"></path>
-          <rect class="mm-leaf3" x="830" y="320" width="170" height="32" rx="6"></rect>
-          <text class="mm-leaf-text" text-anchor="middle" x="915" y="340">16進数: 0-9 & A-F (A=10)</text>
-
-          <!-- Branch 4: Decimals & Weights (Bottom-Right) -->
-          <path class="mm-branch mm-b4" d="M 640 400 Q 760 480 870 540"></path>
-          <rect class="mm-node4" x="780" y="515" width="190" height="50" rx="10"></rect>
-          <text class="mm-text-dark" text-anchor="middle" x="875" y="537">桁の重み & 小数</text>
-          <text class="mm-text-dark" font-size="11" fill="#475569" text-anchor="middle" x="875" y="554">整数部・小数部の重み</text>
-          <path class="mm-branch mm-b4" d="M 875 565 Q 920 610 970 635"></path>
-          <rect class="mm-leaf4" x="890" y="620" width="180" height="32" rx="6"></rect>
-          <text class="mm-leaf-text" text-anchor="middle" x="980" y="640">重み: n⁰, n¹… / n⁻¹…</text>
-          <path class="mm-branch mm-b4" d="M 875 565 Q 810 615 760 655"></path>
-          <rect class="mm-leaf4" x="660" y="645" width="180" height="32" rx="6"></rect>
-          <text class="mm-leaf-text" text-anchor="middle" x="750" y="665">有限・無限・循環小数</text>
-        </svg>
-      </div>
-    </section>
 
     <!-- ===================================================================
          FOOTER NAVIGATION & LESSON COMPLETION
@@ -2043,7 +1940,6 @@ ul.bullet-list li {
           <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
           <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
           <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
-          <li><a href="#sec-5" class="toc-link"><span class="text-ja">⑤ マインドマップ</span><span class="text-vi">⑤ Mind map tổng kết</span></a></li>
         </ul>
       </nav>
     </div>
