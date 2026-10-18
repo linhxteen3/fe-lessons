@@ -71,15 +71,14 @@
       </div>
     </div>
 
-    <!-- Lesson Content Body -->
-    <div class="lesson-body">
-
-
-
-
-<!-- ===================== PART 1: THEORY ===================== -->
-<h2 id="part-1" class="section">📖 Phần 1 — Tóm tắt lý thuyết</h2>
-
+    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
+    <section class="content-section" id="sec-1">
+      <h2 class="section-heading">
+        <span class="num-badge">①</span>
+        <span class="text-ja">重要理論 (Theory)</span>
+        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
+      </h2>
+      <div class="lesson-body-content">
 <!-- 1.1 五大装置 -->
 <h3 class="sub">1.1 Năm thiết bị chính của máy tính (五大装置)</h3>
 <div class="card">
@@ -431,8 +430,17 @@ MIPS = (1 giây ÷ Thời gian thực thi trung bình mỗi lệnh) × 10⁻⁶
 </div>
 
 <!-- ===================== PART 2: EXAMPLES ===================== -->
-<h2 id="part-2" class="section">💡 Phần 2 — Ví dụ minh họa</h2>
+      </div>
+    </section>
 
+    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
+    <section class="content-section" id="sec-2">
+      <h2 class="section-heading">
+        <span class="num-badge">②</span>
+        <span class="text-ja">演習例題 (Worked Examples)</span>
+        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
+      </h2>
+      <div class="lesson-body-content">
 <div class="card">
 <h4 class="sub2">Ví dụ 1 — Phân biệt 5大装置</h4>
 <p>Cho các thiết bị: <span class="term">マウス</span>, <span class="term">プリンター</span>, <span class="term">USBメモリ</span>, <span class="term">CPU</span>, <span class="term">ディスプレイ</span>.</p>
@@ -498,253 +506,45 @@ MIPS = (1 giây ÷ Thời gian thực thi trung bình mỗi lệnh) × 10⁻⁶
 </div>
 
 <!-- ===================== PART 3: FLASHCARDS ===================== -->
-<h2 id="part-3" class="section">🎴 Phần 3 — Flashcard (Click để lật)</h2>
+      </div>
+    </section>
 
-<div class="fc-controls">
-  <button class="fc-btn active" data-cat="all">Tất cả</button>
-  <button class="fc-btn" data-cat="souchi">五大装置</button>
-  <button class="fc-btn" data-cat="cpu">CPU/レジスタ</button>
-  <button class="fc-btn" data-cat="perf">性能指標</button>
-  <button class="fc-btn" data-cat="cycle">命令実行</button>
-  <button class="fc-btn" data-cat="addr">アドレス指定</button>
-  <button class="fc-btn" data-cat="int">割込み</button>
-</div>
+    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-3">
+      <h2 class="section-heading">
+        <span class="num-badge">③</span>
+        <span class="text-ja">暗記カード (Flashcards)</span>
+        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
+        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
+        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
+      </p>
 
-<div class="fc-grid" id="flashcards">
-  <div class="flashcard show-front" data-cat="souchi">
-    <span class="cat">五大装置</span>
-    <div class="front"><div class="q">五大装置 là 5 thiết bị nào?</div><div class="hint">tap để xem đáp án</div></div>
-    <div class="back"><div class="a">制御装置 / 演算装置 / 記憶装置 / 入力装置 / 出力装置. (CPU = 制御装置 + 演算装置)<span class="jp-mini">Control / ALU / Memory / Input / Output</span></div></div>
-  </div>
+      <div class="fc-grid" id="fcGrid"></div>
+    </section>
 
-  <div class="flashcard show-front" data-cat="souchi">
-    <span class="cat">五大装置</span>
-    <div class="front"><div class="q">ノイマン型コンピュータ có 2 đặc điểm nào?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a"><b>プログラム内蔵方式</b> (lưu chương trình trong bộ nhớ) + <b>逐次制御方式</b> (thực thi tuần tự từng lệnh).<span class="jp-mini">Stored-program + Sequential control</span></div></div>
-  </div>
+    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-4">
+      <h2 class="section-heading">
+        <span class="num-badge">④</span>
+        <span class="text-ja">確認テスト (8問)</span>
+        <span class="text-vi">Luyện tập củng cố · 8 câu trắc nghiệm</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
+        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
+        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
+      </p>
 
-  <div class="flashcard show-front" data-cat="cpu">
-    <span class="cat">CPU</span>
-    <div class="front"><div class="q">CPU viết tắt của gì?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a"><b>Central Processing Unit</b> = 中央処理装置. Trong đề FE đôi khi viết là <b>プロセッサ</b>.<span class="jp-mini">中央処理装置 = Bộ xử lý trung tâm</span></div></div>
-  </div>
+      <div id="quizArea"></div>
 
-  <div class="flashcard show-front" data-cat="cpu">
-    <span class="cat">レジスタ</span>
-    <div class="front"><div class="q">プログラムカウンター lưu gì?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a">Lưu <b>địa chỉ của lệnh tiếp theo</b> sẽ được thực thi. Còn gọi là Program Register / PC.<span class="jp-mini">次に実行する命令のアドレスを記憶</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="cpu">
-    <span class="cat">レジスタ</span>
-    <div class="front"><div class="q">命令レジスタ lưu gì?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a">Lưu <b>lệnh đang được thực thi</b> — vừa được nạp từ bộ nhớ chính.<span class="jp-mini">実行する命令を一時的に記憶</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="cpu">
-    <span class="cat">レジスタ</span>
-    <div class="front"><div class="q">汎用レジスタ lưu gì?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a">Lưu <b>dữ liệu</b> — sử dụng cho nhiều mục đích, không giới hạn cụ thể.<span class="jp-mini">用途を限定せず使用</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="cpu">
-    <span class="cat">レジスタ</span>
-    <div class="front"><div class="q">アキュムレーター là gì?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a">Thanh ghi lưu <b>đối tượng và kết quả của phép tính</b>.<span class="jp-mini">演算対象や演算結果を記憶</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="perf">
-    <span class="cat">性能</span>
-    <div class="front"><div class="q">3 chỉ số đánh giá CPU?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a">(1) <b>クロック周波数</b> (clock freq) — (2) <b>MIPS</b> — (3) <b>コア</b>.<span class="jp-mini">CPUの性能 = 3つの指標で評価</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="perf">
-    <span class="cat">性能</span>
-    <div class="front"><div class="q">クロック周波数 đơn vị là gì?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a"><b>Hz (Hertz / ヘルツ)</b>. 1 Hz = 1 tín hiệu/giây. Càng lớn → CPU càng nhanh.<span class="jp-mini">単位は Hz</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="perf">
-    <span class="cat">性能</span>
-    <div class="front"><div class="q">Công thức MIPS?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a">MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶<br>2 MIPS = 2 triệu lệnh/giây.<span class="jp-mini">Million Instructions Per Second</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="perf">
-    <span class="cat">性能</span>
-    <div class="front"><div class="q">マルチコアプロセッサ là gì?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a">CPU có nhiều lõi (コア). 2 lõi = デュアルコア, 4 lõi = クアッドコア. Mỗi lõi xử lý 1 tác vụ độc lập → mạnh hơn.<span class="jp-mini">1つのCPU内に複数のコア</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="cycle">
-    <span class="cat">命令実行</span>
-    <div class="front"><div class="q">フェッチ (fetch) là gì?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a">Hành động <b>lấy lệnh từ bộ nhớ chính và lưu vào 命令レジスタ</b>.<span class="jp-mini">命令を取り出して命令レジスタに格納</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="cycle">
-    <span class="cat">命令実行</span>
-    <div class="front"><div class="q">Một lệnh gồm mấy phần?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a">2 phần: <b>命令部 (opcode)</b> — chỉ thị "làm gì", và <b>アドレス部 (operand)</b> — chỉ ra "ở đâu" có dữ liệu.<span class="jp-mini">命令部 + アドレス部</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="cycle">
-    <span class="cat">命令実行</span>
-    <div class="front"><div class="q">命令デコーダ làm gì?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a">Là <b>命令解読器</b> — phân tích &amp; giải mã lệnh, ra chỉ thị cho thiết bị thực thi.<span class="jp-mini">命令を解読する</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="cycle">
-    <span class="cat">命令実行</span>
-    <div class="front"><div class="q">Sau khi PC được tham chiếu, điều gì xảy ra?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a">PC <b>tự động cộng thêm 1</b> (auto-increment) để trỏ tới lệnh tiếp theo.<span class="jp-mini">自動的に番号を加算</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="addr">
-    <span class="cat">アドレス指定</span>
-    <div class="front"><div class="q">直接アドレス指定 là gì?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a">Phần địa chỉ <b>chính là</b> 有効アドレス (địa chỉ chứa dữ liệu thực sự).<span class="jp-mini">アドレス部に有効アドレスが入っている</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="addr">
-    <span class="cat">アドレス指定</span>
-    <div class="front"><div class="q">間接アドレス指定 cần truy cập bộ nhớ mấy lần?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a"><b>2 lần</b> — lần 1 tới ô địa chỉ ghi trong lệnh, đọc ra địa chỉ thật; lần 2 tới địa chỉ thật để lấy dữ liệu. → Chậm hơn nhưng lưu được địa chỉ <b>kích thước lớn</b>.<span class="jp-mini">主記憶へのアクセスが2回必要</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="addr">
-    <span class="cat">アドレス指定</span>
-    <div class="front"><div class="q">即値アドレス指定 đặc biệt ở chỗ nào?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a">Phần địa chỉ <b>chính là dữ liệu</b> — không cần truy cập bộ nhớ chính nữa.<span class="jp-mini">アドレス部にデータそのものが入っている</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="int">
-    <span class="cat">割込み</span>
-    <div class="front"><div class="q">割込み là gì?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a">Tạm dừng chương trình đang chạy, chuyển sang chương trình ưu tiên cao hơn.<span class="jp-mini">現在実行中のプログラムを中断して別のプログラムに切り替える</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="int">
-    <span class="cat">割込み</span>
-    <div class="front"><div class="q">Mẹo phân biệt 内部 / 外部 割込み?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a">Hỏi: <b>"Nguyên nhân có phải do chương trình đang chạy không?"</b> — Có = 内部, Không = 外部.<span class="jp-mini">実行中のプログラムが原因か否か</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="int">
-    <span class="cat">割込み</span>
-    <div class="front"><div class="q">Ví dụ 内部割込み tiêu biểu?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a"><b>Chia cho 0 (ゼロ除算)</b>, tràn số (オーバーフロー), lệnh không xác định, アドレス例外, ページフォールト, スーパーバイザーコール.<span class="jp-mini">代表例：ゼロ除算</span></div></div>
-  </div>
-
-  <div class="flashcard show-front" data-cat="int">
-    <span class="cat">割込み</span>
-    <div class="front"><div class="q">Ví dụ 外部割込み tiêu biểu?</div><div class="hint">tap</div></div>
-    <div class="back"><div class="a"><b>タイマ割込み (インターバルタイマ)</b>, 入出力割込み, 機械チェック割込み (停電 v.v.), コンソール割込み.<span class="jp-mini">代表例：インターバルタイマ</span></div></div>
-  </div>
-
-</div>
-
-<!-- ===================== PART 4: QUIZ ===================== -->
-<h2 id="part-4" class="section">📝 Phần 4 — Câu hỏi ôn tập (8 câu)</h2>
-
-<div class="qbox" data-correct="2">
-  <div class="q-title">Câu 1. CPUは「五大装置」のうち、どの装置を担当しているか？</div>
-  <ul class="opts">
-    <li>① 入力装置 と 出力装置</li>
-    <li>② 制御装置 と 演算装置</li>
-    <li>③ 記憶装置 と 演算装置</li>
-    <li>④ 制御装置 と 記憶装置</li>
-  </ul>
-  <div class="explain"><b>Đáp án: ②</b><br>CPU (中央処理装置 / プロセッサ) đảm nhiệm <b>制御装置 + 演算装置</b>. Đây là "bộ não" của máy. 記憶装置 là thiết bị riêng (RAM/HDD), không thuộc CPU.</div>
-</div>
-
-<div class="qbox" data-correct="3">
-  <div class="q-title">Câu 2. ノイマン型コンピュータの2大特徴は？</div>
-  <ul class="opts">
-    <li>① 並列処理方式 と プログラム内蔵方式</li>
-    <li>② 逐次制御方式 と 並列制御方式</li>
-    <li>③ プログラム内蔵方式 と 逐次制御方式</li>
-    <li>④ プログラム外蔵方式 と 逐次制御方式</li>
-  </ul>
-  <div class="explain"><b>Đáp án: ③</b><br>ノイマン型 = <b>プログラム内蔵方式</b> (lưu chương trình trong bộ nhớ chính khi chạy) + <b>逐次制御方式</b> (thực thi tuần tự từng lệnh).</div>
-</div>
-
-<div class="qbox" data-correct="1">
-  <div class="q-title">Câu 3. 「次に実行する命令のアドレス」を記憶するレジスタはどれか？</div>
-  <ul class="opts">
-    <li>① プログラムカウンター</li>
-    <li>② 命令レジスタ</li>
-    <li>③ 汎用レジスタ</li>
-    <li>④ アキュムレーター</li>
-  </ul>
-  <div class="explain"><b>Đáp án: ①</b><br>Định nghĩa của <b>プログラムカウンター (PC / プログラムレジスタ)</b>: lưu địa chỉ của lệnh tiếp theo. 命令レジスタ lưu lệnh hiện đang chạy; 汎用レジスタ lưu dữ liệu; アキュムレーター lưu kết quả phép tính.</div>
-</div>
-
-<div class="qbox" data-correct="2">
-  <div class="q-title">Câu 4. クロック周波数が 1GHz、1命令に平均5クロック必要なCPUは、1秒間に何個の命令を実行できるか？</div>
-  <ul class="opts">
-    <li>① 5億個</li>
-    <li>② 2億個</li>
-    <li>③ 1億個</li>
-    <li>④ 50億個</li>
-  </ul>
-  <div class="explain"><b>Đáp án: ②</b><br>1 GHz = 10⁹ = 10億クロック/秒. Công thức: 実行命令数 = クロック周波数 ÷ 1命令クロック数 = 10億 ÷ 5 = <b>2億命令/秒</b>.</div>
-</div>
-
-<div class="qbox" data-correct="2">
-  <div class="q-title">Câu 5. プロセッサによってフェッチされた命令の格納順序を表す図において、「a」に当てはまるレジスタはどれか？（平成30年度 過去問改）<br>
-  <span style="color:var(--muted);font-size:12.5px;font-family:'Space Mono',monospace">主記憶 → [ a ] → 命令デコーダ</span></div>
-  <ul class="opts">
-    <li>① アキュムレーター</li>
-    <li>② 命令レジスタ</li>
-    <li>③ データキャッシュ</li>
-    <li>④ プログラムレジスタ</li>
-  </ul>
-  <div class="explain"><b>Đáp án: ②</b><br>Quy trình fetch: lệnh từ 主記憶 → <b>命令レジスタ</b> → 命令デコーダ (giải mã). PC chỉ lưu địa chỉ chứ không phải nơi lệnh tới sau khi fetch. Đây là câu thi thật 平成30年度.</div>
-</div>
-
-<div class="qbox" data-correct="4">
-  <div class="q-title">Câu 6. アドレス部の値が「20」、20番地には「25」、25番地には「データ」が入っている。アドレス指定方式は？（平成28年度 過去問改）</div>
-  <ul class="opts">
-    <li>① 指標アドレス指定</li>
-    <li>② 相対アドレス指定</li>
-    <li>③ 直接アドレス指定</li>
-    <li>④ 間接アドレス指定</li>
-  </ul>
-  <div class="explain"><b>Đáp án: ④</b><br>Truy cập <b>2 lần</b> bộ nhớ: 20番地 → "25" → 25番地 → データ. Đây là <b>間接アドレス指定</b>. Nếu 直接 thì sẽ lấy thẳng giá trị tại 20番地.</div>
-</div>
-
-<div class="qbox" data-correct="1">
-  <div class="q-title">Câu 7. 次のうち、内部割込みに分類されるものはどれか？</div>
-  <ul class="opts">
-    <li>① ゼロ除算による例外</li>
-    <li>② インターバルタイマによる時間経過</li>
-    <li>③ プリンターの用紙切れ通知</li>
-    <li>④ 電源異常による機械チェック</li>
-  </ul>
-  <div class="explain"><b>Đáp án: ①</b><br><b>ゼロ除算</b> là lỗi sinh ra <i>do chính chương trình đang chạy</i> → 内部. Còn lại đều là 外部: タイマ (timer), プリンター (I/O), 電源 (machine check).</div>
-</div>
-
-<div class="qbox" data-correct="3">
-  <div class="q-title">Câu 8. 「2 MIPS」 とは何を意味するか？</div>
-  <ul class="opts">
-    <li>① 1秒間に2クロックを発生させる</li>
-    <li>② 1命令を実行するのに2秒かかる</li>
-    <li>③ 1秒間に200万個の命令を実行する</li>
-    <li>④ CPUに2つのコアが搭載されている</li>
-  </ul>
-  <div class="explain"><b>Đáp án: ③</b><br>MIPS = Million Instructions Per Second. 2 MIPS = 2 triệu lệnh / giây. Từ đây tính được 平均命令実行時間 = 0.5 μs = 500 ns.</div>
-</div>
-
-
-
-</div>
-
-
-
-
-    </div>
+      <div class="quiz-result-box" id="quiz-result">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
+        <div class="quiz-result-score" id="qScore">0 / 8</div>
+        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
+        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
+      </div>
+    </section>
 
     <!-- Footer Navigation & Lesson Completion -->
     <footer class="lesson-footer-nav">
@@ -794,15 +594,10 @@ MIPS = (1 giây ÷ Thời gian thực thi trung bình mỗi lệnh) × 10⁻⁶
       </div>
       <nav>
         <ul class="toc-list" id="tocList">
-
-          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-  
-          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-  
-          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-  
-          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
-  
+          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 8 câu</span></a></li>
         </ul>
       </nav>
     </div>
@@ -822,53 +617,316 @@ MIPS = (1 giây ÷ Thời gian thực thi trung bình mỗi lệnh) × 10⁻⁶
 
 </div>
 
+<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
 <script>
+const FLASHCARDS = [
+  {
+    "cat": "all",
+    "front": "五大装置 là 5 thiết bị nào?",
+    "back": "制御装置 / 演算装置 / 記憶装置 / 入力装置 / 出力装置. (CPU = 制御装置 + 演算装置) Control / ALU / Memory / Input / Output"
+  },
+  {
+    "cat": "all",
+    "front": "ノイマン型コンピュータ có 2 đặc điểm nào?",
+    "back": "プログラム内蔵方式 (lưu chương trình trong bộ nhớ) + 逐次制御方式 (thực thi tuần tự từng lệnh). Stored-program + Sequential control"
+  },
+  {
+    "cat": "all",
+    "front": "CPU viết tắt của gì?",
+    "back": "Central Processing Unit = 中央処理装置. Trong đề FE đôi khi viết là プロセッサ . 中央処理装置 = Bộ xử lý trung tâm"
+  },
+  {
+    "cat": "all",
+    "front": "プログラムカウンター lưu gì?",
+    "back": "Lưu địa chỉ của lệnh tiếp theo sẽ được thực thi. Còn gọi là Program Register / PC. 次に実行する命令のアドレスを記憶"
+  },
+  {
+    "cat": "all",
+    "front": "命令レジスタ lưu gì?",
+    "back": "Lưu lệnh đang được thực thi — vừa được nạp từ bộ nhớ chính. 実行する命令を一時的に記憶"
+  },
+  {
+    "cat": "all",
+    "front": "汎用レジスタ lưu gì?",
+    "back": "Lưu dữ liệu — sử dụng cho nhiều mục đích, không giới hạn cụ thể. 用途を限定せず使用"
+  },
+  {
+    "cat": "all",
+    "front": "アキュムレーター là gì?",
+    "back": "Thanh ghi lưu đối tượng và kết quả của phép tính . 演算対象や演算結果を記憶"
+  },
+  {
+    "cat": "all",
+    "front": "3 chỉ số đánh giá CPU?",
+    "back": "(1) クロック周波数 (clock freq) — (2) MIPS — (3) コア . CPUの性能 = 3つの指標で評価"
+  },
+  {
+    "cat": "all",
+    "front": "クロック周波数 đơn vị là gì?",
+    "back": "Hz (Hertz / ヘルツ) . 1 Hz = 1 tín hiệu/giây. Càng lớn → CPU càng nhanh. 単位は Hz"
+  },
+  {
+    "cat": "all",
+    "front": "Công thức MIPS?",
+    "back": "MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶ 2 MIPS = 2 triệu lệnh/giây. Million Instructions Per Second"
+  },
+  {
+    "cat": "all",
+    "front": "マルチコアプロセッサ là gì?",
+    "back": "CPU có nhiều lõi (コア). 2 lõi = デュアルコア, 4 lõi = クアッドコア. Mỗi lõi xử lý 1 tác vụ độc lập → mạnh hơn. 1つのCPU内に複数のコア"
+  },
+  {
+    "cat": "all",
+    "front": "フェッチ (fetch) là gì?",
+    "back": "Hành động lấy lệnh từ bộ nhớ chính và lưu vào 命令レジスタ . 命令を取り出して命令レジスタに格納"
+  },
+  {
+    "cat": "all",
+    "front": "Một lệnh gồm mấy phần?",
+    "back": "2 phần: 命令部 (opcode) — chỉ thị \"làm gì\", và アドレス部 (operand) — chỉ ra \"ở đâu\" có dữ liệu. 命令部 + アドレス部"
+  },
+  {
+    "cat": "all",
+    "front": "命令デコーダ làm gì?",
+    "back": "Là 命令解読器 — phân tích &amp; giải mã lệnh, ra chỉ thị cho thiết bị thực thi. 命令を解読する"
+  },
+  {
+    "cat": "all",
+    "front": "Sau khi PC được tham chiếu, điều gì xảy ra?",
+    "back": "PC tự động cộng thêm 1 (auto-increment) để trỏ tới lệnh tiếp theo. 自動的に番号を加算"
+  },
+  {
+    "cat": "all",
+    "front": "直接アドレス指定 là gì?",
+    "back": "Phần địa chỉ chính là 有効アドレス (địa chỉ chứa dữ liệu thực sự). アドレス部に有効アドレスが入っている"
+  },
+  {
+    "cat": "all",
+    "front": "間接アドレス指定 cần truy cập bộ nhớ mấy lần?",
+    "back": "2 lần — lần 1 tới ô địa chỉ ghi trong lệnh, đọc ra địa chỉ thật; lần 2 tới địa chỉ thật để lấy dữ liệu. → Chậm hơn nhưng lưu được địa chỉ kích thước lớn . 主記憶へのアクセスが2回必要"
+  },
+  {
+    "cat": "all",
+    "front": "即値アドレス指定 đặc biệt ở chỗ nào?",
+    "back": "Phần địa chỉ chính là dữ liệu — không cần truy cập bộ nhớ chính nữa. アドレス部にデータそのものが入っている"
+  },
+  {
+    "cat": "all",
+    "front": "割込み là gì?",
+    "back": "Tạm dừng chương trình đang chạy, chuyển sang chương trình ưu tiên cao hơn. 現在実行中のプログラムを中断して別のプログラムに切り替える"
+  },
+  {
+    "cat": "all",
+    "front": "Mẹo phân biệt 内部 / 外部 割込み?",
+    "back": "Hỏi: \"Nguyên nhân có phải do chương trình đang chạy không?\" — Có = 内部, Không = 外部. 実行中のプログラムが原因か否か"
+  },
+  {
+    "cat": "all",
+    "front": "Ví dụ 内部割込み tiêu biểu?",
+    "back": "Chia cho 0 (ゼロ除算) , tràn số (オーバーフロー), lệnh không xác định, アドレス例外, ページフォールト, スーパーバイザーコール. 代表例：ゼロ除算"
+  },
+  {
+    "cat": "all",
+    "front": "Ví dụ 外部割込み tiêu biểu?",
+    "back": "タイマ割込み (インターバルタイマ) , 入出力割込み, 機械チェック割込み (停電 v.v.), コンソール割込み. 代表例：インターバルタイマ"
+  }
+];
+const QUIZ = [
+  {
+    "q": "Câu 1. CPUは「五大装置」のうち、どの装置を担当しているか？",
+    "opts": [
+      "入力装置 と 出力装置",
+      "制御装置 と 演算装置",
+      "記憶装置 と 演算装置",
+      "制御装置 と 記憶装置"
+    ],
+    "ans": 1,
+    "expl": "Đáp án: ②CPU (中央処理装置 / プロセッサ) đảm nhiệm 制御装置 + 演算装置. Đây là \"bộ não\" của máy. 記憶装置 là thiết bị riêng (RAM/HDD), không thuộc CPU."
+  },
+  {
+    "q": "Câu 2. ノイマン型コンピュータの2大特徴は？",
+    "opts": [
+      "並列処理方式 と プログラム内蔵方式",
+      "逐次制御方式 と 並列制御方式",
+      "プログラム内蔵方式 と 逐次制御方式",
+      "プログラム外蔵方式 と 逐次制御方式"
+    ],
+    "ans": 2,
+    "expl": "Đáp án: ③ノイマン型 = プログラム内蔵方式 (lưu chương trình trong bộ nhớ chính khi chạy) + 逐次制御方式 (thực thi tuần tự từng lệnh)."
+  },
+  {
+    "q": "Câu 3. 「次に実行する命令のアドレス」を記憶するレジスタはどれか？",
+    "opts": [
+      "プログラムカウンター",
+      "命令レジスタ",
+      "汎用レジスタ",
+      "アキュムレーター"
+    ],
+    "ans": 0,
+    "expl": "Đáp án: ①Định nghĩa của プログラムカウンター (PC / プログラムレジスタ): lưu địa chỉ của lệnh tiếp theo. 命令レジスタ lưu lệnh hiện đang chạy; 汎用レジスタ lưu dữ liệu; アキュムレーター lưu kết quả phép tính."
+  },
+  {
+    "q": "Câu 4. クロック周波数が 1GHz、1命令に平均5クロック必要なCPUは、1秒間に何個の命令を実行できるか？",
+    "opts": [
+      "5億個",
+      "2億個",
+      "1億個",
+      "50億個"
+    ],
+    "ans": 1,
+    "expl": "Đáp án: ②1 GHz = 10⁹ = 10億クロック/秒. Công thức: 実行命令数 = クロック周波数 ÷ 1命令クロック数 = 10億 ÷ 5 = 2億命令/秒."
+  },
+  {
+    "q": "Câu 5. プロセッサによってフェッチされた命令の格納順序を表す図において、「a」に当てはまるレジスタはどれか？（平成30年度 過去問改）\n  主記憶 → [ a ] → 命令デコーダ",
+    "opts": [
+      "アキュムレーター",
+      "命令レジスタ",
+      "データキャッシュ",
+      "プログラムレジスタ"
+    ],
+    "ans": 1,
+    "expl": "Đáp án: ②Quy trình fetch: lệnh từ 主記憶 → 命令レジスタ → 命令デコーダ (giải mã). PC chỉ lưu địa chỉ chứ không phải nơi lệnh tới sau khi fetch. Đây là câu thi thật 平成30年度."
+  },
+  {
+    "q": "Câu 6. アドレス部の値が「20」、20番地には「25」、25番地には「データ」が入っている。アドレス指定方式は？（平成28年度 過去問改）",
+    "opts": [
+      "指標アドレス指定",
+      "相対アドレス指定",
+      "直接アドレス指定",
+      "間接アドレス指定"
+    ],
+    "ans": 3,
+    "expl": "Đáp án: ④Truy cập 2 lần bộ nhớ: 20番地 → \"25\" → 25番地 → データ. Đây là 間接アドレス指定. Nếu 直接 thì sẽ lấy thẳng giá trị tại 20番地."
+  },
+  {
+    "q": "Câu 7. 次のうち、内部割込みに分類されるものはどれか？",
+    "opts": [
+      "ゼロ除算による例外",
+      "インターバルタイマによる時間経過",
+      "プリンターの用紙切れ通知",
+      "電源異常による機械チェック"
+    ],
+    "ans": 0,
+    "expl": "Đáp án: ①ゼロ除算 là lỗi sinh ra do chính chương trình đang chạy → 内部. Còn lại đều là 外部: タイマ (timer), プリンター (I/O), 電源 (machine check)."
+  },
+  {
+    "q": "Câu 8. 「2 MIPS」 とは何を意味するか？",
+    "opts": [
+      "1秒間に2クロックを発生させる",
+      "1命令を実行するのに2秒かかる",
+      "1秒間に200万個の命令を実行する",
+      "CPUに2つのコアが搭載されている"
+    ],
+    "ans": 2,
+    "expl": "Đáp án: ③MIPS = Million Instructions Per Second. 2 MIPS = 2 triệu lệnh / giây. Từ đây tính được 平均命令実行時間 = 0.5 μs = 500 ns."
+  }
+];
 
-// Flashcard flip
-document.querySelectorAll('.flashcard').forEach(card=>{
-  card.addEventListener('click',()=>{
-    if(card.classList.contains('show-front')){
-      card.classList.remove('show-front'); card.classList.add('show-back');
-    } else {
-      card.classList.remove('show-back'); card.classList.add('show-front');
-    }
+// Render Flashcards with reliable click-to-flip
+function renderFC() {
+  const grid = document.getElementById('fcGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  FLASHCARDS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.innerHTML = `
+      <div>
+        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
+        <div class="fc-front">${f.front}</div>
+        <div class="fc-back">${f.back}</div>
+      </div>
+      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
   });
-});
+}
 
-// Flashcard category filter
-document.querySelectorAll('.fc-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.fc-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const cat=btn.dataset.cat;
-    document.querySelectorAll('.flashcard').forEach(c=>{
-      c.style.display = (cat==='all'||c.dataset.cat===cat)?'flex':'none';
-      // reset to front
-      c.classList.remove('show-back'); c.classList.add('show-front');
+// Render Interactive Quiz with tactile 4-option cards & instant feedback
+let quizScore = 0;
+let quizAnswered = 0;
+
+function renderQuiz() {
+  const area = document.getElementById('quizArea');
+  if (!area) return;
+  area.innerHTML = '';
+  quizScore = 0;
+  quizAnswered = 0;
+
+  QUIZ.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-q-card';
+    card.dataset.idx = idx;
+
+    let optsHtml = '';
+    item.opts.forEach((opt, oi) => {
+      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
     });
-  });
-});
 
-// Quiz logic
-document.querySelectorAll('.qbox').forEach(box=>{
-  const correct=parseInt(box.dataset.correct);
-  const opts=box.querySelectorAll('.opts li');
-  opts.forEach((li,idx)=>{
-    li.addEventListener('click',()=>{
-      if(box.classList.contains('answered')) return;
-      const choice=idx+1;
-      opts.forEach(x=>x.classList.add('locked'));
-      if(choice===correct){
-        li.classList.add('correct');
-      } else {
-        li.classList.add('wrong');
-        opts[correct-1].classList.add('correct');
-      }
-      box.classList.add('answered');
+    card.innerHTML = `
+      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
+    `;
+
+    card.querySelectorAll('.opt').forEach(optEl => {
+      optEl.addEventListener('click', () => {
+        if (card.classList.contains('locked')) return;
+        card.classList.add('locked');
+
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+
+        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
+        if (correctEl) correctEl.classList.add('correct');
+
+        if (chosen !== correct) {
+          optEl.classList.add('wrong');
+        } else {
+          quizScore++;
+        }
+
+        quizAnswered++;
+        if (quizAnswered === QUIZ.length) showQuizResult();
+      });
     });
-  });
-});
 
+    area.appendChild(card);
+  });
+
+  const resBox = document.getElementById('quiz-result');
+  if (resBox) resBox.classList.remove('show');
+}
+
+function showQuizResult() {
+  const pct = Math.round((quizScore / QUIZ.length) * 100);
+  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
+  let verdict = '';
+  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
+  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
+  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
+  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
+  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
+  const res = document.getElementById('quiz-result');
+  if (res) {
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function resetQuiz() {
+  renderQuiz();
+  const area = document.getElementById('quizArea');
+  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize on DOM ready
+renderFC();
+renderQuiz();
 </script>
 <script src="../assets/reader.js"></script>
 </body>

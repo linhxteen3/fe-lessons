@@ -71,19 +71,15 @@
       </div>
     </div>
 
-    <!-- Lesson Content Body -->
-    <div class="lesson-body">
-
-
-
-
-
-
-<main>
-
-<!-- ===================== PHẦN 1: LÝ THUYẾT ===================== -->
-<section id="theory" class="active">
-  <h2 id="part-1"><span class="ic" style="background:rgba(96,165,250,.18);color:var(--a1)">📖</span>Phần 1 — Tóm tắt Lý thuyết</h2>
+    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
+    <section class="content-section" id="sec-1">
+      <h2 class="section-heading">
+        <span class="num-badge">①</span>
+        <span class="text-ja">重要理論 (Theory)</span>
+        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
+      </h2>
+      <div class="lesson-body-content">
+<h2><span class="ic" style="background:rgba(96,165,250,.18);color:var(--a1)">📖</span>Phần 1 — Tóm tắt Lý thuyết</h2>
 
   <!-- ALGORITHM & PROGRAM -->
   <div class="card">
@@ -259,7 +255,7 @@
 
 <!-- ===================== PHẦN FLOWCHART ===================== -->
 <section id="flowchart">
-  <h2 id="part-2"><span class="ic" style="background:rgba(52,211,153,.18);color:var(--a2)">🔀</span>Flowchart — Ký hiệu & Cách đọc</h2>
+  <h2><span class="ic" style="background:rgba(52,211,153,.18);color:var(--a2)">🔀</span>Flowchart — Ký hiệu & Cách đọc</h2>
 
   <div class="card">
     <div class="card-title">📐 Bảng ký hiệu Flowchart (流れ図の記号)</div>
@@ -441,8 +437,18 @@
 </section>
 
 <!-- ===================== PHẦN 3: VÍ DỤ ===================== -->
-<section id="example">
-  <h2 id="part-3"><span class="ic" style="background:rgba(251,191,36,.18);color:var(--a4)">💡</span>Phần 2 — Ví dụ Minh họa</h2>
+      </div>
+    </section>
+
+    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
+    <section class="content-section" id="sec-2">
+      <h2 class="section-heading">
+        <span class="num-badge">②</span>
+        <span class="text-ja">演習例題 (Worked Examples)</span>
+        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
+      </h2>
+      <div class="lesson-body-content">
+<h2><span class="ic" style="background:rgba(251,191,36,.18);color:var(--a4)">💡</span>Phần 2 — Ví dụ Minh họa</h2>
 
   <!-- Stack/Queue example -->
   <div class="card">
@@ -544,100 +550,45 @@ f(x): <span class="kw">if</span> x ≤ 1 <span class="kw">then return</span> 1
 </section>
 
 <!-- ===================== PHẦN 4: FLASHCARD ===================== -->
-<section id="flash">
-  <h2 id="part-4"><span class="ic" style="background:rgba(244,114,182,.18);color:var(--a3)">🃏</span>Phần 3 — Flashcard</h2>
-  <p style="color:var(--dim);margin-bottom:1.3rem;font-size:.87rem">👆 Nhấn thẻ để lật xem đáp án</p>
-  <div class="fc-grid">
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="fc-inner">
-        <div class="fc-f"><div class="fc-term">スタック</div><div class="fc-sub">Stack / データ構造</div><div class="fc-hint">LIFO hay FIFO? →</div></div>
-        <div class="fc-b">後入れ先出し (<span style="color:var(--a4)">LIFO</span>)<br>Last In First Out<br><br><span style="color:var(--vi)">🇻🇳 Vào sau ra trước<br>push = thêm vào, pop = lấy ra</span></div>
       </div>
-    </div>
+    </section>
 
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="fc-inner">
-        <div class="fc-f"><div class="fc-term">キュー</div><div class="fc-sub">Queue / 待ち行列</div><div class="fc-hint">LIFO hay FIFO? →</div></div>
-        <div class="fc-b">先入れ先出し (<span style="color:var(--a4)">FIFO</span>)<br>First In First Out<br><br><span style="color:var(--vi)">🇻🇳 Vào trước ra trước<br>enqueue = thêm, dequeue = lấy</span></div>
+    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-3">
+      <h2 class="section-heading">
+        <span class="num-badge">③</span>
+        <span class="text-ja">暗記カード (Flashcards)</span>
+        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
+        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
+        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
+      </p>
+
+      <div class="fc-grid" id="fcGrid"></div>
+    </section>
+
+    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-4">
+      <h2 class="section-heading">
+        <span class="num-badge">④</span>
+        <span class="text-ja">確認テスト (7問)</span>
+        <span class="text-vi">Luyện tập củng cố · 7 câu trắc nghiệm</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
+        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
+        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
+      </p>
+
+      <div id="quizArea"></div>
+
+      <div class="quiz-result-box" id="quiz-result">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
+        <div class="quiz-result-score" id="qScore">0 / 7</div>
+        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
+        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
       </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="fc-inner">
-        <div class="fc-f"><div class="fc-term">配列 vs 連結リスト</div><div class="fc-sub">Điểm khác biệt chính?</div><div class="fc-hint">Nhấn để so sánh →</div></div>
-        <div class="fc-b" style="font-size:.78rem">配列 → 参照・更新 <span style="color:var(--a2)">速い</span><br>連結リスト → 挿入・削除 <span style="color:var(--a2)">速い</span><br><br><span style="color:var(--vi)">🇻🇳 Mảng: đọc/sửa nhanh<br>Danh sách: chèn/xóa nhanh</span></div>
-      </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="fc-inner">
-        <div class="fc-f"><div class="fc-term">2分探索木の条件</div><div class="fc-sub">Binary Search Tree</div><div class="fc-hint">Điều kiện là gì? →</div></div>
-        <div class="fc-b"><span style="color:var(--a4)">左の子孫 &lt; 親 &lt; 右の子孫</span><br><br><span style="color:var(--vi)">🇻🇳 Con cháu bên trái &lt; Nút cha &lt; Con cháu bên phải</span></div>
-      </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="fc-inner">
-        <div class="fc-f"><div class="fc-term">流れ図 ◇</div><div class="fc-sub">Hình thoi trong flowchart</div><div class="fc-hint">Ý nghĩa? →</div></div>
-        <div class="fc-b">判断 (Decision)<br>条件分岐 — Yes/No で処理を分ける<br><br><span style="color:var(--vi)">🇻🇳 Rẽ nhánh điều kiện (Yes/No)</span></div>
-      </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="fc-inner">
-        <div class="fc-f"><div class="fc-term">端子 ⬭</div><div class="fc-sub">Hình bầu dục trong flowchart</div><div class="fc-hint">Ý nghĩa? →</div></div>
-        <div class="fc-b">流れ図の開始と終了を表す<br>「開始」または「終了」と書く<br><br><span style="color:var(--vi)">🇻🇳 Điểm Bắt đầu / Kết thúc</span></div>
-      </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="fc-inner">
-        <div class="fc-f"><div class="fc-term">再帰 (リカーシブ)</div><div class="fc-sub">Recursive</div><div class="fc-hint">Định nghĩa? →</div></div>
-        <div class="fc-b">プログラム実行中に<span style="color:var(--a4)">自分自身を呼び出す</span>性質<br><br><span style="color:var(--vi)">🇻🇳 Hàm tự gọi chính nó<br>Dùng để: tổng, giai thừa, chia dư</span></div>
-      </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="fc-inner">
-        <div class="fc-f"><div class="fc-term">再入可能 (リエントラント)</div><div class="fc-sub">Reentrant</div><div class="fc-hint">Định nghĩa? →</div></div>
-        <div class="fc-b"><span style="color:var(--a4)">複数タスクから同時</span>に呼び出されても正しく動作する性質<br><br><span style="color:var(--vi)">🇻🇳 Nhiều chương trình gọi đồng thời vẫn chạy đúng</span></div>
-      </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="fc-inner">
-        <div class="fc-f"><div class="fc-term">ハッシュ法のオーダー</div><div class="fc-sub">Hash Method Order</div><div class="fc-hint">O(?) →</div></div>
-        <div class="fc-b" style="font-size:1.5rem;color:var(--a4)">O(1)<br><span style="font-size:.8rem;color:var(--text)">1回の探索でアクセス可能</span><br><br><span style="font-size:.78rem;color:var(--vi)">🇻🇳 1 lần tra cứu là xong!</span></div>
-      </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="fc-inner">
-        <div class="fc-f"><div class="fc-term">2分探索法のオーダー</div><div class="fc-sub">Binary Search Order</div><div class="fc-hint">O(?) →</div></div>
-        <div class="fc-b" style="font-size:1.3rem;color:var(--a4)">O(log₂n)<br><span style="font-size:.8rem;color:var(--text)">データを半分ずつ絞る</span><br><br><span style="font-size:.78rem;color:var(--vi)">🇻🇳 Mỗi lần loại bỏ nửa còn lại</span></div>
-      </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="fc-inner">
-        <div class="fc-f"><div class="fc-term">クイックソート</div><div class="fc-sub">Quick Sort</div><div class="fc-hint">Nguyên lý? →</div></div>
-        <div class="fc-b" style="font-size:.82rem">基準値を選び、それより<span style="color:var(--a2)">小さい</span>グループと<span style="color:var(--a3)">大きい</span>グループに分割を繰り返す<br>オーダー: <span style="color:var(--a4)">O(n log n)</span><br><br><span style="color:var(--vi)">🇻🇳 Chọn pivot, chia 2 nhóm, lặp lại</span></div>
-      </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="fc-inner">
-        <div class="fc-f"><div class="fc-term">Ajax</div><div class="fc-sub">非同期通信</div><div class="fc-hint">Đặc điểm chính? →</div></div>
-        <div class="fc-b" style="font-size:.82rem">JavaScriptの<span style="color:var(--a4)">非同期通信</span>で画面遷移なく動的UIを実現<br>Asynchronous JS + XML<br><br><span style="color:var(--vi)">🇻🇳 Cập nhật nội dung không cần tải lại trang</span></div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-
-    </div>
+    </section>
 
     <!-- Footer Navigation & Lesson Completion -->
     <footer class="lesson-footer-nav">
@@ -687,15 +638,10 @@ f(x): <span class="kw">if</span> x ≤ 1 <span class="kw">then return</span> 1
       </div>
       <nav>
         <ul class="toc-list" id="tocList">
-
-          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-  
-          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-  
-          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-  
-          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
-  
+          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 7 câu</span></a></li>
         </ul>
       </nav>
     </div>
@@ -715,23 +661,255 @@ f(x): <span class="kw">if</span> x ≤ 1 <span class="kw">then return</span> 1
 
 </div>
 
+<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
 <script>
+const FLASHCARDS = [
+  {
+    "cat": "all",
+    "front": "スタック",
+    "back": "後入れ先出し ( LIFO ) Last In First Out 🇻🇳 Vào sau ra trước push = thêm vào, pop = lấy ra"
+  },
+  {
+    "cat": "all",
+    "front": "キュー",
+    "back": "先入れ先出し ( FIFO ) First In First Out 🇻🇳 Vào trước ra trước enqueue = thêm, dequeue = lấy"
+  },
+  {
+    "cat": "all",
+    "front": "配列 vs 連結リスト",
+    "back": "配列 → 参照・更新 速い 連結リスト → 挿入・削除 速い 🇻🇳 Mảng: đọc/sửa nhanh Danh sách: chèn/xóa nhanh"
+  },
+  {
+    "cat": "all",
+    "front": "2分探索木の条件",
+    "back": "左の子孫 &lt; 親 &lt; 右の子孫 🇻🇳 Con cháu bên trái &lt; Nút cha &lt; Con cháu bên phải"
+  },
+  {
+    "cat": "all",
+    "front": "流れ図 ◇",
+    "back": "判断 (Decision) 条件分岐 — Yes/No で処理を分ける 🇻🇳 Rẽ nhánh điều kiện (Yes/No)"
+  },
+  {
+    "cat": "all",
+    "front": "端子 ⬭",
+    "back": "流れ図の開始と終了を表す 「開始」または「終了」と書く 🇻🇳 Điểm Bắt đầu / Kết thúc"
+  },
+  {
+    "cat": "all",
+    "front": "再帰 (リカーシブ)",
+    "back": "プログラム実行中に 自分自身を呼び出す 性質 🇻🇳 Hàm tự gọi chính nó Dùng để: tổng, giai thừa, chia dư"
+  },
+  {
+    "cat": "all",
+    "front": "再入可能 (リエントラント)",
+    "back": "複数タスクから同時 に呼び出されても正しく動作する性質 🇻🇳 Nhiều chương trình gọi đồng thời vẫn chạy đúng"
+  },
+  {
+    "cat": "all",
+    "front": "ハッシュ法のオーダー",
+    "back": "O(1) 1回の探索でアクセス可能 🇻🇳 1 lần tra cứu là xong!"
+  },
+  {
+    "cat": "all",
+    "front": "2分探索法のオーダー",
+    "back": "O(log₂n) データを半分ずつ絞る 🇻🇳 Mỗi lần loại bỏ nửa còn lại"
+  },
+  {
+    "cat": "all",
+    "front": "クイックソート",
+    "back": "基準値を選び、それより 小さい グループと 大きい グループに分割を繰り返す オーダー: O(n log n) 🇻🇳 Chọn pivot, chia 2 nhóm, lặp lại"
+  },
+  {
+    "cat": "all",
+    "front": "Ajax",
+    "back": "JavaScriptの 非同期通信 で画面遷移なく動的UIを実現 Asynchronous JS + XML 🇻🇳 Cập nhật nội dung không cần tải lại trang"
+  }
+];
+const QUIZ = [
+  {
+    "q": "Q1. スタックの説明として正しいものはどれか。(Mô tả đúng về Stack là gì?)",
+    "opts": [
+      "ア. 最初に格納したデータを最初に取り出すデータ構造（先入れ先出し）",
+      "イ. 最後に格納したデータを最初に取り出すデータ構造（後入れ先出し）",
+      "ウ. データをポインタで数珠つなぎにしたデータ構造",
+      "エ. データを階層構造で保持するデータ構造"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "Q2. 配列と比較した連結リストの特徴として適切なものはどれか。(Đặc điểm của Linked List so với Array?)",
+    "opts": [
+      "ア. 要素を参照する場合、ランダムにアクセスできるので処理時間は短い",
+      "イ. 要素を更新する場合、ポインタをたどるだけなので処理時間は短い",
+      "ウ. 要素を削除する場合、削除した要素から後ろにある全要素を前に移動するので処理時間は長い",
+      "エ. 要素を挿入する場合、数個のポインタを書き換えるだけなので処理時間は短い"
+    ],
+    "ans": 3,
+    "expl": ""
+  },
+  {
+    "q": "Q3. クイックソートの処理方法の説明として正しいものはどれか。(Mô tả đúng về Quick Sort?)",
+    "opts": [
+      "ア. 隣り合ったデータの比較と入替えを繰り返して整列する（バブルソート）",
+      "イ. 最小値を選び、先頭と交換する操作を繰り返す（選択ソート）",
+      "ウ. 適当な基準値を選び、それより小さなグループと大きなグループに分割し、繰り返す",
+      "エ. 整列済みデータの正しい位置に未整列データを挿入する（挿入ソート）"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "Q4. 再入可能プログラムの特徴はどれか。(Đặc điểm của Reentrant Program?)",
+    "opts": [
+      "ア. 主記憶上のどこのアドレスに配置しても実行できる（リロケータブル）",
+      "イ. 手続の内部から自分自身を呼び出すことができる（リカーシブ）",
+      "ウ. 主記憶に読み込まれたら再ロードなしに繰り返し利用できる（リユーザブル）",
+      "エ. 複数のタスクからの呼び出しに対して、並行して実行されても正しい結果を返す"
+    ],
+    "ans": 3,
+    "expl": ""
+  },
+  {
+    "q": "Q5. 流れ図記号で ◇（菱形）は何を表すか。(Hình thoi ◇ trong flowchart biểu thị điều gì?)",
+    "opts": [
+      "ア. 端子（流れ図の開始と終了）",
+      "イ. 処理（計算や代入）",
+      "ウ. 判断（条件分岐 — Yes/No で処理を分ける）",
+      "エ. ループ端（繰り返し処理の開始と終了）"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "Q6. Ajax の説明として正しいものはどれか。(Mô tả đúng về Ajax?)",
+    "opts": [
+      "ア. JavaScriptの非同期通信を使い、画面全体の遷移を伴わずに動的なUIを実現する技術",
+      "イ. HTML文書の文字サイズや色などのデザインを指定する言語（CSS）",
+      "ウ. Webページの更新情報を配信するための文書フォーマット（RSS）",
+      "エ. 利用者が任意のタグを定義できるマークアップ言語（XML）"
+    ],
+    "ans": 0,
+    "expl": ""
+  },
+  {
+    "q": "Q7. XMLの特徴として最も適切なものはどれか。(Đặc điểm đúng nhất của XML?)",
+    "opts": [
+      "ア. HTMLと同様にタグの使い方が固定されており、独自タグは定義できない",
+      "イ. ネットワーク経由のデータ交換を容易にするため、任意のタグを定義することができる",
+      "ウ. Webページのデザイン（文字色・大きさ）を指定するための言語",
+      "エ. サーバ上で動作し、動的なWebページを生成するプログラム（サーブレット）"
+    ],
+    "ans": 1,
+    "expl": ""
+  }
+];
 
-function sw(id){
-  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('#nav button').forEach(b=>b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  const idx=['theory','flowchart','example','flash','quiz'].indexOf(id);
-  document.querySelectorAll('#nav button')[idx].classList.add('active');
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function ans(el,res){
-  const p=el.closest('.qi');
-  p.querySelectorAll('.qopt').forEach(o=>{o.classList.remove('correct','wrong');o.onclick=null;o.style.cursor='default';});
-  el.classList.add(res);
-  p.querySelector('.qex').classList.add('show');
+// Render Flashcards with reliable click-to-flip
+function renderFC() {
+  const grid = document.getElementById('fcGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  FLASHCARDS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.innerHTML = `
+      <div>
+        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
+        <div class="fc-front">${f.front}</div>
+        <div class="fc-back">${f.back}</div>
+      </div>
+      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
 }
 
+// Render Interactive Quiz with tactile 4-option cards & instant feedback
+let quizScore = 0;
+let quizAnswered = 0;
+
+function renderQuiz() {
+  const area = document.getElementById('quizArea');
+  if (!area) return;
+  area.innerHTML = '';
+  quizScore = 0;
+  quizAnswered = 0;
+
+  QUIZ.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-q-card';
+    card.dataset.idx = idx;
+
+    let optsHtml = '';
+    item.opts.forEach((opt, oi) => {
+      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
+    });
+
+    card.innerHTML = `
+      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
+    `;
+
+    card.querySelectorAll('.opt').forEach(optEl => {
+      optEl.addEventListener('click', () => {
+        if (card.classList.contains('locked')) return;
+        card.classList.add('locked');
+
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+
+        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
+        if (correctEl) correctEl.classList.add('correct');
+
+        if (chosen !== correct) {
+          optEl.classList.add('wrong');
+        } else {
+          quizScore++;
+        }
+
+        quizAnswered++;
+        if (quizAnswered === QUIZ.length) showQuizResult();
+      });
+    });
+
+    area.appendChild(card);
+  });
+
+  const resBox = document.getElementById('quiz-result');
+  if (resBox) resBox.classList.remove('show');
+}
+
+function showQuizResult() {
+  const pct = Math.round((quizScore / QUIZ.length) * 100);
+  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
+  let verdict = '';
+  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
+  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
+  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
+  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
+  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
+  const res = document.getElementById('quiz-result');
+  if (res) {
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function resetQuiz() {
+  renderQuiz();
+  const area = document.getElementById('quizArea');
+  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize on DOM ready
+renderFC();
+renderQuiz();
 </script>
 <script src="../assets/reader.js"></script>
 </body>

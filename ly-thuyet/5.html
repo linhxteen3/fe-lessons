@@ -71,27 +71,17 @@
       </div>
     </div>
 
-    <!-- Lesson Content Body -->
-    <div class="lesson-body">
-
-
-<div class="progress-bar" id="progressBar"></div>
-
-<main>
-
-<!-- ===== HERO ===== -->
-
-
-<!-- ===== TOC ===== -->
-
-
-<!-- =================================================== -->
-<!-- ====================== PART 1 ====================== -->
-<!-- =================================================== -->
-<section id="part1">
-  <div class="sect-head">
+    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
+    <section class="content-section" id="sec-1">
+      <h2 class="section-heading">
+        <span class="num-badge">①</span>
+        <span class="text-ja">重要理論 (Theory)</span>
+        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
+      </h2>
+      <div class="lesson-body-content">
+<div class="sect-head">
     <div class="sect-num">PART 01 / 五</div>
-    <h2 id="part-1">Tóm tắt lý thuyết<small>Theoretical Foundations · 理論まとめ</small></h2>
+    <h2>Tóm tắt lý thuyết<small>Theoretical Foundations · 理論まとめ</small></h2>
   </div>
 
   <!-- 1.1 -->
@@ -532,10 +522,20 @@
 <!-- =================================================== -->
 <!-- ====================== PART 2 ====================== -->
 <!-- =================================================== -->
-<section id="part2">
-  <div class="sect-head">
+      </div>
+    </section>
+
+    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
+    <section class="content-section" id="sec-2">
+      <h2 class="section-heading">
+        <span class="num-badge">②</span>
+        <span class="text-ja">演習例題 (Worked Examples)</span>
+        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
+      </h2>
+      <div class="lesson-body-content">
+<div class="sect-head">
     <div class="sect-num">PART 02 / 五</div>
-    <h2 id="part-2">Ví dụ minh hoạ<small>Worked Examples · 例題</small></h2>
+    <h2>Ví dụ minh hoạ<small>Worked Examples · 例題</small></h2>
   </div>
 
   <div class="example-box">
@@ -607,233 +607,45 @@ XOR 11111111
 <!-- =================================================== -->
 <!-- ====================== PART 3 ====================== -->
 <!-- =================================================== -->
-<section id="part3">
-  <div class="sect-head">
-    <div class="sect-num">PART 03 / 五</div>
-    <h2 id="part-3">Flashcards<small>暗記カード · Tap to reveal</small></h2>
-  </div>
+      </div>
+    </section>
 
-  <div class="flashcard-section">
-    <div class="flashcard-tabs">
-      <button class="active" data-lang="jp">🇯🇵 日本語</button>
-      <button data-lang="vn">🇻🇳 Tiếng Việt</button>
-      <button data-lang="en">🇬🇧 English</button>
-    </div>
+    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-3">
+      <h2 class="section-heading">
+        <span class="num-badge">③</span>
+        <span class="text-ja">暗記カード (Flashcards)</span>
+        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
+        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
+        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
+      </p>
 
-    <!-- JP cards -->
-    <div class="flashcard-grid lang-set active" data-lang="jp">
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">論理演算とは？</div><div class="flashcard-back">2進数の1桁のみを対象にした演算方式</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">ANDの別名は？</div><div class="flashcard-back">論理積</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">ORの別名は？</div><div class="flashcard-back">論理和</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">XORの別名は？</div><div class="flashcard-back">排他的論理和</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">NOTの別名は？</div><div class="flashcard-back">否定</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">NANDとは？</div><div class="flashcard-back">NOT AND（論理積と否定の組合せ）</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">NORとは？</div><div class="flashcard-back">NOT OR（論理和と否定の組合せ）</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">論理演算子の優先順位は？</div><div class="flashcard-back">括弧 &gt; NOT &gt; AND &gt; OR</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">半加算器とは？</div><div class="flashcard-back">下の位からの桁上がりを考慮しない加算回路</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">半加算器の構成は？</div><div class="flashcard-back">論理積(AND) と 排他的論理和(XOR) の組合せ</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">全加算器とは？</div><div class="flashcard-back">下の位からの桁上がりを考慮する加算回路</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">全加算器の構成は？</div><div class="flashcard-back">2つの半加算器 + 1つの論理和(OR)</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">C (Carry out) とは？</div><div class="flashcard-back">桁上がり</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">S (Sum) とは？</div><div class="flashcard-back">和の1桁目</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">「論理回路」「論理素子」「論理ゲート」の関係は？</div><div class="flashcard-back">すべて同じ意味</div></div></div>
-    </div>
+      <div class="fc-grid" id="fcGrid"></div>
+    </section>
 
-    <!-- VN cards -->
-    <div class="flashcard-grid lang-set" data-lang="vn">
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">Phép toán logic là gì?</div><div class="flashcard-back">Phép tính chỉ xử lý 1 bit nhị phân (0 hoặc 1)</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">AND là gì?</div><div class="flashcard-back">Cả 2 đầu vào = 1 thì kết quả mới = 1</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">OR là gì?</div><div class="flashcard-back">Ít nhất 1 đầu vào = 1 thì kết quả = 1</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">XOR là gì?</div><div class="flashcard-back">2 đầu vào KHÁC nhau → 1; giống nhau → 0</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">NOT là gì?</div><div class="flashcard-back">Đảo bit (0 ↔ 1)</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">NAND là gì?</div><div class="flashcard-back">Phủ định kết quả AND</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">NOR là gì?</div><div class="flashcard-back">Phủ định kết quả OR</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">Thứ tự ưu tiên?</div><div class="flashcard-back">Ngoặc &gt; NOT &gt; AND &gt; OR</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">Mạch bán phần là gì?</div><div class="flashcard-back">Mạch cộng KHÔNG xét số nhớ từ hàng dưới</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">Mạch bán phần dùng gì?</div><div class="flashcard-back">AND + XOR</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">Mạch toàn phần là gì?</div><div class="flashcard-back">Mạch cộng CÓ xét số nhớ</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">Mạch toàn phần dùng gì?</div><div class="flashcard-back">2 mạch bán phần + 1 cổng OR</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">C (Carry) là gì?</div><div class="flashcard-back">Số nhớ sang hàng tiếp theo</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">S (Sum) là gì?</div><div class="flashcard-back">Tổng 1 cột</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">AND với 00001111?</div><div class="flashcard-back">Lấy ra (giữ) 4 bit thấp</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">XOR với 11111111?</div><div class="flashcard-back">Đảo toàn bộ bit</div></div></div>
-    </div>
+    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-4">
+      <h2 class="section-heading">
+        <span class="num-badge">④</span>
+        <span class="text-ja">確認テスト (10問)</span>
+        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
+        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
+        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
+      </p>
 
-    <!-- EN cards -->
-    <div class="flashcard-grid lang-set" data-lang="en">
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">What is a logic operation?</div><div class="flashcard-back">Calculation on a single binary digit</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">AND output rule?</div><div class="flashcard-back">Output = 1 ONLY if both inputs = 1</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">OR output rule?</div><div class="flashcard-back">Output = 1 if at least one input = 1</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">XOR output rule?</div><div class="flashcard-back">Output = 1 if inputs differ</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">NOT output rule?</div><div class="flashcard-back">Inverts the input</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">NAND?</div><div class="flashcard-back">NOT AND — inverted AND output</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">NOR?</div><div class="flashcard-back">NOT OR — inverted OR output</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">Operator priority?</div><div class="flashcard-back">Parentheses &gt; NOT &gt; AND &gt; OR</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">Half Adder?</div><div class="flashcard-back">Addition without carry-in</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">Half Adder components?</div><div class="flashcard-back">AND + XOR</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">Full Adder?</div><div class="flashcard-back">Addition WITH carry-in</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">Full Adder components?</div><div class="flashcard-back">2 Half Adders + 1 OR gate</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">C means?</div><div class="flashcard-back">Carry-out</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">S means?</div><div class="flashcard-back">Sum (current bit)</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">AND with 00001111?</div><div class="flashcard-back">Extracts lower 4 bits</div></div></div>
-      <div class="flashcard"><div class="flashcard-inner"><div class="flashcard-front">XOR with 11111111?</div><div class="flashcard-back">Flips all bits</div></div></div>
-    </div>
-  </div>
-</section>
+      <div id="quizArea"></div>
 
-<!-- =================================================== -->
-<!-- ====================== PART 4 ====================== -->
-<!-- =================================================== -->
-<section id="part4">
-  <div class="sect-head">
-    <div class="sect-num">PART 04 / 五</div>
-    <h2 id="part-4">Câu hỏi ôn tập<small>Practice Quiz · 過去問</small></h2>
-  </div>
-
-  <!-- Quiz template: data-correct=letter -->
-  <div class="quiz-q" data-correct="C">
-    <div class="qnum">Q1 · 基本</div>
-    <h4>Phép toán nào cho kết quả "1" khi và chỉ khi <b>CẢ HAI</b> đầu vào đều là "1"?</h4>
-    <ul class="quiz-options">
-      <li data-opt="A">A. OR</li>
-      <li data-opt="B">B. XOR</li>
-      <li data-opt="C">C. AND</li>
-      <li data-opt="D">D. NOT</li>
-    </ul>
-    <button class="quiz-btn" onclick="reveal(this)">Hiện đáp án</button>
-    <div class="quiz-reveal"><b>Đáp án: C (AND)</b><br>AND chỉ trả về 1 khi cả 2 đầu vào đều = 1. Các phép khác có nhiều trường hợp ra 1.</div>
-  </div>
-
-  <div class="quiz-q" data-correct="B">
-    <div class="qnum">Q2 · 基本</div>
-    <h4>Bảng chân lý nào là của XOR?</h4>
-    <ul class="quiz-options">
-      <li data-opt="A">A. 0,0→0; 0,1→1; 1,0→1; 1,1→1</li>
-      <li data-opt="B">B. 0,0→0; 0,1→1; 1,0→1; 1,1→0</li>
-      <li data-opt="C">C. 0,0→1; 0,1→1; 1,0→1; 1,1→0</li>
-      <li data-opt="D">D. 0,0→0; 0,1→0; 1,0→0; 1,1→1</li>
-    </ul>
-    <button class="quiz-btn" onclick="reveal(this)">Hiện đáp án</button>
-    <div class="quiz-reveal"><b>Đáp án: B</b><br>XOR: khác nhau → 1, giống nhau → 0. A là OR, C là NAND, D là AND.</div>
-  </div>
-
-  <div class="quiz-q" data-correct="C">
-    <div class="qnum">Q3 · 平成29年度 (Bài 2-2)</div>
-    <h4>Trong dãy 8 bit, thao tác nào giữ nguyên 4 bit thấp KHÔNG đổi?</h4>
-    <ul class="quiz-options">
-      <li data-opt="A">ア. XOR với 0F (hex)</li>
-      <li data-opt="B">イ. NAND với 0F (hex)</li>
-      <li data-opt="C">ウ. AND với 0F (hex)</li>
-      <li data-opt="D">エ. OR với 0F (hex)</li>
-    </ul>
-    <button class="quiz-btn" onclick="reveal(this)">Hiện đáp án</button>
-    <div class="quiz-reveal"><b>Đáp án: ウ (AND với 0F)</b><br>0F = 00001111. AND với 1 → giữ nguyên; AND với 0 → xoá. Do đó 4 bit cao thành 0, 4 bit thấp giữ nguyên.</div>
-  </div>
-
-  <div class="quiz-q" data-correct="C">
-    <div class="qnum">Q4 · 令和元年度 (Bài 2-3)</div>
-    <h4>Thao tác nào đảo ngược TẤT CẢ 8 bit?</h4>
-    <ul class="quiz-options">
-      <li data-opt="A">ア. XOR với 00 (hex)</li>
-      <li data-opt="B">イ. OR với 00 (hex)</li>
-      <li data-opt="C">ウ. XOR với FF (hex)</li>
-      <li data-opt="D">エ. OR với FF (hex)</li>
-    </ul>
-    <button class="quiz-btn" onclick="reveal(this)">Hiện đáp án</button>
-    <div class="quiz-reveal"><b>Đáp án: ウ (XOR với FF)</b><br>FF = 11111111. XOR với 1 → đảo bit. Đáp án エ (OR với FF) sẽ làm tất cả thành 1, không phải đảo.</div>
-  </div>
-
-  <div class="quiz-q" data-correct="B">
-    <div class="qnum">Q5 · 計算</div>
-    <h4>Tính: <code style="background:var(--hi); padding:2px 8px">1 OR 0 AND 1</code> = ?</h4>
-    <ul class="quiz-options">
-      <li data-opt="A">A. 0</li>
-      <li data-opt="B">B. 1</li>
-      <li data-opt="C">C. Tuỳ ngữ cảnh</li>
-      <li data-opt="D">D. Không xác định</li>
-    </ul>
-    <button class="quiz-btn" onclick="reveal(this)">Hiện đáp án</button>
-    <div class="quiz-reveal"><b>Đáp án: B (= 1)</b><br>Ưu tiên AND trước OR: 0 AND 1 = 0; sau đó 1 OR 0 = 1.</div>
-  </div>
-
-  <div class="quiz-q" data-correct="B">
-    <div class="qnum">Q6 · 半加算器</div>
-    <h4>Mạch cộng bán phần (半加算器) được tạo thành từ tổ hợp các cổng nào?</h4>
-    <ul class="quiz-options">
-      <li data-opt="A">A. AND + OR</li>
-      <li data-opt="B">B. AND + XOR</li>
-      <li data-opt="C">C. OR + NOT</li>
-      <li data-opt="D">D. XOR + NOT</li>
-    </ul>
-    <button class="quiz-btn" onclick="reveal(this)">Hiện đáp án</button>
-    <div class="quiz-reveal"><b>Đáp án: B (AND + XOR)</b><br>S = X XOR Y (tổng); C = X AND Y (số nhớ).</div>
-  </div>
-
-  <div class="quiz-q" data-correct="C">
-    <div class="qnum">Q7 · 平成21年度 (Bài 2-7)</div>
-    <h4>Cho mạch toàn phần (全加算器) với X=1, Y=0, Z=1. Giá trị (C, S) là?</h4>
-    <ul class="quiz-options">
-      <li data-opt="A">ア. (0, 0)</li>
-      <li data-opt="B">イ. (0, 1)</li>
-      <li data-opt="C">ウ. (1, 0)</li>
-      <li data-opt="D">エ. (1, 1)</li>
-    </ul>
-    <button class="quiz-btn" onclick="reveal(this)">Hiện đáp án</button>
-    <div class="quiz-reveal"><b>Đáp án: ウ (1, 0)</b><br>1 + 0 + 1 = 10 (nhị phân) → C = 1, S = 0.</div>
-  </div>
-
-  <div class="quiz-q" data-correct="C">
-    <div class="qnum">Q8 · 半加算器</div>
-    <h4>Trong bảng chân lý mạch cộng bán phần, khi X=1, Y=1, giá trị (C, S) là?</h4>
-    <ul class="quiz-options">
-      <li data-opt="A">A. (0, 0)</li>
-      <li data-opt="B">B. (0, 1)</li>
-      <li data-opt="C">C. (1, 0)</li>
-      <li data-opt="D">D. (1, 1)</li>
-    </ul>
-    <button class="quiz-btn" onclick="reveal(this)">Hiện đáp án</button>
-    <div class="quiz-reveal"><b>Đáp án: C (1, 0)</b><br>1 + 1 = 10 (nhị phân) → nhớ 1, tổng 0.</div>
-  </div>
-
-  <div class="quiz-q" data-correct="B">
-    <div class="qnum">Q9 · 全加算器</div>
-    <h4>Cộng 1001 + 0101 (nhị phân). Ở cột bên phải nhất (LSB), mạch nào được dùng?</h4>
-    <ul class="quiz-options">
-      <li data-opt="A">A. 全加算器</li>
-      <li data-opt="B">B. 半加算器</li>
-      <li data-opt="C">C. Cả hai</li>
-      <li data-opt="D">D. Không cần mạch</li>
-    </ul>
-    <button class="quiz-btn" onclick="reveal(this)">Hiện đáp án</button>
-    <div class="quiz-reveal"><b>Đáp án: B (半加算器)</b><br>Cột 1 không có bit nào ở dưới nó → không có carry-in → dùng bán phần (chỉ 2 đầu vào).</div>
-  </div>
-
-  <div class="quiz-q" data-correct="D">
-    <div class="qnum">Q10 · MIL記号</div>
-    <h4>Trong ký hiệu MIL, dấu chấm tròn (○) ở đầu ra của cổng có ý nghĩa gì?</h4>
-    <ul class="quiz-options">
-      <li data-opt="A">A. Đầu vào ngược</li>
-      <li data-opt="B">B. Cổng đặc biệt</li>
-      <li data-opt="C">C. Loại trừ (排他的)</li>
-      <li data-opt="D">D. Phủ định (否定)</li>
-    </ul>
-    <button class="quiz-btn" onclick="reveal(this)">Hiện đáp án</button>
-    <div class="quiz-reveal"><b>Đáp án: D (Phủ định)</b><br>Dấu chấm ○ = NOT. Đó là vì sao NAND = AND + ○, NOR = OR + ○. Còn vạch dọc │ thêm bên trái OR mới là 排他的 (XOR).</div>
-  </div>
-</section>
-
-<!-- =================================================== -->
-<!-- ====================== PART 5 ====================== -->
-<!-- =================================================== -->
-
-
-
-
-</main>
-
-
-
-    </div>
+      <div class="quiz-result-box" id="quiz-result">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
+        <div class="quiz-result-score" id="qScore">0 / 10</div>
+        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
+        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
+      </div>
+    </section>
 
     <!-- Footer Navigation & Lesson Completion -->
     <footer class="lesson-footer-nav">
@@ -883,15 +695,10 @@ XOR 11111111
       </div>
       <nav>
         <ul class="toc-list" id="tocList">
-
-          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-  
-          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-  
-          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-  
-          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
-  
+          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
         </ul>
       </nav>
     </div>
@@ -911,63 +718,463 @@ XOR 11111111
 
 </div>
 
+<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
 <script>
+const FLASHCARDS = [
+  {
+    "cat": "all",
+    "front": "論理演算とは？",
+    "back": "2進数の1桁のみを対象にした演算方式"
+  },
+  {
+    "cat": "all",
+    "front": "ANDの別名は？",
+    "back": "論理積"
+  },
+  {
+    "cat": "all",
+    "front": "ORの別名は？",
+    "back": "論理和"
+  },
+  {
+    "cat": "all",
+    "front": "XORの別名は？",
+    "back": "排他的論理和"
+  },
+  {
+    "cat": "all",
+    "front": "NOTの別名は？",
+    "back": "否定"
+  },
+  {
+    "cat": "all",
+    "front": "NANDとは？",
+    "back": "NOT AND（論理積と否定の組合せ）"
+  },
+  {
+    "cat": "all",
+    "front": "NORとは？",
+    "back": "NOT OR（論理和と否定の組合せ）"
+  },
+  {
+    "cat": "all",
+    "front": "論理演算子の優先順位は？",
+    "back": "括弧 &gt; NOT &gt; AND &gt; OR"
+  },
+  {
+    "cat": "all",
+    "front": "半加算器とは？",
+    "back": "下の位からの桁上がりを考慮しない加算回路"
+  },
+  {
+    "cat": "all",
+    "front": "半加算器の構成は？",
+    "back": "論理積(AND) と 排他的論理和(XOR) の組合せ"
+  },
+  {
+    "cat": "all",
+    "front": "全加算器とは？",
+    "back": "下の位からの桁上がりを考慮する加算回路"
+  },
+  {
+    "cat": "all",
+    "front": "全加算器の構成は？",
+    "back": "2つの半加算器 + 1つの論理和(OR)"
+  },
+  {
+    "cat": "all",
+    "front": "C (Carry out) とは？",
+    "back": "桁上がり"
+  },
+  {
+    "cat": "all",
+    "front": "S (Sum) とは？",
+    "back": "和の1桁目"
+  },
+  {
+    "cat": "all",
+    "front": "「論理回路」「論理素子」「論理ゲート」の関係は？",
+    "back": "すべて同じ意味"
+  },
+  {
+    "cat": "all",
+    "front": "Phép toán logic là gì?",
+    "back": "Phép tính chỉ xử lý 1 bit nhị phân (0 hoặc 1)"
+  },
+  {
+    "cat": "all",
+    "front": "AND là gì?",
+    "back": "Cả 2 đầu vào = 1 thì kết quả mới = 1"
+  },
+  {
+    "cat": "all",
+    "front": "OR là gì?",
+    "back": "Ít nhất 1 đầu vào = 1 thì kết quả = 1"
+  },
+  {
+    "cat": "all",
+    "front": "XOR là gì?",
+    "back": "2 đầu vào KHÁC nhau → 1; giống nhau → 0"
+  },
+  {
+    "cat": "all",
+    "front": "NOT là gì?",
+    "back": "Đảo bit (0 ↔ 1)"
+  },
+  {
+    "cat": "all",
+    "front": "NAND là gì?",
+    "back": "Phủ định kết quả AND"
+  },
+  {
+    "cat": "all",
+    "front": "NOR là gì?",
+    "back": "Phủ định kết quả OR"
+  },
+  {
+    "cat": "all",
+    "front": "Thứ tự ưu tiên?",
+    "back": "Ngoặc &gt; NOT &gt; AND &gt; OR"
+  },
+  {
+    "cat": "all",
+    "front": "Mạch bán phần là gì?",
+    "back": "Mạch cộng KHÔNG xét số nhớ từ hàng dưới"
+  },
+  {
+    "cat": "all",
+    "front": "Mạch bán phần dùng gì?",
+    "back": "AND + XOR"
+  },
+  {
+    "cat": "all",
+    "front": "Mạch toàn phần là gì?",
+    "back": "Mạch cộng CÓ xét số nhớ"
+  },
+  {
+    "cat": "all",
+    "front": "Mạch toàn phần dùng gì?",
+    "back": "2 mạch bán phần + 1 cổng OR"
+  },
+  {
+    "cat": "all",
+    "front": "C (Carry) là gì?",
+    "back": "Số nhớ sang hàng tiếp theo"
+  },
+  {
+    "cat": "all",
+    "front": "S (Sum) là gì?",
+    "back": "Tổng 1 cột"
+  },
+  {
+    "cat": "all",
+    "front": "AND với 00001111?",
+    "back": "Lấy ra (giữ) 4 bit thấp"
+  },
+  {
+    "cat": "all",
+    "front": "XOR với 11111111?",
+    "back": "Đảo toàn bộ bit"
+  },
+  {
+    "cat": "all",
+    "front": "What is a logic operation?",
+    "back": "Calculation on a single binary digit"
+  },
+  {
+    "cat": "all",
+    "front": "AND output rule?",
+    "back": "Output = 1 ONLY if both inputs = 1"
+  },
+  {
+    "cat": "all",
+    "front": "OR output rule?",
+    "back": "Output = 1 if at least one input = 1"
+  },
+  {
+    "cat": "all",
+    "front": "XOR output rule?",
+    "back": "Output = 1 if inputs differ"
+  },
+  {
+    "cat": "all",
+    "front": "NOT output rule?",
+    "back": "Inverts the input"
+  },
+  {
+    "cat": "all",
+    "front": "NAND?",
+    "back": "NOT AND — inverted AND output"
+  },
+  {
+    "cat": "all",
+    "front": "NOR?",
+    "back": "NOT OR — inverted OR output"
+  },
+  {
+    "cat": "all",
+    "front": "Operator priority?",
+    "back": "Parentheses &gt; NOT &gt; AND &gt; OR"
+  },
+  {
+    "cat": "all",
+    "front": "Half Adder?",
+    "back": "Addition without carry-in"
+  },
+  {
+    "cat": "all",
+    "front": "Half Adder components?",
+    "back": "AND + XOR"
+  },
+  {
+    "cat": "all",
+    "front": "Full Adder?",
+    "back": "Addition WITH carry-in"
+  },
+  {
+    "cat": "all",
+    "front": "Full Adder components?",
+    "back": "2 Half Adders + 1 OR gate"
+  },
+  {
+    "cat": "all",
+    "front": "C means?",
+    "back": "Carry-out"
+  },
+  {
+    "cat": "all",
+    "front": "S means?",
+    "back": "Sum (current bit)"
+  },
+  {
+    "cat": "all",
+    "front": "AND with 00001111?",
+    "back": "Extracts lower 4 bits"
+  },
+  {
+    "cat": "all",
+    "front": "XOR with 11111111?",
+    "back": "Flips all bits"
+  }
+];
+const QUIZ = [
+  {
+    "q": "Phép toán nào cho kết quả \"1\" khi và chỉ khi CẢ HAI đầu vào đều là \"1\"?",
+    "opts": [
+      "OR",
+      "XOR",
+      "AND",
+      "NOT"
+    ],
+    "ans": 2,
+    "expl": "Đáp án: C (AND)AND chỉ trả về 1 khi cả 2 đầu vào đều = 1. Các phép khác có nhiều trường hợp ra 1."
+  },
+  {
+    "q": "Bảng chân lý nào là của XOR?",
+    "opts": [
+      "0,0→0; 0,1→1; 1,0→1; 1,1→1",
+      "0,0→0; 0,1→1; 1,0→1; 1,1→0",
+      "0,0→1; 0,1→1; 1,0→1; 1,1→0",
+      "0,0→0; 0,1→0; 1,0→0; 1,1→1"
+    ],
+    "ans": 1,
+    "expl": "Đáp án: BXOR: khác nhau → 1, giống nhau → 0. A là OR, C là NAND, D là AND."
+  },
+  {
+    "q": "Trong dãy 8 bit, thao tác nào giữ nguyên 4 bit thấp KHÔNG đổi?",
+    "opts": [
+      "ア. XOR với 0F (hex)",
+      "イ. NAND với 0F (hex)",
+      "ウ. AND với 0F (hex)",
+      "エ. OR với 0F (hex)"
+    ],
+    "ans": 2,
+    "expl": "Đáp án: ウ (AND với 0F)0F = 00001111. AND với 1 → giữ nguyên; AND với 0 → xoá. Do đó 4 bit cao thành 0, 4 bit thấp giữ nguyên."
+  },
+  {
+    "q": "Thao tác nào đảo ngược TẤT CẢ 8 bit?",
+    "opts": [
+      "ア. XOR với 00 (hex)",
+      "イ. OR với 00 (hex)",
+      "ウ. XOR với FF (hex)",
+      "エ. OR với FF (hex)"
+    ],
+    "ans": 2,
+    "expl": "Đáp án: ウ (XOR với FF)FF = 11111111. XOR với 1 → đảo bit. Đáp án エ (OR với FF) sẽ làm tất cả thành 1, không phải đảo."
+  },
+  {
+    "q": "Tính: 1 OR 0 AND 1 = ?",
+    "opts": [
+      "0",
+      "1",
+      "Tuỳ ngữ cảnh",
+      "Không xác định"
+    ],
+    "ans": 1,
+    "expl": "Đáp án: B (= 1)Ưu tiên AND trước OR: 0 AND 1 = 0; sau đó 1 OR 0 = 1."
+  },
+  {
+    "q": "Mạch cộng bán phần (半加算器) được tạo thành từ tổ hợp các cổng nào?",
+    "opts": [
+      "AND + OR",
+      "AND + XOR",
+      "OR + NOT",
+      "XOR + NOT"
+    ],
+    "ans": 1,
+    "expl": "Đáp án: B (AND + XOR)S = X XOR Y (tổng); C = X AND Y (số nhớ)."
+  },
+  {
+    "q": "Cho mạch toàn phần (全加算器) với X=1, Y=0, Z=1. Giá trị (C, S) là?",
+    "opts": [
+      "ア. (0, 0)",
+      "イ. (0, 1)",
+      "ウ. (1, 0)",
+      "エ. (1, 1)"
+    ],
+    "ans": 2,
+    "expl": "Đáp án: ウ (1, 0)1 + 0 + 1 = 10 (nhị phân) → C = 1, S = 0."
+  },
+  {
+    "q": "Trong bảng chân lý mạch cộng bán phần, khi X=1, Y=1, giá trị (C, S) là?",
+    "opts": [
+      "(0, 0)",
+      "(0, 1)",
+      "(1, 0)",
+      "(1, 1)"
+    ],
+    "ans": 2,
+    "expl": "Đáp án: C (1, 0)1 + 1 = 10 (nhị phân) → nhớ 1, tổng 0."
+  },
+  {
+    "q": "Cộng 1001 + 0101 (nhị phân). Ở cột bên phải nhất (LSB), mạch nào được dùng?",
+    "opts": [
+      "全加算器",
+      "半加算器",
+      "Cả hai",
+      "Không cần mạch"
+    ],
+    "ans": 1,
+    "expl": "Đáp án: B (半加算器)Cột 1 không có bit nào ở dưới nó → không có carry-in → dùng bán phần (chỉ 2 đầu vào)."
+  },
+  {
+    "q": "Trong ký hiệu MIL, dấu chấm tròn (○) ở đầu ra của cổng có ý nghĩa gì?",
+    "opts": [
+      "Đầu vào ngược",
+      "Cổng đặc biệt",
+      "Loại trừ (排他的)",
+      "Phủ định (否定)"
+    ],
+    "ans": 3,
+    "expl": "Đáp án: D (Phủ định)Dấu chấm ○ = NOT. Đó là vì sao NAND = AND + ○, NOR = OR + ○. Còn vạch dọc │ thêm bên trái OR mới là 排他的 (XOR)."
+  }
+];
 
-// === Flashcard flip ===
-document.querySelectorAll('.flashcard').forEach(card => {
-  card.addEventListener('click', () => card.classList.toggle('flipped'));
-});
+// Render Flashcards with reliable click-to-flip
+function renderFC() {
+  const grid = document.getElementById('fcGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
 
-// === Flashcard language tabs ===
-document.querySelectorAll('.flashcard-tabs button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const lang = btn.dataset.lang;
-    document.querySelectorAll('.flashcard-tabs button').forEach(b => b.classList.toggle('active', b === btn));
-    document.querySelectorAll('.lang-set').forEach(s => s.classList.toggle('active', s.dataset.lang === lang));
-    // reset flips
-    document.querySelectorAll('.flashcard').forEach(c => c.classList.remove('flipped'));
+  FLASHCARDS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.innerHTML = `
+      <div>
+        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
+        <div class="fc-front">${f.front}</div>
+        <div class="fc-back">${f.back}</div>
+      </div>
+      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
   });
-});
-
-// === Quiz interaction ===
-document.querySelectorAll('.quiz-options li').forEach(opt => {
-  opt.addEventListener('click', () => {
-    const parent = opt.closest('.quiz-q');
-    if (parent.dataset.answered === 'true') return;
-    const correct = parent.dataset.correct;
-    const chosen = opt.dataset.opt;
-    parent.dataset.answered = 'true';
-    // mark all
-    parent.querySelectorAll('.quiz-options li').forEach(li => {
-      if (li.dataset.opt === correct) li.classList.add('correct');
-      else if (li === opt) li.classList.add('wrong');
-    });
-    // auto-reveal
-    parent.querySelector('.quiz-reveal').classList.add('show');
-  });
-});
-
-function reveal(btn) {
-  const reveal = btn.nextElementSibling;
-  reveal.classList.add('show');
-  // also mark correct
-  const parent = btn.closest('.quiz-q');
-  const correct = parent.dataset.correct;
-  parent.querySelectorAll('.quiz-options li').forEach(li => {
-    if (li.dataset.opt === correct) li.classList.add('correct');
-  });
-  btn.style.opacity = '0.4';
-  btn.disabled = true;
 }
 
-// === Scroll progress bar ===
-const progressBar = document.getElementById('progressBar');
-window.addEventListener('scroll', () => {
-  const h = document.documentElement;
-  const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
-  progressBar.style.width = pct + '%';
-});
+// Render Interactive Quiz with tactile 4-option cards & instant feedback
+let quizScore = 0;
+let quizAnswered = 0;
 
+function renderQuiz() {
+  const area = document.getElementById('quizArea');
+  if (!area) return;
+  area.innerHTML = '';
+  quizScore = 0;
+  quizAnswered = 0;
+
+  QUIZ.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-q-card';
+    card.dataset.idx = idx;
+
+    let optsHtml = '';
+    item.opts.forEach((opt, oi) => {
+      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
+    });
+
+    card.innerHTML = `
+      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
+    `;
+
+    card.querySelectorAll('.opt').forEach(optEl => {
+      optEl.addEventListener('click', () => {
+        if (card.classList.contains('locked')) return;
+        card.classList.add('locked');
+
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+
+        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
+        if (correctEl) correctEl.classList.add('correct');
+
+        if (chosen !== correct) {
+          optEl.classList.add('wrong');
+        } else {
+          quizScore++;
+        }
+
+        quizAnswered++;
+        if (quizAnswered === QUIZ.length) showQuizResult();
+      });
+    });
+
+    area.appendChild(card);
+  });
+
+  const resBox = document.getElementById('quiz-result');
+  if (resBox) resBox.classList.remove('show');
+}
+
+function showQuizResult() {
+  const pct = Math.round((quizScore / QUIZ.length) * 100);
+  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
+  let verdict = '';
+  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
+  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
+  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
+  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
+  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
+  const res = document.getElementById('quiz-result');
+  if (res) {
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function resetQuiz() {
+  renderQuiz();
+  const area = document.getElementById('quizArea');
+  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize on DOM ready
+renderFC();
+renderQuiz();
 </script>
 <script src="../assets/reader.js"></script>
 </body>

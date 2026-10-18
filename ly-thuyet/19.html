@@ -71,16 +71,15 @@
       </div>
     </div>
 
-    <!-- Lesson Content Body -->
-    <div class="lesson-body">
-
-
-
-<!-- ============ PHẦN 1: LÝ THUYẾT ============ -->
-<section>
-  <h2 id="part-1">📘 Phần 1 — Tóm tắt lý thuyết</h2>
-
-  <!-- 1.1 -->
+    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
+    <section class="content-section" id="sec-1">
+      <h2 class="section-heading">
+        <span class="num-badge">①</span>
+        <span class="text-ja">重要理論 (Theory)</span>
+        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
+      </h2>
+      <div class="lesson-body-content">
+<!-- 1.1 -->
   <h3>1.1. システムとは・処理形態による分類 (Lesson 05-01)</h3>
   <div class="bilingual">
     <div class="jp">
@@ -362,9 +361,18 @@
 
 <!-- ============ PHẦN 2: VÍ DỤ ============ -->
 <section>
-  <h2 id="part-2">🧮 Phần 2 — 例題 / Ví dụ minh hoạ</h2>
+      </div>
+    </section>
 
-  <h3>例題 2.1: MTBF・MTTR・稼働率の計算 (Slide第2回 原文)</h3>
+    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
+    <section class="content-section" id="sec-2">
+      <h2 class="section-heading">
+        <span class="num-badge">②</span>
+        <span class="text-ja">演習例題 (Worked Examples)</span>
+        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
+      </h2>
+      <div class="lesson-body-content">
+<h3>例題 2.1: MTBF・MTTR・稼働率の計算 (Slide第2回 原文)</h3>
   <div class="example-box">
     <span class="label">問題 / Đề bài</span>
     <div class="bilingual">
@@ -444,26 +452,45 @@
 
 <!-- ============ PHẦN 3: FLASHCARD ============ -->
 <section>
-  <h2 id="part-3">🃏 Phần 3 — フラッシュカード / Flashcard</h2>
-  <p style="color:#394556;font-size:.92em;margin-bottom:12px">クリックでカードを裏返す / Click để lật. グループでフィルター可能 / Lọc theo nhóm:</p>
-  <div class="flashcards-controls">
-    <button class="filter-btn active" onclick="filterFlash('all',this)">全て / Tất cả</button>
-    <button class="filter-btn" onclick="filterFlash('Config',this)">システム構成</button>
-    <button class="filter-btn" onclick="filterFlash('Reliability',this)">信頼性設計</button>
-    <button class="filter-btn" onclick="filterFlash('MTBF',this)">MTBF/稼働率</button>
-    <button class="filter-btn" onclick="filterFlash('Performance',this)">性能指標</button>
-  </div>
-  <div class="flashcard-grid" id="flashGrid"></div>
-</section>
+      </div>
+    </section>
 
-<!-- ============ PHẦN 4: QUIZ ============ -->
-<section>
-  <h2 id="part-4">✅ Phần 4 — 確認テスト / Câu hỏi ôn tập (10 câu)</h2>
-  <div id="quizContainer"></div>
-</section>
+    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-3">
+      <h2 class="section-heading">
+        <span class="num-badge">③</span>
+        <span class="text-ja">暗記カード (Flashcards)</span>
+        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
+        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
+        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
+      </p>
 
+      <div class="fc-grid" id="fcGrid"></div>
+    </section>
 
-    </div>
+    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-4">
+      <h2 class="section-heading">
+        <span class="num-badge">④</span>
+        <span class="text-ja">確認テスト (10問)</span>
+        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
+        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
+        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
+      </p>
+
+      <div id="quizArea"></div>
+
+      <div class="quiz-result-box" id="quiz-result">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
+        <div class="quiz-result-score" id="qScore">0 / 10</div>
+        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
+        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
+      </div>
+    </section>
 
     <!-- Footer Navigation & Lesson Completion -->
     <footer class="lesson-footer-nav">
@@ -513,15 +540,10 @@
       </div>
       <nav>
         <ul class="toc-list" id="tocList">
-
-          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-  
-          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-  
-          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-  
-          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
-  
+          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
         </ul>
       </nav>
     </div>
@@ -541,145 +563,343 @@
 
 </div>
 
+<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
 <script>
-
-const FLASH = [
-  {jp:"集中処理",vn:"Xử lý tập trung",b_jp:"1台のホストコンピュータが端末からの全命令を処理する形態。",b_vn:"1 host xử lý mọi lệnh từ terminal.",cat:"Config"},
-  {jp:"分散処理",vn:"Xử lý phân tán",b_jp:"ネットワークでつながれた複数コンピュータが処理を分担する。",b_vn:"Nhiều máy qua mạng cùng chia việc.",cat:"Config"},
-  {jp:"3層クライアントサーバ",vn:"3-tier C/S",b_jp:"プレゼンテーション層・アプリケーション層・データベース層に分離。",b_vn:"3 lớp: presentation / application / database.",cat:"Config"},
-  {jp:"デュアルシステム",vn:"Dual System",b_jp:"2系統のシステムが同時に独立に処理し結果を照合。処理能力は2倍にならない。",b_vn:"2 hệ thống cùng chạy độc lập + so kết quả. Năng lực KHÔNG gấp đôi.",cat:"Config"},
-  {jp:"デュプレックスシステム",vn:"Duplex System",b_jp:"現用系と待機系の2系統。現用系障害時に待機系が処理を受け継ぐ。",b_vn:"現用系 + 待機系. Failover khi主系 hỏng.",cat:"Config"},
-  {jp:"ホットスタンバイ",vn:"Hot Standby",b_jp:"待機系は電源ON・プログラム起動済み。故障時 速やかに 切替。",b_vn:"待機系 luôn ON, program đã chạy sẵn. Chuyển đổi nhanh.",cat:"Config"},
-  {jp:"コールドスタンバイ",vn:"Cold Standby",b_jp:"待機系は電源OFF・停止状態で待機。切替に時間がかかる。",b_vn:"待機系 OFF, chỉ bật khi cần. Chuyển đổi chậm.",cat:"Config"},
-  {jp:"シンクライアント",vn:"Thin Client",b_jp:"クライアントは最低限の機能のみ、処理・データはサーバ側。紛失時に情報漏洩防止。",b_vn:"Client chỉ tối thiểu, mọi thứ ở server. Mất máy không lộ data.",cat:"Config"},
-  {jp:"フォールトトレラント",vn:"Fault Tolerant",b_jp:"部分故障してもシステム全体の必要機能を維持。冗長化で対応。",b_vn:"Hỏng 1 phần vẫn duy trì chức năng cần thiết (redundancy).",cat:"Reliability"},
-  {jp:"フェールソフト",vn:"Fail Soft",b_jp:"故障時、性能が落ちてもシステム動作続行（縮退運転/フォールバック）。",b_vn:"Hỏng thì giảm hiệu năng nhưng vẫn chạy (縮退運転).",cat:"Reliability"},
-  {jp:"フェールセーフ",vn:"Fail Safe",b_jp:"故障時、停止してでも安全を優先（例：ロボットアームの強制停止）。",b_vn:"Hỏng thì dừng cũng được, ưu tiên an toàn.",cat:"Reliability"},
-  {jp:"フールプルーフ",vn:"Fool Proof",b_jp:"人間が誤操作してもシステムに異常が起こらない設計（例：ドアが閉まらないと加熱しない電子レンジ）。",b_vn:"Người dùng thao tác sai cũng không gây lỗi hệ thống.",cat:"Reliability"},
-  {jp:"MTBF",vn:"Mean Time Between Failures",b_jp:"故障と故障の間隔の平均時間（=正常稼働時間の平均）。大きいほど信頼性高い。",b_vn:"Thời gian TB giữa các lần hỏng (= 稼働時間 TB). Lớn = tin cậy cao.",cat:"MTBF"},
-  {jp:"MTTR",vn:"Mean Time To Repair",b_jp:"故障した時に修理にかかる平均時間。小さいほど保守性高い。",b_vn:"Thời gian TB sửa khi hỏng. Nhỏ = bảo trì tốt.",cat:"MTBF"},
-  {jp:"稼働率",vn:"Availability",b_jp:"稼働率 = MTBF / (MTBF + MTTR)。使いたい時に使える時間の割合。",b_vn:"= MTBF/(MTBF+MTTR). Tỷ lệ thời gian dùng được.",cat:"MTBF"},
-  {jp:"直列稼働率",vn:"Series Availability",b_jp:"A × B。両方とも稼働している必要があり、各単体より低くなる。",b_vn:"= A×B. Cần CẢ 2, luôn thấp hơn từng cái.",cat:"MTBF"},
-  {jp:"並列稼働率",vn:"Parallel Availability",b_jp:"1 − (1−A)(1−B)。少なくとも一方が稼働、各単体より高くなる。",b_vn:"= 1−(1−A)(1−B). Chỉ cần 1 ổn, cao hơn từng cái.",cat:"MTBF"},
-  {jp:"スループット",vn:"Throughput",b_jp:"単位時間当たりに処理する仕事の量。",b_vn:"Khối lượng việc xử lý trong 1 đơn vị thời gian.",cat:"Performance"},
-  {jp:"ターンアラウンドタイム",vn:"Turnaround Time",b_jp:"入力+処理+出力の全工程にかかる合計時間。",b_vn:"Tổng thời gian input+xử lý+output.",cat:"Performance"},
-  {jp:"レスポンスタイム",vn:"Response Time",b_jp:"処理だけにかかる時間（応答時間）。",b_vn:"Chỉ thời gian xử lý.",cat:"Performance"},
-  {jp:"ベンチマークテスト",vn:"Benchmark Test",b_jp:"標準的なプログラム・データを使ってシステム性能を測定するテスト。",b_vn:"Đo hiệu năng bằng chương trình/data chuẩn.",cat:"Performance"},
-  {jp:"スケールアウト",vn:"Scale Out",b_jp:"サーバの台数を増やしてシステム全体の処理能力を向上。",b_vn:"Tăng số server.",cat:"Performance"},
-  {jp:"スケールアップ",vn:"Scale Up",b_jp:"個々のサーバの処理能力を向上（CPU換装等）。",b_vn:"Tăng năng lực từng server.",cat:"Performance"},
+const FLASHCARDS = [
+  {
+    "cat": "Config",
+    "front": "集中処理",
+    "back": "1 host xử lý mọi lệnh từ terminal."
+  },
+  {
+    "cat": "Config",
+    "front": "分散処理",
+    "back": "Nhiều máy qua mạng cùng chia việc."
+  },
+  {
+    "cat": "Config",
+    "front": "3層クライアントサーバ",
+    "back": "3 lớp: presentation / application / database."
+  },
+  {
+    "cat": "Config",
+    "front": "デュアルシステム",
+    "back": "2 hệ thống cùng chạy độc lập + so kết quả. Năng lực KHÔNG gấp đôi."
+  },
+  {
+    "cat": "Config",
+    "front": "デュプレックスシステム",
+    "back": "現用系 + 待機系. Failover khi主系 hỏng."
+  },
+  {
+    "cat": "Config",
+    "front": "ホットスタンバイ",
+    "back": "待機系 luôn ON, program đã chạy sẵn. Chuyển đổi nhanh."
+  },
+  {
+    "cat": "Config",
+    "front": "コールドスタンバイ",
+    "back": "待機系 OFF, chỉ bật khi cần. Chuyển đổi chậm."
+  },
+  {
+    "cat": "Config",
+    "front": "シンクライアント",
+    "back": "Client chỉ tối thiểu, mọi thứ ở server. Mất máy không lộ data."
+  },
+  {
+    "cat": "Reliability",
+    "front": "フォールトトレラント",
+    "back": "Hỏng 1 phần vẫn duy trì chức năng cần thiết (redundancy)."
+  },
+  {
+    "cat": "Reliability",
+    "front": "フェールソフト",
+    "back": "Hỏng thì giảm hiệu năng nhưng vẫn chạy (縮退運転)."
+  },
+  {
+    "cat": "Reliability",
+    "front": "フェールセーフ",
+    "back": "Hỏng thì dừng cũng được, ưu tiên an toàn."
+  },
+  {
+    "cat": "Reliability",
+    "front": "フールプルーフ",
+    "back": "Người dùng thao tác sai cũng không gây lỗi hệ thống."
+  },
+  {
+    "cat": "MTBF",
+    "front": "MTBF",
+    "back": "Thời gian TB giữa các lần hỏng (= 稼働時間 TB). Lớn = tin cậy cao."
+  },
+  {
+    "cat": "MTBF",
+    "front": "MTTR",
+    "back": "Thời gian TB sửa khi hỏng. Nhỏ = bảo trì tốt."
+  },
+  {
+    "cat": "MTBF",
+    "front": "稼働率",
+    "back": "= MTBF/(MTBF+MTTR). Tỷ lệ thời gian dùng được."
+  },
+  {
+    "cat": "MTBF",
+    "front": "直列稼働率",
+    "back": "= A×B. Cần CẢ 2, luôn thấp hơn từng cái."
+  },
+  {
+    "cat": "MTBF",
+    "front": "並列稼働率",
+    "back": "= 1−(1−A)(1−B). Chỉ cần 1 ổn, cao hơn từng cái."
+  },
+  {
+    "cat": "Performance",
+    "front": "スループット",
+    "back": "Khối lượng việc xử lý trong 1 đơn vị thời gian."
+  },
+  {
+    "cat": "Performance",
+    "front": "ターンアラウンドタイム",
+    "back": "Tổng thời gian input+xử lý+output."
+  },
+  {
+    "cat": "Performance",
+    "front": "レスポンスタイム",
+    "back": "Chỉ thời gian xử lý."
+  },
+  {
+    "cat": "Performance",
+    "front": "ベンチマークテスト",
+    "back": "Đo hiệu năng bằng chương trình/data chuẩn."
+  },
+  {
+    "cat": "Performance",
+    "front": "スケールアウト",
+    "back": "Tăng số server."
+  },
+  {
+    "cat": "Performance",
+    "front": "スケールアップ",
+    "back": "Tăng năng lực từng server."
+  }
 ];
-function renderFlash(filter='all'){
-  const g = document.getElementById('flashGrid');
-  g.innerHTML = FLASH.filter(f=>filter==='all'||f.cat===filter).map(f=>`
-    <div class="flashcard" data-cat="${f.cat}" onclick="this.classList.toggle('flipped')">
-      <div class="cat">${f.cat}</div>
-      <div class="front">🇯🇵 ${f.jp}<br><span style="font-size:.85em;color:#94a3b8">🇻🇳 ${f.vn}</span></div>
-      <div class="back">🇯🇵 ${f.b_jp}<br><br>🇻🇳 ${f.b_vn}</div>
-    </div>`).join('');
-}
-function filterFlash(cat,btn){
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderFlash(cat);
-}
-renderFlash();
-
 const QUIZ = [
-  {jp:"MTBFの意味は何か。",vn:"MTBF nghĩa là gì?",
-   o_jp:["Mean Time Before Fix","Mean Time Between Failures（故障間隔の平均）","Maximum Time Before Failure","Median Time Between Functions"],
-   o_vn:["—","Thời gian TB giữa các lần hỏng","—","—"],
-   ans:1,
-   exp_jp:"Slide第2回：MTBF = 故障と故障の間隔の平均時間 = 正常稼働時間の平均。",
-   exp_vn:"MTBF = thời gian trung bình giữa các lần hỏng = thời gian hoạt động bình thường trung bình."},
-  {jp:"MTTRの意味は何か。",vn:"MTTR nghĩa là gì?",
-   o_jp:["Mean Time To Run","Mean Time To Repair（修理時間の平均）","Max Time To Restart","Median Time To Reset"],
-   o_vn:["—","Thời gian sửa trung bình","—","—"],
-   ans:1,
-   exp_jp:"Slide第2回：MTTR = 修理にかかる平均時間。小さいほど保守性が高い。",
-   exp_vn:"MTTR càng nhỏ → bảo trì càng tốt."},
-  {jp:"稼働率の公式として正しいものはどれか。",vn:"Công thức 稼働率 đúng là gì?",
-   o_jp:["MTBF / MTTR","MTBF /（MTBF + MTTR）","MTTR / MTBF","（MTBF + MTTR）/ MTBF"],
-   o_vn:["","","",""],
-   ans:1,
-   exp_jp:"Slide第2回：稼働率 = MTBF /（MTBF + MTTR）。",
-   exp_vn:"稼働率 = MTBF/(MTBF+MTTR), tỷ lệ thời gian dùng được."},
-  {jp:"あるシステムの稼働履歴：稼働200h→修理3h→稼働100h→修理1h→稼働150h→修理2h。MTBFはいくらか。",vn:"Với lịch sử trên, MTBF = ?",
-   o_jp:["150時間","100時間","450時間","6時間"],
-   o_vn:["","","",""],
-   ans:0,
-   exp_jp:"MTBF =（200+100+150）÷ 3 = 150時間（Slide第2回 原文）。",
-   exp_vn:"MTBF = (200+100+150)/3 = 150 giờ."},
-  {jp:"同じ稼働履歴の稼働率はおよそいくらか。",vn:"Cùng dữ liệu trên, 稼働率 ≈ ?",
-   o_jp:["0.987（98.7%）","0.5","0.81","0.95"],
-   o_vn:["","","",""],
-   ans:0,
-   exp_jp:"MTBF=150、MTTR=2 → 150/(150+2) = 150/152 ≈ 0.987。",
-   exp_vn:"150/152 ≈ 0.987 = 98.7%."},
-  {jp:"稼働率0.9のシステムA・Bを直列接続したときの全体の稼働率は。",vn:"A=0.9, B=0.9 nối tuần tự. 稼働率 tổng = ?",
-   o_jp:["1.8","0.81","0.99","0.45"],
-   o_vn:["","","",""],
-   ans:1,
-   exp_jp:"直列の稼働率 = A × B = 0.9 × 0.9 = 0.81。",
-   exp_vn:"Series = A×B = 0.81."},
-  {jp:"同じくA=0.9、B=0.9を並列接続したときの全体の稼働率は。",vn:"Cùng A=0.9, B=0.9 nối song song. 稼働率 tổng = ?",
-   o_jp:["0.81","0.99","0.9","1.0"],
-   o_vn:["","","",""],
-   ans:1,
-   exp_jp:"並列 = 1 −（1−0.9）（1−0.9）= 1 − 0.01 = 0.99。",
-   exp_vn:"Parallel = 1−0.01 = 0.99."},
-  {jp:"デュアルシステムの正しい説明はどれか。",vn:"デュアルシステム định nghĩa nào đúng?",
-   o_jp:["待機系は故障時のみ稼働","2系統で同時に処理し結果を照合する","1台で2倍速処理","完全シリアル処理"],
-   o_vn:["","","",""],
-   ans:1,
-   exp_jp:"Yasashii 過去問 5-2 解答 エ：「一つの処理を2系統で独立に行い結果を照合」。",
-   exp_vn:"2 hệ thống xử lý cùng lúc độc lập + so kết quả."},
-  {jp:"フールプルーフの説明として正しいのはどれか。",vn:"フールプルーフ là gì?",
-   o_jp:["故障時に安全停止","性能が落ちても動作続行","利用者が誤操作してもシステムに異常が起こらない","2系統で冗長化"],
-   o_vn:["","","",""],
-   ans:2,
-   exp_jp:"Yasashii Lesson 05-02 + 過去問 5-5：フールプルーフは利用者誤操作対策。",
-   exp_vn:"Người dùng thao tác sai cũng không gây lỗi."},
-  {jp:"単位時間当たりに処理する仕事の量を表す指標はどれか。",vn:"Chỉ số đo khối lượng việc xử lý/đơn vị thời gian?",
-   o_jp:["スループット","ターンアラウンドタイム","タイムスライス","レスポンスタイム"],
-   o_vn:["","","",""],
-   ans:0,
-   exp_jp:"Yasashii Lesson 05-03 + 過去問 5-8：スループット = 単位時間当たり処理量。",
-   exp_vn:"Throughput = work/time unit."},
+  {
+    "q": "MTBFの意味は何か。 (MTBF nghĩa là gì?)",
+    "opts": [
+      "Mean Time Before Fix",
+      "Mean Time Between Failures（故障間隔の平均）",
+      "Maximum Time Before Failure",
+      "Median Time Between Functions"
+    ],
+    "ans": 1,
+    "expl": "Slide第2回：MTBF = 故障と故障の間隔の平均時間 = 正常稼働時間の平均。"
+  },
+  {
+    "q": "MTTRの意味は何か。 (MTTR nghĩa là gì?)",
+    "opts": [
+      "Mean Time To Run",
+      "Mean Time To Repair（修理時間の平均）",
+      "Max Time To Restart",
+      "Median Time To Reset"
+    ],
+    "ans": 1,
+    "expl": "Slide第2回：MTTR = 修理にかかる平均時間。小さいほど保守性が高い。"
+  },
+  {
+    "q": "稼働率の公式として正しいものはどれか。 (Công thức 稼働率 đúng là gì?)",
+    "opts": [
+      "MTBF / MTTR",
+      "MTBF /（MTBF + MTTR）",
+      "MTTR / MTBF",
+      "（MTBF + MTTR）/ MTBF"
+    ],
+    "ans": 1,
+    "expl": "Slide第2回：稼働率 = MTBF /（MTBF + MTTR）。"
+  },
+  {
+    "q": "あるシステムの稼働履歴：稼働200h→修理3h→稼働100h→修理1h→稼働150h→修理2h。MTBFはいくらか。 (Với lịch sử trên, MTBF = ?)",
+    "opts": [
+      "150時間",
+      "100時間",
+      "450時間",
+      "6時間"
+    ],
+    "ans": 0,
+    "expl": "MTBF =（200+100+150）÷ 3 = 150時間（Slide第2回 原文）。"
+  },
+  {
+    "q": "同じ稼働履歴の稼働率はおよそいくらか。 (Cùng dữ liệu trên, 稼働率 ≈ ?)",
+    "opts": [
+      "987（98.7%）",
+      "5",
+      "81",
+      "95"
+    ],
+    "ans": 0,
+    "expl": "MTBF=150、MTTR=2 → 150/(150+2) = 150/152 ≈ 0.987。"
+  },
+  {
+    "q": "稼働率0.9のシステムA・Bを直列接続したときの全体の稼働率は。 (A=0.9, B=0.9 nối tuần tự. 稼働率 tổng = ?)",
+    "opts": [
+      "8",
+      "81",
+      "99",
+      "45"
+    ],
+    "ans": 1,
+    "expl": "直列の稼働率 = A × B = 0.9 × 0.9 = 0.81。"
+  },
+  {
+    "q": "同じくA=0.9、B=0.9を並列接続したときの全体の稼働率は。 (Cùng A=0.9, B=0.9 nối song song. 稼働率 tổng = ?)",
+    "opts": [
+      "81",
+      "99",
+      "9",
+      "0"
+    ],
+    "ans": 1,
+    "expl": "並列 = 1 −（1−0.9）（1−0.9）= 1 − 0.01 = 0.99。"
+  },
+  {
+    "q": "デュアルシステムの正しい説明はどれか。 (デュアルシステム định nghĩa nào đúng?)",
+    "opts": [
+      "待機系は故障時のみ稼働",
+      "2系統で同時に処理し結果を照合する",
+      "1台で2倍速処理",
+      "完全シリアル処理"
+    ],
+    "ans": 1,
+    "expl": "Yasashii 過去問 5-2 解答 エ：「一つの処理を2系統で独立に行い結果を照合」。"
+  },
+  {
+    "q": "フールプルーフの説明として正しいのはどれか。 (フールプルーフ là gì?)",
+    "opts": [
+      "故障時に安全停止",
+      "性能が落ちても動作続行",
+      "利用者が誤操作してもシステムに異常が起こらない",
+      "2系統で冗長化"
+    ],
+    "ans": 2,
+    "expl": "Yasashii Lesson 05-02 + 過去問 5-5：フールプルーフは利用者誤操作対策。"
+  },
+  {
+    "q": "単位時間当たりに処理する仕事の量を表す指標はどれか。 (Chỉ số đo khối lượng việc xử lý/đơn vị thời gian?)",
+    "opts": [
+      "スループット",
+      "ターンアラウンドタイム",
+      "タイムスライス",
+      "レスポンスタイム"
+    ],
+    "ans": 0,
+    "expl": "Yasashii Lesson 05-03 + 過去問 5-8：スループット = 単位時間当たり処理量。"
+  }
 ];
-function renderQuiz(){
-  document.getElementById('quizContainer').innerHTML = QUIZ.map((q,idx)=>{
-    const L=["ア","イ","ウ","エ"];
-    const opts = q.o_jp.map((o,i)=>{
-      const vn = q.o_vn[i] && q.o_vn[i]!=="" && q.o_vn[i]!=="—" ? `<br><span style="color:#94a3b8;font-size:.85em">🇻🇳 ${q.o_vn[i]}</span>` : "";
-      return `<div class="quiz-opt" onclick="pickQ(${idx},${i},this)" data-i="${i}"><b>${L[i]}.</b> ${o}${vn}</div>`;
-    }).join("");
-    return `<div class="quiz-q">
-      <div class="qt-jp"><b>第${idx+1}問:</b> ${q.jp}</div>
-      <div class="qt-vn">🇻🇳 Câu ${idx+1}: ${q.vn}</div>
-      ${opts}
-      <div class="quiz-exp" id="exp-${idx}">
-        <b>正解 ${L[q.ans]}：</b><br>
-        🇯🇵 ${q.exp_jp}<br>
-        🇻🇳 ${q.exp_vn}
-      </div>
-    </div>`;
-  }).join('');
-}
-function pickQ(qi,oi,el){
-  const card = el.parentElement;
-  if(card.dataset.locked) return;
-  card.dataset.locked='1';
-  const q=QUIZ[qi];
-  card.querySelectorAll('.quiz-opt').forEach(o=>{
-    o.classList.add('locked');
-    const i=parseInt(o.dataset.i);
-    if(i===q.ans) o.classList.add('correct');
-    else if(i===oi) o.classList.add('wrong');
-  });
-  document.getElementById('exp-'+qi).classList.add('open');
-}
-renderQuiz();
 
+// Render Flashcards with reliable click-to-flip
+function renderFC() {
+  const grid = document.getElementById('fcGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  FLASHCARDS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.innerHTML = `
+      <div>
+        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
+        <div class="fc-front">${f.front}</div>
+        <div class="fc-back">${f.back}</div>
+      </div>
+      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+// Render Interactive Quiz with tactile 4-option cards & instant feedback
+let quizScore = 0;
+let quizAnswered = 0;
+
+function renderQuiz() {
+  const area = document.getElementById('quizArea');
+  if (!area) return;
+  area.innerHTML = '';
+  quizScore = 0;
+  quizAnswered = 0;
+
+  QUIZ.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-q-card';
+    card.dataset.idx = idx;
+
+    let optsHtml = '';
+    item.opts.forEach((opt, oi) => {
+      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
+    });
+
+    card.innerHTML = `
+      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
+    `;
+
+    card.querySelectorAll('.opt').forEach(optEl => {
+      optEl.addEventListener('click', () => {
+        if (card.classList.contains('locked')) return;
+        card.classList.add('locked');
+
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+
+        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
+        if (correctEl) correctEl.classList.add('correct');
+
+        if (chosen !== correct) {
+          optEl.classList.add('wrong');
+        } else {
+          quizScore++;
+        }
+
+        quizAnswered++;
+        if (quizAnswered === QUIZ.length) showQuizResult();
+      });
+    });
+
+    area.appendChild(card);
+  });
+
+  const resBox = document.getElementById('quiz-result');
+  if (resBox) resBox.classList.remove('show');
+}
+
+function showQuizResult() {
+  const pct = Math.round((quizScore / QUIZ.length) * 100);
+  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
+  let verdict = '';
+  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
+  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
+  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
+  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
+  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
+  const res = document.getElementById('quiz-result');
+  if (res) {
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function resetQuiz() {
+  renderQuiz();
+  const area = document.getElementById('quizArea');
+  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize on DOM ready
+renderFC();
+renderQuiz();
 </script>
 <script src="../assets/reader.js"></script>
 </body>

@@ -71,19 +71,15 @@
       </div>
     </div>
 
-    <!-- Lesson Content Body -->
-    <div class="lesson-body">
-
-
-
-<div class="warn">
-<b>📌 Lưu ý nguồn:</b> Linh ghi "Yasashii Ch.4 Lesson 04-05" cho chủ đề <b>補助記憶+RAID</b>, nhưng Lesson 04-05 thực tế là <b>入出力装置</b> (display/printer/dpi). Nội dung HDD/SSD/補助記憶 nằm trong <b>Lesson 04-03 さまざまな記憶装置</b>, USB/デイジーチェーン/デバイスドライバ nằm trong <b>Lesson 04-04</b>. Tài liệu này dùng <b>cả 3 lesson (04-03, 04-04, 04-05)</b> để bao trùm đầy đủ chủ đề.
-</div>
-
-<section>
-  <h2 id="part-1">📘 Phần 1 — Tóm tắt lý thuyết</h2>
-
-  <h3>1.1. 主記憶 vs 補助記憶装置</h3>
+    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
+    <section class="content-section" id="sec-1">
+      <h2 class="section-heading">
+        <span class="num-badge">①</span>
+        <span class="text-ja">重要理論 (Theory)</span>
+        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
+      </h2>
+      <div class="lesson-body-content">
+<h3>1.1. 主記憶 vs 補助記憶装置</h3>
   <div class="lang-block">
     <div class="l l-jp">🇯🇵 主記憶装置は電源OFFでデータ消失 (揮発性)、補助記憶装置はデータを長期保存 (不揮発性)。代表的な補助記憶: HDD, SSD, USBメモリ, 光ディスク, 磁気テープ.</div>
     <div class="l l-vn">🇻🇳 <b>主記憶 (RAM)</b> mất dữ liệu khi tắt nguồn (揮発性); <b>補助記憶</b> lưu lâu dài (不揮発性). Loại: HDD, SSD, USB, đĩa quang, băng từ.</div>
@@ -200,9 +196,18 @@
 </section>
 
 <section>
-  <h2 id="part-2">🧮 Phần 2 — Ví dụ minh hoạ</h2>
+      </div>
+    </section>
 
-  <h3>Ví dụ 2.1: Tính HDD 記憶容量 (Slide 第8回 nguyên văn)</h3>
+    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
+    <section class="content-section" id="sec-2">
+      <h2 class="section-heading">
+        <span class="num-badge">②</span>
+        <span class="text-ja">演習例題 (Worked Examples)</span>
+        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
+      </h2>
+      <div class="lesson-body-content">
+<h3>Ví dụ 2.1: Tính HDD 記憶容量 (Slide 第8回 nguyên văn)</h3>
   <div class="example-box">
     <span class="label">問題</span>
     <p>1セクタ=512バイト, 1トラック=20セクタ, 1シリンダ=60トラック, シリンダ数=1,500. 記憶容量 = ?</p>
@@ -243,25 +248,45 @@
 </section>
 
 <section>
-  <h2 id="part-3">🃏 Phần 3 — Flashcard</h2>
-  <div class="flashcards-controls">
-    <button class="filter-btn active" onclick="filterFlash('all',this)">Tất cả</button>
-    <button class="filter-btn" onclick="filterFlash('HDD',this)">HDD構造</button>
-    <button class="filter-btn" onclick="filterFlash('RAID',this)">RAID</button>
-    <button class="filter-btn" onclick="filterFlash('Storage',this)">補助記憶</button>
-    <button class="filter-btn" onclick="filterFlash('IO',this)">入出力</button>
-  </div>
-  <div class="flashcard-grid" id="flashGrid"></div>
-</section>
+      </div>
+    </section>
 
-<section>
-  <h2 id="part-4">✅ Phần 4 — Câu hỏi ôn tập (10 câu)</h2>
-  <div id="quizContainer"></div>
-</section>
+    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-3">
+      <h2 class="section-heading">
+        <span class="num-badge">③</span>
+        <span class="text-ja">暗記カード (Flashcards)</span>
+        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
+        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
+        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
+      </p>
 
+      <div class="fc-grid" id="fcGrid"></div>
+    </section>
 
+    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-4">
+      <h2 class="section-heading">
+        <span class="num-badge">④</span>
+        <span class="text-ja">確認テスト (10問)</span>
+        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
+        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
+        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
+      </p>
 
-    </div>
+      <div id="quizArea"></div>
+
+      <div class="quiz-result-box" id="quiz-result">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
+        <div class="quiz-result-score" id="qScore">0 / 10</div>
+        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
+        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
+      </div>
+    </section>
 
     <!-- Footer Navigation & Lesson Completion -->
     <footer class="lesson-footer-nav">
@@ -311,15 +336,10 @@
       </div>
       <nav>
         <ul class="toc-list" id="tocList">
-
-          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-  
-          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-  
-          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-  
-          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
-  
+          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
         </ul>
       </nav>
     </div>
@@ -339,80 +359,338 @@
 
 </div>
 
+<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
 <script>
-
-const FLASH = [
-  {f:"プラッタ",b:"HDDの円盤状の磁気ディスク。データを記録する。",cat:"HDD"},
-  {f:"セクタ",b:"プラッタを区切った最小単位。通常512バイトなど。",cat:"HDD"},
-  {f:"トラック",b:"セクタが1周集まった同心円状の領域。",cat:"HDD"},
-  {f:"シリンダ",b:"複数プラッタの同じ位置のトラックを縦に並べたもの。",cat:"HDD"},
-  {f:"アクセス時間",b:"位置決め時間 + 回転待ち時間 + データ転送時間。",cat:"HDD"},
-  {f:"回転待ち時間",b:"FE quy ước = thời gian quay 1/2 vòng (平均).",cat:"HDD"},
-  {f:"フラグメンテーション",b:"Data HDD bị phân mảnh theo thời gian. デフラグで解消.",cat:"HDD"},
-  {f:"RAID 0 (ストライピング)",b:"2+ HDDに分散書込み = 高速化. 冗長性なし.",cat:"RAID"},
-  {f:"RAID 1 (ミラーリング)",b:"2+ HDDに同じデータ = 信頼性向上. 容量効率50%.",cat:"RAID"},
-  {f:"RAID 5 (パリティ)",b:"3+ HDDに分散+パリティ. 速度と信頼性のバランス.",cat:"RAID"},
-  {f:"SSD",b:"フラッシュメモリベース. 高速・静か・耐衝撃 but 高価.",cat:"Storage"},
-  {f:"CD/DVD/BD",b:"レーザー波長 CD=780nm > DVD=635nm > BD=405nm. 波長↓ = 容量↑.",cat:"Storage"},
-  {f:"光磁気ディスク",b:"磁気で書込、レーザーで読込のハイブリッド.",cat:"Storage"},
-  {f:"フラッシュメモリ",b:"EEPROMの一種. 電気的に読み書き. SD/USB.",cat:"Storage"},
-  {f:"dpi",b:"dot per inch. 1インチ(2.54cm)あたりのドット数. 品質指標.",cat:"IO"},
-  {f:"ppm",b:"page per minute. レーザープリンタの速度指標.",cat:"IO"},
-  {f:"cps",b:"character per second. ドットインパクトプリンタの速度指標.",cat:"IO"},
-  {f:"USB 3.0",b:"シリアルインターフェース. 最大5Gbps、USB 2.0と互換.",cat:"IO"},
-  {f:"デイジーチェーン",b:"周辺機器を数珠つなぎに接続. ハブ不要、台数増で速度低下.",cat:"IO"},
-  {f:"デバイスドライバ",b:"PCに接続した周辺機器を制御するソフトウェア.",cat:"IO"},
-  {f:"OCR / OMR",b:"OCR = 文字読取. OMR = マークシート読取.",cat:"IO"},
-  {f:"IDE / SCSI",b:"パラレル接続規格. IDE=内蔵HDD, SCSI=外付HDDデイジーチェーン.",cat:"IO"},
+const FLASHCARDS = [
+  {
+    "cat": "HDD",
+    "front": "プラッタ",
+    "back": "HDDの円盤状の磁気ディスク。データを記録する。"
+  },
+  {
+    "cat": "HDD",
+    "front": "セクタ",
+    "back": "プラッタを区切った最小単位。通常512バイトなど。"
+  },
+  {
+    "cat": "HDD",
+    "front": "トラック",
+    "back": "セクタが1周集まった同心円状の領域。"
+  },
+  {
+    "cat": "HDD",
+    "front": "シリンダ",
+    "back": "複数プラッタの同じ位置のトラックを縦に並べたもの。"
+  },
+  {
+    "cat": "HDD",
+    "front": "アクセス時間",
+    "back": "位置決め時間 + 回転待ち時間 + データ転送時間。"
+  },
+  {
+    "cat": "HDD",
+    "front": "回転待ち時間",
+    "back": "FE quy ước = thời gian quay 1/2 vòng (平均)."
+  },
+  {
+    "cat": "HDD",
+    "front": "フラグメンテーション",
+    "back": "Data HDD bị phân mảnh theo thời gian. デフラグで解消."
+  },
+  {
+    "cat": "RAID",
+    "front": "RAID 0 (ストライピング)",
+    "back": "2+ HDDに分散書込み = 高速化. 冗長性なし."
+  },
+  {
+    "cat": "RAID",
+    "front": "RAID 1 (ミラーリング)",
+    "back": "2+ HDDに同じデータ = 信頼性向上. 容量効率50%."
+  },
+  {
+    "cat": "RAID",
+    "front": "RAID 5 (パリティ)",
+    "back": "3+ HDDに分散+パリティ. 速度と信頼性のバランス."
+  },
+  {
+    "cat": "Storage",
+    "front": "SSD",
+    "back": "フラッシュメモリベース. 高速・静か・耐衝撃 but 高価."
+  },
+  {
+    "cat": "Storage",
+    "front": "CD/DVD/BD",
+    "back": "レーザー波長 CD=780nm > DVD=635nm > BD=405nm. 波長↓ = 容量↑."
+  },
+  {
+    "cat": "Storage",
+    "front": "光磁気ディスク",
+    "back": "磁気で書込、レーザーで読込のハイブリッド."
+  },
+  {
+    "cat": "Storage",
+    "front": "フラッシュメモリ",
+    "back": "EEPROMの一種. 電気的に読み書き. SD/USB."
+  },
+  {
+    "cat": "IO",
+    "front": "dpi",
+    "back": "dot per inch. 1インチ(2.54cm)あたりのドット数. 品質指標."
+  },
+  {
+    "cat": "IO",
+    "front": "ppm",
+    "back": "page per minute. レーザープリンタの速度指標."
+  },
+  {
+    "cat": "IO",
+    "front": "cps",
+    "back": "character per second. ドットインパクトプリンタの速度指標."
+  },
+  {
+    "cat": "IO",
+    "front": "USB 3.0",
+    "back": "シリアルインターフェース. 最大5Gbps、USB 2.0と互換."
+  },
+  {
+    "cat": "IO",
+    "front": "デイジーチェーン",
+    "back": "周辺機器を数珠つなぎに接続. ハブ不要、台数増で速度低下."
+  },
+  {
+    "cat": "IO",
+    "front": "デバイスドライバ",
+    "back": "PCに接続した周辺機器を制御するソフトウェア."
+  },
+  {
+    "cat": "IO",
+    "front": "OCR / OMR",
+    "back": "OCR = 文字読取. OMR = マークシート読取."
+  },
+  {
+    "cat": "IO",
+    "front": "IDE / SCSI",
+    "back": "パラレル接続規格. IDE=内蔵HDD, SCSI=外付HDDデイジーチェーン."
+  }
 ];
-function renderFlash(filter='all'){
-  const g = document.getElementById('flashGrid');
-  g.innerHTML = FLASH.filter(f=>filter==='all'||f.cat===filter).map(f=>`
-    <div class="flashcard" data-cat="${f.cat}" onclick="this.classList.toggle('flipped')">
-      <div class="cat">${f.cat}</div><div class="front">${f.f}</div><div class="back">${f.b}</div>
-    </div>`).join('');
-}
-function filterFlash(cat,btn){
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderFlash(cat);
-}
-renderFlash();
-
 const QUIZ = [
-  {q:"プラッタを最小単位に区切ったものは?",o:["シリンダ","トラック","セクタ","ヘッド"],ans:2,exp:"Slide 第8回: セクタ = 最小単位 → トラック (1周) → シリンダ (縦並び)."},
-  {q:"HDD のアクセス時間 = ?",o:["位置決め時間 のみ","位置決め時間 + 回転待ち時間 + データ転送時間","クロック × CPI","ヒット率 × アクセス時間"],ans:1,exp:"Slide 第9回: アクセス時間 = 位置決め時間 + 回転待ち時間 + データ転送時間."},
-  {q:"6,000 rpm の HDD の平均回転待ち時間は?",o:["10 ms","5 ms","100 ms","1 ms"],ans:1,exp:"6,000 rpm = 100 vòng/giây → 1 vòng=10ms → 1/2 = 5ms."},
-  {q:"RAID 0 の特徴は?",o:["ミラーリング = 信頼性向上","ストライピング = 処理速度向上","パリティ = 速度+信頼性","暗号化"],ans:1,exp:"Slide第9回: RAID 0 = ストライピング = 2+台に分散 = 速度向上. 冗長性なし."},
-  {q:"RAID 1 の特徴は?",o:["分散書込み","同じデータをミラーリング = 信頼性向上","パリティのみ","暗号化"],ans:1,exp:"Slide第9回: RAID 1 = ミラーリング = 同じデータを2+台に書込み = 信頼性向上."},
-  {q:"光ディスクで容量が一番大きいのは?",o:["CD (780nm)","DVD (635nm)","BD (405nm)","全て同じ"],ans:2,exp:"Slide第10回: 波長↓ = 容量↑. BD 405nm = max 100GB."},
-  {q:"SSD の特徴で正しいのは?",o:["磁気で書込","フラッシュメモリ使用、衝撃強い、高価","回転部品で読み書き","HDDより大容量で安い"],ans:1,exp:"Slide第10回: SSD = フラッシュメモリ内蔵 = 衝撃強い・静か・速い・高価."},
-  {q:"プリンタの dpi の意味は?",o:["1分当たりページ数","1秒当たり文字数","1インチ当たりドット数 (品質)","ドラム回転速度"],ans:2,exp:"Yasashii Lesson 04-05: dpi = dot per inch. 品質指標."},
-  {q:"デイジーチェーン接続の特徴は?",o:["ハブが必要","数珠つなぎ、配線すっきり、台数増で速度低下","無線専用","HDD専用"],ans:1,exp:"Yasashii Lesson 04-04: 数珠つなぎ、ハブ不要、台数増で速度低下."},
-  {q:"デバイスドライバとは?",o:["CPU","周辺機器を制御するソフトウェア","通信プロトコル","補助記憶装置"],ans:1,exp:"Yasashii Lesson 04-04: 「PCに接続された周辺機器を制御するソフトウェア」."},
+  {
+    "q": "プラッタを最小単位に区切ったものは?",
+    "opts": [
+      "シリンダ",
+      "トラック",
+      "セクタ",
+      "ヘッド"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "HDD のアクセス時間 = ?",
+    "opts": [
+      "位置決め時間 のみ",
+      "位置決め時間 + 回転待ち時間 + データ転送時間",
+      "クロック × CPI",
+      "ヒット率 × アクセス時間"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "6,000 rpm の HDD の平均回転待ち時間は?",
+    "opts": [
+      "10 ms",
+      "ms",
+      "100 ms",
+      "ms"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "RAID 0 の特徴は?",
+    "opts": [
+      "ミラーリング = 信頼性向上",
+      "ストライピング = 処理速度向上",
+      "パリティ = 速度+信頼性",
+      "暗号化"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "RAID 1 の特徴は?",
+    "opts": [
+      "分散書込み",
+      "同じデータをミラーリング = 信頼性向上",
+      "パリティのみ",
+      "暗号化"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "光ディスクで容量が一番大きいのは?",
+    "opts": [
+      "CD (780nm)",
+      "DVD (635nm)",
+      "BD (405nm)",
+      "全て同じ"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "SSD の特徴で正しいのは?",
+    "opts": [
+      "磁気で書込",
+      "フラッシュメモリ使用、衝撃強い、高価",
+      "回転部品で読み書き",
+      "HDDより大容量で安い"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "プリンタの dpi の意味は?",
+    "opts": [
+      "1分当たりページ数",
+      "1秒当たり文字数",
+      "1インチ当たりドット数 (品質)",
+      "ドラム回転速度"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "デイジーチェーン接続の特徴は?",
+    "opts": [
+      "ハブが必要",
+      "数珠つなぎ、配線すっきり、台数増で速度低下",
+      "無線専用",
+      "HDD専用"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "デバイスドライバとは?",
+    "opts": [
+      "CPU",
+      "周辺機器を制御するソフトウェア",
+      "通信プロトコル",
+      "補助記憶装置"
+    ],
+    "ans": 1,
+    "expl": ""
+  }
 ];
-function renderQuiz(){
-  document.getElementById('quizContainer').innerHTML = QUIZ.map((q,idx)=>{
-    const L=["A","B","C","D"];
-    const opts = q.o.map((o,i)=>`<div class="quiz-opt" onclick="pickQ(${idx},${i},this)" data-i="${i}"><b>${L[i]}.</b> ${o}</div>`).join("");
-    return `<div class="quiz-q"><div class="qt"><b>Câu ${idx+1}:</b> ${q.q}</div>${opts}<div class="quiz-exp" id="exp-${idx}"><b>Đáp án ${L[q.ans]}:</b> ${q.exp}</div></div>`;
-  }).join('');
-}
-function pickQ(qi,oi,el){
-  const card = el.parentElement;
-  if(card.dataset.locked) return;
-  card.dataset.locked='1';
-  const q=QUIZ[qi];
-  card.querySelectorAll('.quiz-opt').forEach(o=>{
-    o.classList.add('locked');
-    const i=parseInt(o.dataset.i);
-    if(i===q.ans) o.classList.add('correct');
-    else if(i===oi) o.classList.add('wrong');
-  });
-  document.getElementById('exp-'+qi).classList.add('open');
-}
-renderQuiz();
 
+// Render Flashcards with reliable click-to-flip
+function renderFC() {
+  const grid = document.getElementById('fcGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  FLASHCARDS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.innerHTML = `
+      <div>
+        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
+        <div class="fc-front">${f.front}</div>
+        <div class="fc-back">${f.back}</div>
+      </div>
+      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+// Render Interactive Quiz with tactile 4-option cards & instant feedback
+let quizScore = 0;
+let quizAnswered = 0;
+
+function renderQuiz() {
+  const area = document.getElementById('quizArea');
+  if (!area) return;
+  area.innerHTML = '';
+  quizScore = 0;
+  quizAnswered = 0;
+
+  QUIZ.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-q-card';
+    card.dataset.idx = idx;
+
+    let optsHtml = '';
+    item.opts.forEach((opt, oi) => {
+      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
+    });
+
+    card.innerHTML = `
+      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
+    `;
+
+    card.querySelectorAll('.opt').forEach(optEl => {
+      optEl.addEventListener('click', () => {
+        if (card.classList.contains('locked')) return;
+        card.classList.add('locked');
+
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+
+        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
+        if (correctEl) correctEl.classList.add('correct');
+
+        if (chosen !== correct) {
+          optEl.classList.add('wrong');
+        } else {
+          quizScore++;
+        }
+
+        quizAnswered++;
+        if (quizAnswered === QUIZ.length) showQuizResult();
+      });
+    });
+
+    area.appendChild(card);
+  });
+
+  const resBox = document.getElementById('quiz-result');
+  if (resBox) resBox.classList.remove('show');
+}
+
+function showQuizResult() {
+  const pct = Math.round((quizScore / QUIZ.length) * 100);
+  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
+  let verdict = '';
+  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
+  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
+  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
+  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
+  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
+  const res = document.getElementById('quiz-result');
+  if (res) {
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function resetQuiz() {
+  renderQuiz();
+  const area = document.getElementById('quizArea');
+  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize on DOM ready
+renderFC();
+renderQuiz();
 </script>
 <script src="../assets/reader.js"></script>
 </body>

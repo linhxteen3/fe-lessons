@@ -71,20 +71,15 @@
       </div>
     </div>
 
-    <!-- Lesson Content Body -->
-    <div class="lesson-body">
-
-
-
-<div class="warn">
-<b>📌 Lưu ý nguồn:</b> Chủ đề bạn ghi là "Yasashii Ch.4 Lesson 04-04", nhưng Lesson 04-04 thực tế là <b>入出力インタフェース</b> (USB/HDMI/daisy chain), không phải bộ nhớ. Nội dung <b>メモリ・キャッシュ</b> nằm ở <b>Lesson 04-03 さまざまな記憶装置</b>. Tài liệu này dùng nguồn đúng.
-</div>
-
-<!-- ============ PHẦN 1: LÝ THUYẾT ============ -->
-<section>
-  <h2 id="part-1">📘 Phần 1 — Tóm tắt lý thuyết</h2>
-
-  <h3>1.1. Phân cấp bộ nhớ (記憶装置の階層)</h3>
+    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
+    <section class="content-section" id="sec-1">
+      <h2 class="section-heading">
+        <span class="num-badge">①</span>
+        <span class="text-ja">重要理論 (Theory)</span>
+        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
+      </h2>
+      <div class="lesson-body-content">
+<h3>1.1. Phân cấp bộ nhớ (記憶装置の階層)</h3>
   <div class="lang-block">
     <div class="l l-jp">🇯🇵 コンピュータの記憶装置は左から右へ「処理速度が速く小容量」→「処理速度が遅く大容量」となる：CPU → キャッシュメモリ → 主記憶装置 → 補助記憶装置。</div>
     <div class="l l-vn">🇻🇳 Bộ nhớ máy tính phân cấp theo tốc độ–dung lượng: <b>CPU → Cache → 主記憶 (RAM) → 補助記憶 (HDD/SSD)</b>. Càng gần CPU càng nhanh nhưng dung lượng nhỏ; càng xa CPU càng chậm nhưng dung lượng lớn.</div>
@@ -170,9 +165,18 @@
 
 <!-- ============ PHẦN 2: VÍ DỤ ============ -->
 <section>
-  <h2 id="part-2">🧮 Phần 2 — Ví dụ minh hoạ</h2>
+      </div>
+    </section>
 
-  <h3>Ví dụ 2.1: Tính 実効アクセス時間 (Yasashii nguyên văn)</h3>
+    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
+    <section class="content-section" id="sec-2">
+      <h2 class="section-heading">
+        <span class="num-badge">②</span>
+        <span class="text-ja">演習例題 (Worked Examples)</span>
+        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
+      </h2>
+      <div class="lesson-body-content">
+<h3>Ví dụ 2.1: Tính 実効アクセス時間 (Yasashii nguyên văn)</h3>
   <div class="example-box">
     <span class="label">問題 (Yasashii p.154)</span>
     <ul>
@@ -225,26 +229,45 @@
 
 <!-- ============ PHẦN 3: FLASHCARD ============ -->
 <section>
-  <h2 id="part-3">🃏 Phần 3 — Flashcard</h2>
-  <p style="color:#394556;font-size:.92em;margin-bottom:12px">Click thẻ để lật. Lọc theo nhóm:</p>
-  <div class="flashcards-controls">
-    <button class="filter-btn active" onclick="filterFlash('all',this)">Tất cả</button>
-    <button class="filter-btn" onclick="filterFlash('Memory',this)">メモリ種類</button>
-    <button class="filter-btn" onclick="filterFlash('Cache',this)">キャッシュ</button>
-    <button class="filter-btn" onclick="filterFlash('Write',this)">書き込み方式</button>
-    <button class="filter-btn" onclick="filterFlash('Speed',this)">高速化</button>
-  </div>
-  <div class="flashcard-grid" id="flashGrid"></div>
-</section>
+      </div>
+    </section>
 
-<!-- ============ PHẦN 4: QUIZ ============ -->
-<section>
-  <h2 id="part-4">✅ Phần 4 — Câu hỏi ôn tập (10 câu)</h2>
-  <div id="quizContainer"></div>
-</section>
+    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-3">
+      <h2 class="section-heading">
+        <span class="num-badge">③</span>
+        <span class="text-ja">暗記カード (Flashcards)</span>
+        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
+        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
+        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
+      </p>
 
+      <div class="fc-grid" id="fcGrid"></div>
+    </section>
 
-    </div>
+    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-4">
+      <h2 class="section-heading">
+        <span class="num-badge">④</span>
+        <span class="text-ja">確認テスト (10問)</span>
+        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
+        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
+        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
+      </p>
+
+      <div id="quizArea"></div>
+
+      <div class="quiz-result-box" id="quiz-result">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
+        <div class="quiz-result-score" id="qScore">0 / 10</div>
+        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
+        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
+      </div>
+    </section>
 
     <!-- Footer Navigation & Lesson Completion -->
     <footer class="lesson-footer-nav">
@@ -294,15 +317,10 @@
       </div>
       <nav>
         <ul class="toc-list" id="tocList">
-
-          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-  
-          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-  
-          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-  
-          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
-  
+          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
         </ul>
       </nav>
     </div>
@@ -322,72 +340,288 @@
 
 </div>
 
+<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
 <script>
-
-const FLASH = [
-  {f:"RAM",b:"Random Access Memory — 読み書き可能、揮発性 (電源OFFで消失). 例: DRAM, SRAM.",cat:"Memory"},
-  {f:"ROM",b:"Read Only Memory — 読み出し専用、不揮発性. 例: マスクROM, EPROM, EEPROM, Flash.",cat:"Memory"},
-  {f:"DRAM",b:"Dynamic RAM — コンデンサで電荷保持、リフレッシュ必要、遅い・大容量・安価 → 主記憶装置.",cat:"Memory"},
-  {f:"SRAM",b:"Static RAM — フリップフロップ回路、リフレッシュ不要、高速・小容量・高価 → キャッシュメモリ.",cat:"Memory"},
-  {f:"フラッシュメモリ",b:"EEPROMの一種、ブロック単位で書換え可能、不揮発性. SSD・USBメモリで使用.",cat:"Memory"},
-  {f:"キャッシュメモリ",b:"CPUと主記憶の間にある超高速メモリ. 頻繁に使うデータを保存して処理待ち時間を短縮.",cat:"Cache"},
-  {f:"多段キャッシュ",b:"1次/2次/3次キャッシュなど階層化. 内部 (L1/L2 in CPU) と外部 (L3 outside) に分けてさらなる高速化.",cat:"Cache"},
-  {f:"ヒット率",b:"必要なデータがキャッシュメモリ上に配置されている確率. Hit率が高い = CPU処理効率高い.",cat:"Cache"},
-  {f:"実効アクセス時間",b:"キャッシュへの時間×ヒット率 + 主記憶への時間×(1−ヒット率). FE超頻出公式.",cat:"Cache"},
-  {f:"ライトスルー方式",b:"キャッシュと主記憶の両方に同時に書き込む. シンプルだが毎回主記憶書込みで遅い.",cat:"Write"},
-  {f:"ライトバック方式",b:"通常はキャッシュのみ書き込み、データ追い出し時のみ主記憶に書込み. 高速だが制御複雑.",cat:"Write"},
-  {f:"メモリインタリーブ",b:"主記憶を複数のバンクに分割し、並列アクセスして高速化する技術.",cat:"Speed"},
+const FLASHCARDS = [
+  {
+    "cat": "Memory",
+    "front": "RAM",
+    "back": "Random Access Memory — 読み書き可能、揮発性 (電源OFFで消失). 例: DRAM, SRAM."
+  },
+  {
+    "cat": "Memory",
+    "front": "ROM",
+    "back": "Read Only Memory — 読み出し専用、不揮発性. 例: マスクROM, EPROM, EEPROM, Flash."
+  },
+  {
+    "cat": "Memory",
+    "front": "DRAM",
+    "back": "Dynamic RAM — コンデンサで電荷保持、リフレッシュ必要、遅い・大容量・安価 → 主記憶装置."
+  },
+  {
+    "cat": "Memory",
+    "front": "SRAM",
+    "back": "Static RAM — フリップフロップ回路、リフレッシュ不要、高速・小容量・高価 → キャッシュメモリ."
+  },
+  {
+    "cat": "Memory",
+    "front": "フラッシュメモリ",
+    "back": "EEPROMの一種、ブロック単位で書換え可能、不揮発性. SSD・USBメモリで使用."
+  },
+  {
+    "cat": "Cache",
+    "front": "キャッシュメモリ",
+    "back": "CPUと主記憶の間にある超高速メモリ. 頻繁に使うデータを保存して処理待ち時間を短縮."
+  },
+  {
+    "cat": "Cache",
+    "front": "多段キャッシュ",
+    "back": "1次/2次/3次キャッシュなど階層化. 内部 (L1/L2 in CPU) と外部 (L3 outside) に分けてさらなる高速化."
+  },
+  {
+    "cat": "Cache",
+    "front": "ヒット率",
+    "back": "必要なデータがキャッシュメモリ上に配置されている確率. Hit率が高い = CPU処理効率高い."
+  },
+  {
+    "cat": "Cache",
+    "front": "実効アクセス時間",
+    "back": "キャッシュへの時間×ヒット率 + 主記憶への時間×(1−ヒット率). FE超頻出公式."
+  },
+  {
+    "cat": "Write",
+    "front": "ライトスルー方式",
+    "back": "キャッシュと主記憶の両方に同時に書き込む. シンプルだが毎回主記憶書込みで遅い."
+  },
+  {
+    "cat": "Write",
+    "front": "ライトバック方式",
+    "back": "通常はキャッシュのみ書き込み、データ追い出し時のみ主記憶に書込み. 高速だが制御複雑."
+  },
+  {
+    "cat": "Speed",
+    "front": "メモリインタリーブ",
+    "back": "主記憶を複数のバンクに分割し、並列アクセスして高速化する技術."
+  }
 ];
-function renderFlash(filter='all'){
-  const g = document.getElementById('flashGrid');
-  g.innerHTML = FLASH.filter(f=>filter==='all'||f.cat===filter).map(f=>`
-    <div class="flashcard" data-cat="${f.cat}" onclick="this.classList.toggle('flipped')">
-      <div class="cat">${f.cat}</div>
-      <div class="front">${f.f}</div>
-      <div class="back">${f.b}</div>
-    </div>`).join('');
-}
-function filterFlash(cat,btn){
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderFlash(cat);
-}
-renderFlash();
-
 const QUIZ = [
-  {q:"キャッシュメモリ nằm ở vị trí nào trong cấu trúc bộ nhớ?",o:["Giữa CPU và 主記憶装置","Giữa 主記憶 và 補助記憶","Bên trong 補助記憶","Bên ngoài máy tính"],ans:0,exp:"Yasashii: 「キャッシュメモリとは、CPUと主記憶装置の間にある超高速の記憶装置」."},
-  {q:"ヒット率 = 0.9 nghĩa là gì?",o:["90% lệnh chạy đúng","90% lần CPU cần dữ liệu, dữ liệu đã có sẵn trong cache","Cache đầy 90%","Cache có 90 phần tử"],ans:1,exp:"Yasashii: 「必要なデータがキャッシュメモリ上に配置されている確率」 = hit rate."},
-  {q:"Công thức 実効アクセス時間 đúng là?",o:["キャッシュ時間 + 主記憶時間","キャッシュ時間 × ヒット率 + 主記憶時間 × (1 − ヒット率)","キャッシュ時間 / ヒット率","(キャッシュ時間 + 主記憶時間) / 2"],ans:1,exp:"Yasashii p.154 nguyên văn: 実効アクセス時間 = キャッシュへのアクセス時間 × ヒット率 + 主記憶へのアクセス時間 × (1 − ヒット率)."},
-  {q:"キャッシュ 20ns, 主記憶 580ns, ヒット率 0.9. 実効アクセス時間 = ?",o:["60 ns","76 ns","100 ns","580 ns"],ans:1,exp:"20 × 0.9 + 580 × 0.1 = 18 + 58 = 76 ns (Yasashii p.154 ví dụ chính thức)."},
-  {q:"ライトスルー方式 hoạt động thế nào?",o:["Chỉ ghi vào cache","Ghi cả vào cache và 主記憶 cùng lúc","Ghi vào 主記憶 trước, cache sau","Không ghi gì"],ans:1,exp:"Yasashii: ライトスルー方式 = 「CPUがキャッシュにデータを書き込む際に、主記憶装置にも同じデータを書き込む方式」."},
-  {q:"ライトバック方式 ghi xuống 主記憶 KHI NÀO?",o:["Ngay khi CPU ghi vào cache","Khi dữ liệu bị đẩy ra (追い出される) khỏi cache","Mỗi giây 1 lần","Không bao giờ ghi xuống 主記憶"],ans:1,exp:"Yasashii: 「キャッシュメモリから当該データが追い出されるときに行う方式」."},
-  {q:"SRAM thường được dùng cho mục đích gì?",o:["主記憶装置","キャッシュメモリ","補助記憶装置","ROM"],ans:1,exp:"Slide 第6回: SRAM = 高速・小容量・高価 → キャッシュメモリ. DRAM mới dùng cho 主記憶."},
-  {q:"DRAM cần thực hiện thao tác gì định kỳ?",o:["Defragment","Refresh (定期的にデータを書き直す)","Format","Backup"],ans:1,exp:"DRAM dùng tụ điện, điện tích rò rỉ theo thời gian nên cần refresh định kỳ."},
-  {q:"メモリインタリーブ hoạt động thế nào?",o:["Chia cache thành nhiều cấp","Chia 主記憶 thành nhiều バンク (bank) và truy cập 並列","Ghi nén dữ liệu","Tăng クロック周波数"],ans:1,exp:"Yasashii: 「主記憶装置内部を複数のバンクに分割し、各バンクに並列にアクセスすること」."},
-  {q:"キャッシュ 10ns, 主記憶 60ns, 実効アクセス時間 15ns. Hit率 là?",o:["0.5","0.7","0.9","0.95"],ans:2,exp:"15 = 10x + 60(1−x) → 50x = 45 → x = 0.9 (Yasashii 解答 4-12 nguyên văn)."},
+  {
+    "q": "キャッシュメモリ nằm ở vị trí nào trong cấu trúc bộ nhớ?",
+    "opts": [
+      "Giữa CPU và 主記憶装置",
+      "Giữa 主記憶 và 補助記憶",
+      "Bên trong 補助記憶",
+      "Bên ngoài máy tính"
+    ],
+    "ans": 0,
+    "expl": ""
+  },
+  {
+    "q": "ヒット率 = 0.9 nghĩa là gì?",
+    "opts": [
+      "90% lệnh chạy đúng",
+      "90% lần CPU cần dữ liệu, dữ liệu đã có sẵn trong cache",
+      "Cache đầy 90%",
+      "Cache có 90 phần tử"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "Công thức 実効アクセス時間 đúng là?",
+    "opts": [
+      "キャッシュ時間 + 主記憶時間",
+      "キャッシュ時間 × ヒット率 + 主記憶時間 × (1 − ヒット率)",
+      "キャッシュ時間 / ヒット率",
+      "(キャッシュ時間 + 主記憶時間) / 2"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "キャッシュ 20ns, 主記憶 580ns, ヒット率 0.9. 実効アクセス時間 = ?",
+    "opts": [
+      "60 ns",
+      "76 ns",
+      "100 ns",
+      "580 ns"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "ライトスルー方式 hoạt động thế nào?",
+    "opts": [
+      "Chỉ ghi vào cache",
+      "Ghi cả vào cache và 主記憶 cùng lúc",
+      "Ghi vào 主記憶 trước, cache sau",
+      "Không ghi gì"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "ライトバック方式 ghi xuống 主記憶 KHI NÀO?",
+    "opts": [
+      "Ngay khi CPU ghi vào cache",
+      "Khi dữ liệu bị đẩy ra (追い出される) khỏi cache",
+      "Mỗi giây 1 lần",
+      "Không bao giờ ghi xuống 主記憶"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "SRAM thường được dùng cho mục đích gì?",
+    "opts": [
+      "主記憶装置",
+      "キャッシュメモリ",
+      "補助記憶装置",
+      "ROM"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "DRAM cần thực hiện thao tác gì định kỳ?",
+    "opts": [
+      "Defragment",
+      "Refresh (定期的にデータを書き直す)",
+      "Format",
+      "Backup"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "メモリインタリーブ hoạt động thế nào?",
+    "opts": [
+      "Chia cache thành nhiều cấp",
+      "Chia 主記憶 thành nhiều バンク (bank) và truy cập 並列",
+      "Ghi nén dữ liệu",
+      "Tăng クロック周波数"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "キャッシュ 10ns, 主記憶 60ns, 実効アクセス時間 15ns. Hit率 là?",
+    "opts": [
+      "5",
+      "7",
+      "9",
+      "95"
+    ],
+    "ans": 2,
+    "expl": ""
+  }
 ];
-function renderQuiz(){
-  document.getElementById('quizContainer').innerHTML = QUIZ.map((q,idx)=>{
-    const L=["A","B","C","D"];
-    const opts = q.o.map((o,i)=>`<div class="quiz-opt" onclick="pickQ(${idx},${i},this)" data-i="${i}"><b>${L[i]}.</b> ${o}</div>`).join("");
-    return `<div class="quiz-q"><div class="qt"><b>Câu ${idx+1}:</b> ${q.q}</div>${opts}<div class="quiz-exp" id="exp-${idx}"><b>Đáp án ${L[q.ans]}:</b> ${q.exp}</div></div>`;
-  }).join('');
-}
-function pickQ(qi,oi,el){
-  const card = el.parentElement;
-  if(card.dataset.locked) return;
-  card.dataset.locked='1';
-  const q=QUIZ[qi];
-  card.querySelectorAll('.quiz-opt').forEach(o=>{
-    o.classList.add('locked');
-    const i=parseInt(o.dataset.i);
-    if(i===q.ans) o.classList.add('correct');
-    else if(i===oi) o.classList.add('wrong');
-  });
-  document.getElementById('exp-'+qi).classList.add('open');
-}
-renderQuiz();
 
+// Render Flashcards with reliable click-to-flip
+function renderFC() {
+  const grid = document.getElementById('fcGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  FLASHCARDS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.innerHTML = `
+      <div>
+        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
+        <div class="fc-front">${f.front}</div>
+        <div class="fc-back">${f.back}</div>
+      </div>
+      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+// Render Interactive Quiz with tactile 4-option cards & instant feedback
+let quizScore = 0;
+let quizAnswered = 0;
+
+function renderQuiz() {
+  const area = document.getElementById('quizArea');
+  if (!area) return;
+  area.innerHTML = '';
+  quizScore = 0;
+  quizAnswered = 0;
+
+  QUIZ.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-q-card';
+    card.dataset.idx = idx;
+
+    let optsHtml = '';
+    item.opts.forEach((opt, oi) => {
+      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
+    });
+
+    card.innerHTML = `
+      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
+    `;
+
+    card.querySelectorAll('.opt').forEach(optEl => {
+      optEl.addEventListener('click', () => {
+        if (card.classList.contains('locked')) return;
+        card.classList.add('locked');
+
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+
+        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
+        if (correctEl) correctEl.classList.add('correct');
+
+        if (chosen !== correct) {
+          optEl.classList.add('wrong');
+        } else {
+          quizScore++;
+        }
+
+        quizAnswered++;
+        if (quizAnswered === QUIZ.length) showQuizResult();
+      });
+    });
+
+    area.appendChild(card);
+  });
+
+  const resBox = document.getElementById('quiz-result');
+  if (resBox) resBox.classList.remove('show');
+}
+
+function showQuizResult() {
+  const pct = Math.round((quizScore / QUIZ.length) * 100);
+  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
+  let verdict = '';
+  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
+  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
+  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
+  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
+  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
+  const res = document.getElementById('quiz-result');
+  if (res) {
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function resetQuiz() {
+  renderQuiz();
+  const area = document.getElementById('quizArea');
+  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize on DOM ready
+renderFC();
+renderQuiz();
 </script>
 <script src="../assets/reader.js"></script>
 </body>

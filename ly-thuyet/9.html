@@ -71,21 +71,15 @@
       </div>
     </div>
 
-    <!-- Lesson Content Body -->
-    <div class="lesson-body">
-
-
-
-
-
-
-<main>
-
-<!-- ==============================
-     PHẦN 1: LÝ THUYẾT
-=============================== -->
-<section id="theory" class="active">
-  <h2 id="part-1"><span class="icon" style="background:rgba(124,111,247,0.2);color:var(--accent1)">📖</span> Phần 1 — Tóm tắt Lý thuyết</h2>
+    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
+    <section class="content-section" id="sec-1">
+      <h2 class="section-heading">
+        <span class="num-badge">①</span>
+        <span class="text-ja">重要理論 (Theory)</span>
+        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
+      </h2>
+      <div class="lesson-body-content">
+<h2><span class="icon" style="background:rgba(124,111,247,0.2);color:var(--accent1)">📖</span> Phần 1 — Tóm tắt Lý thuyết</h2>
 
   <!-- AI -->
   <div class="card">
@@ -328,8 +322,18 @@
 <!-- ==============================
      PHẦN 2: VÍ DỤ MINH HỌA
 =============================== -->
-<section id="example">
-  <h2 id="part-2"><span class="icon" style="background:rgba(0,212,170,0.2);color:var(--accent2)">💡</span> Phần 2 — Ví dụ Minh họa</h2>
+      </div>
+    </section>
+
+    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
+    <section class="content-section" id="sec-2">
+      <h2 class="section-heading">
+        <span class="num-badge">②</span>
+        <span class="text-ja">演習例題 (Worked Examples)</span>
+        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
+      </h2>
+      <div class="lesson-body-content">
+<h2><span class="icon" style="background:rgba(0,212,170,0.2);color:var(--accent2)">💡</span> Phần 2 — Ví dụ Minh họa</h2>
 
   <!-- AI Examples -->
   <div class="card">
@@ -425,240 +429,45 @@
 <!-- ==============================
      PHẦN 3: FLASHCARD
 =============================== -->
-<section id="flash">
-  <h2 id="part-3"><span class="icon" style="background:rgba(255,107,107,0.2);color:var(--accent3)">🃏</span> Phần 3 — Flashcard</h2>
-  <p style="color:var(--text-dim);margin-bottom:1.5rem;font-size:.88rem">👆 Nhấn vào thẻ để lật xem đáp án</p>
-
-  <div class="flashcard-grid">
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="flashcard-inner">
-        <div class="fc-front">
-          <div class="fc-term">機械学習</div>
-          <div class="fc-sub">Machine Learning</div>
-          <div class="fc-hint">Nhấn để xem định nghĩa →</div>
-        </div>
-        <div class="fc-back">
-          人間の「学習能力」をコンピュータで再現する技術。データを与えることで自ら学習し予測できる。<br><br>
-          <span style="color:var(--vi)">Tái hiện năng lực học của con người trên máy tính. Máy tự học từ dữ liệu.</span>
-        </div>
       </div>
-    </div>
+    </section>
 
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="flashcard-inner">
-        <div class="fc-front">
-          <div class="fc-term">教師あり学習</div>
-          <div class="fc-sub">Supervised Learning</div>
-          <div class="fc-hint">Nhấn để xem định nghĩa →</div>
-        </div>
-        <div class="fc-back">
-          入力データ＋正解データの両方を与える学習。<br>例：メールと「スパム/非スパム」のラベルを一緒に学習。<br><br>
-          <span style="color:var(--vi)">Cung cấp cả dữ liệu đầu vào + nhãn đúng sai</span>
-        </div>
+    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-3">
+      <h2 class="section-heading">
+        <span class="num-badge">③</span>
+        <span class="text-ja">暗記カード (Flashcards)</span>
+        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
+        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
+        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
+      </p>
+
+      <div class="fc-grid" id="fcGrid"></div>
+    </section>
+
+    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-4">
+      <h2 class="section-heading">
+        <span class="num-badge">④</span>
+        <span class="text-ja">確認テスト (6問)</span>
+        <span class="text-vi">Luyện tập củng cố · 6 câu trắc nghiệm</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
+        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
+        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
+      </p>
+
+      <div id="quizArea"></div>
+
+      <div class="quiz-result-box" id="quiz-result">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
+        <div class="quiz-result-score" id="qScore">0 / 6</div>
+        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
+        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
       </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="flashcard-inner">
-        <div class="fc-front">
-          <div class="fc-term">教師なし学習</div>
-          <div class="fc-sub">Unsupervised Learning</div>
-          <div class="fc-hint">Nhấn để xem định nghĩa →</div>
-        </div>
-        <div class="fc-back">
-          入力データのみ（正解なし）で学習。機械が独自にグループ分けを行う。<br><br>
-          <span style="color:var(--vi)">Chỉ cung cấp dữ liệu đầu vào, máy tự phân nhóm</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="flashcard-inner">
-        <div class="fc-front">
-          <div class="fc-term">ディープラーニング</div>
-          <div class="fc-sub">Deep Learning</div>
-          <div class="fc-hint">Nhấn để xem định nghĩa →</div>
-        </div>
-        <div class="fc-back">
-          ニューラルネットワークを何重にも重ねた構造の機械学習。<br>人間の脳神経回路を模倣。<br><br>
-          <span style="color:var(--vi)">Nhiều tầng neural network chồng lên nhau = học sâu</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="flashcard-inner">
-        <div class="fc-front">
-          <div class="fc-term">期待値</div>
-          <div class="fc-sub">Expected Value</div>
-          <div class="fc-hint">Nhấn để xem định nghĩa →</div>
-        </div>
-        <div class="fc-back">
-          確率的に決まる平均値。<br>E = Σ(値 × 確率)<br><br>
-          <span style="color:var(--vi)">Giá trị trung bình theo xác suất: E = Σ(giá trị × xác suất)</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="flashcard-inner">
-        <div class="fc-front">
-          <div class="fc-term">確率</div>
-          <div class="fc-sub">Probability</div>
-          <div class="fc-hint">Nhấn để xem định nghĩa →</div>
-        </div>
-        <div class="fc-back">
-          事象が起きる可能性を0～1で表した値。全事象の確率の和=1。<br><br>
-          <span style="color:var(--vi)">Xác suất xảy ra của sự kiện, từ 0 đến 1. Tổng tất cả = 1</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="flashcard-inner">
-        <div class="fc-front">
-          <div class="fc-term">ニューラルネットワーク</div>
-          <div class="fc-sub">Neural Network</div>
-          <div class="fc-hint">Nhấn để xem định nghĩa →</div>
-        </div>
-        <div class="fc-back">
-          人間の脳の「ニューロン（神経細胞）」の仕組みをコンピュータで再現した技術。<br><br>
-          <span style="color:var(--vi)">Mô phỏng tế bào thần kinh (nơ-ron) não người trên máy tính</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="flashcard-inner">
-        <div class="fc-front">
-          <div class="fc-term">サイコロの期待値</div>
-          <div class="fc-sub">Kỳ vọng xúc xắc</div>
-          <div class="fc-hint">Kết quả là bao nhiêu?</div>
-        </div>
-        <div class="fc-back">
-          (1+2+3+4+5+6) ÷ 6 = <strong style="color:var(--accent4);font-size:1.2rem">3.5</strong><br><br>
-          <span style="color:var(--vi)">Mỗi mặt P=1/6, kỳ vọng = 3.5</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="flashcard-inner">
-        <div class="fc-front">
-          <div class="fc-term">強化学習</div>
-          <div class="fc-sub">Reinforcement Learning</div>
-          <div class="fc-hint">Nhấn để xem định nghĩa →</div>
-        </div>
-        <div class="fc-back">
-          行動に対して報酬/罰を与えることで最適な行動を学習する手法。<br><br>
-          <span style="color:var(--vi)">Học từ phần thưởng / hình phạt để tối ưu hành động</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-      <div class="flashcard-inner">
-        <div class="fc-front">
-          <div class="fc-term">エキスパートシステム</div>
-          <div class="fc-sub">Expert System</div>
-          <div class="fc-hint">Khác gì Machine Learning?</div>
-        </div>
-        <div class="fc-back">
-          専門知識をルールとして入力し、そのルールで推論する。<br>（機械学習とは異なる）<br><br>
-          <span style="color:var(--vi)">Hệ thống chuyên gia: nhập kiến thức thủ công dưới dạng quy tắc, rồi suy luận</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<!-- ==============================
-     PHẦN 4: CÂU HỎI ÔN TẬP
-=============================== -->
-<section id="quiz">
-  <h2 id="part-4"><span class="icon" style="background:rgba(255,217,61,0.2);color:var(--accent4)">✏️</span> Phần 4 — Câu hỏi Ôn tập</h2>
-
-  <div class="quiz-item">
-    <div class="quiz-q">Q1. AIにおける機械学習の説明として、最も適切なものはどれか。<br><span style="color:var(--text-dim);font-size:.82rem">(Mô tả đúng nhất về Machine Learning trong AI là gì?)</span></div>
-    <div class="quiz-options">
-      <div class="quiz-opt" onclick="answer(this,'wrong')">ア. コンピュータが自然言語を処理して会話する技術</div>
-      <div class="quiz-opt" onclick="answer(this,'correct')">イ. 記憶したデータから特定のパターンを見つけ出すなどの、人が自然に行っている学習能力をコンピュータにもたせるための技術</div>
-      <div class="quiz-opt" onclick="answer(this,'wrong')">ウ. 特定の分野の専門知識をコンピュータに入力し、推論する技術（エキスパートシステム）</div>
-      <div class="quiz-opt" onclick="answer(this,'wrong')">エ. 生命現象や進化のプロセスを再現するための技術（人工生命）</div>
-    </div>
-    <div class="quiz-explain">✅ <strong>答え: イ</strong><br>機械学習は「人間の学習能力をコンピュータで再現」する技術。ウはエキスパートシステム、エは人工生命の説明。<br><span style="color:var(--vi)">🇻🇳 Máy học = tái hiện khả năng học của con người. Không phải hệ thống chuyên gia, không phải AI sinh học.</span></div>
-  </div>
-
-  <div class="quiz-item">
-    <div class="quiz-q">Q2. 機械学習における教師あり学習の説明として、最も適切なものはどれか。<br><span style="color:var(--text-dim);font-size:.82rem">(Mô tả đúng về Supervised Learning là gì?)</span></div>
-    <div class="quiz-options">
-      <div class="quiz-opt" onclick="answer(this,'wrong')">ア. 入力データのみをコンピュータに与え、コンピュータが独自にグループ分けを行う</div>
-      <div class="quiz-opt" onclick="answer(this,'wrong')">イ. 行動に対しての善し悪しを得点として与え、得点が最も多く得られるような方策を学習する</div>
-      <div class="quiz-opt" onclick="answer(this,'correct')">ウ. 正解のデータを提示することによって、未知のデータに対して正誤を得ることを助ける</div>
-      <div class="quiz-opt" onclick="answer(this,'wrong')">エ. ルールをあらかじめ設定して、そのルールに基づいて推論する</div>
-    </div>
-    <div class="quiz-explain">✅ <strong>答え: ウ</strong><br>教師あり = 正解データ（ラベル）を提示して学習。ア=教師なし学習、イ=強化学習。<br><span style="color:var(--vi)">🇻🇳 Học có giám sát = cung cấp cả nhãn đúng/sai cho máy học. ア là không giám sát, イ là học tăng cường.</span></div>
-  </div>
-
-  <div class="quiz-item">
-    <div class="quiz-q">Q3. サイコロを振ったとき、出た目の期待値はいくらか。<br><span style="color:var(--text-dim);font-size:.82rem">(Kỳ vọng của mặt xúc xắc khi tung là bao nhiêu?)</span></div>
-    <div class="quiz-options">
-      <div class="quiz-opt" onclick="answer(this,'wrong')">ア. 3</div>
-      <div class="quiz-opt" onclick="answer(this,'wrong')">イ. 3.0</div>
-      <div class="quiz-opt" onclick="answer(this,'correct')">ウ. 3.5</div>
-      <div class="quiz-opt" onclick="answer(this,'wrong')">エ. 4</div>
-    </div>
-    <div class="quiz-explain">✅ <strong>答え: ウ (3.5)</strong><br>E = (1+2+3+4+5+6)/6 = 21/6 = 3.5<br><span style="color:var(--vi)">🇻🇳 E = (1×1/6)+(2×1/6)+...+(6×1/6) = 21/6 = 3.5</span></div>
-  </div>
-
-  <div class="quiz-item">
-    <div class="quiz-q">Q4. AIにおけるディープラーニングの特徴はどれか。<br><span style="color:var(--text-dim);font-size:.82rem">(Đặc điểm của Deep Learning là gì?)</span></div>
-    <div class="quiz-options">
-      <div class="quiz-opt" onclick="answer(this,'wrong')">ア. "AならばBである"というルールを人間があらかじめ設定し、推論する</div>
-      <div class="quiz-opt" onclick="answer(this,'wrong')">イ. 確率的に高い判断ができる医療診断に限定された技術</div>
-      <div class="quiz-opt" onclick="answer(this,'correct')">ウ. 人間の脳神経回路を模倣し、ニューラルネットワークを用いて、人間と同じような認識ができるようにするもの</div>
-      <div class="quiz-opt" onclick="answer(this,'wrong')">エ. 厳密な解でなくてもなるべく正解に近い解を得る汎用的な問題解決手法</div>
-    </div>
-    <div class="quiz-explain">✅ <strong>答え: ウ</strong><br>ディープラーニング = ニューラルネットワークを多層に重ねた構造。「人間の脳神経回路を模倣」がキーワード。<br><span style="color:var(--vi)">🇻🇳 Deep Learning = neural network nhiều tầng, mô phỏng nơ-ron não. Từ khóa: "模倣"</span></div>
-  </div>
-
-  <div class="quiz-item">
-    <div class="quiz-q">Q5. 商品の1日当たりの販売個数の予想確率が以下のとおりであるとき、仕入個数6個のときの利益の期待値を求めよ。（利益1,000円/個、廃棄300円/個）<br>
-    <span style="font-size:.83rem;color:var(--text-dim)">4個:30%, 5個:30%, 6個:40%</span></div>
-    <div class="quiz-options">
-      <div class="quiz-opt" onclick="answer(this,'wrong')">ア. 4,000円</div>
-      <div class="quiz-opt" onclick="answer(this,'wrong')">イ. 4,610円</div>
-      <div class="quiz-opt" onclick="answer(this,'correct')">ウ. 4,830円</div>
-      <div class="quiz-opt" onclick="answer(this,'wrong')">エ. 5,100円</div>
-    </div>
-    <div class="quiz-explain">✅ <strong>答え: ウ (4,830円)</strong><br>販売KV = 4×30%+5×30%+6×40% = 1.2+1.5+2.4 = 5.1個<br>廃棄KV = 6-5.1 = 0.9個<br>利益KV = 5.1×1000 - 0.9×300 = 5100-270 = <strong>4,830円</strong><br><span style="color:var(--vi)">🇻🇳 KV bán = 5.1sp, KV ế = 0.9sp → lợi nhuận = 4,830円</span></div>
-  </div>
-
-  <div class="quiz-item">
-    <div class="quiz-q">Q6. 生産現場における機械学習の活用事例として、適切なものはどれか。<br><span style="color:var(--text-dim);font-size:.82rem">(Ví dụ ứng dụng Machine Learning trong nhà máy sản xuất là gì?)</span></div>
-    <div class="quiz-options">
-      <div class="quiz-opt" onclick="answer(this,'wrong')">ア. 工場における不良品の発生原因をツリー状に分解して整理し、アナリストが統計的に原因を探る</div>
-      <div class="quiz-opt" onclick="answer(this,'wrong')">イ. 工場の生産設備を高速通信で接続し、ホストコンピュータがリアルタイム制御する</div>
-      <div class="quiz-opt" onclick="answer(this,'correct')">ウ. 工場の生産ロボットに対して作業方法をプログラミングするのではなく、ロボット自らが学んで作業の効率を高める</div>
-      <div class="quiz-opt" onclick="answer(this,'wrong')">エ. 累積生産量が倍増するたびに工場従業員の生産性が向上し、単位コストが減少する</div>
-    </div>
-    <div class="quiz-explain">✅ <strong>答え: ウ</strong><br>機械学習 = コンピュータ（ロボット）が「自ら学ぶ」こと。ア=特性要因図、イ=MtoM、エ=経験曲線。<br><span style="color:var(--vi)">🇻🇳 Robot "tự học" = Machine Learning. ア = phân tích nguyên nhân thủ công, không phải ML.</span></div>
-  </div>
-
-</section>
-
-<!-- ==============================
-     PHẦN 5: MIND MAP
-=============================== -->
-
-
-</main>
-
-
-
-    </div>
+    </section>
 
     <!-- Footer Navigation & Lesson Completion -->
     <footer class="lesson-footer-nav">
@@ -708,15 +517,10 @@
       </div>
       <nav>
         <ul class="toc-list" id="tocList">
-
-          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-  
-          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-  
-          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-  
-          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
-  
+          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 6 câu</span></a></li>
         </ul>
       </nav>
     </div>
@@ -736,34 +540,228 @@
 
 </div>
 
+<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
 <script>
+const FLASHCARDS = [
+  {
+    "cat": "all",
+    "front": "機械学習",
+    "back": "人間の「学習能力」をコンピュータで再現する技術。データを与えることで自ら学習し予測できる。 Tái hiện năng lực học của con người trên máy tính. Máy tự học từ dữ liệu."
+  },
+  {
+    "cat": "all",
+    "front": "教師あり学習",
+    "back": "入力データ＋正解データの両方を与える学習。 例：メールと「スパム/非スパム」のラベルを一緒に学習。 Cung cấp cả dữ liệu đầu vào + nhãn đúng sai"
+  },
+  {
+    "cat": "all",
+    "front": "教師なし学習",
+    "back": "入力データのみ（正解なし）で学習。機械が独自にグループ分けを行う。 Chỉ cung cấp dữ liệu đầu vào, máy tự phân nhóm"
+  },
+  {
+    "cat": "all",
+    "front": "ディープラーニング",
+    "back": "ニューラルネットワークを何重にも重ねた構造の機械学習。 人間の脳神経回路を模倣。 Nhiều tầng neural network chồng lên nhau = học sâu"
+  },
+  {
+    "cat": "all",
+    "front": "期待値",
+    "back": "確率的に決まる平均値。 E = Σ(値 × 確率) Giá trị trung bình theo xác suất: E = Σ(giá trị × xác suất)"
+  },
+  {
+    "cat": "all",
+    "front": "確率",
+    "back": "事象が起きる可能性を0～1で表した値。全事象の確率の和=1。 Xác suất xảy ra của sự kiện, từ 0 đến 1. Tổng tất cả = 1"
+  },
+  {
+    "cat": "all",
+    "front": "ニューラルネットワーク",
+    "back": "人間の脳の「ニューロン（神経細胞）」の仕組みをコンピュータで再現した技術。 Mô phỏng tế bào thần kinh (nơ-ron) não người trên máy tính"
+  },
+  {
+    "cat": "all",
+    "front": "サイコロの期待値",
+    "back": "(1+2+3+4+5+6) ÷ 6 = 3.5 Mỗi mặt P=1/6, kỳ vọng = 3.5"
+  },
+  {
+    "cat": "all",
+    "front": "強化学習",
+    "back": "行動に対して報酬/罰を与えることで最適な行動を学習する手法。 Học từ phần thưởng / hình phạt để tối ưu hành động"
+  },
+  {
+    "cat": "all",
+    "front": "エキスパートシステム",
+    "back": "専門知識をルールとして入力し、そのルールで推論する。 （機械学習とは異なる） Hệ thống chuyên gia: nhập kiến thức thủ công dưới dạng quy tắc, rồi suy luận"
+  }
+];
+const QUIZ = [
+  {
+    "q": "Q1. AIにおける機械学習の説明として、最も適切なものはどれか。  (Mô tả đúng nhất về Machine Learning trong AI là gì?)",
+    "opts": [
+      "コンピュータが自然言語を処理して会話する技術",
+      "記憶したデータから特定のパターンを見つけ出すなどの、人が自然に行っている学習能力をコンピュータにもたせるための技術",
+      "特定の分野の専門知識をコンピュータに入力し、推論する技術（エキスパートシステム）"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "Q2. 機械学習における教師あり学習の説明として、最も適切なものはどれか。  (Mô tả đúng về Supervised Learning là gì?)",
+    "opts": [
+      "入力データのみをコンピュータに与え、コンピュータが独自にグループ分けを行う",
+      "行動に対しての善し悪しを得点として与え、得点が最も多く得られるような方策を学習する",
+      "正解のデータを提示することによって、未知のデータに対して正誤を得ることを助ける"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "Q3. サイコロを振ったとき、出た目の期待値はいくらか。  (Kỳ vọng của mặt xúc xắc khi tung là bao nhiêu?)",
+    "opts": [
+      "3",
+      "3.0",
+      "3.5"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "Q4. AIにおけるディープラーニングの特徴はどれか。  (Đặc điểm của Deep Learning là gì?)",
+    "opts": [
+      "\"AならばBである\"というルールを人間があらかじめ設定し、推論する",
+      "確率的に高い判断ができる医療診断に限定された技術",
+      "人間の脳神経回路を模倣し、ニューラルネットワークを用いて、人間と同じような認識ができるようにするもの"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "Q5. 商品の1日当たりの販売個数の予想確率が以下のとおりであるとき、仕入個数6個のときの利益の期待値を求めよ。（利益1,000円/個、廃棄300円/個） \n     4個:30%, 5個:30%, 6個:40%",
+    "opts": [
+      "4,000円",
+      "4,610円",
+      "4,830円"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "Q6. 生産現場における機械学習の活用事例として、適切なものはどれか。  (Ví dụ ứng dụng Machine Learning trong nhà máy sản xuất là gì?)",
+    "opts": [
+      "工場における不良品の発生原因をツリー状に分解して整理し、アナリストが統計的に原因を探る",
+      "工場の生産設備を高速通信で接続し、ホストコンピュータがリアルタイム制御する",
+      "工場の生産ロボットに対して作業方法をプログラミングするのではなく、ロボット自らが学んで作業の効率を高める"
+    ],
+    "ans": 2,
+    "expl": ""
+  }
+];
 
-function switchTab(id) {
-  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('#mainnav button').forEach(b => b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  const idx = ['theory','example','flash','quiz'].indexOf(id);
-  document.querySelectorAll('#mainnav button')[idx].classList.add('active');
-  window.scrollTo({top: 0, behavior:'smooth'});
+// Render Flashcards with reliable click-to-flip
+function renderFC() {
+  const grid = document.getElementById('fcGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  FLASHCARDS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.innerHTML = `
+      <div>
+        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
+        <div class="fc-front">${f.front}</div>
+        <div class="fc-back">${f.back}</div>
+      </div>
+      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
 }
 
-function answer(el, result) {
-  const parent = el.closest('.quiz-item');
-  // Reset if already answered
-  parent.querySelectorAll('.quiz-opt').forEach(o => {
-    o.classList.remove('correct','wrong');
-    o.onclick = null;
+// Render Interactive Quiz with tactile 4-option cards & instant feedback
+let quizScore = 0;
+let quizAnswered = 0;
+
+function renderQuiz() {
+  const area = document.getElementById('quizArea');
+  if (!area) return;
+  area.innerHTML = '';
+  quizScore = 0;
+  quizAnswered = 0;
+
+  QUIZ.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-q-card';
+    card.dataset.idx = idx;
+
+    let optsHtml = '';
+    item.opts.forEach((opt, oi) => {
+      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
+    });
+
+    card.innerHTML = `
+      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
+    `;
+
+    card.querySelectorAll('.opt').forEach(optEl => {
+      optEl.addEventListener('click', () => {
+        if (card.classList.contains('locked')) return;
+        card.classList.add('locked');
+
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+
+        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
+        if (correctEl) correctEl.classList.add('correct');
+
+        if (chosen !== correct) {
+          optEl.classList.add('wrong');
+        } else {
+          quizScore++;
+        }
+
+        quizAnswered++;
+        if (quizAnswered === QUIZ.length) showQuizResult();
+      });
+    });
+
+    area.appendChild(card);
   });
-  el.classList.add(result);
-  // Show explanation
-  const explain = parent.querySelector('.quiz-explain');
-  explain.classList.add('show');
-  // Disable all options
-  parent.querySelectorAll('.quiz-opt').forEach(o => {
-    o.style.cursor = 'default';
-  });
+
+  const resBox = document.getElementById('quiz-result');
+  if (resBox) resBox.classList.remove('show');
 }
 
+function showQuizResult() {
+  const pct = Math.round((quizScore / QUIZ.length) * 100);
+  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
+  let verdict = '';
+  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
+  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
+  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
+  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
+  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
+  const res = document.getElementById('quiz-result');
+  if (res) {
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function resetQuiz() {
+  renderQuiz();
+  const area = document.getElementById('quizArea');
+  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize on DOM ready
+renderFC();
+renderQuiz();
 </script>
 <script src="../assets/reader.js"></script>
 </body>

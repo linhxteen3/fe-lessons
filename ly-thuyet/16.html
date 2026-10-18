@@ -71,16 +71,15 @@
       </div>
     </div>
 
-    <!-- Lesson Content Body -->
-    <div class="lesson-body">
-
-
-
-<!-- ============ PHẦN 1: LÝ THUYẾT ============ -->
-<section>
-  <h2 id="part-1">📘 Phần 1 — Tóm tắt lý thuyết</h2>
-
-  <h3>1.1. CPU và クロック (xung nhịp)</h3>
+    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
+    <section class="content-section" id="sec-1">
+      <h2 class="section-heading">
+        <span class="num-badge">①</span>
+        <span class="text-ja">重要理論 (Theory)</span>
+        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
+      </h2>
+      <div class="lesson-body-content">
+<h3>1.1. CPU và クロック (xung nhịp)</h3>
   <div class="lang-block">
     <div class="l l-jp">🇯🇵 CPUは発振器が刻むテンポ（クロック）に合わせて命令を処理する。1秒間に発振器が刻むクロック数を「クロック周波数」といい、単位はHz（ヘルツ）。1クロック = 発振器がテンポを1回刻むこと。</div>
     <div class="l l-vn">🇻🇳 CPU hoạt động đồng bộ với "nhịp" (clock) do bộ dao động (発振器) tạo ra. Số xung clock trong 1 giây gọi là <b>tần số xung nhịp (クロック周波数)</b>, đơn vị Hz. Tần số càng cao → CPU càng mạnh.</div>
@@ -173,9 +172,18 @@ F=Fetch  D=Decode  E=Execute  W=Write back</div>
 
 <!-- ============ PHẦN 2: VÍ DỤ ============ -->
 <section>
-  <h2 id="part-2">🧮 Phần 2 — Ví dụ minh hoạ</h2>
+      </div>
+    </section>
 
-  <h3>Ví dụ 2.1: Tính クロック数 từ クロック周波数</h3>
+    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
+    <section class="content-section" id="sec-2">
+      <h2 class="section-heading">
+        <span class="num-badge">②</span>
+        <span class="text-ja">演習例題 (Worked Examples)</span>
+        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
+      </h2>
+      <div class="lesson-body-content">
+<h3>Ví dụ 2.1: Tính クロック数 từ クロック周波数</h3>
   <div class="example-box">
     <span class="label">問題</span>
     <p>CPU có クロック周波数 = 2.5 GHz. Hỏi 1 giây nó có bao nhiêu クロック?</p>
@@ -229,25 +237,45 @@ F=Fetch  D=Decode  E=Execute  W=Write back</div>
 
 <!-- ============ PHẦN 3: FLASHCARD ============ -->
 <section>
-  <h2 id="part-3">🃏 Phần 3 — Flashcard</h2>
-  <p style="color:#394556;font-size:.92em;margin-bottom:12px">Click vào thẻ để xem mặt sau. Lọc theo nhóm:</p>
-  <div class="flashcards-controls">
-    <button class="filter-btn active" onclick="filterFlash('all',this)">Tất cả</button>
-    <button class="filter-btn" onclick="filterFlash('Hieu nang',this)">性能指標</button>
-    <button class="filter-btn" onclick="filterFlash('Pipeline',this)">パイプライン</button>
-    <button class="filter-btn" onclick="filterFlash('Architecture',this)">アーキテクチャ</button>
-  </div>
-  <div class="flashcard-grid" id="flashGrid"></div>
-</section>
+      </div>
+    </section>
 
-<!-- ============ PHẦN 4: QUIZ ============ -->
-<section>
-  <h2 id="part-4">✅ Phần 4 — Câu hỏi ôn tập (10 câu)</h2>
-  <div id="quizContainer"></div>
-</section>
+    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-3">
+      <h2 class="section-heading">
+        <span class="num-badge">③</span>
+        <span class="text-ja">暗記カード (Flashcards)</span>
+        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
+        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
+        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
+      </p>
 
+      <div class="fc-grid" id="fcGrid"></div>
+    </section>
 
-    </div>
+    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-4">
+      <h2 class="section-heading">
+        <span class="num-badge">④</span>
+        <span class="text-ja">確認テスト (10問)</span>
+        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
+        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
+        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
+      </p>
+
+      <div id="quizArea"></div>
+
+      <div class="quiz-result-box" id="quiz-result">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
+        <div class="quiz-result-score" id="qScore">0 / 10</div>
+        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
+        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
+      </div>
+    </section>
 
     <!-- Footer Navigation & Lesson Completion -->
     <footer class="lesson-footer-nav">
@@ -297,15 +325,10 @@ F=Fetch  D=Decode  E=Execute  W=Write back</div>
       </div>
       <nav>
         <ul class="toc-list" id="tocList">
-
-          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-  
-          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-  
-          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-  
-          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
-  
+          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
         </ul>
       </nav>
     </div>
@@ -325,79 +348,293 @@ F=Fetch  D=Decode  E=Execute  W=Write back</div>
 
 </div>
 
+<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
 <script>
-
-// ===== Flashcards =====
-const FLASH = [
-  {f:"クロック周波数",b:"Số クロック/giây mà 発振器 phát ra; đơn vị Hz. Càng cao → CPU càng nhanh.",cat:"Hieu nang"},
-  {f:"1クロックに必要な時間",b:"= 1 ÷ クロック周波数. Ví dụ 2.5GHz → 0.4 nano-giây/clock.",cat:"Hieu nang"},
-  {f:"CPI",b:"Clock Per Instruction — số clock cần để thực thi 1 lệnh. Lệnh phức tạp = CPI lớn.",cat:"Hieu nang"},
-  {f:"MIPS",b:"Million Instructions Per Second — số triệu lệnh/giây. MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶.",cat:"Hieu nang"},
-  {f:"命令ミックス",b:"Tính CPI trung bình bằng cách lấy CPI của mỗi loại lệnh × tần suất (trọng số).",cat:"Hieu nang"},
-  {f:"逐次制御方式",b:"CPU xử lý 1 lệnh tại 1 thời điểm, làm xong mới sang lệnh tiếp. Chậm vì không tận dụng song song.",cat:"Pipeline"},
-  {f:"パイプライン方式",b:"Lệch pha các stage (F→D→E→W) để cùng lúc nhiều lệnh chạy ở stage khác nhau. CPU tăng tốc nhờ song song.",cat:"Pipeline"},
-  {f:"分岐予測 (Branch prediction)",b:"Khi gặp lệnh rẽ nhánh, CPU đoán đi nhánh nào để không phải dừng pipeline.",cat:"Pipeline"},
-  {f:"投機実行 (Speculative execution)",b:"Dựa trên dự đoán nhánh, CPU thực thi trước. Nếu sai → huỷ kết quả.",cat:"Pipeline"},
-  {f:"スーパーパイプライン",b:"Chia nhỏ các stage hiện có thành nhiều stage nhỏ hơn → tăng hiệu quả pipeline.",cat:"Architecture"},
-  {f:"スーパースカラ",b:"Có nhiều pipeline song song (パイプライン①, ②...) → cùng lúc hoàn thành nhiều lệnh mỗi clock.",cat:"Architecture"},
-  {f:"CISC",b:"Complex Instruction Set Computer — 1 lệnh xử lý phức tạp. Ít dòng lệnh nhưng thời gian lệnh không đồng đều.",cat:"Architecture"},
-  {f:"RISC",b:"Reduced Instruction Set Computer — lệnh đơn giản, thời gian đồng đều → phù hợp pipeline. Mỗi lệnh nhanh.",cat:"Architecture"},
+const FLASHCARDS = [
+  {
+    "cat": "Hieu nang",
+    "front": "クロック周波数",
+    "back": "Số クロック/giây mà 発振器 phát ra; đơn vị Hz. Càng cao → CPU càng nhanh."
+  },
+  {
+    "cat": "Hieu nang",
+    "front": "1クロックに必要な時間",
+    "back": "= 1 ÷ クロック周波数. Ví dụ 2.5GHz → 0.4 nano-giây/clock."
+  },
+  {
+    "cat": "Hieu nang",
+    "front": "CPI",
+    "back": "Clock Per Instruction — số clock cần để thực thi 1 lệnh. Lệnh phức tạp = CPI lớn."
+  },
+  {
+    "cat": "Hieu nang",
+    "front": "MIPS",
+    "back": "Million Instructions Per Second — số triệu lệnh/giây. MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶."
+  },
+  {
+    "cat": "Hieu nang",
+    "front": "命令ミックス",
+    "back": "Tính CPI trung bình bằng cách lấy CPI của mỗi loại lệnh × tần suất (trọng số)."
+  },
+  {
+    "cat": "Pipeline",
+    "front": "逐次制御方式",
+    "back": "CPU xử lý 1 lệnh tại 1 thời điểm, làm xong mới sang lệnh tiếp. Chậm vì không tận dụng song song."
+  },
+  {
+    "cat": "Pipeline",
+    "front": "パイプライン方式",
+    "back": "Lệch pha các stage (F→D→E→W) để cùng lúc nhiều lệnh chạy ở stage khác nhau. CPU tăng tốc nhờ song song."
+  },
+  {
+    "cat": "Pipeline",
+    "front": "分岐予測 (Branch prediction)",
+    "back": "Khi gặp lệnh rẽ nhánh, CPU đoán đi nhánh nào để không phải dừng pipeline."
+  },
+  {
+    "cat": "Pipeline",
+    "front": "投機実行 (Speculative execution)",
+    "back": "Dựa trên dự đoán nhánh, CPU thực thi trước. Nếu sai → huỷ kết quả."
+  },
+  {
+    "cat": "Architecture",
+    "front": "スーパーパイプライン",
+    "back": "Chia nhỏ các stage hiện có thành nhiều stage nhỏ hơn → tăng hiệu quả pipeline."
+  },
+  {
+    "cat": "Architecture",
+    "front": "スーパースカラ",
+    "back": "Có nhiều pipeline song song (パイプライン①, ②...) → cùng lúc hoàn thành nhiều lệnh mỗi clock."
+  },
+  {
+    "cat": "Architecture",
+    "front": "CISC",
+    "back": "Complex Instruction Set Computer — 1 lệnh xử lý phức tạp. Ít dòng lệnh nhưng thời gian lệnh không đồng đều."
+  },
+  {
+    "cat": "Architecture",
+    "front": "RISC",
+    "back": "Reduced Instruction Set Computer — lệnh đơn giản, thời gian đồng đều → phù hợp pipeline. Mỗi lệnh nhanh."
+  }
 ];
-function renderFlash(filter='all'){
-  const g = document.getElementById('flashGrid');
-  g.innerHTML = FLASH.filter(f=>filter==='all'||f.cat===filter).map((f,i)=>`
-    <div class="flashcard" data-cat="${f.cat}" onclick="this.classList.toggle('flipped')">
-      <div class="cat">${f.cat}</div>
-      <div class="front">${f.f}</div>
-      <div class="back">${f.b}</div>
-    </div>`).join('');
-}
-function filterFlash(cat,btn){
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderFlash(cat);
-}
-renderFlash();
-
-// ===== Quiz =====
 const QUIZ = [
-  {q:"クロック周波数 2 GHz có nghĩa là gì?",o:["1 giây có 2 lệnh","1 giây có 2 tỷ クロック","1 lệnh cần 2 クロック","CPU có 2 lõi"],ans:1,exp:"2 GHz = 2 × 10⁹ Hz = 2 tỷ クロック/giây. Đây là số nhịp dao động, không phải số lệnh."},
-  {q:"Công thức MIPS chính xác là?",o:["MIPS = 平均命令実行時間 × 10⁻⁶","MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶","MIPS = クロック周波数 × CPI","MIPS = 1秒 × 平均命令実行時間"],ans:1,exp:"MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶ — theo Yasashii p.134."},
-  {q:"CPI là gì?",o:["Số clock cần để thực thi 1 lệnh","Số lệnh thực thi mỗi clock","Tần số xung nhịp","Tốc độ bus"],ans:0,exp:"CPI = Clock Per Instruction = số clock cần cho 1 lệnh."},
-  {q:"パイプライン方式 tăng tốc CPU bằng cách nào?",o:["Tăng クロック周波数","Lệch pha các stage để xử lý song song nhiều lệnh","Giảm số lệnh","Tăng kích thước cache"],ans:1,exp:"Pipeline tăng tốc nhờ song song các stage — khi lệnh 1 sang Decode thì lệnh 2 vào Fetch (slide第5回)."},
-  {q:"Vấn đề nào pipeline phải xử lý với lệnh rẽ nhánh?",o:["Không thể biết trước đi nhánh nào → dùng 分岐予測 + 投機実行","Pipeline tự động dừng vĩnh viễn","Phải reset toàn bộ CPU","Phải chuyển sang 逐次制御"],ans:0,exp:"Slide第5回: パイプライン方式では分岐処理命令に対して、分岐予測と投機実行で対応する."},
-  {q:"スーパースカラ là gì?",o:["Chia nhỏ stage để pipeline nhanh hơn","Có nhiều pipeline song song để cùng lúc xử lý nhiều lệnh","Tăng クロック周波数","Loại bỏ cache"],ans:1,exp:"スーパースカラ = nhiều pipeline song song. Khác với スーパーパイプライン (chia nhỏ stage)."},
-  {q:"CPU 1 GHz với CPI trung bình = 4 thì hiệu năng bao nhiêu MIPS?",o:["250","1000","4000","40"],ans:0,exp:"1秒の命令数 = クロック周波数 ÷ CPI = 10⁹ ÷ 4 = 2.5×10⁸ = 250 triệu = 250 MIPS."},
-  {q:"Vì sao RISC phù hợp với パイプライン hơn CISC?",o:["Vì RISC có nhiều thanh ghi hơn","Vì các lệnh RISC có thời gian thực thi đồng đều, các stage không bị tắc","Vì RISC chạy ở tần số cao hơn","Vì RISC không có lệnh rẽ nhánh"],ans:1,exp:"Slide第5回: RISC có 命令実行時間が均等 → パイプライン方式で効率よく命令を処理することが可能."},
-  {q:"4 lệnh, mỗi lệnh 4 stage 1 clock. Pipeline lý tưởng cần bao nhiêu clock?",o:["16","7","4","1"],ans:1,exp:"Pipeline: 4 clock cho lệnh 1 hoàn thành + 3 clock cho 3 lệnh sau (mỗi clock thêm 1 lệnh) = 7 clock. So với 逐次 16 clock."},
-  {q:"投機実行 (speculative execution) hoạt động thế nào?",o:["Thực thi lệnh sau khi biết chắc kết quả nhánh","Dựa vào dự đoán nhánh, thực thi trước; nếu sai thì huỷ","Thực thi nhiều lệnh cùng lúc","Đợi tất cả lệnh trước hoàn tất"],ans:1,exp:"投機実行 = thực thi suy đoán dựa trên 分岐予測. Sai thì roll back."},
+  {
+    "q": "クロック周波数 2 GHz có nghĩa là gì?",
+    "opts": [
+      "giây có 2 lệnh",
+      "giây có 2 tỷ クロック",
+      "lệnh cần 2 クロック",
+      "CPU có 2 lõi"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "Công thức MIPS chính xác là?",
+    "opts": [
+      "MIPS = 平均命令実行時間 × 10⁻⁶",
+      "MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶",
+      "MIPS = クロック周波数 × CPI",
+      "MIPS = 1秒 × 平均命令実行時間"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "CPI là gì?",
+    "opts": [
+      "Số clock cần để thực thi 1 lệnh",
+      "Số lệnh thực thi mỗi clock",
+      "Tần số xung nhịp",
+      "Tốc độ bus"
+    ],
+    "ans": 0,
+    "expl": ""
+  },
+  {
+    "q": "パイプライン方式 tăng tốc CPU bằng cách nào?",
+    "opts": [
+      "Tăng クロック周波数",
+      "Lệch pha các stage để xử lý song song nhiều lệnh",
+      "Giảm số lệnh",
+      "Tăng kích thước cache"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "Vấn đề nào pipeline phải xử lý với lệnh rẽ nhánh?",
+    "opts": [
+      "Không thể biết trước đi nhánh nào → dùng 分岐予測 + 投機実行",
+      "Pipeline tự động dừng vĩnh viễn",
+      "Phải reset toàn bộ CPU",
+      "Phải chuyển sang 逐次制御"
+    ],
+    "ans": 0,
+    "expl": ""
+  },
+  {
+    "q": "スーパースカラ là gì?",
+    "opts": [
+      "Chia nhỏ stage để pipeline nhanh hơn",
+      "Có nhiều pipeline song song để cùng lúc xử lý nhiều lệnh",
+      "Tăng クロック周波数",
+      "Loại bỏ cache"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "CPU 1 GHz với CPI trung bình = 4 thì hiệu năng bao nhiêu MIPS?",
+    "opts": [
+      "250",
+      "1000",
+      "4000",
+      "40"
+    ],
+    "ans": 0,
+    "expl": ""
+  },
+  {
+    "q": "Vì sao RISC phù hợp với パイプライン hơn CISC?",
+    "opts": [
+      "Vì RISC có nhiều thanh ghi hơn",
+      "Vì các lệnh RISC có thời gian thực thi đồng đều, các stage không bị tắc",
+      "Vì RISC chạy ở tần số cao hơn",
+      "Vì RISC không có lệnh rẽ nhánh"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "4 lệnh, mỗi lệnh 4 stage 1 clock. Pipeline lý tưởng cần bao nhiêu clock?",
+    "opts": [
+      "16",
+      "7",
+      "4",
+      "1"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "投機実行 (speculative execution) hoạt động thế nào?",
+    "opts": [
+      "Thực thi lệnh sau khi biết chắc kết quả nhánh",
+      "Dựa vào dự đoán nhánh, thực thi trước; nếu sai thì huỷ",
+      "Thực thi nhiều lệnh cùng lúc",
+      "Đợi tất cả lệnh trước hoàn tất"
+    ],
+    "ans": 1,
+    "expl": ""
+  }
 ];
-function renderQuiz(){
-  document.getElementById('quizContainer').innerHTML = QUIZ.map((q,idx)=>{
-    const letters=["A","B","C","D"];
-    const opts = q.o.map((o,i)=>`<div class="quiz-opt" onclick="pickQ(${idx},${i},this)" data-i="${i}"><b>${letters[i]}.</b> ${o}</div>`).join("");
-    return `<div class="quiz-q">
-      <div class="qt"><b>Câu ${idx+1}:</b> ${q.q}</div>
-      ${opts}
-      <div class="quiz-exp" id="exp-${idx}"><b>Đáp án ${letters[q.ans]}:</b> ${q.exp}</div>
-    </div>`;
-  }).join('');
-}
-function pickQ(qi,oi,el){
-  const card = el.parentElement;
-  if(card.dataset.locked) return;
-  card.dataset.locked='1';
-  const q=QUIZ[qi];
-  card.querySelectorAll('.quiz-opt').forEach(o=>{
-    o.classList.add('locked');
-    const i=parseInt(o.dataset.i);
-    if(i===q.ans) o.classList.add('correct');
-    else if(i===oi) o.classList.add('wrong');
-  });
-  document.getElementById('exp-'+qi).classList.add('open');
-}
-renderQuiz();
 
+// Render Flashcards with reliable click-to-flip
+function renderFC() {
+  const grid = document.getElementById('fcGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  FLASHCARDS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.innerHTML = `
+      <div>
+        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
+        <div class="fc-front">${f.front}</div>
+        <div class="fc-back">${f.back}</div>
+      </div>
+      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+// Render Interactive Quiz with tactile 4-option cards & instant feedback
+let quizScore = 0;
+let quizAnswered = 0;
+
+function renderQuiz() {
+  const area = document.getElementById('quizArea');
+  if (!area) return;
+  area.innerHTML = '';
+  quizScore = 0;
+  quizAnswered = 0;
+
+  QUIZ.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-q-card';
+    card.dataset.idx = idx;
+
+    let optsHtml = '';
+    item.opts.forEach((opt, oi) => {
+      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
+    });
+
+    card.innerHTML = `
+      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
+    `;
+
+    card.querySelectorAll('.opt').forEach(optEl => {
+      optEl.addEventListener('click', () => {
+        if (card.classList.contains('locked')) return;
+        card.classList.add('locked');
+
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+
+        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
+        if (correctEl) correctEl.classList.add('correct');
+
+        if (chosen !== correct) {
+          optEl.classList.add('wrong');
+        } else {
+          quizScore++;
+        }
+
+        quizAnswered++;
+        if (quizAnswered === QUIZ.length) showQuizResult();
+      });
+    });
+
+    area.appendChild(card);
+  });
+
+  const resBox = document.getElementById('quiz-result');
+  if (resBox) resBox.classList.remove('show');
+}
+
+function showQuizResult() {
+  const pct = Math.round((quizScore / QUIZ.length) * 100);
+  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
+  let verdict = '';
+  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
+  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
+  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
+  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
+  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
+  const res = document.getElementById('quiz-result');
+  if (res) {
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function resetQuiz() {
+  renderQuiz();
+  const area = document.getElementById('quizArea');
+  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize on DOM ready
+renderFC();
+renderQuiz();
 </script>
 <script src="../assets/reader.js"></script>
 </body>

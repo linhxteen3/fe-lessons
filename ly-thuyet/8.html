@@ -71,17 +71,15 @@
       </div>
     </div>
 
-    <!-- Lesson Content Body -->
-    <div class="lesson-body">
-
-
-
-
-
-
-<!-- =============== PART 1: 理論 =============== -->
-<section id="part1">
-<h2 id="part-1">📘 Phần 1 — Tóm tắt lý thuyết</h2>
+    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
+    <section class="content-section" id="sec-1">
+      <h2 class="section-heading">
+        <span class="num-badge">①</span>
+        <span class="text-ja">重要理論 (Theory)</span>
+        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
+      </h2>
+      <div class="lesson-body-content">
+<h2>📘 Phần 1 — Tóm tắt lý thuyết</h2>
 
 <h3>1. モデル化 (Modeling - Mô hình hoá)</h3>
 <div class="lang-block jp">
@@ -236,8 +234,18 @@
 </section>
 
 <!-- =============== PART 2: 例 =============== -->
-<section id="part2">
-<h2 id="part-2">💡 Phần 2 — Ví dụ minh hoạ</h2>
+      </div>
+    </section>
+
+    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
+    <section class="content-section" id="sec-2">
+      <h2 class="section-heading">
+        <span class="num-badge">②</span>
+        <span class="text-ja">演習例題 (Worked Examples)</span>
+        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
+      </h2>
+      <div class="lesson-body-content">
+<h2>💡 Phần 2 — Ví dụ minh hoạ</h2>
 
 <h3>Ví dụ 1: Hệ thống chẵn/lẻ — Đọc input "1 0 1"</h3>
 <div class="example-box">
@@ -301,234 +309,45 @@ Bước 3: 状態=奇数, 入力="1" → 偶数 になる (cộng 1: lẻ→ch�
 </section>
 
 <!-- =============== PART 3: Flashcard =============== -->
-<section id="part3">
-<h2 id="part-3">🃏 Phần 3 — Flashcards (Click để lật)</h2>
+      </div>
+    </section>
 
-<div class="flashcards-grid">
-  <div class="flashcard" onclick="this.classList.toggle('flipped')">
-    <div class="flashcard-inner">
-      <div class="flashcard-front">モデル化 là gì?</div>
-      <div class="flashcard-back">Đơn giản hoá những thứ phức tạp trong thế giới thực để dễ hiểu hơn. Cái được đơn giản hoá gọi là "モデル" (mô hình).</div>
-    </div>
-  </div>
-  <div class="flashcard" onclick="this.classList.toggle('flipped')">
-    <div class="flashcard-inner">
-      <div class="flashcard-front">オートマトン là gì?</div>
-      <div class="flashcard-back">Mô hình hệ thống biểu diễn chức năng bằng 3 yếu tố: 入力 (Input), 状態 (State), 出力 (Output).</div>
-    </div>
-  </div>
-  <div class="flashcard" onclick="this.classList.toggle('flipped')">
-    <div class="flashcard-inner">
-      <div class="flashcard-front">Nghĩa gốc tiếng Hy Lạp của Automaton?</div>
-      <div class="flashcard-back">「自らの意思で動くもの」 — "Vật tự vận hành theo ý chí của chính nó".</div>
-    </div>
-  </div>
-  <div class="flashcard" onclick="this.classList.toggle('flipped')">
-    <div class="flashcard-inner">
-      <div class="flashcard-front">3 yếu tố của Automaton là gì?</div>
-      <div class="flashcard-back">① 入力 (Input) ② 状態 (State) ③ 出力 (Output). Mọi hệ thống đều có thể chia thành 3 thành phần này.</div>
-    </div>
-  </div>
-  <div class="flashcard" onclick="this.classList.toggle('flipped')">
-    <div class="flashcard-inner">
-      <div class="flashcard-front">受理状態 (じゅりじょうたい) là gì?</div>
-      <div class="flashcard-back">Accept state — trạng thái CUỐI cùng mà Automaton đạt đến sau khi đi qua các trạng thái trung gian.</div>
-    </div>
-  </div>
-  <div class="flashcard" onclick="this.classList.toggle('flipped')">
-    <div class="flashcard-inner">
-      <div class="flashcard-front">状態遷移表 là gì?</div>
-      <div class="flashcard-back">Bảng biểu thị sự thay đổi trạng thái (State Transition Table). Cột: input. Hàng: trạng thái hiện tại. Ô: trạng thái tiếp theo.</div>
-    </div>
-  </div>
-  <div class="flashcard" onclick="this.classList.toggle('flipped')">
-    <div class="flashcard-inner">
-      <div class="flashcard-front">状態遷移図 là gì?</div>
-      <div class="flashcard-back">Sơ đồ biểu thị sự thay đổi trạng thái (State Transition Diagram). Vòng tròn = trạng thái, mũi tên = chuyển trạng thái.</div>
-    </div>
-  </div>
-  <div class="flashcard" onclick="this.classList.toggle('flipped')">
-    <div class="flashcard-inner">
-      <div class="flashcard-front">Ý nghĩa của ◎ (vòng tròn kép) trong 状態遷移図?</div>
-      <div class="flashcard-back">Biểu thị 受理状態 (accept state) — trạng thái cuối được "chấp nhận".</div>
-    </div>
-  </div>
-  <div class="flashcard" onclick="this.classList.toggle('flipped')">
-    <div class="flashcard-inner">
-      <div class="flashcard-front">Ý nghĩa của ➡ (mũi tên đen đậm)?</div>
-      <div class="flashcard-back">Chỉ tới 初期状態 (trạng thái ban đầu / initial state) của Automaton.</div>
-    </div>
-  </div>
-  <div class="flashcard" onclick="this.classList.toggle('flipped')">
-    <div class="flashcard-inner">
-      <div class="flashcard-front">Trong nhãn "1/0" trên mũi tên có nghĩa gì?</div>
-      <div class="flashcard-back">Bên trái dấu / là 入力 (input = 1), bên phải dấu / là 出力 (output = 0).</div>
-    </div>
-  </div>
-  <div class="flashcard" onclick="this.classList.toggle('flipped')">
-    <div class="flashcard-inner">
-      <div class="flashcard-front">Ví dụ Automaton trong đời thực?</div>
-      <div class="flashcard-back">自動販売機 (máy bán hàng tự động): Input=tiền, State=tổng tiền, Output=sản phẩm. Đề FE đã từng ra bài này.</div>
-    </div>
-  </div>
-  <div class="flashcard" onclick="this.classList.toggle('flipped')">
-    <div class="flashcard-inner">
-      <div class="flashcard-front">Đề FE hỏi gì về Automaton?</div>
-      <div class="flashcard-back">Cho 状態遷移表 hoặc 状態遷移図, đề hỏi 受理状態 cuối cùng là gì sau khi nhận một chuỗi input.</div>
-    </div>
-  </div>
-</div>
-</section>
+    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-3">
+      <h2 class="section-heading">
+        <span class="num-badge">③</span>
+        <span class="text-ja">暗記カード (Flashcards)</span>
+        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
+        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
+        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
+      </p>
 
-<!-- =============== PART 4: Quiz =============== -->
-<section id="part4">
-<h2 id="part-4">❓ Phần 4 — Câu hỏi ôn tập</h2>
+      <div class="fc-grid" id="fcGrid"></div>
+    </section>
 
-<div id="quiz">
+    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-4">
+      <h2 class="section-heading">
+        <span class="num-badge">④</span>
+        <span class="text-ja">確認テスト (10問)</span>
+        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
+        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
+        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
+      </p>
 
-<div class="quiz-item">
-  <div class="quiz-question">Q1. オートマトン biểu diễn chức năng của hệ thống bằng 3 yếu tố nào?</div>
-  <div class="quiz-options">
-    <label><input type="radio" name="q1" value="A"> A. 入力 / 処理 / 出力</label>
-    <label><input type="radio" name="q1" value="B"> B. 入力 / 状態 / 出力</label>
-    <label><input type="radio" name="q1" value="C"> C. データ / 命令 / 結果</label>
-    <label><input type="radio" name="q1" value="D"> D. 開始 / 中間 / 終了</label>
-  </div>
-  <button class="check-btn" onclick="checkAnswer('q1','B','Định nghĩa chính xác: オートマトンとは、機能を「入力」「状態」「出力」の3つで表すシステムのモデル.')">Kiểm tra</button>
-  <div class="result" id="result-q1"></div>
-</div>
+      <div id="quizArea"></div>
 
-<div class="quiz-item">
-  <div class="quiz-question">Q2. Trạng thái CUỐI cùng mà Automaton đạt đến được gọi là gì?</div>
-  <div class="quiz-options">
-    <label><input type="radio" name="q2" value="A"> A. 初期状態</label>
-    <label><input type="radio" name="q2" value="B"> B. 中間状態</label>
-    <label><input type="radio" name="q2" value="C"> C. 受理状態</label>
-    <label><input type="radio" name="q2" value="D"> D. 終了状態</label>
-  </div>
-  <button class="check-btn" onclick="checkAnswer('q2','C','受理状態 (じゅりじょうたい) là tên chính thức. Trong 状態遷移図 được biểu diễn bằng vòng tròn kép ◎.')">Kiểm tra</button>
-  <div class="result" id="result-q2"></div>
-</div>
-
-<div class="quiz-item">
-  <div class="quiz-question">Q3. Trong 状態遷移図, vòng tròn kép (◎) biểu thị điều gì?</div>
-  <div class="quiz-options">
-    <label><input type="radio" name="q3" value="A"> A. 初期状態</label>
-    <label><input type="radio" name="q3" value="B"> B. 受理状態</label>
-    <label><input type="radio" name="q3" value="C"> C. 中間状態</label>
-    <label><input type="radio" name="q3" value="D"> D. エラー状態</label>
-  </div>
-  <button class="check-btn" onclick="checkAnswer('q3','B','Theo bảng ký hiệu: 円 = 状態 (vòng tròn đơn = trạng thái thường), 二重丸 = 受理状態 (vòng tròn kép = trạng thái chấp nhận).')">Kiểm tra</button>
-  <div class="result" id="result-q3"></div>
-</div>
-
-<div class="quiz-item">
-  <div class="quiz-question">Q4. Cho 状態遷移表 hệ thống chẵn/lẻ. Bắt đầu từ "偶数", nhận chuỗi input "1, 1, 1". Trạng thái cuối là?</div>
-  <div class="quiz-options">
-    <label><input type="radio" name="q4" value="A"> A. 偶数</label>
-    <label><input type="radio" name="q4" value="B"> B. 奇数</label>
-    <label><input type="radio" name="q4" value="C"> C. Không xác định</label>
-    <label><input type="radio" name="q4" value="D"> D. Lỗi</label>
-  </div>
-  <button class="check-btn" onclick="checkAnswer('q4','B','偶数 +1→奇数, +1→偶数, +1→奇数. Hoặc tính nhanh: 1+1+1=3 (lẻ). Cộng 3 số 1 từ 偶数 → đảo 3 lần → 奇数.')">Kiểm tra</button>
-  <div class="result" id="result-q4"></div>
-</div>
-
-<div class="quiz-item">
-  <div class="quiz-question">Q5. モデル化 là gì?</div>
-  <div class="quiz-options">
-    <label><input type="radio" name="q5" value="A"> A. Phức tạp hoá vấn đề để xử lý chi tiết</label>
-    <label><input type="radio" name="q5" value="B"> B. Đơn giản hoá những thứ phức tạp trong thế giới thực để dễ hiểu</label>
-    <label><input type="radio" name="q5" value="C"> C. Vẽ sơ đồ 3D của vật thể</label>
-    <label><input type="radio" name="q5" value="D"> D. Mô phỏng bằng máy tính</label>
-  </div>
-  <button class="check-btn" onclick="checkAnswer('q5','B','Định nghĩa: 現実世界にある複雑なモノを単純化してわかりやすくすること. Cái được đơn giản hoá gọi là "モデル".')">Kiểm tra</button>
-  <div class="result" id="result-q5"></div>
-</div>
-
-<div class="quiz-item">
-  <div class="quiz-question">Q6. Trong ví dụ máy bán hàng tự động (自動販売機) như một Automaton, "状態" là gì?</div>
-  <div class="quiz-options">
-    <label><input type="radio" name="q6" value="A"> A. Đồng xu cho vào máy</label>
-    <label><input type="radio" name="q6" value="B"> B. Sản phẩm nhả ra</label>
-    <label><input type="radio" name="q6" value="C"> C. Tổng số tiền đã cho vào (合計金額)</label>
-    <label><input type="radio" name="q6" value="D"> D. Nút bấm chọn sản phẩm</label>
-  </div>
-  <button class="check-btn" onclick="checkAnswer('q6','C','Trong ví dụ: 入力=お金, 状態=入れたお金の合計金額, 出力=出てくる商品. A là 入力, B là 出力.')">Kiểm tra</button>
-  <div class="result" id="result-q6"></div>
-</div>
-
-<div class="quiz-item">
-  <div class="quiz-question">Q7. Khi vẽ 状態遷移図, ➡ (mũi tên đen đậm không xuất phát từ trạng thái nào) chỉ điều gì?</div>
-  <div class="quiz-options">
-    <label><input type="radio" name="q7" value="A"> A. 受理状態</label>
-    <label><input type="radio" name="q7" value="B"> B. Lối ra của hệ thống</label>
-    <label><input type="radio" name="q7" value="C"> C. 初期状態 (trạng thái bắt đầu)</label>
-    <label><input type="radio" name="q7" value="D"> D. Lỗi hệ thống</label>
-  </div>
-  <button class="check-btn" onclick="checkAnswer('q7','C','Theo bảng ký hiệu: 矢印 (mũi tên đậm) → 初期状態を指し示す (chỉ tới trạng thái ban đầu).')">Kiểm tra</button>
-  <div class="result" id="result-q7"></div>
-</div>
-
-<div class="quiz-item">
-  <div class="quiz-question">Q8. Trong nhãn "1/0" trên một mũi tên 状態遷移図, ý nghĩa là gì?</div>
-  <div class="quiz-options">
-    <label><input type="radio" name="q8" value="A"> A. Input=1, Output=0</label>
-    <label><input type="radio" name="q8" value="B"> B. Input=0, Output=1</label>
-    <label><input type="radio" name="q8" value="C"> C. Trạng thái 1 chuyển sang trạng thái 0</label>
-    <label><input type="radio" name="q8" value="D"> D. Xác suất chuyển = 1/0</label>
-  </div>
-  <button class="check-btn" onclick="checkAnswer('q8','A','Theo bảng ký hiệu: 入力/出力 → 左側のラベル = 入力, 右側のラベル = 出力. Vậy "1/0" = input 1, output 0.')">Kiểm tra</button>
-  <div class="result" id="result-q8"></div>
-</div>
-
-<div class="quiz-item">
-  <div class="quiz-question">Q9. Sự khác biệt chính giữa 状態遷移表 và 状態遷移図 là gì?</div>
-  <div class="quiz-options">
-    <label><input type="radio" name="q9" value="A"> A. 状態遷移表 thể hiện trạng thái, 状態遷移図 thể hiện input</label>
-    <label><input type="radio" name="q9" value="B"> B. 状態遷移表 dùng dạng BẢNG, 状態遷移図 dùng dạng SƠ ĐỒ (hình vẽ)</label>
-    <label><input type="radio" name="q9" value="C"> C. 状態遷移表 chỉ dùng cho Automaton; 状態遷移図 cho hệ thống khác</label>
-    <label><input type="radio" name="q9" value="D"> D. Không có khác biệt</label>
-  </div>
-  <button class="check-btn" onclick="checkAnswer('q9','B','状態遷移表 là 状態の変化を示す「表」(table), 状態遷移図 là 状態の変化を示す「図」(diagram). Cùng nội dung, khác cách trình bày.')">Kiểm tra</button>
-  <div class="result" id="result-q9"></div>
-</div>
-
-<div class="quiz-item">
-  <div class="quiz-question">Q10. Đề thi FE thường hỏi gì khi cho 状態遷移表/状態遷移図?</div>
-  <div class="quiz-options">
-    <label><input type="radio" name="q10" value="A"> A. Vẽ lại sơ đồ</label>
-    <label><input type="radio" name="q10" value="B"> B. Tính số trạng thái có trong hệ thống</label>
-    <label><input type="radio" name="q10" value="C"> C. Cho chuỗi input, hỏi 受理状態 (trạng thái cuối) là gì</label>
-    <label><input type="radio" name="q10" value="D"> D. Lập trình lại bằng Java</label>
-  </div>
-  <button class="check-btn" onclick="checkAnswer('q10','C','Sách ghi rõ: 基本情報技術者試験では「状態遷移表」もしくは「状態遷移図」が示され、オートマトンの最終的な状態（受理状態）が何になるかが問われる.')">Kiểm tra</button>
-  <div class="result" id="result-q10"></div>
-</div>
-
-</div>
-
-<h3 style="margin-top:24px;">📝 Đáp án</h3>
-<table>
-  <thead><tr><th>Câu</th><th>Đáp án</th><th>Câu</th><th>Đáp án</th></tr></thead>
-  <tbody>
-    <tr><td>Q1</td><td>B</td><td>Q6</td><td>C</td></tr>
-    <tr><td>Q2</td><td>C</td><td>Q7</td><td>C</td></tr>
-    <tr><td>Q3</td><td>B</td><td>Q8</td><td>A</td></tr>
-    <tr><td>Q4</td><td>B</td><td>Q9</td><td>B</td></tr>
-    <tr><td>Q5</td><td>B</td><td>Q10</td><td>C</td></tr>
-  </tbody>
-</table>
-
-</section>
-
-<!-- =============== PART 5: Mind Map SVG =============== -->
-
-
-
-
-
-    </div>
+      <div class="quiz-result-box" id="quiz-result">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
+        <div class="quiz-result-score" id="qScore">0 / 10</div>
+        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
+        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
+      </div>
+    </section>
 
     <!-- Footer Navigation & Lesson Completion -->
     <footer class="lesson-footer-nav">
@@ -578,15 +397,10 @@ Bước 3: 状態=奇数, 入力="1" → 偶数 になる (cộng 1: lẻ→ch�
       </div>
       <nav>
         <ul class="toc-list" id="tocList">
-
-          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-  
-          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-  
-          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-  
-          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
-  
+          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
         </ul>
       </nav>
     </div>
@@ -606,26 +420,288 @@ Bước 3: 状態=奇数, 入力="1" → 偶数 になる (cộng 1: lẻ→ch�
 
 </div>
 
+<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
 <script>
-
-function checkAnswer(qid, correct, explanation) {
-  const selected = document.querySelector(`input[name="${qid}"]:checked`);
-  const resultDiv = document.getElementById(`result-${qid}`);
-  resultDiv.style.display = 'block';
-  if (!selected) {
-    resultDiv.className = 'result incorrect';
-    resultDiv.innerHTML = '⚠️ Vui lòng chọn 1 đáp án';
-    return;
+const FLASHCARDS = [
+  {
+    "cat": "all",
+    "front": "モデル化 là gì?",
+    "back": "Đơn giản hoá những thứ phức tạp trong thế giới thực để dễ hiểu hơn. Cái được đơn giản hoá gọi là \"モデル\" (mô hình)."
+  },
+  {
+    "cat": "all",
+    "front": "オートマトン là gì?",
+    "back": "Mô hình hệ thống biểu diễn chức năng bằng 3 yếu tố: 入力 (Input), 状態 (State), 出力 (Output)."
+  },
+  {
+    "cat": "all",
+    "front": "Nghĩa gốc tiếng Hy Lạp của Automaton?",
+    "back": "「自らの意思で動くもの」 — \"Vật tự vận hành theo ý chí của chính nó\"."
+  },
+  {
+    "cat": "all",
+    "front": "3 yếu tố của Automaton là gì?",
+    "back": "① 入力 (Input) ② 状態 (State) ③ 出力 (Output). Mọi hệ thống đều có thể chia thành 3 thành phần này."
+  },
+  {
+    "cat": "all",
+    "front": "受理状態 (じゅりじょうたい) là gì?",
+    "back": "Accept state — trạng thái CUỐI cùng mà Automaton đạt đến sau khi đi qua các trạng thái trung gian."
+  },
+  {
+    "cat": "all",
+    "front": "状態遷移表 là gì?",
+    "back": "Bảng biểu thị sự thay đổi trạng thái (State Transition Table). Cột: input. Hàng: trạng thái hiện tại. Ô: trạng thái tiếp theo."
+  },
+  {
+    "cat": "all",
+    "front": "状態遷移図 là gì?",
+    "back": "Sơ đồ biểu thị sự thay đổi trạng thái (State Transition Diagram). Vòng tròn = trạng thái, mũi tên = chuyển trạng thái."
+  },
+  {
+    "cat": "all",
+    "front": "Ý nghĩa của ◎ (vòng tròn kép) trong 状態遷移図?",
+    "back": "Biểu thị 受理状態 (accept state) — trạng thái cuối được \"chấp nhận\"."
+  },
+  {
+    "cat": "all",
+    "front": "Ý nghĩa của ➡ (mũi tên đen đậm)?",
+    "back": "Chỉ tới 初期状態 (trạng thái ban đầu / initial state) của Automaton."
+  },
+  {
+    "cat": "all",
+    "front": "Trong nhãn \"1/0\" trên mũi tên có nghĩa gì?",
+    "back": "Bên trái dấu / là 入力 (input = 1), bên phải dấu / là 出力 (output = 0)."
+  },
+  {
+    "cat": "all",
+    "front": "Ví dụ Automaton trong đời thực?",
+    "back": "自動販売機 (máy bán hàng tự động): Input=tiền, State=tổng tiền, Output=sản phẩm. Đề FE đã từng ra bài này."
+  },
+  {
+    "cat": "all",
+    "front": "Đề FE hỏi gì về Automaton?",
+    "back": "Cho 状態遷移表 hoặc 状態遷移図, đề hỏi 受理状態 cuối cùng là gì sau khi nhận một chuỗi input."
   }
-  if (selected.value === correct) {
-    resultDiv.className = 'result correct';
-    resultDiv.innerHTML = `✅ Chính xác! ${explanation}`;
-  } else {
-    resultDiv.className = 'result incorrect';
-    resultDiv.innerHTML = `❌ Chưa đúng. Đáp án đúng là <strong>${correct}</strong>. ${explanation}`;
+];
+const QUIZ = [
+  {
+    "q": "Q1. オートマトン biểu diễn chức năng của hệ thống bằng 3 yếu tố nào?",
+    "opts": [
+      "A. 入力 / 処理 / 出力",
+      "B. 入力 / 状態 / 出力",
+      "C. データ / 命令 / 結果",
+      "D. 開始 / 中間 / 終了"
+    ],
+    "ans": 1,
+    "expl": "Định nghĩa chính xác: オートマトンとは、機能を「入力」「状態」「出力」の3つで表すシステムのモデル."
+  },
+  {
+    "q": "Q2. Trạng thái CUỐI cùng mà Automaton đạt đến được gọi là gì?",
+    "opts": [
+      "A. 初期状態",
+      "B. 中間状態",
+      "C. 受理状態",
+      "D. 終了状態"
+    ],
+    "ans": 2,
+    "expl": "受理状態 (じゅりじょうたい) là tên chính thức. Trong 状態遷移図 được biểu diễn bằng vòng tròn kép ◎."
+  },
+  {
+    "q": "Q3. Trong 状態遷移図, vòng tròn kép (◎) biểu thị điều gì?",
+    "opts": [
+      "A. 初期状態",
+      "B. 受理状態",
+      "C. 中間状態",
+      "D. エラー状態"
+    ],
+    "ans": 1,
+    "expl": "Theo bảng ký hiệu: 円 = 状態 (vòng tròn đơn = trạng thái thường), 二重丸 = 受理状態 (vòng tròn kép = trạng thái chấp nhận)."
+  },
+  {
+    "q": "Q4. Cho 状態遷移表 hệ thống chẵn/lẻ. Bắt đầu từ \"偶数\", nhận chuỗi input \"1, 1, 1\". Trạng thái cuối là?",
+    "opts": [
+      "A. 偶数",
+      "B. 奇数",
+      "C. Không xác định",
+      "D. Lỗi"
+    ],
+    "ans": 1,
+    "expl": "偶数 +1→奇数, +1→偶数, +1→奇数. Hoặc tính nhanh: 1+1+1=3 (lẻ). Cộng 3 số 1 từ 偶数 → đảo 3 lần → 奇数."
+  },
+  {
+    "q": "Q5. モデル化 là gì?",
+    "opts": [
+      "A. Phức tạp hoá vấn đề để xử lý chi tiết",
+      "B. Đơn giản hoá những thứ phức tạp trong thế giới thực để dễ hiểu",
+      "C. Vẽ sơ đồ 3D của vật thể",
+      "D. Mô phỏng bằng máy tính"
+    ],
+    "ans": 1,
+    "expl": "Định nghĩa: 現実世界にある複雑なモノを単純化してわかりやすくすること. Cái được đơn giản hoá gọi là \"モデル\"."
+  },
+  {
+    "q": "Q6. Trong ví dụ máy bán hàng tự động (自動販売機) như một Automaton, \"状態\" là gì?",
+    "opts": [
+      "A. Đồng xu cho vào máy",
+      "B. Sản phẩm nhả ra",
+      "C. Tổng số tiền đã cho vào (合計金額)",
+      "D. Nút bấm chọn sản phẩm"
+    ],
+    "ans": 2,
+    "expl": "Trong ví dụ: 入力=お金, 状態=入れたお金の合計金額, 出力=出てくる商品. A là 入力, B là 出力."
+  },
+  {
+    "q": "Q7. Khi vẽ 状態遷移図, ➡ (mũi tên đen đậm không xuất phát từ trạng thái nào) chỉ điều gì?",
+    "opts": [
+      "A. 受理状態",
+      "B. Lối ra của hệ thống",
+      "C. 初期状態 (trạng thái bắt đầu)",
+      "D. Lỗi hệ thống"
+    ],
+    "ans": 2,
+    "expl": "Theo bảng ký hiệu: 矢印 (mũi tên đậm) → 初期状態を指し示す (chỉ tới trạng thái ban đầu)."
+  },
+  {
+    "q": "Q8. Trong nhãn \"1/0\" trên một mũi tên 状態遷移図, ý nghĩa là gì?",
+    "opts": [
+      "A. Input=1, Output=0",
+      "B. Input=0, Output=1",
+      "C. Trạng thái 1 chuyển sang trạng thái 0",
+      "D. Xác suất chuyển = 1/0"
+    ],
+    "ans": 0,
+    "expl": "Theo bảng ký hiệu: 入力/出力 → 左側のラベル = 入力, 右側のラベル = 出力. Vậy \"1/0\" = input 1, output 0."
+  },
+  {
+    "q": "Q9. Sự khác biệt chính giữa 状態遷移表 và 状態遷移図 là gì?",
+    "opts": [
+      "A. 状態遷移表 thể hiện trạng thái, 状態遷移図 thể hiện input",
+      "B. 状態遷移表 dùng dạng BẢNG, 状態遷移図 dùng dạng SƠ ĐỒ (hình vẽ)",
+      "C. 状態遷移表 chỉ dùng cho Automaton; 状態遷移図 cho hệ thống khác",
+      "D. Không có khác biệt"
+    ],
+    "ans": 1,
+    "expl": "状態遷移表 là 状態の変化を示す「表」(table), 状態遷移図 là 状態の変化を示す「図」(diagram). Cùng nội dung, khác cách trình bày."
+  },
+  {
+    "q": "Q10. Đề thi FE thường hỏi gì khi cho 状態遷移表/状態遷移図?",
+    "opts": [
+      "A. Vẽ lại sơ đồ",
+      "B. Tính số trạng thái có trong hệ thống",
+      "C. Cho chuỗi input, hỏi 受理状態 (trạng thái cuối) là gì",
+      "D. Lập trình lại bằng Java"
+    ],
+    "ans": 2,
+    "expl": "Sách ghi rõ: 基本情報技術者試験では「状態遷移表」もしくは「状態遷移図」が示され、オートマトンの最終的な状態（受理状態）が何になるかが問われる."
+  }
+];
+
+// Render Flashcards with reliable click-to-flip
+function renderFC() {
+  const grid = document.getElementById('fcGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  FLASHCARDS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.innerHTML = `
+      <div>
+        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
+        <div class="fc-front">${f.front}</div>
+        <div class="fc-back">${f.back}</div>
+      </div>
+      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+// Render Interactive Quiz with tactile 4-option cards & instant feedback
+let quizScore = 0;
+let quizAnswered = 0;
+
+function renderQuiz() {
+  const area = document.getElementById('quizArea');
+  if (!area) return;
+  area.innerHTML = '';
+  quizScore = 0;
+  quizAnswered = 0;
+
+  QUIZ.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-q-card';
+    card.dataset.idx = idx;
+
+    let optsHtml = '';
+    item.opts.forEach((opt, oi) => {
+      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
+    });
+
+    card.innerHTML = `
+      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
+    `;
+
+    card.querySelectorAll('.opt').forEach(optEl => {
+      optEl.addEventListener('click', () => {
+        if (card.classList.contains('locked')) return;
+        card.classList.add('locked');
+
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+
+        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
+        if (correctEl) correctEl.classList.add('correct');
+
+        if (chosen !== correct) {
+          optEl.classList.add('wrong');
+        } else {
+          quizScore++;
+        }
+
+        quizAnswered++;
+        if (quizAnswered === QUIZ.length) showQuizResult();
+      });
+    });
+
+    area.appendChild(card);
+  });
+
+  const resBox = document.getElementById('quiz-result');
+  if (resBox) resBox.classList.remove('show');
+}
+
+function showQuizResult() {
+  const pct = Math.round((quizScore / QUIZ.length) * 100);
+  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
+  let verdict = '';
+  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
+  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
+  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
+  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
+  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
+  const res = document.getElementById('quiz-result');
+  if (res) {
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
 
+function resetQuiz() {
+  renderQuiz();
+  const area = document.getElementById('quizArea');
+  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize on DOM ready
+renderFC();
+renderQuiz();
 </script>
 <script src="../assets/reader.js"></script>
 </body>

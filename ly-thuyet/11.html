@@ -71,22 +71,14 @@
       </div>
     </div>
 
-    <!-- Lesson Content Body -->
-    <div class="lesson-body">
-
-
-<h1>データ構造 — Stack / Queue / Tree(木構造)</h1>
-<div class="sub">📘 Yasashii Ch.3 Lesson 03-01 · データ構造の種類 (スタック・キュー・木構造)
-<div class="tags" style="margin-top:6px"><span>FE</span><span>基礎理論</span><span>データ構造</span><span>頻出</span></div>
-</div>
-
-<div class="callout">
-<b>📌 試験のポイント:</b> Yasashii Ch.3 ghi rõ <b>「基本情報技術者試験では、スタックが最頻出です」</b>. 5 loại データ構造 trong sách là: (1) スタック (2) キュー (3) 配列 (4) 連結リスト (5) 木構造. Bài này tập trung vào <b>Stack, Queue, Tree</b>.
-</div>
-
-<!-- ============ PHẦN 1 ============ -->
-<h2 id="part-1">📚 Phần 1 — Tóm tắt lý thuyết</h2>
-
+    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
+    <section class="content-section" id="sec-1">
+      <h2 class="section-heading">
+        <span class="num-badge">①</span>
+        <span class="text-ja">重要理論 (Theory)</span>
+        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
+      </h2>
+      <div class="lesson-body-content">
 <h3>0. データ構造 là gì?</h3>
 <div class="lang jp"><span class="tag">🇯🇵 日本語</span>
 コンピュータが扱う情報を「データ」といい、主記憶装置に保存される。データの並べ方によって処理効率が大きく変わるため、状況に応じてさまざまな方式で並べる。この<b>主記憶装置上のデータの並べ方</b>を「データ構造」という。
@@ -256,8 +248,17 @@ Sai vì:
 </table>
 
 <!-- ============ PHẦN 2 ============ -->
-<h2 id="part-2">💡 Phần 2 — Ví dụ minh hoạ</h2>
+      </div>
+    </section>
 
+    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
+    <section class="content-section" id="sec-2">
+      <h2 class="section-heading">
+        <span class="num-badge">②</span>
+        <span class="text-ja">演習例題 (Worked Examples)</span>
+        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
+      </h2>
+      <div class="lesson-body-content">
 <h3>Ví dụ 1 — Stack: dãy thao tác push/pop</h3>
 <div class="panel">
 <b>Bài:</b> Thực hiện theo thứ tự: <code>push 1, push 2, push 3, pop, push 4, pop, pop</code>. Hỏi giá trị các lần pop là gì? Sau cùng stack chứa gì?
@@ -312,18 +313,45 @@ Bước 6: dequeue   → [C, D]            ← lấy B
 </table>
 
 <!-- ============ PHẦN 3 FLASHCARD ============ -->
-<h2 id="part-3">🎴 Phần 3 — Flashcard (bấm để lật)</h2>
-<p style="color:var(--mute);font-size:14px">Click vào thẻ để xem mặt sau. Click lần nữa để quay lại.</p>
-<div class="flash" id="flash"></div>
+      </div>
+    </section>
 
-<!-- ============ PHẦN 4 QUIZ ============ -->
-<h2 id="part-4">📝 Phần 4 — Câu hỏi ôn tập (10 câu)</h2>
-<p style="color:var(--mute);font-size:14px">Chọn đáp án rồi bấm "Hiện đáp án" cuối trang.</p>
-<div id="quiz"></div>
-<div style="margin:16px 0"><button onclick="showAllAns()">✅ Hiện toàn bộ đáp án</button></div>
+    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-3">
+      <h2 class="section-heading">
+        <span class="num-badge">③</span>
+        <span class="text-ja">暗記カード (Flashcards)</span>
+        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
+        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
+        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
+      </p>
 
+      <div class="fc-grid" id="fcGrid"></div>
+    </section>
 
-    </div>
+    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-4">
+      <h2 class="section-heading">
+        <span class="num-badge">④</span>
+        <span class="text-ja">確認テスト (10問)</span>
+        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
+        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
+        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
+      </p>
+
+      <div id="quizArea"></div>
+
+      <div class="quiz-result-box" id="quiz-result">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
+        <div class="quiz-result-score" id="qScore">0 / 10</div>
+        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
+        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
+      </div>
+    </section>
 
     <!-- Footer Navigation & Lesson Completion -->
     <footer class="lesson-footer-nav">
@@ -373,15 +401,10 @@ Bước 6: dequeue   → [C, D]            ← lấy B
       </div>
       <nav>
         <ul class="toc-list" id="tocList">
-
-          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-  
-          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-  
-          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-  
-          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
-  
+          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
         </ul>
       </nav>
     </div>
@@ -401,79 +424,303 @@ Bước 6: dequeue   → [C, D]            ← lấy B
 
 </div>
 
+<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
 <script>
-
-// =============== FLASHCARDS ===============
-const flashData = [
- ["スタック (Stack) とは?","Cấu trúc dữ liệu LIFO — 後入れ先出し. Phần tử nhập sau lấy ra trước. Hình ảnh: chồng sách."],
- ["LIFO 是什么 / là gì?","Last In First Out — 最後に格納したデータを最初に取り出す. Đặc trưng của Stack."],
- ["push / pop là gì?","push X = đẩy X vào đỉnh stack. pop = lấy phần tử đỉnh ra (không cần tên vì chỉ có 1)."],
- ["キュー (Queue) tên khác?","待ち行列 (machi-gyōretsu) — hàng chờ. FIFO: First In First Out."],
- ["enqueue / dequeue?","enqueue X = thêm X vào cuối hàng. dequeue = lấy phần tử ở đầu hàng ra."],
- ["FIFO là viết tắt của?","First In First Out — 先入れ先出し. Phần tử vào trước thì ra trước."],
- ["5 loại データ構造 trong Yasashii?","(1) スタック (2) キュー (3) 配列 (4) 連結リスト (5) 木構造"],
- ["根・節・葉 là gì?","根 (root) = nút trên cùng. 節 (node) = điểm phân nhánh, chứa dữ liệu. 葉 (leaf) = nút tận cùng."],
- ["親・子 trong tree?","親 = nút phân nhánh ra (cha). 子 = nút bị phân nhánh đến (con). Cha có thể có nhiều con."],
- ["2分木 là gì?","Tree mà mỗi nút có 0~2 con. Tổng quát: n分木 = mỗi nút có 0~n con."],
- ["Điều kiện 2分探索木?","左の子孫 < 親 < 右の子孫. CHÚ Ý: ràng buộc là 子孫 (cháu chắt) chứ không chỉ 子 (con)."],
- ["Lợi ích của 2分探索木?","Tìm dữ liệu nhanh — chỉ cần kiểm tra số tầng (階層の数) lần là ra, không phải duyệt từng nút."],
- ["FE試験 — loại nào hay ra nhất?","スタック (Stack) — Yasashii nói 「スタックが最頻出」."],
- ["Pop 2 lần sau push 1,2,3 trả về?","3 rồi 2 (LIFO — lấy ngược chiều push)."],
- ["Dequeue 2 lần sau enqueue A,B,C?","A rồi B (FIFO — lấy theo đúng chiều enqueue)."]
+const FLASHCARDS = [
+  {
+    "cat": "all",
+    "front": "スタック (Stack) とは?",
+    "back": "Cấu trúc dữ liệu LIFO — 後入れ先出し. Phần tử nhập sau lấy ra trước. Hình ảnh: chồng sách."
+  },
+  {
+    "cat": "all",
+    "front": "LIFO 是什么 / là gì?",
+    "back": "Last In First Out — 最後に格納したデータを最初に取り出す. Đặc trưng của Stack."
+  },
+  {
+    "cat": "all",
+    "front": "push / pop là gì?",
+    "back": "push X = đẩy X vào đỉnh stack. pop = lấy phần tử đỉnh ra (không cần tên vì chỉ có 1)."
+  },
+  {
+    "cat": "all",
+    "front": "キュー (Queue) tên khác?",
+    "back": "待ち行列 (machi-gyōretsu) — hàng chờ. FIFO: First In First Out."
+  },
+  {
+    "cat": "all",
+    "front": "enqueue / dequeue?",
+    "back": "enqueue X = thêm X vào cuối hàng. dequeue = lấy phần tử ở đầu hàng ra."
+  },
+  {
+    "cat": "all",
+    "front": "FIFO là viết tắt của?",
+    "back": "First In First Out — 先入れ先出し. Phần tử vào trước thì ra trước."
+  },
+  {
+    "cat": "all",
+    "front": "5 loại データ構造 trong Yasashii?",
+    "back": "(1) スタック (2) キュー (3) 配列 (4) 連結リスト (5) 木構造"
+  },
+  {
+    "cat": "all",
+    "front": "根・節・葉 là gì?",
+    "back": "根 (root) = nút trên cùng. 節 (node) = điểm phân nhánh, chứa dữ liệu. 葉 (leaf) = nút tận cùng."
+  },
+  {
+    "cat": "all",
+    "front": "親・子 trong tree?",
+    "back": "親 = nút phân nhánh ra (cha). 子 = nút bị phân nhánh đến (con). Cha có thể có nhiều con."
+  },
+  {
+    "cat": "all",
+    "front": "2分木 là gì?",
+    "back": "Tree mà mỗi nút có 0~2 con. Tổng quát: n分木 = mỗi nút có 0~n con."
+  },
+  {
+    "cat": "all",
+    "front": "Điều kiện 2分探索木?",
+    "back": "左の子孫 < 親 < 右の子孫. CHÚ Ý: ràng buộc là 子孫 (cháu chắt) chứ không chỉ 子 (con)."
+  },
+  {
+    "cat": "all",
+    "front": "Lợi ích của 2分探索木?",
+    "back": "Tìm dữ liệu nhanh — chỉ cần kiểm tra số tầng (階層の数) lần là ra, không phải duyệt từng nút."
+  },
+  {
+    "cat": "all",
+    "front": "FE試験 — loại nào hay ra nhất?",
+    "back": "スタック (Stack) — Yasashii nói 「スタックが最頻出」."
+  },
+  {
+    "cat": "all",
+    "front": "Pop 2 lần sau push 1,2,3 trả về?",
+    "back": "3 rồi 2 (LIFO — lấy ngược chiều push)."
+  },
+  {
+    "cat": "all",
+    "front": "Dequeue 2 lần sau enqueue A,B,C?",
+    "back": "A rồi B (FIFO — lấy theo đúng chiều enqueue)."
+  }
 ];
-const flashEl = document.getElementById('flash');
-flashData.forEach(([f,b])=>{
-  const d=document.createElement('div');
-  d.className='card';
-  d.innerHTML=`<div><div class="front">${f}</div><div class="back">${b}</div></div>`;
-  d.onclick=()=>d.classList.toggle('flip');
-  flashEl.appendChild(d);
-});
-
-// =============== QUIZ ===============
-const quizData = [
- {q:"Stack hoạt động theo nguyên tắc nào?",
-  opts:["FIFO","LIFO","Random Access","Hash"],ans:1,
-  ex:"Stack = LIFO (Last In First Out / 後入れ先出し). Phần tử push sau cùng được pop ra trước."},
- {q:"Phép thêm dữ liệu vào stack tên là gì?",
-  opts:["enqueue","insert","push","add"],ans:2,
-  ex:"push thêm vào đỉnh stack. pop là lấy ra. Yasashii: 「データを格納することをpushという」."},
- {q:"Sau dãy push 1, push 2, push 3, pop, pop — giá trị 2 lần pop là?",
-  opts:["1, 2","2, 3","3, 2","3, 1"],ans:2,
-  ex:"Stack [1,2,3]. Pop lấy TOP=3 trước, rồi TOP=2. Đáp án 3, 2 (LIFO)."},
- {q:"Queue (キュー) còn được gọi là gì trong Yasashii?",
-  opts:["待ち時間","待ち行列","行列式","数列"],ans:1,
-  ex:"待ち行列 (machi-gyōretsu) = hàng đợi. Hoạt động theo FIFO."},
- {q:"Sau enqueue A, enqueue B, enqueue C, dequeue — dequeue trả về?",
-  opts:["A","B","C","Tất cả"],ans:0,
-  ex:"FIFO — A vào trước → A ra trước. Sau dequeue, queue còn [B, C]."},
- {q:"Trong cây, nút trên cùng được gọi là?",
-  opts:["葉 (leaf)","節 (node)","根 (root)","親 (parent)"],ans:2,
-  ex:"根 = root, nút trên cùng (chỉ 1 nút). 葉 là nút tận cùng. 節 là điểm phân nhánh tổng quát."},
- {q:"n分木 nghĩa là gì?",
-  opts:["Cây có n tầng","Cây có n nút","Mỗi nút có tối đa n con","Cây có n lá"],ans:2,
-  ex:"Yasashii: 「分木とは、節が最大でいくつの子に分かれるのかを表しています」. 2分木 = max 2 con, 3分木 = max 3 con."},
- {q:"Điều kiện của 2分探索木 là gì?",
-  opts:["左の子 < 親 < 右の子","左の子孫 < 親 < 右の子孫","親 < 左の子孫 < 右の子孫","左の子孫 > 親 > 右の子孫"],ans:1,
-  ex:"Yasashii nhấn mạnh: ràng buộc là 子孫 (con cháu) chứ không chỉ 子 (con). 左の子孫 < 親 < 右の子孫."},
- {q:"Trường hợp nào nên dùng Stack?",
-  opts:["Hàng đợi máy in","Chức năng Undo (Ctrl+Z)","Danh bạ sắp xếp","Cây thư mục"],ans:1,
-  ex:"Undo cần lấy thao tác gần nhất ra trước → LIFO → Stack. Máy in dùng Queue (FIFO)."},
- {q:"Lợi ích chính của 2分探索木 là gì?",
-  opts:["Tiết kiệm bộ nhớ","Sắp xếp tự động","Tìm kiếm nhanh theo số tầng","Cho phép trùng giá trị"],ans:2,
-  ex:"Yasashii: 「根から葉までの階層の数だけ値を調べれば、目的のデータを見つけ出せる」 — chỉ cần kiểm tra theo số tầng (logarit) lần."}
+const QUIZ = [
+  {
+    "q": "Stack hoạt động theo nguyên tắc nào?",
+    "opts": [
+      "FIFO",
+      "LIFO",
+      "Random Access",
+      "Hash"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "Phép thêm dữ liệu vào stack tên là gì?",
+    "opts": [
+      "enqueue",
+      "insert",
+      "push",
+      "add"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "Sau dãy push 1, push 2, push 3, pop, pop — giá trị 2 lần pop là?",
+    "opts": [
+      "1, 2",
+      "2, 3",
+      "3, 2",
+      "3, 1"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "Queue (キュー) còn được gọi là gì trong Yasashii?",
+    "opts": [
+      "待ち時間",
+      "待ち行列",
+      "行列式",
+      "数列"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "Sau enqueue A, enqueue B, enqueue C, dequeue — dequeue trả về?",
+    "opts": [
+      "A",
+      "B",
+      "C",
+      "Tất cả"
+    ],
+    "ans": 0,
+    "expl": ""
+  },
+  {
+    "q": "Trong cây, nút trên cùng được gọi là?",
+    "opts": [
+      "葉 (leaf)",
+      "節 (node)",
+      "根 (root)",
+      "親 (parent)"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "n分木 nghĩa là gì?",
+    "opts": [
+      "Cây có n tầng",
+      "Cây có n nút",
+      "Mỗi nút có tối đa n con",
+      "Cây có n lá"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "Điều kiện của 2分探索木 là gì?",
+    "opts": [
+      "左の子 < 親 < 右の子",
+      "左の子孫 < 親 < 右の子孫",
+      "親 < 左の子孫 < 右の子孫",
+      "左の子孫 > 親 > 右の子孫"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "Trường hợp nào nên dùng Stack?",
+    "opts": [
+      "Hàng đợi máy in",
+      "Chức năng Undo (Ctrl+Z)",
+      "Danh bạ sắp xếp",
+      "Cây thư mục"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "Lợi ích chính của 2分探索木 là gì?",
+    "opts": [
+      "Tiết kiệm bộ nhớ",
+      "Sắp xếp tự động",
+      "Tìm kiếm nhanh theo số tầng",
+      "Cho phép trùng giá trị"
+    ],
+    "ans": 2,
+    "expl": ""
+  }
 ];
-const quizEl=document.getElementById('quiz');
-quizData.forEach((it,i)=>{
-  const d=document.createElement('div');
-  d.className='quiz-q';
-  d.innerHTML=`<b>Câu ${i+1}.</b> ${it.q}
-    <div class="opts">${it.opts.map((o,j)=>`<label><input type="radio" name="q${i}" value="${j}"> ${String.fromCharCode(65+j)}. ${o}</label>`).join('')}</div>
-    <div class="ans"><b>✅ Đáp án: ${String.fromCharCode(65+it.ans)}.</b> ${it.ex}</div>`;
-  quizEl.appendChild(d);
-});
-function showAllAns(){document.querySelectorAll('.quiz-q').forEach(q=>q.classList.add('show'));}
 
+// Render Flashcards with reliable click-to-flip
+function renderFC() {
+  const grid = document.getElementById('fcGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  FLASHCARDS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.innerHTML = `
+      <div>
+        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
+        <div class="fc-front">${f.front}</div>
+        <div class="fc-back">${f.back}</div>
+      </div>
+      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+// Render Interactive Quiz with tactile 4-option cards & instant feedback
+let quizScore = 0;
+let quizAnswered = 0;
+
+function renderQuiz() {
+  const area = document.getElementById('quizArea');
+  if (!area) return;
+  area.innerHTML = '';
+  quizScore = 0;
+  quizAnswered = 0;
+
+  QUIZ.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-q-card';
+    card.dataset.idx = idx;
+
+    let optsHtml = '';
+    item.opts.forEach((opt, oi) => {
+      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
+    });
+
+    card.innerHTML = `
+      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
+    `;
+
+    card.querySelectorAll('.opt').forEach(optEl => {
+      optEl.addEventListener('click', () => {
+        if (card.classList.contains('locked')) return;
+        card.classList.add('locked');
+
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+
+        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
+        if (correctEl) correctEl.classList.add('correct');
+
+        if (chosen !== correct) {
+          optEl.classList.add('wrong');
+        } else {
+          quizScore++;
+        }
+
+        quizAnswered++;
+        if (quizAnswered === QUIZ.length) showQuizResult();
+      });
+    });
+
+    area.appendChild(card);
+  });
+
+  const resBox = document.getElementById('quiz-result');
+  if (resBox) resBox.classList.remove('show');
+}
+
+function showQuizResult() {
+  const pct = Math.round((quizScore / QUIZ.length) * 100);
+  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
+  let verdict = '';
+  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
+  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
+  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
+  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
+  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
+  const res = document.getElementById('quiz-result');
+  if (res) {
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function resetQuiz() {
+  renderQuiz();
+  const area = document.getElementById('quizArea');
+  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize on DOM ready
+renderFC();
+renderQuiz();
 </script>
 <script src="../assets/reader.js"></script>
 </body>

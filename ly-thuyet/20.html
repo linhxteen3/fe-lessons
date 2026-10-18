@@ -71,15 +71,14 @@
       </div>
     </div>
 
-    <!-- Lesson Content Body -->
-    <div class="lesson-body">
-
-
-
-
-<!-- ===================== PHẦN 1 — LÝ THUYẾT ===================== -->
-<h2 id="part-1" class="sec">① Tóm tắt lý thuyết</h2>
-
+    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
+    <section class="content-section" id="sec-1">
+      <h2 class="section-heading">
+        <span class="num-badge">①</span>
+        <span class="text-ja">重要理論 (Theory)</span>
+        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
+      </h2>
+      <div class="lesson-body-content">
 <div class="card">
 <h3>1.1 Cấu trúc phần mềm — ソフトウェアの構成</h3>
 
@@ -271,8 +270,17 @@ Trong khi CPU rảnh (chờ I/O), gán task khác cho CPU → trông như đang 
 </div>
 
 <!-- ===================== PHẦN 2 — VÍ DỤ ===================== -->
-<h2 id="part-2" class="sec">② Ví dụ minh hoạ</h2>
+      </div>
+    </section>
 
+    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
+    <section class="content-section" id="sec-2">
+      <h2 class="section-heading">
+        <span class="num-badge">②</span>
+        <span class="text-ja">演習例題 (Worked Examples)</span>
+        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
+      </h2>
+      <div class="lesson-body-content">
 <div class="card">
 <h3>Ví dụ 1: Spooling — In tài liệu</h3>
 <div class="example"><span class="lbl">Tình huống</span>
@@ -328,47 +336,45 @@ Task X (low priority) đang chạy. Task Y (high priority) đột nhiên xuất 
 </div>
 
 <!-- ===================== PHẦN 3 — FLASHCARD ===================== -->
-<h2 id="part-3" class="sec">③ Flashcard — Click để lật</h2>
+      </div>
+    </section>
 
-<div class="flash-controls">
-  <button class="filter-btn active" data-cat="all">Tất cả</button>
-  <button class="filter-btn" data-cat="os">OS cơ bản</button>
-  <button class="filter-btn" data-cat="job">Job 管理</button>
-  <button class="filter-btn" data-cat="task">Task 管理</button>
-  <button class="filter-btn" data-cat="sched">Scheduling</button>
-  <button class="filter-btn" data-cat="int">割込み</button>
-</div>
+    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-3">
+      <h2 class="section-heading">
+        <span class="num-badge">③</span>
+        <span class="text-ja">暗記カード (Flashcards)</span>
+        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
+        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
+        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
+      </p>
 
-<div class="flashgrid" id="flashgrid">
-  <div class="flash" data-cat="os"><div class="front">OS (オペレーティングシステム) là gì?</div><div class="back">Phần mềm cơ bản trung gian giữa <b>ứng dụng và phần cứng</b>. Ví dụ: Windows, macOS, Linux, iOS, Android.<div class="cat">OS</div></div></div>
-  <div class="flash" data-cat="os"><div class="front">GUI vs API</div><div class="back"><b>GUI</b>: OS ↔ người dùng (icon, cửa sổ). <b>API</b>: OS ↔ ứng dụng (tập hàm).<div class="cat">OS</div></div></div>
-  <div class="flash" data-cat="os"><div class="front">4 chức năng chính của OS</div><div class="back">(1) ジョブ管理 (2) タスク管理 (3) 記憶管理 (4) データ管理<div class="cat">OS</div></div></div>
-  <div class="flash" data-cat="job"><div class="front">ジョブ vs タスク</div><div class="back"><b>ジョブ</b> = lệnh do <b>người dùng</b> ra cho máy. <b>タスク</b> = lệnh do <b>OS</b> ra cho CPU. 1 job được chia thành nhiều task.<div class="cat">Job</div></div></div>
-  <div class="flash" data-cat="job"><div class="front">Tại sao cần Job管理?</div><div class="back">CPU và các thiết bị khác có <b>tốc độ chênh lệch lớn</b>. Job管理 giúp CPU không phải chờ → tận dụng CPU.<div class="cat">Job</div></div></div>
-  <div class="flash" data-cat="job"><div class="front">スプーリング (Spooling)</div><div class="back">Kỹ thuật trung gian dữ liệu giữa CPU và thiết bị I/O chậm <b>thông qua ổ đĩa phụ (補助記憶装置)</b>. Tăng <b>スループット throughput</b>.<div class="cat">Job</div></div></div>
-  <div class="flash" data-cat="job"><div class="front">バッファ (Buffer)</div><div class="back">Bộ nhớ <b>tạm thời</b> bù đắp chênh lệch tốc độ. VD: cache memory (CPU↔RAM), disk cache (RAM↔HDD).<div class="cat">Job</div></div></div>
-  <div class="flash" data-cat="job"><div class="front">スループット (Throughput)</div><div class="back">Lượng công việc CPU xử lý được trong 1 đơn vị thời gian. Spooling và multiprogramming đều tăng throughput.<div class="cat">Job</div></div></div>
-  <div class="flash" data-cat="task"><div class="front">マルチタスク (Multitask)</div><div class="back">Chuyển đổi nhanh giữa nhiều task để <b>trông như đang chạy đồng thời</b>. Thực tế 1 core chạy 1 task tại 1 thời điểm.<div class="cat">Task</div></div></div>
-  <div class="flash" data-cat="task"><div class="front">3 trạng thái của Task</div><div class="back"><b>実行可能 (Ready)</b>, <b>実行 (Running)</b>, <b>待ち (Wait)</b>.<div class="cat">Task</div></div></div>
-  <div class="flash" data-cat="task"><div class="front">ディスパッチ (Dispatch)</div><div class="back">OS chuyển task từ <b>実行可能 → 実行</b> bằng cách cấp quyền dùng CPU.<div class="cat">Task</div></div></div>
-  <div class="flash" data-cat="task"><div class="front">実行 → 待ち</div><div class="back">Xảy ra khi task cần <b>I/O</b>. OS đẩy task vào <b>待ち状態</b> và cho CPU làm task khác.<div class="cat">Task</div></div></div>
-  <div class="flash" data-cat="task"><div class="front">プリエンプティブ (Preemptive)</div><div class="back"><b>OS</b> quản lý quyền dùng CPU. Có thể <b>tước</b> CPU của task ưu tiên thấp khi task cao xuất hiện. Chủ lưu hiện nay.<div class="cat">Task</div></div></div>
-  <div class="flash" data-cat="task"><div class="front">ノンプリエンプティブ</div><div class="back"><b>Task</b> tự quản lý CPU. Chỉ trả CPU khi xong việc. OS đơn giản hơn.<div class="cat">Task</div></div></div>
-  <div class="flash" data-cat="sched"><div class="front">到着順方式 (FCFS)</div><div class="back">Task đến Ready trước chạy trước. Non-preemptive.<div class="cat">Sched</div></div></div>
-  <div class="flash" data-cat="sched"><div class="front">処理時間順方式 (SJF)</div><div class="back">Task có thời gian xử lý ngắn nhất chạy trước.<div class="cat">Sched</div></div></div>
-  <div class="flash" data-cat="sched"><div class="front">優先度順方式</div><div class="back">Cấp ưu tiên cho từng task, chạy theo ưu tiên. Có 2 biến thể: preemptive và non-preemptive.<div class="cat">Sched</div></div></div>
-  <div class="flash" data-cat="sched"><div class="front">ラウンドロビン (Round Robin)</div><div class="back">Mỗi task được cấp 1 <b>time quantum cố định</b>, hết quantum thì chuyển task khác. Preemptive.<div class="cat">Sched</div></div></div>
-  <div class="flash" data-cat="int"><div class="front">内部割込み 例</div><div class="back">プログラム割込み (chia cho 0, overflow, page fault) và SVC割込み (yêu cầu I/O từ OS).<div class="cat">Int</div></div></div>
-  <div class="flash" data-cat="int"><div class="front">外部割込み 例</div><div class="back">機械チェック (lỗi HW), タイマ (hết quantum), コンソール (người dùng), 入出力 (I/O xong).<div class="cat">Int</div></div></div>
-  <div class="flash" data-cat="int"><div class="front">マルチプログラミング</div><div class="back">Trong khi 1 task chờ I/O, CPU làm task khác → thực hiện multitask. Tăng utilization của CPU.<div class="cat">Int</div></div></div>
-</div>
+      <div class="fc-grid" id="fcGrid"></div>
+    </section>
 
-<!-- ===================== PHẦN 4 — QUIZ ===================== -->
-<h2 id="part-4" class="sec">④ Câu hỏi ôn tập (10 câu, tự chấm)</h2>
-<div id="quizbox"></div>
+    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-4">
+      <h2 class="section-heading">
+        <span class="num-badge">④</span>
+        <span class="text-ja">確認テスト (10問)</span>
+        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
+        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
+        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
+      </p>
 
+      <div id="quizArea"></div>
 
-    </div>
+      <div class="quiz-result-box" id="quiz-result">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
+        <div class="quiz-result-score" id="qScore">0 / 10</div>
+        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
+        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
+      </div>
+    </section>
 
     <!-- Footer Navigation & Lesson Completion -->
     <footer class="lesson-footer-nav">
@@ -418,15 +424,10 @@ Task X (low priority) đang chạy. Task Y (high priority) đột nhiên xuất 
       </div>
       <nav>
         <ul class="toc-list" id="tocList">
-
-          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-  
-          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-  
-          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-  
-          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
-  
+          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
         </ul>
       </nav>
     </div>
@@ -446,57 +447,333 @@ Task X (low priority) đang chạy. Task Y (high priority) đột nhiên xuất 
 
 </div>
 
+<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
 <script>
-
-// Flashcard flip
-document.querySelectorAll('.flash').forEach(c=>{
-  c.addEventListener('click',()=>c.classList.toggle('flipped'));
-});
-// Filter
-document.querySelectorAll('.filter-btn').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    const cat=b.dataset.cat;
-    document.querySelectorAll('.flash').forEach(f=>{
-      f.style.display=(cat==='all'||f.dataset.cat===cat)?'':'none';
-    });
-  });
-});
-
-// Quiz
-const QUIZ=[
-{q:"OS có bao nhiêu chức năng chính được FE quan tâm?",opts:["2 (ジョブ・タスク)","3 (ジョブ・タスク・記憶)","4 (ジョブ・タスク・記憶・データ)","5"],ans:2,e:"FE Syllabus liệt kê 4 chức năng: ジョブ管理, タスク管理, 記憶管理, データ管理."},
-{q:"ジョブ là đơn vị do ai đưa ra?",opts:["OS đưa cho CPU","Người dùng đưa cho máy tính","CPU đưa cho I/O","Compiler tạo ra"],ans:1,e:"ジョブ = đơn vị công việc do người dùng yêu cầu. タスク = do OS đưa cho CPU."},
-{q:"Spooling sử dụng thiết bị nào làm trung gian?",opts:["Cache CPU","Bộ nhớ chính (RAM)","Bộ nhớ phụ (HDD/SSD)","Register"],ans:2,e:"Spooling chèn 補助記憶装置 (HDD) giữa CPU và thiết bị I/O chậm."},
-{q:"Phương thức nào KHÔNG phải preemptive?",opts:["ラウンドロビン","優先度順 (preemptive)","到着順","タイマ割込みベース"],ans:2,e:"到着順 (FCFS) là non-preemptive — task đã chạy thì chạy đến xong."},
-{q:"Khi nào task chuyển từ 実行 sang 待ち?",opts:["Khi hết quantum","Khi cần I/O","Khi tạo task mới","Khi tăng priority"],ans:1,e:"待ち状態 = đang chờ I/O. Hết quantum thì sang Ready chứ không phải Wait."},
-{q:"ディスパッチ là hành động gì?",opts:["Tạo task mới","OS chuyển task từ 実行可能 sang 実行","Hủy task","Lưu task xuống HDD"],ans:1,e:"Dispatch = OS cấp quyền dùng CPU cho task đang ở Ready."},
-{q:"Page fault thuộc loại interrupt nào?",opts:["外部割込み (タイマ)","内部割込み (プログラム割込み)","SVC割込み","入出力割込み"],ans:1,e:"Page fault là lệnh không xử lý được → プログラム割込み (internal)."},
-{q:"Multitask trên 1 core CPU hoạt động thế nào?",opts:["Thực sự chạy song song nhiều task","OS chuyển nhanh task để trông như song song","Mỗi task có 1 core riêng","Dùng GPU song song"],ans:1,e:"1 core chỉ chạy 1 task tại 1 thời điểm. OS chuyển nhanh để cảm giác song song."},
-{q:"Buffer khác Spooling ở điểm nào?",opts:["Buffer là phần mềm, spooling là phần cứng","Buffer dùng bộ nhớ tạm; spooling dùng HDD trung gian giữa CPU và I/O chậm","Hai từ đồng nghĩa","Buffer chỉ dùng cho mạng"],ans:1,e:"Buffer là bộ nhớ tạm bù chênh tốc độ chung. Spooling là kỹ thuật cụ thể dùng HDD giữa CPU và máy in."},
-{q:"Quantum trong Round Robin nghĩa là gì?",opts:["Ưu tiên cao nhất","Khoảng thời gian cố định mỗi task được dùng CPU","Số core CPU","Bộ nhớ task chiếm"],ans:1,e:"Round Robin chia thời gian thành các quantum đều, mỗi task chạy đúng 1 quantum rồi nhường."}
+const FLASHCARDS = [
+  {
+    "cat": "all",
+    "front": "OS (オペレーティングシステム) là gì?",
+    "back": "Phần mềm cơ bản trung gian giữa ứng dụng và phần cứng . Ví dụ: Windows, macOS, Linux, iOS, Android. OS"
+  },
+  {
+    "cat": "all",
+    "front": "GUI vs API",
+    "back": "GUI : OS ↔ người dùng (icon, cửa sổ). API : OS ↔ ứng dụng (tập hàm). OS"
+  },
+  {
+    "cat": "all",
+    "front": "4 chức năng chính của OS",
+    "back": "(1) ジョブ管理 (2) タスク管理 (3) 記憶管理 (4) データ管理 OS"
+  },
+  {
+    "cat": "all",
+    "front": "ジョブ vs タスク",
+    "back": "ジョブ = lệnh do người dùng ra cho máy. タスク = lệnh do OS ra cho CPU. 1 job được chia thành nhiều task. Job"
+  },
+  {
+    "cat": "all",
+    "front": "Tại sao cần Job管理?",
+    "back": "CPU và các thiết bị khác có tốc độ chênh lệch lớn . Job管理 giúp CPU không phải chờ → tận dụng CPU. Job"
+  },
+  {
+    "cat": "all",
+    "front": "スプーリング (Spooling)",
+    "back": "Kỹ thuật trung gian dữ liệu giữa CPU và thiết bị I/O chậm thông qua ổ đĩa phụ (補助記憶装置) . Tăng スループット throughput . Job"
+  },
+  {
+    "cat": "all",
+    "front": "バッファ (Buffer)",
+    "back": "Bộ nhớ tạm thời bù đắp chênh lệch tốc độ. VD: cache memory (CPU↔RAM), disk cache (RAM↔HDD). Job"
+  },
+  {
+    "cat": "all",
+    "front": "スループット (Throughput)",
+    "back": "Lượng công việc CPU xử lý được trong 1 đơn vị thời gian. Spooling và multiprogramming đều tăng throughput. Job"
+  },
+  {
+    "cat": "all",
+    "front": "マルチタスク (Multitask)",
+    "back": "Chuyển đổi nhanh giữa nhiều task để trông như đang chạy đồng thời . Thực tế 1 core chạy 1 task tại 1 thời điểm. Task"
+  },
+  {
+    "cat": "all",
+    "front": "3 trạng thái của Task",
+    "back": "実行可能 (Ready) , 実行 (Running) , 待ち (Wait) . Task"
+  },
+  {
+    "cat": "all",
+    "front": "ディスパッチ (Dispatch)",
+    "back": "OS chuyển task từ 実行可能 → 実行 bằng cách cấp quyền dùng CPU. Task"
+  },
+  {
+    "cat": "all",
+    "front": "実行 → 待ち",
+    "back": "Xảy ra khi task cần I/O . OS đẩy task vào 待ち状態 và cho CPU làm task khác. Task"
+  },
+  {
+    "cat": "all",
+    "front": "プリエンプティブ (Preemptive)",
+    "back": "OS quản lý quyền dùng CPU. Có thể tước CPU của task ưu tiên thấp khi task cao xuất hiện. Chủ lưu hiện nay. Task"
+  },
+  {
+    "cat": "all",
+    "front": "ノンプリエンプティブ",
+    "back": "Task tự quản lý CPU. Chỉ trả CPU khi xong việc. OS đơn giản hơn. Task"
+  },
+  {
+    "cat": "all",
+    "front": "到着順方式 (FCFS)",
+    "back": "Task đến Ready trước chạy trước. Non-preemptive. Sched"
+  },
+  {
+    "cat": "all",
+    "front": "処理時間順方式 (SJF)",
+    "back": "Task có thời gian xử lý ngắn nhất chạy trước. Sched"
+  },
+  {
+    "cat": "all",
+    "front": "優先度順方式",
+    "back": "Cấp ưu tiên cho từng task, chạy theo ưu tiên. Có 2 biến thể: preemptive và non-preemptive. Sched"
+  },
+  {
+    "cat": "all",
+    "front": "ラウンドロビン (Round Robin)",
+    "back": "Mỗi task được cấp 1 time quantum cố định , hết quantum thì chuyển task khác. Preemptive. Sched"
+  },
+  {
+    "cat": "all",
+    "front": "内部割込み 例",
+    "back": "プログラム割込み (chia cho 0, overflow, page fault) và SVC割込み (yêu cầu I/O từ OS). Int"
+  },
+  {
+    "cat": "all",
+    "front": "外部割込み 例",
+    "back": "機械チェック (lỗi HW), タイマ (hết quantum), コンソール (người dùng), 入出力 (I/O xong). Int"
+  },
+  {
+    "cat": "all",
+    "front": "マルチプログラミング",
+    "back": "Trong khi 1 task chờ I/O, CPU làm task khác → thực hiện multitask. Tăng utilization của CPU. Int"
+  }
 ];
-const box=document.getElementById('quizbox');
-QUIZ.forEach((q,i)=>{
-  const div=document.createElement('div');div.className='quiz-q';
-  div.innerHTML=`<div class="qtxt">Câu ${i+1}. ${q.q}</div>`+
-  q.opts.map((o,j)=>`<div class="opt" data-i="${i}" data-j="${j}">${String.fromCharCode(65+j)}. ${o}</div>`).join('')+
-  `<div class="expl" id="e${i}"><b>Giải thích:</b> ${q.e}</div>`;
-  box.appendChild(div);
-});
-document.querySelectorAll('.opt').forEach(o=>{
-  o.addEventListener('click',()=>{
-    const i=+o.dataset.i,j=+o.dataset.j;
-    const opts=document.querySelectorAll(`.opt[data-i="${i}"]`);
-    if([...opts].some(x=>x.classList.contains('locked')))return;
-    opts.forEach(x=>x.classList.add('locked'));
-    if(j===QUIZ[i].ans)o.classList.add('correct');
-    else{o.classList.add('wrong');opts[QUIZ[i].ans].classList.add('correct');}
-    document.getElementById('e'+i).classList.add('show');
-  });
-});
+const QUIZ = [
+  {
+    "q": "OS có bao nhiêu chức năng chính được FE quan tâm?",
+    "opts": [
+      "(ジョブ・タスク)",
+      "(ジョブ・タスク・記憶)",
+      "(ジョブ・タスク・記憶・データ)",
+      "5"
+    ],
+    "ans": 2,
+    "expl": "FE Syllabus liệt kê 4 chức năng: ジョブ管理, タスク管理, 記憶管理, データ管理."
+  },
+  {
+    "q": "ジョブ là đơn vị do ai đưa ra?",
+    "opts": [
+      "OS đưa cho CPU",
+      "Người dùng đưa cho máy tính",
+      "CPU đưa cho I/O",
+      "Compiler tạo ra"
+    ],
+    "ans": 1,
+    "expl": "ジョブ = đơn vị công việc do người dùng yêu cầu. タスク = do OS đưa cho CPU."
+  },
+  {
+    "q": "Spooling sử dụng thiết bị nào làm trung gian?",
+    "opts": [
+      "Cache CPU",
+      "Bộ nhớ chính (RAM)",
+      "Bộ nhớ phụ (HDD/SSD)",
+      "Register"
+    ],
+    "ans": 2,
+    "expl": "Spooling chèn 補助記憶装置 (HDD) giữa CPU và thiết bị I/O chậm."
+  },
+  {
+    "q": "Phương thức nào KHÔNG phải preemptive?",
+    "opts": [
+      "ラウンドロビン",
+      "優先度順 (preemptive)",
+      "到着順",
+      "タイマ割込みベース"
+    ],
+    "ans": 2,
+    "expl": "到着順 (FCFS) là non-preemptive — task đã chạy thì chạy đến xong."
+  },
+  {
+    "q": "Khi nào task chuyển từ 実行 sang 待ち?",
+    "opts": [
+      "Khi hết quantum",
+      "Khi cần I/O",
+      "Khi tạo task mới",
+      "Khi tăng priority"
+    ],
+    "ans": 1,
+    "expl": "待ち状態 = đang chờ I/O. Hết quantum thì sang Ready chứ không phải Wait."
+  },
+  {
+    "q": "ディスパッチ là hành động gì?",
+    "opts": [
+      "Tạo task mới",
+      "OS chuyển task từ 実行可能 sang 実行",
+      "Hủy task",
+      "Lưu task xuống HDD"
+    ],
+    "ans": 1,
+    "expl": "Dispatch = OS cấp quyền dùng CPU cho task đang ở Ready."
+  },
+  {
+    "q": "Page fault thuộc loại interrupt nào?",
+    "opts": [
+      "外部割込み (タイマ)",
+      "内部割込み (プログラム割込み)",
+      "SVC割込み",
+      "入出力割込み"
+    ],
+    "ans": 1,
+    "expl": "Page fault là lệnh không xử lý được → プログラム割込み (internal)."
+  },
+  {
+    "q": "Multitask trên 1 core CPU hoạt động thế nào?",
+    "opts": [
+      "Thực sự chạy song song nhiều task",
+      "OS chuyển nhanh task để trông như song song",
+      "Mỗi task có 1 core riêng",
+      "Dùng GPU song song"
+    ],
+    "ans": 1,
+    "expl": "1 core chỉ chạy 1 task tại 1 thời điểm. OS chuyển nhanh để cảm giác song song."
+  },
+  {
+    "q": "Buffer khác Spooling ở điểm nào?",
+    "opts": [
+      "Buffer là phần mềm, spooling là phần cứng",
+      "Buffer dùng bộ nhớ tạm; spooling dùng HDD trung gian giữa CPU và I/O chậm",
+      "Hai từ đồng nghĩa",
+      "Buffer chỉ dùng cho mạng"
+    ],
+    "ans": 1,
+    "expl": "Buffer là bộ nhớ tạm bù chênh tốc độ chung. Spooling là kỹ thuật cụ thể dùng HDD giữa CPU và máy in."
+  },
+  {
+    "q": "Quantum trong Round Robin nghĩa là gì?",
+    "opts": [
+      "Ưu tiên cao nhất",
+      "Khoảng thời gian cố định mỗi task được dùng CPU",
+      "Số core CPU",
+      "Bộ nhớ task chiếm"
+    ],
+    "ans": 1,
+    "expl": "Round Robin chia thời gian thành các quantum đều, mỗi task chạy đúng 1 quantum rồi nhường."
+  }
+];
 
+// Render Flashcards with reliable click-to-flip
+function renderFC() {
+  const grid = document.getElementById('fcGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  FLASHCARDS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.innerHTML = `
+      <div>
+        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
+        <div class="fc-front">${f.front}</div>
+        <div class="fc-back">${f.back}</div>
+      </div>
+      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+// Render Interactive Quiz with tactile 4-option cards & instant feedback
+let quizScore = 0;
+let quizAnswered = 0;
+
+function renderQuiz() {
+  const area = document.getElementById('quizArea');
+  if (!area) return;
+  area.innerHTML = '';
+  quizScore = 0;
+  quizAnswered = 0;
+
+  QUIZ.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-q-card';
+    card.dataset.idx = idx;
+
+    let optsHtml = '';
+    item.opts.forEach((opt, oi) => {
+      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
+    });
+
+    card.innerHTML = `
+      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
+    `;
+
+    card.querySelectorAll('.opt').forEach(optEl => {
+      optEl.addEventListener('click', () => {
+        if (card.classList.contains('locked')) return;
+        card.classList.add('locked');
+
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+
+        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
+        if (correctEl) correctEl.classList.add('correct');
+
+        if (chosen !== correct) {
+          optEl.classList.add('wrong');
+        } else {
+          quizScore++;
+        }
+
+        quizAnswered++;
+        if (quizAnswered === QUIZ.length) showQuizResult();
+      });
+    });
+
+    area.appendChild(card);
+  });
+
+  const resBox = document.getElementById('quiz-result');
+  if (resBox) resBox.classList.remove('show');
+}
+
+function showQuizResult() {
+  const pct = Math.round((quizScore / QUIZ.length) * 100);
+  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
+  let verdict = '';
+  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
+  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
+  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
+  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
+  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
+  const res = document.getElementById('quiz-result');
+  if (res) {
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function resetQuiz() {
+  renderQuiz();
+  const area = document.getElementById('quizArea');
+  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize on DOM ready
+renderFC();
+renderQuiz();
 </script>
 <script src="../assets/reader.js"></script>
 </body>

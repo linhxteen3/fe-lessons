@@ -71,19 +71,14 @@
       </div>
     </div>
 
-    <!-- Lesson Content Body -->
-    <div class="lesson-body">
-
-
-
-
-<div class="warn-box">
-<b>📌 Lưu ý về nguồn:</b> Yasashii không có "Lesson 06-03" tách riêng — nội dung <b>実記憶/仮想記憶/ページング</b> nằm trong <b>Lesson 06-01 オペレーティングシステム, mục「(3)記憶管理」(trang 203–208)</b>. Tài liệu này bám đúng phạm vi: <b>実記憶管理 (Slide 第3回)</b> + <b>仮想記憶管理・ページング (Slide 第4回 + Yasashii p.203–208)</b>.
-</div>
-
-<!-- ===================== PHẦN 1 ===================== -->
-<h2 id="part-1" class="sec">① Tóm tắt lý thuyết</h2>
-
+    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
+    <section class="content-section" id="sec-1">
+      <h2 class="section-heading">
+        <span class="num-badge">①</span>
+        <span class="text-ja">重要理論 (Theory)</span>
+        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
+      </h2>
+      <div class="lesson-body-content">
 <div class="card">
 <h3>1.1 記憶管理 là gì? — Khái quát</h3>
 
@@ -332,8 +327,17 @@ Thrashing happens when allocated real memory is too small — the system spends 
 </div>
 
 <!-- ===================== PHẦN 2 — VÍ DỤ ===================== -->
-<h2 id="part-2" class="sec">② Ví dụ minh hoạ</h2>
+      </div>
+    </section>
 
+    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
+    <section class="content-section" id="sec-2">
+      <h2 class="section-heading">
+        <span class="num-badge">②</span>
+        <span class="text-ja">演習例題 (Worked Examples)</span>
+        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
+      </h2>
+      <div class="lesson-body-content">
 <div class="card">
 <h3>Ví dụ 1: CPU truy cập page A — 3 bước (Yasashii)</h3>
 <div class="example"><span class="lbl">Tình huống</span>
@@ -399,49 +403,45 @@ Bạn mở 30 tab Chrome + Photoshop + Video editor cùng lúc trên máy có RA
 </div>
 
 <!-- ===================== PHẦN 3 — FLASHCARD ===================== -->
-<h2 id="part-3" class="sec">③ Flashcard — Click để lật</h2>
+      </div>
+    </section>
 
-<div class="flash-controls">
-  <button class="filter-btn active" data-cat="all">Tất cả</button>
-  <button class="filter-btn" data-cat="real">実記憶</button>
-  <button class="filter-btn" data-cat="virt">仮想記憶</button>
-  <button class="filter-btn" data-cat="page">ページング</button>
-  <button class="filter-btn" data-cat="algo">置換 Algorithm</button>
-</div>
+    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-3">
+      <h2 class="section-heading">
+        <span class="num-badge">③</span>
+        <span class="text-ja">暗記カード (Flashcards)</span>
+        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
+        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
+        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
+      </p>
 
-<div class="flashgrid" id="flashgrid">
-  <div class="flash" data-cat="real"><div class="front">記憶管理 chia làm mấy loại?</div><div class="back">2: <b>主記憶管理 (実記憶管理)</b> + <b>仮想記憶管理</b>. FE chủ yếu hỏi virtual.<div class="cat">Real</div></div></div>
-  <div class="flash" data-cat="real"><div class="front">固定区画方式 (Fixed)</div><div class="back">Chia RAM thành vùng <b>kích thước cố định trước</b>. Ưu: nạp nhanh. Nhược: hiệu suất kém (lãng phí).<div class="cat">Real</div></div></div>
-  <div class="flash" data-cat="real"><div class="front">可変区画方式 (Variable)</div><div class="back">Khi nạp mới chia RAM khít với chương trình. Hiệu suất tốt, nhưng theo thời gian sinh <b>フラグメンテーション</b>.<div class="cat">Real</div></div></div>
-  <div class="flash" data-cat="real"><div class="front">フラグメンテーション</div><div class="back">RAM bị <b>phân mảnh</b> thành nhiều ô trống nhỏ rời rạc sau khi chương trình kết thúc và giải phóng.<div class="cat">Real</div></div></div>
-  <div class="flash" data-cat="real"><div class="front">メモリコンパクション</div><div class="back">Dồn các chương trình lại liền nhau → tạo vùng trống liên tục → giải quyết フラグメンテーション.<div class="cat">Real</div></div></div>
-  <div class="flash" data-cat="real"><div class="front">オーバーレイ方式</div><div class="back">Khi chương trình > RAM, chia thành <b>セグメント</b> và nạp luân phiên chỉ phần đang cần.<div class="cat">Real</div></div></div>
-  <div class="flash" data-cat="real"><div class="front">スワッピング (Swapping)</div><div class="back">Khi ngắt ưu tiên cao, tạm dừng chương trình hiện tại, đẩy nó xuống HDD (swap-out), sau đó nạp lại (swap-in).<div class="cat">Real</div></div></div>
-  <div class="flash" data-cat="real"><div class="front">メモリリーク</div><div class="back">Vùng nhớ <b>không dùng nhưng không được giải phóng</b> do bug → RAM bị "rò rỉ" theo thời gian.<div class="cat">Real</div></div></div>
-  <div class="flash" data-cat="real"><div class="front">ガーベージコレクション (GC)</div><div class="back">Tự động quét và giải phóng vùng nhớ không còn dùng → giảm memory leak.<div class="cat">Real</div></div></div>
-  <div class="flash" data-cat="virt"><div class="front">仮想記憶 là gì?</div><div class="back">Không gian bộ nhớ "ảo" do OS tạo ra, một phần thực ra nằm trên HDD. Cho phép chương trình <b>lớn hơn RAM</b> vẫn chạy được.<div class="cat">Virt</div></div></div>
-  <div class="flash" data-cat="virt"><div class="front">仮想アドレス vs 物理アドレス</div><div class="back"><b>仮想アドレス</b> = trong không gian ảo (logic). <b>物理アドレス</b> = trong RAM thật. OS ánh xạ qua page table.<div class="cat">Virt</div></div></div>
-  <div class="flash" data-cat="virt"><div class="front">動的アドレス変換機構 (DAT/MMU)</div><div class="back">Bộ phận phần cứng chuyển <b>地址 ảo → vật lý</b> trong khi CPU đang chạy.<div class="cat">Virt</div></div></div>
-  <div class="flash" data-cat="virt"><div class="front">セグメンテーション vs ページング</div><div class="back"><b>Segmentation</b>: chia theo セグメント <b>可変長</b>. <b>Paging</b>: chia theo ページ <b>固定長</b>. FE hỏi nhiều paging.<div class="cat">Virt</div></div></div>
-  <div class="flash" data-cat="page"><div class="front">ページング方式</div><div class="back">Cả 仮想記憶 và 実記憶 đều chia thành các <b>page kích thước cố định bằng nhau</b>, đối ứng qua page table.<div class="cat">Page</div></div></div>
-  <div class="flash" data-cat="page"><div class="front">ページテーブル</div><div class="back">Bảng 2 cột (<b>仮想アドレス | 物理アドレス</b>). <b>Số dòng = số page trong 仮想記憶</b>.<div class="cat">Page</div></div></div>
-  <div class="flash" data-cat="page"><div class="front">ページフォールト</div><div class="back">Một <b>interrupt</b> xảy ra khi CPU truy cập page <b>không có trong 実記憶</b>.<div class="cat">Page</div></div></div>
-  <div class="flash" data-cat="page"><div class="front">ページイン (Page-in)</div><div class="back">Sau page fault, OS đọc page cần thiết <b>từ 補助記憶 → 実記憶</b>.<div class="cat">Page</div></div></div>
-  <div class="flash" data-cat="page"><div class="front">ページアウト (Page-out)</div><div class="back">Khi 実記憶 đầy, OS chọn 1 page và ghi nó <b>từ 実記憶 → 補助記憶</b> để giải phóng chỗ.<div class="cat">Page</div></div></div>
-  <div class="flash" data-cat="page"><div class="front">Luồng CPU truy cập page</div><div class="back">仮想記憶アクセス → ページテーブル参照 → (nếu fault) ページフォールト → 置き換えページ決定 → ページアウト → ページイン.<div class="cat">Page</div></div></div>
-  <div class="flash" data-cat="page"><div class="front">スラッシング</div><div class="back">Hiện tượng <b>page-in/out liên tục</b> khi RAM cấp quá nhỏ. Làm <b>スループット toàn hệ thống giảm</b>.<div class="cat">Page</div></div></div>
-  <div class="flash" data-cat="algo"><div class="front">FIFO</div><div class="back">Đẩy ra page <b>vào RAM sớm nhất</b> (First In First Out).<div class="cat">Algo</div></div></div>
-  <div class="flash" data-cat="algo"><div class="front">LIFO</div><div class="back">Đẩy ra page <b>vào RAM muộn nhất</b> (Last In First Out). Slide có; Yasashii không nhấn mạnh.<div class="cat">Algo</div></div></div>
-  <div class="flash" data-cat="algo"><div class="front">LRU ⭐</div><div class="back"><b>Least Recently Used</b> — đẩy ra page có thời điểm tham chiếu cuối <b>cũ nhất</b>. <b>FE chủ yếu hỏi LRU</b>.<div class="cat">Algo</div></div></div>
-  <div class="flash" data-cat="algo"><div class="front">LFU</div><div class="back"><b>Least Frequently Used</b> — đẩy ra page có <b>số lần tham chiếu ít nhất</b>.<div class="cat">Algo</div></div></div>
-</div>
+      <div class="fc-grid" id="fcGrid"></div>
+    </section>
 
-<!-- ===================== PHẦN 4 — QUIZ ===================== -->
-<h2 id="part-4" class="sec">④ Câu hỏi ôn tập (10 câu, tự chấm)</h2>
-<div id="quizbox"></div>
+    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-4">
+      <h2 class="section-heading">
+        <span class="num-badge">④</span>
+        <span class="text-ja">確認テスト (10問)</span>
+        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
+        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
+        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
+      </p>
 
+      <div id="quizArea"></div>
 
-    </div>
+      <div class="quiz-result-box" id="quiz-result">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
+        <div class="quiz-result-score" id="qScore">0 / 10</div>
+        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
+        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
+      </div>
+    </section>
 
     <!-- Footer Navigation & Lesson Completion -->
     <footer class="lesson-footer-nav">
@@ -491,15 +491,10 @@ Bạn mở 30 tab Chrome + Photoshop + Video editor cùng lúc trên máy có RA
       </div>
       <nav>
         <ul class="toc-list" id="tocList">
-
-          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-  
-          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-  
-          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-  
-          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
-  
+          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
         </ul>
       </nav>
     </div>
@@ -519,56 +514,348 @@ Bạn mở 30 tab Chrome + Photoshop + Video editor cùng lúc trên máy có RA
 
 </div>
 
+<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
 <script>
-
-// Flashcard
-document.querySelectorAll('.flash').forEach(c=>{
-  c.addEventListener('click',()=>c.classList.toggle('flipped'));
-});
-document.querySelectorAll('.filter-btn').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('.filter-btn').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    const cat=b.dataset.cat;
-    document.querySelectorAll('.flash').forEach(f=>{
-      f.style.display=(cat==='all'||f.dataset.cat===cat)?'':'none';
-    });
-  });
-});
-
-// Quiz
-const QUIZ=[
-{q:"記憶管理 chia làm 2 loại nào?",opts:["Cache + RAM","主記憶管理 (実記憶) + 仮想記憶管理","HDD + SSD","Stack + Heap"],ans:1,e:"記憶管理 = 主記憶 (RAM thật) + 仮想記憶 (ảo). FE chủ yếu hỏi virtual."},
-{q:"フラグメンテーション được giải quyết bằng cách nào?",opts:["Tăng RAM","メモリコンパクション (dồn lại)","ガーベージコレクション","オーバーレイ"],ans:1,e:"Compaction = dồn các chương trình lại liền nhau để tạo vùng trống liên tục."},
-{q:"オーバーレイ方式 dùng khi nào?",opts:["RAM dư thừa","Chương trình lớn hơn RAM","Có nhiều CPU","Disk hỏng"],ans:1,e:"Khi chương trình > RAM, chia thành segment và nạp luân phiên."},
-{q:"ページング方式 chia bộ nhớ thành đơn vị có đặc điểm gì?",opts:["可変長 (segment)","固定長 (page)","Không chia","Theo chương trình"],ans:1,e:"Paging chia thành ページ kích thước CỐ ĐỊNH bằng nhau. Segmentation mới là 可変長."},
-{q:"ページフォールト là gì?",opts:["Lỗi cấu hình RAM","Một loại interrupt khi page cần không có trong 実記憶","HDD hỏng","Page table sai"],ans:1,e:"Page fault = interrupt báo page cần không có trong RAM thật → kích hoạt page-in."},
-{q:"Hướng của ページアウト là gì?",opts:["RAM → HDD","HDD → RAM","CPU → RAM","RAM → CPU"],ans:0,e:"Page-OUT = đẩy page từ 実記憶 ra 補助記憶 để giải phóng chỗ."},
-{q:"LRU chọn đẩy ra page nào?",opts:["Page vào sớm nhất","Page có thời điểm tham chiếu cuối cũ nhất","Page tham chiếu ít nhất","Page vào muộn nhất"],ans:1,e:"LRU = Least Recently Used = lâu nhất chưa được dùng. FE hay hỏi nhất."},
-{q:"LFU chọn đẩy ra page nào?",opts:["Vào sớm nhất","Cũ nhất từ lần đọc cuối","Số lần tham chiếu ít nhất","Lớn nhất"],ans:2,e:"LFU = Least Frequently Used = ít được tham chiếu nhất."},
-{q:"スラッシング xảy ra khi nào?",opts:["RAM cấp quá ít → page-in/out liên tục","CPU quá nhanh","HDD quá nhanh","Page table rỗng"],ans:0,e:"Thrashing = page-in/out không ngừng do RAM cấp cho process quá nhỏ → throughput hệ thống giảm."},
-{q:"動的アドレス変換機構 (DAT/MMU) làm gì?",opts:["Chia page","Chuyển địa chỉ ảo → vật lý","Cache cho CPU","Quản lý disk"],ans:1,e:"DAT/MMU = phần cứng chuyển 仮想アドレス → 物理アドレス trong khi CPU đang chạy."}
+const FLASHCARDS = [
+  {
+    "cat": "all",
+    "front": "記憶管理 chia làm mấy loại?",
+    "back": "2: 主記憶管理 (実記憶管理) + 仮想記憶管理 . FE chủ yếu hỏi virtual. Real"
+  },
+  {
+    "cat": "all",
+    "front": "固定区画方式 (Fixed)",
+    "back": "Chia RAM thành vùng kích thước cố định trước . Ưu: nạp nhanh. Nhược: hiệu suất kém (lãng phí). Real"
+  },
+  {
+    "cat": "all",
+    "front": "可変区画方式 (Variable)",
+    "back": "Khi nạp mới chia RAM khít với chương trình. Hiệu suất tốt, nhưng theo thời gian sinh フラグメンテーション . Real"
+  },
+  {
+    "cat": "all",
+    "front": "フラグメンテーション",
+    "back": "RAM bị phân mảnh thành nhiều ô trống nhỏ rời rạc sau khi chương trình kết thúc và giải phóng. Real"
+  },
+  {
+    "cat": "all",
+    "front": "メモリコンパクション",
+    "back": "Dồn các chương trình lại liền nhau → tạo vùng trống liên tục → giải quyết フラグメンテーション. Real"
+  },
+  {
+    "cat": "all",
+    "front": "オーバーレイ方式",
+    "back": "Khi chương trình > RAM, chia thành セグメント và nạp luân phiên chỉ phần đang cần. Real"
+  },
+  {
+    "cat": "all",
+    "front": "スワッピング (Swapping)",
+    "back": "Khi ngắt ưu tiên cao, tạm dừng chương trình hiện tại, đẩy nó xuống HDD (swap-out), sau đó nạp lại (swap-in). Real"
+  },
+  {
+    "cat": "all",
+    "front": "メモリリーク",
+    "back": "Vùng nhớ không dùng nhưng không được giải phóng do bug → RAM bị \"rò rỉ\" theo thời gian. Real"
+  },
+  {
+    "cat": "all",
+    "front": "ガーベージコレクション (GC)",
+    "back": "Tự động quét và giải phóng vùng nhớ không còn dùng → giảm memory leak. Real"
+  },
+  {
+    "cat": "all",
+    "front": "仮想記憶 là gì?",
+    "back": "Không gian bộ nhớ \"ảo\" do OS tạo ra, một phần thực ra nằm trên HDD. Cho phép chương trình lớn hơn RAM vẫn chạy được. Virt"
+  },
+  {
+    "cat": "all",
+    "front": "仮想アドレス vs 物理アドレス",
+    "back": "仮想アドレス = trong không gian ảo (logic). 物理アドレス = trong RAM thật. OS ánh xạ qua page table. Virt"
+  },
+  {
+    "cat": "all",
+    "front": "動的アドレス変換機構 (DAT/MMU)",
+    "back": "Bộ phận phần cứng chuyển 地址 ảo → vật lý trong khi CPU đang chạy. Virt"
+  },
+  {
+    "cat": "all",
+    "front": "セグメンテーション vs ページング",
+    "back": "Segmentation : chia theo セグメント 可変長 . Paging : chia theo ページ 固定長 . FE hỏi nhiều paging. Virt"
+  },
+  {
+    "cat": "all",
+    "front": "ページング方式",
+    "back": "Cả 仮想記憶 và 実記憶 đều chia thành các page kích thước cố định bằng nhau , đối ứng qua page table. Page"
+  },
+  {
+    "cat": "all",
+    "front": "ページテーブル",
+    "back": "Bảng 2 cột ( 仮想アドレス | 物理アドレス ). Số dòng = số page trong 仮想記憶 . Page"
+  },
+  {
+    "cat": "all",
+    "front": "ページフォールト",
+    "back": "Một interrupt xảy ra khi CPU truy cập page không có trong 実記憶 . Page"
+  },
+  {
+    "cat": "all",
+    "front": "ページイン (Page-in)",
+    "back": "Sau page fault, OS đọc page cần thiết từ 補助記憶 → 実記憶 . Page"
+  },
+  {
+    "cat": "all",
+    "front": "ページアウト (Page-out)",
+    "back": "Khi 実記憶 đầy, OS chọn 1 page và ghi nó từ 実記憶 → 補助記憶 để giải phóng chỗ. Page"
+  },
+  {
+    "cat": "all",
+    "front": "Luồng CPU truy cập page",
+    "back": "仮想記憶アクセス → ページテーブル参照 → (nếu fault) ページフォールト → 置き換えページ決定 → ページアウト → ページイン. Page"
+  },
+  {
+    "cat": "all",
+    "front": "スラッシング",
+    "back": "Hiện tượng page-in/out liên tục khi RAM cấp quá nhỏ. Làm スループット toàn hệ thống giảm . Page"
+  },
+  {
+    "cat": "all",
+    "front": "FIFO",
+    "back": "Đẩy ra page vào RAM sớm nhất (First In First Out). Algo"
+  },
+  {
+    "cat": "all",
+    "front": "LIFO",
+    "back": "Đẩy ra page vào RAM muộn nhất (Last In First Out). Slide có; Yasashii không nhấn mạnh. Algo"
+  },
+  {
+    "cat": "all",
+    "front": "LRU ⭐",
+    "back": "Least Recently Used — đẩy ra page có thời điểm tham chiếu cuối cũ nhất . FE chủ yếu hỏi LRU . Algo"
+  },
+  {
+    "cat": "all",
+    "front": "LFU",
+    "back": "Least Frequently Used — đẩy ra page có số lần tham chiếu ít nhất . Algo"
+  }
 ];
-const box=document.getElementById('quizbox');
-QUIZ.forEach((q,i)=>{
-  const div=document.createElement('div');div.className='quiz-q';
-  div.innerHTML=`<div class="qtxt">Câu ${i+1}. ${q.q}</div>`+
-  q.opts.map((o,j)=>`<div class="opt" data-i="${i}" data-j="${j}">${String.fromCharCode(65+j)}. ${o}</div>`).join('')+
-  `<div class="expl" id="e${i}"><b>Giải thích:</b> ${q.e}</div>`;
-  box.appendChild(div);
-});
-document.querySelectorAll('.opt').forEach(o=>{
-  o.addEventListener('click',()=>{
-    const i=+o.dataset.i,j=+o.dataset.j;
-    const opts=document.querySelectorAll(`.opt[data-i="${i}"]`);
-    if([...opts].some(x=>x.classList.contains('locked')))return;
-    opts.forEach(x=>x.classList.add('locked'));
-    if(j===QUIZ[i].ans)o.classList.add('correct');
-    else{o.classList.add('wrong');opts[QUIZ[i].ans].classList.add('correct');}
-    document.getElementById('e'+i).classList.add('show');
-  });
-});
+const QUIZ = [
+  {
+    "q": "記憶管理 chia làm 2 loại nào?",
+    "opts": [
+      "Cache + RAM",
+      "主記憶管理 (実記憶) + 仮想記憶管理",
+      "HDD + SSD",
+      "Stack + Heap"
+    ],
+    "ans": 1,
+    "expl": "記憶管理 = 主記憶 (RAM thật) + 仮想記憶 (ảo). FE chủ yếu hỏi virtual."
+  },
+  {
+    "q": "フラグメンテーション được giải quyết bằng cách nào?",
+    "opts": [
+      "Tăng RAM",
+      "メモリコンパクション (dồn lại)",
+      "ガーベージコレクション",
+      "オーバーレイ"
+    ],
+    "ans": 1,
+    "expl": "Compaction = dồn các chương trình lại liền nhau để tạo vùng trống liên tục."
+  },
+  {
+    "q": "オーバーレイ方式 dùng khi nào?",
+    "opts": [
+      "RAM dư thừa",
+      "Chương trình lớn hơn RAM",
+      "Có nhiều CPU",
+      "Disk hỏng"
+    ],
+    "ans": 1,
+    "expl": "Khi chương trình > RAM, chia thành segment và nạp luân phiên."
+  },
+  {
+    "q": "ページング方式 chia bộ nhớ thành đơn vị có đặc điểm gì?",
+    "opts": [
+      "可変長 (segment)",
+      "固定長 (page)",
+      "Không chia",
+      "Theo chương trình"
+    ],
+    "ans": 1,
+    "expl": "Paging chia thành ページ kích thước CỐ ĐỊNH bằng nhau. Segmentation mới là 可変長."
+  },
+  {
+    "q": "ページフォールト là gì?",
+    "opts": [
+      "Lỗi cấu hình RAM",
+      "Một loại interrupt khi page cần không có trong 実記憶",
+      "HDD hỏng",
+      "Page table sai"
+    ],
+    "ans": 1,
+    "expl": "Page fault = interrupt báo page cần không có trong RAM thật → kích hoạt page-in."
+  },
+  {
+    "q": "Hướng của ページアウト là gì?",
+    "opts": [
+      "RAM → HDD",
+      "HDD → RAM",
+      "CPU → RAM",
+      "RAM → CPU"
+    ],
+    "ans": 0,
+    "expl": "Page-OUT = đẩy page từ 実記憶 ra 補助記憶 để giải phóng chỗ."
+  },
+  {
+    "q": "LRU chọn đẩy ra page nào?",
+    "opts": [
+      "Page vào sớm nhất",
+      "Page có thời điểm tham chiếu cuối cũ nhất",
+      "Page tham chiếu ít nhất",
+      "Page vào muộn nhất"
+    ],
+    "ans": 1,
+    "expl": "LRU = Least Recently Used = lâu nhất chưa được dùng. FE hay hỏi nhất."
+  },
+  {
+    "q": "LFU chọn đẩy ra page nào?",
+    "opts": [
+      "Vào sớm nhất",
+      "Cũ nhất từ lần đọc cuối",
+      "Số lần tham chiếu ít nhất",
+      "Lớn nhất"
+    ],
+    "ans": 2,
+    "expl": "LFU = Least Frequently Used = ít được tham chiếu nhất."
+  },
+  {
+    "q": "スラッシング xảy ra khi nào?",
+    "opts": [
+      "RAM cấp quá ít → page-in/out liên tục",
+      "CPU quá nhanh",
+      "HDD quá nhanh",
+      "Page table rỗng"
+    ],
+    "ans": 0,
+    "expl": "Thrashing = page-in/out không ngừng do RAM cấp cho process quá nhỏ → throughput hệ thống giảm."
+  },
+  {
+    "q": "動的アドレス変換機構 (DAT/MMU) làm gì?",
+    "opts": [
+      "Chia page",
+      "Chuyển địa chỉ ảo → vật lý",
+      "Cache cho CPU",
+      "Quản lý disk"
+    ],
+    "ans": 1,
+    "expl": "DAT/MMU = phần cứng chuyển 仮想アドレス → 物理アドレス trong khi CPU đang chạy."
+  }
+];
 
+// Render Flashcards with reliable click-to-flip
+function renderFC() {
+  const grid = document.getElementById('fcGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  FLASHCARDS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.innerHTML = `
+      <div>
+        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
+        <div class="fc-front">${f.front}</div>
+        <div class="fc-back">${f.back}</div>
+      </div>
+      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
+  });
+}
+
+// Render Interactive Quiz with tactile 4-option cards & instant feedback
+let quizScore = 0;
+let quizAnswered = 0;
+
+function renderQuiz() {
+  const area = document.getElementById('quizArea');
+  if (!area) return;
+  area.innerHTML = '';
+  quizScore = 0;
+  quizAnswered = 0;
+
+  QUIZ.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-q-card';
+    card.dataset.idx = idx;
+
+    let optsHtml = '';
+    item.opts.forEach((opt, oi) => {
+      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
+    });
+
+    card.innerHTML = `
+      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
+    `;
+
+    card.querySelectorAll('.opt').forEach(optEl => {
+      optEl.addEventListener('click', () => {
+        if (card.classList.contains('locked')) return;
+        card.classList.add('locked');
+
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+
+        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
+        if (correctEl) correctEl.classList.add('correct');
+
+        if (chosen !== correct) {
+          optEl.classList.add('wrong');
+        } else {
+          quizScore++;
+        }
+
+        quizAnswered++;
+        if (quizAnswered === QUIZ.length) showQuizResult();
+      });
+    });
+
+    area.appendChild(card);
+  });
+
+  const resBox = document.getElementById('quiz-result');
+  if (resBox) resBox.classList.remove('show');
+}
+
+function showQuizResult() {
+  const pct = Math.round((quizScore / QUIZ.length) * 100);
+  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
+  let verdict = '';
+  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
+  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
+  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
+  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
+  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
+  const res = document.getElementById('quiz-result');
+  if (res) {
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function resetQuiz() {
+  renderQuiz();
+  const area = document.getElementById('quizArea');
+  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize on DOM ready
+renderFC();
+renderQuiz();
 </script>
 <script src="../assets/reader.js"></script>
 </body>

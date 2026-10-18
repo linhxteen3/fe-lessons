@@ -71,15 +71,14 @@
       </div>
     </div>
 
-    <!-- Lesson Content Body -->
-    <div class="lesson-body">
-
-
-
-
-<!-- =============== PHẦN 1 =============== -->
-<h2 id="part-1" class="section">📖 Phần 1 — Tóm tắt lý thuyết</h2>
-
+    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
+    <section class="content-section" id="sec-1">
+      <h2 class="section-heading">
+        <span class="num-badge">①</span>
+        <span class="text-ja">重要理論 (Theory)</span>
+        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
+      </h2>
+      <div class="lesson-body-content">
 <h3>1.1 ソート (整列) là gì?</h3>
 <div class="lang jp"><span class="flag">🇯🇵 日本語</span>
 <b>ソート (整列)</b>とは、データを<b>一定の規則に従って並べ替える</b>処理です。「<b>昇順 (小→大)</b>」と「<b>降順 (大→小)</b>」の2種類があります。FE試験では「アルゴリズム名」と「処理方法」の対応を問う問題が頻繁に出題されます。
@@ -255,8 +254,17 @@ Bước 4: lấy 8 → chèn vào [17, 12, 5, 3]
 </div>
 
 <!-- =============== PHẦN 2 =============== -->
-<h2 id="part-2" class="section">💡 Phần 2 — Ví dụ minh hoạ tổng hợp</h2>
+      </div>
+    </section>
 
+    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
+    <section class="content-section" id="sec-2">
+      <h2 class="section-heading">
+        <span class="num-badge">②</span>
+        <span class="text-ja">演習例題 (Worked Examples)</span>
+        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
+      </h2>
+      <div class="lesson-body-content">
 <h3>VD1 · So sánh 4 thuật toán trên cùng input [5, 2, 8, 1, 4]</h3>
 <table>
 <thead><tr><th>Thuật toán</th><th>Bước 1</th><th>Bước cuối</th></tr></thead>
@@ -295,24 +303,45 @@ Bước 4: lấy 8 → chèn vào [17, 12, 5, 3]
 </pre>
 
 <!-- =============== PHẦN 3 =============== -->
-<h2 id="part-3" class="section">🃏 Phần 3 — Flashcards (click để lật)</h2>
-<div class="fc-filters">
-  <button class="active" data-cat="all">Tất cả</button>
-  <button data-cat="basic">3 thuật toán cơ bản</button>
-  <button data-cat="quick">クイックソート</button>
-  <button data-cat="other">Nâng cao</button>
-  <button data-cat="term">Thuật ngữ</button>
-</div>
-<div class="fc-wrap" id="flashcards"></div>
+      </div>
+    </section>
 
-<!-- =============== PHẦN 4 =============== -->
-<h2 id="part-4" class="section">📝 Phần 4 — Quiz ôn tập (10 câu)</h2>
-<div id="quiz"></div>
-<button class="btn" onclick="gradeQuiz()">🎯 Chấm điểm</button>
-<div class="quiz-result" id="quiz-result"></div>
+    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-3">
+      <h2 class="section-heading">
+        <span class="num-badge">③</span>
+        <span class="text-ja">暗記カード (Flashcards)</span>
+        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
+        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
+        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
+      </p>
 
+      <div class="fc-grid" id="fcGrid"></div>
+    </section>
 
-    </div>
+    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-4">
+      <h2 class="section-heading">
+        <span class="num-badge">④</span>
+        <span class="text-ja">確認テスト (10問)</span>
+        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
+        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
+        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
+      </p>
+
+      <div id="quizArea"></div>
+
+      <div class="quiz-result-box" id="quiz-result">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
+        <div class="quiz-result-score" id="qScore">0 / 10</div>
+        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
+        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
+      </div>
+    </section>
 
     <!-- Footer Navigation & Lesson Completion -->
     <footer class="lesson-footer-nav">
@@ -362,15 +391,10 @@ Bước 4: lấy 8 → chèn vào [17, 12, 5, 3]
       </div>
       <nav>
         <ul class="toc-list" id="tocList">
-
-          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-  
-          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-  
-          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-  
-          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
-  
+          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
         </ul>
       </nav>
     </div>
@@ -390,126 +414,303 @@ Bước 4: lấy 8 → chèn vào [17, 12, 5, 3]
 
 </div>
 
+<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
 <script>
-
-const flashcards = [
-  {q:"ソート (整列)", a:"Thao tác sắp xếp dữ liệu theo quy tắc: 昇順 (tăng) hoặc 降順 (giảm).", cat:"term"},
-  {q:"基本交換法 (Bubble Sort)", a:"So sánh 2 phần tử LIỀN KỀ, đổi chỗ nếu sai thứ tự. Đặt tên 「交換 = đổi chỗ」.", cat:"basic"},
-  {q:"基本選択法 (Selection Sort)", a:"CHỌN giá trị max (hoặc min) từ phần chưa sắp, chuyển sang phần đã sắp. Đặt tên 「選択 = chọn」.", cat:"basic"},
-  {q:"基本挿入法 (Insertion Sort)", a:"Lấy từng phần tử mới, CHÈN vào đúng vị trí trong phần đã sắp xếp. Đặt tên 「挿入 = chèn」.", cat:"basic"},
-  {q:"Cả 3 thuật toán cơ bản có độ phức tạp?", a:"O(n²) — chậm khi n lớn. Dùng để học nguyên lý, ít dùng thực tế.", cat:"basic"},
-  {q:"クイックソート là gì?", a:"Chọn 基準値 (pivot), chia dữ liệu thành 2 nhóm: nhỏ hơn pivot / lớn hơn pivot. Lặp đệ quy.", cat:"quick"},
-  {q:"基準値 (Pivot)", a:"Giá trị chuẩn để phân chia trong Quick Sort. Yasashii nói: 「基準値はどこでもよい」 — chọn ở đâu cũng được (đầu, giữa, cuối).", cat:"quick"},
-  {q:"Tại sao クイックソート hay xuất hiện trong đề thi?", a:"Vì là thuật toán sort NHANH NHẤT (O(n log n) trung bình). Yasashii viết: 「出題者としても、高速なアルゴリズムのほうを学んでもらいたい」.", cat:"quick"},
-  {q:"クイックソート worst case?", a:"O(n²) khi pivot luôn là min/max của nhóm. Trung bình thì O(n log n).", cat:"quick"},
-  {q:"シェルソート", a:"Cải tiến của Insertion. Lấy phần tử cách nhau một KHOẢNG (gap), sắp xếp, rồi thu hẹp gap dần (4→2→1).", cat:"other"},
-  {q:"ヒープソート", a:"Dùng ヒープ木 (heap tree — cha ≥ con hoặc cha ≤ con) để liên tục lấy max/min. O(n log n).", cat:"other"},
-  {q:"マージソート", a:"Chia mảng đôi đệ quy đến 1 phần tử, rồi GỘP (merge) các phần đã sắp lại. O(n log n).", cat:"other"},
-  {q:"昇順 vs 降順", a:"昇順 (jōjun) = tăng dần (nhỏ→lớn). 降順 (kōjun) = giảm dần (lớn→nhỏ). Y như leo núi xuống núi.", cat:"term"},
-  {q:"Thuật toán nào dùng 2 phần tử LIỀN KỀ?", a:"Chỉ 基本交換法 (Bubble). Selection thì lướt cả mảng, Insertion thì so với phần đã sắp.", cat:"term"},
-  {q:"Mô tả 「正しい位置にデータを追加する操作を繰り返す」 là?", a:"基本挿入法 (Insertion Sort). Đây là nguyên văn 過去問 3-11 平成30年度 đáp án ア.", cat:"term"},
+const FLASHCARDS = [
+  {
+    "cat": "term",
+    "front": "ソート (整列)",
+    "back": "Thao tác sắp xếp dữ liệu theo quy tắc: 昇順 (tăng) hoặc 降順 (giảm)."
+  },
+  {
+    "cat": "basic",
+    "front": "基本交換法 (Bubble Sort)",
+    "back": "So sánh 2 phần tử LIỀN KỀ, đổi chỗ nếu sai thứ tự. Đặt tên 「交換 = đổi chỗ」."
+  },
+  {
+    "cat": "basic",
+    "front": "基本選択法 (Selection Sort)",
+    "back": "CHỌN giá trị max (hoặc min) từ phần chưa sắp, chuyển sang phần đã sắp. Đặt tên 「選択 = chọn」."
+  },
+  {
+    "cat": "basic",
+    "front": "基本挿入法 (Insertion Sort)",
+    "back": "Lấy từng phần tử mới, CHÈN vào đúng vị trí trong phần đã sắp xếp. Đặt tên 「挿入 = chèn」."
+  },
+  {
+    "cat": "basic",
+    "front": "Cả 3 thuật toán cơ bản có độ phức tạp?",
+    "back": "O(n²) — chậm khi n lớn. Dùng để học nguyên lý, ít dùng thực tế."
+  },
+  {
+    "cat": "quick",
+    "front": "クイックソート là gì?",
+    "back": "Chọn 基準値 (pivot), chia dữ liệu thành 2 nhóm: nhỏ hơn pivot / lớn hơn pivot. Lặp đệ quy."
+  },
+  {
+    "cat": "quick",
+    "front": "基準値 (Pivot)",
+    "back": "Giá trị chuẩn để phân chia trong Quick Sort. Yasashii nói: 「基準値はどこでもよい」 — chọn ở đâu cũng được (đầu, giữa, cuối)."
+  },
+  {
+    "cat": "quick",
+    "front": "Tại sao クイックソート hay xuất hiện trong đề thi?",
+    "back": "Vì là thuật toán sort NHANH NHẤT (O(n log n) trung bình). Yasashii viết: 「出題者としても、高速なアルゴリズムのほうを学んでもらいたい」."
+  },
+  {
+    "cat": "quick",
+    "front": "クイックソート worst case?",
+    "back": "O(n²) khi pivot luôn là min/max của nhóm. Trung bình thì O(n log n)."
+  },
+  {
+    "cat": "other",
+    "front": "シェルソート",
+    "back": "Cải tiến của Insertion. Lấy phần tử cách nhau một KHOẢNG (gap), sắp xếp, rồi thu hẹp gap dần (4→2→1)."
+  },
+  {
+    "cat": "other",
+    "front": "ヒープソート",
+    "back": "Dùng ヒープ木 (heap tree — cha ≥ con hoặc cha ≤ con) để liên tục lấy max/min. O(n log n)."
+  },
+  {
+    "cat": "other",
+    "front": "マージソート",
+    "back": "Chia mảng đôi đệ quy đến 1 phần tử, rồi GỘP (merge) các phần đã sắp lại. O(n log n)."
+  },
+  {
+    "cat": "term",
+    "front": "昇順 vs 降順",
+    "back": "昇順 (jōjun) = tăng dần (nhỏ→lớn). 降順 (kōjun) = giảm dần (lớn→nhỏ). Y như leo núi xuống núi."
+  },
+  {
+    "cat": "term",
+    "front": "Thuật toán nào dùng 2 phần tử LIỀN KỀ?",
+    "back": "Chỉ 基本交換法 (Bubble). Selection thì lướt cả mảng, Insertion thì so với phần đã sắp."
+  },
+  {
+    "cat": "term",
+    "front": "Mô tả 「正しい位置にデータを追加する操作を繰り返す」 là?",
+    "back": "基本挿入法 (Insertion Sort). Đây là nguyên văn 過去問 3-11 平成30年度 đáp án ア."
+  }
+];
+const QUIZ = [
+  {
+    "q": "「クイックソートの処理方法を説明したものはどれか」 (平成30年度 問題3-11)",
+    "opts": [
+      "既に整列済みのデータ列の正しい位置に、データを追加する操作を繰り返していく方法",
+      "データ中の最小値を求め、次にそれを除いた部分の中から最小値を求める。この操作を繰り返していく方法",
+      "適当な基準値を選び、それよりも小さな値のグループと大きな値のグループにデータを分割する。同様にして、グループの中で基準値を選び、それぞれのグループを分割する。この操作を繰り返していく方法",
+      "隣り合ったデータの比較と入替えを繰り返すことによって、小さな値のデータを次第に端の方に移していく方法"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "「隣り合ったデータの比較と入替えを繰り返す」là mô tả của?",
+    "opts": [
+      "基本交換法",
+      "基本選択法",
+      "基本挿入法",
+      "クイックソート"
+    ],
+    "ans": 0,
+    "expl": ""
+  },
+  {
+    "q": "「最小値を求め、それを除いた部分から最小値を求める」là mô tả của?",
+    "opts": [
+      "基本交換法",
+      "基本選択法",
+      "基本挿入法",
+      "ヒープソート"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "「既に整列済みのデータ列の正しい位置に、データを追加する」là?",
+    "opts": [
+      "基本交換法",
+      "基本選択法",
+      "基本挿入法",
+      "マージソート"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "Thuật toán sort nhanh nhất trong các thuật toán phổ biến (TB)?",
+    "opts": [
+      "基本交換法",
+      "基本選択法",
+      "クイックソート",
+      "基本挿入法"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "Sắp xếp tăng dần [5,2,8,1,4] bằng 基本選択法, sau bước 1 mảng thành?",
+    "opts": [
+      "[2,5,8,1,4]",
+      "[1,2,8,5,4]",
+      "[1,5,8,2,4]",
+      "[2,5,8,4,1]"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "Yasashii nhấn mạnh: クイックソート bắt đầu bằng việc?",
+    "opts": [
+      "Chọn 基準値 và chia thành nhóm nhỏ/lớn hơn",
+      "Sắp xếp 2 phần tử liền kề",
+      "Tìm max của toàn bộ mảng",
+      "Chia đôi mảng theo chỉ số"
+    ],
+    "ans": 0,
+    "expl": ""
+  },
+  {
+    "q": "シェルソート là cải tiến của thuật toán nào?",
+    "opts": [
+      "基本交換法",
+      "基本選択法",
+      "基本挿入法",
+      "クイックソート"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "Thứ tự diễn biến của クイックソート là?",
+    "opts": [
+      "Sắp xếp → Tìm pivot → Lặp",
+      "Chọn pivot → Chia 2 nhóm (nhỏ/lớn hơn pivot) → Lặp đệ quy trên mỗi nhóm",
+      "Tìm min → Chuyển sang nhóm đã sắp → Lặp",
+      "Chia đôi → Sắp xếp → Gộp lại"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "Để tìm khách hàng bằng 2分探索, dữ liệu cần như nào? (平成29年度 関連問題)",
+    "opts": [
+      "ランダムに配置されているデータ構造",
+      "ハッシュ値が指し示す位置に配置されているデータ構造",
+      "顧客番号の昇順に配置されているデータ構造",
+      "アドレス順に格納されているデータ構造"
+    ],
+    "ans": 2,
+    "expl": ""
+  }
 ];
 
-function renderFlashcards(filter='all'){
-  const wrap = document.getElementById('flashcards');
-  wrap.innerHTML = '';
-  flashcards.filter(c => filter==='all' || c.cat===filter).forEach(c=>{
-    const div = document.createElement('div');
-    div.className = 'fc';
-    div.innerHTML = `<span class="cat">${c.cat}</span><div class="q">${c.q}</div><span class="back">${c.a}</span>`;
-    div.onclick = ()=> div.classList.toggle('flipped');
-    wrap.appendChild(div);
+// Render Flashcards with reliable click-to-flip
+function renderFC() {
+  const grid = document.getElementById('fcGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  FLASHCARDS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.innerHTML = `
+      <div>
+        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
+        <div class="fc-front">${f.front}</div>
+        <div class="fc-back">${f.back}</div>
+      </div>
+      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
   });
 }
-document.querySelectorAll('.fc-filters button').forEach(b=>{
-  b.onclick = ()=>{
-    document.querySelectorAll('.fc-filters button').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    renderFlashcards(b.dataset.cat);
-  };
-});
-renderFlashcards();
 
-const quiz = [
-  {q:"「クイックソートの処理方法を説明したものはどれか」 (平成30年度 問題3-11)", opts:[
-    "既に整列済みのデータ列の正しい位置に、データを追加する操作を繰り返していく方法",
-    "データ中の最小値を求め、次にそれを除いた部分の中から最小値を求める。この操作を繰り返していく方法",
-    "適当な基準値を選び、それよりも小さな値のグループと大きな値のグループにデータを分割する。同様にして、グループの中で基準値を選び、それぞれのグループを分割する。この操作を繰り返していく方法",
-    "隣り合ったデータの比較と入替えを繰り返すことによって、小さな値のデータを次第に端の方に移していく方法"
-   ], ans:2,
-   exp:"ア = 基本挿入法, イ = 基本選択法, ウ = クイックソート ✓, エ = 基本交換法. Đáp án Yasashii: ウ (p.117)."},
-  {q:"「隣り合ったデータの比較と入替えを繰り返す」là mô tả của?", opts:["基本交換法","基本選択法","基本挿入法","クイックソート"], ans:0,
-   exp:"「隣り合った」(liền kề) = đặc trưng riêng của 基本交換法 (Bubble)."},
-  {q:"「最小値を求め、それを除いた部分から最小値を求める」là mô tả của?", opts:["基本交換法","基本選択法","基本挿入法","ヒープソート"], ans:1,
-   exp:"「最小値を求める = chọn min」 → 基本選択法 (Selection). Selection chính là 「選 = chọn」."},
-  {q:"「既に整列済みのデータ列の正しい位置に、データを追加する」là?", opts:["基本交換法","基本選択法","基本挿入法","マージソート"], ans:2,
-   exp:"「正しい位置に追加 (挿入) する」→ 基本挿入法 (Insertion). 挿入 = chèn."},
-  {q:"Thuật toán sort nhanh nhất trong các thuật toán phổ biến (TB)?", opts:["基本交換法","基本選択法","クイックソート","基本挿入法"], ans:2,
-   exp:"クイックソート O(n log n) trung bình. 3 cái cơ bản đều O(n²). Yasashii: 「もっとも高速な整列アルゴリズム」."},
-  {q:"Sắp xếp tăng dần [5,2,8,1,4] bằng 基本選択法, sau bước 1 mảng thành?", opts:["[2,5,8,1,4]","[1,2,8,5,4]","[1,5,8,2,4]","[2,5,8,4,1]"], ans:1,
-   exp:"Selection bước 1: tìm min = 1, đổi chỗ với phần tử đầu → [1, 2, 8, 5, 4]."},
-  {q:"Yasashii nhấn mạnh: クイックソート bắt đầu bằng việc?", opts:[
-    "Chọn 基準値 và chia thành nhóm nhỏ/lớn hơn",
-    "Sắp xếp 2 phần tử liền kề",
-    "Tìm max của toàn bộ mảng",
-    "Chia đôi mảng theo chỉ số"
-   ], ans:0,
-   exp:"Yasashii「試験にはコレが出る」: 「最初に基準値を選び、それよりも小さな値のグループと大きな値のグループにデータを分割する」."},
-  {q:"シェルソート là cải tiến của thuật toán nào?", opts:["基本交換法","基本選択法","基本挿入法","クイックソート"], ans:2,
-   exp:"シェルソート là phiên bản nâng cao của 基本挿入法 — bằng cách sắp xếp các phần tử cách nhau một khoảng rồi thu hẹp khoảng dần."},
-  {q:"Thứ tự diễn biến của クイックソート là?", opts:[
-    "Sắp xếp → Tìm pivot → Lặp",
-    "Chọn pivot → Chia 2 nhóm (nhỏ/lớn hơn pivot) → Lặp đệ quy trên mỗi nhóm",
-    "Tìm min → Chuyển sang nhóm đã sắp → Lặp",
-    "Chia đôi → Sắp xếp → Gộp lại"
-   ], ans:1,
-   exp:"B = Quick Sort (pivot + partition + recursion). D = Merge Sort. C = Selection. Yasashii p.105-106."},
-  {q:"Để tìm khách hàng bằng 2分探索, dữ liệu cần như nào? (平成29年度 関連問題)", opts:[
-    "ランダムに配置されているデータ構造",
-    "ハッシュ値が指し示す位置に配置されているデータ構造",
-    "顧客番号の昇順に配置されているデータ構造",
-    "アドレス順に格納されているデータ構造"
-   ], ans:2,
-   exp:"2分探索 cần dữ liệu ĐÃ SẮP XẾP (昇順/降順). Đây là lý do tại sao sort + search luôn đi đôi trong FE. Đáp án ウ (Yasashii p.117 問題3-10)."},
-];
+// Render Interactive Quiz with tactile 4-option cards & instant feedback
+let quizScore = 0;
+let quizAnswered = 0;
 
-function renderQuiz(){
-  const wrap = document.getElementById('quiz');
-  quiz.forEach((q,i)=>{
-    const div = document.createElement('div');
-    div.className = 'quiz-q';
-    div.id = 'q'+i;
-    let opts = q.opts.map((o,j)=>`<label data-i="${j}"><input type="radio" name="q${i}" value="${j}" style="margin-right:8px">${o}</label>`).join('');
-    div.innerHTML = `<div class="stem">Câu ${i+1}. ${q.q}</div><div class="opts">${opts}</div><div class="exp"><b>Giải thích:</b> ${q.exp}</div>`;
-    wrap.appendChild(div);
-  });
-}
-renderQuiz();
+function renderQuiz() {
+  const area = document.getElementById('quizArea');
+  if (!area) return;
+  area.innerHTML = '';
+  quizScore = 0;
+  quizAnswered = 0;
 
-function gradeQuiz(){
-  let correct = 0;
-  quiz.forEach((q,i)=>{
-    const div = document.getElementById('q'+i);
-    const picked = div.querySelector('input[name="q'+i+'"]:checked');
-    div.classList.add('locked');
-    div.querySelectorAll('label').forEach(lb=>{
-      const idx = +lb.dataset.i;
-      if(idx === q.ans) lb.classList.add('correct');
-      else if(picked && +picked.value === idx) lb.classList.add('incorrect');
+  QUIZ.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-q-card';
+    card.dataset.idx = idx;
+
+    let optsHtml = '';
+    item.opts.forEach((opt, oi) => {
+      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
     });
-    if(picked && +picked.value === q.ans) correct++;
+
+    card.innerHTML = `
+      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
+    `;
+
+    card.querySelectorAll('.opt').forEach(optEl => {
+      optEl.addEventListener('click', () => {
+        if (card.classList.contains('locked')) return;
+        card.classList.add('locked');
+
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+
+        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
+        if (correctEl) correctEl.classList.add('correct');
+
+        if (chosen !== correct) {
+          optEl.classList.add('wrong');
+        } else {
+          quizScore++;
+        }
+
+        quizAnswered++;
+        if (quizAnswered === QUIZ.length) showQuizResult();
+      });
+    });
+
+    area.appendChild(card);
   });
-  const res = document.getElementById('quiz-result');
-  res.style.display = 'block';
-  const pct = Math.round(correct/quiz.length*100);
-  let msg = '';
-  if(pct>=80) msg = '🎉 Xuất sắc! Bạn đã nắm chắc ソートアルゴリズム.';
-  else if(pct>=60) msg = '👍 Đạt mức 合格! Ôn lại các câu sai.';
-  else msg = '📚 Cần ôn lại — đọc kỹ slide 第3回 và Yasashii p.105-106, p.116.';
-  res.innerHTML = `Kết quả: <span style="color:var(--accent)">${correct}/${quiz.length}</span> (${pct}%)<br><span style="font-size:14px;font-weight:400;color:var(--fg2)">${msg}</span>`;
-  res.scrollIntoView({behavior:'smooth'});
+
+  const resBox = document.getElementById('quiz-result');
+  if (resBox) resBox.classList.remove('show');
 }
 
+function showQuizResult() {
+  const pct = Math.round((quizScore / QUIZ.length) * 100);
+  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
+  let verdict = '';
+  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
+  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
+  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
+  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
+  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
+  const res = document.getElementById('quiz-result');
+  if (res) {
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function resetQuiz() {
+  renderQuiz();
+  const area = document.getElementById('quizArea');
+  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize on DOM ready
+renderFC();
+renderQuiz();
 </script>
 <script src="../assets/reader.js"></script>
 </body>

@@ -71,23 +71,14 @@
       </div>
     </div>
 
-    <!-- Lesson Content Body -->
-    <div class="lesson-body">
-
-
-<h1>FE 03-03 · 基本アルゴリズム · 探索 (Tìm kiếm)</h1>
-<div class="meta">
-  Nguồn: Yasashii Ch.3 Lesson 03-03「アルゴリズムの分類」(2)探索アルゴリズム (pp.106–110) + Slide 2_アルゴリズム · データ探索方法<br>
-  Phạm vi: 線形探索法 · ハッシュ法 · 2分探索法
-</div>
-
-<div class="note">
-  <strong>⚠ Lưu ý phạm vi:</strong> Lesson 03-03 của Yasashii có tiêu đề「アルゴリズムの分類」và bao gồm 3 phần (整列 / 探索 / 再帰). Theo yêu cầu hôm nay, tài liệu này chỉ tập trung vào phần (2) 探索アルゴリズム — Search.
-</div>
-
-<!-- ============================================= -->
-<h2 id="part-1">📘 Phần 1 – Tóm tắt lý thuyết</h2>
-
+    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
+    <section class="content-section" id="sec-1">
+      <h2 class="section-heading">
+        <span class="num-badge">①</span>
+        <span class="text-ja">重要理論 (Theory)</span>
+        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
+      </h2>
+      <div class="lesson-body-content">
 <h3>1.1 探索アルゴリズム là gì?</h3>
 <div class="lang jp"><span class="tag">🇯🇵 日本語</span>探索アルゴリズム（たんさくアルゴリズム）とは、<b>特定のデータを見つけ出す</b>ためのアルゴリズムです。基本情報技術者試験では主に「線形探索法」「ハッシュ法」「2分探索法」の3種類が出題されます。</div>
 <div class="lang vn"><span class="tag">🇻🇳 Tiếng Việt</span>Thuật toán tìm kiếm là thuật toán dùng để <b>tìm ra một dữ liệu cụ thể</b> trong tập dữ liệu. Trong kỳ thi FE, ba thuật toán chính được hỏi là: <b>線形探索法 (tìm tuyến tính)</b>, <b>ハッシュ法 (hash)</b>, và <b>2分探索法 (tìm nhị phân)</b>.</div>
@@ -142,8 +133,17 @@
 </div>
 
 <!-- ============================================= -->
-<h2 id="part-2">🔍 Phần 2 – Ví dụ minh hoạ</h2>
+      </div>
+    </section>
 
+    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
+    <section class="content-section" id="sec-2">
+      <h2 class="section-heading">
+        <span class="num-badge">②</span>
+        <span class="text-ja">演習例題 (Worked Examples)</span>
+        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
+      </h2>
+      <div class="lesson-body-content">
 <h3>2.1 Ví dụ Linear Search — tìm "14" (theo slide)</h3>
 <p>Mảng: <code>[12, 3, 17, 5, 8, 14, 21, 6, 9, 1, 19]</code></p>
 <div class="ascii">
@@ -205,41 +205,45 @@ Tổng số so sánh: 3 lần (so với Linear search có thể tốn 6 lần)
 </table>
 
 <!-- ============================================= -->
-<h2 id="part-3">🃏 Phần 3 – Flashcards (Click để lật)</h2>
-<div class="flashcard-controls">
-  <button class="btn active" onclick="filterCards('all',this)">All</button>
-  <button class="btn" onclick="filterCards('linear',this)">線形 Linear</button>
-  <button class="btn" onclick="filterCards('hash',this)">ハッシュ Hash</button>
-  <button class="btn" onclick="filterCards('binary',this)">2分 Binary</button>
-  <button class="btn" onclick="flipAll()">Lật tất cả</button>
-</div>
-<div class="flashcards" id="flashcards">
-  <div class="flashcard cat-linear" onclick="this.classList.toggle('flipped')"><span class="cat">線形</span><div class="front"><b>線形探索法 là gì?</b></div><div class="back">So sánh từng phần tử từ đầu mảng đến khi tìm thấy mục tiêu. Không cần sắp xếp trước.</div></div>
-  <div class="flashcard cat-linear" onclick="this.classList.toggle('flipped')"><span class="cat">線形</span><div class="front"><b>Linear search trung bình kiểm tra bao nhiêu phần tử?</b></div><div class="back">Trung bình n/2 phần tử (n là số phần tử của mảng).</div></div>
-  <div class="flashcard cat-hash" onclick="this.classList.toggle('flipped')"><span class="cat">ハッシュ</span><div class="front"><b>ハッシュ関数 là gì?</b></div><div class="back">Hàm dùng để biến đổi dữ liệu thành ハッシュ値 (hash value). Ví dụ phổ biến: <code>x mod 10</code>.</div></div>
-  <div class="flashcard cat-hash" onclick="this.classList.toggle('flipped')"><span class="cat">ハッシュ</span><div class="front"><b>ハッシュ表 (Hash table) là gì?</b></div><div class="back">Mảng dùng hash value làm chỉ số (要素番号) để lưu dữ liệu.</div></div>
-  <div class="flashcard cat-hash" onclick="this.classList.toggle('flipped')"><span class="cat">ハッシュ</span><div class="front"><b>衝突 (シノニム / Synonym) là gì?</b></div><div class="back">Hai input khác nhau cho ra cùng một hash value → lưu cùng vị trí. Đây là nhược điểm chính của hash.</div></div>
-  <div class="flashcard cat-hash" onclick="this.classList.toggle('flipped')"><span class="cat">ハッシュ</span><div class="front"><b>剰余 (じょうよ) là gì?</b></div><div class="back">Phần dư của phép chia, ký hiệu <code>mod</code>. Ví dụ: 32 mod 10 = 2.</div></div>
-  <div class="flashcard cat-hash" onclick="this.classList.toggle('flipped')"><span class="cat">ハッシュ</span><div class="front"><b>Ưu điểm lớn nhất của hash là gì?</b></div><div class="back">Có thể tìm dữ liệu chỉ trong <b>1 lần truy cập</b> (nếu không va chạm).</div></div>
-  <div class="flashcard cat-binary" onclick="this.classList.toggle('flipped')"><span class="cat">2分</span><div class="front"><b>2 đặc điểm của 2分探索法?</b></div><div class="back">① Dữ liệu phải được <b>sắp xếp trước (整列)</b>. ② Tìm bằng cách <b>chia đôi (2つに分ける)</b> vùng tìm kiếm.</div></div>
-  <div class="flashcard cat-binary" onclick="this.classList.toggle('flipped')"><span class="cat">2分</span><div class="front"><b>Công thức tính phần tử giữa?</b></div><div class="back"><code>中央 = (先頭番号 + 末尾番号) ÷ 2</code>. Làm tròn lên hoặc xuống đều được.</div></div>
-  <div class="flashcard cat-binary" onclick="this.classList.toggle('flipped')"><span class="cat">2分</span><div class="front"><b>Độ phức tạp của binary search?</b></div><div class="back">O(log₂ n). Với n=1.000.000 chỉ cần ~20 so sánh.</div></div>
-  <div class="flashcard cat-binary" onclick="this.classList.toggle('flipped')"><span class="cat">2分</span><div class="front"><b>Nếu mảng chưa sắp xếp, có dùng được binary search không?</b></div><div class="back">Không. Đây là điều kiện bắt buộc (特徴1).</div></div>
-  <div class="flashcard cat-linear" onclick="this.classList.toggle('flipped')"><span class="cat">線形</span><div class="front"><b>Khi nào nên dùng linear search?</b></div><div class="back">Khi dữ liệu nhỏ, hoặc khi không thể sắp xếp / không có hash table.</div></div>
-</div>
+      </div>
+    </section>
 
-<!-- ============================================= -->
-<h2 id="part-4">📝 Phần 4 – Quiz 10 câu (tự chấm)</h2>
-<div id="quiz"></div>
-<div class="score" id="score">Chưa làm câu nào — 0 / 10</div>
+    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-3">
+      <h2 class="section-heading">
+        <span class="num-badge">③</span>
+        <span class="text-ja">暗記カード (Flashcards)</span>
+        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
+        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
+        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
+      </p>
 
-<!-- ============================================= -->
+      <div class="fc-grid" id="fcGrid"></div>
+    </section>
 
+    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-4">
+      <h2 class="section-heading">
+        <span class="num-badge">④</span>
+        <span class="text-ja">確認テスト (10問)</span>
+        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
+        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
+        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
+      </p>
 
+      <div id="quizArea"></div>
 
-
-
-    </div>
+      <div class="quiz-result-box" id="quiz-result">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
+        <div class="quiz-result-score" id="qScore">0 / 10</div>
+        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
+        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
+      </div>
+    </section>
 
     <!-- Footer Navigation & Lesson Completion -->
     <footer class="lesson-footer-nav">
@@ -289,15 +293,10 @@ Tổng số so sánh: 3 lần (so với Linear search có thể tốn 6 lần)
       </div>
       <nav>
         <ul class="toc-list" id="tocList">
-
-          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-  
-          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-  
-          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-  
-          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
-  
+          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
         </ul>
       </nav>
     </div>
@@ -317,88 +316,288 @@ Tổng số so sánh: 3 lần (so với Linear search có thể tốn 6 lần)
 
 </div>
 
+<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
 <script>
-
-// Flashcards
-function filterCards(cat,btn){
-  document.querySelectorAll('.flashcard-controls .btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.flashcard').forEach(c=>{
-    if(cat==='all'||c.classList.contains('cat-'+cat)) c.style.display='block';
-    else c.style.display='none';
-  });
-}
-function flipAll(){
-  document.querySelectorAll('.flashcard').forEach(c=>c.classList.toggle('flipped'));
-}
-
-// Quiz data
-const quizData = [
-  {q:"線形探索法の特徴として正しいものはどれか?",
-   opts:["データが整列されている必要がある","先頭から順番に1つずつ照合する","ハッシュ関数を使う","データを2つに分割する"],
-   correct:1, exp:"Linear search so sánh từng phần tử từ đầu, không cần sắp xếp, không dùng hash. Câu A là binary, C là hash, D là binary."},
-  {q:"ハッシュ法において、入力値が異なるのにハッシュ値が同じになる現象を何と呼ぶか?",
-   opts:["分岐 (bunki)","衝突 (shototsu / synonym)","整列 (seiretsu)","再帰 (saiki)"],
-   correct:1, exp:"衝突 (シノニム / synonym) là khi 2 input khác nhau cho cùng hash value. Đây là nhược điểm chính của hash."},
-  {q:"2分探索法を使うために必要な前提条件は何か?",
-   opts:["データが整列されていること","ハッシュ関数が定義されていること","データが偶数個であること","データが文字列であること"],
-   correct:0, exp:"特徴1 của binary search: dữ liệu phải được sắp xếp trước (昇順 hoặc 降順)."},
-  {q:"ハッシュ関数が「x mod 10」のとき、値「47」のハッシュ値はいくつか?",
-   opts:["4","7","10","47"],
-   correct:1, exp:"47 mod 10 = phần dư của 47÷10 = 7. (47 = 4×10 + 7)"},
-  {q:"要素数1.000.000個の整列済み配列から目的のデータを2分探索法で探す場合、最大何回程度の比較が必要か?",
-   opts:["1回","約20回","約500.000回","1.000.000回"],
-   correct:1, exp:"log₂(1.000.000) ≈ 19.93 ≈ 20 lần. Đây là điểm mạnh của binary search."},
-  {q:"ハッシュ法の最大のメリットは何か?",
-   opts:["データを並べる必要がない上、1回のアクセスで目的のデータを取り出せる","データ量に関係なく必ず1回で見つかる","衝突が起こらない","プログラムが最も単純である"],
-   correct:0, exp:"Hash cho phép truy cập 1 lần để lấy dữ liệu (nếu không va chạm). Nhưng B sai vì va chạm có thể xảy ra; C sai vì va chạm là nhược điểm chính; D sai vì linear search đơn giản hơn."},
-  {q:"昇順に並んだ配列 [1,2,3,4,5,6,7,8,9] から2分探索法で「3」を探すとき、最初に比較する要素は何か?",
-   opts:["1","3","5","9"],
-   correct:2, exp:"中央 = (1+9)÷2 = 5 → so sánh với phần tử thứ 5 = 5 trước tiên."},
-  {q:"基本情報技術者試験で「探索アルゴリズム」として頻繁に出題されるのはどれか?(2つ選択)",
-   opts:["線形探索法のみ","ハッシュ法と2分探索法","クイックソートとマージソート","再帰アルゴリズムのみ"],
-   correct:1, exp:"Theo Yasashii: 「ハッシュ法」と「2分探索法」が頻繁に出題されます。"},
-  {q:"次のうち「探索アルゴリズム」ではないものはどれか?",
-   opts:["線形探索法","2分探索法","ハッシュ法","クイックソート"],
-   correct:3, exp:"Quick sort là thuật toán SẮP XẾP (整列), không phải tìm kiếm. 3 cái còn lại đều là search."},
-  {q:"2分探索法の特徴を述べた次の文章のうち、誤っているものはどれか?",
-   opts:["データを、あらかじめ整列させておく必要がある","データを、2つに分けながら探索する","データ量が多いほど効率がよい(線形より)","ハッシュ関数を使って格納場所を決める"],
-   correct:3, exp:"Câu D mô tả ハッシュ法, không phải binary search. 3 câu còn lại đều đúng về binary search."}
+const FLASHCARDS = [
+  {
+    "cat": "all",
+    "front": "線形探索法 là gì?",
+    "back": "So sánh từng phần tử từ đầu mảng đến khi tìm thấy mục tiêu. Không cần sắp xếp trước."
+  },
+  {
+    "cat": "all",
+    "front": "Linear search trung bình kiểm tra bao nhiêu phần tử?",
+    "back": "Trung bình n/2 phần tử (n là số phần tử của mảng)."
+  },
+  {
+    "cat": "all",
+    "front": "ハッシュ関数 là gì?",
+    "back": "Hàm dùng để biến đổi dữ liệu thành ハッシュ値 (hash value). Ví dụ phổ biến: x mod 10 ."
+  },
+  {
+    "cat": "all",
+    "front": "ハッシュ表 (Hash table) là gì?",
+    "back": "Mảng dùng hash value làm chỉ số (要素番号) để lưu dữ liệu."
+  },
+  {
+    "cat": "all",
+    "front": "衝突 (シノニム / Synonym) là gì?",
+    "back": "Hai input khác nhau cho ra cùng một hash value → lưu cùng vị trí. Đây là nhược điểm chính của hash."
+  },
+  {
+    "cat": "all",
+    "front": "剰余 (じょうよ) là gì?",
+    "back": "Phần dư của phép chia, ký hiệu mod . Ví dụ: 32 mod 10 = 2."
+  },
+  {
+    "cat": "all",
+    "front": "Ưu điểm lớn nhất của hash là gì?",
+    "back": "Có thể tìm dữ liệu chỉ trong 1 lần truy cập (nếu không va chạm)."
+  },
+  {
+    "cat": "all",
+    "front": "2 đặc điểm của 2分探索法?",
+    "back": "① Dữ liệu phải được sắp xếp trước (整列) . ② Tìm bằng cách chia đôi (2つに分ける) vùng tìm kiếm."
+  },
+  {
+    "cat": "all",
+    "front": "Công thức tính phần tử giữa?",
+    "back": "中央 = (先頭番号 + 末尾番号) ÷ 2 . Làm tròn lên hoặc xuống đều được."
+  },
+  {
+    "cat": "all",
+    "front": "Độ phức tạp của binary search?",
+    "back": "O(log₂ n). Với n=1.000.000 chỉ cần ~20 so sánh."
+  },
+  {
+    "cat": "all",
+    "front": "Nếu mảng chưa sắp xếp, có dùng được binary search không?",
+    "back": "Không. Đây là điều kiện bắt buộc (特徴1)."
+  },
+  {
+    "cat": "all",
+    "front": "Khi nào nên dùng linear search?",
+    "back": "Khi dữ liệu nhỏ, hoặc khi không thể sắp xếp / không có hash table."
+  }
+];
+const QUIZ = [
+  {
+    "q": "線形探索法の特徴として正しいものはどれか?",
+    "opts": [
+      "データが整列されている必要がある",
+      "先頭から順番に1つずつ照合する",
+      "ハッシュ関数を使う",
+      "データを2つに分割する"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "ハッシュ法において、入力値が異なるのにハッシュ値が同じになる現象を何と呼ぶか?",
+    "opts": [
+      "分岐 (bunki)",
+      "衝突 (shototsu / synonym)",
+      "整列 (seiretsu)",
+      "再帰 (saiki)"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "2分探索法を使うために必要な前提条件は何か?",
+    "opts": [
+      "データが整列されていること",
+      "ハッシュ関数が定義されていること",
+      "データが偶数個であること",
+      "データが文字列であること"
+    ],
+    "ans": 0,
+    "expl": ""
+  },
+  {
+    "q": "ハッシュ関数が「x mod 10」のとき、値「47」のハッシュ値はいくつか?",
+    "opts": [
+      "4",
+      "7",
+      "10",
+      "47"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "要素数1.000.000個の整列済み配列から目的のデータを2分探索法で探す場合、最大何回程度の比較が必要か?",
+    "opts": [
+      "1回",
+      "約20回",
+      "約500.000回",
+      "000.000回"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "ハッシュ法の最大のメリットは何か?",
+    "opts": [
+      "データを並べる必要がない上、1回のアクセスで目的のデータを取り出せる",
+      "データ量に関係なく必ず1回で見つかる",
+      "衝突が起こらない",
+      "プログラムが最も単純である"
+    ],
+    "ans": 0,
+    "expl": ""
+  },
+  {
+    "q": "昇順に並んだ配列 [1,2,3,4,5,6,7,8,9] から2分探索法で「3」を探すとき、最初に比較する要素は何か?",
+    "opts": [
+      "1",
+      "3",
+      "5",
+      "9"
+    ],
+    "ans": 2,
+    "expl": ""
+  },
+  {
+    "q": "基本情報技術者試験で「探索アルゴリズム」として頻繁に出題されるのはどれか?(2つ選択)",
+    "opts": [
+      "線形探索法のみ",
+      "ハッシュ法と2分探索法",
+      "クイックソートとマージソート",
+      "再帰アルゴリズムのみ"
+    ],
+    "ans": 1,
+    "expl": ""
+  },
+  {
+    "q": "次のうち「探索アルゴリズム」ではないものはどれか?",
+    "opts": [
+      "線形探索法",
+      "2分探索法",
+      "ハッシュ法",
+      "クイックソート"
+    ],
+    "ans": 3,
+    "expl": ""
+  },
+  {
+    "q": "2分探索法の特徴を述べた次の文章のうち、誤っているものはどれか?",
+    "opts": [
+      "データを、あらかじめ整列させておく必要がある",
+      "データを、2つに分けながら探索する",
+      "データ量が多いほど効率がよい(線形より)",
+      "ハッシュ関数を使って格納場所を決める"
+    ],
+    "ans": 3,
+    "expl": ""
+  }
 ];
 
-const quizDiv = document.getElementById('quiz');
-const scoreDiv = document.getElementById('score');
-let answered = 0, correct = 0;
+// Render Flashcards with reliable click-to-flip
+function renderFC() {
+  const grid = document.getElementById('fcGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
 
-quizData.forEach((q,i)=>{
-  const div = document.createElement('div');
-  div.className = 'quiz-q';
-  div.id = 'q'+i;
-  div.innerHTML = `<div class="qtext">Câu ${i+1}: ${q.q}</div>` +
-    q.opts.map((o,j)=>`<div class="opt" data-i="${i}" data-j="${j}">${String.fromCharCode(65+j)}. ${o}</div>`).join('') +
-    `<div class="explain"><b>Giải thích:</b> ${q.exp}</div>`;
-  quizDiv.appendChild(div);
-});
-
-document.querySelectorAll('.opt').forEach(opt=>{
-  opt.addEventListener('click',function(){
-    const i = +this.dataset.i, j = +this.dataset.j;
-    const qDiv = document.getElementById('q'+i);
-    if(qDiv.classList.contains('answered')) return;
-    qDiv.classList.add('answered');
-    const correctJ = quizData[i].correct;
-    qDiv.querySelectorAll('.opt').forEach(o=>{
-      o.classList.add('locked');
-      const oj = +o.dataset.j;
-      if(oj===correctJ) o.classList.add('correct');
-      else if(oj===j) o.classList.add('wrong');
-    });
-    answered++;
-    if(j===correctJ) correct++;
-    scoreDiv.textContent = `Đã trả lời ${answered}/10 — Đúng: ${correct} (${Math.round(correct/10*100)}%)`;
+  FLASHCARDS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.innerHTML = `
+      <div>
+        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
+        <div class="fc-front">${f.front}</div>
+        <div class="fc-back">${f.back}</div>
+      </div>
+      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
   });
-});
+}
 
+// Render Interactive Quiz with tactile 4-option cards & instant feedback
+let quizScore = 0;
+let quizAnswered = 0;
+
+function renderQuiz() {
+  const area = document.getElementById('quizArea');
+  if (!area) return;
+  area.innerHTML = '';
+  quizScore = 0;
+  quizAnswered = 0;
+
+  QUIZ.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-q-card';
+    card.dataset.idx = idx;
+
+    let optsHtml = '';
+    item.opts.forEach((opt, oi) => {
+      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
+    });
+
+    card.innerHTML = `
+      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
+    `;
+
+    card.querySelectorAll('.opt').forEach(optEl => {
+      optEl.addEventListener('click', () => {
+        if (card.classList.contains('locked')) return;
+        card.classList.add('locked');
+
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+
+        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
+        if (correctEl) correctEl.classList.add('correct');
+
+        if (chosen !== correct) {
+          optEl.classList.add('wrong');
+        } else {
+          quizScore++;
+        }
+
+        quizAnswered++;
+        if (quizAnswered === QUIZ.length) showQuizResult();
+      });
+    });
+
+    area.appendChild(card);
+  });
+
+  const resBox = document.getElementById('quiz-result');
+  if (resBox) resBox.classList.remove('show');
+}
+
+function showQuizResult() {
+  const pct = Math.round((quizScore / QUIZ.length) * 100);
+  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
+  let verdict = '';
+  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
+  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
+  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
+  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
+  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
+  const res = document.getElementById('quiz-result');
+  if (res) {
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function resetQuiz() {
+  renderQuiz();
+  const area = document.getElementById('quizArea');
+  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize on DOM ready
+renderFC();
+renderQuiz();
 </script>
 <script src="../assets/reader.js"></script>
 </body>

@@ -71,17 +71,15 @@
       </div>
     </div>
 
-    <!-- Lesson Content Body -->
-    <div class="lesson-body">
-
-
-
-
-
-
-<!-- ============ PHẦN 1: LÝ THUYẾT ============ -->
-<section id="p1">
-<h2 id="part-1">📘 Phần 1 — Tóm tắt lý thuyết</h2>
+    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
+    <section class="content-section" id="sec-1">
+      <h2 class="section-heading">
+        <span class="num-badge">①</span>
+        <span class="text-ja">重要理論 (Theory)</span>
+        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
+      </h2>
+      <div class="lesson-body-content">
+<h2>📘 Phần 1 — Tóm tắt lý thuyết</h2>
 
 <h3>1.1. 足し算 (Phép cộng) — 2進数</h3>
 <div class="tri">
@@ -201,8 +199,18 @@ x × 7 = x×2² + x×2¹ + x×2⁰
 </section>
 
 <!-- ============ PHẦN 2: VÍ DỤ MINH HỌA ============ -->
-<section id="p2">
-<h2 id="part-2">📐 Phần 2 — Ví dụ minh họa</h2>
+      </div>
+    </section>
+
+    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
+    <section class="content-section" id="sec-2">
+      <h2 class="section-heading">
+        <span class="num-badge">②</span>
+        <span class="text-ja">演習例題 (Worked Examples)</span>
+        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
+      </h2>
+      <div class="lesson-body-content">
+<h2>📐 Phần 2 — Ví dụ minh họa</h2>
 
 <h3>Ví dụ 1 — Cộng 2進: 1011 + 1101</h3>
 <div class="example">
@@ -300,19 +308,45 @@ x × 7 = x×4 + x×2 + x×1
 </section>
 
 <!-- ============ PHẦN 3: FLASHCARD ============ -->
-<section id="p3">
-<h2 id="part-3">🎴 Phần 3 — Flashcard (Click để lật)</h2>
-<div class="fc-grid" id="fcg"></div>
-</section>
+      </div>
+    </section>
 
-<!-- ============ PHẦN 4: ÔN TẬP ============ -->
-<section id="p4">
-<h2 id="part-4">📝 Phần 4 — 10 câu ôn tập</h2>
-<div id="quiz"></div>
-</section>
+    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-3">
+      <h2 class="section-heading">
+        <span class="num-badge">③</span>
+        <span class="text-ja">暗記カード (Flashcards)</span>
+        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
+        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
+        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
+      </p>
 
+      <div class="fc-grid" id="fcGrid"></div>
+    </section>
 
-    </div>
+    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
+    <section class="content-section" id="sec-4">
+      <h2 class="section-heading">
+        <span class="num-badge">④</span>
+        <span class="text-ja">確認テスト (10問)</span>
+        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
+        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
+        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
+      </p>
+
+      <div id="quizArea"></div>
+
+      <div class="quiz-result-box" id="quiz-result">
+        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
+        <div class="quiz-result-score" id="qScore">0 / 10</div>
+        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
+        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
+      </div>
+    </section>
 
     <!-- Footer Navigation & Lesson Completion -->
     <footer class="lesson-footer-nav">
@@ -362,15 +396,10 @@ x × 7 = x×4 + x×2 + x×1
       </div>
       <nav>
         <ul class="toc-list" id="tocList">
-
-          <li><a href="#part-1" class="toc-link"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-  
-          <li><a href="#part-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-  
-          <li><a href="#part-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-  
-          <li><a href="#part-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz ôn tập</span></a></li>
-  
+          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
+          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
+          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
+          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
         </ul>
       </nav>
     </div>
@@ -390,74 +419,288 @@ x × 7 = x×4 + x×2 + x×1
 
 </div>
 
+<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
 <script>
-
-// ============ FLASHCARDS ============
-const FC = [
-  {f:"足し算の繰り上がり (carry)", b:"Khi tổng 2 bit đạt 2 (10₂), viết 0 và nhớ 1 sang bit kế bên trái.", jp:"足して2になったら繰り上がる"},
-  {f:"引き算の方法", b:"Lấy bù 2 của số trừ rồi CỘNG vào số bị trừ. Bỏ carry tràn.", jp:"引く数を2の補数で表現して足し算"},
-  {f:"左シフト n bit = ?", b:"× 2ⁿ (nhân). VD: 1 bit = ×2, 2 bit = ×4, 3 bit = ×8.", jp:"左にn個ずれると 2ⁿ倍"},
-  {f:"右シフト n bit = ?", b:"× 2⁻ⁿ (chia). VD: 1 bit = ÷2, 2 bit = ÷4. Phần trào = số dư.", jp:"右にn個ずれると 2⁻ⁿ倍"},
-  {f:"論理シフト là gì?", b:"Dịch bit KHÔNG quan tâm dấu. Chỗ trống đều điền 0 (cả 2 hướng).", jp:"符号を考慮せずにシフト操作"},
-  {f:"算術シフト là gì?", b:"Dịch bit CÓ quan tâm dấu. Trái: điền 0. Phải: điền bit dấu để giữ dấu.", jp:"符号を考慮してシフト操作"},
-  {f:"論理左シフトのオーバーフロー", b:"Khi bit 1 trào ra khỏi đầu trái → overflow.", jp:"1がはみ出るとオーバーフロー"},
-  {f:"算術左シフトのオーバーフロー", b:"Khi bit KHÁC bit dấu trào ra → overflow.", jp:"符号ビットと異なる数字がはみ出るとオーバーフロー"},
-  {f:"右シフトではみ出した部分", b:"Bit trào ra bên phải = số dư của phép chia.", jp:"はみ出た分は割り算の余り"},
-  {f:"算術右シフトの空きスペース", b:"Điền bằng bit dấu (sign bit). Số dương điền 0, số âm điền 1.", jp:"空いたスペースに符号ビットを入れる"},
-  {f:"×7 bằng shift?", b:"7 = 4+2+1 = 2²+2¹+2⁰ → x×7 = (x<<2) + (x<<1) + x.", jp:"7 = 2² + 2¹ + 2⁰"},
-  {f:"42 を 2ビット左シフト = ?", b:"42 × 4 = 168. (Slide ví dụ: 00101010 → 10101000)", jp:"42 → 168"},
+const FLASHCARDS = [
+  {
+    "cat": "all",
+    "front": "足し算の繰り上がり (carry)",
+    "back": "Khi tổng 2 bit đạt 2 (10₂), viết 0 và nhớ 1 sang bit kế bên trái."
+  },
+  {
+    "cat": "all",
+    "front": "引き算の方法",
+    "back": "Lấy bù 2 của số trừ rồi CỘNG vào số bị trừ. Bỏ carry tràn."
+  },
+  {
+    "cat": "all",
+    "front": "左シフト n bit = ?",
+    "back": "× 2ⁿ (nhân). VD: 1 bit = ×2, 2 bit = ×4, 3 bit = ×8."
+  },
+  {
+    "cat": "all",
+    "front": "右シフト n bit = ?",
+    "back": "× 2⁻ⁿ (chia). VD: 1 bit = ÷2, 2 bit = ÷4. Phần trào = số dư."
+  },
+  {
+    "cat": "all",
+    "front": "論理シフト là gì?",
+    "back": "Dịch bit KHÔNG quan tâm dấu. Chỗ trống đều điền 0 (cả 2 hướng)."
+  },
+  {
+    "cat": "all",
+    "front": "算術シフト là gì?",
+    "back": "Dịch bit CÓ quan tâm dấu. Trái: điền 0. Phải: điền bit dấu để giữ dấu."
+  },
+  {
+    "cat": "all",
+    "front": "論理左シフトのオーバーフロー",
+    "back": "Khi bit 1 trào ra khỏi đầu trái → overflow."
+  },
+  {
+    "cat": "all",
+    "front": "算術左シフトのオーバーフロー",
+    "back": "Khi bit KHÁC bit dấu trào ra → overflow."
+  },
+  {
+    "cat": "all",
+    "front": "右シフトではみ出した部分",
+    "back": "Bit trào ra bên phải = số dư của phép chia."
+  },
+  {
+    "cat": "all",
+    "front": "算術右シフトの空きスペース",
+    "back": "Điền bằng bit dấu (sign bit). Số dương điền 0, số âm điền 1."
+  },
+  {
+    "cat": "all",
+    "front": "×7 bằng shift?",
+    "back": "7 = 4+2+1 = 2²+2¹+2⁰ → x×7 = (x<<2) + (x<<1) + x."
+  },
+  {
+    "cat": "all",
+    "front": "42 を 2ビット左シフト = ?",
+    "back": "42 × 4 = 168. (Slide ví dụ: 00101010 → 10101000)"
+  }
 ];
-const fcg = document.getElementById('fcg');
-FC.forEach(c=>{
-  const el = document.createElement('div');
-  el.className = 'fc show-front';
-  el.innerHTML = `
-    <div class="fc-side fc-front"><div class="h">CÂU HỎI / 表</div>${c.f}</div>
-    <div class="fc-side fc-back"><div class="h">TRẢ LỜI / 裏</div>${c.b}<div class="jp">🇯🇵 ${c.jp}</div></div>`;
-  el.onclick = ()=>{
-    el.classList.toggle('show-front');
-    el.classList.toggle('show-back');
-  };
-  fcg.appendChild(el);
-});
-
-// ============ QUIZ ============
-const Q = [
-  {q:"2進数の足し算で、1 + 1 の結果として正しいのは？", o:["10₂ (= 2)","11₂","1₂","0₂"], a:0, e:"Slide: 足して2になったら繰り上がる. 1+1=10₂ tức viết 0, nhớ 1."},
-  {q:"2進数の引き算「1010 − 0011」を計算する際の最初の手順は？", o:["0011 の2の補数を作る","1010 の2の補数を作る","両方をビット反転","左シフトする"], a:0, e:"Lấy bù 2 của số trừ (引く数 = 0011) rồi cộng vào số bị trừ."},
-  {q:"2進数を1ビット左にシフトした結果は元の値の何倍？", o:["2倍","1/2倍","4倍","変わらない"], a:0, e:"Slide: 桁が1つ左にずれると2倍."},
-  {q:"2進数を3ビット右にシフトした結果は元の値の何倍？", o:["2⁻³ (1/8)倍","2³倍","3倍","1/3倍"], a:0, e:"右シフト n bit = ×2⁻ⁿ. 3 bit = ×1/8."},
-  {q:"論理右シフトの空いたスペースには何を入れる？", o:["0","符号ビット","1","直前のビット"], a:0, e:"Slide: 論理シフトは符号を考慮しない → cả 2 hướng đều điền 0."},
-  {q:"算術右シフトの空いたスペースには何を入れる？", o:["符号ビット","0","1","ランダム"], a:0, e:"Slide: 算術右シフトは空いたスペースに符号ビットを入れる để giữ dấu."},
-  {q:"論理左シフトでオーバーフローが起こる条件は？", o:["1 がはみ出たとき","0 がはみ出たとき","符号ビットが変わったとき","シフト幅が大きいとき"], a:0, e:"Slide: 論理シフトの場合は1がはみ出たらオーバーフロー."},
-  {q:"算術左シフトでオーバーフローが起こる条件は？", o:["符号ビットと異なる値がはみ出たとき","0 がはみ出たとき","1 が右に流れたとき","シフト後の値が偶数のとき"], a:0, e:"Slide: 符号ビットと異なる値がはみ出たらオーバーフロー."},
-  {q:"右シフトではみ出したビットは何を表す？", o:["割り算の余り","次のシフト用","符号","オーバーフローフラグ"], a:0, e:"Slide: はみ出した部分は割り算の余りを表している."},
-  {q:"x × 7 をシフト演算で計算する正しい分解は？", o:["(x<<2) + (x<<1) + x","(x<<3) − x","(x<<7)","(x<<2) × 7"], a:0, e:"Slide: 7 = 4+2+1 = 2²+2¹+2⁰. → x×7 = x×4 + x×2 + x×1."},
+const QUIZ = [
+  {
+    "q": "2進数の足し算で、1 + 1 の結果として正しいのは？",
+    "opts": [
+      "10₂ (= 2)",
+      "11₂",
+      "1₂",
+      "0₂"
+    ],
+    "ans": 0,
+    "expl": "Slide: 足して2になったら繰り上がる. 1+1=10₂ tức viết 0, nhớ 1."
+  },
+  {
+    "q": "2進数の引き算「1010 − 0011」を計算する際の最初の手順は？",
+    "opts": [
+      "0011 の2の補数を作る",
+      "1010 の2の補数を作る",
+      "両方をビット反転",
+      "左シフトする"
+    ],
+    "ans": 0,
+    "expl": "Lấy bù 2 của số trừ (引く数 = 0011) rồi cộng vào số bị trừ."
+  },
+  {
+    "q": "2進数を1ビット左にシフトした結果は元の値の何倍？",
+    "opts": [
+      "2倍",
+      "1/2倍",
+      "4倍",
+      "変わらない"
+    ],
+    "ans": 0,
+    "expl": "Slide: 桁が1つ左にずれると2倍."
+  },
+  {
+    "q": "2進数を3ビット右にシフトした結果は元の値の何倍？",
+    "opts": [
+      "2⁻³ (1/8)倍",
+      "2³倍",
+      "3倍",
+      "1/3倍"
+    ],
+    "ans": 0,
+    "expl": "右シフト n bit = ×2⁻ⁿ. 3 bit = ×1/8."
+  },
+  {
+    "q": "論理右シフトの空いたスペースには何を入れる？",
+    "opts": [
+      "0",
+      "符号ビット",
+      "1",
+      "直前のビット"
+    ],
+    "ans": 0,
+    "expl": "Slide: 論理シフトは符号を考慮しない → cả 2 hướng đều điền 0."
+  },
+  {
+    "q": "算術右シフトの空いたスペースには何を入れる？",
+    "opts": [
+      "符号ビット",
+      "0",
+      "1",
+      "ランダム"
+    ],
+    "ans": 0,
+    "expl": "Slide: 算術右シフトは空いたスペースに符号ビットを入れる để giữ dấu."
+  },
+  {
+    "q": "論理左シフトでオーバーフローが起こる条件は？",
+    "opts": [
+      "がはみ出たとき",
+      "がはみ出たとき",
+      "符号ビットが変わったとき",
+      "シフト幅が大きいとき"
+    ],
+    "ans": 0,
+    "expl": "Slide: 論理シフトの場合は1がはみ出たらオーバーフロー."
+  },
+  {
+    "q": "算術左シフトでオーバーフローが起こる条件は？",
+    "opts": [
+      "符号ビットと異なる値がはみ出たとき",
+      "がはみ出たとき",
+      "が右に流れたとき",
+      "シフト後の値が偶数のとき"
+    ],
+    "ans": 0,
+    "expl": "Slide: 符号ビットと異なる値がはみ出たらオーバーフロー."
+  },
+  {
+    "q": "右シフトではみ出したビットは何を表す？",
+    "opts": [
+      "割り算の余り",
+      "次のシフト用",
+      "符号",
+      "オーバーフローフラグ"
+    ],
+    "ans": 0,
+    "expl": "Slide: はみ出した部分は割り算の余りを表している."
+  },
+  {
+    "q": "x × 7 をシフト演算で計算する正しい分解は？",
+    "opts": [
+      "(x<<2) + (x<<1) + x",
+      "(x<<3) − x",
+      "(x<<7)",
+      "(x<<2) × 7"
+    ],
+    "ans": 0,
+    "expl": "Slide: 7 = 4+2+1 = 2²+2¹+2⁰. → x×7 = x×4 + x×2 + x×1."
+  }
 ];
 
-const qz = document.getElementById('quiz');
-Q.forEach((q,i)=>{
-  const wrap = document.createElement('div');
-  wrap.className='qz';
-  const letters=['A','B','C','D'];
-  wrap.innerHTML = `<div class="qz-q">Câu ${i+1}. ${q.q}</div>` +
-    q.o.map((o,j)=>`<div class="qz-opt" data-i="${j}"><strong>${letters[j]}.</strong> ${o}</div>`).join('') +
-    `<div class="qz-exp">✓ Đáp án đúng: <strong>${letters[q.a]}</strong>. ${q.e}</div>`;
-  wrap.querySelectorAll('.qz-opt').forEach(el=>{
-    el.onclick=()=>{
-      if(wrap.querySelector('.locked')) return;
-      const i = parseInt(el.dataset.i);
-      wrap.querySelectorAll('.qz-opt').forEach((o,k)=>{
-        o.classList.add('locked');
-        if(k===q.a) o.classList.add('ok');
-        else if(k===i) o.classList.add('ng');
-      });
-      wrap.querySelector('.qz-exp').classList.add('show');
-    };
+// Render Flashcards with reliable click-to-flip
+function renderFC() {
+  const grid = document.getElementById('fcGrid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  FLASHCARDS.forEach(f => {
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.innerHTML = `
+      <div>
+        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
+        <div class="fc-front">${f.front}</div>
+        <div class="fc-back">${f.back}</div>
+      </div>
+      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
+    `;
+    card.addEventListener('click', () => card.classList.toggle('flipped'));
+    grid.appendChild(card);
   });
-  qz.appendChild(wrap);
-});
+}
 
+// Render Interactive Quiz with tactile 4-option cards & instant feedback
+let quizScore = 0;
+let quizAnswered = 0;
+
+function renderQuiz() {
+  const area = document.getElementById('quizArea');
+  if (!area) return;
+  area.innerHTML = '';
+  quizScore = 0;
+  quizAnswered = 0;
+
+  QUIZ.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-q-card';
+    card.dataset.idx = idx;
+
+    let optsHtml = '';
+    item.opts.forEach((opt, oi) => {
+      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
+      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
+    });
+
+    card.innerHTML = `
+      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
+      <div class="q-text">${item.q}</div>
+      <div class="opts">${optsHtml}</div>
+      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
+    `;
+
+    card.querySelectorAll('.opt').forEach(optEl => {
+      optEl.addEventListener('click', () => {
+        if (card.classList.contains('locked')) return;
+        card.classList.add('locked');
+
+        const chosen = parseInt(optEl.dataset.oi, 10);
+        const correct = item.ans;
+
+        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
+        if (correctEl) correctEl.classList.add('correct');
+
+        if (chosen !== correct) {
+          optEl.classList.add('wrong');
+        } else {
+          quizScore++;
+        }
+
+        quizAnswered++;
+        if (quizAnswered === QUIZ.length) showQuizResult();
+      });
+    });
+
+    area.appendChild(card);
+  });
+
+  const resBox = document.getElementById('quiz-result');
+  if (resBox) resBox.classList.remove('show');
+}
+
+function showQuizResult() {
+  const pct = Math.round((quizScore / QUIZ.length) * 100);
+  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
+  let verdict = '';
+  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
+  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
+  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
+  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
+  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
+  const res = document.getElementById('quiz-result');
+  if (res) {
+    res.classList.add('show');
+    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function resetQuiz() {
+  renderQuiz();
+  const area = document.getElementById('quizArea');
+  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Initialize on DOM ready
+renderFC();
+renderQuiz();
 </script>
 <script src="../assets/reader.js"></script>
 </body>
