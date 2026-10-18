@@ -4,29 +4,29 @@
    BRILLIANT.ORG THEME OVERRIDE CHO FE-LESSONS
    ========================================================= */
 :root {
-  --bg: #FFFFFF !important;
-  --surface: #FFFFFF !important;
-  --surface2: #F7F8FA !important;
-  --ink: #191919 !important;
-  --text-dim: #6B7280 !important;
-  --border: #E5E7EB !important;
-  --border-dark: #D1D5DB !important;
+  --bg: #1d1d1d !important;
+  --surface: #1d1d1d !important;
+  --surface2: #272727 !important;
+  --ink: #f5f5f5 !important;
+  --text-dim: #aaaaaa !important;
+  --border: #383838 !important;
+  --border-dark: #454545 !important;
 
   /* Bảng màu đặc trưng của Brilliant */
   --brilliant-green: #22C55E;
   --brilliant-green-dark: #16A34A;
-  --brilliant-green-bg: #F0FDF4;
+  --brilliant-green-bg: #17372b;
 
   --brilliant-blue: #3B82F6;
   --brilliant-blue-dark: #2563EB;
-  --brilliant-blue-bg: #EFF6FF;
+  --brilliant-blue-bg: #29213b;
 
   --brilliant-amber: #F59E0B;
-  --brilliant-amber-bg: #FFFBEB;
+  --brilliant-amber-bg: #392e19;
 
   --brilliant-red: #EF4444;
   --brilliant-red-dark: #DC2626;
-  --brilliant-red-bg: #FEF2F2;
+  --brilliant-red-bg: #402327;
 }
 
 body {
@@ -52,7 +52,7 @@ body {
   gap: 12px;
   flex-wrap: wrap;
   padding: 10px 24px;
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(29, 29, 29, 0.96);
   backdrop-filter: blur(10px);
   border-bottom: 2px solid var(--border);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
@@ -76,7 +76,7 @@ body {
   border: 2px solid var(--border) !important;
   border-bottom: 3.5px solid var(--border-dark) !important;
   border-radius: 10px !important;
-  background: #FFFFFF !important;
+  background: #1d1d1d !important;
   color: var(--ink) !important;
   font-size: 13px !important;
   font-weight: 700 !important;
@@ -99,7 +99,7 @@ body {
 
 .fe-toolbar .btn-done {
   background: var(--brilliant-green) !important;
-  color: #FFFFFF !important;
+  color: #1d1d1d !important;
   border-color: var(--brilliant-green) !important;
   border-bottom-color: var(--brilliant-green-dark) !important;
 }
@@ -126,8 +126,8 @@ body {
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  background: #191919;
-  color: #FFFFFF;
+  background: #f5f5f5;
+  color: #1d1d1d;
   font-size: 16px;
   box-shadow: 0 3px 0 #000000;
 }
@@ -144,7 +144,7 @@ body {
   border-radius: 99px;
   border: 2px solid var(--border);
   border-bottom-width: 4px;
-  background: #FFFFFF;
+  background: #1d1d1d;
   color: var(--ink);
   font-weight: 700;
   font-size: 13.5px;
@@ -156,14 +156,14 @@ body {
   border-bottom-width: 2px;
 }
 #fcFilter button.active {
-  background: #191919;
-  color: #FFFFFF;
-  border-color: #191919;
+  background: #f5f5f5;
+  color: #1d1d1d;
+  border-color: #f5f5f5;
   box-shadow: 0 2px 0 #000;
 }
 
 .fc-card {
-  background: #FFFFFF !important;
+  background: #1d1d1d !important;
   border: 2px solid var(--border) !important;
   border-bottom-width: 5px !important;
   border-radius: 16px !important;
@@ -173,7 +173,7 @@ body {
 }
 .fc-card:hover {
   border-color: var(--brilliant-blue) !important;
-  background: #F9FAFB !important;
+  background: #141414 !important;
 }
 .fc-card:active {
   transform: translateY(3px) !important;
@@ -190,14 +190,14 @@ body {
   letter-spacing: 0.06em;
   padding: 3px 8px;
   border-radius: 6px;
-  background: #F3F4F6;
-  color: #4B5563;
+  background: #272727;
+  color: #bcbcbc;
   margin-bottom: 10px;
 }
 
 /* ── Khung Câu hỏi Trắc nghiệm (Quiz 3D Tactile Cards) ── */
 .quiz-q {
-  background: #FFFFFF !important;
+  background: #1d1d1d !important;
   border: 2px solid var(--border) !important;
   border-bottom-width: 5px !important;
   border-radius: 18px !important;
@@ -230,7 +230,7 @@ body {
   align-items: center;
   gap: 14px;
   padding: 14px 18px !important;
-  background: #FFFFFF !important;
+  background: #1d1d1d !important;
   border: 2px solid var(--border) !important;
   border-bottom-width: 4px !important;
   border-radius: 14px !important;
@@ -242,7 +242,7 @@ body {
 }
 .quiz-q .opt:hover {
   border-color: var(--border-dark) !important;
-  background: #F9FAFB !important;
+  background: #141414 !important;
 }
 .quiz-q .opt:active {
   transform: translateY(2px) !important;
@@ -266,24 +266,24 @@ body {
   border-color: var(--brilliant-green) !important;
   border-bottom-color: var(--brilliant-green-dark) !important;
   background: var(--brilliant-green-bg) !important;
-  color: #14532D !important;
+  color: #99e5bd !important;
 }
 .quiz-q .opt.correct .ltr {
   background: var(--brilliant-green);
   border-color: var(--brilliant-green);
-  color: #FFFFFF;
+  color: #1d1d1d;
 }
 
 .quiz-q .opt.wrong {
   border-color: var(--brilliant-red) !important;
   border-bottom-color: var(--brilliant-red-dark) !important;
   background: var(--brilliant-red-bg) !important;
-  color: #7F1D1D !important;
+  color: #ffb5bd !important;
 }
 .quiz-q .opt.wrong .ltr {
   background: var(--brilliant-red);
   border-color: var(--brilliant-red);
-  color: #FFFFFF;
+  color: #1d1d1d;
 }
 
 /* Khung Gợi ý (Hint) và Giải thích (Explanation) */
@@ -297,7 +297,7 @@ body {
   border: 2px solid #FDE68A;
   border-bottom-width: 3px;
   background: var(--brilliant-amber-bg);
-  color: #92400E;
+  color: #f1cd62;
   font-weight: 700;
   font-size: 13px;
   cursor: pointer;
@@ -309,7 +309,7 @@ body {
   border-radius: 12px;
   background: var(--brilliant-amber-bg);
   border: 2px solid #FDE68A;
-  color: #92400E;
+  color: #f1cd62;
   font-size: 14.5px;
   line-height: 1.55;
 }
@@ -321,7 +321,7 @@ body {
   border-radius: 14px !important;
   background: var(--brilliant-green-bg) !important;
   border: 2px solid #BBF7D0 !important;
-  color: #14532D !important;
+  color: #99e5bd !important;
   font-size: 14.5px !important;
   line-height: 1.6 !important;
 }

@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid}/progress/{key} {
+      function owner() { return request.auth != null && request.auth.uid == uid; }
+      function validRecord() {
+        let data = request.resource.data;
+        return key.matches('^(activity|test|test-result|status):([1-9]|[1-5][0-9]|6[01])$')
+          && data.keys().hasOnly(['value', 'updatedAt'])
+          && data.updatedAt is int && data.updatedAt >= 0
+          && (key.matches('^status:.*') ? data.value == 'p4' : data.value is map);
+      }
+      allow read: if owner();
+      allow create, update: if owner() && validRecord();
+      allow delete: if owner();
+    }
+  }
+}

@@ -1,104 +1,40 @@
 <!DOCTYPE html>
+
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FE Master — Học tập & Luyện thi FE (Brilliant Style)</title>
-<link rel="stylesheet" href="assets/home.css">
-<link rel="stylesheet" href="assets/site.css">
-<script src="assets/site.js"></script>
-<script src="assets/brilliant.js"></script>
-<link rel="stylesheet" href="./assets/learning.css">
+<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="#141414" name="theme-color"/>
+<title>FE Master — Lộ trình 基本情報技術者試験</title>
+<link href="assets/home.css" rel="stylesheet"/><script src="assets/site.js"></script><script src="assets/brilliant.js"></script>
 </head>
 <body>
-<div class="wrap">
-
-  <!-- TOP NAVIGATION BAR -->
-  <header class="top-nav">
-    <a href="index.html" class="brand">
-      <div class="brand-logo" id="brandLogo"></div>
-      <span>FE Master</span>
-      <span class="brand-badge">IPA Syllabus</span>
-    </a>
-    <div class="nav-stats">
-      <div class="br-streak-badge" id="streakBadge" title="Chuỗi ngày học liên tục">
-        <span class="br-streak-fire">⚡</span>
-        <span id="streakCount">1</span> Ngày
-      </div>
-    </div>
-  </header>
-
-  <!-- HERO HEADER & PROGRESS -->
-  <div class="hero">
-    <div class="hero-left">
-      <div class="eyebrow">FE Syllabus · 学習トラッカー</div>
-      <div class="hero-title">Tài liệu học FE <span class="soft">／ 教材 & Luyện thi</span></div>
-      <p style="color:var(--br-text-secondary);font-size:14px;margin-top:4px">Học theo phương pháp tương tác <b>Learn by Doing</b> từng bước nhỏ</p>
-    </div>
-    <div class="hero-right">
-      <div class="prog-container">
-        <div class="prog-big" id="pnum">0 / 0</div>
-        <div class="prog-small">bài đã xong</div>
-      </div>
-      <div class="prog-bar-mini">
-        <div class="prog-bar-mini-fill" id="progBarFill" style="width:0%"></div>
-      </div>
-      <div class="phase-sum" id="phaseSum"></div>
-    </div>
-  </div>
-
-  <!-- ROBOT TUTOR WELCOMING BANNER -->
-  <div class="br-tutor" id="tutorBanner">
-    <div class="br-tutor-mascot" id="tutorMascot"></div>
-    <div class="br-tutor-bubble">
-      <div class="br-tutor-title">⚡ GIA SƯ ROBOT FE</div>
-      <div>Chào mừng bạn! Mỗi bài học đều có phần <b>Đọc lý thuyết</b> giải thích trực quan và <b>40 câu kiểm tra trắc nghiệm</b> phản hồi tức thì. Hãy chọn một bài bên dưới để bắt đầu luyện tập ngay nhé!</div>
-    </div>
-  </div>
-
-  <div class="banner" id="banner" style="display:none">
-    <span>ⓘ</span>
-    <div><b>Đang xem bản mẫu.</b> Khi đưa <code>lessons.json</code> lên GitHub Pages, danh sách bài học đầy đủ sẽ hiển thị.</div>
-  </div>
-
-  <!-- CONTROLS & SEARCH -->
-  <div class="controls">
-    <div class="search">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-      <input id="q" type="search" placeholder="Tìm theo chủ đề hoặc số thứ tự bài học…" aria-label="Tìm bài học">
-    </div>
-    <div class="chips" role="group" aria-label="Lọc theo trạng thái">
-      <button class="chip" data-f="all" aria-pressed="true">Tất cả</button>
-      <button class="chip" data-f="p4"  aria-pressed="false">✓ Đã xong</button>
-      <button class="chip" data-f="p0"  aria-pressed="false">○ Chưa bắt đầu</button>
-    </div>
-  </div>
-
-  <!-- LESSON LIST (TACTILE 3D CARDS) -->
-  <ol class="spine" id="list"></ol>
-  <div class="empty" id="empty" style="display:none">Không tìm thấy bài học nào phù hợp.</div>
+<a class="skip-link" href="#curriculum"><span data-ui="Đến lộ trình học">Đến lộ trình học</span></a>
+<header class="site-header"><div class="nav-inner">
+<a class="brand" href="index.html">FE<span>Master</span><i aria-hidden="true">✦</i></a>
+<nav aria-label="Điều hướng chính" class="main-nav"><a aria-current="page" class="active" href="#curriculum"><span aria-hidden="true">⌂</span> <span data-ui="Lộ trình">Lộ trình</span></a><a href="#exam-guide"><span aria-hidden="true">▤</span> <span data-ui="Kỳ thi FE">Kỳ thi FE</span></a><a href="#progress"><span aria-hidden="true">◉</span> <span data-ui="Tiến độ">Tiến độ</span></a></nav>
+<div class="header-actions"><button class="outline-btn" id="accountTop" type="button"><span data-ui="Đăng nhập Google">Đăng nhập Google</span></button><button aria-label="Đổi ngôn ngữ" class="outline-btn" id="languageToggle" type="button">日本語</button><span class="streak" title="Chuỗi ngày học"><span aria-hidden="true">ϟ</span><b id="streakCount">1</b><span class="streak-label"><span data-ui="ngày">ngày</span></span></span><button class="outline-btn" id="resumeTop"><span data-ui="Tiếp tục học ↗">Tiếp tục học ↗</span></button></div>
+</div></header>
+<main class="course-layout">
+<aside aria-label="Tổng quan khóa học" class="course-sidebar">
+<div class="course-card">
+<svg aria-hidden="true" class="course-art" fill="none" viewBox="0 0 180 160"><ellipse cx="88" cy="144" fill="#090909" rx="64" ry="9"></ellipse><path d="M33 44 59 28h89v101l-25 17H33Z" fill="#50209D"></path><path d="m33 44 26-16h89l-25 16H33Z" fill="#AA77F5"></path><path d="M33 44h90v102H33Z" fill="#8246DB"></path><rect fill="#1D172B" height="65" rx="5" width="70" x="43" y="55"></rect><rect fill="#101014" height="53" rx="2" width="58" x="49" y="61"></rect><path d="m69 76-10 10 10 10m19-20 10 10-10 10m-9-23-4 26" stroke="#F4CB49" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"></path><path d="m123 44 25-16v101l-25 17V44Z" fill="#6730BF"></path><rect fill="#382060" height="5" rx="2" width="18" x="94" y="129"></rect><circle cx="47" cy="132" fill="#F4CB49" r="2"></circle><circle cx="55" cy="132" fill="#F4CB49" r="2"></circle><circle cx="63" cy="132" fill="#F4CB49" r="2"></circle><path d="M71 28v-8a13 13 0 0 1 26 0v8" stroke="#F4CB49" stroke-width="3"></path><path d="m153 52 3-8 3 8 8 3-8 3-3 8-3-8-8-3 8-3Z" fill="#C7A1FF"></path></svg>
+<div class="eyebrow">基本情報技術者試験 · IPA JAPAN</div>
+<h1><span data-ui="Lộ trình FE">Lộ trình FE</span></h1>
+<div class="course-facts"><span><b id="lessonCount">61</b><span data-ui="bài học">bài học</span></span><span><b id="goalCount">10</b><span data-ui="mục tiêu">mục tiêu</span></span><span>科目A + B</span></div>
+<button class="primary-btn" id="resumeCourse"><span data-ui="Tiếp tục học">Tiếp tục học</span> <span aria-hidden="true">→</span></button><p class="continue-topic" id="continueTopic"><span data-ui="Đang tải bài học…">Đang tải bài học…</span></p>
 </div>
-
-<!-- READING PANE (SLIDE-OUT DRAWER) -->
-<div class="pane" id="pane" role="dialog" aria-modal="true" aria-label="Bài học">
-  <div class="pane-inner">
-    <div class="pane-head">
-      <span class="pstt" id="pPstt"></span>
-      <span class="ptopic" id="pTopic"></span>
-      <a id="pNew" href="#" target="_blank" rel="noopener" title="Mở trong tab mới">↗ Tab mới</a>
-      <button class="close br-btn" id="pClose" aria-label="Đóng">✕</button>
-    </div>
-    <div class="tabs">
-      <button class="tab" id="tabTheory" aria-selected="true">📖 Lý thuyết</button>
-      <button class="tab" id="tabTest"   aria-selected="false">📝 Kiểm tra 40 câu</button>
-    </div>
-    <iframe id="frame" title="Nội dung bài học"></iframe>
-    <div class="pane-placeholder" id="placeholder" style="display:none"></div>
-  </div>
+<section aria-label="Tiến độ học của bạn" class="progress-card" id="progress"><div class="section-topline"><h2><span data-ui="Tiến độ học">Tiến độ học</span></h2><span id="percentDone">0%</span></div><div aria-label="Tiến độ hoàn thành" aria-valuemax="61" aria-valuemin="0" aria-valuenow="0" class="progress-track" id="courseProgress" role="progressbar"><div id="progBarFill"></div></div><p><strong id="pnum">0 / 61</strong><span data-ui="bài đã hoàn thành">bài đã hoàn thành</span></p><p class="availability" id="availability"><span data-ui="Đang kiểm tra tài liệu…">Đang kiểm tra tài liệu…</span></p><small><span data-ui="Đang lưu trên trình duyệt này.">Đang lưu trên trình duyệt này.</span></small></section>
+</aside>
+<div class="learning-column">
+<div class="curriculum-heading" id="curriculum"><div><div class="eyebrow">FE · 学習ロードマップ</div><h2><span data-ui="Mục tiêu học tập">Mục tiêu học tập</span></h2></div><span class="course-pill"><span data-ui="61 bài · số thứ tự gốc">61 bài · số thứ tự gốc</span></span></div>
+<div aria-label="Chọn lộ trình" class="track-tabs" role="group"><button aria-pressed="true" data-track="a">科目A <span><span data-ui="Kiến thức nền tảng">Kiến thức nền tảng</span></span></button><button aria-pressed="false" data-track="b">科目B <span><span data-ui="Tư duy thực hành">Tư duy thực hành</span></span></button></div>
+<div class="catalog-controls" id="catalogControls"><label class="search"><span aria-hidden="true">⌕</span><input aria-label="Tìm bài học" id="q" placeholder="Tìm bài học, chủ đề…" type="search"/></label><button aria-expanded="false" class="text-btn" id="expandGoals"><span data-ui="Mở tất cả mục tiêu ↓">Mở tất cả mục tiêu ↓</span></button></div>
+<div class="banner" hidden="" id="banner"><span data-ui="Không tải được dữ liệu. Hãy tải lại trang để xem đủ lộ trình.">Không tải được dữ liệu. Hãy tải lại trang để xem đủ lộ trình.</span></div>
+<div class="path-intro" id="pathIntro"></div>
+<ol aria-label="Các mục tiêu và bài học" class="course-path" id="list"></ol><div class="empty" hidden="" id="empty"><span data-ui="Không tìm thấy bài phù hợp. Hãy thử từ khóa khác.">Không tìm thấy bài phù hợp. Hãy thử từ khóa khác.</span></div><div hidden="" id="subjectB"></div>
+<section class="exam-guide" id="exam-guide"><div class="eyebrow"><span data-ui="KNOW YOUR DESTINATION">KNOW YOUR DESTINATION</span></div><h2><span data-ui="Hai môn thi. Hai cách rèn luyện.">Hai môn thi. Hai cách rèn luyện.</span></h2><div class="exam-pair"><div><span>科目A</span><h3><span data-ui="Kiến thức IT tổng quát">Kiến thức IT tổng quát</span></h3><strong><span data-ui="60 câu">60 câu</span><i>·</i><span data-ui="90 phút">90 phút</span></strong><p><span data-ui="Công nghệ · Quản lý · Chiến lược. Các bài kiểm tra theo chủ đề giúp củng cố kiến thức cho môn này.">Công nghệ · Quản lý · Chiến lược. Các bài kiểm tra theo chủ đề giúp củng cố kiến thức cho môn này.</span></p></div><div><span>科目B</span><h3><span data-ui="Vận dụng &amp; giải quyết vấn đề">Vận dụng &amp; giải quyết vấn đề</span></h3><strong><span data-ui="20 câu">20 câu</span><i>·</i><span data-ui="100 phút">100 phút</span></strong><p><span data-ui="16 câu thuật toán/lập trình và 4 câu an toàn thông tin. Luyện giả mã, trace và tình huống thực tế song song.">16 câu thuật toán/lập trình và 4 câu an toàn thông tin. Luyện giả mã, trace và tình huống thực tế song song.</span></p></div></div><p class="exam-note"><span data-ui="Quiz theo bài chưa phải đề mô phỏng đủ cấu trúc FE. Các checkpoint 50/80 câu là mốc ôn của tài liệu gốc. Đề công khai có thể chỉ là một phần câu hỏi; cần nguồn luyện bổ sung cho buổi thi thử đủ số câu.">Quiz theo bài chưa phải đề mô phỏng đủ cấu trúc FE. Các checkpoint 50/80 câu là mốc ôn của tài liệu gốc. Đề công khai có thể chỉ là một phần câu hỏi; cần nguồn luyện bổ sung cho buổi thi thử đủ số câu.</span></p><p class="source-caption"><span data-ui="Lộ trình do FE Master đề xuất từ 61 mục tài liệu của bạn. Thông tin kỳ thi đối chiếu IPA ngày">Lộ trình do FE Master đề xuất từ 61 mục tài liệu của bạn. Thông tin kỳ thi đối chiếu IPA ngày</span><span id="reviewedDate">17/10/2026</span>.</p><div class="source-links" id="sourceLinks"></div></section>
+<footer class="page-footer"><a href="#curriculum"><span data-ui="↑ Về đầu lộ trình">↑ Về đầu lộ trình</span></a><span>FE Master</span></footer>
 </div>
-
-<div class="toast" id="toast"></div>
-
-<script src="assets/home.js"></script>
-</body>
-</html>
+</main>
+<dialog aria-label="Bài học" class="pane" id="pane"><div class="pane-inner"><div class="pane-head"><span class="pstt" id="pPstt"></span><span class="ptopic" id="pTopic"></span><a href="#" id="pNew" rel="noopener" target="_blank"><span data-ui="↗ Tab mới">↗ Tab mới</span></a><button aria-label="Đóng bài học" id="pClose">✕</button></div><div aria-label="Nội dung bài" class="tabs" role="group"><button aria-pressed="true" class="tab" id="tabTheory"><span data-ui="Lý thuyết">Lý thuyết</span></button><button aria-pressed="false" class="tab" id="tabTest"><span data-ui="Kiểm tra">Kiểm tra</span></button></div><iframe id="frame" title="Nội dung bài học"></iframe><div class="pane-placeholder" hidden="" id="placeholder"></div></div></dialog>
+<div class="toast" id="toast" role="status"></div><script src="assets/home.js"></script>
+</body></html>

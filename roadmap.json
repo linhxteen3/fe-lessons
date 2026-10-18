@@ -1,0 +1,282 @@
+{
+  "reviewed": "17/10/2026",
+  "syllabus": "IPA FE Ver.9.2",
+  "sources": [
+    {
+      "label": "Cấu trúc kỳ thi FE",
+      "url": "https://www.ipa.go.jp/shiken/kubun/fe.html"
+    },
+    {
+      "label": "Syllabus FE Ver.9.2",
+      "url": "https://www.ipa.go.jp/shiken/syllabus/omgdg50000005kpe-att/syllabus_fe_ver9_2.pdf"
+    },
+    {
+      "label": "Quy chế thi Ver.5.6",
+      "url": "https://www.ipa.go.jp/shiken/syllabus/rcu1hd00000141gq-att/youkou_ver5_6.pdf"
+    },
+    {
+      "label": "Đề mẫu IPA và quy ước giả mã",
+      "url": "https://www.ipa.go.jp/shiken/syllabus/henkou/2022/20220425.html"
+    },
+    {
+      "label": "Đề công khai IPA",
+      "url": "https://www.ipa.go.jp/shiken/mondai-kaiotu/sg_fe/koukai/index.html"
+    }
+  ],
+  "stages": [
+    {
+      "title": "Nền tảng máy tính",
+      "jp": "基礎理論",
+      "area": "科目A · テクノロジ系",
+      "lessons": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "goal": "Biểu diễn dữ liệu, cơ số, logic, RPN, mô hình trạng thái và xác suất. Giữ thứ tự bài 01–09 trong tài liệu gốc.",
+      "checkpoint": "Tự đổi cơ số, tính bù 2 và giải thích bảng chân lý; làm lại câu sai mà không xem đáp án.",
+      "goalJa": "データ表現、基数、論理、逆ポーランド記法、状態遷移、確率を学びます。元の教材の01〜09の順序を維持します。",
+      "checkpointJa": "基数変換、2の補数、真理値表を説明し、間違えた問題を解答を見ずに解き直します。"
+    },
+    {
+      "title": "Tư duy thuật toán",
+      "jp": "アルゴリズムとプログラミング",
+      "area": "科目A · nền tảng cho 科目B",
+      "lessons": [
+        10,
+        11,
+        12,
+        13,
+        14
+      ],
+      "goal": "Luồng chương trình, cấu trúc dữ liệu, tìm kiếm, sắp xếp và OOP. Dùng bài 07 về stack/RPN làm phần ôn bổ trợ; bắt đầu luyện 科目B song song.",
+      "checkpoint": "Tự lập bảng trace, mô phỏng stack/queue và từng bước tìm kiếm, sắp xếp. Biết định nghĩa thuật toán chưa đủ cho 科目B.",
+      "goalJa": "制御構造、データ構造、探索、整列、オブジェクト指向を学びます。レッスン07のスタック・RPNを復習し、科目Bの練習を並行して始めます。",
+      "checkpointJa": "トレース表を作り、スタック・キュー、探索・整列の動きを追います。科目Bには用語の理解だけでなく実践が必要です。"
+    },
+    {
+      "title": "Máy tính & hệ điều hành",
+      "jp": "コンピュータシステム",
+      "area": "科目A · テクノロジ系",
+      "lessons": [
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24
+      ],
+      "goal": "CPU, bộ nhớ, I/O, hiệu năng, độ tin cậy, hệ điều hành và quản lý tệp. Bài 23 là checkpoint ôn tích lũy của tài liệu gốc, không phải đề thi FE đầy đủ.",
+      "checkpoint": "Tính được thời gian xử lý, cache, MTBF/MTTR và mô phỏng thay trang; phân biệt task, job và interrupt.",
+      "goalJa": "CPU、メモリ、入出力、性能、信頼性、OS、ファイル管理を学びます。レッスン23は元の教材の総合復習で、本試験形式の模試ではありません。",
+      "checkpointJa": "処理時間、キャッシュ、MTBF・MTTRを計算し、ページ置換を追います。タスク・ジョブ・割込みを区別します。"
+    },
+    {
+      "title": "Giao diện & đa phương tiện",
+      "jp": "ユーザーインタフェース・情報メディア",
+      "area": "科目A · テクノロジ系",
+      "lessons": [
+        25,
+        26,
+        27,
+        28
+      ],
+      "goal": "Bổ sung khả năng sử dụng, khả năng tiếp cận, biểu diễn hình ảnh/âm thanh và ôn phần cứng liên quan.",
+      "checkpoint": "Giải thích lựa chọn thiết kế UI và tự tính dung lượng dữ liệu hình ảnh, âm thanh.",
+      "goalJa": "使いやすさ、アクセシビリティ、画像・音声の表現と関連するハードウェアを学びます。",
+      "checkpointJa": "UI設計の選択理由を説明し、画像・音声のデータ量を計算します。"
+    },
+    {
+      "title": "Cơ sở dữ liệu",
+      "jp": "データベース",
+      "area": "科目A · テクノロジ系",
+      "lessons": [
+        29,
+        30,
+        31,
+        32,
+        33
+      ],
+      "goal": "Mô hình E-R → chuẩn hóa → SQL → giao dịch/ACID. Mục 33 chứa cả phần ôn DB và AI/ML; xem lại AI cùng chặng nền tảng.",
+      "checkpoint": "Tự viết SELECT/JOIN/GROUP BY trên bảng nhỏ, tìm khóa và nhận biết bất thường của giao dịch.",
+      "goalJa": "E-Rモデル、正規化、SQL、トランザクション・ACIDの順で学びます。項目33にはDBの復習とAI・機械学習が含まれ、AIは基礎分野と併せて復習します。",
+      "checkpointJa": "小さな表でSELECT・JOIN・GROUP BYを書き、キーとトランザクションの異常を見分けます。"
+    },
+    {
+      "title": "Mạng máy tính",
+      "jp": "ネットワーク",
+      "area": "科目A · テクノロジ系",
+      "lessons": [
+        34,
+        35,
+        36,
+        37,
+        38
+      ],
+      "goal": "Hiểu phân lớp mạng, địa chỉ IP, subnet, thiết bị và các giao thức trước khi học bảo mật.",
+      "checkpoint": "Tính subnet, lần theo một yêu cầu web và phân biệt vai trò DNS, DHCP, NAT, TCP/UDP.",
+      "goalJa": "セキュリティ学習の前に、ネットワーク階層、IPアドレス、サブネット、機器、プロトコルを理解します。",
+      "checkpointJa": "サブネットを計算し、Webリクエストを追い、DNS・DHCP・NAT・TCP/UDPの役割を区別します。"
+    },
+    {
+      "title": "An toàn thông tin",
+      "jp": "情報セキュリティ",
+      "area": "科目A · nền tảng cho 科目B",
+      "lessons": [
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46
+      ],
+      "goal": "CIA, rủi ro, tấn công, mật mã và bảo vệ mạng; sau đó ôn các điểm yếu và phân tích kết quả theo bài 44–46. Ghép kiến thức bảo mật với tình huống 科目B.",
+      "checkpoint": "Với mỗi tình huống, chỉ ra tài sản, mối đe dọa, điểm yếu và biện pháp phù hợp; không chỉ ghi nhớ thuật ngữ.",
+      "goalJa": "CIA、リスク、攻撃、暗号、ネットワーク防御を学び、44〜46で弱点と結果を振り返ります。科目Bの事例問題にも結び付けます。",
+      "checkpointJa": "各事例の資産、脅威、脆弱性、適切な対策を特定します。用語の暗記だけで終わらせません。"
+    },
+    {
+      "title": "Phát triển hệ thống",
+      "jp": "開発技術",
+      "area": "科目A · テクノロジ系",
+      "lessons": [
+        47,
+        48,
+        49,
+        50,
+        51
+      ],
+      "goal": "Vòng đời phát triển, phương pháp, mô hình hóa, thiết kế module và kiểm thử. Mô hình nghiệp vụ ở mục 49 cũng liên quan phần chiến lược.",
+      "checkpoint": "Đọc được UML/DFD, chọn cách kiểm thử và giải thích cohesion/coupling, quản lý thay đổi.",
+      "goalJa": "開発ライフサイクル、手法、モデリング、モジュール設計、テストを学びます。項目49の業務モデルはストラテジ分野にも関連します。",
+      "checkpointJa": "UML・DFDを読み、テスト手法を選び、凝集度・結合度と変更管理を説明します。"
+    },
+    {
+      "title": "Quản lý dự án & dịch vụ",
+      "jp": "マネジメント系",
+      "area": "科目A · マネジメント系",
+      "lessons": [
+        52,
+        53,
+        54,
+        55,
+        56
+      ],
+      "goal": "Quản lý dự án, tiến độ/chi phí, IT service management, vận hành và kiểm toán.",
+      "checkpoint": "Tính critical path/EVM trên ví dụ nhỏ; phân biệt SLA, incident, problem, change và vai trò kiểm toán.",
+      "goalJa": "プロジェクト、進捗・コスト、ITサービス、運用、監査を学びます。",
+      "checkpointJa": "小さな例でクリティカルパス・EVMを計算し、SLA、インシデント、問題、変更、監査の役割を区別します。"
+    },
+    {
+      "title": "Chiến lược, doanh nghiệp & pháp luật",
+      "jp": "ストラテジ系",
+      "area": "科目A · ストラテジ系",
+      "lessons": [
+        57,
+        58,
+        59,
+        60,
+        61
+      ],
+      "goal": "Chiến lược hệ thống, kinh doanh, công nghệ, hoạt động doanh nghiệp và pháp luật. Đối chiếu phần pháp luật với syllabus mới.",
+      "checkpoint": "Giải thích SWOT/PPM/BSC, tính bài kế toán cơ bản và phân biệt quyền sở hữu trí tuệ, dữ liệu cá nhân, nghĩa vụ pháp lý.",
+      "goalJa": "システム・経営・技術戦略、企業活動、法務を学びます。法務は最新のシラバスと照合します。",
+      "checkpointJa": "SWOT・PPM・BSCを説明し、基本的な会計計算を行い、知的財産権、個人情報、法的義務を区別します。"
+    }
+  ],
+  "subjectB": [
+    {
+      "title": "Đọc giả mã & lập bảng trace",
+      "jp": "擬似言語・トレース",
+      "related": [
+        10,
+        4
+      ],
+      "practice": "Biến, phép gán, điều kiện, vòng lặp; theo dõi giá trị sau từng lệnh và kiểm tra biên vòng lặp.",
+      "gap": "Có nền tảng flowchart, nhưng chưa có bộ bài luyện riêng theo giả mã IPA. Đọc quy ước và làm đề mẫu IPA trước khi tăng tốc.",
+      "titleJa": "擬似言語の読解とトレース",
+      "practiceJa": "変数、代入、条件、繰返しの値を一行ずつ追い、ループの境界を確認します。",
+      "gapJa": "フローチャートの基礎はありますが、IPA擬似言語の専用演習は未整備です。規則とサンプル問題から始めます。"
+    },
+    {
+      "title": "Mảng, chuỗi & cấu trúc dữ liệu",
+      "jp": "配列・文字列・データ構造",
+      "related": [
+        11,
+        7
+      ],
+      "practice": "Mảng một/hai chiều, xử lý chuỗi, stack/queue, danh sách liên kết và cây; ghi rõ chỉ số bắt đầu và trạng thái dữ liệu.",
+      "gap": "Các bài hiện có hỗ trợ stack/queue/tree và RPN; cần bổ sung trace mảng/chuỗi và danh sách liên kết theo dạng 科目B.",
+      "titleJa": "配列・文字列・データ構造",
+      "practiceJa": "一次元・二次元配列、文字列、スタック・キュー、連結リスト、木を扱い、添字とデータの状態を明記します。",
+      "gapJa": "スタック・キュー・木・RPNの教材はあります。科目B形式の配列・文字列・連結リストのトレース演習を追加する必要があります。"
+    },
+    {
+      "title": "Hàm, đệ quy & thuật toán",
+      "jp": "関数・再帰・アルゴリズム",
+      "related": [
+        12,
+        13,
+        14
+      ],
+      "practice": "Tham số, giá trị trả về, phạm vi biến, đệ quy; tự trace tìm kiếm/sắp xếp trên dữ liệu nhỏ.",
+      "gap": "Có ví dụ tìm kiếm/sắp xếp; chưa có lộ trình luyện hàm/đệ quy và các bài đọc chương trình đầy đủ. Mục 14 hiện chưa có tài liệu.",
+      "titleJa": "関数・再帰・アルゴリズム",
+      "practiceJa": "引数、戻り値、変数のスコープ、再帰を学び、小さなデータで探索・整列を追います。",
+      "gapJa": "探索・整列の例はありますが、関数・再帰とプログラム読解の体系的な演習は未整備です。項目14は教材未公開です。"
+    },
+    {
+      "title": "Giải quyết vấn đề bằng lập trình",
+      "jp": "プログラミングによる問題解決",
+      "related": [
+        10,
+        11,
+        12,
+        13
+      ],
+      "practice": "Từ mô tả bài toán, xác định đầu vào/đầu ra, cách lưu dữ liệu và thuật toán; chọn lệnh còn thiếu rồi kiểm chứng bằng trace.",
+      "gap": "Cần bộ bài tình huống riêng; bài trắc nghiệm khái niệm hiện có không thay thế được phần thực hành này.",
+      "titleJa": "プログラミングによる問題解決",
+      "practiceJa": "問題文から入出力、データの持ち方、アルゴリズムを決め、不足する命令を選んでトレースで検証します。",
+      "gapJa": "専用の事例演習が必要です。既存の知識確認問題だけではこの実践を代替できません。"
+    },
+    {
+      "title": "Tình huống an toàn thông tin",
+      "jp": "情報セキュリティ",
+      "related": [
+        39,
+        40,
+        41,
+        42,
+        43
+      ],
+      "practice": "Đọc tình huống về xác thực, phân quyền, nhật ký, lừa đảo, xử lý sự cố và kiểm soát rủi ro; chọn biện pháp theo ngữ cảnh.",
+      "gap": "Các mục bảo mật mới có tên trong danh mục, chưa có trang học. Cần bổ sung cả nền tảng 科目A và thực hành tình huống 科目B.",
+      "titleJa": "情報セキュリティの事例演習",
+      "practiceJa": "認証、権限、ログ、詐欺、インシデント対応、リスク管理の事例を読み、状況に合う対策を選びます。",
+      "gapJa": "セキュリティ項目は一覧のみで、学習ページは未公開です。科目Aの基礎と科目Bの事例演習の両方を追加する必要があります。"
+    },
+    {
+      "title": "Luyện đề 科目B có bấm giờ",
+      "jp": "20問・100分",
+      "related": [],
+      "practice": "Luyện theo cấu trúc 16 câu thuật toán/lập trình và 4 câu an toàn thông tin; xem lại trace và lý do sai sau mỗi buổi.",
+      "gap": "Chưa có đề 科目B hoàn chỉnh trong kho. Dùng đề mẫu/đề công khai IPA và bổ sung nguồn luyện đủ 20 câu. Không dùng tỷ lệ đúng của quiz để suy ra điểm IRT.",
+      "titleJa": "時間を計って科目Bを演習",
+      "practiceJa": "アルゴリズム・プログラミング16問と情報セキュリティ4問で練習し、毎回トレースと誤答理由を見直します。",
+      "gapJa": "完全な科目B模試は未収録です。IPAサンプル・公開問題と追加教材で20問を用意します。クイズの正答率からIRT評価点を推定しないでください。"
+    }
+  ]
+}
