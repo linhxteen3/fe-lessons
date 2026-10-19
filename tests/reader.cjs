@@ -48,6 +48,45 @@ const counts=require('./reader-counts.json');
    if([1,5,9,15,21].includes(n))await page.screenshot({path:path.join(require('node:os').tmpdir(),`fe-reader-${n}-mobile.png`)});
    await page.setViewportSize({width:1440,height:1000});console.log(`Lesson ${n} passed.`);
   }
+
+  // Regression for the annotated Japanese-only view of Lesson 01.
+  await page.goto(`${origin}/ly-thuyet/1.html`);
+  await page.locator('#reading-language').selectOption('ja');
+  assert.equal(await page.locator('.lesson-meta').count(),0,'Remove the requested metadata line');
+  assert.ok(await page.locator('.lesson-hero h1').evaluate(el=>parseFloat(getComputedStyle(el).fontSize)>38),'Larger lesson title');
+  assert.equal(await page.locator('#lesson-1-topic-2').textContent(),'1.2 さまざまなデータの単位');
+  assert.equal(await page.locator('#lesson-1-topic-3').textContent(),'1.3 文字の表現（スライド第1回）');
+  await page.locator('.fc-toggle').evaluateAll(buttons=>buttons.forEach(button=>button.click()));
+  const lessonOneAnswers=await page.evaluate(()=>LESSON.quiz.map(q=>q.ans));
+  for(let i=0;i<lessonOneAnswers.length;i++)await page.locator('#quizArea .quiz-q').nth(i).locator('button').nth(lessonOneAnswers[i]).click();
+  await page.locator('.quick-check .opt').first().click();
+  async function japaneseOnly(){
+    const leaks=await page.evaluate(()=>{
+      const found=[];
+      const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+      let node;
+      while(node=walker.nextNode()){
+        if(node.parentElement.closest('script,style,option'))continue;
+        const text=node.textContent.trim();
+        if(!/[ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚÝàáâãèéêìíòóôõùúýăđơưĂĐƠƯ\u1EA0-\u1EF9]/u.test(text))continue;
+        const range=document.createRange();range.selectNodeContents(node);
+        if(range.getClientRects().length)found.push(text.slice(0,140));
+      }
+      return found;
+    });
+    assert.deepEqual(leaks,[],'Japanese mode must not display Vietnamese anywhere in Lesson 01');
+  }
+  await japaneseOnly();
+  await page.setViewportSize({width:799,height:668});await japaneseOnly();
+  await page.evaluate(()=>scrollTo(0,0));
+  await page.screenshot({path:path.join(require('node:os').tmpdir(),'fe-reader-one-japanese.png')});
+  await page.locator('#reading-theme').click();await japaneseOnly();await page.locator('#reading-theme').click();
+  await page.locator('#reading-language').selectOption('vi');
+  assert.ok((await page.locator('.lesson-recap .reading-vi').textContent()).includes('Nhớ 3 ý chính'));
+  assert.ok(await page.locator('.callout .reading-vi').first().isVisible(),'Vietnamese original is retained');
+  await page.locator('#reading-language').selectOption('dual');
+  assert.ok((await page.locator('#lesson-1-topic-2').textContent()).includes('Các đơn vị dữ liệu'));
+  await page.setViewportSize({width:1440,height:1000});
   await page.goto(`${origin}/ly-thuyet/2.html`);const answers=await page.evaluate(()=>LESSON.quiz.map(q=>q.ans));
   for(let i=0;i<answers.length;i++)await page.locator('#quizArea .quiz-q').nth(i).locator('button').nth(answers[i]).click();
   assert.equal(await page.locator('#qScore').textContent(),`${answers.length} / ${answers.length}`);

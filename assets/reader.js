@@ -68,7 +68,8 @@ function questionCard(question,index,quick=false) {
     if(quick)quickPicks[index]=choice;
     else if(!restoring){picks[index]=choice;readerStorage.set(key,picks);updateResult();}
   }
-  question.opts.forEach((option,i)=>{
+  const displayedOptions=language==='ja'&&Array.isArray(question.optsJa)&&question.optsJa.length===question.opts.length?question.optsJa:question.opts;
+  displayedOptions.forEach((option,i)=>{
     const button=document.createElement('button');button.type='button';button.className='opt';button.setAttribute('aria-pressed','false');button.innerHTML=`<span class="ltr">${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[i]}.</span><span>${option}</span>`;button.onclick=()=>choose(i);options.append(button);
   });
   const choice=quick?quickPicks[index]:picks[index];
@@ -122,7 +123,8 @@ function showCompletion(){if(!completion)return;const complete=readerStorage.get
 if(completion)completion.onclick=()=>{const value=completion.getAttribute('aria-pressed')!=='true';const saved=readerStorage.set('reader-complete:'+LESSON.number,value);showCompletion();document.getElementById('completion-status').textContent=saved?t('Đã lưu trạng thái đọc trên trình duyệt này.','このブラウザに読了状態を保存しました。'):t('Trình duyệt không cho phép lưu.','このブラウザでは保存できません。');};
 function applyLanguage(value) {
   language=value;document.documentElement.dataset.readingLang=value;document.documentElement.lang=value==='ja'?'ja':'vi';selector.value=value;
-  document.querySelectorAll('[data-vi][data-ja]').forEach(el=>el.textContent=t(el.dataset.vi,el.dataset.ja));
+  document.querySelectorAll('[data-vi][data-ja]').forEach(el=>el.textContent=language==='dual'&&el.dataset.dual?el.dataset.dual:t(el.dataset.vi,el.dataset.ja));
+  document.querySelectorAll('[data-aria-vi][data-aria-ja]').forEach(el=>el.setAttribute('aria-label',t(el.dataset.ariaVi,el.dataset.ariaJa)));
   targets.forEach(item=>item.link.textContent=item.heading.textContent.trim());
   document.querySelectorAll('.vocab-toggle').forEach(button=>{const card=FLASHCARDS[Number(button.dataset.index)];button.innerHTML=language==='ja'?(card.frontJa||card.front):card.front;button.nextElementSibling.innerHTML=bilingual(card.back,card.backJa);});
   renderFilters();renderCards();renderQuiz();renderQuickChecks();showCompletion();updateThemeButton();scheduleReading();

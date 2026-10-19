@@ -84,3 +84,5 @@ svg,img { max-width:100%; height:auto; }
 :root { --a1:var(--accent); --a2:var(--good); --a3:var(--accent); --a4:var(--tip-text); --a5:var(--accent); --a6:var(--accent); --accent1:var(--accent); --accent2:var(--accent); --accent3:var(--good); --accent4:var(--tip-text); --accent5:var(--accent); --mute:var(--muted); --hi:var(--tint); --linear:var(--accent); --hash:var(--good); --binary:var(--accent); }
 
 .reading-main, .reading-sidebar { overflow-wrap:anywhere; }
+
+.lesson-one .lesson-hero h1 { font-size:clamp(32px,5vw,46px); }
