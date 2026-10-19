@@ -158,29 +158,29 @@
     {
       "stt": 23,
       "topic": "ファイル管理+Ôn Ch.1-5",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/23.html",
+      "test": "kiem-tra/23.html",
       "status": "todo"
     },
     {
       "stt": 24,
       "topic": "MILESTONE: 50 câu tổng GĐ1",
       "theory": null,
-      "test": null,
+      "test": "kiem-tra/24.html",
       "status": "todo"
     },
     {
       "stt": 25,
       "topic": "ユーザーインタフェース",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/25.html",
+      "test": "kiem-tra/25.html",
       "status": "todo"
     },
     {
       "stt": 26,
       "topic": "マルチメディア・画像音声",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/26.html",
+      "test": "kiem-tra/26.html",
       "status": "todo"
     },
     {
@@ -200,50 +200,50 @@
     {
       "stt": 29,
       "topic": "DB基本・E-R図",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/29.html",
+      "test": "kiem-tra/29.html",
       "status": "todo"
     },
     {
       "stt": 30,
       "topic": "正規化 (1NF→3NF)",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/30.html",
+      "test": "kiem-tra/30.html",
       "status": "todo"
     },
     {
       "stt": 31,
       "topic": "SQL · SELECT JOIN GROUP BY",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/31.html",
+      "test": "kiem-tra/31.html",
       "status": "todo"
     },
     {
       "stt": 32,
       "topic": "トランザクション · ACID",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/32.html",
+      "test": "kiem-tra/32.html",
       "status": "todo"
     },
     {
       "stt": 33,
       "topic": "DB過去問 + AI/ML 機械学習",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/33.html",
+      "test": "kiem-tra/33.html",
       "status": "todo"
     },
     {
       "stt": 34,
       "topic": "ネットワーク基本+OSI参照モデル",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/34.html",
+      "test": "kiem-tra/34.html",
       "status": "todo"
     },
     {
       "stt": 35,
       "topic": "TCP/IP・IPアドレス・サブネット",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/35.html",
+      "test": "kiem-tra/35.html",
       "status": "todo"
     },
     {
