@@ -1,152 +1,63 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="light" data-lang="dual">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bài 12: FE 03-03 · 基本アルゴリズム · 探索 (Tìm kiếm) — FE Master</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/reader.css">
-</head>
-<body>
 
-<!-- Reading Progress Bar -->
-<div class="reading-progress-track">
-  <div class="reading-progress-bar" id="readingProgress"></div>
-</div>
-
-<!-- Minimal Sticky Top Header -->
-<header class="site-header">
-  <div class="header-container">
-    <div class="header-left">
-      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
-        <span class="text-ja">← ロードマップ</span>
-        <span class="text-vi">← Lộ trình</span>
-      </a>
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
-        <span class="sep">/</span>
-        <span>Mục tiêu 2</span>
-        <span class="sep">/</span>
-        <span class="current">Bài 12</span>
-      </nav>
-    </div>
-    <div class="header-right">
-      <div class="lang-selector">
-        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
-        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
-        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
-      </div>
-      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
-        <span id="zenIcon">📖</span>
-        <span id="zenText">Zen</span>
-      </button>
-      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
-        <span id="themeIcon">◐</span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- Main Two-Column Reader Layout -->
-<div class="page-container">
-
-  <!-- Left Content Column -->
-  <main class="main-content">
-
-    <div class="lesson-header">
-      <div class="lesson-meta-bar">
-        <span class="badge-lesson">BÀI 12 · CƠ SỞ LÝ THUYẾT</span>
-        <span class="badge-tag">MỤC TIÊU 2</span>
-        <span class="badge-tag">TRỌNG TÂM 科目A</span>
-      </div>
-      <h1 class="lesson-title">
-        FE 03-03 · 基本アルゴリズム · 探索 (Tìm kiếm)
-      </h1>
-      <div class="lesson-stats">
-        <span>⏱ ~30-45 phút đọc</span>
-        <span>·</span>
-        <span>Active Recall & Flashcards</span>
-      </div>
-    </div>
-
-    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
-    <section class="content-section" id="sec-1">
-      <h2 class="section-heading">
-        <span class="num-badge">①</span>
-        <span class="text-ja">重要理論 (Theory)</span>
-        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
-      </h2>
-      <div class="lesson-body-content">
-<h3>1.1 探索アルゴリズム là gì?</h3>
-<div class="lang jp"><span class="tag">🇯🇵 日本語</span>探索アルゴリズム（たんさくアルゴリズム）とは、<b>特定のデータを見つけ出す</b>ためのアルゴリズムです。基本情報技術者試験では主に「線形探索法」「ハッシュ法」「2分探索法」の3種類が出題されます。</div>
-<div class="lang vn"><span class="tag">🇻🇳 Tiếng Việt</span>Thuật toán tìm kiếm là thuật toán dùng để <b>tìm ra một dữ liệu cụ thể</b> trong tập dữ liệu. Trong kỳ thi FE, ba thuật toán chính được hỏi là: <b>線形探索法 (tìm tuyến tính)</b>, <b>ハッシュ法 (hash)</b>, và <b>2分探索法 (tìm nhị phân)</b>.</div>
-<div class="lang en"><span class="tag">🇬🇧 English</span>A search algorithm is used to <b>locate a specific data item</b>. The FE exam focuses on three types: <b>Linear Search</b>, <b>Hashing</b>, and <b>Binary Search</b>.</div>
-
-<h3>1.2 Ba thuật toán chính – bảng tổng quan</h3>
-<table>
-  <tr><th>種類 (Loại)</th><th>説明 (Mô tả)</th><th>FE出題頻度</th></tr>
-  <tr><td><span style="color:var(--linear)">線形探索法<br>Linear Search</span></td><td>So sánh từng phần tử từ đầu danh sách, từng cái một, đến khi tìm thấy mục tiêu.</td><td>Thấp</td></tr>
-  <tr><td><span style="color:var(--hash)">ハッシュ法<br>Hashing</span></td><td>Dùng hàm băm (ハッシュ関数) để biến dữ liệu thành "ハッシュ値" và lưu vào "ハッシュ表".</td><td><b>Cao ⭐</b></td></tr>
-  <tr><td><span style="color:var(--binary)">2分探索法<br>Binary Search</span></td><td>Chia đôi vùng tìm kiếm liên tiếp. Yêu cầu dữ liệu phải được sắp xếp trước.</td><td><b>Cao ⭐</b></td></tr>
-</table>
-
-<h3>1.3 線形探索法 (Linear Search)</h3>
+<html data-reading-lang="dual" data-reading-theme="light" lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><meta content="light dark" name="color-scheme"/><title>Bài 12 · 基本アルゴリズム — FE Master</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/><link href="../assets/reader.css" rel="stylesheet"/><script defer="" src="../assets/reader.js"></script></head><body>
+<a class="skip-link" data-ja="本文へ" data-vi="Đến nội dung bài học" href="#lesson-content">Đến nội dung bài học</a>
+<header class="topbar"><div aria-label="Tiến độ đọc bài" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-track" role="progressbar"><div id="reader-progress"></div></div><div class="top-inner"><div class="top-left"><a class="reading-back" data-ja="← ロードマップへ" data-vi="← Quay lại lộ trình" href="../index.html" target="_top">← Quay lại lộ trình</a><nav aria-label="Breadcrumb" class="breadcrumb"><span>FE</span><span>/</span><span data-ja="目標2" data-vi="Mục tiêu 2">Mục tiêu 2</span><span>/</span><span data-ja="解説12" data-vi="Lý thuyết 12">Lý thuyết 12</span></nav></div><div class="reading-controls"><label class="sr-only" for="reading-language">Ngôn ngữ bài học</label><select id="reading-language"><option value="dual">Việt + 日本語</option><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select><button aria-label="Chế độ tập trung: ẩn sidebar" aria-pressed="false" id="zen-toggle" type="button">⊡ <span class="zen-label" data-ja="集中" data-vi="Tập trung">Tập trung</span></button><button aria-pressed="false" id="reading-theme" type="button">☾ Tối</button></div></div></header>
+<div class="layout"><main class="reading-main" id="lesson-content"><header class="lesson-hero"><span class="lesson-eyebrow" data-ja="レッスン12 · 理論" data-vi="BÀI 12 · LÝ THUYẾT">BÀI 12 · LÝ THUYẾT</span><h1><span class="reading-ja" lang="ja">基本アルゴリズム</span><span class="reading-vi" lang="vi">Tìm kiếm</span></h1><div class="lesson-meta"><span data-ja="科目Aの基礎" data-vi="Trọng tâm 科目A">Trọng tâm 科目A</span><span data-ja="暗記カード12枚 · 確認問題10問" data-vi="12 flashcard · 10 câu ôn tập">12 flashcard · 10 câu ôn tập</span></div></header>
+<section class="lesson-part lesson-section" id="p1"><h2 class="lesson-part-title" data-ja="理論のまとめ" data-step="01" data-vi="Tóm tắt lý thuyết">Tóm tắt lý thuyết</h2>
+<h3 id="lesson-12-topic-1">1.1 探索アルゴリズム là gì?</h3>
+<div class="lang jp reading-ja" lang="ja"><span class="tag">🇯🇵 日本語</span>探索アルゴリズム（たんさくアルゴリズム）とは、<b>特定のデータを見つけ出す</b>ためのアルゴリズムです。基本情報技術者試験では主に「線形探索法」「ハッシュ法」「2分探索法」の3種類が出題されます。</div>
+<div class="lang vn reading-vi" lang="vi"><span class="tag">🇻🇳 Tiếng Việt</span>Thuật toán tìm kiếm là thuật toán dùng để <b>tìm ra một dữ liệu cụ thể</b> trong tập dữ liệu. Trong kỳ thi FE, ba thuật toán chính được hỏi là: <b>線形探索法 (tìm tuyến tính)</b>, <b>ハッシュ法 (hash)</b>, và <b>2分探索法 (tìm nhị phân)</b>.</div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en"><span class="tag">🇬🇧 English</span>A search algorithm is used to <b>locate a specific data item</b>. The FE exam focuses on three types: <b>Linear Search</b>, <b>Hashing</b>, and <b>Binary Search</b>.</div></details>
+<h3 id="lesson-12-topic-2">1.2 Ba thuật toán chính – bảng tổng quan</h3>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><th scope="col">種類 (Loại)</th><th scope="col">説明 (Mô tả)</th><th scope="col">FE出題頻度</th></tr>
+<tr><td><span style="color:var(--linear)">線形探索法<br/>Linear Search</span></td><td>So sánh từng phần tử từ đầu danh sách, từng cái một, đến khi tìm thấy mục tiêu.</td><td>Thấp</td></tr>
+<tr><td><span style="color:var(--hash)">ハッシュ法<br/>Hashing</span></td><td>Dùng hàm băm (ハッシュ関数) để biến dữ liệu thành "ハッシュ値" và lưu vào "ハッシュ表".</td><td><b>Cao ⭐</b></td></tr>
+<tr><td><span style="color:var(--binary)">2分探索法<br/>Binary Search</span></td><td>Chia đôi vùng tìm kiếm liên tiếp. Yêu cầu dữ liệu phải được sắp xếp trước.</td><td><b>Cao ⭐</b></td></tr>
+</table></div>
+<h3 id="lesson-12-topic-3">1.3 線形探索法 (Linear Search)</h3>
 <div class="box linear">
-<div class="lang jp"><span class="tag">🇯🇵 日本語</span>先頭のデータから順番に1つずつ照合することで目的のデータを見つける、単純な探索アルゴリズム。</div>
-<div class="lang vn"><span class="tag">🇻🇳 Tiếng Việt</span>Từ phần tử đầu tiên, lần lượt so sánh từng phần tử một với mục tiêu cho đến khi tìm thấy. <b>Ví von:</b> giống như bạn lật từng trang sách từ đầu để tìm một từ — đơn giản nhưng chậm.</div>
-<div class="lang en"><span class="tag">🇬🇧 English</span>Compare each element one by one from the beginning until the target is found. Simple but slow.</div>
+<div class="lang jp reading-ja" lang="ja"><span class="tag">🇯🇵 日本語</span>先頭のデータから順番に1つずつ照合することで目的のデータを見つける、単純な探索アルゴリズム。</div>
+<div class="lang vn reading-vi" lang="vi"><span class="tag">🇻🇳 Tiếng Việt</span>Từ phần tử đầu tiên, lần lượt so sánh từng phần tử một với mục tiêu cho đến khi tìm thấy. <b>Ví von:</b> giống như bạn lật từng trang sách từ đầu để tìm một từ — đơn giản nhưng chậm.</div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en"><span class="tag">🇬🇧 English</span>Compare each element one by one from the beginning until the target is found. Simple but slow.</div></details>
 <ul>
-  <li>✅ Ưu điểm: đơn giản, không cần sắp xếp trước.</li>
-  <li>❌ Nhược điểm: chậm khi dữ liệu lớn (trung bình kiểm tra n/2 phần tử).</li>
+<li>✅ Ưu điểm: đơn giản, không cần sắp xếp trước.</li>
+<li>❌ Nhược điểm: chậm khi dữ liệu lớn (trung bình kiểm tra n/2 phần tử).</li>
 </ul>
 </div>
-
-<h3>1.4 ハッシュ法 (Hashing)</h3>
+<h3 id="lesson-12-topic-4">1.4 ハッシュ法 (Hashing)</h3>
 <div class="box hash">
-<div class="lang jp"><span class="tag">🇯🇵 日本語</span>探索対象のデータをハッシュ関数でハッシュ値に変換し、このハッシュ値を要素番号として配列（ハッシュ表）に格納する。1回のアクセスで目的のデータを取り出せる。</div>
-<div class="lang vn"><span class="tag">🇻🇳 Tiếng Việt</span>Biến đổi dữ liệu thành một số gọi là <b>ハッシュ値 (hash value)</b> bằng một <b>ハッシュ関数 (hash function)</b>, rồi dùng số đó làm chỉ số trong mảng (<b>ハッシュ表</b>). Chỉ cần <b>1 lần truy cập</b> là tìm được dữ liệu.<br><b>Ví von:</b> như tủ khoá ở phòng tập — mỗi người có 1 số khoá riêng, đến đúng tủ là lấy đồ ngay, không cần dò từng tủ.</div>
-<div class="lang en"><span class="tag">🇬🇧 English</span>Convert the data into a hash value using a hash function; the hash value is used as an array index. Retrieval takes one access on average.</div>
+<div class="lang jp reading-ja" lang="ja"><span class="tag">🇯🇵 日本語</span>探索対象のデータをハッシュ関数でハッシュ値に変換し、このハッシュ値を要素番号として配列（ハッシュ表）に格納する。1回のアクセスで目的のデータを取り出せる。</div>
+<div class="lang vn reading-vi" lang="vi"><span class="tag">🇻🇳 Tiếng Việt</span>Biến đổi dữ liệu thành một số gọi là <b>ハッシュ値 (hash value)</b> bằng một <b>ハッシュ関数 (hash function)</b>, rồi dùng số đó làm chỉ số trong mảng (<b>ハッシュ表</b>). Chỉ cần <b>1 lần truy cập</b> là tìm được dữ liệu.<br/><b>Ví von:</b> như tủ khoá ở phòng tập — mỗi người có 1 số khoá riêng, đến đúng tủ là lấy đồ ngay, không cần dò từng tủ.</div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en"><span class="tag">🇬🇧 English</span>Convert the data into a hash value using a hash function; the hash value is used as an array index. Retrieval takes one access on average.</div></details>
 <p><b>Ví dụ hàm băm phổ biến:</b> <code>x mod 10</code> (剰余 = phần dư của phép chia).</p>
 <div class="exam-tip">
-  <strong>試験にはコレが出る!</strong>
-  <ul>
-    <li>ハッシュ法では、<b>ハッシュ値によって格納場所を決める</b>。</li>
-    <li>ハッシュ法のデメリットは <b>衝突 (シノニム / synonym)</b> が起こる可能性があること — input khác nhau nhưng cho ra cùng hash value.</li>
-    <li>FE không hỏi cách giải quyết va chạm cụ thể, chỉ hỏi "có khả năng va chạm".</li>
-  </ul>
+<strong>試験にはコレが出る!</strong>
+<ul>
+<li>ハッシュ法では、<b>ハッシュ値によって格納場所を決める</b>。</li>
+<li>ハッシュ法のデメリットは <b>衝突 (シノニム / synonym)</b> が起こる可能性があること — input khác nhau nhưng cho ra cùng hash value.</li>
+<li>FE không hỏi cách giải quyết va chạm cụ thể, chỉ hỏi "có khả năng va chạm".</li>
+</ul>
 </div>
 </div>
-
-<h3>1.5 2分探索法 (Binary Search)</h3>
+<h3 id="lesson-12-topic-5">1.5 2分探索法 (Binary Search)</h3>
 <div class="box binary">
-<div class="lang jp"><span class="tag">🇯🇵 日本語</span>調べる範囲を半分に分割することで目的のデータを見つけるアルゴリズム。2つの特徴:【特徴1】データを、あらかじめ整列させておく必要がある 【特徴2】データを、2つに分けながら探索する。</div>
-<div class="lang vn"><span class="tag">🇻🇳 Tiếng Việt</span>Chia đôi vùng tìm kiếm sau mỗi lần so sánh. <b>Ví von:</b> như tra từ điển giấy — mở vào giữa, nếu từ cần tìm ở trước thì bỏ nửa sau, ngược lại bỏ nửa trước. Sau mỗi lần, vùng tìm kiếm chỉ còn một nửa.<br>
+<div class="lang jp reading-ja" lang="ja"><span class="tag">🇯🇵 日本語</span>調べる範囲を半分に分割することで目的のデータを見つけるアルゴリズム。2つの特徴:【特徴1】データを、あらかじめ整列させておく必要がある 【特徴2】データを、2つに分けながら探索する。</div>
+<div class="lang vn reading-vi" lang="vi"><span class="tag">🇻🇳 Tiếng Việt</span>Chia đôi vùng tìm kiếm sau mỗi lần so sánh. <b>Ví von:</b> như tra từ điển giấy — mở vào giữa, nếu từ cần tìm ở trước thì bỏ nửa sau, ngược lại bỏ nửa trước. Sau mỗi lần, vùng tìm kiếm chỉ còn một nửa.<br/>
 <b>2 đặc điểm bắt buộc nhớ:</b>
 <ol>
-  <li><b>特徴1:</b> Dữ liệu phải được sắp xếp trước (tăng dần hoặc giảm dần).</li>
-  <li><b>特徴2:</b> Tìm bằng cách chia đôi liên tiếp.</li>
+<li><b>特徴1:</b> Dữ liệu phải được sắp xếp trước (tăng dần hoặc giảm dần).</li>
+<li><b>特徴2:</b> Tìm bằng cách chia đôi liên tiếp.</li>
 </ol></div>
-<div class="lang en"><span class="tag">🇬🇧 English</span>Repeatedly halves the search range. Requires the data to be sorted in advance. Each comparison eliminates half of the remaining elements.</div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en"><span class="tag">🇬🇧 English</span>Repeatedly halves the search range. Requires the data to be sorted in advance. Each comparison eliminates half of the remaining elements.</div></details>
 <p><b>Cách tính phần tử giữa:</b> <code>中央 = (先頭番号 + 末尾番号) ÷ 2</code> (làm tròn lên hoặc xuống đều được).</p>
 </div>
-
-<!-- ============================================= -->
-      </div>
-    </section>
-
-    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
-    <section class="content-section" id="sec-2">
-      <h2 class="section-heading">
-        <span class="num-badge">②</span>
-        <span class="text-ja">演習例題 (Worked Examples)</span>
-        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
-      </h2>
-      <div class="lesson-body-content">
-<h3>2.1 Ví dụ Linear Search — tìm "14" (theo slide)</h3>
+ =============================================
+</section><section class="lesson-part lesson-section" id="p2"><h2 class="lesson-part-title" data-ja="例題" data-step="02" data-vi="Ví dụ minh hoạ">Ví dụ minh hoạ</h2>
+<h3 id="lesson-12-topic-6">2.1 Ví dụ Linear Search — tìm "14" (theo slide)</h3>
 <p>Mảng: <code>[12, 3, 17, 5, 8, 14, 21, 6, 9, 1, 19]</code></p>
-<div class="ascii">
+<pre class="ascii" tabindex="0">
 Bước  Vị trí  Giá trị  So sánh với 14  Kết quả
  1      [0]     12     12 == 14?       Không, tiếp
  2      [1]      3      3 == 14?       Không, tiếp
@@ -156,11 +67,10 @@ Bước  Vị trí  Giá trị  So sánh với 14  Kết quả
  6      [5]     14     14 == 14?       ★ TÌM THẤY! (発見)
 
 Tổng số phép so sánh: 6 lần
-</div>
-
-<h3>2.2 Ví dụ Hash — tìm "32" trong bảng (theo Yasashii)</h3>
+</pre>
+<h3 id="lesson-12-topic-7">2.2 Ví dụ Hash — tìm "32" trong bảng (theo Yasashii)</h3>
 <p>Hàm băm: <code>x mod 10</code>. Bảng hash đã có sẵn:</p>
-<div class="ascii">
+<pre class="ascii" tabindex="0">
 ハッシュ表 (Hash table)
 アドレス  データ
    1      51
@@ -172,433 +82,34 @@ Tổng số phép so sánh: 6 lần
 Tìm "32":
   Bước 1: tính hash → 32 mod 10 = 2
   Bước 2: truy cập trực tiếp ô địa chỉ [2] → lấy ra 32. ★ 発見 trong 1 lần!
-</div>
+</pre>
 <div class="note"><b>シノニム (Synonym / Collision):</b> Nếu thêm "42" → 42 mod 10 = 2 → cùng địa chỉ với "32" ⇒ 衝突 xảy ra.</div>
-
-<h3>2.3 Ví dụ Binary Search — tìm "6" trong [1..9] (theo Yasashii)</h3>
-<div class="ascii">
+<h3 id="lesson-12-topic-8">2.3 Ví dụ Binary Search — tìm "6" trong [1..9] (theo Yasashii)</h3>
+<pre class="ascii" tabindex="0">
 Mảng đã sắp xếp tăng dần (要素番号 1..9):
 [1] [2] [3] [4] [5] [6] [7] [8] [9]
  1   2   3   4   5   6   7   8   9
 
 ─ Bước 1: 中央 = (1+9)÷2 = 5  → phần tử [5] = 5
-          So sánh: 6 > 5 → bỏ nửa TRÁI
+          So sánh: 6 &gt; 5 → bỏ nửa TRÁI
 
 ─ Bước 2: vùng còn lại [6..9]
           中央 = (6+9)÷2 = 7.5 ≒ 7  → phần tử [7] = 7
-          So sánh: 6 < 7 → bỏ nửa PHẢI
+          So sánh: 6 &lt; 7 → bỏ nửa PHẢI
 
 ─ Bước 3: vùng còn lại [6]
           → phần tử [6] = 6 → ★ 発見 (Tìm thấy)
 
 Tổng số so sánh: 3 lần (so với Linear search có thể tốn 6 lần)
-</div>
-
-<h3>2.4 Bảng so sánh 3 thuật toán</h3>
-<table>
-  <tr><th>Tiêu chí</th><th>Linear (線形)</th><th>Hash (ハッシュ)</th><th>Binary (2分)</th></tr>
-  <tr><td>Yêu cầu sắp xếp trước?</td><td>Không</td><td>Không</td><td><b>Có (bắt buộc)</b></td></tr>
-  <tr><td>Số phép so sánh trung bình</td><td>n/2</td><td>1 (nếu không va chạm)</td><td>log₂ n</td></tr>
-  <tr><td>Tốc độ với n=1.000.000</td><td>~500.000</td><td>1</td><td>~20</td></tr>
-  <tr><td>Có va chạm không?</td><td>—</td><td><b>Có (衝突/シノニム)</b></td><td>—</td></tr>
-  <tr><td>FE出題</td><td>Thấp</td><td>Cao</td><td>Cao</td></tr>
-</table>
-
-<!-- ============================================= -->
-      </div>
-    </section>
-
-    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-3">
-      <h2 class="section-heading">
-        <span class="num-badge">③</span>
-        <span class="text-ja">暗記カード (Flashcards)</span>
-        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
-        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
-        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
-      </p>
-
-      <div class="fc-grid" id="fcGrid"></div>
-    </section>
-
-    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-4">
-      <h2 class="section-heading">
-        <span class="num-badge">④</span>
-        <span class="text-ja">確認テスト (10問)</span>
-        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
-        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
-        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
-      </p>
-
-      <div id="quizArea"></div>
-
-      <div class="quiz-result-box" id="quiz-result">
-        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
-        <div class="quiz-result-score" id="qScore">0 / 10</div>
-        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
-        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
-      </div>
-    </section>
-
-    <!-- Footer Navigation & Lesson Completion -->
-    <footer class="lesson-footer-nav">
-      <div class="completion-card">
-        <div>
-          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
-            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
-            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
-          </div>
-          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
-            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
-            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
-          </div>
-        </div>
-        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
-      </div>
-
-      <div class="footer-nav-buttons">
-        
-        <a href="11.html" class="nav-link-card prev">
-          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 11</span>
-            <span class="text-vi">Bài học 11</span>
-          </span>
-        </a>
-        
-        <a href="13.html" class="nav-link-card next">
-          <span class="nav-dir">BÀI TIẾP THEO / NEXT →</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 13</span>
-            <span class="text-vi">Bài học 13</span>
-          </span>
-        </a>
-      </div>
-    </footer>
-
-  </main>
-
-  <!-- Right Sticky Sidebar -->
-  <aside class="sticky-sidebar">
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-        <span class="text-ja">目次 (TOC)</span>
-        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
-      </div>
-      <nav>
-        <ul class="toc-list" id="tocList">
-          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
-        </ul>
-      </nav>
-    </div>
-
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        <span class="text-ja">クイック復習</span>
-        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
-      </div>
-      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
-        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
-        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
-      </p>
-    </div>
-  </aside>
-
-</div>
-
-<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
-<script>
-const FLASHCARDS = [
-  {
-    "cat": "all",
-    "front": "線形探索法 là gì?",
-    "back": "So sánh từng phần tử từ đầu mảng đến khi tìm thấy mục tiêu. Không cần sắp xếp trước."
-  },
-  {
-    "cat": "all",
-    "front": "Linear search trung bình kiểm tra bao nhiêu phần tử?",
-    "back": "Trung bình n/2 phần tử (n là số phần tử của mảng)."
-  },
-  {
-    "cat": "all",
-    "front": "ハッシュ関数 là gì?",
-    "back": "Hàm dùng để biến đổi dữ liệu thành ハッシュ値 (hash value). Ví dụ phổ biến: x mod 10 ."
-  },
-  {
-    "cat": "all",
-    "front": "ハッシュ表 (Hash table) là gì?",
-    "back": "Mảng dùng hash value làm chỉ số (要素番号) để lưu dữ liệu."
-  },
-  {
-    "cat": "all",
-    "front": "衝突 (シノニム / Synonym) là gì?",
-    "back": "Hai input khác nhau cho ra cùng một hash value → lưu cùng vị trí. Đây là nhược điểm chính của hash."
-  },
-  {
-    "cat": "all",
-    "front": "剰余 (じょうよ) là gì?",
-    "back": "Phần dư của phép chia, ký hiệu mod . Ví dụ: 32 mod 10 = 2."
-  },
-  {
-    "cat": "all",
-    "front": "Ưu điểm lớn nhất của hash là gì?",
-    "back": "Có thể tìm dữ liệu chỉ trong 1 lần truy cập (nếu không va chạm)."
-  },
-  {
-    "cat": "all",
-    "front": "2 đặc điểm của 2分探索法?",
-    "back": "① Dữ liệu phải được sắp xếp trước (整列) . ② Tìm bằng cách chia đôi (2つに分ける) vùng tìm kiếm."
-  },
-  {
-    "cat": "all",
-    "front": "Công thức tính phần tử giữa?",
-    "back": "中央 = (先頭番号 + 末尾番号) ÷ 2 . Làm tròn lên hoặc xuống đều được."
-  },
-  {
-    "cat": "all",
-    "front": "Độ phức tạp của binary search?",
-    "back": "O(log₂ n). Với n=1.000.000 chỉ cần ~20 so sánh."
-  },
-  {
-    "cat": "all",
-    "front": "Nếu mảng chưa sắp xếp, có dùng được binary search không?",
-    "back": "Không. Đây là điều kiện bắt buộc (特徴1)."
-  },
-  {
-    "cat": "all",
-    "front": "Khi nào nên dùng linear search?",
-    "back": "Khi dữ liệu nhỏ, hoặc khi không thể sắp xếp / không có hash table."
-  }
-];
-const QUIZ = [
-  {
-    "q": "線形探索法の特徴として正しいものはどれか?",
-    "opts": [
-      "データが整列されている必要がある",
-      "先頭から順番に1つずつ照合する",
-      "ハッシュ関数を使う",
-      "データを2つに分割する"
-    ],
-    "ans": 1,
-    "expl": ""
-  },
-  {
-    "q": "ハッシュ法において、入力値が異なるのにハッシュ値が同じになる現象を何と呼ぶか?",
-    "opts": [
-      "分岐 (bunki)",
-      "衝突 (shototsu / synonym)",
-      "整列 (seiretsu)",
-      "再帰 (saiki)"
-    ],
-    "ans": 1,
-    "expl": ""
-  },
-  {
-    "q": "2分探索法を使うために必要な前提条件は何か?",
-    "opts": [
-      "データが整列されていること",
-      "ハッシュ関数が定義されていること",
-      "データが偶数個であること",
-      "データが文字列であること"
-    ],
-    "ans": 0,
-    "expl": ""
-  },
-  {
-    "q": "ハッシュ関数が「x mod 10」のとき、値「47」のハッシュ値はいくつか?",
-    "opts": [
-      "4",
-      "7",
-      "10",
-      "47"
-    ],
-    "ans": 1,
-    "expl": ""
-  },
-  {
-    "q": "要素数1.000.000個の整列済み配列から目的のデータを2分探索法で探す場合、最大何回程度の比較が必要か?",
-    "opts": [
-      "1回",
-      "約20回",
-      "約500.000回",
-      "000.000回"
-    ],
-    "ans": 1,
-    "expl": ""
-  },
-  {
-    "q": "ハッシュ法の最大のメリットは何か?",
-    "opts": [
-      "データを並べる必要がない上、1回のアクセスで目的のデータを取り出せる",
-      "データ量に関係なく必ず1回で見つかる",
-      "衝突が起こらない",
-      "プログラムが最も単純である"
-    ],
-    "ans": 0,
-    "expl": ""
-  },
-  {
-    "q": "昇順に並んだ配列 [1,2,3,4,5,6,7,8,9] から2分探索法で「3」を探すとき、最初に比較する要素は何か?",
-    "opts": [
-      "1",
-      "3",
-      "5",
-      "9"
-    ],
-    "ans": 2,
-    "expl": ""
-  },
-  {
-    "q": "基本情報技術者試験で「探索アルゴリズム」として頻繁に出題されるのはどれか?(2つ選択)",
-    "opts": [
-      "線形探索法のみ",
-      "ハッシュ法と2分探索法",
-      "クイックソートとマージソート",
-      "再帰アルゴリズムのみ"
-    ],
-    "ans": 1,
-    "expl": ""
-  },
-  {
-    "q": "次のうち「探索アルゴリズム」ではないものはどれか?",
-    "opts": [
-      "線形探索法",
-      "2分探索法",
-      "ハッシュ法",
-      "クイックソート"
-    ],
-    "ans": 3,
-    "expl": ""
-  },
-  {
-    "q": "2分探索法の特徴を述べた次の文章のうち、誤っているものはどれか?",
-    "opts": [
-      "データを、あらかじめ整列させておく必要がある",
-      "データを、2つに分けながら探索する",
-      "データ量が多いほど効率がよい(線形より)",
-      "ハッシュ関数を使って格納場所を決める"
-    ],
-    "ans": 3,
-    "expl": ""
-  }
-];
-
-// Render Flashcards with reliable click-to-flip
-function renderFC() {
-  const grid = document.getElementById('fcGrid');
-  if (!grid) return;
-  grid.innerHTML = '';
-
-  FLASHCARDS.forEach(f => {
-    const card = document.createElement('div');
-    card.className = 'fc-card';
-    card.innerHTML = `
-      <div>
-        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
-        <div class="fc-front">${f.front}</div>
-        <div class="fc-back">${f.back}</div>
-      </div>
-      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
-    `;
-    card.addEventListener('click', () => card.classList.toggle('flipped'));
-    grid.appendChild(card);
-  });
-}
-
-// Render Interactive Quiz with tactile 4-option cards & instant feedback
-let quizScore = 0;
-let quizAnswered = 0;
-
-function renderQuiz() {
-  const area = document.getElementById('quizArea');
-  if (!area) return;
-  area.innerHTML = '';
-  quizScore = 0;
-  quizAnswered = 0;
-
-  QUIZ.forEach((item, idx) => {
-    const card = document.createElement('div');
-    card.className = 'quiz-q-card';
-    card.dataset.idx = idx;
-
-    let optsHtml = '';
-    item.opts.forEach((opt, oi) => {
-      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
-      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
-    });
-
-    card.innerHTML = `
-      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
-      <div class="q-text">${item.q}</div>
-      <div class="opts">${optsHtml}</div>
-      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
-    `;
-
-    card.querySelectorAll('.opt').forEach(optEl => {
-      optEl.addEventListener('click', () => {
-        if (card.classList.contains('locked')) return;
-        card.classList.add('locked');
-
-        const chosen = parseInt(optEl.dataset.oi, 10);
-        const correct = item.ans;
-
-        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
-        if (correctEl) correctEl.classList.add('correct');
-
-        if (chosen !== correct) {
-          optEl.classList.add('wrong');
-        } else {
-          quizScore++;
-        }
-
-        quizAnswered++;
-        if (quizAnswered === QUIZ.length) showQuizResult();
-      });
-    });
-
-    area.appendChild(card);
-  });
-
-  const resBox = document.getElementById('quiz-result');
-  if (resBox) resBox.classList.remove('show');
-}
-
-function showQuizResult() {
-  const pct = Math.round((quizScore / QUIZ.length) * 100);
-  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
-  let verdict = '';
-  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
-  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
-  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
-  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
-  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
-  const res = document.getElementById('quiz-result');
-  if (res) {
-    res.classList.add('show');
-    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
-
-function resetQuiz() {
-  renderQuiz();
-  const area = document.getElementById('quizArea');
-  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// Initialize on DOM ready
-renderFC();
-renderQuiz();
-</script>
-<script src="../assets/reader.js"></script>
-</body>
-</html>
+</pre>
+<h3 id="lesson-12-topic-9">2.4 Bảng so sánh 3 thuật toán</h3>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><th scope="col">Tiêu chí</th><th scope="col">Linear (線形)</th><th scope="col">Hash (ハッシュ)</th><th scope="col">Binary (2分)</th></tr>
+<tr><td>Yêu cầu sắp xếp trước?</td><td>Không</td><td>Không</td><td><b>Có (bắt buộc)</b></td></tr>
+<tr><td>Số phép so sánh trung bình</td><td>n/2</td><td>1 (nếu không va chạm)</td><td>log₂ n</td></tr>
+<tr><td>Tốc độ với n=1.000.000</td><td>~500.000</td><td>1</td><td>~20</td></tr>
+<tr><td>Có va chạm không?</td><td>—</td><td><b>Có (衝突/シノニム)</b></td><td>—</td></tr>
+<tr><td>FE出題</td><td>Thấp</td><td>Cao</td><td>Cao</td></tr>
+</table></div>
+ =============================================
+</section><section class="lesson-part lesson-section" id="p3"><h2 class="lesson-part-title" data-ja="暗記カード" data-step="03" data-vi="Flashcards · Bấm để lật">Flashcards · Bấm để lật</h2><div aria-label="Nhóm flashcard" class="fc-filter" id="fcFilter" role="group"></div><div class="fc-grid" id="fcGrid"></div></section><section class="lesson-part lesson-section" id="p4"><h2 class="lesson-part-title" data-ja="確認テスト · 10問" data-step="04" data-vi="Quiz ôn tập · 10 câu">Quiz ôn tập · 10 câu</h2><div class="reading-quiz-tools"><span class="reading-resume-note"></span><button class="btn" id="quiz-reset" type="button">↻ Làm lại</button></div><div id="quizArea"></div><div hidden="" id="quiz-result"><div class="score" id="qScore"></div><p class="verdict" id="qVerdict"></p></div></section><footer class="lesson-footer"><button aria-pressed="false" class="btn primary" id="complete-lesson" type="button">✓ Đã hoàn thành bài học</button><p data-ja="読了状態はテストの進捗とは別に、このブラウザに保存されます。" data-vi="Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra." id="completion-status" role="status">Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra.</p><a class="btn" data-ja="テストへ →" data-vi="Làm bài kiểm tra →" href="../kiem-tra/12.html">Làm bài kiểm tra →</a><nav aria-label="Điều hướng bài học" class="footer-nav"><a class="btn" data-ja="← 前のレッスン" data-vi="← Bài trước" href="11.html">← Bài trước</a><a class="btn" data-ja="次のレッスン →" data-vi="Bài tiếp theo →" href="13.html">Bài tiếp theo →</a></nav></footer></main><aside aria-label="Mục lục và ôn tập" class="reading-sidebar"><nav class="lesson-toc"><h3 data-ja="このレッスンの内容" data-vi="TRONG BÀI HỌC NÀY">TRONG BÀI HỌC NÀY</h3><ul></ul></nav><div class="reading-vocab"><h3 data-ja="覚えたいFE用語" data-vi="Từ vựng FE cần nhớ">Từ vựng FE cần nhớ</h3><p data-ja="用語をクリックして意味を確認。" data-vi="Bấm thuật ngữ để tự kiểm tra nghĩa.">Bấm thuật ngữ để tự kiểm tra nghĩa.</p></div></aside></div><script id="lesson-data" type="application/json">{"number": 12, "cards": [{"cat": "all", "front": "線形探索法 là gì?", "back": "So sánh từng phần tử từ đầu mảng đến khi tìm thấy mục tiêu. Không cần sắp xếp trước."}, {"cat": "all", "front": "Linear search trung bình kiểm tra bao nhiêu phần tử?", "back": "Trung bình n/2 phần tử (n là số phần tử của mảng)."}, {"cat": "all", "front": "ハッシュ関数 là gì?", "back": "Hàm dùng để biến đổi dữ liệu thành ハッシュ値 (hash value). Ví dụ phổ biến: x mod 10 ."}, {"cat": "all", "front": "ハッシュ表 (Hash table) là gì?", "back": "Mảng dùng hash value làm chỉ số (要素番号) để lưu dữ liệu."}, {"cat": "all", "front": "衝突 (シノニム / Synonym) là gì?", "back": "Hai input khác nhau cho ra cùng một hash value → lưu cùng vị trí. Đây là nhược điểm chính của hash."}, {"cat": "all", "front": "剰余 (じょうよ) là gì?", "back": "Phần dư của phép chia, ký hiệu mod . Ví dụ: 32 mod 10 = 2."}, {"cat": "all", "front": "Ưu điểm lớn nhất của hash là gì?", "back": "Có thể tìm dữ liệu chỉ trong 1 lần truy cập (nếu không va chạm)."}, {"cat": "all", "front": "2 đặc điểm của 2分探索法?", "back": "① Dữ liệu phải được sắp xếp trước (整列) . ② Tìm bằng cách chia đôi (2つに分ける) vùng tìm kiếm."}, {"cat": "all", "front": "Công thức tính phần tử giữa?", "back": "中央 = (先頭番号 + 末尾番号) ÷ 2 . Làm tròn lên hoặc xuống đều được."}, {"cat": "all", "front": "Độ phức tạp của binary search?", "back": "O(log₂ n). Với n=1.000.000 chỉ cần ~20 so sánh."}, {"cat": "all", "front": "Nếu mảng chưa sắp xếp, có dùng được binary search không?", "back": "Không. Đây là điều kiện bắt buộc (特徴1)."}, {"cat": "all", "front": "Khi nào nên dùng linear search?", "back": "Khi dữ liệu nhỏ, hoặc khi không thể sắp xếp / không có hash table."}], "quiz": [{"q": "線形探索法の特徴として正しいものはどれか?", "opts": ["データが整列されている必要がある", "先頭から順番に1つずつ照合する", "ハッシュ関数を使う", "データを2つに分割する"], "ans": 1, "expl": "", "qJa": "線形探索法の特徴として正しいものはどれか?", "qVi": "線形探索法の特徴として正しいものはどれか?"}, {"q": "ハッシュ法において、入力値が異なるのにハッシュ値が同じになる現象を何と呼ぶか?", "opts": ["分岐 (bunki)", "衝突 (shototsu / synonym)", "整列 (seiretsu)", "再帰 (saiki)"], "ans": 1, "expl": "", "qJa": "ハッシュ法において、入力値が異なるのにハッシュ値が同じになる現象を何と呼ぶか?", "qVi": "ハッシュ法において、入力値が異なるのにハッシュ値が同じになる現象を何と呼ぶか?"}, {"q": "2分探索法を使うために必要な前提条件は何か?", "opts": ["データが整列されていること", "ハッシュ関数が定義されていること", "データが偶数個であること", "データが文字列であること"], "ans": 0, "expl": "", "qJa": "2分探索法を使うために必要な前提条件は何か?", "qVi": "2分探索法を使うために必要な前提条件は何か?"}, {"q": "ハッシュ関数が「x mod 10」のとき、値「47」のハッシュ値はいくつか?", "opts": ["4", "7", "10", "47"], "ans": 1, "expl": "", "qJa": "ハッシュ関数が「x mod 10」のとき、値「47」のハッシュ値はいくつか?", "qVi": "ハッシュ関数が「x mod 10」のとき、値「47」のハッシュ値はいくつか?"}, {"q": "要素数1.000.000個の整列済み配列から目的のデータを2分探索法で探す場合、最大何回程度の比較が必要か?", "opts": ["1回", "約20回", "約500.000回", "000.000回"], "ans": 1, "expl": "", "qJa": "要素数1.000.000個の整列済み配列から目的のデータを2分探索法で探す場合、最大何回程度の比較が必要か?", "qVi": "要素数1.000.000個の整列済み配列から目的のデータを2分探索法で探す場合、最大何回程度の比較が必要か?"}, {"q": "ハッシュ法の最大のメリットは何か?", "opts": ["データを並べる必要がない上、1回のアクセスで目的のデータを取り出せる", "データ量に関係なく必ず1回で見つかる", "衝突が起こらない", "プログラムが最も単純である"], "ans": 0, "expl": "", "qJa": "ハッシュ法の最大のメリットは何か?", "qVi": "ハッシュ法の最大のメリットは何か?"}, {"q": "昇順に並んだ配列 [1,2,3,4,5,6,7,8,9] から2分探索法で「3」を探すとき、最初に比較する要素は何か?", "opts": ["1", "3", "5", "9"], "ans": 2, "expl": "", "qJa": "昇順に並んだ配列 [1,2,3,4,5,6,7,8,9] から2分探索法で「3」を探すとき、最初に比較する要素は何か?", "qVi": "昇順に並んだ配列 [1,2,3,4,5,6,7,8,9] から2分探索法で「3」を探すとき、最初に比較する要素は何か?"}, {"q": "基本情報技術者試験で「探索アルゴリズム」として頻繁に出題されるのはどれか?(2つ選択)", "opts": ["線形探索法のみ", "ハッシュ法と2分探索法", "クイックソートとマージソート", "再帰アルゴリズムのみ"], "ans": 1, "expl": "", "qJa": "基本情報技術者試験で「探索アルゴリズム」として頻繁に出題されるのはどれか?(2つ選択)", "qVi": "基本情報技術者試験で「探索アルゴリズム」として頻繁に出題されるのはどれか?(2つ選択)"}, {"q": "次のうち「探索アルゴリズム」ではないものはどれか?", "opts": ["線形探索法", "2分探索法", "ハッシュ法", "クイックソート"], "ans": 3, "expl": "", "qJa": "次のうち「探索アルゴリズム」ではないものはどれか?", "qVi": "次のうち「探索アルゴリズム」ではないものはどれか?"}, {"q": "2分探索法の特徴を述べた次の文章のうち、誤っているものはどれか?", "opts": ["データを、あらかじめ整列させておく必要がある", "データを、2つに分けながら探索する", "データ量が多いほど効率がよい(線形より)", "ハッシュ関数を使って格納場所を決める"], "ans": 3, "expl": "", "qJa": "2分探索法の特徴を述べた次の文章のうち、誤っているものはどれか?", "qVi": "2分探索法の特徴を述べた次の文章のうち、誤っているものはどれか?"}], "available": true}</script></body></html>

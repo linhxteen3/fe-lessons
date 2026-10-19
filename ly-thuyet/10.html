@@ -1,110 +1,35 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="light" data-lang="dual">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bài 10: プログラムの基本 + フローチャート — FE Master</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/reader.css">
-</head>
-<body>
 
-<!-- Reading Progress Bar -->
-<div class="reading-progress-track">
-  <div class="reading-progress-bar" id="readingProgress"></div>
-</div>
+<html data-reading-lang="dual" data-reading-theme="light" lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><meta content="light dark" name="color-scheme"/><title>Bài 10 · プログラムの基本+フローチャート — FE Master</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/><link href="../assets/reader.css" rel="stylesheet"/><script defer="" src="../assets/reader.js"></script></head><body>
+<a class="skip-link" data-ja="本文へ" data-vi="Đến nội dung bài học" href="#lesson-content">Đến nội dung bài học</a>
+<header class="topbar"><div aria-label="Tiến độ đọc bài" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-track" role="progressbar"><div id="reader-progress"></div></div><div class="top-inner"><div class="top-left"><a class="reading-back" data-ja="← ロードマップへ" data-vi="← Quay lại lộ trình" href="../index.html" target="_top">← Quay lại lộ trình</a><nav aria-label="Breadcrumb" class="breadcrumb"><span>FE</span><span>/</span><span data-ja="目標2" data-vi="Mục tiêu 2">Mục tiêu 2</span><span>/</span><span data-ja="解説10" data-vi="Lý thuyết 10">Lý thuyết 10</span></nav></div><div class="reading-controls"><label class="sr-only" for="reading-language">Ngôn ngữ bài học</label><select id="reading-language"><option value="dual">Việt + 日本語</option><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select><button aria-label="Chế độ tập trung: ẩn sidebar" aria-pressed="false" id="zen-toggle" type="button">⊡ <span class="zen-label" data-ja="集中" data-vi="Tập trung">Tập trung</span></button><button aria-pressed="false" id="reading-theme" type="button">☾ Tối</button></div></div></header>
+<div class="layout"><main class="reading-main" id="lesson-content"><header class="lesson-hero"><span class="lesson-eyebrow" data-ja="レッスン10 · 理論" data-vi="BÀI 10 · LÝ THUYẾT">BÀI 10 · LÝ THUYẾT</span><h1><span class="reading-ja" lang="ja">プログラムの基本+フローチャート</span><span class="reading-vi" lang="vi">プログラムの基本+フローチャート</span></h1><div class="lesson-meta"><span data-ja="科目Aの基礎" data-vi="Trọng tâm 科目A">Trọng tâm 科目A</span><span data-ja="暗記カード12枚 · 確認問題7問" data-vi="12 flashcard · 7 câu ôn tập">12 flashcard · 7 câu ôn tập</span></div></header>
+<section class="lesson-part lesson-section" id="p1"><h2 class="lesson-part-title" data-ja="理論のまとめ" data-step="01" data-vi="Tóm tắt lý thuyết">Tóm tắt lý thuyết</h2>
 
-<!-- Minimal Sticky Top Header -->
-<header class="site-header">
-  <div class="header-container">
-    <div class="header-left">
-      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
-        <span class="text-ja">← ロードマップ</span>
-        <span class="text-vi">← Lộ trình</span>
-      </a>
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
-        <span class="sep">/</span>
-        <span>Mục tiêu 2</span>
-        <span class="sep">/</span>
-        <span class="current">Bài 10</span>
-      </nav>
-    </div>
-    <div class="header-right">
-      <div class="lang-selector">
-        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
-        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
-        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
-      </div>
-      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
-        <span id="zenIcon">📖</span>
-        <span id="zenText">Zen</span>
-      </button>
-      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
-        <span id="themeIcon">◐</span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- Main Two-Column Reader Layout -->
-<div class="page-container">
-
-  <!-- Left Content Column -->
-  <main class="main-content">
-
-    <div class="lesson-header">
-      <div class="lesson-meta-bar">
-        <span class="badge-lesson">BÀI 10 · CƠ SỞ LÝ THUYẾT</span>
-        <span class="badge-tag">MỤC TIÊU 2</span>
-        <span class="badge-tag">TRỌNG TÂM 科目A</span>
-      </div>
-      <h1 class="lesson-title">
-        プログラムの基本 + フローチャート
-      </h1>
-      <div class="lesson-stats">
-        <span>⏱ ~30-45 phút đọc</span>
-        <span>·</span>
-        <span>Active Recall & Flashcards</span>
-      </div>
-    </div>
-
-    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
-    <section class="content-section" id="sec-1">
-      <h2 class="section-heading">
-        <span class="num-badge">①</span>
-        <span class="text-ja">重要理論 (Theory)</span>
-        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
-      </h2>
-      <div class="lesson-body-content">
-<h2><span class="ic" style="background:rgba(96,165,250,.18);color:var(--a1)">📖</span>Phần 1 — Tóm tắt Lý thuyết</h2>
-
-  <!-- ALGORITHM & PROGRAM -->
-  <div class="card">
-    <div class="card-title">🔧 アルゴリズム & プログラム</div>
-    <div class="lang-block">
-      <div class="lang-label lang-jp">🇯🇵 日本語</div>
-      <div class="lang-content">
+ ALGORITHM &amp; PROGRAM
+<div class="card">
+<div class="card-title">🔧 アルゴリズム &amp; プログラム</div>
+<div class="lang-block reading-ja" lang="ja">
+<div class="lang-label lang-jp">🇯🇵 日本語</div>
+<div class="lang-content">
         アルゴリズムとは、問題を解いたり課題を解決するための<strong>手順</strong>。プログラムは、そのアルゴリズムをコンピュータが理解できる特定の言語で記述したもの。
       </div>
-    </div>
-    <div class="lang-block">
-      <div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
-      <div class="lang-content">
-        <strong>Thuật toán (アルゴリズム)</strong> = trình tự các bước để giải quyết vấn đề.<br>
-        <strong>Chương trình (プログラム)</strong> = thuật toán được viết bằng ngôn ngữ mà máy tính hiểu được.
-        <br>Ví von: Thuật toán = công thức nấu cà-ri, Chương trình = công thức đó được viết bằng tiếng Nhật.
+</div>
+<div class="lang-block reading-vi" lang="vi">
+<div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
+<div class="lang-content">
+<strong>Thuật toán (アルゴリズム)</strong> = trình tự các bước để giải quyết vấn đề.<br/>
+<strong>Chương trình (プログラム)</strong> = thuật toán được viết bằng ngôn ngữ mà máy tính hiểu được.
+        <br/>Ví von: Thuật toán = công thức nấu cà-ri, Chương trình = công thức đó được viết bằng tiếng Nhật.
       </div>
-    </div>
-    <div class="lang-block">
-      <div class="lang-label lang-en">🇬🇧 English</div>
-      <div class="lang-content">
+</div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block reading-en" lang="en">
+<div class="lang-label lang-en">🇬🇧 English</div>
+<div class="lang-content">
         An <strong>algorithm</strong> is a step-by-step procedure to solve a problem. A <strong>program</strong> is that algorithm written in a language a computer understands.
       </div>
-    </div>
-    <div class="diagram">  [アルゴリズム例: カレーを作る]
+</div></details>
+<div class="diagram">  [アルゴリズム例: カレーを作る]
   開始
    ↓ 食材を購入する
    ↓ 食材の下処理をする
@@ -113,367 +38,334 @@
   終了         ← これがアルゴリズム
 
   [プログラム] = アルゴリズムをコンピュータ言語で記述</div>
-  </div>
-
-  <!-- DATA STRUCTURE -->
-  <div class="card">
-    <div class="card-title">📦 データ構造 — 5つの種類</div>
-    <div class="lang-block">
-      <div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
-      <div class="lang-content">Cấu trúc dữ liệu là <strong>cách sắp xếp dữ liệu trong bộ nhớ</strong>. Có 5 loại quan trọng trong thi FE:</div>
-    </div>
-
-    <div class="grid2">
-      <!-- STACK -->
-      <div class="cmp-card">
-        <div class="cmp-head" style="background:rgba(96,165,250,.15);color:var(--a1)">📚 スタック (Stack)</div>
-        <div class="cmp-body">
-          <div class="lang-label lang-vi">🇻🇳</div> <strong>LIFO</strong> — Vào sau ra trước<br>
-          <em>Như chồng sách: lấy sách trên cùng trước</em><br><br>
-          <div class="lang-label lang-jp">🇯🇵</div> 後入れ先出し (Last In First Out)<br>
-          <span class="hl">push</span> = 格納 | <span class="hl">pop</span> = 取り出し<br><br>
-          <span class="tag ex">最頻出!</span>
+</div>
+ DATA STRUCTURE
+<div class="card">
+<div class="card-title">📦 データ構造 — 5つの種類</div>
+<div class="lang-block reading-vi" lang="vi">
+<div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
+<div class="lang-content">Cấu trúc dữ liệu là <strong>cách sắp xếp dữ liệu trong bộ nhớ</strong>. Có 5 loại quan trọng trong thi FE:</div>
+</div>
+<div class="grid2">
+<!-- STACK -->
+<div class="cmp-card">
+<div class="cmp-head" style="background:rgba(96,165,250,.15);color:var(--a1)">📚 スタック (Stack)</div>
+<div class="cmp-body">
+<div class="lang-label lang-vi reading-vi" lang="vi">🇻🇳</div> <strong>LIFO</strong> — Vào sau ra trước<br/>
+<em>Như chồng sách: lấy sách trên cùng trước</em><br/><br/>
+<div class="lang-label lang-jp reading-ja" lang="ja">🇯🇵</div> 後入れ先出し (Last In First Out)<br/>
+<span class="hl">push</span> = 格納 | <span class="hl">pop</span> = 取り出し<br/><br/>
+<span class="tag ex">最頻出!</span>
+</div>
+</div>
+<!-- QUEUE -->
+<div class="cmp-card">
+<div class="cmp-head" style="background:rgba(52,211,153,.15);color:var(--a2)">🚶 キュー (Queue)</div>
+<div class="cmp-body">
+<div class="lang-label lang-vi reading-vi" lang="vi">🇻🇳</div> <strong>FIFO</strong> — Vào trước ra trước<br/>
+<em>Như xếp hàng tính tiền: người xếp hàng trước thanh toán trước</em><br/><br/>
+<div class="lang-label lang-jp reading-ja" lang="ja">🇯🇵</div> 先入れ先出し (First In First Out)<br/>
+<span class="hl">enqueue</span> = 追加 | <span class="hl">dequeue</span> = 取り出し
         </div>
-      </div>
-      <!-- QUEUE -->
-      <div class="cmp-card">
-        <div class="cmp-head" style="background:rgba(52,211,153,.15);color:var(--a2)">🚶 キュー (Queue)</div>
-        <div class="cmp-body">
-          <div class="lang-label lang-vi">🇻🇳</div> <strong>FIFO</strong> — Vào trước ra trước<br>
-          <em>Như xếp hàng tính tiền: người xếp hàng trước thanh toán trước</em><br><br>
-          <div class="lang-label lang-jp">🇯🇵</div> 先入れ先出し (First In First Out)<br>
-          <span class="hl">enqueue</span> = 追加 | <span class="hl">dequeue</span> = 取り出し
+</div>
+<!-- ARRAY -->
+<div class="cmp-card">
+<div class="cmp-head" style="background:rgba(251,191,36,.15);color:var(--a4)">🔢 配列 (Array)</div>
+<div class="cmp-body">
+<div class="lang-label lang-vi reading-vi" lang="vi">🇻🇳</div> Mảng — các ô dữ liệu có đánh số thứ tự (요素番号)<br/>
+<em>A[3] = lấy phần tử thứ 3 của mảng A</em><br/>
+          1次元 (1D) / 2次元: A[行,列]<br/><br/>
+<span class="ht">●</span> Truy cập nhanh theo chỉ số (số thứ tự)
         </div>
-      </div>
-      <!-- ARRAY -->
-      <div class="cmp-card">
-        <div class="cmp-head" style="background:rgba(251,191,36,.15);color:var(--a4)">🔢 配列 (Array)</div>
-        <div class="cmp-body">
-          <div class="lang-label lang-vi">🇻🇳</div> Mảng — các ô dữ liệu có đánh số thứ tự (요素番号)<br>
-          <em>A[3] = lấy phần tử thứ 3 của mảng A</em><br>
-          1次元 (1D) / 2次元: A[行,列]<br><br>
-          <span class="ht">●</span> Truy cập nhanh theo chỉ số (số thứ tự)
+</div>
+<!-- LINKED LIST -->
+<div class="cmp-card">
+<div class="cmp-head" style="background:rgba(167,139,250,.15);color:var(--a5)">🔗 連結リスト (Linked List)</div>
+<div class="cmp-body">
+<div class="lang-label lang-vi reading-vi" lang="vi">🇻🇳</div> Danh sách liên kết — mỗi phần tử chứa <strong>con trỏ (ポインタ)</strong> trỏ đến phần tử tiếp theo<br/><br/>
+<span class="ht">●</span> Chèn/Xóa nhanh (chỉ đổi pointer)<br/>
+<span class="a3">●</span> Truy cập chậm (phải duyệt từ đầu)
         </div>
-      </div>
-      <!-- LINKED LIST -->
-      <div class="cmp-card">
-        <div class="cmp-head" style="background:rgba(167,139,250,.15);color:var(--a5)">🔗 連結リスト (Linked List)</div>
-        <div class="cmp-body">
-          <div class="lang-label lang-vi">🇻🇳</div> Danh sách liên kết — mỗi phần tử chứa <strong>con trỏ (ポインタ)</strong> trỏ đến phần tử tiếp theo<br><br>
-          <span class="ht">●</span> Chèn/Xóa nhanh (chỉ đổi pointer)<br>
-          <span class="a3">●</span> Truy cập chậm (phải duyệt từ đầu)
-        </div>
-      </div>
-    </div>
-
-    <!-- TREE -->
-    <div class="def pu" style="margin-top:.8rem">
-      <strong style="color:var(--a5)">🌳 木構造 (Tree)</strong> — Cấu trúc phân cấp (階層構造). Gốc = <span class="hl">根 (root)</span>, Nút = <span class="hl">節 (node)</span>, Lá = <span class="hl">葉 (leaf)</span><br>
-      <strong>2分探索木の条件:</strong> <span class="hl">左の子孫 &lt; 親 &lt; 右の子孫</span>
-    </div>
-
-    <h3>⚡ Bảng so sánh 配列 vs 連結リスト</h3>
-    <div class="tw">
-      <table>
-        <thead><tr><th>Thao tác</th><th>配列 (Array)</th><th>連結リスト (Linked List)</th></tr></thead>
-        <tbody>
-          <tr><td><strong>参照・更新</strong> (Đọc/Sửa)</td><td><span class="ht">✅ Nhanh</span> — dùng index</td><td><span style="color:var(--a3)">🐢 Chậm</span> — phải duyệt từ đầu</td></tr>
-          <tr><td><strong>挿入・削除</strong> (Chèn/Xóa)</td><td><span style="color:var(--a3)">🐢 Chậm</span> — dời tất cả phần tử sau</td><td><span class="ht">✅ Nhanh</span> — chỉ đổi pointer</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="def yw"><span class="tag ex">出る!</span> <strong>配列 = 参照・更新が速い | 連結リスト = 挿入・削除が速い</strong></div>
-  </div>
-
-  <!-- ALGORITHM STRUCTURE -->
-  <div class="card">
-    <div class="card-title">🔁 アルゴリズムの基本構造 — 3つ</div>
-    <div class="lang-block">
-      <div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
-      <div class="lang-content">Mọi thuật toán đều được tạo từ <strong>3 cấu trúc cơ bản</strong>:</div>
-    </div>
-    <div class="grid2">
-      <div class="cmp-card">
-        <div class="cmp-head" style="background:rgba(96,165,250,.15);color:var(--a1)">① 順次構造 (Tuần tự)</div>
-        <div class="cmp-body">Thực hiện lần lượt từng bước một, từ trên xuống.<br><em>処理1 → 処理2 → 処理3</em></div>
-      </div>
-      <div class="cmp-card">
-        <div class="cmp-head" style="background:rgba(244,114,182,.15);color:var(--a3)">② 選択構造 (Rẽ nhánh)</div>
-        <div class="cmp-body">Kiểm tra điều kiện (True/False), thực hiện nhánh tương ứng.<br><em>if 条件 then 処理A else 処理B</em></div>
-      </div>
-      <div class="cmp-card" style="grid-column:1/-1">
-        <div class="cmp-head" style="background:rgba(251,191,36,.15);color:var(--a4)">③ 繰返構造 (Lặp)</div>
-        <div class="cmp-body">Lặp lại thực hiện cho đến khi thỏa điều kiện kết thúc.<br><em>ループ → 処理 → 条件チェック → ループ (繰り返し)</em></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PROGRAM PROPERTIES -->
-  <div class="card">
-    <div class="card-title">⚙️ プログラムの4つの性質</div>
-    <div class="tw">
-      <table>
-        <thead><tr><th>性質名</th><th>カタカナ</th><th>Tiếng Việt</th><th>Ý nghĩa</th></tr></thead>
-        <tbody>
-          <tr><td><strong>再帰</strong></td><td>リカーシブ</td><td>Đệ quy</td><td>Chương trình tự gọi chính nó trong quá trình chạy</td></tr>
-          <tr><td><strong>再入可能</strong></td><td>リエントラント</td><td>Tái nhập được</td><td>Nhiều chương trình cùng gọi đồng thời, vẫn chạy đúng</td></tr>
-          <tr><td><strong>再配置可能</strong></td><td>リロケータブル</td><td>Tái định vị được</td><td>Đặt ở bất kỳ vị trí nào trong RAM đều chạy được</td></tr>
-          <tr><td><strong>再使用可能</strong></td><td>リユーザブル</td><td>Tái sử dụng được</td><td>Load 1 lần, dùng nhiều lần, không cần load lại</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="def yw"><span class="tag ex">出る!</span> <strong>再帰</strong>と<strong>再入可能</strong>の2つが最頻出。<br>
+</div>
+</div>
+<!-- TREE -->
+<div class="def pu" style="margin-top:.8rem">
+<strong style="color:var(--a5)">🌳 木構造 (Tree)</strong> — Cấu trúc phân cấp (階層構造). Gốc = <span class="hl">根 (root)</span>, Nút = <span class="hl">節 (node)</span>, Lá = <span class="hl">葉 (leaf)</span><br/>
+<strong>2分探索木の条件:</strong> <span class="hl">左の子孫 &lt; 親 &lt; 右の子孫</span>
+</div>
+<h3 id="lesson-10-topic-1">⚡ Bảng so sánh 配列 vs 連結リスト</h3>
+<div class="tw">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">Thao tác</th><th scope="col">配列 (Array)</th><th scope="col">連結リスト (Linked List)</th></tr></thead>
+<tbody>
+<tr><td><strong>参照・更新</strong> (Đọc/Sửa)</td><td><span class="ht">✅ Nhanh</span> — dùng index</td><td><span style="color:var(--a3)">🐢 Chậm</span> — phải duyệt từ đầu</td></tr>
+<tr><td><strong>挿入・削除</strong> (Chèn/Xóa)</td><td><span style="color:var(--a3)">🐢 Chậm</span> — dời tất cả phần tử sau</td><td><span class="ht">✅ Nhanh</span> — chỉ đổi pointer</td></tr>
+</tbody>
+</table></div>
+</div>
+<div class="def yw"><span class="tag ex">出る!</span> <strong>配列 = 参照・更新が速い | 連結リスト = 挿入・削除が速い</strong></div>
+</div>
+ ALGORITHM STRUCTURE
+<div class="card">
+<div class="card-title">🔁 アルゴリズムの基本構造 — 3つ</div>
+<div class="lang-block reading-vi" lang="vi">
+<div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
+<div class="lang-content">Mọi thuật toán đều được tạo từ <strong>3 cấu trúc cơ bản</strong>:</div>
+</div>
+<div class="grid2">
+<div class="cmp-card">
+<div class="cmp-head" style="background:rgba(96,165,250,.15);color:var(--a1)">① 順次構造 (Tuần tự)</div>
+<div class="cmp-body">Thực hiện lần lượt từng bước một, từ trên xuống.<br/><em>処理1 → 処理2 → 処理3</em></div>
+</div>
+<div class="cmp-card">
+<div class="cmp-head" style="background:rgba(244,114,182,.15);color:var(--a3)">② 選択構造 (Rẽ nhánh)</div>
+<div class="cmp-body">Kiểm tra điều kiện (True/False), thực hiện nhánh tương ứng.<br/><em>if 条件 then 処理A else 処理B</em></div>
+</div>
+<div class="cmp-card" style="grid-column:1/-1">
+<div class="cmp-head" style="background:rgba(251,191,36,.15);color:var(--a4)">③ 繰返構造 (Lặp)</div>
+<div class="cmp-body">Lặp lại thực hiện cho đến khi thỏa điều kiện kết thúc.<br/><em>ループ → 処理 → 条件チェック → ループ (繰り返し)</em></div>
+</div>
+</div>
+</div>
+ PROGRAM PROPERTIES
+<div class="card">
+<div class="card-title">⚙️ プログラムの4つの性質</div>
+<div class="tw">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">性質名</th><th scope="col">カタカナ</th><th scope="col">Tiếng Việt</th><th scope="col">Ý nghĩa</th></tr></thead>
+<tbody>
+<tr><td><strong>再帰</strong></td><td>リカーシブ</td><td>Đệ quy</td><td>Chương trình tự gọi chính nó trong quá trình chạy</td></tr>
+<tr><td><strong>再入可能</strong></td><td>リエントラント</td><td>Tái nhập được</td><td>Nhiều chương trình cùng gọi đồng thời, vẫn chạy đúng</td></tr>
+<tr><td><strong>再配置可能</strong></td><td>リロケータブル</td><td>Tái định vị được</td><td>Đặt ở bất kỳ vị trí nào trong RAM đều chạy được</td></tr>
+<tr><td><strong>再使用可能</strong></td><td>リユーザブル</td><td>Tái sử dụng được</td><td>Load 1 lần, dùng nhiều lần, không cần load lại</td></tr>
+</tbody>
+</table></div>
+</div>
+<div class="def yw"><span class="tag ex">出る!</span> <strong>再帰</strong>と<strong>再入可能</strong>の2つが最頻出。<br/>
     再帰 = 自分自身を呼び出す | 再入可能 = 複数タスクから同時に呼び出されても正しく動作
     </div>
-  </div>
-
-  <!-- SORT / SEARCH ALGORITHMS -->
-  <div class="card">
-    <div class="card-title">🔍 整列・探索アルゴリズム & オーダー</div>
-    <div class="tw">
-      <table>
-        <thead><tr><th>アルゴリズム</th><th>説明</th><th>オーダー</th></tr></thead>
-        <tbody>
-          <tr><td><strong>ハッシュ法</strong></td><td>ハッシュ値で格納場所を決定、1回で到達</td><td><span class="hl">O(1)</span></td></tr>
-          <tr><td><strong>2分探索法</strong></td><td>ソート済みデータを半分に割りながら探索 ※要整列</td><td><span class="hl">O(log₂n)</span></td></tr>
-          <tr><td><strong>線形探索法</strong></td><td>先頭から順番に1つずつ照合</td><td><span class="hl">O(n)</span></td></tr>
-          <tr><td><strong>クイックソート</strong></td><td>基準値で小グループ/大グループに分割を繰り返す</td><td><span class="hl">O(n log n)</span></td></tr>
-          <tr><td><strong>バブルソート</strong></td><td>隣り合う要素を比較・交換を繰り返す</td><td>O(n²)</td></tr>
-        </tbody>
-      </table>
+</div>
+ SORT / SEARCH ALGORITHMS
+<div class="card">
+<div class="card-title">🔍 整列・探索アルゴリズム &amp; オーダー</div>
+<div class="tw">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">アルゴリズム</th><th scope="col">説明</th><th scope="col">オーダー</th></tr></thead>
+<tbody>
+<tr><td><strong>ハッシュ法</strong></td><td>ハッシュ値で格納場所を決定、1回で到達</td><td><span class="hl">O(1)</span></td></tr>
+<tr><td><strong>2分探索法</strong></td><td>ソート済みデータを半分に割りながら探索 ※要整列</td><td><span class="hl">O(log₂n)</span></td></tr>
+<tr><td><strong>線形探索法</strong></td><td>先頭から順番に1つずつ照合</td><td><span class="hl">O(n)</span></td></tr>
+<tr><td><strong>クイックソート</strong></td><td>基準値で小グループ/大グループに分割を繰り返す</td><td><span class="hl">O(n log n)</span></td></tr>
+<tr><td><strong>バブルソート</strong></td><td>隣り合う要素を比較・交換を繰り返す</td><td>O(n²)</td></tr>
+</tbody>
+</table></div>
+</div>
+<div class="def gr">
+<strong>ハッシュ法のデメリット:</strong> 異なる入力が同じハッシュ値になる「<span class="hl">衝突 (Collision)</span>」が起こる可能性がある
     </div>
-    <div class="def gr">
-      <strong>ハッシュ法のデメリット:</strong> 異なる入力が同じハッシュ値になる「<span class="hl">衝突 (Collision)</span>」が起こる可能性がある
-    </div>
-    <div class="def">
-      <strong>2分探索法の2大条件:</strong><br>
-      ① データを<span class="hl">あらかじめ整列</span>させておく必要がある<br>
+<div class="def">
+<strong>2分探索法の2大条件:</strong><br/>
+      ① データを<span class="hl">あらかじめ整列</span>させておく必要がある<br/>
       ② データを<span class="hl">2つに分けながら</span>探索する
     </div>
-  </div>
-</section>
-
-<!-- ===================== PHẦN FLOWCHART ===================== -->
+</div>
 <section id="flowchart">
-  <h2><span class="ic" style="background:rgba(52,211,153,.18);color:var(--a2)">🔀</span>Flowchart — Ký hiệu & Cách đọc</h2>
-
-  <div class="card">
-    <div class="card-title">📐 Bảng ký hiệu Flowchart (流れ図の記号)</div>
-    <div class="lang-block">
-      <div class="lang-label lang-vi">🇻🇳</div>
-      <div class="lang-content">Ký hiệu flowchart được chuẩn hóa theo JIS. Thi FE thường dùng 5 ký hiệu sau:</div>
-    </div>
-    <div class="tw">
-      <table>
-        <thead><tr><th>Ký hiệu (hình dạng)</th><th>Tên (記号名)</th><th>Tiếng Việt</th><th>Ví dụ sử dụng</th></tr></thead>
-        <tbody>
-          <tr><td>⬭ <em>hình bầu dục</em></td><td><strong>端子 (Terminator)</strong></td><td>Điểm bắt đầu / kết thúc</td><td>「開始」「終了」</td></tr>
-          <tr><td>▭ <em>hình chữ nhật</em></td><td><strong>処理 (Process)</strong></td><td>Xử lý, tính toán, gán biến</td><td>「x ← x + 1」</td></tr>
-          <tr><td>◇ <em>hình thoi</em></td><td><strong>判断 (Decision)</strong></td><td>Điều kiện rẽ nhánh (Yes/No)</td><td>「x &lt; 0？」</td></tr>
-          <tr><td>→ <em>mũi tên</em></td><td><strong>線 (Arrow)</strong></td><td>Hướng luồng xử lý</td><td>nối các ký hiệu lại</td></tr>
-          <tr><td>⌈⌋ <em>ký hiệu đặc biệt</em></td><td><strong>ループ端 (Loop)</strong></td><td>Vòng lặp — bắt đầu và kết thúc</td><td>「i:1,1,100」</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h3>🔧 Quy tắc đọc Flowchart</h3>
-    <div class="steps">
-      <div class="step"><div class="step-n">1</div><div class="step-t">Luồng đi từ <span class="hl">trên xuống dưới</span> (nguyên tắc)</div></div>
-      <div class="step"><div class="step-n">2</div><div class="step-t">Gặp <strong>◇ hình thoi</strong> → kiểm tra điều kiện, đi theo nhánh <span class="ht">Yes</span> hoặc <span style="color:var(--a3)">No</span></div></div>
-      <div class="step"><div class="step-n">3</div><div class="step-t">Gặp <strong>ループ端</strong> → lặp lại cho đến khi điều kiện kết thúc</div></div>
-      <div class="step"><div class="step-n">4</div><div class="step-t">Dùng <strong>Trace Table (トレース表)</strong> để theo dõi giá trị biến qua từng bước</div></div>
-    </div>
-  </div>
-
-  <!-- FLOWCHART EXAMPLES SVG -->
-  <div class="card">
-    <div class="card-title">📊 Flowchart minh họa — 3 ví dụ từ tài liệu</div>
-
-    <h3>① 絶対値を求めるアルゴリズム (Tính giá trị tuyệt đối)</h3>
-    <div class="lang-block">
-      <div class="lang-label lang-vi">🇻🇳</div>
-      <div class="lang-content">Nếu x &lt; 0 → đổi dấu (x = −x). Nếu x ≥ 0 → giữ nguyên. Trả về x.</div>
-    </div>
-    <div class="fc-wrap">
-      <svg viewBox="0 0 260 320" width="260" height="320" xmlns="http://www.w3.org/2000/svg" font-family="Be Vietnam Pro,sans-serif">
-        <!-- 開始 -->
-        <ellipse cx="130" cy="30" rx="55" ry="20" fill="#1a2a4a" stroke="#60a5fa" stroke-width="1.8"/>
-        <text x="130" y="35" text-anchor="middle" fill="#60a5fa" font-size="12" font-weight="700">開始</text>
-        <!-- Arrow -->
-        <line x1="130" y1="50" x2="130" y2="78" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
-        <!-- Decision -->
-        <polygon points="130,80 195,115 130,150 65,115" fill="#1a1a2e" stroke="#f472b6" stroke-width="1.8"/>
-        <text x="130" y="110" text-anchor="middle" fill="#f472b6" font-size="11">x &lt; 0 ?</text>
-        <text x="130" y="125" text-anchor="middle" fill="#f472b6" font-size="10">条件判定</text>
-        <!-- YES arrow (left) -->
-        <line x1="65" y1="115" x2="30" y2="115" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr2)"/>
-        <text x="47" y="107" text-anchor="middle" fill="#34d399" font-size="10">Yes</text>
-        <!-- NO arrow (right) -->
-        <line x1="195" y1="115" x2="225" y2="115" stroke="#f87171" stroke-width="1.5" marker-end="url(#arr3)"/>
-        <text x="210" y="107" text-anchor="middle" fill="#f87171" font-size="10">No</text>
-        <!-- YES: Process x = -x -->
-        <line x1="30" y1="115" x2="30" y2="185" stroke="#34d399" stroke-width="1.5" marker-end="url(#arr2)"/>
-        <rect x="5" y="185" width="50" height="35" rx="4" fill="#0d2e1e" stroke="#34d399" stroke-width="1.5"/>
-        <text x="30" y="205" text-anchor="middle" fill="#34d399" font-size="10">x ← -x</text>
-        <!-- NO: continues down on right -->
-        <line x1="225" y1="115" x2="225" y2="220" stroke="#f87171" stroke-width="1.5"/>
-        <!-- merge -->
-        <line x1="30" y1="220" x2="130" y2="220" stroke="#64748b" stroke-width="1.5"/>
-        <line x1="225" y1="220" x2="130" y2="220" stroke="#64748b" stroke-width="1.5"/>
-        <line x1="130" y1="220" x2="130" y2="248" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
-        <!-- 処理: return x -->
-        <rect x="80" y="248" width="100" height="32" rx="4" fill="#1a2a1a" stroke="#34d399" stroke-width="1.5"/>
-        <text x="130" y="268" text-anchor="middle" fill="#34d399" font-size="11">x を返す</text>
-        <!-- Arrow to 終了 -->
-        <line x1="130" y1="280" x2="130" y2="295" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
-        <!-- 終了 -->
-        <ellipse cx="130" cy="308" rx="55" ry="18" fill="#1a2a4a" stroke="#60a5fa" stroke-width="1.8"/>
-        <text x="130" y="313" text-anchor="middle" fill="#60a5fa" font-size="12" font-weight="700">終了</text>
-        <!-- Arrows defs -->
-        <defs>
-          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-            <path d="M0,0 L10,5 L0,10 z" fill="#64748b"/>
-          </marker>
-          <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-            <path d="M0,0 L10,5 L0,10 z" fill="#34d399"/>
-          </marker>
-          <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-            <path d="M0,0 L10,5 L0,10 z" fill="#f87171"/>
-          </marker>
-        </defs>
-      </svg>
-    </div>
-
-    <h3>② 1から5までの累計 (Tính tổng 1+2+3+4+5)</h3>
-    <div class="lang-block">
-      <div class="lang-label lang-vi">🇻🇳</div>
-      <div class="lang-content">Khởi tạo X=1, Y=0. Vòng lặp: cộng X vào Y, tăng X lên 1, đến khi X=5.</div>
-    </div>
-    <div class="fc-wrap">
-      <svg viewBox="0 0 300 380" width="300" height="380" xmlns="http://www.w3.org/2000/svg" font-family="Be Vietnam Pro,sans-serif">
-        <defs>
-          <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
-          <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/></marker>
-        </defs>
-        <!-- 開始 -->
-        <ellipse cx="150" cy="25" rx="55" ry="18" fill="#1a2a4a" stroke="#60a5fa" stroke-width="1.8"/>
-        <text x="150" y="30" text-anchor="middle" fill="#60a5fa" font-size="12" font-weight="700">開始</text>
-        <line x1="150" y1="43" x2="150" y2="63" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
-        <!-- 初期化 -->
-        <rect x="80" y="63" width="140" height="38" rx="5" fill="#1a2a1a" stroke="#34d399" stroke-width="1.5"/>
-        <text x="150" y="79" text-anchor="middle" fill="#34d399" font-size="10">X ← 1</text>
-        <text x="150" y="93" text-anchor="middle" fill="#34d399" font-size="10">Y ← 0</text>
-        <line x1="150" y1="101" x2="150" y2="118" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
-        <!-- ループ開始 -->
-        <rect x="60" y="118" width="180" height="32" rx="0" fill="#1a1a30" stroke="#a78bfa" stroke-width="1.5"
-              style="clip-path:polygon(15px 0,100% 0,100% 100%,0 100%)"/>
-        <polygon points="60,118 85,118 85,150 60,150 75,134" fill="#1a1a30" stroke="#a78bfa" stroke-width="1.5"/>
-        <polygon points="215,118 240,118 225,134 240,150 215,150" fill="#1a1a30" stroke="#a78bfa" stroke-width="1.5"/>
-        <text x="150" y="139" text-anchor="middle" fill="#a78bfa" font-size="10">X が 5 になるまで</text>
-        <line x1="150" y1="150" x2="150" y2="168" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
-        <!-- 処理 Y=X+Y -->
-        <rect x="80" y="168" width="140" height="32" rx="5" fill="#1a2a1a" stroke="#34d399" stroke-width="1.5"/>
-        <text x="150" y="184" text-anchor="middle" fill="#34d399" font-size="10">Y ← X + Y</text>
-        <text x="150" y="196" text-anchor="middle" fill="#34d399" font-size="10">Cộng X vào Y</text>
-        <line x1="150" y1="200" x2="150" y2="218" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
-        <!-- X = X+1 -->
-        <rect x="80" y="218" width="140" height="28" rx="5" fill="#1a2a1a" stroke="#34d399" stroke-width="1.5"/>
-        <text x="150" y="235" text-anchor="middle" fill="#34d399" font-size="10">X ← X + 1</text>
-        <line x1="150" y1="246" x2="150" y2="263" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
-        <!-- ループ終了 -->
-        <polygon points="60,263 85,263 75,279 85,295 60,295" fill="#1a1a30" stroke="#a78bfa" stroke-width="1.5"/>
-        <polygon points="240,263 215,263 225,279 215,295 240,295" fill="#1a1a30" stroke="#a78bfa" stroke-width="1.5"/>
-        <rect x="85" y="263" width="130" height="32" fill="#1a1a30" stroke="#a78bfa" stroke-width="1.5"/>
-        <text x="150" y="283" text-anchor="middle" fill="#a78bfa" font-size="10">ループ端 (繰り返し終了)</text>
-        <line x1="150" y1="295" x2="150" y2="313" stroke="#64748b" stroke-width="1.5" marker-end="url(#a1)"/>
-        <!-- 終了 -->
-        <ellipse cx="150" cy="328" rx="55" ry="18" fill="#1a2a4a" stroke="#60a5fa" stroke-width="1.8"/>
-        <text x="150" y="333" text-anchor="middle" fill="#60a5fa" font-size="12" font-weight="700">終了</text>
-        <!-- Result label -->
-        <text x="255" y="185" text-anchor="start" fill="#fbbf24" font-size="9">結果:</text>
-        <text x="255" y="197" text-anchor="start" fill="#fbbf24" font-size="9">Y=15</text>
-      </svg>
-    </div>
-
-    <h3>③ Trace Table (トレース表) の使い方</h3>
-    <div class="lang-block">
-      <div class="lang-label lang-vi">🇻🇳</div>
-      <div class="lang-content">Trace Table = bảng theo dõi giá trị biến qua từng bước. Đây là kỹ năng <strong>cực kỳ quan trọng</strong> trong thi FE để giải flowchart đúng.</div>
-    </div>
-    <div class="tw">
-      <table>
-        <thead><tr><th>Bước</th><th>Xử lý</th><th>X</th><th>Y</th><th>Ghi chú</th></tr></thead>
-        <tbody>
-          <tr><td>①</td><td>X←1, Y←0</td><td>1</td><td>0</td><td>Khởi tạo</td></tr>
-          <tr><td>②</td><td>Y←X+Y (=0+1)</td><td>1</td><td>1</td><td>Vòng 1</td></tr>
-          <tr><td>③</td><td>X←X+1</td><td>2</td><td>1</td><td></td></tr>
-          <tr><td>④</td><td>Y←X+Y (=1+2)</td><td>2</td><td>3</td><td>Vòng 2</td></tr>
-          <tr><td>⑤</td><td>X←X+1</td><td>3</td><td>3</td><td></td></tr>
-          <tr><td>...</td><td>...</td><td>...</td><td>...</td><td></td></tr>
-          <tr style="background:rgba(52,211,153,.07)"><td>⑩</td><td>X=5 → ループ終了</td><td>5</td><td><strong style="color:var(--a2)">15</strong></td><td>1+2+3+4+5=15 ✓</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- FLOWCHART SYMBOLS REFERENCE -->
-  <div class="card">
-    <div class="card-title">📌 Ký hiệu quan trọng trong Flowchart</div>
-    <div class="def yw">
-      <strong>代入記号:</strong> 「←」または「→」は代入を表す。<br>
-      例: <span class="hl">x ← 5</span> = 変数xに5を代入する (gán giá trị 5 cho biến x)<br>
+<h3 id="lesson-10-topic-2"><span class="ic" style="background:rgba(52,211,153,.18);color:var(--a2)">🔀</span>Flowchart — Ký hiệu &amp; Cách đọc</h3>
+<div class="card">
+<div class="card-title">📐 Bảng ký hiệu Flowchart (流れ図の記号)</div>
+<div class="lang-block reading-vi" lang="vi">
+<div class="lang-label lang-vi">🇻🇳</div>
+<div class="lang-content">Ký hiệu flowchart được chuẩn hóa theo JIS. Thi FE thường dùng 5 ký hiệu sau:</div>
+</div>
+<div class="tw">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">Ký hiệu (hình dạng)</th><th scope="col">Tên (記号名)</th><th scope="col">Tiếng Việt</th><th scope="col">Ví dụ sử dụng</th></tr></thead>
+<tbody>
+<tr><td>⬭ <em>hình bầu dục</em></td><td><strong>端子 (Terminator)</strong></td><td>Điểm bắt đầu / kết thúc</td><td>「開始」「終了」</td></tr>
+<tr><td>▭ <em>hình chữ nhật</em></td><td><strong>処理 (Process)</strong></td><td>Xử lý, tính toán, gán biến</td><td>「x ← x + 1」</td></tr>
+<tr><td>◇ <em>hình thoi</em></td><td><strong>判断 (Decision)</strong></td><td>Điều kiện rẽ nhánh (Yes/No)</td><td>「x &lt; 0？」</td></tr>
+<tr><td>→ <em>mũi tên</em></td><td><strong>線 (Arrow)</strong></td><td>Hướng luồng xử lý</td><td>nối các ký hiệu lại</td></tr>
+<tr><td>⌈⌋ <em>ký hiệu đặc biệt</em></td><td><strong>ループ端 (Loop)</strong></td><td>Vòng lặp — bắt đầu và kết thúc</td><td>「i:1,1,100」</td></tr>
+</tbody>
+</table></div>
+</div>
+<h3 id="lesson-10-topic-3">🔧 Quy tắc đọc Flowchart</h3>
+<div class="steps">
+<div class="step"><div class="step-n">1</div><div class="step-t">Luồng đi từ <span class="hl">trên xuống dưới</span> (nguyên tắc)</div></div>
+<div class="step"><div class="step-n">2</div><div class="step-t">Gặp <strong>◇ hình thoi</strong> → kiểm tra điều kiện, đi theo nhánh <span class="ht">Yes</span> hoặc <span style="color:var(--a3)">No</span></div></div>
+<div class="step"><div class="step-n">3</div><div class="step-t">Gặp <strong>ループ端</strong> → lặp lại cho đến khi điều kiện kết thúc</div></div>
+<div class="step"><div class="step-n">4</div><div class="step-t">Dùng <strong>Trace Table (トレース表)</strong> để theo dõi giá trị biến qua từng bước</div></div>
+</div>
+</div>
+<!-- FLOWCHART EXAMPLES SVG -->
+<div class="card">
+<div class="card-title">📊 Flowchart minh họa — 3 ví dụ từ tài liệu</div>
+<h3 id="lesson-10-topic-4">① 絶対値を求めるアルゴリズム (Tính giá trị tuyệt đối)</h3>
+<div class="lang-block reading-vi" lang="vi">
+<div class="lang-label lang-vi">🇻🇳</div>
+<div class="lang-content">Nếu x &lt; 0 → đổi dấu (x = −x). Nếu x ≥ 0 → giữ nguyên. Trả về x.</div>
+</div>
+<div class="fc-wrap">
+<svg font-family="Be Vietnam Pro,sans-serif" height="320" viewbox="0 0 260 320" width="260" xmlns="http://www.w3.org/2000/svg">
+<!-- 開始 -->
+<ellipse cx="130" cy="30" fill="#1a2a4a" rx="55" ry="20" stroke="#60a5fa" stroke-width="1.8"></ellipse>
+<text fill="#60a5fa" font-size="12" font-weight="700" text-anchor="middle" x="130" y="35">開始</text>
+<!-- Arrow -->
+<line marker-end="url(#arr)" stroke="#64748b" stroke-width="1.5" x1="130" x2="130" y1="50" y2="78"></line>
+<!-- Decision -->
+<polygon fill="#1a1a2e" points="130,80 195,115 130,150 65,115" stroke="#f472b6" stroke-width="1.8"></polygon>
+<text fill="#f472b6" font-size="11" text-anchor="middle" x="130" y="110">x &lt; 0 ?</text>
+<text fill="#f472b6" font-size="10" text-anchor="middle" x="130" y="125">条件判定</text>
+<!-- YES arrow (left) -->
+<line marker-end="url(#arr2)" stroke="#34d399" stroke-width="1.5" x1="65" x2="30" y1="115" y2="115"></line>
+<text fill="#34d399" font-size="10" text-anchor="middle" x="47" y="107">Yes</text>
+<!-- NO arrow (right) -->
+<line marker-end="url(#arr3)" stroke="#f87171" stroke-width="1.5" x1="195" x2="225" y1="115" y2="115"></line>
+<text fill="#f87171" font-size="10" text-anchor="middle" x="210" y="107">No</text>
+<!-- YES: Process x = -x -->
+<line marker-end="url(#arr2)" stroke="#34d399" stroke-width="1.5" x1="30" x2="30" y1="115" y2="185"></line>
+<rect fill="#0d2e1e" height="35" rx="4" stroke="#34d399" stroke-width="1.5" width="50" x="5" y="185"></rect>
+<text fill="#34d399" font-size="10" text-anchor="middle" x="30" y="205">x ← -x</text>
+<!-- NO: continues down on right -->
+<line stroke="#f87171" stroke-width="1.5" x1="225" x2="225" y1="115" y2="220"></line>
+<!-- merge -->
+<line stroke="#64748b" stroke-width="1.5" x1="30" x2="130" y1="220" y2="220"></line>
+<line stroke="#64748b" stroke-width="1.5" x1="225" x2="130" y1="220" y2="220"></line>
+<line marker-end="url(#arr)" stroke="#64748b" stroke-width="1.5" x1="130" x2="130" y1="220" y2="248"></line>
+<!-- 処理: return x -->
+<rect fill="#1a2a1a" height="32" rx="4" stroke="#34d399" stroke-width="1.5" width="100" x="80" y="248"></rect>
+<text fill="#34d399" font-size="11" text-anchor="middle" x="130" y="268">x を返す</text>
+<!-- Arrow to 終了 -->
+<line marker-end="url(#arr)" stroke="#64748b" stroke-width="1.5" x1="130" x2="130" y1="280" y2="295"></line>
+<!-- 終了 -->
+<ellipse cx="130" cy="308" fill="#1a2a4a" rx="55" ry="18" stroke="#60a5fa" stroke-width="1.8"></ellipse>
+<text fill="#60a5fa" font-size="12" font-weight="700" text-anchor="middle" x="130" y="313">終了</text>
+<!-- Arrows defs -->
+<defs>
+<marker id="arr" markerheight="6" markerwidth="6" orient="auto" refx="9" refy="5" viewbox="0 0 10 10">
+<path d="M0,0 L10,5 L0,10 z" fill="#64748b"></path>
+</marker>
+<marker id="arr2" markerheight="6" markerwidth="6" orient="auto" refx="9" refy="5" viewbox="0 0 10 10">
+<path d="M0,0 L10,5 L0,10 z" fill="#34d399"></path>
+</marker>
+<marker id="arr3" markerheight="6" markerwidth="6" orient="auto" refx="9" refy="5" viewbox="0 0 10 10">
+<path d="M0,0 L10,5 L0,10 z" fill="#f87171"></path>
+</marker>
+</defs>
+</svg>
+</div>
+<h3 id="lesson-10-topic-5">② 1から5までの累計 (Tính tổng 1+2+3+4+5)</h3>
+<div class="lang-block reading-vi" lang="vi">
+<div class="lang-label lang-vi">🇻🇳</div>
+<div class="lang-content">Khởi tạo X=1, Y=0. Vòng lặp: cộng X vào Y, tăng X lên 1, đến khi X=5.</div>
+</div>
+<div class="fc-wrap">
+<svg font-family="Be Vietnam Pro,sans-serif" height="380" viewbox="0 0 300 380" width="300" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="a1" markerheight="6" markerwidth="6" orient="auto" refx="9" refy="5" viewbox="0 0 10 10"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"></path></marker>
+<marker id="a2" markerheight="6" markerwidth="6" orient="auto" refx="9" refy="5" viewbox="0 0 10 10"><path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"></path></marker>
+</defs>
+<!-- 開始 -->
+<ellipse cx="150" cy="25" fill="#1a2a4a" rx="55" ry="18" stroke="#60a5fa" stroke-width="1.8"></ellipse>
+<text fill="#60a5fa" font-size="12" font-weight="700" text-anchor="middle" x="150" y="30">開始</text>
+<line marker-end="url(#a1)" stroke="#64748b" stroke-width="1.5" x1="150" x2="150" y1="43" y2="63"></line>
+<!-- 初期化 -->
+<rect fill="#1a2a1a" height="38" rx="5" stroke="#34d399" stroke-width="1.5" width="140" x="80" y="63"></rect>
+<text fill="#34d399" font-size="10" text-anchor="middle" x="150" y="79">X ← 1</text>
+<text fill="#34d399" font-size="10" text-anchor="middle" x="150" y="93">Y ← 0</text>
+<line marker-end="url(#a1)" stroke="#64748b" stroke-width="1.5" x1="150" x2="150" y1="101" y2="118"></line>
+<!-- ループ開始 -->
+<rect fill="#1a1a30" height="32" rx="0" stroke="#a78bfa" stroke-width="1.5" style="clip-path:polygon(15px 0,100% 0,100% 100%,0 100%)" width="180" x="60" y="118"></rect>
+<polygon fill="#1a1a30" points="60,118 85,118 85,150 60,150 75,134" stroke="#a78bfa" stroke-width="1.5"></polygon>
+<polygon fill="#1a1a30" points="215,118 240,118 225,134 240,150 215,150" stroke="#a78bfa" stroke-width="1.5"></polygon>
+<text fill="#a78bfa" font-size="10" text-anchor="middle" x="150" y="139">X が 5 になるまで</text>
+<line marker-end="url(#a1)" stroke="#64748b" stroke-width="1.5" x1="150" x2="150" y1="150" y2="168"></line>
+<!-- 処理 Y=X+Y -->
+<rect fill="#1a2a1a" height="32" rx="5" stroke="#34d399" stroke-width="1.5" width="140" x="80" y="168"></rect>
+<text fill="#34d399" font-size="10" text-anchor="middle" x="150" y="184">Y ← X + Y</text>
+<text fill="#34d399" font-size="10" text-anchor="middle" x="150" y="196">Cộng X vào Y</text>
+<line marker-end="url(#a1)" stroke="#64748b" stroke-width="1.5" x1="150" x2="150" y1="200" y2="218"></line>
+<!-- X = X+1 -->
+<rect fill="#1a2a1a" height="28" rx="5" stroke="#34d399" stroke-width="1.5" width="140" x="80" y="218"></rect>
+<text fill="#34d399" font-size="10" text-anchor="middle" x="150" y="235">X ← X + 1</text>
+<line marker-end="url(#a1)" stroke="#64748b" stroke-width="1.5" x1="150" x2="150" y1="246" y2="263"></line>
+<!-- ループ終了 -->
+<polygon fill="#1a1a30" points="60,263 85,263 75,279 85,295 60,295" stroke="#a78bfa" stroke-width="1.5"></polygon>
+<polygon fill="#1a1a30" points="240,263 215,263 225,279 215,295 240,295" stroke="#a78bfa" stroke-width="1.5"></polygon>
+<rect fill="#1a1a30" height="32" stroke="#a78bfa" stroke-width="1.5" width="130" x="85" y="263"></rect>
+<text fill="#a78bfa" font-size="10" text-anchor="middle" x="150" y="283">ループ端 (繰り返し終了)</text>
+<line marker-end="url(#a1)" stroke="#64748b" stroke-width="1.5" x1="150" x2="150" y1="295" y2="313"></line>
+<!-- 終了 -->
+<ellipse cx="150" cy="328" fill="#1a2a4a" rx="55" ry="18" stroke="#60a5fa" stroke-width="1.8"></ellipse>
+<text fill="#60a5fa" font-size="12" font-weight="700" text-anchor="middle" x="150" y="333">終了</text>
+<!-- Result label -->
+<text fill="#fbbf24" font-size="9" text-anchor="start" x="255" y="185">結果:</text>
+<text fill="#fbbf24" font-size="9" text-anchor="start" x="255" y="197">Y=15</text>
+</svg>
+</div>
+<h3 id="lesson-10-topic-6">③ Trace Table (トレース表) の使い方</h3>
+<div class="lang-block reading-vi" lang="vi">
+<div class="lang-label lang-vi">🇻🇳</div>
+<div class="lang-content">Trace Table = bảng theo dõi giá trị biến qua từng bước. Đây là kỹ năng <strong>cực kỳ quan trọng</strong> trong thi FE để giải flowchart đúng.</div>
+</div>
+<div class="tw">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">Bước</th><th scope="col">Xử lý</th><th scope="col">X</th><th scope="col">Y</th><th scope="col">Ghi chú</th></tr></thead>
+<tbody>
+<tr><td>①</td><td>X←1, Y←0</td><td>1</td><td>0</td><td>Khởi tạo</td></tr>
+<tr><td>②</td><td>Y←X+Y (=0+1)</td><td>1</td><td>1</td><td>Vòng 1</td></tr>
+<tr><td>③</td><td>X←X+1</td><td>2</td><td>1</td><td></td></tr>
+<tr><td>④</td><td>Y←X+Y (=1+2)</td><td>2</td><td>3</td><td>Vòng 2</td></tr>
+<tr><td>⑤</td><td>X←X+1</td><td>3</td><td>3</td><td></td></tr>
+<tr><td>...</td><td>...</td><td>...</td><td>...</td><td></td></tr>
+<tr style="background:rgba(52,211,153,.07)"><td>⑩</td><td>X=5 → ループ終了</td><td>5</td><td><strong style="color:var(--a2)">15</strong></td><td>1+2+3+4+5=15 ✓</td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<!-- FLOWCHART SYMBOLS REFERENCE -->
+<div class="card">
+<div class="card-title">📌 Ký hiệu quan trọng trong Flowchart</div>
+<div class="def yw">
+<strong>代入記号:</strong> 「←」または「→」は代入を表す。<br/>
+      例: <span class="hl">x ← 5</span> = 変数xに5を代入する (gán giá trị 5 cho biến x)<br/>
       例: <span class="hl">5 → x</span> = 同じ意味
     </div>
-    <div class="def gr">
-      <strong>mod (余り):</strong> 割り算の余り。<br>
+<div class="def gr">
+<strong>mod (余り):</strong> 割り算の余り。<br/>
       例: <span class="hl">7 mod 3 = 1</span> (7÷3 = 2 余り 1)
     </div>
-    <div class="def">
-      <strong>プログラム言語キーワード:</strong><br>
-      <span class="hl">if</span> 〈条件〉 <span class="hl">then</span> 〈正しい処理〉 <span class="hl">else</span> 〈正しくない処理〉<br>
-      <span class="hl">return</span> 〈戻り値〉
+<div class="def">
+<strong>プログラム言語キーワード:</strong><br/>
+<span class="hl">if</span> 〈条件〉 <span class="hl">then</span> 〈正しい処理〉 <span class="hl">else</span> 〈正しくない処理〉<br/>
+<span class="hl">return</span> 〈戻り値〉
     </div>
-  </div>
-</section>
+</div>
+</section></section><section class="lesson-part lesson-section" id="p2"><h2 class="lesson-part-title" data-ja="例題" data-step="02" data-vi="Ví dụ minh hoạ">Ví dụ minh hoạ</h2>
+<h3 id="lesson-10-topic-7"><span class="ic" style="background:rgba(251,191,36,.18);color:var(--a4)">💡</span>Phần 2 — Ví dụ Minh họa</h3>
+ Stack/Queue example
+<div class="card">
+<div class="card-title">📚 Ví dụ 1: Stack (スタック) — Bài thi thực tế</div>
+<div class="def yw"><span class="tag ex">問題3-1</span> A,B,C,D theo thứ tự đến. Dùng 1 Stack. Dãy đầu ra nào khả thi?<br/>
+<strong>Đáp án: C, B, D, A</strong>
+</div>
+<div class="diagram">  Thứ tự vào: A → B → C → D
 
-<!-- ===================== PHẦN 3: VÍ DỤ ===================== -->
-      </div>
-    </section>
-
-    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
-    <section class="content-section" id="sec-2">
-      <h2 class="section-heading">
-        <span class="num-badge">②</span>
-        <span class="text-ja">演習例題 (Worked Examples)</span>
-        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
-      </h2>
-      <div class="lesson-body-content">
-<h2><span class="ic" style="background:rgba(251,191,36,.18);color:var(--a4)">💡</span>Phần 2 — Ví dụ Minh họa</h2>
-
-  <!-- Stack/Queue example -->
-  <div class="card">
-    <div class="card-title">📚 Ví dụ 1: Stack (スタック) — Bài thi thực tế</div>
-    <div class="def yw"><span class="tag ex">問題3-1</span> A,B,C,D theo thứ tự đến. Dùng 1 Stack. Dãy đầu ra nào khả thi?<br>
-    <strong>Đáp án: C, B, D, A</strong>
-    </div>
-    <div class="diagram">  Thứ tự vào: A → B → C → D
-  
   Push A: [A]
-  Push B: [A, B]  
+  Push B: [A, B]
   Push C: [A, B, C]
   Pop → C         ← lấy C ra trước (LIFO)
   Pop → B         ← lấy B
   Push D: [A, D]
-  Pop → D         ← lấy D  
+  Pop → D         ← lấy D
   Pop → A         ← lấy A cuối cùng
 
   Kết quả: C, B, D, A ✓</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">🚶 Ví dụ 2: Queue (キュー) — Bài thi thực tế</div>
-    <div class="def yw"><span class="tag ex">問題3-2</span> ENQ1, ENQ2, ENQ3, DEQ, ENQ4, ENQ5, DEQ, ENQ6, DEQ, DEQ, DEQ → lấy ra cuối là số nào?</div>
-    <div class="diagram">  ENQ1: [1]          → Queue: 1
+</div>
+<div class="card">
+<div class="card-title">🚶 Ví dụ 2: Queue (キュー) — Bài thi thực tế</div>
+<div class="def yw"><span class="tag ex">問題3-2</span> ENQ1, ENQ2, ENQ3, DEQ, ENQ4, ENQ5, DEQ, ENQ6, DEQ, DEQ, DEQ → lấy ra cuối là số nào?</div>
+<div class="diagram">  ENQ1: [1]          → Queue: 1
   ENQ2: [1,2]        → Queue: 1,2
   ENQ3: [1,2,3]      → Queue: 1,2,3
   DEQ → lấy 1       → Queue: 2,3
@@ -484,37 +376,35 @@
   DEQ → lấy 3       → Queue: 4,5,6
   DEQ → lấy 4       → Queue: 5,6
   DEQ cuối → lấy 5  ← Đáp án: 5 ✓</div>
-  </div>
+</div>
+<div class="card">
+<div class="card-title">🔍 Ví dụ 3: 2分探索法 (Binary Search)</div>
+<div class="lang-block reading-vi" lang="vi">
+<div class="lang-label lang-vi">🇻🇳</div>
+<div class="lang-content">Tìm số "6" trong mảng đã sắp xếp: [1, 2, 3, 4, 5, 6, 7, 8, 9]</div>
+</div>
+<div class="diagram">  Mảng: [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-  <div class="card">
-    <div class="card-title">🔍 Ví dụ 3: 2分探索法 (Binary Search)</div>
-    <div class="lang-block">
-      <div class="lang-label lang-vi">🇻🇳</div>
-      <div class="lang-content">Tìm số "6" trong mảng đã sắp xếp: [1, 2, 3, 4, 5, 6, 7, 8, 9]</div>
-    </div>
-    <div class="diagram">  Mảng: [1, 2, 3, 4, 5, 6, 7, 8, 9]
-  
   Bước 1: Phần tử giữa = (1+9)/2 = 5 → giá trị = 5
-           6 > 5 → Tìm ở nửa phải [6,7,8,9]
-  
+           6 &gt; 5 → Tìm ở nửa phải [6,7,8,9]
+
   Bước 2: Phần tử giữa = (6+9)/2 = 7 → giá trị = 7
-           6 < 7 → Tìm ở nửa trái [6]
-  
+           6 &lt; 7 → Tìm ở nửa trái [6]
+
   Bước 3: Phần tử giữa = 6 → TÌM THẤY! ✓
 
   Chỉ cần 3 bước cho 9 phần tử!
   O(log₂9) ≈ 3.17 ≈ 3 bước</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">🔁 Ví dụ 4: 再帰的アルゴリズム — 総和 (Tổng đệ quy)</div>
-    <div class="lang-block">
-      <div class="lang-label lang-vi">🇻🇳</div>
-      <div class="lang-content">Tính 1+2+3+4+5 = 15 bằng đệ quy: f(5) → f(5) tự gọi f(4) → f(4) gọi f(3)... </div>
-    </div>
-    <div class="code">
+</div>
+<div class="card">
+<div class="card-title">🔁 Ví dụ 4: 再帰的アルゴリズム — 総和 (Tổng đệ quy)</div>
+<div class="lang-block reading-vi" lang="vi">
+<div class="lang-label lang-vi">🇻🇳</div>
+<div class="lang-content">Tính 1+2+3+4+5 = 15 bằng đệ quy: f(5) → f(5) tự gọi f(4) → f(4) gọi f(3)... </div>
+</div>
+<div class="code">
 <span class="cmt">// Định nghĩa hàm đệ quy (Recursive Function)</span>
-f(x): <span class="kw">if</span> x ≤ 1 <span class="kw">then return</span> 1 
+f(x): <span class="kw">if</span> x ≤ 1 <span class="kw">then return</span> 1
       <span class="kw">else return</span> x + <span class="fn">f</span>(x - 1)
 
 <span class="cmt">// Tính f(5):</span>
@@ -524,393 +414,26 @@ f(x): <span class="kw">if</span> x ≤ 1 <span class="kw">then return</span> 1
       = 5 + 4 + 3 + 2 + <span class="fn">f</span>(1)
       = 5 + 4 + 3 + 2 + 1
       = <span class="str">15</span> ✓</div>
-  </div>
-
-  <div class="card">
-    <div class="card-title">⚡ Ví dụ 5: Sửa lỗi Flowchart (Bài thi thực tế)</div>
-    <div class="def yw"><span class="tag ex">問題3-6</span> Tính tổng 1 đến 100. Flowchart bắt đầu với ① <code>1→x</code>. Kết quả là 5051 (sai, phải là 5050). Sửa như thế nào?</div>
-    <div class="lang-block">
-      <div class="lang-label lang-vi">🇻🇳</div>
-      <div class="lang-content">
-        Lỗi: Khởi tạo x=1 thay vì x=0, nên đã cộng thêm 1 lần 1 dư.<br>
-        <strong>Sửa:</strong> Đổi ① thành <span class="hl">0 → x</span> (khởi tạo x=0)<br>
+</div>
+<div class="card">
+<div class="card-title">⚡ Ví dụ 5: Sửa lỗi Flowchart (Bài thi thực tế)</div>
+<div class="def yw"><span class="tag ex">問題3-6</span> Tính tổng 1 đến 100. Flowchart bắt đầu với ① <code>1→x</code>. Kết quả là 5051 (sai, phải là 5050). Sửa như thế nào?</div>
+<div class="lang-block reading-vi" lang="vi">
+<div class="lang-label lang-vi">🇻🇳</div>
+<div class="lang-content">
+        Lỗi: Khởi tạo x=1 thay vì x=0, nên đã cộng thêm 1 lần 1 dư.<br/>
+<strong>Sửa:</strong> Đổi ① thành <span class="hl">0 → x</span> (khởi tạo x=0)<br/>
         → 0 + 1 + 2 + ... + 100 = 5050 ✓
       </div>
-    </div>
-    <div class="tw">
-      <table>
-        <thead><tr><th>Bước</th><th>Flowchart sai (x bắt đầu=1)</th><th>Flowchart đúng (x bắt đầu=0)</th></tr></thead>
-        <tbody>
-          <tr><td>①</td><td><span style="color:var(--a3)">1 → x (SAI)</span></td><td><span class="ht">0 → x (ĐÚNG)</span></td></tr>
-          <tr><td>Kết quả</td><td>1+1+2+...+100 = 5051 ✗</td><td>0+1+2+...+100 = 5050 ✓</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== PHẦN 4: FLASHCARD ===================== -->
-      </div>
-    </section>
-
-    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-3">
-      <h2 class="section-heading">
-        <span class="num-badge">③</span>
-        <span class="text-ja">暗記カード (Flashcards)</span>
-        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
-        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
-        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
-      </p>
-
-      <div class="fc-grid" id="fcGrid"></div>
-    </section>
-
-    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-4">
-      <h2 class="section-heading">
-        <span class="num-badge">④</span>
-        <span class="text-ja">確認テスト (7問)</span>
-        <span class="text-vi">Luyện tập củng cố · 7 câu trắc nghiệm</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
-        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
-        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
-      </p>
-
-      <div id="quizArea"></div>
-
-      <div class="quiz-result-box" id="quiz-result">
-        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
-        <div class="quiz-result-score" id="qScore">0 / 7</div>
-        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
-        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
-      </div>
-    </section>
-
-    <!-- Footer Navigation & Lesson Completion -->
-    <footer class="lesson-footer-nav">
-      <div class="completion-card">
-        <div>
-          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
-            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
-            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
-          </div>
-          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
-            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
-            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
-          </div>
-        </div>
-        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
-      </div>
-
-      <div class="footer-nav-buttons">
-        
-        <a href="9.html" class="nav-link-card prev">
-          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 09</span>
-            <span class="text-vi">Bài học 09</span>
-          </span>
-        </a>
-        
-        <a href="11.html" class="nav-link-card next">
-          <span class="nav-dir">BÀI TIẾP THEO / NEXT →</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 11</span>
-            <span class="text-vi">Bài học 11</span>
-          </span>
-        </a>
-      </div>
-    </footer>
-
-  </main>
-
-  <!-- Right Sticky Sidebar -->
-  <aside class="sticky-sidebar">
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-        <span class="text-ja">目次 (TOC)</span>
-        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
-      </div>
-      <nav>
-        <ul class="toc-list" id="tocList">
-          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 7 câu</span></a></li>
-        </ul>
-      </nav>
-    </div>
-
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        <span class="text-ja">クイック復習</span>
-        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
-      </div>
-      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
-        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
-        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
-      </p>
-    </div>
-  </aside>
-
 </div>
-
-<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
-<script>
-const FLASHCARDS = [
-  {
-    "cat": "all",
-    "front": "スタック",
-    "back": "後入れ先出し ( LIFO ) Last In First Out 🇻🇳 Vào sau ra trước push = thêm vào, pop = lấy ra"
-  },
-  {
-    "cat": "all",
-    "front": "キュー",
-    "back": "先入れ先出し ( FIFO ) First In First Out 🇻🇳 Vào trước ra trước enqueue = thêm, dequeue = lấy"
-  },
-  {
-    "cat": "all",
-    "front": "配列 vs 連結リスト",
-    "back": "配列 → 参照・更新 速い 連結リスト → 挿入・削除 速い 🇻🇳 Mảng: đọc/sửa nhanh Danh sách: chèn/xóa nhanh"
-  },
-  {
-    "cat": "all",
-    "front": "2分探索木の条件",
-    "back": "左の子孫 &lt; 親 &lt; 右の子孫 🇻🇳 Con cháu bên trái &lt; Nút cha &lt; Con cháu bên phải"
-  },
-  {
-    "cat": "all",
-    "front": "流れ図 ◇",
-    "back": "判断 (Decision) 条件分岐 — Yes/No で処理を分ける 🇻🇳 Rẽ nhánh điều kiện (Yes/No)"
-  },
-  {
-    "cat": "all",
-    "front": "端子 ⬭",
-    "back": "流れ図の開始と終了を表す 「開始」または「終了」と書く 🇻🇳 Điểm Bắt đầu / Kết thúc"
-  },
-  {
-    "cat": "all",
-    "front": "再帰 (リカーシブ)",
-    "back": "プログラム実行中に 自分自身を呼び出す 性質 🇻🇳 Hàm tự gọi chính nó Dùng để: tổng, giai thừa, chia dư"
-  },
-  {
-    "cat": "all",
-    "front": "再入可能 (リエントラント)",
-    "back": "複数タスクから同時 に呼び出されても正しく動作する性質 🇻🇳 Nhiều chương trình gọi đồng thời vẫn chạy đúng"
-  },
-  {
-    "cat": "all",
-    "front": "ハッシュ法のオーダー",
-    "back": "O(1) 1回の探索でアクセス可能 🇻🇳 1 lần tra cứu là xong!"
-  },
-  {
-    "cat": "all",
-    "front": "2分探索法のオーダー",
-    "back": "O(log₂n) データを半分ずつ絞る 🇻🇳 Mỗi lần loại bỏ nửa còn lại"
-  },
-  {
-    "cat": "all",
-    "front": "クイックソート",
-    "back": "基準値を選び、それより 小さい グループと 大きい グループに分割を繰り返す オーダー: O(n log n) 🇻🇳 Chọn pivot, chia 2 nhóm, lặp lại"
-  },
-  {
-    "cat": "all",
-    "front": "Ajax",
-    "back": "JavaScriptの 非同期通信 で画面遷移なく動的UIを実現 Asynchronous JS + XML 🇻🇳 Cập nhật nội dung không cần tải lại trang"
-  }
-];
-const QUIZ = [
-  {
-    "q": "Q1. スタックの説明として正しいものはどれか。(Mô tả đúng về Stack là gì?)",
-    "opts": [
-      "ア. 最初に格納したデータを最初に取り出すデータ構造（先入れ先出し）",
-      "イ. 最後に格納したデータを最初に取り出すデータ構造（後入れ先出し）",
-      "ウ. データをポインタで数珠つなぎにしたデータ構造",
-      "エ. データを階層構造で保持するデータ構造"
-    ],
-    "ans": 1,
-    "expl": ""
-  },
-  {
-    "q": "Q2. 配列と比較した連結リストの特徴として適切なものはどれか。(Đặc điểm của Linked List so với Array?)",
-    "opts": [
-      "ア. 要素を参照する場合、ランダムにアクセスできるので処理時間は短い",
-      "イ. 要素を更新する場合、ポインタをたどるだけなので処理時間は短い",
-      "ウ. 要素を削除する場合、削除した要素から後ろにある全要素を前に移動するので処理時間は長い",
-      "エ. 要素を挿入する場合、数個のポインタを書き換えるだけなので処理時間は短い"
-    ],
-    "ans": 3,
-    "expl": ""
-  },
-  {
-    "q": "Q3. クイックソートの処理方法の説明として正しいものはどれか。(Mô tả đúng về Quick Sort?)",
-    "opts": [
-      "ア. 隣り合ったデータの比較と入替えを繰り返して整列する（バブルソート）",
-      "イ. 最小値を選び、先頭と交換する操作を繰り返す（選択ソート）",
-      "ウ. 適当な基準値を選び、それより小さなグループと大きなグループに分割し、繰り返す",
-      "エ. 整列済みデータの正しい位置に未整列データを挿入する（挿入ソート）"
-    ],
-    "ans": 2,
-    "expl": ""
-  },
-  {
-    "q": "Q4. 再入可能プログラムの特徴はどれか。(Đặc điểm của Reentrant Program?)",
-    "opts": [
-      "ア. 主記憶上のどこのアドレスに配置しても実行できる（リロケータブル）",
-      "イ. 手続の内部から自分自身を呼び出すことができる（リカーシブ）",
-      "ウ. 主記憶に読み込まれたら再ロードなしに繰り返し利用できる（リユーザブル）",
-      "エ. 複数のタスクからの呼び出しに対して、並行して実行されても正しい結果を返す"
-    ],
-    "ans": 3,
-    "expl": ""
-  },
-  {
-    "q": "Q5. 流れ図記号で ◇（菱形）は何を表すか。(Hình thoi ◇ trong flowchart biểu thị điều gì?)",
-    "opts": [
-      "ア. 端子（流れ図の開始と終了）",
-      "イ. 処理（計算や代入）",
-      "ウ. 判断（条件分岐 — Yes/No で処理を分ける）",
-      "エ. ループ端（繰り返し処理の開始と終了）"
-    ],
-    "ans": 2,
-    "expl": ""
-  },
-  {
-    "q": "Q6. Ajax の説明として正しいものはどれか。(Mô tả đúng về Ajax?)",
-    "opts": [
-      "ア. JavaScriptの非同期通信を使い、画面全体の遷移を伴わずに動的なUIを実現する技術",
-      "イ. HTML文書の文字サイズや色などのデザインを指定する言語（CSS）",
-      "ウ. Webページの更新情報を配信するための文書フォーマット（RSS）",
-      "エ. 利用者が任意のタグを定義できるマークアップ言語（XML）"
-    ],
-    "ans": 0,
-    "expl": ""
-  },
-  {
-    "q": "Q7. XMLの特徴として最も適切なものはどれか。(Đặc điểm đúng nhất của XML?)",
-    "opts": [
-      "ア. HTMLと同様にタグの使い方が固定されており、独自タグは定義できない",
-      "イ. ネットワーク経由のデータ交換を容易にするため、任意のタグを定義することができる",
-      "ウ. Webページのデザイン（文字色・大きさ）を指定するための言語",
-      "エ. サーバ上で動作し、動的なWebページを生成するプログラム（サーブレット）"
-    ],
-    "ans": 1,
-    "expl": ""
-  }
-];
-
-// Render Flashcards with reliable click-to-flip
-function renderFC() {
-  const grid = document.getElementById('fcGrid');
-  if (!grid) return;
-  grid.innerHTML = '';
-
-  FLASHCARDS.forEach(f => {
-    const card = document.createElement('div');
-    card.className = 'fc-card';
-    card.innerHTML = `
-      <div>
-        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
-        <div class="fc-front">${f.front}</div>
-        <div class="fc-back">${f.back}</div>
-      </div>
-      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
-    `;
-    card.addEventListener('click', () => card.classList.toggle('flipped'));
-    grid.appendChild(card);
-  });
-}
-
-// Render Interactive Quiz with tactile 4-option cards & instant feedback
-let quizScore = 0;
-let quizAnswered = 0;
-
-function renderQuiz() {
-  const area = document.getElementById('quizArea');
-  if (!area) return;
-  area.innerHTML = '';
-  quizScore = 0;
-  quizAnswered = 0;
-
-  QUIZ.forEach((item, idx) => {
-    const card = document.createElement('div');
-    card.className = 'quiz-q-card';
-    card.dataset.idx = idx;
-
-    let optsHtml = '';
-    item.opts.forEach((opt, oi) => {
-      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
-      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
-    });
-
-    card.innerHTML = `
-      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
-      <div class="q-text">${item.q}</div>
-      <div class="opts">${optsHtml}</div>
-      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
-    `;
-
-    card.querySelectorAll('.opt').forEach(optEl => {
-      optEl.addEventListener('click', () => {
-        if (card.classList.contains('locked')) return;
-        card.classList.add('locked');
-
-        const chosen = parseInt(optEl.dataset.oi, 10);
-        const correct = item.ans;
-
-        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
-        if (correctEl) correctEl.classList.add('correct');
-
-        if (chosen !== correct) {
-          optEl.classList.add('wrong');
-        } else {
-          quizScore++;
-        }
-
-        quizAnswered++;
-        if (quizAnswered === QUIZ.length) showQuizResult();
-      });
-    });
-
-    area.appendChild(card);
-  });
-
-  const resBox = document.getElementById('quiz-result');
-  if (resBox) resBox.classList.remove('show');
-}
-
-function showQuizResult() {
-  const pct = Math.round((quizScore / QUIZ.length) * 100);
-  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
-  let verdict = '';
-  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
-  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
-  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
-  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
-  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
-  const res = document.getElementById('quiz-result');
-  if (res) {
-    res.classList.add('show');
-    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
-
-function resetQuiz() {
-  renderQuiz();
-  const area = document.getElementById('quizArea');
-  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// Initialize on DOM ready
-renderFC();
-renderQuiz();
-</script>
-<script src="../assets/reader.js"></script>
-</body>
-</html>
+<div class="tw">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">Bước</th><th scope="col">Flowchart sai (x bắt đầu=1)</th><th scope="col">Flowchart đúng (x bắt đầu=0)</th></tr></thead>
+<tbody>
+<tr><td>①</td><td><span style="color:var(--a3)">1 → x (SAI)</span></td><td><span class="ht">0 → x (ĐÚNG)</span></td></tr>
+<tr><td>Kết quả</td><td>1+1+2+...+100 = 5051 ✗</td><td>0+1+2+...+100 = 5050 ✓</td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</section><section class="lesson-part lesson-section" id="p3"><h2 class="lesson-part-title" data-ja="暗記カード" data-step="03" data-vi="Flashcards · Bấm để lật">Flashcards · Bấm để lật</h2><div aria-label="Nhóm flashcard" class="fc-filter" id="fcFilter" role="group"></div><div class="fc-grid" id="fcGrid"></div></section><section class="lesson-part lesson-section" id="p4"><h2 class="lesson-part-title" data-ja="確認テスト · 7問" data-step="04" data-vi="Quiz ôn tập · 7 câu">Quiz ôn tập · 7 câu</h2><div class="reading-quiz-tools"><span class="reading-resume-note"></span><button class="btn" id="quiz-reset" type="button">↻ Làm lại</button></div><div id="quizArea"></div><div hidden="" id="quiz-result"><div class="score" id="qScore"></div><p class="verdict" id="qVerdict"></p></div></section><footer class="lesson-footer"><button aria-pressed="false" class="btn primary" id="complete-lesson" type="button">✓ Đã hoàn thành bài học</button><p data-ja="読了状態はテストの進捗とは別に、このブラウザに保存されます。" data-vi="Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra." id="completion-status" role="status">Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra.</p><a class="btn" data-ja="テストへ →" data-vi="Làm bài kiểm tra →" href="../kiem-tra/10.html">Làm bài kiểm tra →</a><nav aria-label="Điều hướng bài học" class="footer-nav"><a class="btn" data-ja="← 前のレッスン" data-vi="← Bài trước" href="9.html">← Bài trước</a><a class="btn" data-ja="次のレッスン →" data-vi="Bài tiếp theo →" href="11.html">Bài tiếp theo →</a></nav></footer></main><aside aria-label="Mục lục và ôn tập" class="reading-sidebar"><nav class="lesson-toc"><h3 data-ja="このレッスンの内容" data-vi="TRONG BÀI HỌC NÀY">TRONG BÀI HỌC NÀY</h3><ul></ul></nav><div class="reading-vocab"><h3 data-ja="覚えたいFE用語" data-vi="Từ vựng FE cần nhớ">Từ vựng FE cần nhớ</h3><p data-ja="用語をクリックして意味を確認。" data-vi="Bấm thuật ngữ để tự kiểm tra nghĩa.">Bấm thuật ngữ để tự kiểm tra nghĩa.</p></div></aside></div><script id="lesson-data" type="application/json">{"number": 10, "cards": [{"cat": "all", "front": "スタック", "back": "後入れ先出し ( LIFO ) Last In First Out 🇻🇳 Vào sau ra trước push = thêm vào, pop = lấy ra"}, {"cat": "all", "front": "キュー", "back": "先入れ先出し ( FIFO ) First In First Out 🇻🇳 Vào trước ra trước enqueue = thêm, dequeue = lấy"}, {"cat": "all", "front": "配列 vs 連結リスト", "back": "配列 → 参照・更新 速い 連結リスト → 挿入・削除 速い 🇻🇳 Mảng: đọc/sửa nhanh Danh sách: chèn/xóa nhanh"}, {"cat": "all", "front": "2分探索木の条件", "back": "左の子孫 &lt; 親 &lt; 右の子孫 🇻🇳 Con cháu bên trái &lt; Nút cha &lt; Con cháu bên phải"}, {"cat": "all", "front": "流れ図 ◇", "back": "判断 (Decision) 条件分岐 — Yes/No で処理を分ける 🇻🇳 Rẽ nhánh điều kiện (Yes/No)"}, {"cat": "all", "front": "端子 ⬭", "back": "流れ図の開始と終了を表す 「開始」または「終了」と書く 🇻🇳 Điểm Bắt đầu / Kết thúc"}, {"cat": "all", "front": "再帰 (リカーシブ)", "back": "プログラム実行中に 自分自身を呼び出す 性質 🇻🇳 Hàm tự gọi chính nó Dùng để: tổng, giai thừa, chia dư"}, {"cat": "all", "front": "再入可能 (リエントラント)", "back": "複数タスクから同時 に呼び出されても正しく動作する性質 🇻🇳 Nhiều chương trình gọi đồng thời vẫn chạy đúng"}, {"cat": "all", "front": "ハッシュ法のオーダー", "back": "O(1) 1回の探索でアクセス可能 🇻🇳 1 lần tra cứu là xong!"}, {"cat": "all", "front": "2分探索法のオーダー", "back": "O(log₂n) データを半分ずつ絞る 🇻🇳 Mỗi lần loại bỏ nửa còn lại"}, {"cat": "all", "front": "クイックソート", "back": "基準値を選び、それより 小さい グループと 大きい グループに分割を繰り返す オーダー: O(n log n) 🇻🇳 Chọn pivot, chia 2 nhóm, lặp lại"}, {"cat": "all", "front": "Ajax", "back": "JavaScriptの 非同期通信 で画面遷移なく動的UIを実現 Asynchronous JS + XML 🇻🇳 Cập nhật nội dung không cần tải lại trang"}], "quiz": [{"q": "Q1. スタックの説明として正しいものはどれか。(Mô tả đúng về Stack là gì?)", "opts": ["ア. 最初に格納したデータを最初に取り出すデータ構造（先入れ先出し）", "イ. 最後に格納したデータを最初に取り出すデータ構造（後入れ先出し）", "ウ. データをポインタで数珠つなぎにしたデータ構造", "エ. データを階層構造で保持するデータ構造"], "ans": 1, "expl": "", "qJa": "Q1. スタックの説明として正しいものはどれか。(Mô tả đúng về Stack là gì?)", "qVi": "Q1. スタックの説明として正しいものはどれか。(Mô tả đúng về Stack là gì?)"}, {"q": "Q2. 配列と比較した連結リストの特徴として適切なものはどれか。(Đặc điểm của Linked List so với Array?)", "opts": ["ア. 要素を参照する場合、ランダムにアクセスできるので処理時間は短い", "イ. 要素を更新する場合、ポインタをたどるだけなので処理時間は短い", "ウ. 要素を削除する場合、削除した要素から後ろにある全要素を前に移動するので処理時間は長い", "エ. 要素を挿入する場合、数個のポインタを書き換えるだけなので処理時間は短い"], "ans": 3, "expl": "", "qJa": "Q2. 配列と比較した連結リストの特徴として適切なものはどれか。(Đặc điểm của Linked List so với Array?)", "qVi": "Q2. 配列と比較した連結リストの特徴として適切なものはどれか。(Đặc điểm của Linked List so với Array?)"}, {"q": "Q3. クイックソートの処理方法の説明として正しいものはどれか。(Mô tả đúng về Quick Sort?)", "opts": ["ア. 隣り合ったデータの比較と入替えを繰り返して整列する（バブルソート）", "イ. 最小値を選び、先頭と交換する操作を繰り返す（選択ソート）", "ウ. 適当な基準値を選び、それより小さなグループと大きなグループに分割し、繰り返す", "エ. 整列済みデータの正しい位置に未整列データを挿入する（挿入ソート）"], "ans": 2, "expl": "", "qJa": "Q3. クイックソートの処理方法の説明として正しいものはどれか。(Mô tả đúng về Quick Sort?)", "qVi": "Q3. クイックソートの処理方法の説明として正しいものはどれか。(Mô tả đúng về Quick Sort?)"}, {"q": "Q4. 再入可能プログラムの特徴はどれか。(Đặc điểm của Reentrant Program?)", "opts": ["ア. 主記憶上のどこのアドレスに配置しても実行できる（リロケータブル）", "イ. 手続の内部から自分自身を呼び出すことができる（リカーシブ）", "ウ. 主記憶に読み込まれたら再ロードなしに繰り返し利用できる（リユーザブル）", "エ. 複数のタスクからの呼び出しに対して、並行して実行されても正しい結果を返す"], "ans": 3, "expl": "", "qJa": "Q4. 再入可能プログラムの特徴はどれか。(Đặc điểm của Reentrant Program?)", "qVi": "Q4. 再入可能プログラムの特徴はどれか。(Đặc điểm của Reentrant Program?)"}, {"q": "Q5. 流れ図記号で ◇（菱形）は何を表すか。(Hình thoi ◇ trong flowchart biểu thị điều gì?)", "opts": ["ア. 端子（流れ図の開始と終了）", "イ. 処理（計算や代入）", "ウ. 判断（条件分岐 — Yes/No で処理を分ける）", "エ. ループ端（繰り返し処理の開始と終了）"], "ans": 2, "expl": "", "qJa": "Q5. 流れ図記号で ◇（菱形）は何を表すか。(Hình thoi ◇ trong flowchart biểu thị điều gì?)", "qVi": "Q5. 流れ図記号で ◇（菱形）は何を表すか。(Hình thoi ◇ trong flowchart biểu thị điều gì?)"}, {"q": "Q6. Ajax の説明として正しいものはどれか。(Mô tả đúng về Ajax?)", "opts": ["ア. JavaScriptの非同期通信を使い、画面全体の遷移を伴わずに動的なUIを実現する技術", "イ. HTML文書の文字サイズや色などのデザインを指定する言語（CSS）", "ウ. Webページの更新情報を配信するための文書フォーマット（RSS）", "エ. 利用者が任意のタグを定義できるマークアップ言語（XML）"], "ans": 0, "expl": "", "qJa": "Q6. Ajax の説明として正しいものはどれか。(Mô tả đúng về Ajax?)", "qVi": "Q6. Ajax の説明として正しいものはどれか。(Mô tả đúng về Ajax?)"}, {"q": "Q7. XMLの特徴として最も適切なものはどれか。(Đặc điểm đúng nhất của XML?)", "opts": ["ア. HTMLと同様にタグの使い方が固定されており、独自タグは定義できない", "イ. ネットワーク経由のデータ交換を容易にするため、任意のタグを定義することができる", "ウ. Webページのデザイン（文字色・大きさ）を指定するための言語", "エ. サーバ上で動作し、動的なWebページを生成するプログラム（サーブレット）"], "ans": 1, "expl": "", "qJa": "Q7. XMLの特徴として最も適切なものはどれか。(Đặc điểm đúng nhất của XML?)", "qVi": "Q7. XMLの特徴として最も適切なものはどれか。(Đặc điểm đúng nhất của XML?)"}], "available": true}</script></body></html>

@@ -1,1181 +1,485 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="light" data-lang="dual">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bài 05: 論理演算 & 半加算器 — FE Master</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/reader.css">
-</head>
-<body>
 
-<!-- Reading Progress Bar -->
-<div class="reading-progress-track">
-  <div class="reading-progress-bar" id="readingProgress"></div>
-</div>
-
-<!-- Minimal Sticky Top Header -->
-<header class="site-header">
-  <div class="header-container">
-    <div class="header-left">
-      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
-        <span class="text-ja">← ロードマップ</span>
-        <span class="text-vi">← Lộ trình</span>
-      </a>
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
-        <span class="sep">/</span>
-        <span>Mục tiêu 1</span>
-        <span class="sep">/</span>
-        <span class="current">Bài 05</span>
-      </nav>
-    </div>
-    <div class="header-right">
-      <div class="lang-selector">
-        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
-        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
-        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
-      </div>
-      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
-        <span id="zenIcon">📖</span>
-        <span id="zenText">Zen</span>
-      </button>
-      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
-        <span id="themeIcon">◐</span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- Main Two-Column Reader Layout -->
-<div class="page-container">
-
-  <!-- Left Content Column -->
-  <main class="main-content">
-
-    <div class="lesson-header">
-      <div class="lesson-meta-bar">
-        <span class="badge-lesson">BÀI 05 · CƠ SỞ LÝ THUYẾT</span>
-        <span class="badge-tag">MỤC TIÊU 1</span>
-        <span class="badge-tag">TRỌNG TÂM 科目A</span>
-      </div>
-      <h1 class="lesson-title">
-        論理演算 & 半加算器
-      </h1>
-      <div class="lesson-stats">
-        <span>⏱ ~30-45 phút đọc</span>
-        <span>·</span>
-        <span>Active Recall & Flashcards</span>
-      </div>
-    </div>
-
-    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
-    <section class="content-section" id="sec-1">
-      <h2 class="section-heading">
-        <span class="num-badge">①</span>
-        <span class="text-ja">重要理論 (Theory)</span>
-        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
-      </h2>
-      <div class="lesson-body-content">
+<html data-reading-lang="dual" data-reading-theme="light" lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><meta content="light dark" name="color-scheme"/><title>Bài 05 · 集合と論理演算 — FE Master</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/><link href="../assets/reader.css" rel="stylesheet"/><script defer="" src="../assets/reader.js"></script></head><body>
+<a class="skip-link" data-ja="本文へ" data-vi="Đến nội dung bài học" href="#lesson-content">Đến nội dung bài học</a>
+<header class="topbar"><div aria-label="Tiến độ đọc bài" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-track" role="progressbar"><div id="reader-progress"></div></div><div class="top-inner"><div class="top-left"><a class="reading-back" data-ja="← ロードマップへ" data-vi="← Quay lại lộ trình" href="../index.html" target="_top">← Quay lại lộ trình</a><nav aria-label="Breadcrumb" class="breadcrumb"><span>FE</span><span>/</span><span data-ja="目標1" data-vi="Mục tiêu 1">Mục tiêu 1</span><span>/</span><span data-ja="解説5" data-vi="Lý thuyết 5">Lý thuyết 5</span></nav></div><div class="reading-controls"><label class="sr-only" for="reading-language">Ngôn ngữ bài học</label><select id="reading-language"><option value="dual">Việt + 日本語</option><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select><button aria-label="Chế độ tập trung: ẩn sidebar" aria-pressed="false" id="zen-toggle" type="button">⊡ <span class="zen-label" data-ja="集中" data-vi="Tập trung">Tập trung</span></button><button aria-pressed="false" id="reading-theme" type="button">☾ Tối</button></div></div></header>
+<div class="layout"><main class="reading-main" id="lesson-content"><header class="lesson-hero"><span class="lesson-eyebrow" data-ja="レッスン05 · 理論" data-vi="BÀI 05 · LÝ THUYẾT">BÀI 05 · LÝ THUYẾT</span><h1><span class="reading-ja" lang="ja">集合と論理演算</span><span class="reading-vi" lang="vi">集合と論理演算</span></h1><div class="lesson-meta"><span data-ja="科目Aの基礎" data-vi="Trọng tâm 科目A">Trọng tâm 科目A</span><span data-ja="暗記カード47枚 · 確認問題10問" data-vi="47 flashcard · 10 câu ôn tập">47 flashcard · 10 câu ôn tập</span></div></header>
+<section class="lesson-part lesson-section" id="p1"><h2 class="lesson-part-title" data-ja="理論のまとめ" data-step="01" data-vi="Tóm tắt lý thuyết">Tóm tắt lý thuyết</h2>
 <div class="sect-head">
-    <div class="sect-num">PART 01 / 五</div>
-    <h2>Tóm tắt lý thuyết<small>Theoretical Foundations · 理論まとめ</small></h2>
-  </div>
-
-  <!-- 1.1 -->
-  <div class="card">
-    <h3>1.1 ・ 論理演算とは何か</h3>
-    <div class="lang jp">
-      <span class="flag">🇯🇵 日本語</span>
+</div>
+ 1.1
+<div class="card">
+<h3 id="lesson-5-topic-1">1.1 ・ 論理演算とは何か</h3>
+<div class="lang jp reading-ja" lang="ja">
+<span class="flag">🇯🇵 日本語</span>
       論理演算とは、<b>2進数の1桁のみを対象にした演算方式</b>である。扱う数字は「0」と「1」の2種類のみで、計算結果も常に「0」か「1」のいずれか。コンピュータは0(電圧低)と1(電圧高)の2進数の世界なので、四則演算を直接行えない。論理演算を組み合わせることで、四則演算をはじめさまざまな計算を行う。
     </div>
-    <div class="lang vn">
-      <span class="flag">🇻🇳 Tiếng Việt</span>
+<div class="lang vn reading-vi" lang="vi">
+<span class="flag">🇻🇳 Tiếng Việt</span>
       Phép toán logic là <b>phương thức tính toán chỉ xử lý 1 chữ số nhị phân</b>. Chỉ có 2 số: "0" và "1", kết quả cũng luôn là "0" hoặc "1". Máy tính làm việc với điện áp thấp (0) và cao (1), nên không thể trực tiếp làm phép +, −, ×, ÷. Bằng cách kết hợp các phép toán logic, máy tính thực hiện được bốn phép toán và các phép tính phức tạp khác.
     </div>
-    <div class="lang en">
-      <span class="flag">🇬🇧 English</span>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en">
+<span class="flag">🇬🇧 English</span>
       Logic operations are <b>calculations performed on a single binary digit</b>. Only two values exist ("0" and "1"), and the results are also always "0" or "1". Since computers work in binary (low voltage = 0, high voltage = 1), they cannot directly perform arithmetic. By combining logic operations, computers achieve arithmetic and other complex computations.
+    </div></details>
+</div>
+ 1.2
+<div class="card">
+<h3 id="lesson-5-topic-2">1.2 ・ 4つの基本演算子</h3>
+<div class="table-wrap">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead>
+<tr><th scope="col">演算子</th><th scope="col">論理式</th><th scope="col">意味 / Meaning</th><th scope="col">別名</th></tr>
+</thead>
+<tbody>
+<tr><td><b>AND</b> (アンド)</td><td>A・B</td><td>Cả A và B đều = 1 → kết quả 1</td><td>論理積 (Tích logic)</td></tr>
+<tr><td><b>OR</b> (オア)</td><td>A+B</td><td>Ít nhất 1 trong A, B = 1 → kết quả 1</td><td>論理和 (Tổng logic)</td></tr>
+<tr><td><b>XOR</b> (エックスオア)</td><td>A⊕B</td><td>A và B khác nhau → 1; giống nhau → 0</td><td>排他的論理和 (Tổng logic loại trừ)</td></tr>
+<tr><td><b>NOT</b> (ノット)</td><td>Ā</td><td>Đảo ngược đầu vào</td><td>否定 (Phủ định)</td></tr>
+</tbody>
+</table></div>
+</div>
+<h4>真理値表 — Truth Tables</h4>
+<div class="truth-grid">
+<div class="truth-card" data-op="AND">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><td>A</td><td>B</td><td>A·B</td></tr>
+<tr><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td class="hi">1</td></tr>
+</table></div>
+</div>
+<div class="truth-card" data-op="OR">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><td>A</td><td>B</td><td>A+B</td></tr>
+<tr><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td class="hi">1</td></tr>
+<tr><td>1</td><td>0</td><td class="hi">1</td></tr>
+<tr><td>1</td><td>1</td><td class="hi">1</td></tr>
+</table></div>
+</div>
+<div class="truth-card" data-op="XOR">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><td>A</td><td>B</td><td>A⊕B</td></tr>
+<tr><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td class="hi">1</td></tr>
+<tr><td>1</td><td>0</td><td class="hi">1</td></tr>
+<tr><td>1</td><td>1</td><td>0</td></tr>
+</table></div>
+</div>
+<div class="truth-card" data-op="NOT">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><td>A</td><td colspan="2">Ā</td></tr>
+<tr><td>0</td><td class="hi" colspan="2">1</td></tr>
+<tr><td>1</td><td colspan="2">0</td></tr>
+</table></div>
+</div>
+</div>
+<h4>Venn Diagrams — ベン図</h4>
+<div class="venn-row">
+<div class="venn-card">
+<svg height="80" viewbox="0 0 120 80" width="120">
+<defs><clippath id="cAND"><circle cx="50" cy="40" r="26"></circle></clippath></defs>
+<circle cx="50" cy="40" fill="none" r="26" stroke="#1a1410" stroke-width="1.5"></circle>
+<circle cx="74" cy="40" fill="none" r="26" stroke="#1a1410" stroke-width="1.5"></circle>
+<circle clip-path="url(#cAND)" cx="74" cy="40" fill="#c2410c" opacity=".55" r="26"></circle>
+<text font-family="DM Mono" font-size="9" x="38" y="20">A</text>
+<text font-family="DM Mono" font-size="9" x="84" y="20">B</text>
+</svg>
+<div class="lab">AND (A∩B)</div>
+</div>
+<div class="venn-card">
+<svg height="80" viewbox="0 0 120 80" width="120">
+<circle cx="50" cy="40" fill="#c2410c" opacity=".55" r="26" stroke="#1a1410" stroke-width="1.5"></circle>
+<circle cx="74" cy="40" fill="#c2410c" opacity=".55" r="26" stroke="#1a1410" stroke-width="1.5"></circle>
+<text font-family="DM Mono" font-size="9" x="38" y="20">A</text>
+<text font-family="DM Mono" font-size="9" x="84" y="20">B</text>
+</svg>
+<div class="lab">OR (A∪B)</div>
+</div>
+<div class="venn-card">
+<svg height="80" viewbox="0 0 120 80" width="120">
+<defs>
+<mask id="mXOR">
+<rect fill="white" height="80" width="120"></rect>
+<circle cx="50" cy="40" fill="white" r="26"></circle>
+<circle cx="74" cy="40" fill="white" r="26"></circle>
+<ellipse cx="62" cy="40" fill="black" rx="14" ry="20"></ellipse>
+</mask>
+</defs>
+<g mask="url(#mXOR)">
+<circle cx="50" cy="40" fill="#c2410c" opacity=".55" r="26"></circle>
+<circle cx="74" cy="40" fill="#c2410c" opacity=".55" r="26"></circle>
+</g>
+<circle cx="50" cy="40" fill="none" r="26" stroke="#1a1410" stroke-width="1.5"></circle>
+<circle cx="74" cy="40" fill="none" r="26" stroke="#1a1410" stroke-width="1.5"></circle>
+<text font-family="DM Mono" font-size="9" x="38" y="20">A</text>
+<text font-family="DM Mono" font-size="9" x="84" y="20">B</text>
+</svg>
+<div class="lab">XOR (A⊕B)</div>
+</div>
+<div class="venn-card">
+<svg height="80" viewbox="0 0 120 80" width="120">
+<defs>
+<mask id="mNOT">
+<rect fill="white" height="80" width="120"></rect>
+<circle cx="60" cy="40" fill="black" r="26"></circle>
+</mask>
+</defs>
+<rect fill="#c2410c" height="60" mask="url(#mNOT)" opacity=".55" width="100" x="10" y="10"></rect>
+<rect fill="none" height="60" stroke="#1a1410" stroke-width="1.5" width="100" x="10" y="10"></rect>
+<circle cx="60" cy="40" fill="none" r="26" stroke="#1a1410" stroke-width="1.5"></circle>
+<text font-family="DM Mono" font-size="9" x="48" y="20">A</text>
+</svg>
+<div class="lab">NOT (Ā)</div>
+</div>
+</div>
+<div class="keybox">
+<strong>⚠ Lưu ý: </strong>"AND = 論理積 (tích)" — chữ 「積」 ở đây <span class="hl-red">KHÔNG phải</span> phép nhân của bốn phép toán, mà là 「積」 của <b>tập hợp giao</b> (積集合).
     </div>
-  </div>
-
-  <!-- 1.2 -->
-  <div class="card">
-    <h3>1.2 ・ 4つの基本演算子</h3>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>演算子</th><th>論理式</th><th>意味 / Meaning</th><th>別名</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><b>AND</b> (アンド)</td><td>A・B</td><td>Cả A và B đều = 1 → kết quả 1</td><td>論理積 (Tích logic)</td></tr>
-          <tr><td><b>OR</b> (オア)</td><td>A+B</td><td>Ít nhất 1 trong A, B = 1 → kết quả 1</td><td>論理和 (Tổng logic)</td></tr>
-          <tr><td><b>XOR</b> (エックスオア)</td><td>A⊕B</td><td>A và B khác nhau → 1; giống nhau → 0</td><td>排他的論理和 (Tổng logic loại trừ)</td></tr>
-          <tr><td><b>NOT</b> (ノット)</td><td>Ā</td><td>Đảo ngược đầu vào</td><td>否定 (Phủ định)</td></tr>
-        </tbody>
-      </table>
+</div>
+ 1.3 NAND &amp; NOR
+<div class="card">
+<h3 id="lesson-5-topic-3">1.3 ・ NAND と NOR</h3>
+<div class="lang vn reading-vi" lang="vi">
+<span class="flag">🇻🇳 Tiếng Việt</span>
+<b>NAND</b> = NOT AND = đảo ngược kết quả AND (0 thành 1, 1 thành 0)<br/>
+<b>NOR</b> = NOT OR = đảo ngược kết quả OR
     </div>
-
-    <h4>真理値表 — Truth Tables</h4>
-    <div class="truth-grid">
-      <div class="truth-card" data-op="AND">
-        <table>
-          <tr><td>A</td><td>B</td><td>A·B</td></tr>
-          <tr><td>0</td><td>0</td><td>0</td></tr>
-          <tr><td>0</td><td>1</td><td>0</td></tr>
-          <tr><td>1</td><td>0</td><td>0</td></tr>
-          <tr><td>1</td><td>1</td><td class="hi">1</td></tr>
-        </table>
-      </div>
-      <div class="truth-card" data-op="OR">
-        <table>
-          <tr><td>A</td><td>B</td><td>A+B</td></tr>
-          <tr><td>0</td><td>0</td><td>0</td></tr>
-          <tr><td>0</td><td>1</td><td class="hi">1</td></tr>
-          <tr><td>1</td><td>0</td><td class="hi">1</td></tr>
-          <tr><td>1</td><td>1</td><td class="hi">1</td></tr>
-        </table>
-      </div>
-      <div class="truth-card" data-op="XOR">
-        <table>
-          <tr><td>A</td><td>B</td><td>A⊕B</td></tr>
-          <tr><td>0</td><td>0</td><td>0</td></tr>
-          <tr><td>0</td><td>1</td><td class="hi">1</td></tr>
-          <tr><td>1</td><td>0</td><td class="hi">1</td></tr>
-          <tr><td>1</td><td>1</td><td>0</td></tr>
-        </table>
-      </div>
-      <div class="truth-card" data-op="NOT">
-        <table>
-          <tr><td>A</td><td colspan="2">Ā</td></tr>
-          <tr><td>0</td><td colspan="2" class="hi">1</td></tr>
-          <tr><td>1</td><td colspan="2">0</td></tr>
-        </table>
-      </div>
+<div class="truth-grid">
+<div class="truth-card" data-op="NAND">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><td>A</td><td>B</td><td>NAND</td></tr>
+<tr><td>0</td><td>0</td><td class="hi">1</td></tr>
+<tr><td>0</td><td>1</td><td class="hi">1</td></tr>
+<tr><td>1</td><td>0</td><td class="hi">1</td></tr>
+<tr><td>1</td><td>1</td><td>0</td></tr>
+</table></div>
+</div>
+<div class="truth-card" data-op="NOR">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><td>A</td><td>B</td><td>NOR</td></tr>
+<tr><td>0</td><td>0</td><td class="hi">1</td></tr>
+<tr><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>0</td></tr>
+</table></div>
+</div>
+</div>
+</div>
+ 1.4 priority
+<div class="card">
+<h3 id="lesson-5-topic-4">1.4 ・ Thứ tự ưu tiên · 優先順位</h3>
+<div class="formula"> <b>括弧</b>  &gt;  <b>NOT</b>  &gt;  <b>AND</b>  &gt;  <b>OR</b>
+(Ngoặc) &gt; (Phủ định) &gt; (Tích) &gt; (Tổng)</div>
+<p style="margin-top:10px">🔑 <span class="hl-red">AND ưu tiên cao hơn OR</span> (giống × ưu tiên hơn + trong số học thường).</p>
+<p>Ví dụ: <code style="background:var(--hi); padding:2px 6px; font-family:'DM Mono', monospace">A OR B AND C</code> → tính <b>B AND C</b> trước, rồi mới OR với A.</p>
+</div>
+ 1.5 MIL symbols
+<div class="card">
+<h3 id="lesson-5-topic-5">1.5 ・ 論理回路 と MIL記号</h3>
+<div class="lang vn reading-vi" lang="vi">
+<span class="flag">🇻🇳 Tiếng Việt</span>
+<b>論理回路</b> = mạch điện tử thực hiện phép toán logic. CPU được tạo từ vô số mạch logic.<br/>
+<b>MIL記号</b> = ký hiệu chuẩn để biểu diễn mạch logic trên giấy.
     </div>
-
-    <h4>Venn Diagrams — ベン図</h4>
-    <div class="venn-row">
-      <div class="venn-card">
-        <svg width="120" height="80" viewBox="0 0 120 80">
-          <defs><clipPath id="cAND"><circle cx="50" cy="40" r="26"/></clipPath></defs>
-          <circle cx="50" cy="40" r="26" fill="none" stroke="#1a1410" stroke-width="1.5"/>
-          <circle cx="74" cy="40" r="26" fill="none" stroke="#1a1410" stroke-width="1.5"/>
-          <circle cx="74" cy="40" r="26" fill="#c2410c" opacity=".55" clip-path="url(#cAND)"/>
-          <text x="38" y="20" font-size="9" font-family="DM Mono">A</text>
-          <text x="84" y="20" font-size="9" font-family="DM Mono">B</text>
-        </svg>
-        <div class="lab">AND (A∩B)</div>
-      </div>
-      <div class="venn-card">
-        <svg width="120" height="80" viewBox="0 0 120 80">
-          <circle cx="50" cy="40" r="26" fill="#c2410c" opacity=".55" stroke="#1a1410" stroke-width="1.5"/>
-          <circle cx="74" cy="40" r="26" fill="#c2410c" opacity=".55" stroke="#1a1410" stroke-width="1.5"/>
-          <text x="38" y="20" font-size="9" font-family="DM Mono">A</text>
-          <text x="84" y="20" font-size="9" font-family="DM Mono">B</text>
-        </svg>
-        <div class="lab">OR (A∪B)</div>
-      </div>
-      <div class="venn-card">
-        <svg width="120" height="80" viewBox="0 0 120 80">
-          <defs>
-            <mask id="mXOR">
-              <rect width="120" height="80" fill="white"/>
-              <circle cx="50" cy="40" r="26" fill="white"/>
-              <circle cx="74" cy="40" r="26" fill="white"/>
-              <ellipse cx="62" cy="40" rx="14" ry="20" fill="black"/>
-            </mask>
-          </defs>
-          <g mask="url(#mXOR)">
-            <circle cx="50" cy="40" r="26" fill="#c2410c" opacity=".55"/>
-            <circle cx="74" cy="40" r="26" fill="#c2410c" opacity=".55"/>
-          </g>
-          <circle cx="50" cy="40" r="26" fill="none" stroke="#1a1410" stroke-width="1.5"/>
-          <circle cx="74" cy="40" r="26" fill="none" stroke="#1a1410" stroke-width="1.5"/>
-          <text x="38" y="20" font-size="9" font-family="DM Mono">A</text>
-          <text x="84" y="20" font-size="9" font-family="DM Mono">B</text>
-        </svg>
-        <div class="lab">XOR (A⊕B)</div>
-      </div>
-      <div class="venn-card">
-        <svg width="120" height="80" viewBox="0 0 120 80">
-          <defs>
-            <mask id="mNOT">
-              <rect width="120" height="80" fill="white"/>
-              <circle cx="60" cy="40" r="26" fill="black"/>
-            </mask>
-          </defs>
-          <rect x="10" y="10" width="100" height="60" fill="#c2410c" opacity=".55" mask="url(#mNOT)"/>
-          <rect x="10" y="10" width="100" height="60" fill="none" stroke="#1a1410" stroke-width="1.5"/>
-          <circle cx="60" cy="40" r="26" fill="none" stroke="#1a1410" stroke-width="1.5"/>
-          <text x="48" y="20" font-size="9" font-family="DM Mono">A</text>
-        </svg>
-        <div class="lab">NOT (Ā)</div>
-      </div>
-    </div>
-
-    <div class="keybox">
-      <strong>⚠ Lưu ý: </strong>"AND = 論理積 (tích)" — chữ 「積」 ở đây <span class="hl-red">KHÔNG phải</span> phép nhân của bốn phép toán, mà là 「積」 của <b>tập hợp giao</b> (積集合).
-    </div>
-  </div>
-
-  <!-- 1.3 NAND & NOR -->
-  <div class="card">
-    <h3>1.3 ・ NAND と NOR</h3>
-    <div class="lang vn">
-      <span class="flag">🇻🇳 Tiếng Việt</span>
-      <b>NAND</b> = NOT AND = đảo ngược kết quả AND (0 thành 1, 1 thành 0)<br>
-      <b>NOR</b> = NOT OR = đảo ngược kết quả OR
-    </div>
-    <div class="truth-grid">
-      <div class="truth-card" data-op="NAND">
-        <table>
-          <tr><td>A</td><td>B</td><td>NAND</td></tr>
-          <tr><td>0</td><td>0</td><td class="hi">1</td></tr>
-          <tr><td>0</td><td>1</td><td class="hi">1</td></tr>
-          <tr><td>1</td><td>0</td><td class="hi">1</td></tr>
-          <tr><td>1</td><td>1</td><td>0</td></tr>
-        </table>
-      </div>
-      <div class="truth-card" data-op="NOR">
-        <table>
-          <tr><td>A</td><td>B</td><td>NOR</td></tr>
-          <tr><td>0</td><td>0</td><td class="hi">1</td></tr>
-          <tr><td>0</td><td>1</td><td>0</td></tr>
-          <tr><td>1</td><td>0</td><td>0</td></tr>
-          <tr><td>1</td><td>1</td><td>0</td></tr>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- 1.4 priority -->
-  <div class="card">
-    <h3>1.4 ・ Thứ tự ưu tiên · 優先順位</h3>
-    <div class="formula">  <b>括弧</b>  >  <b>NOT</b>  >  <b>AND</b>  >  <b>OR</b>
-(Ngoặc) > (Phủ định) > (Tích) > (Tổng)</div>
-    <p style="margin-top:10px">🔑 <span class="hl-red">AND ưu tiên cao hơn OR</span> (giống × ưu tiên hơn + trong số học thường).</p>
-    <p>Ví dụ: <code style="background:var(--hi); padding:2px 6px; font-family:'DM Mono', monospace">A OR B AND C</code> → tính <b>B AND C</b> trước, rồi mới OR với A.</p>
-  </div>
-
-  <!-- 1.5 MIL symbols -->
-  <div class="card">
-    <h3>1.5 ・ 論理回路 と MIL記号</h3>
-    <div class="lang vn">
-      <span class="flag">🇻🇳 Tiếng Việt</span>
-      <b>論理回路</b> = mạch điện tử thực hiện phép toán logic. CPU được tạo từ vô số mạch logic.<br>
-      <b>MIL記号</b> = ký hiệu chuẩn để biểu diễn mạch logic trên giấy.
-    </div>
-
-    <div class="gate-row">
-      <div class="gate-item">
-        <svg width="80" height="50" viewBox="0 0 80 50">
-          <line x1="0" y1="15" x2="20" y2="15" stroke="#1a1410" stroke-width="1.5"/>
-          <line x1="0" y1="35" x2="20" y2="35" stroke="#1a1410" stroke-width="1.5"/>
-          <path d="M 20 5 L 20 45 L 40 45 A 20 20 0 0 0 40 5 Z" fill="#fffaf0" stroke="#1a1410" stroke-width="1.5"/>
-          <line x1="60" y1="25" x2="80" y2="25" stroke="#1a1410" stroke-width="1.5"/>
-        </svg>
-        <div class="label">AND<br>論理積</div>
-      </div>
-      <div class="gate-item">
-        <svg width="80" height="50" viewBox="0 0 80 50">
-          <line x1="0" y1="15" x2="22" y2="15" stroke="#1a1410" stroke-width="1.5"/>
-          <line x1="0" y1="35" x2="22" y2="35" stroke="#1a1410" stroke-width="1.5"/>
-          <path d="M 15 5 Q 28 25 15 45 Q 45 45 60 25 Q 45 5 15 5 Z" fill="#fffaf0" stroke="#1a1410" stroke-width="1.5"/>
-          <line x1="60" y1="25" x2="80" y2="25" stroke="#1a1410" stroke-width="1.5"/>
-        </svg>
-        <div class="label">OR<br>論理和</div>
-      </div>
-      <div class="gate-item">
-        <svg width="80" height="50" viewBox="0 0 80 50">
-          <line x1="0" y1="25" x2="18" y2="25" stroke="#1a1410" stroke-width="1.5"/>
-          <path d="M 18 8 L 18 42 L 50 25 Z" fill="#fffaf0" stroke="#1a1410" stroke-width="1.5"/>
-          <circle cx="55" cy="25" r="4" fill="#fffaf0" stroke="#1a1410" stroke-width="1.5"/>
-          <line x1="59" y1="25" x2="80" y2="25" stroke="#1a1410" stroke-width="1.5"/>
-        </svg>
-        <div class="label">NOT<br>否定</div>
-      </div>
-      <div class="gate-item">
-        <svg width="80" height="50" viewBox="0 0 80 50">
-          <line x1="0" y1="15" x2="20" y2="15" stroke="#1a1410" stroke-width="1.5"/>
-          <line x1="0" y1="35" x2="20" y2="35" stroke="#1a1410" stroke-width="1.5"/>
-          <path d="M 20 5 L 20 45 L 40 45 A 20 20 0 0 0 40 5 Z" fill="#fffaf0" stroke="#1a1410" stroke-width="1.5"/>
-          <circle cx="65" cy="25" r="4" fill="#fffaf0" stroke="#1a1410" stroke-width="1.5"/>
-          <line x1="69" y1="25" x2="80" y2="25" stroke="#1a1410" stroke-width="1.5"/>
-        </svg>
-        <div class="label">NAND<br>否定論理積</div>
-      </div>
-      <div class="gate-item">
-        <svg width="80" height="50" viewBox="0 0 80 50">
-          <line x1="0" y1="15" x2="22" y2="15" stroke="#1a1410" stroke-width="1.5"/>
-          <line x1="0" y1="35" x2="22" y2="35" stroke="#1a1410" stroke-width="1.5"/>
-          <path d="M 15 5 Q 28 25 15 45 Q 45 45 60 25 Q 45 5 15 5 Z" fill="#fffaf0" stroke="#1a1410" stroke-width="1.5"/>
-          <circle cx="65" cy="25" r="4" fill="#fffaf0" stroke="#1a1410" stroke-width="1.5"/>
-          <line x1="69" y1="25" x2="80" y2="25" stroke="#1a1410" stroke-width="1.5"/>
-        </svg>
-        <div class="label">NOR<br>否定論理和</div>
-      </div>
-      <div class="gate-item">
-        <svg width="80" height="50" viewBox="0 0 80 50">
-          <line x1="0" y1="15" x2="22" y2="15" stroke="#1a1410" stroke-width="1.5"/>
-          <line x1="0" y1="35" x2="22" y2="35" stroke="#1a1410" stroke-width="1.5"/>
-          <path d="M 10 5 Q 23 25 10 45" fill="none" stroke="#1a1410" stroke-width="1.5"/>
-          <path d="M 18 5 Q 31 25 18 45 Q 48 45 63 25 Q 48 5 18 5 Z" fill="#fffaf0" stroke="#1a1410" stroke-width="1.5"/>
-          <line x1="63" y1="25" x2="80" y2="25" stroke="#1a1410" stroke-width="1.5"/>
-        </svg>
-        <div class="label">XOR<br>排他的論理和</div>
-      </div>
-    </div>
-
-    <div class="keybox">
-      <strong>🔑 Mẹo nhớ MIL記号:</strong>
-      <ul>
-        <li>Dấu chấm tròn ○ ở đầu ra = <span class="hl-red">否定 (phủ định)</span></li>
-        <li>Vạch dọc │ thêm vào bên trái OR = <span class="hl-red">排他的 (loại trừ)</span></li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- 1.6 Half Adder -->
-  <div class="card">
-    <h3>1.6 ・ 半加算器 (Half Adder)</h3>
-    <div class="lang jp">
-      <span class="flag">🇯🇵 日本語</span>
+<div class="gate-row">
+<div class="gate-item">
+<svg height="50" viewbox="0 0 80 50" width="80">
+<line stroke="#1a1410" stroke-width="1.5" x1="0" x2="20" y1="15" y2="15"></line>
+<line stroke="#1a1410" stroke-width="1.5" x1="0" x2="20" y1="35" y2="35"></line>
+<path d="M 20 5 L 20 45 L 40 45 A 20 20 0 0 0 40 5 Z" fill="#fffaf0" stroke="#1a1410" stroke-width="1.5"></path>
+<line stroke="#1a1410" stroke-width="1.5" x1="60" x2="80" y1="25" y2="25"></line>
+</svg>
+<div class="label">AND<br/>論理積</div>
+</div>
+<div class="gate-item">
+<svg height="50" viewbox="0 0 80 50" width="80">
+<line stroke="#1a1410" stroke-width="1.5" x1="0" x2="22" y1="15" y2="15"></line>
+<line stroke="#1a1410" stroke-width="1.5" x1="0" x2="22" y1="35" y2="35"></line>
+<path d="M 15 5 Q 28 25 15 45 Q 45 45 60 25 Q 45 5 15 5 Z" fill="#fffaf0" stroke="#1a1410" stroke-width="1.5"></path>
+<line stroke="#1a1410" stroke-width="1.5" x1="60" x2="80" y1="25" y2="25"></line>
+</svg>
+<div class="label">OR<br/>論理和</div>
+</div>
+<div class="gate-item">
+<svg height="50" viewbox="0 0 80 50" width="80">
+<line stroke="#1a1410" stroke-width="1.5" x1="0" x2="18" y1="25" y2="25"></line>
+<path d="M 18 8 L 18 42 L 50 25 Z" fill="#fffaf0" stroke="#1a1410" stroke-width="1.5"></path>
+<circle cx="55" cy="25" fill="#fffaf0" r="4" stroke="#1a1410" stroke-width="1.5"></circle>
+<line stroke="#1a1410" stroke-width="1.5" x1="59" x2="80" y1="25" y2="25"></line>
+</svg>
+<div class="label">NOT<br/>否定</div>
+</div>
+<div class="gate-item">
+<svg height="50" viewbox="0 0 80 50" width="80">
+<line stroke="#1a1410" stroke-width="1.5" x1="0" x2="20" y1="15" y2="15"></line>
+<line stroke="#1a1410" stroke-width="1.5" x1="0" x2="20" y1="35" y2="35"></line>
+<path d="M 20 5 L 20 45 L 40 45 A 20 20 0 0 0 40 5 Z" fill="#fffaf0" stroke="#1a1410" stroke-width="1.5"></path>
+<circle cx="65" cy="25" fill="#fffaf0" r="4" stroke="#1a1410" stroke-width="1.5"></circle>
+<line stroke="#1a1410" stroke-width="1.5" x1="69" x2="80" y1="25" y2="25"></line>
+</svg>
+<div class="label">NAND<br/>否定論理積</div>
+</div>
+<div class="gate-item">
+<svg height="50" viewbox="0 0 80 50" width="80">
+<line stroke="#1a1410" stroke-width="1.5" x1="0" x2="22" y1="15" y2="15"></line>
+<line stroke="#1a1410" stroke-width="1.5" x1="0" x2="22" y1="35" y2="35"></line>
+<path d="M 15 5 Q 28 25 15 45 Q 45 45 60 25 Q 45 5 15 5 Z" fill="#fffaf0" stroke="#1a1410" stroke-width="1.5"></path>
+<circle cx="65" cy="25" fill="#fffaf0" r="4" stroke="#1a1410" stroke-width="1.5"></circle>
+<line stroke="#1a1410" stroke-width="1.5" x1="69" x2="80" y1="25" y2="25"></line>
+</svg>
+<div class="label">NOR<br/>否定論理和</div>
+</div>
+<div class="gate-item">
+<svg height="50" viewbox="0 0 80 50" width="80">
+<line stroke="#1a1410" stroke-width="1.5" x1="0" x2="22" y1="15" y2="15"></line>
+<line stroke="#1a1410" stroke-width="1.5" x1="0" x2="22" y1="35" y2="35"></line>
+<path d="M 10 5 Q 23 25 10 45" fill="none" stroke="#1a1410" stroke-width="1.5"></path>
+<path d="M 18 5 Q 31 25 18 45 Q 48 45 63 25 Q 48 5 18 5 Z" fill="#fffaf0" stroke="#1a1410" stroke-width="1.5"></path>
+<line stroke="#1a1410" stroke-width="1.5" x1="63" x2="80" y1="25" y2="25"></line>
+</svg>
+<div class="label">XOR<br/>排他的論理和</div>
+</div>
+</div>
+<div class="keybox">
+<strong>🔑 Mẹo nhớ MIL記号:</strong>
+<ul>
+<li>Dấu chấm tròn ○ ở đầu ra = <span class="hl-red">否定 (phủ định)</span></li>
+<li>Vạch dọc │ thêm vào bên trái OR = <span class="hl-red">排他的 (loại trừ)</span></li>
+</ul>
+</div>
+</div>
+ 1.6 Half Adder
+<div class="card">
+<h3 id="lesson-5-topic-6">1.6 ・ 半加算器 (Half Adder)</h3>
+<div class="lang jp reading-ja" lang="ja">
+<span class="flag">🇯🇵 日本語</span>
       半加算器とは、2進数のたし算において、<b>下の位からの桁上がりを考慮しない</b>加算回路である。
     </div>
-    <div class="lang vn">
-      <span class="flag">🇻🇳 Tiếng Việt</span>
+<div class="lang vn reading-vi" lang="vi">
+<span class="flag">🇻🇳 Tiếng Việt</span>
       Mạch cộng bán phần là mạch cộng nhị phân <b>KHÔNG xét số nhớ từ hàng dưới</b> sang.
     </div>
-    <div class="lang en">
-      <span class="flag">🇬🇧 English</span>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en">
+<span class="flag">🇬🇧 English</span>
       A Half Adder is an addition circuit for binary numbers that <b>does NOT consider carry from lower bits</b>.
-    </div>
-
-    <h4>4 mẫu cộng nhị phân — 4 patterns</h4>
-    <div class="formula">  0    0    1    1
+    </div></details>
+<h4>4 mẫu cộng nhị phân — 4 patterns</h4>
+<div class="formula">  0    0    1    1
 + 0  + 1  + 0  + 1
 ───  ───  ───  ───
   0    1    1  <b>1 0</b>  ← chỉ 1+1 mới có nhớ</div>
-
-    <h4>真理値表 (X, Y → C, S)</h4>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th colspan="2">入力 Input</th><th colspan="2">出力 Output</th></tr>
-          <tr><th>X</th><th>Y</th><th>C (Carry)</th><th>S (Sum)</th></tr>
-        </thead>
-        <tbody>
-          <tr><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
-          <tr><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="num">1</td></tr>
-          <tr><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
-          <tr style="background:var(--hi)"><td class="num"><b>1</b></td><td class="num"><b>1</b></td><td class="num"><b>1</b></td><td class="num"><b>0</b></td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h4>論理回路 — Mạch nguyên lý</h4>
-    <div class="adder-diagram">
-      <svg width="100%" height="180" viewBox="0 0 500 180" style="max-width:560px; margin:0 auto; display:block">
-        <!-- X input -->
-        <text x="10" y="48" font-family="DM Mono" font-size="13" font-weight="600">X</text>
-        <line x1="25" y1="45" x2="80" y2="45" stroke="#1a1410" stroke-width="1.5"/>
-        <circle cx="80" cy="45" r="3" fill="#1a1410"/>
-        <line x1="80" y1="45" x2="80" y2="120" stroke="#1a1410" stroke-width="1.5"/>
-        <line x1="80" y1="45" x2="160" y2="45" stroke="#1a1410" stroke-width="1.5"/>
-        <!-- Y input -->
-        <text x="10" y="138" font-family="DM Mono" font-size="13" font-weight="600">Y</text>
-        <line x1="25" y1="135" x2="120" y2="135" stroke="#1a1410" stroke-width="1.5"/>
-        <circle cx="120" cy="135" r="3" fill="#1a1410"/>
-        <line x1="120" y1="135" x2="120" y2="60" stroke="#1a1410" stroke-width="1.5"/>
-        <line x1="120" y1="60" x2="160" y2="60" stroke="#1a1410" stroke-width="1.5"/>
-        <line x1="120" y1="135" x2="160" y2="135" stroke="#1a1410" stroke-width="1.5"/>
-        <line x1="80" y1="120" x2="160" y2="120" stroke="#1a1410" stroke-width="1.5"/>
-        <!-- AND gate -->
-        <path d="M 160 30 L 160 75 L 185 75 A 22 22 0 0 0 185 30 Z" fill="#fef3c7" stroke="#1a1410" stroke-width="1.5"/>
-        <text x="170" y="58" font-family="DM Mono" font-size="11" font-weight="600">AND</text>
-        <line x1="207" y1="52" x2="280" y2="52" stroke="#1a1410" stroke-width="1.5"/>
-        <text x="290" y="56" font-family="DM Mono" font-size="13" font-weight="600" fill="#c2410c">C</text>
-        <text x="310" y="56" font-family="Shippori Mincho" font-size="11">桁上がり / Carry</text>
-        <!-- XOR gate -->
-        <path d="M 152 105 Q 165 127 152 150" fill="none" stroke="#1a1410" stroke-width="1.5"/>
-        <path d="M 160 105 Q 173 127 160 150 Q 195 150 213 127 Q 195 105 160 105 Z" fill="#fef3c7" stroke="#1a1410" stroke-width="1.5"/>
-        <text x="170" y="131" font-family="DM Mono" font-size="11" font-weight="600">XOR</text>
-        <line x1="213" y1="127" x2="280" y2="127" stroke="#1a1410" stroke-width="1.5"/>
-        <text x="290" y="131" font-family="DM Mono" font-size="13" font-weight="600" fill="#c2410c">S</text>
-        <text x="310" y="131" font-family="Shippori Mincho" font-size="11">和の1桁目 / Sum</text>
-      </svg>
-    </div>
-
-    <div class="formula"><b>S</b> = X XOR Y    (排他的論理和)
+<h4>真理値表 (X, Y → C, S)</h4>
+<div class="table-wrap">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead>
+<tr><th colspan="2" scope="col">入力 Input</th><th colspan="2" scope="col">出力 Output</th></tr>
+<tr><th scope="col">X</th><th scope="col">Y</th><th scope="col">C (Carry)</th><th scope="col">S (Sum)</th></tr>
+</thead>
+<tbody>
+<tr><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="num">1</td></tr>
+<tr><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
+<tr style="background:var(--hi)"><td class="num"><b>1</b></td><td class="num"><b>1</b></td><td class="num"><b>1</b></td><td class="num"><b>0</b></td></tr>
+</tbody>
+</table></div>
+</div>
+<h4>論理回路 — Mạch nguyên lý</h4>
+<div class="adder-diagram">
+<svg height="180" style="max-width:560px; margin:0 auto; display:block" viewbox="0 0 500 180" width="100%">
+<!-- X input -->
+<text font-family="DM Mono" font-size="13" font-weight="600" x="10" y="48">X</text>
+<line stroke="#1a1410" stroke-width="1.5" x1="25" x2="80" y1="45" y2="45"></line>
+<circle cx="80" cy="45" fill="#1a1410" r="3"></circle>
+<line stroke="#1a1410" stroke-width="1.5" x1="80" x2="80" y1="45" y2="120"></line>
+<line stroke="#1a1410" stroke-width="1.5" x1="80" x2="160" y1="45" y2="45"></line>
+<!-- Y input -->
+<text font-family="DM Mono" font-size="13" font-weight="600" x="10" y="138">Y</text>
+<line stroke="#1a1410" stroke-width="1.5" x1="25" x2="120" y1="135" y2="135"></line>
+<circle cx="120" cy="135" fill="#1a1410" r="3"></circle>
+<line stroke="#1a1410" stroke-width="1.5" x1="120" x2="120" y1="135" y2="60"></line>
+<line stroke="#1a1410" stroke-width="1.5" x1="120" x2="160" y1="60" y2="60"></line>
+<line stroke="#1a1410" stroke-width="1.5" x1="120" x2="160" y1="135" y2="135"></line>
+<line stroke="#1a1410" stroke-width="1.5" x1="80" x2="160" y1="120" y2="120"></line>
+<!-- AND gate -->
+<path d="M 160 30 L 160 75 L 185 75 A 22 22 0 0 0 185 30 Z" fill="#fef3c7" stroke="#1a1410" stroke-width="1.5"></path>
+<text font-family="DM Mono" font-size="11" font-weight="600" x="170" y="58">AND</text>
+<line stroke="#1a1410" stroke-width="1.5" x1="207" x2="280" y1="52" y2="52"></line>
+<text fill="#c2410c" font-family="DM Mono" font-size="13" font-weight="600" x="290" y="56">C</text>
+<text font-family="Shippori Mincho" font-size="11" x="310" y="56">桁上がり / Carry</text>
+<!-- XOR gate -->
+<path d="M 152 105 Q 165 127 152 150" fill="none" stroke="#1a1410" stroke-width="1.5"></path>
+<path d="M 160 105 Q 173 127 160 150 Q 195 150 213 127 Q 195 105 160 105 Z" fill="#fef3c7" stroke="#1a1410" stroke-width="1.5"></path>
+<text font-family="DM Mono" font-size="11" font-weight="600" x="170" y="131">XOR</text>
+<line stroke="#1a1410" stroke-width="1.5" x1="213" x2="280" y1="127" y2="127"></line>
+<text fill="#c2410c" font-family="DM Mono" font-size="13" font-weight="600" x="290" y="131">S</text>
+<text font-family="Shippori Mincho" font-size="11" x="310" y="131">和の1桁目 / Sum</text>
+</svg>
+</div>
+<div class="formula"><b>S</b> = X XOR Y    (排他的論理和)
 <b>C</b> = X AND Y    (論理積)</div>
-  </div>
-
-  <!-- 1.7 Full Adder -->
-  <div class="card">
-    <h3>1.7 ・ 全加算器 (Full Adder)</h3>
-    <div class="lang vn">
-      <span class="flag">🇻🇳 Tiếng Việt</span>
+</div>
+ 1.7 Full Adder
+<div class="card">
+<h3 id="lesson-5-topic-7">1.7 ・ 全加算器 (Full Adder)</h3>
+<div class="lang vn reading-vi" lang="vi">
+<span class="flag">🇻🇳 Tiếng Việt</span>
       Mạch cộng đầy đủ <b>CÓ xét số nhớ</b> từ hàng dưới sang. Có <b>3 đầu vào</b> (X, Y, Z), trong đó X là số nhớ từ cột dưới.
     </div>
-
-    <h4>8 mẫu — 8 patterns</h4>
-    <div class="formula">  0  0  0  0  <b>1</b>  <b>1</b>  <b>1</b>  <b>1</b>   ← X (carry-in)
+<h4>8 mẫu — 8 patterns</h4>
+<div class="formula">  0  0  0  0  <b>1</b> <b>1</b> <b>1</b> <b>1</b>   ← X (carry-in)
   0  0  1  1  0  0  1  1   ← Y
 + 0 +1 +0 +1 +0 +1 +0 +1   ← Z
 ───────────────────────
   0  1  1 10  1 10 10 11</div>
-
-    <h4>真理値表 (X, Y, Z → C, S)</h4>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th colspan="3">入力 Input</th><th colspan="2">出力 Output</th></tr>
-          <tr><th>X</th><th>Y</th><th>Z</th><th>C</th><th>S</th></tr>
-        </thead>
-        <tbody>
-          <tr><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
-          <tr><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="num">1</td></tr>
-          <tr><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
-          <tr><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">0</td></tr>
-          <tr><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
-          <tr><td class="num">1</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">0</td></tr>
-          <tr><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">1</td><td class="num">0</td></tr>
-          <tr style="background:var(--hi)"><td class="num"><b>1</b></td><td class="num"><b>1</b></td><td class="num"><b>1</b></td><td class="num"><b>1</b></td><td class="num"><b>1</b></td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h4>構成 — Cấu trúc (2 半加算器 + 1 OR)</h4>
-    <div class="adder-diagram">
-      <svg width="100%" height="200" viewBox="0 0 540 200" style="max-width:600px; margin:0 auto; display:block">
-        <!-- inputs -->
-        <text x="10" y="48" font-family="DM Mono" font-size="13" font-weight="600">X</text>
-        <line x1="25" y1="45" x2="100" y2="45" stroke="#1a1410" stroke-width="1.5"/>
-        <text x="10" y="93" font-family="DM Mono" font-size="13" font-weight="600">Y</text>
-        <line x1="25" y1="90" x2="100" y2="90" stroke="#1a1410" stroke-width="1.5"/>
-        <text x="10" y="143" font-family="DM Mono" font-size="13" font-weight="600">Z</text>
-        <line x1="25" y1="140" x2="220" y2="140" stroke="#1a1410" stroke-width="1.5"/>
-        <!-- HA1 -->
-        <rect x="100" y="25" width="100" height="65" fill="#fef3c7" stroke="#1a1410" stroke-width="1.5"/>
-        <text x="120" y="55" font-family="Shippori Mincho" font-size="13" font-weight="600">半加算器</text>
-        <text x="130" y="75" font-family="DM Mono" font-size="10">HA ①</text>
-        <!-- HA1 → HA2 -->
-        <line x1="200" y1="50" x2="220" y2="50" stroke="#1a1410" stroke-width="1.5"/>
-        <text x="207" y="44" font-family="DM Mono" font-size="9" fill="#c2410c">S₁</text>
-        <line x1="200" y1="75" x2="280" y2="75" stroke="#1a1410" stroke-width="1.5"/>
-        <text x="207" y="69" font-family="DM Mono" font-size="9" fill="#c2410c">C₁</text>
-        <!-- HA2 -->
-        <rect x="220" y="105" width="100" height="65" fill="#fef3c7" stroke="#1a1410" stroke-width="1.5"/>
-        <text x="240" y="135" font-family="Shippori Mincho" font-size="13" font-weight="600">半加算器</text>
-        <text x="250" y="155" font-family="DM Mono" font-size="10">HA ②</text>
-        <line x1="220" y1="120" x2="220" y2="50" stroke="#1a1410" stroke-width="1.5"/>
-        <!-- HA2 outputs -->
-        <line x1="320" y1="130" x2="380" y2="130" stroke="#1a1410" stroke-width="1.5"/>
-        <text x="327" y="124" font-family="DM Mono" font-size="9" fill="#c2410c">C₂</text>
-        <line x1="320" y1="155" x2="450" y2="155" stroke="#1a1410" stroke-width="1.5"/>
-        <text x="327" y="149" font-family="DM Mono" font-size="9" fill="#c2410c">S</text>
-        <!-- OR gate -->
-        <line x1="280" y1="75" x2="280" y2="110" stroke="#1a1410" stroke-width="1.5"/>
-        <line x1="280" y1="110" x2="380" y2="110" stroke="#1a1410" stroke-width="1.5"/>
-        <path d="M 380 95 Q 393 120 380 145 Q 415 145 433 120 Q 415 95 380 95 Z" fill="#fef3c7" stroke="#1a1410" stroke-width="1.5"/>
-        <text x="392" y="124" font-family="DM Mono" font-size="11" font-weight="600">OR</text>
-        <line x1="433" y1="120" x2="490" y2="120" stroke="#1a1410" stroke-width="1.5"/>
-        <text x="500" y="124" font-family="DM Mono" font-size="13" font-weight="600" fill="#c2410c">C</text>
-        <text x="500" y="160" font-family="DM Mono" font-size="13" font-weight="600" fill="#c2410c">S</text>
-      </svg>
-    </div>
-  </div>
-
-  <!-- 1.8 Usage -->
-  <div class="card">
-    <h3>1.8 ・ 半加算器 vs 全加算器 の使い分け</h3>
-    <div class="formula">      1 0 0 1
+<h4>真理値表 (X, Y, Z → C, S)</h4>
+<div class="table-wrap">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead>
+<tr><th colspan="3" scope="col">入力 Input</th><th colspan="2" scope="col">出力 Output</th></tr>
+<tr><th scope="col">X</th><th scope="col">Y</th><th scope="col">Z</th><th scope="col">C</th><th scope="col">S</th></tr>
+</thead>
+<tbody>
+<tr><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+<tr><td class="num">0</td><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="num">1</td></tr>
+<tr><td class="num">0</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
+<tr><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">0</td></tr>
+<tr><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">1</td></tr>
+<tr><td class="num">1</td><td class="num">0</td><td class="num">1</td><td class="num">1</td><td class="num">0</td></tr>
+<tr><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">1</td><td class="num">0</td></tr>
+<tr style="background:var(--hi)"><td class="num"><b>1</b></td><td class="num"><b>1</b></td><td class="num"><b>1</b></td><td class="num"><b>1</b></td><td class="num"><b>1</b></td></tr>
+</tbody>
+</table></div>
+</div>
+<h4>構成 — Cấu trúc (2 半加算器 + 1 OR)</h4>
+<div class="adder-diagram">
+<svg height="200" style="max-width:600px; margin:0 auto; display:block" viewbox="0 0 540 200" width="100%">
+<!-- inputs -->
+<text font-family="DM Mono" font-size="13" font-weight="600" x="10" y="48">X</text>
+<line stroke="#1a1410" stroke-width="1.5" x1="25" x2="100" y1="45" y2="45"></line>
+<text font-family="DM Mono" font-size="13" font-weight="600" x="10" y="93">Y</text>
+<line stroke="#1a1410" stroke-width="1.5" x1="25" x2="100" y1="90" y2="90"></line>
+<text font-family="DM Mono" font-size="13" font-weight="600" x="10" y="143">Z</text>
+<line stroke="#1a1410" stroke-width="1.5" x1="25" x2="220" y1="140" y2="140"></line>
+<!-- HA1 -->
+<rect fill="#fef3c7" height="65" stroke="#1a1410" stroke-width="1.5" width="100" x="100" y="25"></rect>
+<text font-family="Shippori Mincho" font-size="13" font-weight="600" x="120" y="55">半加算器</text>
+<text font-family="DM Mono" font-size="10" x="130" y="75">HA ①</text>
+<!-- HA1 → HA2 -->
+<line stroke="#1a1410" stroke-width="1.5" x1="200" x2="220" y1="50" y2="50"></line>
+<text fill="#c2410c" font-family="DM Mono" font-size="9" x="207" y="44">S₁</text>
+<line stroke="#1a1410" stroke-width="1.5" x1="200" x2="280" y1="75" y2="75"></line>
+<text fill="#c2410c" font-family="DM Mono" font-size="9" x="207" y="69">C₁</text>
+<!-- HA2 -->
+<rect fill="#fef3c7" height="65" stroke="#1a1410" stroke-width="1.5" width="100" x="220" y="105"></rect>
+<text font-family="Shippori Mincho" font-size="13" font-weight="600" x="240" y="135">半加算器</text>
+<text font-family="DM Mono" font-size="10" x="250" y="155">HA ②</text>
+<line stroke="#1a1410" stroke-width="1.5" x1="220" x2="220" y1="120" y2="50"></line>
+<!-- HA2 outputs -->
+<line stroke="#1a1410" stroke-width="1.5" x1="320" x2="380" y1="130" y2="130"></line>
+<text fill="#c2410c" font-family="DM Mono" font-size="9" x="327" y="124">C₂</text>
+<line stroke="#1a1410" stroke-width="1.5" x1="320" x2="450" y1="155" y2="155"></line>
+<text fill="#c2410c" font-family="DM Mono" font-size="9" x="327" y="149">S</text>
+<!-- OR gate -->
+<line stroke="#1a1410" stroke-width="1.5" x1="280" x2="280" y1="75" y2="110"></line>
+<line stroke="#1a1410" stroke-width="1.5" x1="280" x2="380" y1="110" y2="110"></line>
+<path d="M 380 95 Q 393 120 380 145 Q 415 145 433 120 Q 415 95 380 95 Z" fill="#fef3c7" stroke="#1a1410" stroke-width="1.5"></path>
+<text font-family="DM Mono" font-size="11" font-weight="600" x="392" y="124">OR</text>
+<line stroke="#1a1410" stroke-width="1.5" x1="433" x2="490" y1="120" y2="120"></line>
+<text fill="#c2410c" font-family="DM Mono" font-size="13" font-weight="600" x="500" y="124">C</text>
+<text fill="#c2410c" font-family="DM Mono" font-size="13" font-weight="600" x="500" y="160">S</text>
+</svg>
+</div>
+</div>
+ 1.8 Usage
+<div class="card">
+<h3 id="lesson-5-topic-8">1.8 ・ 半加算器 vs 全加算器 の使い分け</h3>
+<div class="formula">      1 0 0 1
    +    1 0 1
    ─────────
        ↑   ↑
    全加算器  半加算器
    (cột 2+)  (cột 1)</div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Vị trí</th><th>Mạch dùng</th><th>Lý do</th></tr></thead>
-        <tbody>
-          <tr><td>Cột 1 (LSB · 1桁目)</td><td><b class="hl-red">半加算器</b></td><td>Không có bit nào ở dưới → không có carry-in</td></tr>
-          <tr><td>Cột 2 trở lên (2桁目以降)</td><td><b class="hl-red">全加算器</b></td><td>Phải xét carry-in từ cột bên phải</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 1.9 素子・ゲート -->
-  <div class="card">
-    <h3>1.9 ・ 素子 / ゲート (Element / Gate)</h3>
-    <p><b>素子 (so-shi)</b> = đơn vị cơ bản cấu thành thiết bị (điện trở, tụ điện, transistor, diode…). <br><b>論理素子</b> = phần tử thực hiện phép toán logic.</p>
-    <div class="keybox">
+<div class="table-wrap">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">Vị trí</th><th scope="col">Mạch dùng</th><th scope="col">Lý do</th></tr></thead>
+<tbody>
+<tr><td>Cột 1 (LSB · 1桁目)</td><td><b class="hl-red">半加算器</b></td><td>Không có bit nào ở dưới → không có carry-in</td></tr>
+<tr><td>Cột 2 trở lên (2桁目以降)</td><td><b class="hl-red">全加算器</b></td><td>Phải xét carry-in từ cột bên phải</td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+ 1.9 素子・ゲート
+<div class="card">
+<h3 id="lesson-5-topic-9">1.9 ・ 素子 / ゲート (Element / Gate)</h3>
+<p><b>素子 (so-shi)</b> = đơn vị cơ bản cấu thành thiết bị (điện trở, tụ điện, transistor, diode…). <br/><b>論理素子</b> = phần tử thực hiện phép toán logic.</p>
+<div class="keybox">
       Trong kỳ thi FE: <span class="hl-red">論理回路 = 論理素子 = 論理ゲート</span> → tất cả đều cùng nghĩa.
     </div>
-  </div>
-</section>
-
-<!-- =================================================== -->
-<!-- ====================== PART 2 ====================== -->
-<!-- =================================================== -->
-      </div>
-    </section>
-
-    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
-    <section class="content-section" id="sec-2">
-      <h2 class="section-heading">
-        <span class="num-badge">②</span>
-        <span class="text-ja">演習例題 (Worked Examples)</span>
-        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
-      </h2>
-      <div class="lesson-body-content">
+</div>
+</section><section class="lesson-part lesson-section" id="p2"><h2 class="lesson-part-title" data-ja="例題" data-step="02" data-vi="Ví dụ minh hoạ">Ví dụ minh hoạ</h2>
 <div class="sect-head">
-    <div class="sect-num">PART 02 / 五</div>
-    <h2>Ví dụ minh hoạ<small>Worked Examples · 例題</small></h2>
-  </div>
-
-  <div class="example-box">
-    <h4>Ví dụ 1 — AND (論理積): Hai công tắc nối tiếp</h4>
-    <p>Tưởng tượng 2 công tắc nối tiếp với 1 bóng đèn. <b>Cả 2 phải BẬT</b> thì đèn mới sáng.</p>
-    <ul style="margin-left:20px">
-      <li>A OFF (0), B OFF (0) → đèn TẮT (0)</li>
-      <li>A ON (1), B OFF (0) → đèn TẮT (0)</li>
-      <li>A ON (1), B ON (1) → đèn SÁNG (1) ✓</li>
-    </ul>
-  </div>
-
-  <div class="example-box">
-    <h4>Ví dụ 2 — OR (論理和): Hai công tắc song song</h4>
-    <p>Hai công tắc song song. <b>Chỉ cần 1 cái BẬT</b> là đèn sáng. Áp dụng: phòng có 2 cửa, mỗi cửa 1 công tắc đèn → bật bên nào cũng được.</p>
-  </div>
-
-  <div class="example-box">
-    <h4>Ví dụ 3 — XOR (排他的論理和): Cầu thang nhà</h4>
-    <p>Đèn cầu thang điều khiển bởi 2 công tắc (tầng dưới + tầng trên). Bật/tắt 1 cái sẽ <b>đảo trạng thái</b> đèn.</p>
-    <ul style="margin-left:20px">
-      <li>Cả 2 ở trạng thái giống nhau → đèn TẮT</li>
-      <li>Trạng thái khác nhau → đèn SÁNG</li>
-    </ul>
-  </div>
-
-  <div class="example-box">
-    <h4>Ví dụ 4 — NOT (否定): Công tắc đảo</h4>
-    <p>Đầu vào 0 → ra 1; đầu vào 1 → ra 0. Giống như nút "không phải".</p>
-  </div>
-
-  <div class="example-box">
-    <h4>Ví dụ 5 — Bài 2-2 (平成28年度): Giữ nguyên 4 bit thấp</h4>
-    <p><b>Đề:</b> Trong dãy 8 bit, thao tác nào KHÔNG làm thay đổi 4 bit thấp?</p>
-    <p><b>Cách giải:</b> Lấy dãy mẫu <code>10101010</code>, AND với <code>00001111</code> (= 0F hex):</p>
-    <div class="formula">    10101010
+<h3 id="lesson-5-topic-10">Ví dụ minh hoạ<small>Worked Examples · 例題</small></h3>
+</div>
+<div class="example-box">
+<h4>Ví dụ 1 — AND (論理積): Hai công tắc nối tiếp</h4>
+<p>Tưởng tượng 2 công tắc nối tiếp với 1 bóng đèn. <b>Cả 2 phải BẬT</b> thì đèn mới sáng.</p>
+<ul style="margin-left:20px">
+<li>A OFF (0), B OFF (0) → đèn TẮT (0)</li>
+<li>A ON (1), B OFF (0) → đèn TẮT (0)</li>
+<li>A ON (1), B ON (1) → đèn SÁNG (1) ✓</li>
+</ul>
+</div>
+<div class="example-box">
+<h4>Ví dụ 2 — OR (論理和): Hai công tắc song song</h4>
+<p>Hai công tắc song song. <b>Chỉ cần 1 cái BẬT</b> là đèn sáng. Áp dụng: phòng có 2 cửa, mỗi cửa 1 công tắc đèn → bật bên nào cũng được.</p>
+</div>
+<div class="example-box">
+<h4>Ví dụ 3 — XOR (排他的論理和): Cầu thang nhà</h4>
+<p>Đèn cầu thang điều khiển bởi 2 công tắc (tầng dưới + tầng trên). Bật/tắt 1 cái sẽ <b>đảo trạng thái</b> đèn.</p>
+<ul style="margin-left:20px">
+<li>Cả 2 ở trạng thái giống nhau → đèn TẮT</li>
+<li>Trạng thái khác nhau → đèn SÁNG</li>
+</ul>
+</div>
+<div class="example-box">
+<h4>Ví dụ 4 — NOT (否定): Công tắc đảo</h4>
+<p>Đầu vào 0 → ra 1; đầu vào 1 → ra 0. Giống như nút "không phải".</p>
+</div>
+<div class="example-box">
+<h4>Ví dụ 5 — Bài 2-2 (平成28年度): Giữ nguyên 4 bit thấp</h4>
+<p><b>Đề:</b> Trong dãy 8 bit, thao tác nào KHÔNG làm thay đổi 4 bit thấp?</p>
+<p><b>Cách giải:</b> Lấy dãy mẫu <code>10101010</code>, AND với <code>00001111</code> (= 0F hex):</p>
+<div class="formula">    10101010
 AND 00001111
   ──────────
     0000<b>1010</b>   ← 4 bit thấp (1010) GIỮ NGUYÊN ✓</div>
-    <p>➡ Đáp án <b class="hl-red">ウ (論理積 / AND)</b>.</p>
-    <p>🔑 <b>Quy tắc:</b> AND với 0 → ra 0 (xoá); AND với 1 → giữ nguyên.</p>
-  </div>
-
-  <div class="example-box">
-    <h4>Ví dụ 6 — Bài 2-3 (令和元年度): Đảo toàn bộ bit</h4>
-    <p><b>Đề:</b> Thao tác nào đảo ngược TẤT CẢ 8 bit?</p>
-    <div class="formula">    10101010
+<p>➡ Đáp án <b class="hl-red">ウ (論理積 / AND)</b>.</p>
+<p>🔑 <b>Quy tắc:</b> AND với 0 → ra 0 (xoá); AND với 1 → giữ nguyên.</p>
+</div>
+<div class="example-box">
+<h4>Ví dụ 6 — Bài 2-3 (令和元年度): Đảo toàn bộ bit</h4>
+<p><b>Đề:</b> Thao tác nào đảo ngược TẤT CẢ 8 bit?</p>
+<div class="formula">    10101010
 XOR 11111111
   ──────────
     <b>01010101</b>   ← TẤT CẢ bit bị đảo ✓</div>
-    <p>➡ Đáp án <b class="hl-red">ウ (排他的論理和 với FF)</b>.</p>
-    <p>🔑 <b>Quy tắc:</b> XOR với 1 → đảo bit; XOR với 0 → giữ nguyên.</p>
-  </div>
-
-  <div class="example-box">
-    <h4>Ví dụ 7 — Bài 2-7: Tính toán mạch toàn phần</h4>
-    <p><b>Đề:</b> Cho X=1, Y=0, Z=1, tìm C, S.</p>
-    <div class="formula">  X = 1
+<p>➡ Đáp án <b class="hl-red">ウ (排他的論理和 với FF)</b>.</p>
+<p>🔑 <b>Quy tắc:</b> XOR với 1 → đảo bit; XOR với 0 → giữ nguyên.</p>
+</div>
+<div class="example-box">
+<h4>Ví dụ 7 — Bài 2-7: Tính toán mạch toàn phần</h4>
+<p><b>Đề:</b> Cho X=1, Y=0, Z=1, tìm C, S.</p>
+<div class="formula">  X = 1
   Y = 0
 + Z = 1
 ─────────
     <b>1 0</b>   ← kết quả "10" nhị phân
     ↑ ↑
     C S</div>
-    <p>➡ <b class="hl-red">C = 1, S = 0</b> → Đáp án <b>ウ</b>.</p>
-  </div>
-</section>
-
-<!-- =================================================== -->
-<!-- ====================== PART 3 ====================== -->
-<!-- =================================================== -->
-      </div>
-    </section>
-
-    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-3">
-      <h2 class="section-heading">
-        <span class="num-badge">③</span>
-        <span class="text-ja">暗記カード (Flashcards)</span>
-        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
-        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
-        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
-      </p>
-
-      <div class="fc-grid" id="fcGrid"></div>
-    </section>
-
-    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-4">
-      <h2 class="section-heading">
-        <span class="num-badge">④</span>
-        <span class="text-ja">確認テスト (10問)</span>
-        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
-        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
-        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
-      </p>
-
-      <div id="quizArea"></div>
-
-      <div class="quiz-result-box" id="quiz-result">
-        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
-        <div class="quiz-result-score" id="qScore">0 / 10</div>
-        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
-        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
-      </div>
-    </section>
-
-    <!-- Footer Navigation & Lesson Completion -->
-    <footer class="lesson-footer-nav">
-      <div class="completion-card">
-        <div>
-          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
-            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
-            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
-          </div>
-          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
-            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
-            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
-          </div>
-        </div>
-        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
-      </div>
-
-      <div class="footer-nav-buttons">
-        
-        <a href="4.html" class="nav-link-card prev">
-          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 04</span>
-            <span class="text-vi">Bài học 04</span>
-          </span>
-        </a>
-        
-        <a href="6.html" class="nav-link-card next">
-          <span class="nav-dir">BÀI TIẾP THEO / NEXT →</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 06</span>
-            <span class="text-vi">Bài học 06</span>
-          </span>
-        </a>
-      </div>
-    </footer>
-
-  </main>
-
-  <!-- Right Sticky Sidebar -->
-  <aside class="sticky-sidebar">
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-        <span class="text-ja">目次 (TOC)</span>
-        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
-      </div>
-      <nav>
-        <ul class="toc-list" id="tocList">
-          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
-        </ul>
-      </nav>
-    </div>
-
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        <span class="text-ja">クイック復習</span>
-        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
-      </div>
-      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
-        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
-        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
-      </p>
-    </div>
-  </aside>
-
+<p>➡ <b class="hl-red">C = 1, S = 0</b> → Đáp án <b>ウ</b>.</p>
 </div>
-
-<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
-<script>
-const FLASHCARDS = [
-  {
-    "cat": "all",
-    "front": "論理演算とは？",
-    "back": "2進数の1桁のみを対象にした演算方式"
-  },
-  {
-    "cat": "all",
-    "front": "ANDの別名は？",
-    "back": "論理積"
-  },
-  {
-    "cat": "all",
-    "front": "ORの別名は？",
-    "back": "論理和"
-  },
-  {
-    "cat": "all",
-    "front": "XORの別名は？",
-    "back": "排他的論理和"
-  },
-  {
-    "cat": "all",
-    "front": "NOTの別名は？",
-    "back": "否定"
-  },
-  {
-    "cat": "all",
-    "front": "NANDとは？",
-    "back": "NOT AND（論理積と否定の組合せ）"
-  },
-  {
-    "cat": "all",
-    "front": "NORとは？",
-    "back": "NOT OR（論理和と否定の組合せ）"
-  },
-  {
-    "cat": "all",
-    "front": "論理演算子の優先順位は？",
-    "back": "括弧 &gt; NOT &gt; AND &gt; OR"
-  },
-  {
-    "cat": "all",
-    "front": "半加算器とは？",
-    "back": "下の位からの桁上がりを考慮しない加算回路"
-  },
-  {
-    "cat": "all",
-    "front": "半加算器の構成は？",
-    "back": "論理積(AND) と 排他的論理和(XOR) の組合せ"
-  },
-  {
-    "cat": "all",
-    "front": "全加算器とは？",
-    "back": "下の位からの桁上がりを考慮する加算回路"
-  },
-  {
-    "cat": "all",
-    "front": "全加算器の構成は？",
-    "back": "2つの半加算器 + 1つの論理和(OR)"
-  },
-  {
-    "cat": "all",
-    "front": "C (Carry out) とは？",
-    "back": "桁上がり"
-  },
-  {
-    "cat": "all",
-    "front": "S (Sum) とは？",
-    "back": "和の1桁目"
-  },
-  {
-    "cat": "all",
-    "front": "「論理回路」「論理素子」「論理ゲート」の関係は？",
-    "back": "すべて同じ意味"
-  },
-  {
-    "cat": "all",
-    "front": "Phép toán logic là gì?",
-    "back": "Phép tính chỉ xử lý 1 bit nhị phân (0 hoặc 1)"
-  },
-  {
-    "cat": "all",
-    "front": "AND là gì?",
-    "back": "Cả 2 đầu vào = 1 thì kết quả mới = 1"
-  },
-  {
-    "cat": "all",
-    "front": "OR là gì?",
-    "back": "Ít nhất 1 đầu vào = 1 thì kết quả = 1"
-  },
-  {
-    "cat": "all",
-    "front": "XOR là gì?",
-    "back": "2 đầu vào KHÁC nhau → 1; giống nhau → 0"
-  },
-  {
-    "cat": "all",
-    "front": "NOT là gì?",
-    "back": "Đảo bit (0 ↔ 1)"
-  },
-  {
-    "cat": "all",
-    "front": "NAND là gì?",
-    "back": "Phủ định kết quả AND"
-  },
-  {
-    "cat": "all",
-    "front": "NOR là gì?",
-    "back": "Phủ định kết quả OR"
-  },
-  {
-    "cat": "all",
-    "front": "Thứ tự ưu tiên?",
-    "back": "Ngoặc &gt; NOT &gt; AND &gt; OR"
-  },
-  {
-    "cat": "all",
-    "front": "Mạch bán phần là gì?",
-    "back": "Mạch cộng KHÔNG xét số nhớ từ hàng dưới"
-  },
-  {
-    "cat": "all",
-    "front": "Mạch bán phần dùng gì?",
-    "back": "AND + XOR"
-  },
-  {
-    "cat": "all",
-    "front": "Mạch toàn phần là gì?",
-    "back": "Mạch cộng CÓ xét số nhớ"
-  },
-  {
-    "cat": "all",
-    "front": "Mạch toàn phần dùng gì?",
-    "back": "2 mạch bán phần + 1 cổng OR"
-  },
-  {
-    "cat": "all",
-    "front": "C (Carry) là gì?",
-    "back": "Số nhớ sang hàng tiếp theo"
-  },
-  {
-    "cat": "all",
-    "front": "S (Sum) là gì?",
-    "back": "Tổng 1 cột"
-  },
-  {
-    "cat": "all",
-    "front": "AND với 00001111?",
-    "back": "Lấy ra (giữ) 4 bit thấp"
-  },
-  {
-    "cat": "all",
-    "front": "XOR với 11111111?",
-    "back": "Đảo toàn bộ bit"
-  },
-  {
-    "cat": "all",
-    "front": "What is a logic operation?",
-    "back": "Calculation on a single binary digit"
-  },
-  {
-    "cat": "all",
-    "front": "AND output rule?",
-    "back": "Output = 1 ONLY if both inputs = 1"
-  },
-  {
-    "cat": "all",
-    "front": "OR output rule?",
-    "back": "Output = 1 if at least one input = 1"
-  },
-  {
-    "cat": "all",
-    "front": "XOR output rule?",
-    "back": "Output = 1 if inputs differ"
-  },
-  {
-    "cat": "all",
-    "front": "NOT output rule?",
-    "back": "Inverts the input"
-  },
-  {
-    "cat": "all",
-    "front": "NAND?",
-    "back": "NOT AND — inverted AND output"
-  },
-  {
-    "cat": "all",
-    "front": "NOR?",
-    "back": "NOT OR — inverted OR output"
-  },
-  {
-    "cat": "all",
-    "front": "Operator priority?",
-    "back": "Parentheses &gt; NOT &gt; AND &gt; OR"
-  },
-  {
-    "cat": "all",
-    "front": "Half Adder?",
-    "back": "Addition without carry-in"
-  },
-  {
-    "cat": "all",
-    "front": "Half Adder components?",
-    "back": "AND + XOR"
-  },
-  {
-    "cat": "all",
-    "front": "Full Adder?",
-    "back": "Addition WITH carry-in"
-  },
-  {
-    "cat": "all",
-    "front": "Full Adder components?",
-    "back": "2 Half Adders + 1 OR gate"
-  },
-  {
-    "cat": "all",
-    "front": "C means?",
-    "back": "Carry-out"
-  },
-  {
-    "cat": "all",
-    "front": "S means?",
-    "back": "Sum (current bit)"
-  },
-  {
-    "cat": "all",
-    "front": "AND with 00001111?",
-    "back": "Extracts lower 4 bits"
-  },
-  {
-    "cat": "all",
-    "front": "XOR with 11111111?",
-    "back": "Flips all bits"
-  }
-];
-const QUIZ = [
-  {
-    "q": "Phép toán nào cho kết quả \"1\" khi và chỉ khi CẢ HAI đầu vào đều là \"1\"?",
-    "opts": [
-      "OR",
-      "XOR",
-      "AND",
-      "NOT"
-    ],
-    "ans": 2,
-    "expl": "Đáp án: C (AND)AND chỉ trả về 1 khi cả 2 đầu vào đều = 1. Các phép khác có nhiều trường hợp ra 1."
-  },
-  {
-    "q": "Bảng chân lý nào là của XOR?",
-    "opts": [
-      "0,0→0; 0,1→1; 1,0→1; 1,1→1",
-      "0,0→0; 0,1→1; 1,0→1; 1,1→0",
-      "0,0→1; 0,1→1; 1,0→1; 1,1→0",
-      "0,0→0; 0,1→0; 1,0→0; 1,1→1"
-    ],
-    "ans": 1,
-    "expl": "Đáp án: BXOR: khác nhau → 1, giống nhau → 0. A là OR, C là NAND, D là AND."
-  },
-  {
-    "q": "Trong dãy 8 bit, thao tác nào giữ nguyên 4 bit thấp KHÔNG đổi?",
-    "opts": [
-      "ア. XOR với 0F (hex)",
-      "イ. NAND với 0F (hex)",
-      "ウ. AND với 0F (hex)",
-      "エ. OR với 0F (hex)"
-    ],
-    "ans": 2,
-    "expl": "Đáp án: ウ (AND với 0F)0F = 00001111. AND với 1 → giữ nguyên; AND với 0 → xoá. Do đó 4 bit cao thành 0, 4 bit thấp giữ nguyên."
-  },
-  {
-    "q": "Thao tác nào đảo ngược TẤT CẢ 8 bit?",
-    "opts": [
-      "ア. XOR với 00 (hex)",
-      "イ. OR với 00 (hex)",
-      "ウ. XOR với FF (hex)",
-      "エ. OR với FF (hex)"
-    ],
-    "ans": 2,
-    "expl": "Đáp án: ウ (XOR với FF)FF = 11111111. XOR với 1 → đảo bit. Đáp án エ (OR với FF) sẽ làm tất cả thành 1, không phải đảo."
-  },
-  {
-    "q": "Tính: 1 OR 0 AND 1 = ?",
-    "opts": [
-      "0",
-      "1",
-      "Tuỳ ngữ cảnh",
-      "Không xác định"
-    ],
-    "ans": 1,
-    "expl": "Đáp án: B (= 1)Ưu tiên AND trước OR: 0 AND 1 = 0; sau đó 1 OR 0 = 1."
-  },
-  {
-    "q": "Mạch cộng bán phần (半加算器) được tạo thành từ tổ hợp các cổng nào?",
-    "opts": [
-      "AND + OR",
-      "AND + XOR",
-      "OR + NOT",
-      "XOR + NOT"
-    ],
-    "ans": 1,
-    "expl": "Đáp án: B (AND + XOR)S = X XOR Y (tổng); C = X AND Y (số nhớ)."
-  },
-  {
-    "q": "Cho mạch toàn phần (全加算器) với X=1, Y=0, Z=1. Giá trị (C, S) là?",
-    "opts": [
-      "ア. (0, 0)",
-      "イ. (0, 1)",
-      "ウ. (1, 0)",
-      "エ. (1, 1)"
-    ],
-    "ans": 2,
-    "expl": "Đáp án: ウ (1, 0)1 + 0 + 1 = 10 (nhị phân) → C = 1, S = 0."
-  },
-  {
-    "q": "Trong bảng chân lý mạch cộng bán phần, khi X=1, Y=1, giá trị (C, S) là?",
-    "opts": [
-      "(0, 0)",
-      "(0, 1)",
-      "(1, 0)",
-      "(1, 1)"
-    ],
-    "ans": 2,
-    "expl": "Đáp án: C (1, 0)1 + 1 = 10 (nhị phân) → nhớ 1, tổng 0."
-  },
-  {
-    "q": "Cộng 1001 + 0101 (nhị phân). Ở cột bên phải nhất (LSB), mạch nào được dùng?",
-    "opts": [
-      "全加算器",
-      "半加算器",
-      "Cả hai",
-      "Không cần mạch"
-    ],
-    "ans": 1,
-    "expl": "Đáp án: B (半加算器)Cột 1 không có bit nào ở dưới nó → không có carry-in → dùng bán phần (chỉ 2 đầu vào)."
-  },
-  {
-    "q": "Trong ký hiệu MIL, dấu chấm tròn (○) ở đầu ra của cổng có ý nghĩa gì?",
-    "opts": [
-      "Đầu vào ngược",
-      "Cổng đặc biệt",
-      "Loại trừ (排他的)",
-      "Phủ định (否定)"
-    ],
-    "ans": 3,
-    "expl": "Đáp án: D (Phủ định)Dấu chấm ○ = NOT. Đó là vì sao NAND = AND + ○, NOR = OR + ○. Còn vạch dọc │ thêm bên trái OR mới là 排他的 (XOR)."
-  }
-];
-
-// Render Flashcards with reliable click-to-flip
-function renderFC() {
-  const grid = document.getElementById('fcGrid');
-  if (!grid) return;
-  grid.innerHTML = '';
-
-  FLASHCARDS.forEach(f => {
-    const card = document.createElement('div');
-    card.className = 'fc-card';
-    card.innerHTML = `
-      <div>
-        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
-        <div class="fc-front">${f.front}</div>
-        <div class="fc-back">${f.back}</div>
-      </div>
-      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
-    `;
-    card.addEventListener('click', () => card.classList.toggle('flipped'));
-    grid.appendChild(card);
-  });
-}
-
-// Render Interactive Quiz with tactile 4-option cards & instant feedback
-let quizScore = 0;
-let quizAnswered = 0;
-
-function renderQuiz() {
-  const area = document.getElementById('quizArea');
-  if (!area) return;
-  area.innerHTML = '';
-  quizScore = 0;
-  quizAnswered = 0;
-
-  QUIZ.forEach((item, idx) => {
-    const card = document.createElement('div');
-    card.className = 'quiz-q-card';
-    card.dataset.idx = idx;
-
-    let optsHtml = '';
-    item.opts.forEach((opt, oi) => {
-      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
-      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
-    });
-
-    card.innerHTML = `
-      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
-      <div class="q-text">${item.q}</div>
-      <div class="opts">${optsHtml}</div>
-      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
-    `;
-
-    card.querySelectorAll('.opt').forEach(optEl => {
-      optEl.addEventListener('click', () => {
-        if (card.classList.contains('locked')) return;
-        card.classList.add('locked');
-
-        const chosen = parseInt(optEl.dataset.oi, 10);
-        const correct = item.ans;
-
-        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
-        if (correctEl) correctEl.classList.add('correct');
-
-        if (chosen !== correct) {
-          optEl.classList.add('wrong');
-        } else {
-          quizScore++;
-        }
-
-        quizAnswered++;
-        if (quizAnswered === QUIZ.length) showQuizResult();
-      });
-    });
-
-    area.appendChild(card);
-  });
-
-  const resBox = document.getElementById('quiz-result');
-  if (resBox) resBox.classList.remove('show');
-}
-
-function showQuizResult() {
-  const pct = Math.round((quizScore / QUIZ.length) * 100);
-  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
-  let verdict = '';
-  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
-  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
-  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
-  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
-  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
-  const res = document.getElementById('quiz-result');
-  if (res) {
-    res.classList.add('show');
-    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
-
-function resetQuiz() {
-  renderQuiz();
-  const area = document.getElementById('quizArea');
-  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// Initialize on DOM ready
-renderFC();
-renderQuiz();
-</script>
-<script src="../assets/reader.js"></script>
-</body>
-</html>
+</section><section class="lesson-part lesson-section" id="p3"><h2 class="lesson-part-title" data-ja="暗記カード" data-step="03" data-vi="Flashcards · Bấm để lật">Flashcards · Bấm để lật</h2><div aria-label="Nhóm flashcard" class="fc-filter" id="fcFilter" role="group"></div><div class="fc-grid" id="fcGrid"></div></section><section class="lesson-part lesson-section" id="p4"><h2 class="lesson-part-title" data-ja="確認テスト · 10問" data-step="04" data-vi="Quiz ôn tập · 10 câu">Quiz ôn tập · 10 câu</h2><div class="reading-quiz-tools"><span class="reading-resume-note"></span><button class="btn" id="quiz-reset" type="button">↻ Làm lại</button></div><div id="quizArea"></div><div hidden="" id="quiz-result"><div class="score" id="qScore"></div><p class="verdict" id="qVerdict"></p></div></section><footer class="lesson-footer"><button aria-pressed="false" class="btn primary" id="complete-lesson" type="button">✓ Đã hoàn thành bài học</button><p data-ja="読了状態はテストの進捗とは別に、このブラウザに保存されます。" data-vi="Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra." id="completion-status" role="status">Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra.</p><a class="btn" data-ja="テストへ →" data-vi="Làm bài kiểm tra →" href="../kiem-tra/5.html">Làm bài kiểm tra →</a><nav aria-label="Điều hướng bài học" class="footer-nav"><a class="btn" data-ja="← 前のレッスン" data-vi="← Bài trước" href="4.html">← Bài trước</a><a class="btn" data-ja="次のレッスン →" data-vi="Bài tiếp theo →" href="6.html">Bài tiếp theo →</a></nav></footer></main><aside aria-label="Mục lục và ôn tập" class="reading-sidebar"><nav class="lesson-toc"><h3 data-ja="このレッスンの内容" data-vi="TRONG BÀI HỌC NÀY">TRONG BÀI HỌC NÀY</h3><ul></ul></nav><div class="reading-vocab"><h3 data-ja="覚えたいFE用語" data-vi="Từ vựng FE cần nhớ">Từ vựng FE cần nhớ</h3><p data-ja="用語をクリックして意味を確認。" data-vi="Bấm thuật ngữ để tự kiểm tra nghĩa.">Bấm thuật ngữ để tự kiểm tra nghĩa.</p></div></aside></div><script id="lesson-data" type="application/json">{"number": 5, "cards": [{"cat": "all", "front": "論理演算とは？", "back": "2進数の1桁のみを対象にした演算方式"}, {"cat": "all", "front": "ANDの別名は？", "back": "論理積"}, {"cat": "all", "front": "ORの別名は？", "back": "論理和"}, {"cat": "all", "front": "XORの別名は？", "back": "排他的論理和"}, {"cat": "all", "front": "NOTの別名は？", "back": "否定"}, {"cat": "all", "front": "NANDとは？", "back": "NOT AND（論理積と否定の組合せ）"}, {"cat": "all", "front": "NORとは？", "back": "NOT OR（論理和と否定の組合せ）"}, {"cat": "all", "front": "論理演算子の優先順位は？", "back": "括弧 &gt; NOT &gt; AND &gt; OR"}, {"cat": "all", "front": "半加算器とは？", "back": "下の位からの桁上がりを考慮しない加算回路"}, {"cat": "all", "front": "半加算器の構成は？", "back": "論理積(AND) と 排他的論理和(XOR) の組合せ"}, {"cat": "all", "front": "全加算器とは？", "back": "下の位からの桁上がりを考慮する加算回路"}, {"cat": "all", "front": "全加算器の構成は？", "back": "2つの半加算器 + 1つの論理和(OR)"}, {"cat": "all", "front": "C (Carry out) とは？", "back": "桁上がり"}, {"cat": "all", "front": "S (Sum) とは？", "back": "和の1桁目"}, {"cat": "all", "front": "「論理回路」「論理素子」「論理ゲート」の関係は？", "back": "すべて同じ意味"}, {"cat": "all", "front": "Phép toán logic là gì?", "back": "Phép tính chỉ xử lý 1 bit nhị phân (0 hoặc 1)"}, {"cat": "all", "front": "AND là gì?", "back": "Cả 2 đầu vào = 1 thì kết quả mới = 1"}, {"cat": "all", "front": "OR là gì?", "back": "Ít nhất 1 đầu vào = 1 thì kết quả = 1"}, {"cat": "all", "front": "XOR là gì?", "back": "2 đầu vào KHÁC nhau → 1; giống nhau → 0"}, {"cat": "all", "front": "NOT là gì?", "back": "Đảo bit (0 ↔ 1)"}, {"cat": "all", "front": "NAND là gì?", "back": "Phủ định kết quả AND"}, {"cat": "all", "front": "NOR là gì?", "back": "Phủ định kết quả OR"}, {"cat": "all", "front": "Thứ tự ưu tiên?", "back": "Ngoặc &gt; NOT &gt; AND &gt; OR"}, {"cat": "all", "front": "Mạch bán phần là gì?", "back": "Mạch cộng KHÔNG xét số nhớ từ hàng dưới"}, {"cat": "all", "front": "Mạch bán phần dùng gì?", "back": "AND + XOR"}, {"cat": "all", "front": "Mạch toàn phần là gì?", "back": "Mạch cộng CÓ xét số nhớ"}, {"cat": "all", "front": "Mạch toàn phần dùng gì?", "back": "2 mạch bán phần + 1 cổng OR"}, {"cat": "all", "front": "C (Carry) là gì?", "back": "Số nhớ sang hàng tiếp theo"}, {"cat": "all", "front": "S (Sum) là gì?", "back": "Tổng 1 cột"}, {"cat": "all", "front": "AND với 00001111?", "back": "Lấy ra (giữ) 4 bit thấp"}, {"cat": "all", "front": "XOR với 11111111?", "back": "Đảo toàn bộ bit"}, {"cat": "all", "front": "What is a logic operation?", "back": "Calculation on a single binary digit"}, {"cat": "all", "front": "AND output rule?", "back": "Output = 1 ONLY if both inputs = 1"}, {"cat": "all", "front": "OR output rule?", "back": "Output = 1 if at least one input = 1"}, {"cat": "all", "front": "XOR output rule?", "back": "Output = 1 if inputs differ"}, {"cat": "all", "front": "NOT output rule?", "back": "Inverts the input"}, {"cat": "all", "front": "NAND?", "back": "NOT AND — inverted AND output"}, {"cat": "all", "front": "NOR?", "back": "NOT OR — inverted OR output"}, {"cat": "all", "front": "Operator priority?", "back": "Parentheses &gt; NOT &gt; AND &gt; OR"}, {"cat": "all", "front": "Half Adder?", "back": "Addition without carry-in"}, {"cat": "all", "front": "Half Adder components?", "back": "AND + XOR"}, {"cat": "all", "front": "Full Adder?", "back": "Addition WITH carry-in"}, {"cat": "all", "front": "Full Adder components?", "back": "2 Half Adders + 1 OR gate"}, {"cat": "all", "front": "C means?", "back": "Carry-out"}, {"cat": "all", "front": "S means?", "back": "Sum (current bit)"}, {"cat": "all", "front": "AND with 00001111?", "back": "Extracts lower 4 bits"}, {"cat": "all", "front": "XOR with 11111111?", "back": "Flips all bits"}], "quiz": [{"q": "Phép toán nào cho kết quả \"1\" khi và chỉ khi CẢ HAI đầu vào đều là \"1\"?", "opts": ["OR", "XOR", "AND", "NOT"], "ans": 2, "expl": "Đáp án: C (AND)AND chỉ trả về 1 khi cả 2 đầu vào đều = 1. Các phép khác có nhiều trường hợp ra 1.", "qJa": "Phép toán nào cho kết quả \"1\" khi và chỉ khi CẢ HAI đầu vào đều là \"1\"?", "qVi": "Phép toán nào cho kết quả \"1\" khi và chỉ khi CẢ HAI đầu vào đều là \"1\"?"}, {"q": "Bảng chân lý nào là của XOR?", "opts": ["0,0→0; 0,1→1; 1,0→1; 1,1→1", "0,0→0; 0,1→1; 1,0→1; 1,1→0", "0,0→1; 0,1→1; 1,0→1; 1,1→0", "0,0→0; 0,1→0; 1,0→0; 1,1→1"], "ans": 1, "expl": "Đáp án: BXOR: khác nhau → 1, giống nhau → 0. A là OR, C là NAND, D là AND.", "qJa": "Bảng chân lý nào là của XOR?", "qVi": "Bảng chân lý nào là của XOR?"}, {"q": "Trong dãy 8 bit, thao tác nào giữ nguyên 4 bit thấp KHÔNG đổi?", "opts": ["ア. XOR với 0F (hex)", "イ. NAND với 0F (hex)", "ウ. AND với 0F (hex)", "エ. OR với 0F (hex)"], "ans": 2, "expl": "Đáp án: ウ (AND với 0F)0F = 00001111. AND với 1 → giữ nguyên; AND với 0 → xoá. Do đó 4 bit cao thành 0, 4 bit thấp giữ nguyên.", "qJa": "Trong dãy 8 bit, thao tác nào giữ nguyên 4 bit thấp KHÔNG đổi?", "qVi": "Trong dãy 8 bit, thao tác nào giữ nguyên 4 bit thấp KHÔNG đổi?"}, {"q": "Thao tác nào đảo ngược TẤT CẢ 8 bit?", "opts": ["ア. XOR với 00 (hex)", "イ. OR với 00 (hex)", "ウ. XOR với FF (hex)", "エ. OR với FF (hex)"], "ans": 2, "expl": "Đáp án: ウ (XOR với FF)FF = 11111111. XOR với 1 → đảo bit. Đáp án エ (OR với FF) sẽ làm tất cả thành 1, không phải đảo.", "qJa": "Thao tác nào đảo ngược TẤT CẢ 8 bit?", "qVi": "Thao tác nào đảo ngược TẤT CẢ 8 bit?"}, {"q": "Tính: 1 OR 0 AND 1 = ?", "opts": ["0", "1", "Tuỳ ngữ cảnh", "Không xác định"], "ans": 1, "expl": "Đáp án: B (= 1)Ưu tiên AND trước OR: 0 AND 1 = 0; sau đó 1 OR 0 = 1.", "qJa": "Tính: 1 OR 0 AND 1 = ?", "qVi": "Tính: 1 OR 0 AND 1 = ?"}, {"q": "Mạch cộng bán phần (半加算器) được tạo thành từ tổ hợp các cổng nào?", "opts": ["AND + OR", "AND + XOR", "OR + NOT", "XOR + NOT"], "ans": 1, "expl": "Đáp án: B (AND + XOR)S = X XOR Y (tổng); C = X AND Y (số nhớ).", "qJa": "Mạch cộng bán phần (半加算器) được tạo thành từ tổ hợp các cổng nào?", "qVi": "Mạch cộng bán phần (半加算器) được tạo thành từ tổ hợp các cổng nào?"}, {"q": "Cho mạch toàn phần (全加算器) với X=1, Y=0, Z=1. Giá trị (C, S) là?", "opts": ["ア. (0, 0)", "イ. (0, 1)", "ウ. (1, 0)", "エ. (1, 1)"], "ans": 2, "expl": "Đáp án: ウ (1, 0)1 + 0 + 1 = 10 (nhị phân) → C = 1, S = 0.", "qJa": "Cho mạch toàn phần (全加算器) với X=1, Y=0, Z=1. Giá trị (C, S) là?", "qVi": "Cho mạch toàn phần (全加算器) với X=1, Y=0, Z=1. Giá trị (C, S) là?"}, {"q": "Trong bảng chân lý mạch cộng bán phần, khi X=1, Y=1, giá trị (C, S) là?", "opts": ["(0, 0)", "(0, 1)", "(1, 0)", "(1, 1)"], "ans": 2, "expl": "Đáp án: C (1, 0)1 + 1 = 10 (nhị phân) → nhớ 1, tổng 0.", "qJa": "Trong bảng chân lý mạch cộng bán phần, khi X=1, Y=1, giá trị (C, S) là?", "qVi": "Trong bảng chân lý mạch cộng bán phần, khi X=1, Y=1, giá trị (C, S) là?"}, {"q": "Cộng 1001 + 0101 (nhị phân). Ở cột bên phải nhất (LSB), mạch nào được dùng?", "opts": ["全加算器", "半加算器", "Cả hai", "Không cần mạch"], "ans": 1, "expl": "Đáp án: B (半加算器)Cột 1 không có bit nào ở dưới nó → không có carry-in → dùng bán phần (chỉ 2 đầu vào).", "qJa": "Cộng 1001 + 0101 (nhị phân). Ở cột bên phải nhất (LSB), mạch nào được dùng?", "qVi": "Cộng 1001 + 0101 (nhị phân). Ở cột bên phải nhất (LSB), mạch nào được dùng?"}, {"q": "Trong ký hiệu MIL, dấu chấm tròn (○) ở đầu ra của cổng có ý nghĩa gì?", "opts": ["Đầu vào ngược", "Cổng đặc biệt", "Loại trừ (排他的)", "Phủ định (否定)"], "ans": 3, "expl": "Đáp án: D (Phủ định)Dấu chấm ○ = NOT. Đó là vì sao NAND = AND + ○, NOR = OR + ○. Còn vạch dọc │ thêm bên trái OR mới là 排他的 (XOR).", "qJa": "Trong ký hiệu MIL, dấu chấm tròn (○) ở đầu ra của cổng có ý nghĩa gì?", "qVi": "Trong ký hiệu MIL, dấu chấm tròn (○) ở đầu ra của cổng có ý nghĩa gì?"}], "available": true}</script></body></html>

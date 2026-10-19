@@ -1,194 +1,98 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="light" data-lang="dual">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bài 02: 基数変換 · Chuyển đổi cơ số — FE Master</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/reader.css">
-</head>
-<body>
 
-<!-- Reading Progress Bar -->
-<div class="reading-progress-track">
-  <div class="reading-progress-bar" id="readingProgress"></div>
-</div>
-
-<!-- Minimal Sticky Top Header -->
-<header class="site-header">
-  <div class="header-container">
-    <div class="header-left">
-      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
-        <span class="text-ja">← ロードマップ</span>
-        <span class="text-vi">← Lộ trình</span>
-      </a>
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
-        <span class="sep">/</span>
-        <span>Mục tiêu 1</span>
-        <span class="sep">/</span>
-        <span class="current">Bài 02</span>
-      </nav>
-    </div>
-    <div class="header-right">
-      <div class="lang-selector">
-        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
-        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
-        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
-      </div>
-      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
-        <span id="zenIcon">📖</span>
-        <span id="zenText">Zen</span>
-      </button>
-      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
-        <span id="themeIcon">◐</span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- Main Two-Column Reader Layout -->
-<div class="page-container">
-
-  <!-- Left Content Column -->
-  <main class="main-content">
-
-    <div class="lesson-header">
-      <div class="lesson-meta-bar">
-        <span class="badge-lesson">BÀI 02 · CƠ SỞ LÝ THUYẾT</span>
-        <span class="badge-tag">MỤC TIÊU 1</span>
-        <span class="badge-tag">TRỌNG TÂM 科目A</span>
-      </div>
-      <h1 class="lesson-title">
-        基数変換 · Chuyển đổi cơ số
-      </h1>
-      <div class="lesson-stats">
-        <span>⏱ ~30-45 phút đọc</span>
-        <span>·</span>
-        <span>Active Recall & Flashcards</span>
-      </div>
-    </div>
-
-    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
-    <section class="content-section" id="sec-1">
-      <h2 class="section-heading">
-        <span class="num-badge">①</span>
-        <span class="text-ja">重要理論 (Theory)</span>
-        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
-      </h2>
-      <div class="lesson-body-content">
-<h2 class="part-title"><span class="num">①</span>Tóm tắt lý thuyết</h2>
-
-<h3 class="sub">1.1 桁の重み + 指数 · Trọng số hàng và Số mũ</h3>
-
+<html data-reading-lang="dual" data-reading-theme="light" lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><meta content="light dark" name="color-scheme"/><title>Bài 02 · 基数変換 — FE Master</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/><link href="../assets/reader.css" rel="stylesheet"/><script defer="" src="../assets/reader.js"></script></head><body>
+<a class="skip-link" data-ja="本文へ" data-vi="Đến nội dung bài học" href="#lesson-content">Đến nội dung bài học</a>
+<header class="topbar"><div aria-label="Tiến độ đọc bài" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-track" role="progressbar"><div id="reader-progress"></div></div><div class="top-inner"><div class="top-left"><a class="reading-back" data-ja="← ロードマップへ" data-vi="← Quay lại lộ trình" href="../index.html" target="_top">← Quay lại lộ trình</a><nav aria-label="Breadcrumb" class="breadcrumb"><span>FE</span><span>/</span><span data-ja="目標1" data-vi="Mục tiêu 1">Mục tiêu 1</span><span>/</span><span data-ja="解説2" data-vi="Lý thuyết 2">Lý thuyết 2</span></nav></div><div class="reading-controls"><label class="sr-only" for="reading-language">Ngôn ngữ bài học</label><select id="reading-language"><option value="dual">Việt + 日本語</option><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select><button aria-label="Chế độ tập trung: ẩn sidebar" aria-pressed="false" id="zen-toggle" type="button">⊡ <span class="zen-label" data-ja="集中" data-vi="Tập trung">Tập trung</span></button><button aria-pressed="false" id="reading-theme" type="button">☾ Tối</button></div></div></header>
+<div class="layout"><main class="reading-main" id="lesson-content"><header class="lesson-hero"><span class="lesson-eyebrow" data-ja="レッスン02 · 理論" data-vi="BÀI 02 · LÝ THUYẾT">BÀI 02 · LÝ THUYẾT</span><h1><span class="reading-ja" lang="ja">基数変換</span><span class="reading-vi" lang="vi">Chuyển đổi cơ số</span></h1><div class="lesson-meta"><span data-ja="科目Aの基礎" data-vi="Trọng tâm 科目A">Trọng tâm 科目A</span><span data-ja="暗記カード21枚 · 確認問題10問" data-vi="21 flashcard · 10 câu ôn tập">21 flashcard · 10 câu ôn tập</span></div></header>
+<section class="lesson-part lesson-section" id="p1"><h2 class="lesson-part-title" data-ja="理論のまとめ" data-step="01" data-vi="Tóm tắt lý thuyết">Tóm tắt lý thuyết</h2>
+<h3 class="sub" id="lesson-2-topic-1">1.1 桁の重み + 指数 · Trọng số hàng và Số mũ</h3>
 <div class="lang-block">
-  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content"><b>桁の重み</b>とは「位」のこと。10進数 "7297" の左端の7と右端の7は同じ「7」でも、左端は右端の<b>1000倍</b>大きい。これは桁ごとに重みが異なるため。数の大きさ＝<b>桁ごとの重みをかけて、それらを合計する</b>ことで表現される。<br><br><b>指数</b>とは数をかけ合わせる回数。例: 10³ = 10×10×10 = 1000。ルール: <b>a⁰ = 1</b>（基数に関わらず）、<b>a⁻ⁿ = 1/aⁿ</b>。</div></div>
-  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>Trọng số (桁の重み)</b> = giá trị của một hàng. Trong 10進数 "7297", chữ số 7 ở bên trái nặng gấp 1000 lần chữ số 7 ở bên phải. Tổng giá trị một số = <b>(chữ số × trọng số) cộng lại</b>.<br><br><b>指数 (shisuu — số mũ)</b>: số lần nhân cùng một số. Ví dụ 10³ = 10×10×10 = 1000. Hai quy tắc: <b>a⁰ = 1</b> (mọi cơ số), <b>a⁻ⁿ = 1/aⁿ</b>.</div></div>
-  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content"><b>Place weight</b>: each digit position has a weight. A number's value = sum of (digit × position weight). <b>Exponents</b>: a⁰ = 1; a⁻ⁿ = 1/aⁿ.</div></div>
+<div class="lang-row jp reading-ja" lang="ja"><span class="label">🇯🇵 日本語</span><div class="content"><b>桁の重み</b>とは「位」のこと。10進数 "7297" の左端の7と右端の7は同じ「7」でも、左端は右端の<b>1000倍</b>大きい。これは桁ごとに重みが異なるため。数の大きさ＝<b>桁ごとの重みをかけて、それらを合計する</b>ことで表現される。<br/><br/><b>指数</b>とは数をかけ合わせる回数。例: 10³ = 10×10×10 = 1000。ルール: <b>a⁰ = 1</b>（基数に関わらず）、<b>a⁻ⁿ = 1/aⁿ</b>。</div></div>
+<div class="lang-row vn reading-vi" lang="vi"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>Trọng số (桁の重み)</b> = giá trị của một hàng. Trong 10進数 "7297", chữ số 7 ở bên trái nặng gấp 1000 lần chữ số 7 ở bên phải. Tổng giá trị một số = <b>(chữ số × trọng số) cộng lại</b>.<br/><br/><b>指数 (shisuu — số mũ)</b>: số lần nhân cùng một số. Ví dụ 10³ = 10×10×10 = 1000. Hai quy tắc: <b>a⁰ = 1</b> (mọi cơ số), <b>a⁻ⁿ = 1/aⁿ</b>.</div></div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-row en reading-en" lang="en"><span class="label">🇬🇧 English</span><div class="content"><b>Place weight</b>: each digit position has a weight. A number's value = sum of (digit × position weight). <b>Exponents</b>: a⁰ = 1; a⁻ⁿ = 1/aⁿ.</div></div></details>
 </div>
-
-<table>
-<thead><tr><th>10進数 7297.41</th><th>7</th><th>2</th><th>9</th><th>7</th><th>.</th><th>4</th><th>1</th></tr></thead>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">10進数 7297.41</th><th scope="col">7</th><th scope="col">2</th><th scope="col">9</th><th scope="col">7</th><th scope="col">.</th><th scope="col">4</th><th scope="col">1</th></tr></thead>
 <tbody>
 <tr><td>位 (vị trí)</td><td>千</td><td>百</td><td>十</td><td>一</td><td>.</td><td>1/10</td><td>1/100</td></tr>
 <tr><td>桁の重み</td><td>1000</td><td>100</td><td>10</td><td>1</td><td>.</td><td>0.1</td><td>0.01</td></tr>
 <tr><td>= 10ⁿ</td><td>10³</td><td>10²</td><td>10¹</td><td>10⁰</td><td>.</td><td>10⁻¹</td><td>10⁻²</td></tr>
 </tbody>
-</table>
-
+</table></div>
 <div class="callout warn">
-  <div class="head">⚠ CÔNG THỨC CHUNG (Yasashii Ch.1 Lesson 01-04)</div>
+<div class="head">⚠ CÔNG THỨC CHUNG (Yasashii Ch.1 Lesson 01-04)</div>
   Với n進数 viết là <code>d₃d₂d₁d₀ . d₋₁d₋₂d₋₃</code>, giá trị trong hệ 10 = <b>d₃n³ + d₂n² + d₁n¹ + d₀n⁰ + d₋₁n⁻¹ + d₋₂n⁻² + d₋₃n⁻³</b>. Thay n bằng cơ số tương ứng (2, 8, 16, …) để tính giá trị thực.
 </div>
-
-<h3 class="sub">1.2 基数変換 là gì</h3>
-
+<h3 class="sub" id="lesson-2-topic-2">1.2 基数変換 là gì</h3>
 <div class="lang-block">
-  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content"><b>基数変換</b>とは、n進数の「n」を他の数字に置き換えること（数値の表記法を変えること）。コンピュータの世界では2進数/8進数/10進数/16進数の<b>4つを互いに変換できればOK</b>。</div></div>
-  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>基数変換 (kisuu henkan — chuyển đổi cơ số)</b> = đổi cách biểu diễn số từ hệ n này sang hệ n khác (vd: 2進数 ↔ 10進数). Trong FE chỉ cần thành thạo 4 hệ: <b>2 / 8 / 10 / 16</b>.</div></div>
-  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content"><b>Base conversion</b>: changing the representation of a number from base n to another base. FE exam focuses on bases 2, 8, 10, 16.</div></div>
+<div class="lang-row jp reading-ja" lang="ja"><span class="label">🇯🇵 日本語</span><div class="content"><b>基数変換</b>とは、n進数の「n」を他の数字に置き換えること（数値の表記法を変えること）。コンピュータの世界では2進数/8進数/10進数/16進数の<b>4つを互いに変換できればOK</b>。</div></div>
+<div class="lang-row vn reading-vi" lang="vi"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>基数変換 (kisuu henkan — chuyển đổi cơ số)</b> = đổi cách biểu diễn số từ hệ n này sang hệ n khác (vd: 2進数 ↔ 10進数). Trong FE chỉ cần thành thạo 4 hệ: <b>2 / 8 / 10 / 16</b>.</div></div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-row en reading-en" lang="en"><span class="label">🇬🇧 English</span><div class="content"><b>Base conversion</b>: changing the representation of a number from base n to another base. FE exam focuses on bases 2, 8, 10, 16.</div></div></details>
 </div>
-
-<div class="ascii">     2進数  ⇄  10進数  ⇄  16進数
+<pre class="ascii" tabindex="0">     2進数  ⇄  10進数  ⇄  16進数
               ⇕            ⇕
-            8進数       (qua 2進数)</div>
-
-<h3 class="sub">1.3 n進数 → 10進数 · Đổi sang hệ 10</h3>
-
+            8進数       (qua 2進数)</pre>
+<h3 class="sub" id="lesson-2-topic-3">1.3 n進数 → 10進数 · Đổi sang hệ 10</h3>
 <div class="lang-block">
-  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content">n進数を10進数に変換するには、<b>各桁の重みをかけてから、各桁の積を合計する</b>。16進数の場合は<b>事前にA〜Fを10進数（10〜15）に変換してから計算</b>することが必須。</div></div>
-  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>Công thức 1 dòng:</b> mỗi chữ số × trọng số hàng của nó → cộng tất cả lại. Với 16進数 có chữ A–F thì <b>phải đổi A=10, B=11, ..., F=15 TRƯỚC</b> rồi mới nhân.</div></div>
-  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content">Multiply each digit by its weight, then sum. For hex, convert A–F to 10–15 first.</div></div>
+<div class="lang-row jp reading-ja" lang="ja"><span class="label">🇯🇵 日本語</span><div class="content">n進数を10進数に変換するには、<b>各桁の重みをかけてから、各桁の積を合計する</b>。16進数の場合は<b>事前にA〜Fを10進数（10〜15）に変換してから計算</b>することが必須。</div></div>
+<div class="lang-row vn reading-vi" lang="vi"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>Công thức 1 dòng:</b> mỗi chữ số × trọng số hàng của nó → cộng tất cả lại. Với 16進数 có chữ A–F thì <b>phải đổi A=10, B=11, ..., F=15 TRƯỚC</b> rồi mới nhân.</div></div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-row en reading-en" lang="en"><span class="label">🇬🇧 English</span><div class="content">Multiply each digit by its weight, then sum. For hex, convert A–F to 10–15 first.</div></div></details>
 </div>
-
 <h4 class="sub2">▸ Ví dụ: 2進数 1001.001 → 10進数</h4>
-<div class="ascii">2進数 ··· 1    0    0    1   .   0    0    1
+<pre class="ascii" tabindex="0">2進数 ··· 1    0    0    1   .   0    0    1
          ×    ×    ×    ×       ×    ×    ×
 重 み ··· 2³   2²   2¹   2⁰      2⁻¹  2⁻²  2⁻³
        =  8    0    0    1   +   0    0    0.125
-                                              = 9.125</div>
-
+                                              = 9.125</pre>
 <h4 class="sub2">▸ Ví dụ: 16進数 2BD.C8 → 10進数</h4>
-<div class="ascii">16進数 ··    2      B      D    .    C      8
+<pre class="ascii" tabindex="0">16進数 ··    2      B      D    .    C      8
          B=11, D=13, C=12, mọi chữ → đổi sang số trước
         (2)   (11)   (13)        (12)    (8)
          ×     ×      ×           ×       ×
 重 み ··· 16²   16¹    16⁰         16⁻¹    16⁻²
        = 512 + 176 + 13     +   0.75 + 0.03125
-                                          = 701.78125</div>
-
-<h3 class="sub">1.4 10進数 → 2進数 · Đổi sang hệ 2</h3>
-
+                                          = 701.78125</pre>
+<h3 class="sub" id="lesson-2-topic-4">1.4 10進数 → 2進数 · Đổi sang hệ 2</h3>
 <div class="lang-block">
-  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content"><b>整数部と小数部を分けて計算する</b>。整数部: 10進数を<b>基数2でわり算</b>し、商が0になるまで繰り返し、<b>余りを下から上に並べる</b>。小数部: 10進小数に<b>基数2をかけ算</b>し、積の<b>整数部だけを取り出して上から下に並べる</b>。小数部が0になるまで繰り返す。</div></div>
-  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>Tách phần nguyên và phần thập phân</b> tính riêng:<br>• <b>Phần nguyên</b>: chia liên tục cho 2 đến khi thương = 0, lấy <b>số dư từ DƯỚI lên TRÊN</b>.<br>• <b>Phần thập phân</b>: nhân với 2 nhiều lần, mỗi lần lấy phần nguyên của tích, đến khi phần thập phân = 0 (hoặc tuần hoàn). Ghép phần nguyên đã lấy <b>từ TRÊN xuống DƯỚI</b>.</div></div>
-  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content">Split integer and fractional parts. Integer: divide by 2 until quotient = 0, read remainders bottom-up. Fraction: multiply by 2; extract integer part each step; read top-down.</div></div>
+<div class="lang-row jp reading-ja" lang="ja"><span class="label">🇯🇵 日本語</span><div class="content"><b>整数部と小数部を分けて計算する</b>。整数部: 10進数を<b>基数2でわり算</b>し、商が0になるまで繰り返し、<b>余りを下から上に並べる</b>。小数部: 10進小数に<b>基数2をかけ算</b>し、積の<b>整数部だけを取り出して上から下に並べる</b>。小数部が0になるまで繰り返す。</div></div>
+<div class="lang-row vn reading-vi" lang="vi"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>Tách phần nguyên và phần thập phân</b> tính riêng:<br/>• <b>Phần nguyên</b>: chia liên tục cho 2 đến khi thương = 0, lấy <b>số dư từ DƯỚI lên TRÊN</b>.<br/>• <b>Phần thập phân</b>: nhân với 2 nhiều lần, mỗi lần lấy phần nguyên của tích, đến khi phần thập phân = 0 (hoặc tuần hoàn). Ghép phần nguyên đã lấy <b>từ TRÊN xuống DƯỚI</b>.</div></div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-row en reading-en" lang="en"><span class="label">🇬🇧 English</span><div class="content">Split integer and fractional parts. Integer: divide by 2 until quotient = 0, read remainders bottom-up. Fraction: multiply by 2; extract integer part each step; read top-down.</div></div></details>
 </div>
-
 <h4 class="sub2">▸ Ví dụ: 10進数 4.625 → 2進数 (Yasashii)</h4>
-<div class="ascii">[Phần nguyên: 4]                  [Phần thập phân: 0.625]
+<pre class="ascii" tabindex="0">[Phần nguyên: 4]                  [Phần thập phân: 0.625]
   2) 4                              0.625 × 2 = 1.250  → lấy 1
   2) 2 …… 0  ↑                      0.25  × 2 = 0.50   → lấy 0
   2) 1 …… 0  | đọc từ dưới lên      0.5   × 2 = 1.0    → lấy 1
      0 …… 1  ↑                                            (dừng vì = 0)
   ⇒ 100                             ⇒ 0.101 (đọc từ trên xuống)
 
-Ghép: 10進 4.625 = 2進 100.101</div>
-
+Ghép: 10進 4.625 = 2進 100.101</pre>
 <div class="callout warn">
-  <div class="head">⚠ ĐIỂM CẦN NHỚ — 無限小数 (vô hạn)</div>
+<div class="head">⚠ ĐIỂM CẦN NHỚ — 無限小数 (vô hạn)</div>
   Khi đổi 10進小数 → 2進小数, thường phần thập phân <b>KHÔNG về 0</b> mà thành <b>無限小数</b> (vô hạn). Trong FE hầu hết các giá trị này là <b>循環小数</b> (tuần hoàn). Khi thấy cụm số <b>lặp lại</b> → dừng và kết luận là vô hạn.
 </div>
-
-<h3 class="sub">1.5 10進数 → 16進数 · Đổi sang hệ 16</h3>
-
+<h3 class="sub" id="lesson-2-topic-5">1.5 10進数 → 16進数 · Đổi sang hệ 16</h3>
 <div class="lang-block">
-  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content">基本手順は10進数→2進数と同じだが、わる数/かける数が<b>「16」</b>になる。さらに、<b>余り 10〜15 はアルファベット A〜F に置き換える</b>必要がある。</div></div>
-  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content">Quy trình giống đổi sang hệ 2 nhưng <b>chia / nhân với 16</b>. Lưu ý quan trọng: <b>nếu số dư ≥ 10 phải đổi thành A–F</b> (10=A, 11=B, 12=C, 13=D, 14=E, 15=F) khi viết ra.</div></div>
-  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content">Same process as binary, but divide/multiply by 16. Convert remainders 10–15 to A–F.</div></div>
+<div class="lang-row jp reading-ja" lang="ja"><span class="label">🇯🇵 日本語</span><div class="content">基本手順は10進数→2進数と同じだが、わる数/かける数が<b>「16」</b>になる。さらに、<b>余り 10〜15 はアルファベット A〜F に置き換える</b>必要がある。</div></div>
+<div class="lang-row vn reading-vi" lang="vi"><span class="label">🇻🇳 Tiếng Việt</span><div class="content">Quy trình giống đổi sang hệ 2 nhưng <b>chia / nhân với 16</b>. Lưu ý quan trọng: <b>nếu số dư ≥ 10 phải đổi thành A–F</b> (10=A, 11=B, 12=C, 13=D, 14=E, 15=F) khi viết ra.</div></div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-row en reading-en" lang="en"><span class="label">🇬🇧 English</span><div class="content">Same process as binary, but divide/multiply by 16. Convert remainders 10–15 to A–F.</div></div></details>
 </div>
-
 <h4 class="sub2">▸ Ví dụ: 10進数 701.78125 → 16進数 (Yasashii)</h4>
-<div class="ascii">[Phần nguyên: 701]                [Phần thập phân: 0.78125]
+<pre class="ascii" tabindex="0">[Phần nguyên: 701]                [Phần thập phân: 0.78125]
   16) 701                          0.78125 × 16 = 12.50000 → lấy 12 = C
   16) 43 …… 13 → D                 0.5     × 16 =  8.0    → lấy 8
   16)  2 …… 11 → B                                          (dừng)
        0 …… 2  → 2                 ⇒ 0.C8
 
 Đọc từ dưới lên: 2BD              Đọc từ trên xuống: C8
-Ghép: 10進 701.78125 = 16進 2BD.C8</div>
-
-<h3 class="sub">1.6 2進数 ↔ 8進数 (Slide 第2回)</h3>
-
+Ghép: 10進 701.78125 = 16進 2BD.C8</pre>
+<h3 class="sub" id="lesson-2-topic-6">1.6 2進数 ↔ 8進数 (Slide 第2回)</h3>
 <div class="lang-block">
-  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content">2進数 → 8進数: 小数点を基準に、2進数を<b>3桁ずつに区切り</b>、各ブロックを8進数に直す（2³=8 だから3桁）。8進数 → 2進数: 8進数の各桁を<b>2進数3桁で表現</b>してくっつける。</div></div>
-  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>2進数 → 8進数</b>: lấy dấu chấm làm gốc, chia dãy bit thành <b>nhóm 3 chữ số</b>, mỗi nhóm đổi sang 1 chữ số hệ 8. <b>8進数 → 2進数</b>: mỗi chữ số hệ 8 viết thành <b>3 bit</b>, ghép lại.<br><b>Vì sao 3?</b> Vì 2³ = 8 (mỗi 3 bit biểu diễn được đúng 8 giá trị, khớp với 1 chữ số hệ 8).</div></div>
-  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content">Binary ↔ octal: group 3 bits per octal digit (2³ = 8).</div></div>
+<div class="lang-row jp reading-ja" lang="ja"><span class="label">🇯🇵 日本語</span><div class="content">2進数 → 8進数: 小数点を基準に、2進数を<b>3桁ずつに区切り</b>、各ブロックを8進数に直す（2³=8 だから3桁）。8進数 → 2進数: 8進数の各桁を<b>2進数3桁で表現</b>してくっつける。</div></div>
+<div class="lang-row vn reading-vi" lang="vi"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>2進数 → 8進数</b>: lấy dấu chấm làm gốc, chia dãy bit thành <b>nhóm 3 chữ số</b>, mỗi nhóm đổi sang 1 chữ số hệ 8. <b>8進数 → 2進数</b>: mỗi chữ số hệ 8 viết thành <b>3 bit</b>, ghép lại.<br/><b>Vì sao 3?</b> Vì 2³ = 8 (mỗi 3 bit biểu diễn được đúng 8 giá trị, khớp với 1 chữ số hệ 8).</div></div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-row en reading-en" lang="en"><span class="label">🇬🇧 English</span><div class="content">Binary ↔ octal: group 3 bits per octal digit (2³ = 8).</div></div></details>
 </div>
-
-<div class="ascii">▸ Ví dụ: 2進数 1101011.01 → 8進数
+<pre class="ascii" tabindex="0">▸ Ví dụ: 2進数 1101011.01 → 8進数
   Chia nhóm 3 bit (đệm 0 nếu thiếu):
        001  101  011  .  010
         1    5    3      2
@@ -198,18 +102,15 @@ Ghép: 10進 701.78125 = 16進 2BD.C8</div>
        6   3   .   5
        ↓   ↓       ↓
       110 011    101
-  ⇒ 2進数 110011.101</div>
-
-<h3 class="sub">1.7 2進数 ↔ 16進数 (Slide 第2回)</h3>
-
+  ⇒ 2進数 110011.101</pre>
+<h3 class="sub" id="lesson-2-topic-7">1.7 2進数 ↔ 16進数 (Slide 第2回)</h3>
 <div class="lang-block">
-  <div class="lang-row jp"><span class="label">🇯🇵 日本語</span><div class="content">2進数 ↔ 16進数 は8進数のときの「3桁」が「4桁」になるだけで、方法は同じ。<b>2⁴ = 16</b> なので、2進数を<b>4桁ずつ区切る</b>。</div></div>
-  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>2進数 ↔ 16進数</b>: y hệt 2 ↔ 8 nhưng <b>nhóm 4 bit</b> thay vì 3. Vì 2⁴ = 16. Mỗi 4 bit = 1 chữ số hệ 16.</div></div>
-  <div class="lang-row en"><span class="label">🇬🇧 English</span><div class="content">Binary ↔ hex: group 4 bits per hex digit (2⁴ = 16).</div></div>
+<div class="lang-row jp reading-ja" lang="ja"><span class="label">🇯🇵 日本語</span><div class="content">2進数 ↔ 16進数 は8進数のときの「3桁」が「4桁」になるだけで、方法は同じ。<b>2⁴ = 16</b> なので、2進数を<b>4桁ずつ区切る</b>。</div></div>
+<div class="lang-row vn reading-vi" lang="vi"><span class="label">🇻🇳 Tiếng Việt</span><div class="content"><b>2進数 ↔ 16進数</b>: y hệt 2 ↔ 8 nhưng <b>nhóm 4 bit</b> thay vì 3. Vì 2⁴ = 16. Mỗi 4 bit = 1 chữ số hệ 16.</div></div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-row en reading-en" lang="en"><span class="label">🇬🇧 English</span><div class="content">Binary ↔ hex: group 4 bits per hex digit (2⁴ = 16).</div></div></details>
 </div>
-
-<table>
-<thead><tr><th>4 bit</th><th>16進数</th><th>4 bit</th><th>16進数</th></tr></thead>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">4 bit</th><th scope="col">16進数</th><th scope="col">4 bit</th><th scope="col">16進数</th></tr></thead>
 <tbody>
 <tr><td>0000</td><td>0</td><td>1000</td><td>8</td></tr>
 <tr><td>0001</td><td>1</td><td>1001</td><td>9</td></tr>
@@ -220,45 +121,29 @@ Ghép: 10進 701.78125 = 16進 2BD.C8</div>
 <tr><td>0110</td><td>6</td><td>1110</td><td>E</td></tr>
 <tr><td>0111</td><td>7</td><td>1111</td><td>F</td></tr>
 </tbody>
-</table>
-
+</table></div>
 <div class="callout">
-  <div class="head">💡 MẸO TỪ SLIDE — Đi đường vòng qua 2進数</div>
-  Khi cần đổi <b>10進数 → 8 hoặc 16進数</b>, đi thẳng cũng được nhưng <b>đi vòng qua 2進数 dễ hơn nhiều</b>:<br>
-  ❌ 10進数 ⇒ 8/16進数 (chia nhiều bước, dễ sai)<br>
+<div class="head">💡 MẸO TỪ SLIDE — Đi đường vòng qua 2進数</div>
+  Khi cần đổi <b>10進数 → 8 hoặc 16進数</b>, đi thẳng cũng được nhưng <b>đi vòng qua 2進数 dễ hơn nhiều</b>:<br/>
+  ❌ 10進数 ⇒ 8/16進数 (chia nhiều bước, dễ sai)<br/>
   ⭕ 10進数 ⇒ 2進数 ⇒ 8/16進数 (chia cho 2 đơn giản → gom nhóm 3 hoặc 4 bit)
 </div>
-
-<h3 class="sub">1.8 n進数 → 10進数 (mở rộng) · Cho bất kỳ cơ số nào</h3>
-
+<h3 class="sub" id="lesson-2-topic-8">1.8 n進数 → 10進数 (mở rộng) · Cho bất kỳ cơ số nào</h3>
 <div class="lang-block">
-  <div class="lang-row vn"><span class="label">🇻🇳 Tiếng Việt</span><div class="content">FE đôi khi xuất hiện <b>8進数, 11進数</b>… Thay vì học thuộc từng cách, nắm <b>công thức chung</b>: với số n進数 "d₃d₂d₁d₀.d₋₁d₋₂d₋₃" — giá trị = d₃×n³ + d₂×n² + d₁×n¹ + d₀×n⁰ + d₋₁×n⁻¹ + d₋₂×n⁻² + d₋₃×n⁻³. Chỉ cần thay n = 2 (2進数), 8 (8進数), 16 (16進数)…</div></div>
+<div class="lang-row vn reading-vi" lang="vi"><span class="label">🇻🇳 Tiếng Việt</span><div class="content">FE đôi khi xuất hiện <b>8進数, 11進数</b>… Thay vì học thuộc từng cách, nắm <b>công thức chung</b>: với số n進数 "d₃d₂d₁d₀.d₋₁d₋₂d₋₃" — giá trị = d₃×n³ + d₂×n² + d₁×n¹ + d₀×n⁰ + d₋₁×n⁻¹ + d₋₂×n⁻² + d₋₃×n⁻³. Chỉ cần thay n = 2 (2進数), 8 (8進数), 16 (16進数)…</div></div>
 </div>
-
-<div class="ascii">▸ Ví dụ (Yasashii): 8進数 3725.104 → 10進数
+<pre class="ascii" tabindex="0">▸ Ví dụ (Yasashii): 8進数 3725.104 → 10進数
   = 3×8³ + 7×8² + 2×8¹ + 5×8⁰ + 1×8⁻¹ + 0×8⁻² + 4×8⁻³
   = 1536 + 448 + 16 + 5 + 0.125 + 0 + 0.0078125
-  = 2005.1328125</div>
-
+  = 2005.1328125</pre>
 <div class="callout warn">
-  <div class="head">⚠ ĐIỂM THI — 過去問 平成31年度</div>
-  Câu hỏi đầu sách: "10進数 7÷32 を 2進数で表したものはどれか"<br>
-  → 7÷32 = 0.21875 → áp dụng phương pháp đổi phần thập phân (nhân 2 liên tục):<br>
-  0.21875×2=0.4375 (0); 0.4375×2=0.875 (0); 0.875×2=1.75 (1); 0.75×2=1.5 (1); 0.5×2=1.0 (1) → dừng<br>
+<div class="head">⚠ ĐIỂM THI — 過去問 平成31年度</div>
+  Câu hỏi đầu sách: "10進数 7÷32 を 2進数で表したものはどれか"<br/>
+  → 7÷32 = 0.21875 → áp dụng phương pháp đổi phần thập phân (nhân 2 liên tục):<br/>
+  0.21875×2=0.4375 (0); 0.4375×2=0.875 (0); 0.875×2=1.75 (1); 0.75×2=1.5 (1); 0.5×2=1.0 (1) → dừng<br/>
   ⇒ <b>0.00111</b> (đáp án ウ)
 </div>
-      </div>
-    </section>
-
-    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
-    <section class="content-section" id="sec-2">
-      <h2 class="section-heading">
-        <span class="num-badge">②</span>
-        <span class="text-ja">演習例題 (Worked Examples)</span>
-        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
-      </h2>
-      <div class="lesson-body-content">
-<h2 class="part-title"><span class="num">②</span>Ví dụ minh hoạ</h2>
+</section><section class="lesson-part lesson-section" id="p2"><h2 class="lesson-part-title" data-ja="例題" data-step="02" data-vi="Ví dụ minh hoạ">Ví dụ minh hoạ</h2>
 
 <div class="example-box">
 <span class="ex-tag">VÍ DỤ 1 · 2進数 → 10進数 (số nguyên)</span>
@@ -267,7 +152,6 @@ Ghép: 10進 701.78125 = 16進 2BD.C8</div>
 <div class="step"><b>Bước 2.</b> Nhân: 1×8 + 1×4 + 0×2 + 1×1 = 8 + 4 + 0 + 1.</div>
 <div class="step"><b>Kết quả:</b> = <b>13</b>.</div>
 </div>
-
 <div class="example-box">
 <span class="ex-tag">VÍ DỤ 2 · 2進数 → 10進数 (có phần thập phân)</span>
 <p><b>Câu hỏi:</b> Chuyển 2進数 "1010.01" sang 10進数.</p>
@@ -275,30 +159,27 @@ Ghép: 10進 701.78125 = 16進 2BD.C8</div>
 <div class="step"><b>Bước 2.</b> Phần thập phân: 0×0.5 + 1×0.25 = 0.25.</div>
 <div class="step"><b>Kết quả:</b> 10 + 0.25 = <b>10.25</b>.</div>
 </div>
-
 <div class="example-box">
 <span class="ex-tag">VÍ DỤ 3 · 10進数 → 2進数 (số nguyên)</span>
 <p><b>Câu hỏi:</b> Chuyển 10進数 "13" sang 2進数.</p>
-<div class="step"><b>Bước 1.</b> Chia liên tục cho 2:<br>
-&nbsp;&nbsp;13 ÷ 2 = 6 dư <b>1</b><br>
-&nbsp;&nbsp;6 ÷ 2 = 3 dư <b>0</b><br>
-&nbsp;&nbsp;3 ÷ 2 = 1 dư <b>1</b><br>
-&nbsp;&nbsp;1 ÷ 2 = 0 dư <b>1</b> (dừng vì thương = 0)</div>
+<div class="step"><b>Bước 1.</b> Chia liên tục cho 2:<br/>
+  13 ÷ 2 = 6 dư <b>1</b><br/>
+  6 ÷ 2 = 3 dư <b>0</b><br/>
+  3 ÷ 2 = 1 dư <b>1</b><br/>
+  1 ÷ 2 = 0 dư <b>1</b> (dừng vì thương = 0)</div>
 <div class="step"><b>Bước 2.</b> Đọc số dư <b>TỪ DƯỚI LÊN</b>: 1, 1, 0, 1.</div>
 <div class="step"><b>Kết quả:</b> <b>1101</b>.</div>
 </div>
-
 <div class="example-box">
 <span class="ex-tag">VÍ DỤ 4 · 10進数 → 2進数 (có phần thập phân)</span>
 <p><b>Câu hỏi:</b> Chuyển 10進数 "0.625" sang 2進数.</p>
-<div class="step"><b>Bước 1.</b> Nhân liên tục với 2, lấy phần nguyên:<br>
-&nbsp;&nbsp;0.625 × 2 = <b>1</b>.25  → lấy 1<br>
-&nbsp;&nbsp;0.25 × 2 = <b>0</b>.5   → lấy 0<br>
-&nbsp;&nbsp;0.5 × 2 = <b>1</b>.0   → lấy 1, phần thập phân = 0, dừng.</div>
+<div class="step"><b>Bước 1.</b> Nhân liên tục với 2, lấy phần nguyên:<br/>
+  0.625 × 2 = <b>1</b>.25  → lấy 1<br/>
+  0.25 × 2 = <b>0</b>.5   → lấy 0<br/>
+  0.5 × 2 = <b>1</b>.0   → lấy 1, phần thập phân = 0, dừng.</div>
 <div class="step"><b>Bước 2.</b> Ghép phần nguyên <b>TỪ TRÊN XUỐNG</b>: 1, 0, 1.</div>
 <div class="step"><b>Kết quả:</b> <b>0.101</b>.</div>
 </div>
-
 <div class="example-box">
 <span class="ex-tag">VÍ DỤ 5 · 16進数 → 10進数</span>
 <p><b>Câu hỏi:</b> Chuyển 16進数 "1A" sang 10進数.</p>
@@ -306,26 +187,23 @@ Ghép: 10進 701.78125 = 16進 2BD.C8</div>
 <div class="step"><b>Bước 2.</b> Nhân theo trọng số: 1×16¹ + 10×16⁰ = 16 + 10.</div>
 <div class="step"><b>Kết quả:</b> = <b>26</b>.</div>
 </div>
-
 <div class="example-box">
 <span class="ex-tag">VÍ DỤ 6 · 10進数 → 16進数</span>
 <p><b>Câu hỏi:</b> Chuyển 10進数 "255" sang 16進数.</p>
-<div class="step"><b>Bước 1.</b> Chia liên tục cho 16:<br>
-&nbsp;&nbsp;255 ÷ 16 = 15 dư <b>15</b> → F<br>
-&nbsp;&nbsp;15 ÷ 16 = 0 dư <b>15</b> → F (dừng)</div>
+<div class="step"><b>Bước 1.</b> Chia liên tục cho 16:<br/>
+  255 ÷ 16 = 15 dư <b>15</b> → F<br/>
+  15 ÷ 16 = 0 dư <b>15</b> → F (dừng)</div>
 <div class="step"><b>Bước 2.</b> Đọc từ dưới lên (đã đổi sang ký hiệu A–F): F, F.</div>
 <div class="step"><b>Kết quả:</b> <b>FF</b>.</div>
 </div>
-
 <div class="example-box">
 <span class="ex-tag">VÍ DỤ 7 · 2進数 → 8進数 (chia nhóm 3)</span>
 <p><b>Câu hỏi:</b> Chuyển 2進数 "10110.1" sang 8進数.</p>
-<div class="step"><b>Bước 1.</b> Chia nhóm 3 bit từ dấu chấm, đệm 0 nếu thiếu:<br>
-&nbsp;&nbsp;<code>010 110 . 100</code></div>
+<div class="step"><b>Bước 1.</b> Chia nhóm 3 bit từ dấu chấm, đệm 0 nếu thiếu:<br/>
+  <code>010 110 . 100</code></div>
 <div class="step"><b>Bước 2.</b> Đổi từng nhóm: 010=2, 110=6, 100=4.</div>
 <div class="step"><b>Kết quả:</b> <b>26.4</b> (hệ 8).</div>
 </div>
-
 <div class="example-box">
 <span class="ex-tag">VÍ DỤ 8 · 16進数 → 2進数 (mỗi chữ = 4 bit)</span>
 <p><b>Câu hỏi:</b> Chuyển 16進数 "3F" sang 2進数.</p>
@@ -333,7 +211,6 @@ Ghép: 10進 701.78125 = 16進 2BD.C8</div>
 <div class="step"><b>Bước 2.</b> Ghép lại: 0011 1111.</div>
 <div class="step"><b>Kết quả:</b> <b>111111</b> (bỏ 0 ở đầu).</div>
 </div>
-
 <div class="example-box">
 <span class="ex-tag">VÍ DỤ 9 · Mẹo đi vòng — 10進数 18 → 16進数</span>
 <p><b>Cách trực tiếp:</b> 18÷16 = 1 dư 2 → "12".</p>
@@ -342,445 +219,4 @@ Ghép: 10進 701.78125 = 16進 2BD.C8</div>
 <div class="step"><b>Bước 2.</b> Chia nhóm 4 bit từ phải: <code>0001 0010</code>.</div>
 <div class="step"><b>Bước 3.</b> Đổi mỗi nhóm: 0001=1, 0010=2 → <b>12</b>. ✓ Khớp với cách trực tiếp.</div>
 </div>
-      </div>
-    </section>
-
-    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-3">
-      <h2 class="section-heading">
-        <span class="num-badge">③</span>
-        <span class="text-ja">暗記カード (Flashcards)</span>
-        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
-        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
-        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
-      </p>
-
-      <div class="fc-grid" id="fcGrid"></div>
-    </section>
-
-    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-4">
-      <h2 class="section-heading">
-        <span class="num-badge">④</span>
-        <span class="text-ja">確認テスト (10問)</span>
-        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
-        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
-        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
-      </p>
-
-      <div id="quizArea"></div>
-
-      <div class="quiz-result-box" id="quiz-result">
-        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
-        <div class="quiz-result-score" id="qScore">0 / 10</div>
-        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
-        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
-      </div>
-    </section>
-
-    <!-- Footer Navigation & Lesson Completion -->
-    <footer class="lesson-footer-nav">
-      <div class="completion-card">
-        <div>
-          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
-            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
-            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
-          </div>
-          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
-            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
-            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
-          </div>
-        </div>
-        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
-      </div>
-
-      <div class="footer-nav-buttons">
-        
-        <a href="1.html" class="nav-link-card prev">
-          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 01</span>
-            <span class="text-vi">Bài học 01</span>
-          </span>
-        </a>
-        
-        <a href="3.html" class="nav-link-card next">
-          <span class="nav-dir">BÀI TIẾP THEO / NEXT →</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 03</span>
-            <span class="text-vi">Bài học 03</span>
-          </span>
-        </a>
-      </div>
-    </footer>
-
-  </main>
-
-  <!-- Right Sticky Sidebar -->
-  <aside class="sticky-sidebar">
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-        <span class="text-ja">目次 (TOC)</span>
-        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
-      </div>
-      <nav>
-        <ul class="toc-list" id="tocList">
-          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
-        </ul>
-      </nav>
-    </div>
-
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        <span class="text-ja">クイック復習</span>
-        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
-      </div>
-      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
-        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
-        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
-      </p>
-    </div>
-  </aside>
-
-</div>
-
-<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
-<script>
-const FLASHCARDS = [
-  {
-    "cat": "concept",
-    "front": "基数変換 là gì?",
-    "back": "Đổi cách biểu diễn số từ hệ n này sang hệ n khác (vd: 2進数 ↔ 10進数). FE tập trung 4 hệ: 2, 8, 10, 16."
-  },
-  {
-    "cat": "concept",
-    "front": "桁の重み (place weight)",
-    "back": "Giá trị của mỗi hàng. Tổng giá trị 1 số = Σ (chữ số × trọng số). Trong n進数, hàng thứ k bên trái dấu chấm có trọng số n^k."
-  },
-  {
-    "cat": "concept",
-    "front": "指数 (shisuu — số mũ)",
-    "back": "Số lần nhân cùng một số. 10³ = 10×10×10 = 1000. Trong công thức a^b, a là 基数, b là 指数."
-  },
-  {
-    "cat": "concept",
-    "front": "a⁰ = ? và a⁻ⁿ = ?",
-    "back": "<b>a⁰ = 1</b> với mọi cơ số a (kể cả 10⁰, 2⁰, 16⁰ đều = 1). <b>a⁻ⁿ = 1/aⁿ</b>. VD: 2⁻³ = 1/8 = 0.125."
-  },
-  {
-    "cat": "concept",
-    "front": "Công thức tổng quát n進数 → 10進数",
-    "back": "Số \"d₃d₂d₁d₀.d₋₁d₋₂\" trong hệ n = d₃×n³ + d₂×n² + d₁×n¹ + d₀×n⁰ + d₋₁×n⁻¹ + d₋₂×n⁻². Thay n bằng cơ số tương ứng."
-  },
-  {
-    "cat": "to10",
-    "front": "2進数 → 10進数: cách làm?",
-    "back": "Nhân từng chữ số với trọng số (2⁰, 2¹, 2², …) rồi <b>cộng tất cả</b>. VD: 1101 = 1×8+1×4+0×2+1×1 = 13."
-  },
-  {
-    "cat": "to10",
-    "front": "16進数 → 10進数: bước đặc biệt?",
-    "back": "Trước khi nhân với trọng số 16^k, phải <b>đổi A–F sang 10–15 trước</b> (A=10, B=11, C=12, D=13, E=14, F=15)."
-  },
-  {
-    "cat": "to10",
-    "front": "2進数 0.011 → 10進数 = ?",
-    "back": "= 0×0.5 + 1×0.25 + 1×0.125 = <b>0.375</b>."
-  },
-  {
-    "cat": "to10",
-    "front": "16進数 \"A\" → 10進数 = ?",
-    "back": "A=10 (chỉ 1 chữ số). Kiểm tra: 10×16⁰ = 10×1 = 10."
-  },
-  {
-    "cat": "to10",
-    "front": "8進数 17 → 10進数 = ?",
-    "back": "= 1×8¹ + 7×8⁰ = 8 + 7 = <b>15</b>."
-  },
-  {
-    "cat": "from10",
-    "front": "10進数 → 2進数 (phần nguyên)?",
-    "back": "<b>Chia liên tục cho 2</b> đến khi thương = 0. Đọc số dư <b>TỪ DƯỚI LÊN</b>. VD: 13 → 1101."
-  },
-  {
-    "cat": "from10",
-    "front": "10進数 → 2進数 (phần thập phân)?",
-    "back": "<b>Nhân với 2</b> nhiều lần, mỗi lần lấy phần nguyên của tích. Đọc các phần nguyên <b>TỪ TRÊN XUỐNG</b>. VD: 0.625 → 0.101."
-  },
-  {
-    "cat": "from10",
-    "front": "10進数 → 16進数?",
-    "back": "Y hệt như đổi sang 2進数 nhưng <b>chia/nhân với 16</b>. Quan trọng: <b>nếu số dư ≥ 10 phải đổi thành A–F</b>."
-  },
-  {
-    "cat": "from10",
-    "front": "Tại sao kết quả thường ra 無限小数?",
-    "back": "Vì hầu hết 10進小数 không biểu diễn chính xác trong 2進数. Khi thấy cụm số <b>lặp lại</b> thì dừng và kết luận là <b>循環小数</b>."
-  },
-  {
-    "cat": "from10",
-    "front": "10進 0.5 → 2進 = ?",
-    "back": "0.5 × 2 = 1.0 (dừng) → <b>0.1</b>. (Vì hàng đầu sau dấu chấm trong 2進数 = 2⁻¹ = 0.5)"
-  },
-  {
-    "cat": "from10",
-    "front": "10進 10 → 2進 = ?",
-    "back": "10÷2=5 dư 0; 5÷2=2 dư 1; 2÷2=1 dư 0; 1÷2=0 dư 1 → đọc ngược: <b>1010</b>."
-  },
-  {
-    "cat": "shortcut",
-    "front": "2進数 → 8進数: chia mấy bit?",
-    "back": "<b>3 bit</b>. Lý do: 2³ = 8 (mỗi nhóm 3 bit khớp với 1 chữ số hệ 8). Chia nhóm từ dấu chấm ra 2 phía, đệm 0 nếu thiếu."
-  },
-  {
-    "cat": "shortcut",
-    "front": "2進数 → 16進数: chia mấy bit?",
-    "back": "<b>4 bit</b>. Lý do: 2⁴ = 16. Mỗi nhóm 4 bit = 1 chữ số hệ 16. Đệm 0 nếu thiếu."
-  },
-  {
-    "cat": "shortcut",
-    "front": "16進 F → 2進 = ?",
-    "back": "F = 15. Viết thành 4 bit = <b>1111</b>."
-  },
-  {
-    "cat": "shortcut",
-    "front": "Mẹo 10進 → 8/16進 dễ hơn?",
-    "back": "Đi vòng qua 2進数: <b>10進 → 2進 → gom nhóm 3 hoặc 4 bit → 8/16進</b>. Chia cho 2 nhanh hơn chia cho 8 hay 16."
-  },
-  {
-    "cat": "shortcut",
-    "front": "2進 \"110100\" → 16進 = ?",
-    "back": "Chia nhóm 4 bit từ PHẢI: <code>0011 0100</code> → 3, 4 → <b>34</b> (hệ 16). ⚠ Đệm 0 ở đầu cho đủ 4 bit."
-  }
-];
-const QUIZ = [
-  {
-    "q": "2進数 \"1011\" を10進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>Số 2進数 \"1011\" trong hệ 10 là?</span>",
-    "opts": [
-      "9",
-      "10",
-      "11",
-      "13"
-    ],
-    "ans": 2,
-    "expl": "<b>Đáp án: C.</b> 1×2³ + 0×2² + 1×2¹ + 1×2⁰ = 8+0+2+1 = <b>11</b>. (A) sai vì thiếu hàng 2⁰. (B) là 1010. (D) là 1101."
-  },
-  {
-    "q": "10進数 \"13\" を2進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>Số 10進数 \"13\" trong hệ 2 là?</span>",
-    "opts": [
-      "1011",
-      "1101",
-      "1110",
-      "1111"
-    ],
-    "ans": 1,
-    "expl": "<b>Đáp án: B.</b> 13÷2=6 dư 1; 6÷2=3 dư 0; 3÷2=1 dư 1; 1÷2=0 dư 1 → đọc ngược: <b>1101</b>. (A) là 11. (C) là 14. (D) là 15."
-  },
-  {
-    "q": "16進数 \"1A\" を10進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>Số 16進数 \"1A\" trong hệ 10 là?</span>",
-    "opts": [
-      "19",
-      "26",
-      "110",
-      "1010"
-    ],
-    "ans": 1,
-    "expl": "<b>Đáp án: B.</b> Đổi A=10 trước. 1×16¹ + 10×16⁰ = 16 + 10 = <b>26</b>. (A) nhầm đọc \"1A\" như \"19\". (C, D) nhầm với hệ 2."
-  },
-  {
-    "q": "10進数 \"255\" を16進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>Số 10進数 \"255\" trong hệ 16 là?</span>",
-    "opts": [
-      "FF",
-      "F0",
-      "100",
-      "255"
-    ],
-    "ans": 0,
-    "expl": "<b>Đáp án: A.</b> 255÷16=15 dư 15→F; 15÷16=0 dư 15→F → đọc ngược: <b>FF</b>. (B) F0 = 240. (C) 100₁₆ = 256. (D) là cách đọc hệ 10."
-  },
-  {
-    "q": "2進数 \"1010.01\" を10進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>2進数 \"1010.01\" trong hệ 10 là?</span>",
-    "opts": [
-      "10.1",
-      "10.25",
-      "10.5",
-      "10.01"
-    ],
-    "ans": 1,
-    "expl": "<b>Đáp án: B.</b> Phần nguyên: 1×8+0×4+1×2+0×1 = 10. Phần thập phân: 0×0.5 + 1×0.25 = 0.25. Tổng: <b>10.25</b>. (A, D) nhầm trọng số. (C) là 1010.1."
-  },
-  {
-    "q": "10進数 \"0.625\" を2進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>10進数 \"0.625\" trong hệ 2 là?</span>",
-    "opts": [
-      "110",
-      "101",
-      "011",
-      "111"
-    ],
-    "ans": 1,
-    "expl": "<b>Đáp án: B.</b> 0.625×2=<b>1</b>.25 → 1; 0.25×2=<b>0</b>.5 → 0; 0.5×2=<b>1</b>.0 → 1, dừng. Đọc trên xuống: <b>0.101</b>. (Tương ứng 0.5+0.125=0.625 ✓)."
-  },
-  {
-    "q": "2進数 \"110101\" を16進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>2進数 \"110101\" trong hệ 16 là?</span>",
-    "opts": [
-      "35",
-      "53",
-      "65",
-      "D5"
-    ],
-    "ans": 0,
-    "expl": "<b>Đáp án: A.</b> Chia nhóm 4 bit từ PHẢI, đệm 0: <code>0011 0101</code> → 3, 5 → <b>35</b>. Kiểm tra: 3×16+5 = 53 = 110101₂ (32+16+4+1=53 ✓). (B) sai do đọc ngược."
-  },
-  {
-    "q": "16進数 \"3F\" を2進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>16進数 \"3F\" trong hệ 2 là?</span>",
-    "opts": [
-      "111111",
-      "100001",
-      "11110",
-      "1011111"
-    ],
-    "ans": 0,
-    "expl": "<b>Đáp án: A.</b> Mỗi chữ hệ 16 = 4 bit: 3 → 0011; F (=15) → 1111. Ghép: 00111111 → bỏ 0 đầu → <b>111111</b>. (= 10進 63 = 3×16+15 ✓)."
-  },
-  {
-    "q": "2進数 \"101101\" を8進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>2進数 \"101101\" trong hệ 8 là?</span>",
-    "opts": [
-      "45",
-      "55",
-      "65",
-      "D"
-    ],
-    "ans": 1,
-    "expl": "<b>Đáp án: B.</b> Chia nhóm 3 bit từ PHẢI: <code>101 101</code> → 5, 5 → <b>55</b>. Kiểm tra: 5×8+5 = 45 = 101101₂ (32+8+4+1=45 ✓). (D) là hệ 16."
-  },
-  {
-    "q": "次のうち、10進数を16進数に変換する手順として正しいものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>Cách đúng để đổi 10進数 sang 16進数 là?</span>",
-    "opts": [
-      "Nhân liên tục với 16, lấy thương",
-      "Chia liên tục cho 16, đọc số dư từ TRÊN xuống",
-      "Chia liên tục cho 16, đọc số dư TỪ DƯỚI LÊN; số dư ≥ 10 đổi thành A–F",
-      "Đếm số chữ số rồi nhân với 16"
-    ],
-    "ans": 2,
-    "expl": "<b>Đáp án: C.</b> Quy trình đúng từ Yasashii Lesson 01-04: chia liên tục cho cơ số (=16), đến khi thương = 0; <b>đọc số dư từ dưới lên</b>; nếu dư từ 10–15 phải đổi thành A–F. (A) là quy tắc cho phần thập phân. (B) nhầm hướng đọc. (D) không phải quy tắc."
-  }
-];
-
-// Render Flashcards with reliable click-to-flip
-function renderFC() {
-  const grid = document.getElementById('fcGrid');
-  if (!grid) return;
-  grid.innerHTML = '';
-
-  FLASHCARDS.forEach(f => {
-    const card = document.createElement('div');
-    card.className = 'fc-card';
-    card.innerHTML = `
-      <div>
-        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
-        <div class="fc-front">${f.front}</div>
-        <div class="fc-back">${f.back}</div>
-      </div>
-      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
-    `;
-    card.addEventListener('click', () => card.classList.toggle('flipped'));
-    grid.appendChild(card);
-  });
-}
-
-// Render Interactive Quiz with tactile 4-option cards & instant feedback
-let quizScore = 0;
-let quizAnswered = 0;
-
-function renderQuiz() {
-  const area = document.getElementById('quizArea');
-  if (!area) return;
-  area.innerHTML = '';
-  quizScore = 0;
-  quizAnswered = 0;
-
-  QUIZ.forEach((item, idx) => {
-    const card = document.createElement('div');
-    card.className = 'quiz-q-card';
-    card.dataset.idx = idx;
-
-    let optsHtml = '';
-    item.opts.forEach((opt, oi) => {
-      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
-      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
-    });
-
-    card.innerHTML = `
-      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
-      <div class="q-text">${item.q}</div>
-      <div class="opts">${optsHtml}</div>
-      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
-    `;
-
-    card.querySelectorAll('.opt').forEach(optEl => {
-      optEl.addEventListener('click', () => {
-        if (card.classList.contains('locked')) return;
-        card.classList.add('locked');
-
-        const chosen = parseInt(optEl.dataset.oi, 10);
-        const correct = item.ans;
-
-        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
-        if (correctEl) correctEl.classList.add('correct');
-
-        if (chosen !== correct) {
-          optEl.classList.add('wrong');
-        } else {
-          quizScore++;
-        }
-
-        quizAnswered++;
-        if (quizAnswered === QUIZ.length) showQuizResult();
-      });
-    });
-
-    area.appendChild(card);
-  });
-
-  const resBox = document.getElementById('quiz-result');
-  if (resBox) resBox.classList.remove('show');
-}
-
-function showQuizResult() {
-  const pct = Math.round((quizScore / QUIZ.length) * 100);
-  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
-  let verdict = '';
-  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
-  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
-  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
-  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
-  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
-  const res = document.getElementById('quiz-result');
-  if (res) {
-    res.classList.add('show');
-    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
-
-function resetQuiz() {
-  renderQuiz();
-  const area = document.getElementById('quizArea');
-  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// Initialize on DOM ready
-renderFC();
-renderQuiz();
-</script>
-<script src="../assets/reader.js"></script>
-</body>
-</html>
+</section><section class="lesson-part lesson-section" id="p3"><h2 class="lesson-part-title" data-ja="暗記カード" data-step="03" data-vi="Flashcards · Bấm để lật">Flashcards · Bấm để lật</h2><div aria-label="Nhóm flashcard" class="fc-filter" id="fcFilter" role="group"></div><div class="fc-grid" id="fcGrid"></div></section><section class="lesson-part lesson-section" id="p4"><h2 class="lesson-part-title" data-ja="確認テスト · 10問" data-step="04" data-vi="Quiz ôn tập · 10 câu">Quiz ôn tập · 10 câu</h2><div class="reading-quiz-tools"><span class="reading-resume-note"></span><button class="btn" id="quiz-reset" type="button">↻ Làm lại</button></div><div id="quizArea"></div><div hidden="" id="quiz-result"><div class="score" id="qScore"></div><p class="verdict" id="qVerdict"></p></div></section><footer class="lesson-footer"><button aria-pressed="false" class="btn primary" id="complete-lesson" type="button">✓ Đã hoàn thành bài học</button><p data-ja="読了状態はテストの進捗とは別に、このブラウザに保存されます。" data-vi="Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra." id="completion-status" role="status">Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra.</p><a class="btn" data-ja="テストへ →" data-vi="Làm bài kiểm tra →" href="../kiem-tra/2.html">Làm bài kiểm tra →</a><nav aria-label="Điều hướng bài học" class="footer-nav"><a class="btn" data-ja="← 前のレッスン" data-vi="← Bài trước" href="1.html">← Bài trước</a><a class="btn" data-ja="次のレッスン →" data-vi="Bài tiếp theo →" href="3.html">Bài tiếp theo →</a></nav></footer></main><aside aria-label="Mục lục và ôn tập" class="reading-sidebar"><nav class="lesson-toc"><h3 data-ja="このレッスンの内容" data-vi="TRONG BÀI HỌC NÀY">TRONG BÀI HỌC NÀY</h3><ul></ul></nav><div class="reading-vocab"><h3 data-ja="覚えたいFE用語" data-vi="Từ vựng FE cần nhớ">Từ vựng FE cần nhớ</h3><p data-ja="用語をクリックして意味を確認。" data-vi="Bấm thuật ngữ để tự kiểm tra nghĩa.">Bấm thuật ngữ để tự kiểm tra nghĩa.</p></div></aside></div><script id="lesson-data" type="application/json">{"number": 2, "cards": [{"cat": "concept", "front": "基数変換 là gì?", "back": "Đổi cách biểu diễn số từ hệ n này sang hệ n khác (vd: 2進数 ↔ 10進数). FE tập trung 4 hệ: 2, 8, 10, 16."}, {"cat": "concept", "front": "桁の重み (place weight)", "back": "Giá trị của mỗi hàng. Tổng giá trị 1 số = Σ (chữ số × trọng số). Trong n進数, hàng thứ k bên trái dấu chấm có trọng số n^k."}, {"cat": "concept", "front": "指数 (shisuu — số mũ)", "back": "Số lần nhân cùng một số. 10³ = 10×10×10 = 1000. Trong công thức a^b, a là 基数, b là 指数."}, {"cat": "concept", "front": "a⁰ = ? và a⁻ⁿ = ?", "back": "<b>a⁰ = 1<\/b> với mọi cơ số a (kể cả 10⁰, 2⁰, 16⁰ đều = 1). <b>a⁻ⁿ = 1/aⁿ<\/b>. VD: 2⁻³ = 1/8 = 0.125."}, {"cat": "concept", "front": "Công thức tổng quát n進数 → 10進数", "back": "Số \"d₃d₂d₁d₀.d₋₁d₋₂\" trong hệ n = d₃×n³ + d₂×n² + d₁×n¹ + d₀×n⁰ + d₋₁×n⁻¹ + d₋₂×n⁻². Thay n bằng cơ số tương ứng."}, {"cat": "to10", "front": "2進数 → 10進数: cách làm?", "back": "Nhân từng chữ số với trọng số (2⁰, 2¹, 2², …) rồi <b>cộng tất cả<\/b>. VD: 1101 = 1×8+1×4+0×2+1×1 = 13."}, {"cat": "to10", "front": "16進数 → 10進数: bước đặc biệt?", "back": "Trước khi nhân với trọng số 16^k, phải <b>đổi A–F sang 10–15 trước<\/b> (A=10, B=11, C=12, D=13, E=14, F=15)."}, {"cat": "to10", "front": "2進数 0.011 → 10進数 = ?", "back": "= 0×0.5 + 1×0.25 + 1×0.125 = <b>0.375<\/b>."}, {"cat": "to10", "front": "16進数 \"A\" → 10進数 = ?", "back": "A=10 (chỉ 1 chữ số). Kiểm tra: 10×16⁰ = 10×1 = 10."}, {"cat": "to10", "front": "8進数 17 → 10進数 = ?", "back": "= 1×8¹ + 7×8⁰ = 8 + 7 = <b>15<\/b>."}, {"cat": "from10", "front": "10進数 → 2進数 (phần nguyên)?", "back": "<b>Chia liên tục cho 2<\/b> đến khi thương = 0. Đọc số dư <b>TỪ DƯỚI LÊN<\/b>. VD: 13 → 1101."}, {"cat": "from10", "front": "10進数 → 2進数 (phần thập phân)?", "back": "<b>Nhân với 2<\/b> nhiều lần, mỗi lần lấy phần nguyên của tích. Đọc các phần nguyên <b>TỪ TRÊN XUỐNG<\/b>. VD: 0.625 → 0.101."}, {"cat": "from10", "front": "10進数 → 16進数?", "back": "Y hệt như đổi sang 2進数 nhưng <b>chia/nhân với 16<\/b>. Quan trọng: <b>nếu số dư ≥ 10 phải đổi thành A–F<\/b>."}, {"cat": "from10", "front": "Tại sao kết quả thường ra 無限小数?", "back": "Vì hầu hết 10進小数 không biểu diễn chính xác trong 2進数. Khi thấy cụm số <b>lặp lại<\/b> thì dừng và kết luận là <b>循環小数<\/b>."}, {"cat": "from10", "front": "10進 0.5 → 2進 = ?", "back": "0.5 × 2 = 1.0 (dừng) → <b>0.1<\/b>. (Vì hàng đầu sau dấu chấm trong 2進数 = 2⁻¹ = 0.5)"}, {"cat": "from10", "front": "10進 10 → 2進 = ?", "back": "10÷2=5 dư 0; 5÷2=2 dư 1; 2÷2=1 dư 0; 1÷2=0 dư 1 → đọc ngược: <b>1010<\/b>."}, {"cat": "shortcut", "front": "2進数 → 8進数: chia mấy bit?", "back": "<b>3 bit<\/b>. Lý do: 2³ = 8 (mỗi nhóm 3 bit khớp với 1 chữ số hệ 8). Chia nhóm từ dấu chấm ra 2 phía, đệm 0 nếu thiếu."}, {"cat": "shortcut", "front": "2進数 → 16進数: chia mấy bit?", "back": "<b>4 bit<\/b>. Lý do: 2⁴ = 16. Mỗi nhóm 4 bit = 1 chữ số hệ 16. Đệm 0 nếu thiếu."}, {"cat": "shortcut", "front": "16進 F → 2進 = ?", "back": "F = 15. Viết thành 4 bit = <b>1111<\/b>."}, {"cat": "shortcut", "front": "Mẹo 10進 → 8/16進 dễ hơn?", "back": "Đi vòng qua 2進数: <b>10進 → 2進 → gom nhóm 3 hoặc 4 bit → 8/16進<\/b>. Chia cho 2 nhanh hơn chia cho 8 hay 16."}, {"cat": "shortcut", "front": "2進 \"110100\" → 16進 = ?", "back": "Chia nhóm 4 bit từ PHẢI: <code>0011 0100<\/code> → 3, 4 → <b>34<\/b> (hệ 16). ⚠ Đệm 0 ở đầu cho đủ 4 bit."}], "quiz": [{"q": "2進数 \"1011\" を10進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>Số 2進数 \"1011\" trong hệ 10 là?<\/span>", "opts": ["9", "10", "11", "13"], "ans": 2, "expl": "<b>Đáp án: C.<\/b> 1×2³ + 0×2² + 1×2¹ + 1×2⁰ = 8+0+2+1 = <b>11<\/b>. (A) sai vì thiếu hàng 2⁰. (B) là 1010. (D) là 1101.", "qVi": "Số 2進数 \"1011\" trong hệ 10 là?", "qJa": "2進数 \"1011\" を10進数で表したものはどれか。"}, {"q": "10進数 \"13\" を2進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>Số 10進数 \"13\" trong hệ 2 là?<\/span>", "opts": ["1011", "1101", "1110", "1111"], "ans": 1, "expl": "<b>Đáp án: B.<\/b> 13÷2=6 dư 1; 6÷2=3 dư 0; 3÷2=1 dư 1; 1÷2=0 dư 1 → đọc ngược: <b>1101<\/b>. (A) là 11. (C) là 14. (D) là 15.", "qVi": "Số 10進数 \"13\" trong hệ 2 là?", "qJa": "10進数 \"13\" を2進数で表したものはどれか。"}, {"q": "16進数 \"1A\" を10進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>Số 16進数 \"1A\" trong hệ 10 là?<\/span>", "opts": ["19", "26", "110", "1010"], "ans": 1, "expl": "<b>Đáp án: B.<\/b> Đổi A=10 trước. 1×16¹ + 10×16⁰ = 16 + 10 = <b>26<\/b>. (A) nhầm đọc \"1A\" như \"19\". (C, D) nhầm với hệ 2.", "qVi": "Số 16進数 \"1A\" trong hệ 10 là?", "qJa": "16進数 \"1A\" を10進数で表したものはどれか。"}, {"q": "10進数 \"255\" を16進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>Số 10進数 \"255\" trong hệ 16 là?<\/span>", "opts": ["FF", "F0", "100", "255"], "ans": 0, "expl": "<b>Đáp án: A.<\/b> 255÷16=15 dư 15→F; 15÷16=0 dư 15→F → đọc ngược: <b>FF<\/b>. (B) F0 = 240. (C) 100₁₆ = 256. (D) là cách đọc hệ 10.", "qVi": "Số 10進数 \"255\" trong hệ 16 là?", "qJa": "10進数 \"255\" を16進数で表したものはどれか。"}, {"q": "2進数 \"1010.01\" を10進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>2進数 \"1010.01\" trong hệ 10 là?<\/span>", "opts": ["10.1", "10.25", "10.5", "10.01"], "ans": 1, "expl": "<b>Đáp án: B.<\/b> Phần nguyên: 1×8+0×4+1×2+0×1 = 10. Phần thập phân: 0×0.5 + 1×0.25 = 0.25. Tổng: <b>10.25<\/b>. (A, D) nhầm trọng số. (C) là 1010.1.", "qVi": "2進数 \"1010.01\" trong hệ 10 là?", "qJa": "2進数 \"1010.01\" を10進数で表したものはどれか。"}, {"q": "10進数 \"0.625\" を2進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>10進数 \"0.625\" trong hệ 2 là?<\/span>", "opts": ["110", "101", "011", "111"], "ans": 1, "expl": "<b>Đáp án: B.<\/b> 0.625×2=<b>1<\/b>.25 → 1; 0.25×2=<b>0<\/b>.5 → 0; 0.5×2=<b>1<\/b>.0 → 1, dừng. Đọc trên xuống: <b>0.101<\/b>. (Tương ứng 0.5+0.125=0.625 ✓).", "qVi": "10進数 \"0.625\" trong hệ 2 là?", "qJa": "10進数 \"0.625\" を2進数で表したものはどれか。"}, {"q": "2進数 \"110101\" を16進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>2進数 \"110101\" trong hệ 16 là?<\/span>", "opts": ["35", "53", "65", "D5"], "ans": 0, "expl": "<b>Đáp án: A.<\/b> Chia nhóm 4 bit từ PHẢI, đệm 0: <code>0011 0101<\/code> → 3, 5 → <b>35<\/b>. Kiểm tra: 3×16+5 = 53 = 110101₂ (32+16+4+1=53 ✓). (B) sai do đọc ngược.", "qVi": "2進数 \"110101\" trong hệ 16 là?", "qJa": "2進数 \"110101\" を16進数で表したものはどれか。"}, {"q": "16進数 \"3F\" を2進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>16進数 \"3F\" trong hệ 2 là?<\/span>", "opts": ["111111", "100001", "11110", "1011111"], "ans": 0, "expl": "<b>Đáp án: A.<\/b> Mỗi chữ hệ 16 = 4 bit: 3 → 0011; F (=15) → 1111. Ghép: 00111111 → bỏ 0 đầu → <b>111111<\/b>. (= 10進 63 = 3×16+15 ✓).", "qVi": "16進数 \"3F\" trong hệ 2 là?", "qJa": "16進数 \"3F\" を2進数で表したものはどれか。"}, {"q": "2進数 \"101101\" を8進数で表したものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>2進数 \"101101\" trong hệ 8 là?<\/span>", "opts": ["45", "55", "65", "D"], "ans": 1, "expl": "<b>Đáp án: B.<\/b> Chia nhóm 3 bit từ PHẢI: <code>101 101<\/code> → 5, 5 → <b>55<\/b>. Kiểm tra: 5×8+5 = 45 = 101101₂ (32+8+4+1=45 ✓). (D) là hệ 16.", "qVi": "2進数 \"101101\" trong hệ 8 là?", "qJa": "2進数 \"101101\" を8進数で表したものはどれか。"}, {"q": "次のうち、10進数を16進数に変換する手順として正しいものはどれか。<br><span style='color:var(--text-dim);font-size:0.88rem'>Cách đúng để đổi 10進数 sang 16進数 là?<\/span>", "opts": ["Nhân liên tục với 16, lấy thương", "Chia liên tục cho 16, đọc số dư từ TRÊN xuống", "Chia liên tục cho 16, đọc số dư TỪ DƯỚI LÊN; số dư ≥ 10 đổi thành A–F", "Đếm số chữ số rồi nhân với 16"], "ans": 2, "expl": "<b>Đáp án: C.<\/b> Quy trình đúng từ Yasashii Lesson 01-04: chia liên tục cho cơ số (=16), đến khi thương = 0; <b>đọc số dư từ dưới lên<\/b>; nếu dư từ 10–15 phải đổi thành A–F. (A) là quy tắc cho phần thập phân. (B) nhầm hướng đọc. (D) không phải quy tắc.", "qVi": "Cách đúng để đổi 10進数 sang 16進数 là?", "qJa": "次のうち、10進数を16進数に変換する手順として正しいものはどれか。"}], "available": true}</script></body></html>

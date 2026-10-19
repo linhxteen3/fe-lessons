@@ -1,115 +1,39 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="light" data-lang="dual">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bài 15: 5大装置・CPU基本 — FE Master</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/reader.css">
-</head>
-<body>
 
-<!-- Reading Progress Bar -->
-<div class="reading-progress-track">
-  <div class="reading-progress-bar" id="readingProgress"></div>
-</div>
-
-<!-- Minimal Sticky Top Header -->
-<header class="site-header">
-  <div class="header-container">
-    <div class="header-left">
-      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
-        <span class="text-ja">← ロードマップ</span>
-        <span class="text-vi">← Lộ trình</span>
-      </a>
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
-        <span class="sep">/</span>
-        <span>Mục tiêu 3</span>
-        <span class="sep">/</span>
-        <span class="current">Bài 15</span>
-      </nav>
-    </div>
-    <div class="header-right">
-      <div class="lang-selector">
-        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
-        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
-        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
-      </div>
-      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
-        <span id="zenIcon">📖</span>
-        <span id="zenText">Zen</span>
-      </button>
-      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
-        <span id="themeIcon">◐</span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- Main Two-Column Reader Layout -->
-<div class="page-container">
-
-  <!-- Left Content Column -->
-  <main class="main-content">
-
-    <div class="lesson-header">
-      <div class="lesson-meta-bar">
-        <span class="badge-lesson">BÀI 15 · CƠ SỞ LÝ THUYẾT</span>
-        <span class="badge-tag">MỤC TIÊU 3</span>
-        <span class="badge-tag">TRỌNG TÂM 科目A</span>
-      </div>
-      <h1 class="lesson-title">
-        5大装置・CPU基本
-      </h1>
-      <div class="lesson-stats">
-        <span>⏱ ~30-45 phút đọc</span>
-        <span>·</span>
-        <span>Active Recall & Flashcards</span>
-      </div>
-    </div>
-
-    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
-    <section class="content-section" id="sec-1">
-      <h2 class="section-heading">
-        <span class="num-badge">①</span>
-        <span class="text-ja">重要理論 (Theory)</span>
-        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
-      </h2>
-      <div class="lesson-body-content">
-<!-- 1.1 五大装置 -->
-<h3 class="sub">1.1 Năm thiết bị chính của máy tính (五大装置)</h3>
+<html data-reading-lang="dual" data-reading-theme="light" lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><meta content="light dark" name="color-scheme"/><title>Bài 15 · 5大装置・CPU基本 — FE Master</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/><link href="../assets/reader.css" rel="stylesheet"/><script defer="" src="../assets/reader.js"></script></head><body>
+<a class="skip-link" data-ja="本文へ" data-vi="Đến nội dung bài học" href="#lesson-content">Đến nội dung bài học</a>
+<header class="topbar"><div aria-label="Tiến độ đọc bài" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-track" role="progressbar"><div id="reader-progress"></div></div><div class="top-inner"><div class="top-left"><a class="reading-back" data-ja="← ロードマップへ" data-vi="← Quay lại lộ trình" href="../index.html" target="_top">← Quay lại lộ trình</a><nav aria-label="Breadcrumb" class="breadcrumb"><span>FE</span><span>/</span><span data-ja="目標3" data-vi="Mục tiêu 3">Mục tiêu 3</span><span>/</span><span data-ja="解説15" data-vi="Lý thuyết 15">Lý thuyết 15</span></nav></div><div class="reading-controls"><label class="sr-only" for="reading-language">Ngôn ngữ bài học</label><select id="reading-language"><option value="dual">Việt + 日本語</option><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select><button aria-label="Chế độ tập trung: ẩn sidebar" aria-pressed="false" id="zen-toggle" type="button">⊡ <span class="zen-label" data-ja="集中" data-vi="Tập trung">Tập trung</span></button><button aria-pressed="false" id="reading-theme" type="button">☾ Tối</button></div></div></header>
+<div class="layout"><main class="reading-main" id="lesson-content"><header class="lesson-hero"><span class="lesson-eyebrow" data-ja="レッスン15 · 理論" data-vi="BÀI 15 · LÝ THUYẾT">BÀI 15 · LÝ THUYẾT</span><h1><span class="reading-ja" lang="ja">5大装置・CPU基本</span><span class="reading-vi" lang="vi">5大装置・CPU基本</span></h1><div class="lesson-meta"><span data-ja="科目Aの基礎" data-vi="Trọng tâm 科目A">Trọng tâm 科目A</span><span data-ja="暗記カード22枚 · 確認問題8問" data-vi="22 flashcard · 8 câu ôn tập">22 flashcard · 8 câu ôn tập</span></div></header>
+<section class="lesson-part lesson-section" id="p1"><h2 class="lesson-part-title" data-ja="理論のまとめ" data-step="01" data-vi="Tóm tắt lý thuyết">Tóm tắt lý thuyết</h2>
+ 1.1 五大装置
+<h3 class="sub" id="lesson-15-topic-1">1.1 Năm thiết bị chính của máy tính (五大装置)</h3>
 <div class="card">
 <div class="tri">
-  <div class="lang jp"><div class="flag">🇯🇵 日本語</div>
+<div class="lang jp reading-ja" lang="ja"><div class="flag">🇯🇵 日本語</div>
     コンピュータのハードウェアは大きく<strong>5つの装置</strong>に分かれます。これを<span class="kw">五大装置（ごだいそうち）</span>と呼びます。
     <strong>CPU（中央処理装置）</strong>は「制御装置」と「演算装置」の2つを担当し、コンピュータの<strong>脳みそ</strong>に相当します。
   </div>
-  <div class="lang vn"><div class="flag">🇻🇳 Tiếng Việt</div>
+<div class="lang vn reading-vi" lang="vi"><div class="flag">🇻🇳 Tiếng Việt</div>
     Phần cứng của máy tính được chia thành <strong>5 thiết bị lớn</strong>, gọi là <span class="kw">五大装置 (Năm thiết bị chính)</span>.
     <strong>CPU (Bộ xử lý trung tâm)</strong> đảm nhiệm cả "thiết bị điều khiển" và "thiết bị tính toán" — nó tương ứng với <strong>bộ não</strong> của máy tính.
   </div>
-  <div class="lang en"><div class="flag">🇬🇧 English</div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en"><div class="flag">🇬🇧 English</div>
     Computer hardware is divided into <strong>five major devices</strong>, called the <span class="kw">Five Core Devices</span>.
     The <strong>CPU (Central Processing Unit)</strong> handles both the control unit and the arithmetic unit — it is the <strong>brain</strong> of the computer.
-  </div>
+  </div></details>
 </div>
-
-<table>
-  <thead><tr><th>装置 (Thiết bị)</th><th>Vai trò · 役割</th><th>Ví dụ · 例</th></tr></thead>
-  <tbody>
-    <tr><td><b>制御装置</b><br><span style="color:var(--muted);font-size:12px">Control Unit / Khối điều khiển</span></td><td>Giải mã lệnh, ra chỉ thị điều khiển các thiết bị khác. (命令を解読して指示を出す)</td><td rowspan="2"><span class="term">CPU</span></td></tr>
-    <tr><td><b>演算装置</b><br><span style="color:var(--muted);font-size:12px">ALU / Khối tính toán</span></td><td>Thực hiện các phép tính số học &amp; logic. (計算を行う)</td></tr>
-    <tr><td><b>記憶装置</b><br><span style="color:var(--muted);font-size:12px">Memory / Thiết bị nhớ</span></td><td>Lưu trữ dữ liệu &amp; chương trình. (データを記憶する)</td><td>USB, RAM, HDD</td></tr>
-    <tr><td><b>入力装置</b><br><span style="color:var(--muted);font-size:12px">Input / Thiết bị nhập</span></td><td>Đưa dữ liệu từ ngoài vào máy. (データを入力する)</td><td>マウス, キーボード</td></tr>
-    <tr><td><b>出力装置</b><br><span style="color:var(--muted);font-size:12px">Output / Thiết bị xuất</span></td><td>Đưa kết quả ra ngoài. (データを出力する)</td><td>プリンター, ディスプレイ</td></tr>
-  </tbody>
-</table>
-
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">装置 (Thiết bị)</th><th scope="col">Vai trò · 役割</th><th scope="col">Ví dụ · 例</th></tr></thead>
+<tbody>
+<tr><td><b>制御装置</b><br/><span style="color:var(--muted);font-size:12px">Control Unit / Khối điều khiển</span></td><td>Giải mã lệnh, ra chỉ thị điều khiển các thiết bị khác. (命令を解読して指示を出す)</td><td rowspan="2"><span class="term">CPU</span></td></tr>
+<tr><td><b>演算装置</b><br/><span style="color:var(--muted);font-size:12px">ALU / Khối tính toán</span></td><td>Thực hiện các phép tính số học &amp; logic. (計算を行う)</td></tr>
+<tr><td><b>記憶装置</b><br/><span style="color:var(--muted);font-size:12px">Memory / Thiết bị nhớ</span></td><td>Lưu trữ dữ liệu &amp; chương trình. (データを記憶する)</td><td>USB, RAM, HDD</td></tr>
+<tr><td><b>入力装置</b><br/><span style="color:var(--muted);font-size:12px">Input / Thiết bị nhập</span></td><td>Đưa dữ liệu từ ngoài vào máy. (データを入力する)</td><td>マウス, キーボード</td></tr>
+<tr><td><b>出力装置</b><br/><span style="color:var(--muted);font-size:12px">Output / Thiết bị xuất</span></td><td>Đưa kết quả ra ngoài. (データを出力する)</td><td>プリンター, ディスプレイ</td></tr>
+</tbody>
+</table></div>
 <h4 class="sub2">📊 Sơ đồ tổng quan — Hardware</h4>
-<div class="ascii">             ┌────────────────────────────────────┐
+<pre class="ascii" tabindex="0">             ┌────────────────────────────────────┐
              │             ハードウェア              │
              └────────────────────────────────────┘
                               │
@@ -120,58 +44,54 @@
           │                  USB        Keyboard    Printer
        ┌──┴──┐
        │ CPU │  ← 脳みそ (Brain / Bộ não)
-       └─────┘</div>
+       └─────┘</pre>
 </div>
-
-<!-- 1.2 ノイマン型 -->
-<h3 class="sub">1.2 Máy tính kiểu Von Neumann (ノイマン型コンピュータ)</h3>
+ 1.2 ノイマン型
+<h3 class="sub" id="lesson-15-topic-2">1.2 Máy tính kiểu Von Neumann (ノイマン型コンピュータ)</h3>
 <div class="card">
 <div class="tri">
-  <div class="lang jp"><div class="flag">🇯🇵 日本語</div>
+<div class="lang jp reading-ja" lang="ja"><div class="flag">🇯🇵 日本語</div>
     現代のコンピュータはほぼ<span class="kw">ノイマン型コンピュータ</span>で、次の2つの特徴があります：
     <ul class="clean">
-      <li><strong>プログラム内蔵方式</strong>：プログラムを補助記憶装置に格納しておき、実行時に主記憶装置に読み込ませる</li>
-      <li><strong>逐次制御方式</strong>：命令を前から1つずつ順番に実行する</li>
-    </ul>
-  </div>
-  <div class="lang vn"><div class="flag">🇻🇳 Tiếng Việt</div>
+<li><strong>プログラム内蔵方式</strong>：プログラムを補助記憶装置に格納しておき、実行時に主記憶装置に読み込ませる</li>
+<li><strong>逐次制御方式</strong>：命令を前から1つずつ順番に実行する</li>
+</ul>
+</div>
+<div class="lang vn reading-vi" lang="vi"><div class="flag">🇻🇳 Tiếng Việt</div>
     Máy tính hiện đại hầu hết là <span class="kw">máy Von Neumann (ノイマン型)</span>, có 2 đặc điểm:
     <ul class="clean">
-      <li><strong>Lưu chương trình trong bộ nhớ (プログラム内蔵方式)</strong>: chương trình thường nằm ở bộ nhớ phụ, khi chạy mới nạp vào bộ nhớ chính.</li>
-      <li><strong>Điều khiển tuần tự (逐次制御方式)</strong>: thực hiện lệnh lần lượt từng cái một, theo thứ tự.</li>
-    </ul>
-  </div>
-  <div class="lang en"><div class="flag">🇬🇧 English</div>
+<li><strong>Lưu chương trình trong bộ nhớ (プログラム内蔵方式)</strong>: chương trình thường nằm ở bộ nhớ phụ, khi chạy mới nạp vào bộ nhớ chính.</li>
+<li><strong>Điều khiển tuần tự (逐次制御方式)</strong>: thực hiện lệnh lần lượt từng cái một, theo thứ tự.</li>
+</ul>
+</div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en"><div class="flag">🇬🇧 English</div>
     Modern computers are mostly <span class="kw">Von Neumann machines</span>, characterized by:
     <ul class="clean">
-      <li><strong>Stored-program scheme</strong>: programs sit on secondary storage; at execution time they're loaded into main memory.</li>
-      <li><strong>Sequential control</strong>: instructions are executed one by one in order.</li>
-    </ul>
-  </div>
+<li><strong>Stored-program scheme</strong>: programs sit on secondary storage; at execution time they're loaded into main memory.</li>
+<li><strong>Sequential control</strong>: instructions are executed one by one in order.</li>
+</ul>
+</div></details>
 </div>
-
 <div class="card tip">
 🎼 <b>So sánh đời thực:</b> Như đầu bếp đọc công thức nấu ăn — công thức (chương trình) viết sẵn trên giấy (bộ nhớ phụ), khi nấu thì để trên bàn (bộ nhớ chính), và đọc <i>từng dòng một</i> chứ không nhảy lung tung.
 </div>
 </div>
-
-<!-- 1.3 CPU構成 -->
-<h3 class="sub">1.3 Cấu trúc CPU (CPU構成)</h3>
+ 1.3 CPU構成
+<h3 class="sub" id="lesson-15-topic-3">1.3 Cấu trúc CPU (CPU構成)</h3>
 <div class="card">
 <div class="tri">
-  <div class="lang jp"><div class="flag">🇯🇵 日本語</div>
-    <span class="kw">CPU（Central Processing Unit / 中央処理装置）</span>は「コンピュータの中心で仕事をする機械」。基本情報技術者試験では<strong>「プロセッサ」</strong>と書かれることもあります。CPUの中には<strong>レジスタ</strong>（小さな記憶装置）と<strong>デコーダ</strong>（命令解読器）、<strong>ALU</strong>（演算装置）があります。
+<div class="lang jp reading-ja" lang="ja"><div class="flag">🇯🇵 日本語</div>
+<span class="kw">CPU（Central Processing Unit / 中央処理装置）</span>は「コンピュータの中心で仕事をする機械」。基本情報技術者試験では<strong>「プロセッサ」</strong>と書かれることもあります。CPUの中には<strong>レジスタ</strong>（小さな記憶装置）と<strong>デコーダ</strong>（命令解読器）、<strong>ALU</strong>（演算装置）があります。
   </div>
-  <div class="lang vn"><div class="flag">🇻🇳 Tiếng Việt</div>
-    <span class="kw">CPU (中央処理装置)</span> nghĩa là "Bộ xử lý trung tâm" — cỗ máy làm việc ở trung tâm của máy tính. Trong đề thi FE đôi khi được gọi là <strong>プロセッサ (processor)</strong>. Bên trong CPU có <strong>レジスタ (thanh ghi)</strong> — bộ nhớ nhỏ, <strong>デコーダ (bộ giải mã lệnh)</strong>, và <strong>ALU (khối tính toán)</strong>.
+<div class="lang vn reading-vi" lang="vi"><div class="flag">🇻🇳 Tiếng Việt</div>
+<span class="kw">CPU (中央処理装置)</span> nghĩa là "Bộ xử lý trung tâm" — cỗ máy làm việc ở trung tâm của máy tính. Trong đề thi FE đôi khi được gọi là <strong>プロセッサ (processor)</strong>. Bên trong CPU có <strong>レジスタ (thanh ghi)</strong> — bộ nhớ nhỏ, <strong>デコーダ (bộ giải mã lệnh)</strong>, và <strong>ALU (khối tính toán)</strong>.
   </div>
-  <div class="lang en"><div class="flag">🇬🇧 English</div>
-    <span class="kw">CPU (Central Processing Unit)</span> — the machine working at the heart of the computer. On the FE exam it is sometimes written as <strong>"processor"</strong>. Inside the CPU: <strong>registers</strong> (small storage), <strong>instruction decoder</strong>, and <strong>ALU</strong> (Arithmetic Logic Unit).
-  </div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en"><div class="flag">🇬🇧 English</div>
+<span class="kw">CPU (Central Processing Unit)</span> — the machine working at the heart of the computer. On the FE exam it is sometimes written as <strong>"processor"</strong>. Inside the CPU: <strong>registers</strong> (small storage), <strong>instruction decoder</strong>, and <strong>ALU</strong> (Arithmetic Logic Unit).
+  </div></details>
 </div>
-
 <h4 class="sub2">🧩 Sơ đồ CPU &amp; Memory</h4>
-<div class="ascii">  ┌──────────────────────── CPU ────────────────────────┐
+<pre class="ascii" tabindex="0">  ┌──────────────────────── CPU ────────────────────────┐
   │                                                       │
   │   ┌─ 制御装置 ──────────────┐    ┌─ 演算装置 ─────┐  │
   │   │  プログラムカウンタ (PC) │    │   ALU         │  │
@@ -192,204 +112,184 @@
         │  0003 │ データA│                  │
         │  ...                              │
         │  FFFF │       │                  │
-        └──────────────────────────────────┘</div>
+        └──────────────────────────────────┘</pre>
 </div>
-
-<!-- 1.4 レジスタ -->
-<h3 class="sub">1.4 Các loại thanh ghi (レジスタの種類)</h3>
+ 1.4 レジスタ
+<h3 class="sub" id="lesson-15-topic-4">1.4 Các loại thanh ghi (レジスタの種類)</h3>
 <div class="card">
 <div class="tri">
-  <div class="lang jp"><div class="flag">🇯🇵 日本語</div>
-    <span class="kw">レジスタ</span>は、CPU内部にある<strong>命令やデータを一時的に格納する記憶装置</strong>です。「小さな格納庫」のようなものです。試験では各レジスタの<strong>名前と役割</strong>がよく出題されます。
+<div class="lang jp reading-ja" lang="ja"><div class="flag">🇯🇵 日本語</div>
+<span class="kw">レジスタ</span>は、CPU内部にある<strong>命令やデータを一時的に格納する記憶装置</strong>です。「小さな格納庫」のようなものです。試験では各レジスタの<strong>名前と役割</strong>がよく出題されます。
   </div>
-  <div class="lang vn"><div class="flag">🇻🇳 Tiếng Việt</div>
-    <span class="kw">Thanh ghi (レジスタ)</span> là <strong>thiết bị nhớ nhỏ bên trong CPU</strong>, dùng để <strong>lưu tạm</strong> lệnh và dữ liệu. Giống như "kho chứa mini" của CPU. Trong đề thi FE thường hỏi <strong>tên và vai trò</strong> của từng thanh ghi.
+<div class="lang vn reading-vi" lang="vi"><div class="flag">🇻🇳 Tiếng Việt</div>
+<span class="kw">Thanh ghi (レジスタ)</span> là <strong>thiết bị nhớ nhỏ bên trong CPU</strong>, dùng để <strong>lưu tạm</strong> lệnh và dữ liệu. Giống như "kho chứa mini" của CPU. Trong đề thi FE thường hỏi <strong>tên và vai trò</strong> của từng thanh ghi.
   </div>
-  <div class="lang en"><div class="flag">🇬🇧 English</div>
-    <span class="kw">Registers</span> are tiny storage cells inside the CPU that <strong>temporarily hold</strong> instructions and data — like little lockers. The FE exam frequently tests the <strong>names and roles</strong> of each register type.
-  </div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en"><div class="flag">🇬🇧 English</div>
+<span class="kw">Registers</span> are tiny storage cells inside the CPU that <strong>temporarily hold</strong> instructions and data — like little lockers. The FE exam frequently tests the <strong>names and roles</strong> of each register type.
+  </div></details>
 </div>
-
-<table>
-  <thead><tr><th>名称 · Tên</th><th>役割 · Vai trò</th></tr></thead>
-  <tbody>
-    <tr><td><b>プログラムカウンター</b><br>(プログラムレジスタ / Program Counter / PC)</td><td>Lưu địa chỉ của <b>lệnh tiếp theo</b> sẽ được thực thi. (次に実行する命令のアドレスを記憶)</td></tr>
-    <tr><td><b>命令レジスタ</b><br>(Instruction Register / IR)</td><td>Lưu lệnh hiện đang thực thi — vừa được nạp từ bộ nhớ. (実行する命令を一時的に記憶)</td></tr>
-    <tr><td><b>汎用レジスタ</b><br>(General-purpose Register)</td><td>Lưu <b>dữ liệu</b>; dùng cho nhiều mục đích, không bị giới hạn. (用途を限定せず、各目的で使用)</td></tr>
-    <tr><td>インデックスレジスタ<br>(Index Register)</td><td>Lưu địa chỉ cơ sở dùng cho <i>chỉ định địa chỉ kiểu chỉ số</i>. (基準アドレスを記憶)</td></tr>
-    <tr><td>ベースレジスタ<br>(Base Register)</td><td>Lưu địa chỉ cơ sở dùng cho <i>chỉ định địa chỉ kiểu cơ sở</i>.</td></tr>
-    <tr><td>アキュムレーター<br>(Accumulator / ACC)</td><td>Lưu đối tượng &amp; kết quả của phép tính. (演算対象や演算結果を記憶)</td></tr>
-  </tbody>
-</table>
-
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">名称 · Tên</th><th scope="col">役割 · Vai trò</th></tr></thead>
+<tbody>
+<tr><td><b>プログラムカウンター</b><br/>(プログラムレジスタ / Program Counter / PC)</td><td>Lưu địa chỉ của <b>lệnh tiếp theo</b> sẽ được thực thi. (次に実行する命令のアドレスを記憶)</td></tr>
+<tr><td><b>命令レジスタ</b><br/>(Instruction Register / IR)</td><td>Lưu lệnh hiện đang thực thi — vừa được nạp từ bộ nhớ. (実行する命令を一時的に記憶)</td></tr>
+<tr><td><b>汎用レジスタ</b><br/>(General-purpose Register)</td><td>Lưu <b>dữ liệu</b>; dùng cho nhiều mục đích, không bị giới hạn. (用途を限定せず、各目的で使用)</td></tr>
+<tr><td>インデックスレジスタ<br/>(Index Register)</td><td>Lưu địa chỉ cơ sở dùng cho <i>chỉ định địa chỉ kiểu chỉ số</i>. (基準アドレスを記憶)</td></tr>
+<tr><td>ベースレジスタ<br/>(Base Register)</td><td>Lưu địa chỉ cơ sở dùng cho <i>chỉ định địa chỉ kiểu cơ sở</i>.</td></tr>
+<tr><td>アキュムレーター<br/>(Accumulator / ACC)</td><td>Lưu đối tượng &amp; kết quả của phép tính. (演算対象や演算結果を記憶)</td></tr>
+</tbody>
+</table></div>
 <div class="card warn">
 ⚡ <b>3 loại quan trọng nhất (Yasashii nhấn mạnh):</b> <span class="term">プログラムカウンター</span> · <span class="term">命令レジスタ</span> · <span class="term">汎用レジスタ</span>
 </div>
 </div>
-
-<!-- 1.5 CPU性能 -->
-<h3 class="sub">1.5 Chỉ số đánh giá hiệu năng CPU (CPUの性能指標) — 3 chỉ số</h3>
-
+ 1.5 CPU性能
+<h3 class="sub" id="lesson-15-topic-5">1.5 Chỉ số đánh giá hiệu năng CPU (CPUの性能指標) — 3 chỉ số</h3>
 <h4 class="sub2">(1) クロック周波数 (Clock Frequency / Tần số xung nhịp)</h4>
 <div class="card">
 <div class="tri">
-  <div class="lang jp"><div class="flag">🇯🇵 日本語</div>
-    <span class="kw">クロック周波数</span>とは、CPU内の発振器が<strong>1秒間に発生させる信号の回数</strong>です。単位は<span class="term">Hz</span>（ヘルツ）。<strong>クロック周波数が大きいほど高性能</strong>。
+<div class="lang jp reading-ja" lang="ja"><div class="flag">🇯🇵 日本語</div>
+<span class="kw">クロック周波数</span>とは、CPU内の発振器が<strong>1秒間に発生させる信号の回数</strong>です。単位は<span class="term">Hz</span>（ヘルツ）。<strong>クロック周波数が大きいほど高性能</strong>。
   </div>
-  <div class="lang vn"><div class="flag">🇻🇳 Tiếng Việt</div>
-    <span class="kw">Tần số xung nhịp (クロック周波数)</span> là <strong>số lần bộ phát xung trong CPU phát tín hiệu trong 1 giây</strong>. Đơn vị là <span class="term">Hz</span>. <strong>Tần số càng lớn thì CPU càng nhanh.</strong>
-  </div>
-  <div class="lang en"><div class="flag">🇬🇧 English</div>
-    <span class="kw">Clock frequency</span> = the number of signals the CPU's oscillator emits per second. Unit: <span class="term">Hz</span>. <strong>Higher clock → higher performance.</strong>
-  </div>
+<div class="lang vn reading-vi" lang="vi"><div class="flag">🇻🇳 Tiếng Việt</div>
+<span class="kw">Tần số xung nhịp (クロック周波数)</span> là <strong>số lần bộ phát xung trong CPU phát tín hiệu trong 1 giây</strong>. Đơn vị là <span class="term">Hz</span>. <strong>Tần số càng lớn thì CPU càng nhanh.</strong>
 </div>
-
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en"><div class="flag">🇬🇧 English</div>
+<span class="kw">Clock frequency</span> = the number of signals the CPU's oscillator emits per second. Unit: <span class="term">Hz</span>. <strong>Higher clock → higher performance.</strong>
+</div></details>
+</div>
 <div class="card tip">
 🎵 <b>So sánh:</b> Máy đếm nhịp (metronome) = bộ phát xung; CPU = nhạc công. Metronome đập càng nhanh, nhạc công chơi càng nhiều nốt mỗi giây.
 </div>
-
 <div class="formula">
-<div class="num">1秒間に実行できる命令数 = クロック周波数 ÷ 1命令に必要なクロック数</div><br>
+<div class="num">1秒間に実行できる命令数 = クロック周波数 ÷ 1命令に必要なクロック数</div><br/>
 Số lệnh thực thi trong 1 giây = Clock frequency ÷ Số clock mỗi lệnh
 </div>
 </div>
-
 <h4 class="sub2">(2) MIPS (Million Instructions Per Second)</h4>
 <div class="card">
 <div class="tri">
-  <div class="lang jp"><div class="flag">🇯🇵 日本語</div>
-    <span class="kw">MIPS</span>とは、CPUが<strong>1秒間に何百万個の命令を実行できるか</strong>を表す単位です。「2MIPS」=「1秒間に200万個の命令を実行する」。
+<div class="lang jp reading-ja" lang="ja"><div class="flag">🇯🇵 日本語</div>
+<span class="kw">MIPS</span>とは、CPUが<strong>1秒間に何百万個の命令を実行できるか</strong>を表す単位です。「2MIPS」=「1秒間に200万個の命令を実行する」。
   </div>
-  <div class="lang vn"><div class="flag">🇻🇳 Tiếng Việt</div>
-    <span class="kw">MIPS</span> = đơn vị thể hiện CPU thực thi được <strong>bao nhiêu triệu lệnh trong 1 giây</strong>. "2MIPS" nghĩa là <strong>2 triệu lệnh/giây</strong>.
+<div class="lang vn reading-vi" lang="vi"><div class="flag">🇻🇳 Tiếng Việt</div>
+<span class="kw">MIPS</span> = đơn vị thể hiện CPU thực thi được <strong>bao nhiêu triệu lệnh trong 1 giây</strong>. "2MIPS" nghĩa là <strong>2 triệu lệnh/giây</strong>.
   </div>
-  <div class="lang en"><div class="flag">🇬🇧 English</div>
-    <span class="kw">MIPS</span> = the number of millions of instructions a CPU can execute per second. 2 MIPS = 2,000,000 instructions / sec.
-  </div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en"><div class="flag">🇬🇧 English</div>
+<span class="kw">MIPS</span> = the number of millions of instructions a CPU can execute per second. 2 MIPS = 2,000,000 instructions / sec.
+  </div></details>
 </div>
-
 <div class="formula">
-<div class="num">MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶</div><br>
+<div class="num">MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶</div><br/>
 MIPS = (1 giây ÷ Thời gian thực thi trung bình mỗi lệnh) × 10⁻⁶
 </div>
-
 <div class="card warn">
 🧮 <b>Ví dụ tính ngược:</b> 2MIPS → thời gian thực thi trung bình mỗi lệnh = 0.5 × 10⁻⁶ giây = <b>500 ns (nanosecond)</b>.
 </div>
 </div>
-
 <h4 class="sub2">(3) コア (Core / Lõi)</h4>
 <div class="card">
 <div class="tri">
-  <div class="lang jp"><div class="flag">🇯🇵 日本語</div>
-    <span class="kw">コア</span>とは、CPU内にある<strong>「演算を行う装置」</strong>のこと。1つのCPUに複数のコアを持つCPUを<strong>マルチコアプロセッサ</strong>といいます。<strong>それぞれのコアが別々の処理を実行できる</strong>ため、コア数が多いほど高性能。
+<div class="lang jp reading-ja" lang="ja"><div class="flag">🇯🇵 日本語</div>
+<span class="kw">コア</span>とは、CPU内にある<strong>「演算を行う装置」</strong>のこと。1つのCPUに複数のコアを持つCPUを<strong>マルチコアプロセッサ</strong>といいます。<strong>それぞれのコアが別々の処理を実行できる</strong>ため、コア数が多いほど高性能。
   </div>
-  <div class="lang vn"><div class="flag">🇻🇳 Tiếng Việt</div>
-    <span class="kw">Lõi (コア)</span> là <strong>"đơn vị thực hiện phép tính"</strong> bên trong CPU. CPU có nhiều lõi gọi là <strong>マルチコアプロセッサ (multi-core processor)</strong>. Vì <strong>mỗi lõi có thể thực thi một tác vụ riêng</strong>, nên nhiều lõi → mạnh hơn.
+<div class="lang vn reading-vi" lang="vi"><div class="flag">🇻🇳 Tiếng Việt</div>
+<span class="kw">Lõi (コア)</span> là <strong>"đơn vị thực hiện phép tính"</strong> bên trong CPU. CPU có nhiều lõi gọi là <strong>マルチコアプロセッサ (multi-core processor)</strong>. Vì <strong>mỗi lõi có thể thực thi một tác vụ riêng</strong>, nên nhiều lõi → mạnh hơn.
   </div>
-  <div class="lang en"><div class="flag">🇬🇧 English</div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en"><div class="flag">🇬🇧 English</div>
     A <span class="kw">core</span> is the actual computation unit inside the CPU. A CPU with multiple cores is a <strong>multi-core processor</strong>. Each core can run a separate task in parallel → more cores = higher performance.
-  </div>
+  </div></details>
 </div>
-
-<table>
-  <thead><tr><th>呼び名 · Tên gọi</th><th>コア数 · Số lõi</th></tr></thead>
-  <tbody>
-    <tr><td><b>デュアルコア</b> (Dual-core)</td><td>2 lõi</td></tr>
-    <tr><td><b>クアッドコア</b> (Quad-core)</td><td>4 lõi</td></tr>
-    <tr><td><b>マルチコア</b> (Multi-core)</td><td>≥ 2 lõi (chung)</td></tr>
-  </tbody>
-</table>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">呼び名 · Tên gọi</th><th scope="col">コア数 · Số lõi</th></tr></thead>
+<tbody>
+<tr><td><b>デュアルコア</b> (Dual-core)</td><td>2 lõi</td></tr>
+<tr><td><b>クアッドコア</b> (Quad-core)</td><td>4 lõi</td></tr>
+<tr><td><b>マルチコア</b> (Multi-core)</td><td>≥ 2 lõi (chung)</td></tr>
+</tbody>
+</table></div>
 </div>
-
-<!-- 1.6 命令の構成 -->
-<h3 class="sub">1.6 Cấu trúc của một lệnh (命令の構成)</h3>
+ 1.6 命令の構成
+<h3 class="sub" id="lesson-15-topic-6">1.6 Cấu trúc của một lệnh (命令の構成)</h3>
 <div class="card">
 <div class="tri">
-  <div class="lang jp"><div class="flag">🇯🇵 日本語</div>
+<div class="lang jp reading-ja" lang="ja"><div class="flag">🇯🇵 日本語</div>
     主記憶装置からCPUに読み込まれる<span class="kw">命令</span>は、<strong>「命令部」</strong>と<strong>「アドレス部（オペランド部）」</strong>で構成されます。命令部には「たし算をせよ」「データを取り出せ」などの命令、アドレス部には<strong>処理対象のデータが格納されているアドレス</strong>が入っています。
   </div>
-  <div class="lang vn"><div class="flag">🇻🇳 Tiếng Việt</div>
+<div class="lang vn reading-vi" lang="vi"><div class="flag">🇻🇳 Tiếng Việt</div>
     Một <span class="kw">lệnh (命令)</span> được nạp từ bộ nhớ chính lên CPU bao gồm <strong>"phần lệnh (命令部)"</strong> và <strong>"phần địa chỉ (アドレス部 / オペランド部)"</strong>. Phần lệnh ghi việc cần làm ("cộng", "lấy dữ liệu"), phần địa chỉ ghi <strong>địa chỉ của dữ liệu cần xử lý</strong>.
   </div>
-  <div class="lang en"><div class="flag">🇬🇧 English</div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en"><div class="flag">🇬🇧 English</div>
     An instruction loaded from main memory into the CPU consists of an <strong>opcode (命令部)</strong> and an <strong>address part / operand (アドレス部)</strong>. The opcode says <i>what to do</i> ("add", "fetch"); the address part says <i>where the operand lives</i> in memory.
-  </div>
+  </div></details>
 </div>
-
-<div class="ascii">           ┌──────── 命令 (Instruction) ────────┐
+<pre class="ascii" tabindex="0">           ┌──────── 命令 (Instruction) ────────┐
            │                                       │
            │  ┌──────────────┬────────────────┐    │
            │  │  命令部       │  アドレス部     │    │
            │  │  "取り出せ"   │   4番地         │    │
            │  └──────────────┴────────────────┘    │
            │   (opcode)        (operand)            │
-           └───────────────────────────────────────┘</div>
+           └───────────────────────────────────────┘</pre>
 </div>
-
-<!-- 1.7 命令実行手順 -->
-<h3 class="sub">1.7 Quy trình CPU thực thi lệnh (命令実行手順) — 6 bước</h3>
+ 1.7 命令実行手順
+<h3 class="sub" id="lesson-15-topic-7">1.7 Quy trình CPU thực thi lệnh (命令実行手順) — 6 bước</h3>
 <div class="card">
 <div class="tri">
-  <div class="lang jp"><div class="flag">🇯🇵 日本語</div>
+<div class="lang jp reading-ja" lang="ja"><div class="flag">🇯🇵 日本語</div>
     CPUが主記憶装置から命令を取り出して実行する流れは、以下の<strong>①〜⑥</strong>です。<span class="kw">フェッチ (fetch) → デコード (decode) → 実行 (execute)</span>の3段階に大別されます。
   </div>
-  <div class="lang vn"><div class="flag">🇻🇳 Tiếng Việt</div>
+<div class="lang vn reading-vi" lang="vi"><div class="flag">🇻🇳 Tiếng Việt</div>
     Quy trình CPU lấy lệnh từ bộ nhớ chính và thực thi gồm <strong>6 bước</strong> sau. Có thể gom thành 3 giai đoạn lớn: <span class="kw">Nạp lệnh (Fetch) → Giải mã (Decode) → Thực thi (Execute)</span>.
   </div>
-  <div class="lang en"><div class="flag">🇬🇧 English</div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en"><div class="flag">🇬🇧 English</div>
     The CPU's instruction cycle has <strong>six steps</strong>, grouped into three phases: <span class="kw">Fetch → Decode → Execute</span>.
-  </div>
+  </div></details>
 </div>
-
 <ol class="steps">
-  <li><b>① 命令を取りに行く</b> — CPU đọc giá trị trong <span class="term">プログラムカウンター</span> để biết địa chỉ của lệnh tiếp theo, rồi đi đến địa chỉ đó trong bộ nhớ chính. <i>(PC tells the CPU where the next instruction is.)</i></li>
-  <li><b>② PCを更新</b> — Sau khi đọc, プログラムカウンター <strong>tự động cộng thêm 1</strong> để trỏ tới lệnh kế tiếp (1番地 → 2番地). <i>(PC auto-increments.)</i></li>
-  <li><b>③ 命令レジスタに格納（フェッチ）</b> — Lệnh được lấy về và lưu vào <span class="term">命令レジスタ</span>. Bước này gọi là <span class="kw">フェッチ (fetch)</span>.</li>
-  <li><b>④ 命令デコーダで解読（デコード）</b> — <span class="term">命令デコーダ (命令解読器)</span> phân tích lệnh, hiểu xem cần làm gì.</li>
-  <li><b>⑤ アドレス部のデータを取りに行く</b> — Theo địa chỉ ghi trong phần địa chỉ, CPU đi đến bộ nhớ lấy dữ liệu.</li>
-  <li><b>⑥ 汎用レジスタに格納</b> — Dữ liệu vừa lấy được đưa vào <span class="term">汎用レジスタ</span> để sẵn sàng cho phép tính tiếp theo.</li>
+<li><b>① 命令を取りに行く</b> — CPU đọc giá trị trong <span class="term">プログラムカウンター</span> để biết địa chỉ của lệnh tiếp theo, rồi đi đến địa chỉ đó trong bộ nhớ chính. <i>(PC tells the CPU where the next instruction is.)</i></li>
+<li><b>② PCを更新</b> — Sau khi đọc, プログラムカウンター <strong>tự động cộng thêm 1</strong> để trỏ tới lệnh kế tiếp (1番地 → 2番地). <i>(PC auto-increments.)</i></li>
+<li><b>③ 命令レジスタに格納（フェッチ）</b> — Lệnh được lấy về và lưu vào <span class="term">命令レジスタ</span>. Bước này gọi là <span class="kw">フェッチ (fetch)</span>.</li>
+<li><b>④ 命令デコーダで解読（デコード）</b> — <span class="term">命令デコーダ (命令解読器)</span> phân tích lệnh, hiểu xem cần làm gì.</li>
+<li><b>⑤ アドレス部のデータを取りに行く</b> — Theo địa chỉ ghi trong phần địa chỉ, CPU đi đến bộ nhớ lấy dữ liệu.</li>
+<li><b>⑥ 汎用レジスタに格納</b> — Dữ liệu vừa lấy được đưa vào <span class="term">汎用レジスタ</span> để sẵn sàng cho phép tính tiếp theo.</li>
 </ol>
-
 <div class="card tip">
 🍳 <b>Ví dụ đời thực:</b> Đầu bếp (CPU) nhìn vào sổ ghi chú (PC) thấy ghi "công thức trên trang 1", giở đến trang đó đọc công thức (fetch), hiểu công thức yêu cầu gì (decode), rồi đi lấy nguyên liệu (execute).
 </div>
 </div>
-
-<!-- 1.8 アドレス指定方式 -->
-<h3 class="sub">1.8 Phương thức chỉ định địa chỉ (アドレス指定方式) — cơ bản</h3>
+ 1.8 アドレス指定方式
+<h3 class="sub" id="lesson-15-topic-8">1.8 Phương thức chỉ định địa chỉ (アドレス指定方式) — cơ bản</h3>
 <div class="card">
 <div class="tri">
-  <div class="lang jp"><div class="flag">🇯🇵 日本語</div>
-    <span class="kw">アドレス指定方式</span>とは、命令のアドレス部が処理対象データの場所を指定する方法のこと。基本情報技術者試験では<strong>直接アドレス指定</strong>と<strong>間接アドレス指定</strong>が頻出。
+<div class="lang jp reading-ja" lang="ja"><div class="flag">🇯🇵 日本語</div>
+<span class="kw">アドレス指定方式</span>とは、命令のアドレス部が処理対象データの場所を指定する方法のこと。基本情報技術者試験では<strong>直接アドレス指定</strong>と<strong>間接アドレス指定</strong>が頻出。
   </div>
-  <div class="lang vn"><div class="flag">🇻🇳 Tiếng Việt</div>
-    <span class="kw">Phương thức chỉ định địa chỉ (アドレス指定方式)</span> là cách phần địa chỉ trong lệnh chỉ ra nơi đặt dữ liệu cần xử lý. Trong FE thường gặp 2 loại quan trọng nhất: <strong>chỉ định địa chỉ trực tiếp (直接)</strong> và <strong>chỉ định địa chỉ gián tiếp (間接)</strong>.
+<div class="lang vn reading-vi" lang="vi"><div class="flag">🇻🇳 Tiếng Việt</div>
+<span class="kw">Phương thức chỉ định địa chỉ (アドレス指定方式)</span> là cách phần địa chỉ trong lệnh chỉ ra nơi đặt dữ liệu cần xử lý. Trong FE thường gặp 2 loại quan trọng nhất: <strong>chỉ định địa chỉ trực tiếp (直接)</strong> và <strong>chỉ định địa chỉ gián tiếp (間接)</strong>.
   </div>
-  <div class="lang en"><div class="flag">🇬🇧 English</div>
-    <span class="kw">Addressing mode</span> = how the address part of an instruction specifies where the target data lives. FE exam focuses mainly on <strong>direct</strong> and <strong>indirect</strong> addressing.
-  </div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en"><div class="flag">🇬🇧 English</div>
+<span class="kw">Addressing mode</span> = how the address part of an instruction specifies where the target data lives. FE exam focuses mainly on <strong>direct</strong> and <strong>indirect</strong> addressing.
+  </div></details>
 </div>
-
-<table>
-  <thead><tr><th>方式 · Phương thức</th><th>意味 · Ý nghĩa</th></tr></thead>
-  <tbody>
-    <tr><td><b>直接アドレス指定</b><br>(Direct)</td><td>Phần địa chỉ <b>chính là</b> địa chỉ hợp lệ (有効アドレス) chứa dữ liệu.</td></tr>
-    <tr><td><b>間接アドレス指定</b><br>(Indirect)</td><td>Phần địa chỉ trỏ tới một ô nhớ, ô đó lại chứa địa chỉ thật của dữ liệu. → cần truy cập bộ nhớ <b>2 lần</b> → chậm hơn nhưng có thể lưu địa chỉ kích thước lớn.</td></tr>
-    <tr><td>即値アドレス指定 (Immediate)</td><td>Phần địa chỉ <b>chính là dữ liệu</b> (không cần truy cập bộ nhớ).</td></tr>
-    <tr><td>指標アドレス指定 (Indexed)</td><td>Địa chỉ hợp lệ = phần địa chỉ <b>+ giá trị インデックスレジスタ</b>.</td></tr>
-    <tr><td>ベースアドレス指定 (Base)</td><td>Địa chỉ hợp lệ = phần địa chỉ <b>+ giá trị ベースレジスタ</b>.</td></tr>
-    <tr><td>相対アドレス指定 (Relative)</td><td>Địa chỉ hợp lệ = phần địa chỉ <b>+ giá trị プログラムカウンター</b>.</td></tr>
-  </tbody>
-</table>
-
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">方式 · Phương thức</th><th scope="col">意味 · Ý nghĩa</th></tr></thead>
+<tbody>
+<tr><td><b>直接アドレス指定</b><br/>(Direct)</td><td>Phần địa chỉ <b>chính là</b> địa chỉ hợp lệ (有効アドレス) chứa dữ liệu.</td></tr>
+<tr><td><b>間接アドレス指定</b><br/>(Indirect)</td><td>Phần địa chỉ trỏ tới một ô nhớ, ô đó lại chứa địa chỉ thật của dữ liệu. → cần truy cập bộ nhớ <b>2 lần</b> → chậm hơn nhưng có thể lưu địa chỉ kích thước lớn.</td></tr>
+<tr><td>即値アドレス指定 (Immediate)</td><td>Phần địa chỉ <b>chính là dữ liệu</b> (không cần truy cập bộ nhớ).</td></tr>
+<tr><td>指標アドレス指定 (Indexed)</td><td>Địa chỉ hợp lệ = phần địa chỉ <b>+ giá trị インデックスレジスタ</b>.</td></tr>
+<tr><td>ベースアドレス指定 (Base)</td><td>Địa chỉ hợp lệ = phần địa chỉ <b>+ giá trị ベースレジスタ</b>.</td></tr>
+<tr><td>相対アドレス指定 (Relative)</td><td>Địa chỉ hợp lệ = phần địa chỉ <b>+ giá trị プログラムカウンター</b>.</td></tr>
+</tbody>
+</table></div>
 <h4 class="sub2">📊 So sánh 直接 vs 間接</h4>
-<div class="ascii">  直接アドレス指定:
+<pre class="ascii" tabindex="0">  直接アドレス指定:
   命令: [取り出せ | 20番地]
                      │
                      ▼
               20番地 ─ データ ✓
-  
+
   間接アドレス指定:
   命令: [取り出せ | 20番地]
                      │
@@ -397,50 +297,36 @@ MIPS = (1 giây ÷ Thời gian thực thi trung bình mỗi lệnh) × 10⁻⁶
               20番地 ─ "25番地"
                             │
                             ▼
-                       25番地 ─ データ ✓  (2回参照)</div>
+                       25番地 ─ データ ✓  (2回参照)</pre>
 </div>
-
-<!-- 1.9 割込み -->
-<h3 class="sub">1.9 Ngắt (割込み)</h3>
+ 1.9 割込み
+<h3 class="sub" id="lesson-15-topic-9">1.9 Ngắt (割込み)</h3>
 <div class="card">
 <div class="tri">
-  <div class="lang jp"><div class="flag">🇯🇵 日本語</div>
-    <span class="kw">割込み</span>とは、<strong>現在実行中のプログラムを中断して、別のプログラムに切り替える</strong>こと。優先度の高い処理を先に行うため。割込みが起きると、CPUは<span class="term">プログラムカウンター</span>にあるアドレスを退避し、割込み命令のアドレスをセット。完了後に元のアドレスに復帰する。
+<div class="lang jp reading-ja" lang="ja"><div class="flag">🇯🇵 日本語</div>
+<span class="kw">割込み</span>とは、<strong>現在実行中のプログラムを中断して、別のプログラムに切り替える</strong>こと。優先度の高い処理を先に行うため。割込みが起きると、CPUは<span class="term">プログラムカウンター</span>にあるアドレスを退避し、割込み命令のアドレスをセット。完了後に元のアドレスに復帰する。
   </div>
-  <div class="lang vn"><div class="flag">🇻🇳 Tiếng Việt</div>
-    <span class="kw">Ngắt (割込み)</span> là việc <strong>tạm dừng chương trình đang chạy để chuyển sang chương trình khác</strong>, để xử lý việc ưu tiên cao hơn. Khi xảy ra: CPU <strong>cất giữ</strong> giá trị プログラムカウンター hiện tại, đặt PC trỏ tới lệnh xử lý ngắt; xong việc thì <strong>khôi phục PC</strong> để tiếp tục chương trình cũ.
+<div class="lang vn reading-vi" lang="vi"><div class="flag">🇻🇳 Tiếng Việt</div>
+<span class="kw">Ngắt (割込み)</span> là việc <strong>tạm dừng chương trình đang chạy để chuyển sang chương trình khác</strong>, để xử lý việc ưu tiên cao hơn. Khi xảy ra: CPU <strong>cất giữ</strong> giá trị プログラムカウンター hiện tại, đặt PC trỏ tới lệnh xử lý ngắt; xong việc thì <strong>khôi phục PC</strong> để tiếp tục chương trình cũ.
   </div>
-  <div class="lang en"><div class="flag">🇬🇧 English</div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang en reading-en" lang="en"><div class="flag">🇬🇧 English</div>
     An <span class="kw">interrupt</span> pauses the running program and switches to a higher-priority one. On occurrence: CPU saves the current PC, loads the interrupt handler's address into PC; when finished, restores the saved PC and resumes.
-  </div>
+  </div></details>
 </div>
-
-<table>
-  <thead><tr><th>分類 · Phân loại</th><th>原因 · Nguyên nhân</th><th>代表例 · Ví dụ tiêu biểu</th></tr></thead>
-  <tbody>
-    <tr><td><b>内部割込み</b><br>(Internal / Bên trong)</td><td>Chính chương trình đang chạy gây ra.</td><td><span class="term">ゼロ除算</span>, オーバーフロー, ページフォールト, スーパーバイザーコール</td></tr>
-    <tr><td><b>外部割込み</b><br>(External / Bên ngoài)</td><td>Nguyên nhân từ <b>ngoài</b> chương trình đang chạy.</td><td>タイマ割込み (<span class="term">インターバルタイマ</span>), 入出力割込み, 機械チェック割込み, コンソール割込み</td></tr>
-  </tbody>
-</table>
-
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">分類 · Phân loại</th><th scope="col">原因 · Nguyên nhân</th><th scope="col">代表例 · Ví dụ tiêu biểu</th></tr></thead>
+<tbody>
+<tr><td><b>内部割込み</b><br/>(Internal / Bên trong)</td><td>Chính chương trình đang chạy gây ra.</td><td><span class="term">ゼロ除算</span>, オーバーフロー, ページフォールト, スーパーバイザーコール</td></tr>
+<tr><td><b>外部割込み</b><br/>(External / Bên ngoài)</td><td>Nguyên nhân từ <b>ngoài</b> chương trình đang chạy.</td><td>タイマ割込み (<span class="term">インターバルタイマ</span>), 入出力割込み, 機械チェック割込み, コンソール割込み</td></tr>
+</tbody>
+</table></div>
 <div class="card warn">
-🎯 <b>Bí quyết thi:</b> Đề FE hay đưa <i>ví dụ</i> rồi hỏi đó là <b>内部</b> hay <b>外部</b>. <br>
+🎯 <b>Bí quyết thi:</b> Đề FE hay đưa <i>ví dụ</i> rồi hỏi đó là <b>内部</b> hay <b>外部</b>. <br/>
 → Hỏi: <i>"Nguyên nhân có phải do chương trình đang chạy gây ra không?"</i> — Có = 内部, Không = 外部.
 </div>
 </div>
-
-<!-- ===================== PART 2: EXAMPLES ===================== -->
-      </div>
-    </section>
-
-    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
-    <section class="content-section" id="sec-2">
-      <h2 class="section-heading">
-        <span class="num-badge">②</span>
-        <span class="text-ja">演習例題 (Worked Examples)</span>
-        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
-      </h2>
-      <div class="lesson-body-content">
+ ===================== PART 2: EXAMPLES =====================
+</section><section class="lesson-part lesson-section" id="p2"><h2 class="lesson-part-title" data-ja="例題" data-step="02" data-vi="Ví dụ minh hoạ">Ví dụ minh hoạ</h2>
 <div class="card">
 <h4 class="sub2">Ví dụ 1 — Phân biệt 5大装置</h4>
 <p>Cho các thiết bị: <span class="term">マウス</span>, <span class="term">プリンター</span>, <span class="term">USBメモリ</span>, <span class="term">CPU</span>, <span class="term">ディスプレイ</span>.</p>
@@ -451,25 +337,22 @@ MIPS = (1 giây ÷ Thời gian thực thi trung bình mỗi lệnh) × 10⁻⁶
 <li>CPU → <b>制御装置 + 演算装置</b> (Brain)</li>
 </ul>
 </div>
-
 <div class="card">
 <h4 class="sub2">Ví dụ 2 — Tính số lệnh thực thi/giây</h4>
 <p>CPU có クロック周波数 = <b>2.5 GHz</b>, mỗi lệnh cần trung bình <b>2 clock</b>. Hỏi 1 giây CPU thực thi được bao nhiêu lệnh?</p>
 <div class="formula">
-2.5 GHz = 2.5 × 10⁹ = 25億クロック/秒<br>
+2.5 GHz = 2.5 × 10⁹ = 25億クロック/秒<br/>
 1秒間に実行できる命令数 = 25億 ÷ 2 = <b>12.5億命令/秒</b>
 </div>
 </div>
-
 <div class="card">
 <h4 class="sub2">Ví dụ 3 — Tính thời gian trung bình mỗi lệnh từ MIPS</h4>
 <p>CPU = <b>2 MIPS</b>. Tính 平均命令実行時間 (thời gian thực thi trung bình mỗi lệnh).</p>
 <div class="formula">
-2 = (1秒 ÷ 平均命令実行時間) × 10⁻⁶<br>
+2 = (1秒 ÷ 平均命令実行時間) × 10⁻⁶<br/>
 → 平均命令実行時間 = 0.5 × 10⁻⁶秒 = <b>500 ns (nanosecond)</b>
 </div>
 </div>
-
 <div class="card">
 <h4 class="sub2">Ví dụ 4 — Truy vết quy trình CPU thực thi lệnh</h4>
 <p>Lệnh tại địa chỉ <b>1番地</b>: <code>[取り出せ | 4番地]</code>. Dữ liệu ở 4番地 = <b>3</b>.</p>
@@ -482,7 +365,6 @@ MIPS = (1 giây ÷ Thời gian thực thi trung bình mỗi lệnh) × 10⁻⁶
 <li>Giá trị <b>3</b> được lưu vào <b>汎用レジスタ</b>. ✓</li>
 </ol>
 </div>
-
 <div class="card">
 <h4 class="sub2">Ví dụ 5 — Phân biệt 直接 vs 間接 アドレス指定</h4>
 <p>Phần địa chỉ trong lệnh = <b>20</b>. Bộ nhớ: <code>20番地 → 25</code>, <code>25番地 → データ</code>.</p>
@@ -491,443 +373,17 @@ MIPS = (1 giây ÷ Thời gian thực thi trung bình mỗi lệnh) × 10⁻⁶
 <li>Nếu là <b>間接</b>: 20番地 → 25 → đi tới 25番地 → lấy <b>データ</b>. (2 lần truy cập bộ nhớ)</li>
 </ul>
 </div>
-
 <div class="card">
 <h4 class="sub2">Ví dụ 6 — 内部 hay 外部 割込み?</h4>
-<table>
-<thead><tr><th>Tình huống</th><th>分類</th><th>Lý do</th></tr></thead>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">Tình huống</th><th scope="col">分類</th><th scope="col">Lý do</th></tr></thead>
 <tbody>
 <tr><td>Chương trình chia cho 0</td><td><b>内部</b></td><td>Lỗi do chính chương trình</td></tr>
 <tr><td>Hết giấy máy in báo về</td><td><b>外部</b></td><td>Do thiết bị I/O — ngoài chương trình</td></tr>
 <tr><td>Timer hết hạn cấp slot CPU</td><td><b>外部</b></td><td>Do timer — ngoài chương trình</td></tr>
 <tr><td>Phép tính tràn số (overflow)</td><td><b>内部</b></td><td>Lỗi tính toán trong chương trình</td></tr>
 </tbody>
-</table>
+</table></div>
 </div>
-
-<!-- ===================== PART 3: FLASHCARDS ===================== -->
-      </div>
-    </section>
-
-    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-3">
-      <h2 class="section-heading">
-        <span class="num-badge">③</span>
-        <span class="text-ja">暗記カード (Flashcards)</span>
-        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
-        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
-        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
-      </p>
-
-      <div class="fc-grid" id="fcGrid"></div>
-    </section>
-
-    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-4">
-      <h2 class="section-heading">
-        <span class="num-badge">④</span>
-        <span class="text-ja">確認テスト (8問)</span>
-        <span class="text-vi">Luyện tập củng cố · 8 câu trắc nghiệm</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
-        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
-        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
-      </p>
-
-      <div id="quizArea"></div>
-
-      <div class="quiz-result-box" id="quiz-result">
-        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
-        <div class="quiz-result-score" id="qScore">0 / 8</div>
-        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
-        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
-      </div>
-    </section>
-
-    <!-- Footer Navigation & Lesson Completion -->
-    <footer class="lesson-footer-nav">
-      <div class="completion-card">
-        <div>
-          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
-            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
-            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
-          </div>
-          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
-            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
-            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
-          </div>
-        </div>
-        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
-      </div>
-
-      <div class="footer-nav-buttons">
-        
-        <a href="13.html" class="nav-link-card prev">
-          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 13</span>
-            <span class="text-vi">Bài học 13</span>
-          </span>
-        </a>
-        
-        <a href="16.html" class="nav-link-card next">
-          <span class="nav-dir">BÀI TIẾP THEO / NEXT →</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 16</span>
-            <span class="text-vi">Bài học 16</span>
-          </span>
-        </a>
-      </div>
-    </footer>
-
-  </main>
-
-  <!-- Right Sticky Sidebar -->
-  <aside class="sticky-sidebar">
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-        <span class="text-ja">目次 (TOC)</span>
-        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
-      </div>
-      <nav>
-        <ul class="toc-list" id="tocList">
-          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 8 câu</span></a></li>
-        </ul>
-      </nav>
-    </div>
-
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        <span class="text-ja">クイック復習</span>
-        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
-      </div>
-      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
-        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
-        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
-      </p>
-    </div>
-  </aside>
-
-</div>
-
-<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
-<script>
-const FLASHCARDS = [
-  {
-    "cat": "all",
-    "front": "五大装置 là 5 thiết bị nào?",
-    "back": "制御装置 / 演算装置 / 記憶装置 / 入力装置 / 出力装置. (CPU = 制御装置 + 演算装置) Control / ALU / Memory / Input / Output"
-  },
-  {
-    "cat": "all",
-    "front": "ノイマン型コンピュータ có 2 đặc điểm nào?",
-    "back": "プログラム内蔵方式 (lưu chương trình trong bộ nhớ) + 逐次制御方式 (thực thi tuần tự từng lệnh). Stored-program + Sequential control"
-  },
-  {
-    "cat": "all",
-    "front": "CPU viết tắt của gì?",
-    "back": "Central Processing Unit = 中央処理装置. Trong đề FE đôi khi viết là プロセッサ . 中央処理装置 = Bộ xử lý trung tâm"
-  },
-  {
-    "cat": "all",
-    "front": "プログラムカウンター lưu gì?",
-    "back": "Lưu địa chỉ của lệnh tiếp theo sẽ được thực thi. Còn gọi là Program Register / PC. 次に実行する命令のアドレスを記憶"
-  },
-  {
-    "cat": "all",
-    "front": "命令レジスタ lưu gì?",
-    "back": "Lưu lệnh đang được thực thi — vừa được nạp từ bộ nhớ chính. 実行する命令を一時的に記憶"
-  },
-  {
-    "cat": "all",
-    "front": "汎用レジスタ lưu gì?",
-    "back": "Lưu dữ liệu — sử dụng cho nhiều mục đích, không giới hạn cụ thể. 用途を限定せず使用"
-  },
-  {
-    "cat": "all",
-    "front": "アキュムレーター là gì?",
-    "back": "Thanh ghi lưu đối tượng và kết quả của phép tính . 演算対象や演算結果を記憶"
-  },
-  {
-    "cat": "all",
-    "front": "3 chỉ số đánh giá CPU?",
-    "back": "(1) クロック周波数 (clock freq) — (2) MIPS — (3) コア . CPUの性能 = 3つの指標で評価"
-  },
-  {
-    "cat": "all",
-    "front": "クロック周波数 đơn vị là gì?",
-    "back": "Hz (Hertz / ヘルツ) . 1 Hz = 1 tín hiệu/giây. Càng lớn → CPU càng nhanh. 単位は Hz"
-  },
-  {
-    "cat": "all",
-    "front": "Công thức MIPS?",
-    "back": "MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶ 2 MIPS = 2 triệu lệnh/giây. Million Instructions Per Second"
-  },
-  {
-    "cat": "all",
-    "front": "マルチコアプロセッサ là gì?",
-    "back": "CPU có nhiều lõi (コア). 2 lõi = デュアルコア, 4 lõi = クアッドコア. Mỗi lõi xử lý 1 tác vụ độc lập → mạnh hơn. 1つのCPU内に複数のコア"
-  },
-  {
-    "cat": "all",
-    "front": "フェッチ (fetch) là gì?",
-    "back": "Hành động lấy lệnh từ bộ nhớ chính và lưu vào 命令レジスタ . 命令を取り出して命令レジスタに格納"
-  },
-  {
-    "cat": "all",
-    "front": "Một lệnh gồm mấy phần?",
-    "back": "2 phần: 命令部 (opcode) — chỉ thị \"làm gì\", và アドレス部 (operand) — chỉ ra \"ở đâu\" có dữ liệu. 命令部 + アドレス部"
-  },
-  {
-    "cat": "all",
-    "front": "命令デコーダ làm gì?",
-    "back": "Là 命令解読器 — phân tích &amp; giải mã lệnh, ra chỉ thị cho thiết bị thực thi. 命令を解読する"
-  },
-  {
-    "cat": "all",
-    "front": "Sau khi PC được tham chiếu, điều gì xảy ra?",
-    "back": "PC tự động cộng thêm 1 (auto-increment) để trỏ tới lệnh tiếp theo. 自動的に番号を加算"
-  },
-  {
-    "cat": "all",
-    "front": "直接アドレス指定 là gì?",
-    "back": "Phần địa chỉ chính là 有効アドレス (địa chỉ chứa dữ liệu thực sự). アドレス部に有効アドレスが入っている"
-  },
-  {
-    "cat": "all",
-    "front": "間接アドレス指定 cần truy cập bộ nhớ mấy lần?",
-    "back": "2 lần — lần 1 tới ô địa chỉ ghi trong lệnh, đọc ra địa chỉ thật; lần 2 tới địa chỉ thật để lấy dữ liệu. → Chậm hơn nhưng lưu được địa chỉ kích thước lớn . 主記憶へのアクセスが2回必要"
-  },
-  {
-    "cat": "all",
-    "front": "即値アドレス指定 đặc biệt ở chỗ nào?",
-    "back": "Phần địa chỉ chính là dữ liệu — không cần truy cập bộ nhớ chính nữa. アドレス部にデータそのものが入っている"
-  },
-  {
-    "cat": "all",
-    "front": "割込み là gì?",
-    "back": "Tạm dừng chương trình đang chạy, chuyển sang chương trình ưu tiên cao hơn. 現在実行中のプログラムを中断して別のプログラムに切り替える"
-  },
-  {
-    "cat": "all",
-    "front": "Mẹo phân biệt 内部 / 外部 割込み?",
-    "back": "Hỏi: \"Nguyên nhân có phải do chương trình đang chạy không?\" — Có = 内部, Không = 外部. 実行中のプログラムが原因か否か"
-  },
-  {
-    "cat": "all",
-    "front": "Ví dụ 内部割込み tiêu biểu?",
-    "back": "Chia cho 0 (ゼロ除算) , tràn số (オーバーフロー), lệnh không xác định, アドレス例外, ページフォールト, スーパーバイザーコール. 代表例：ゼロ除算"
-  },
-  {
-    "cat": "all",
-    "front": "Ví dụ 外部割込み tiêu biểu?",
-    "back": "タイマ割込み (インターバルタイマ) , 入出力割込み, 機械チェック割込み (停電 v.v.), コンソール割込み. 代表例：インターバルタイマ"
-  }
-];
-const QUIZ = [
-  {
-    "q": "Câu 1. CPUは「五大装置」のうち、どの装置を担当しているか？",
-    "opts": [
-      "入力装置 と 出力装置",
-      "制御装置 と 演算装置",
-      "記憶装置 と 演算装置",
-      "制御装置 と 記憶装置"
-    ],
-    "ans": 1,
-    "expl": "Đáp án: ②CPU (中央処理装置 / プロセッサ) đảm nhiệm 制御装置 + 演算装置. Đây là \"bộ não\" của máy. 記憶装置 là thiết bị riêng (RAM/HDD), không thuộc CPU."
-  },
-  {
-    "q": "Câu 2. ノイマン型コンピュータの2大特徴は？",
-    "opts": [
-      "並列処理方式 と プログラム内蔵方式",
-      "逐次制御方式 と 並列制御方式",
-      "プログラム内蔵方式 と 逐次制御方式",
-      "プログラム外蔵方式 と 逐次制御方式"
-    ],
-    "ans": 2,
-    "expl": "Đáp án: ③ノイマン型 = プログラム内蔵方式 (lưu chương trình trong bộ nhớ chính khi chạy) + 逐次制御方式 (thực thi tuần tự từng lệnh)."
-  },
-  {
-    "q": "Câu 3. 「次に実行する命令のアドレス」を記憶するレジスタはどれか？",
-    "opts": [
-      "プログラムカウンター",
-      "命令レジスタ",
-      "汎用レジスタ",
-      "アキュムレーター"
-    ],
-    "ans": 0,
-    "expl": "Đáp án: ①Định nghĩa của プログラムカウンター (PC / プログラムレジスタ): lưu địa chỉ của lệnh tiếp theo. 命令レジスタ lưu lệnh hiện đang chạy; 汎用レジスタ lưu dữ liệu; アキュムレーター lưu kết quả phép tính."
-  },
-  {
-    "q": "Câu 4. クロック周波数が 1GHz、1命令に平均5クロック必要なCPUは、1秒間に何個の命令を実行できるか？",
-    "opts": [
-      "5億個",
-      "2億個",
-      "1億個",
-      "50億個"
-    ],
-    "ans": 1,
-    "expl": "Đáp án: ②1 GHz = 10⁹ = 10億クロック/秒. Công thức: 実行命令数 = クロック周波数 ÷ 1命令クロック数 = 10億 ÷ 5 = 2億命令/秒."
-  },
-  {
-    "q": "Câu 5. プロセッサによってフェッチされた命令の格納順序を表す図において、「a」に当てはまるレジスタはどれか？（平成30年度 過去問改）\n  主記憶 → [ a ] → 命令デコーダ",
-    "opts": [
-      "アキュムレーター",
-      "命令レジスタ",
-      "データキャッシュ",
-      "プログラムレジスタ"
-    ],
-    "ans": 1,
-    "expl": "Đáp án: ②Quy trình fetch: lệnh từ 主記憶 → 命令レジスタ → 命令デコーダ (giải mã). PC chỉ lưu địa chỉ chứ không phải nơi lệnh tới sau khi fetch. Đây là câu thi thật 平成30年度."
-  },
-  {
-    "q": "Câu 6. アドレス部の値が「20」、20番地には「25」、25番地には「データ」が入っている。アドレス指定方式は？（平成28年度 過去問改）",
-    "opts": [
-      "指標アドレス指定",
-      "相対アドレス指定",
-      "直接アドレス指定",
-      "間接アドレス指定"
-    ],
-    "ans": 3,
-    "expl": "Đáp án: ④Truy cập 2 lần bộ nhớ: 20番地 → \"25\" → 25番地 → データ. Đây là 間接アドレス指定. Nếu 直接 thì sẽ lấy thẳng giá trị tại 20番地."
-  },
-  {
-    "q": "Câu 7. 次のうち、内部割込みに分類されるものはどれか？",
-    "opts": [
-      "ゼロ除算による例外",
-      "インターバルタイマによる時間経過",
-      "プリンターの用紙切れ通知",
-      "電源異常による機械チェック"
-    ],
-    "ans": 0,
-    "expl": "Đáp án: ①ゼロ除算 là lỗi sinh ra do chính chương trình đang chạy → 内部. Còn lại đều là 外部: タイマ (timer), プリンター (I/O), 電源 (machine check)."
-  },
-  {
-    "q": "Câu 8. 「2 MIPS」 とは何を意味するか？",
-    "opts": [
-      "1秒間に2クロックを発生させる",
-      "1命令を実行するのに2秒かかる",
-      "1秒間に200万個の命令を実行する",
-      "CPUに2つのコアが搭載されている"
-    ],
-    "ans": 2,
-    "expl": "Đáp án: ③MIPS = Million Instructions Per Second. 2 MIPS = 2 triệu lệnh / giây. Từ đây tính được 平均命令実行時間 = 0.5 μs = 500 ns."
-  }
-];
-
-// Render Flashcards with reliable click-to-flip
-function renderFC() {
-  const grid = document.getElementById('fcGrid');
-  if (!grid) return;
-  grid.innerHTML = '';
-
-  FLASHCARDS.forEach(f => {
-    const card = document.createElement('div');
-    card.className = 'fc-card';
-    card.innerHTML = `
-      <div>
-        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
-        <div class="fc-front">${f.front}</div>
-        <div class="fc-back">${f.back}</div>
-      </div>
-      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
-    `;
-    card.addEventListener('click', () => card.classList.toggle('flipped'));
-    grid.appendChild(card);
-  });
-}
-
-// Render Interactive Quiz with tactile 4-option cards & instant feedback
-let quizScore = 0;
-let quizAnswered = 0;
-
-function renderQuiz() {
-  const area = document.getElementById('quizArea');
-  if (!area) return;
-  area.innerHTML = '';
-  quizScore = 0;
-  quizAnswered = 0;
-
-  QUIZ.forEach((item, idx) => {
-    const card = document.createElement('div');
-    card.className = 'quiz-q-card';
-    card.dataset.idx = idx;
-
-    let optsHtml = '';
-    item.opts.forEach((opt, oi) => {
-      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
-      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
-    });
-
-    card.innerHTML = `
-      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
-      <div class="q-text">${item.q}</div>
-      <div class="opts">${optsHtml}</div>
-      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
-    `;
-
-    card.querySelectorAll('.opt').forEach(optEl => {
-      optEl.addEventListener('click', () => {
-        if (card.classList.contains('locked')) return;
-        card.classList.add('locked');
-
-        const chosen = parseInt(optEl.dataset.oi, 10);
-        const correct = item.ans;
-
-        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
-        if (correctEl) correctEl.classList.add('correct');
-
-        if (chosen !== correct) {
-          optEl.classList.add('wrong');
-        } else {
-          quizScore++;
-        }
-
-        quizAnswered++;
-        if (quizAnswered === QUIZ.length) showQuizResult();
-      });
-    });
-
-    area.appendChild(card);
-  });
-
-  const resBox = document.getElementById('quiz-result');
-  if (resBox) resBox.classList.remove('show');
-}
-
-function showQuizResult() {
-  const pct = Math.round((quizScore / QUIZ.length) * 100);
-  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
-  let verdict = '';
-  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
-  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
-  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
-  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
-  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
-  const res = document.getElementById('quiz-result');
-  if (res) {
-    res.classList.add('show');
-    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
-
-function resetQuiz() {
-  renderQuiz();
-  const area = document.getElementById('quizArea');
-  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// Initialize on DOM ready
-renderFC();
-renderQuiz();
-</script>
-<script src="../assets/reader.js"></script>
-</body>
-</html>
+ ===================== PART 3: FLASHCARDS =====================
+</section><section class="lesson-part lesson-section" id="p3"><h2 class="lesson-part-title" data-ja="暗記カード" data-step="03" data-vi="Flashcards · Bấm để lật">Flashcards · Bấm để lật</h2><div aria-label="Nhóm flashcard" class="fc-filter" id="fcFilter" role="group"></div><div class="fc-grid" id="fcGrid"></div></section><section class="lesson-part lesson-section" id="p4"><h2 class="lesson-part-title" data-ja="確認テスト · 8問" data-step="04" data-vi="Quiz ôn tập · 8 câu">Quiz ôn tập · 8 câu</h2><div class="reading-quiz-tools"><span class="reading-resume-note"></span><button class="btn" id="quiz-reset" type="button">↻ Làm lại</button></div><div id="quizArea"></div><div hidden="" id="quiz-result"><div class="score" id="qScore"></div><p class="verdict" id="qVerdict"></p></div></section><footer class="lesson-footer"><button aria-pressed="false" class="btn primary" id="complete-lesson" type="button">✓ Đã hoàn thành bài học</button><p data-ja="読了状態はテストの進捗とは別に、このブラウザに保存されます。" data-vi="Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra." id="completion-status" role="status">Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra.</p><a class="btn" data-ja="テストへ →" data-vi="Làm bài kiểm tra →" href="../kiem-tra/15.html">Làm bài kiểm tra →</a><nav aria-label="Điều hướng bài học" class="footer-nav"><a class="btn" data-ja="← 前のレッスン" data-vi="← Bài trước" href="14.html">← Bài trước</a><a class="btn" data-ja="次のレッスン →" data-vi="Bài tiếp theo →" href="16.html">Bài tiếp theo →</a></nav></footer></main><aside aria-label="Mục lục và ôn tập" class="reading-sidebar"><nav class="lesson-toc"><h3 data-ja="このレッスンの内容" data-vi="TRONG BÀI HỌC NÀY">TRONG BÀI HỌC NÀY</h3><ul></ul></nav><div class="reading-vocab"><h3 data-ja="覚えたいFE用語" data-vi="Từ vựng FE cần nhớ">Từ vựng FE cần nhớ</h3><p data-ja="用語をクリックして意味を確認。" data-vi="Bấm thuật ngữ để tự kiểm tra nghĩa.">Bấm thuật ngữ để tự kiểm tra nghĩa.</p></div></aside></div><script id="lesson-data" type="application/json">{"number": 15, "cards": [{"cat": "all", "front": "五大装置 là 5 thiết bị nào?", "back": "制御装置 / 演算装置 / 記憶装置 / 入力装置 / 出力装置. (CPU = 制御装置 + 演算装置) Control / ALU / Memory / Input / Output"}, {"cat": "all", "front": "ノイマン型コンピュータ có 2 đặc điểm nào?", "back": "プログラム内蔵方式 (lưu chương trình trong bộ nhớ) + 逐次制御方式 (thực thi tuần tự từng lệnh). Stored-program + Sequential control"}, {"cat": "all", "front": "CPU viết tắt của gì?", "back": "Central Processing Unit = 中央処理装置. Trong đề FE đôi khi viết là プロセッサ . 中央処理装置 = Bộ xử lý trung tâm"}, {"cat": "all", "front": "プログラムカウンター lưu gì?", "back": "Lưu địa chỉ của lệnh tiếp theo sẽ được thực thi. Còn gọi là Program Register / PC. 次に実行する命令のアドレスを記憶"}, {"cat": "all", "front": "命令レジスタ lưu gì?", "back": "Lưu lệnh đang được thực thi — vừa được nạp từ bộ nhớ chính. 実行する命令を一時的に記憶"}, {"cat": "all", "front": "汎用レジスタ lưu gì?", "back": "Lưu dữ liệu — sử dụng cho nhiều mục đích, không giới hạn cụ thể. 用途を限定せず使用"}, {"cat": "all", "front": "アキュムレーター là gì?", "back": "Thanh ghi lưu đối tượng và kết quả của phép tính . 演算対象や演算結果を記憶"}, {"cat": "all", "front": "3 chỉ số đánh giá CPU?", "back": "(1) クロック周波数 (clock freq) — (2) MIPS — (3) コア . CPUの性能 = 3つの指標で評価"}, {"cat": "all", "front": "クロック周波数 đơn vị là gì?", "back": "Hz (Hertz / ヘルツ) . 1 Hz = 1 tín hiệu/giây. Càng lớn → CPU càng nhanh. 単位は Hz"}, {"cat": "all", "front": "Công thức MIPS?", "back": "MIPS = (1秒 ÷ 平均命令実行時間) × 10⁻⁶ 2 MIPS = 2 triệu lệnh/giây. Million Instructions Per Second"}, {"cat": "all", "front": "マルチコアプロセッサ là gì?", "back": "CPU có nhiều lõi (コア). 2 lõi = デュアルコア, 4 lõi = クアッドコア. Mỗi lõi xử lý 1 tác vụ độc lập → mạnh hơn. 1つのCPU内に複数のコア"}, {"cat": "all", "front": "フェッチ (fetch) là gì?", "back": "Hành động lấy lệnh từ bộ nhớ chính và lưu vào 命令レジスタ . 命令を取り出して命令レジスタに格納"}, {"cat": "all", "front": "Một lệnh gồm mấy phần?", "back": "2 phần: 命令部 (opcode) — chỉ thị \"làm gì\", và アドレス部 (operand) — chỉ ra \"ở đâu\" có dữ liệu. 命令部 + アドレス部"}, {"cat": "all", "front": "命令デコーダ làm gì?", "back": "Là 命令解読器 — phân tích &amp; giải mã lệnh, ra chỉ thị cho thiết bị thực thi. 命令を解読する"}, {"cat": "all", "front": "Sau khi PC được tham chiếu, điều gì xảy ra?", "back": "PC tự động cộng thêm 1 (auto-increment) để trỏ tới lệnh tiếp theo. 自動的に番号を加算"}, {"cat": "all", "front": "直接アドレス指定 là gì?", "back": "Phần địa chỉ chính là 有効アドレス (địa chỉ chứa dữ liệu thực sự). アドレス部に有効アドレスが入っている"}, {"cat": "all", "front": "間接アドレス指定 cần truy cập bộ nhớ mấy lần?", "back": "2 lần — lần 1 tới ô địa chỉ ghi trong lệnh, đọc ra địa chỉ thật; lần 2 tới địa chỉ thật để lấy dữ liệu. → Chậm hơn nhưng lưu được địa chỉ kích thước lớn . 主記憶へのアクセスが2回必要"}, {"cat": "all", "front": "即値アドレス指定 đặc biệt ở chỗ nào?", "back": "Phần địa chỉ chính là dữ liệu — không cần truy cập bộ nhớ chính nữa. アドレス部にデータそのものが入っている"}, {"cat": "all", "front": "割込み là gì?", "back": "Tạm dừng chương trình đang chạy, chuyển sang chương trình ưu tiên cao hơn. 現在実行中のプログラムを中断して別のプログラムに切り替える"}, {"cat": "all", "front": "Mẹo phân biệt 内部 / 外部 割込み?", "back": "Hỏi: \"Nguyên nhân có phải do chương trình đang chạy không?\" — Có = 内部, Không = 外部. 実行中のプログラムが原因か否か"}, {"cat": "all", "front": "Ví dụ 内部割込み tiêu biểu?", "back": "Chia cho 0 (ゼロ除算) , tràn số (オーバーフロー), lệnh không xác định, アドレス例外, ページフォールト, スーパーバイザーコール. 代表例：ゼロ除算"}, {"cat": "all", "front": "Ví dụ 外部割込み tiêu biểu?", "back": "タイマ割込み (インターバルタイマ) , 入出力割込み, 機械チェック割込み (停電 v.v.), コンソール割込み. 代表例：インターバルタイマ"}], "quiz": [{"q": "Câu 1. CPUは「五大装置」のうち、どの装置を担当しているか？", "opts": ["入力装置 と 出力装置", "制御装置 と 演算装置", "記憶装置 と 演算装置", "制御装置 と 記憶装置"], "ans": 1, "expl": "Đáp án: ②CPU (中央処理装置 / プロセッサ) đảm nhiệm 制御装置 + 演算装置. Đây là \"bộ não\" của máy. 記憶装置 là thiết bị riêng (RAM/HDD), không thuộc CPU.", "qJa": "Câu 1. CPUは「五大装置」のうち、どの装置を担当しているか？", "qVi": "Câu 1. CPUは「五大装置」のうち、どの装置を担当しているか？"}, {"q": "Câu 2. ノイマン型コンピュータの2大特徴は？", "opts": ["並列処理方式 と プログラム内蔵方式", "逐次制御方式 と 並列制御方式", "プログラム内蔵方式 と 逐次制御方式", "プログラム外蔵方式 と 逐次制御方式"], "ans": 2, "expl": "Đáp án: ③ノイマン型 = プログラム内蔵方式 (lưu chương trình trong bộ nhớ chính khi chạy) + 逐次制御方式 (thực thi tuần tự từng lệnh).", "qJa": "Câu 2. ノイマン型コンピュータの2大特徴は？", "qVi": "Câu 2. ノイマン型コンピュータの2大特徴は？"}, {"q": "Câu 3. 「次に実行する命令のアドレス」を記憶するレジスタはどれか？", "opts": ["プログラムカウンター", "命令レジスタ", "汎用レジスタ", "アキュムレーター"], "ans": 0, "expl": "Đáp án: ①Định nghĩa của プログラムカウンター (PC / プログラムレジスタ): lưu địa chỉ của lệnh tiếp theo. 命令レジスタ lưu lệnh hiện đang chạy; 汎用レジスタ lưu dữ liệu; アキュムレーター lưu kết quả phép tính.", "qJa": "Câu 3. 「次に実行する命令のアドレス」を記憶するレジスタはどれか？", "qVi": "Câu 3. 「次に実行する命令のアドレス」を記憶するレジスタはどれか？"}, {"q": "Câu 4. クロック周波数が 1GHz、1命令に平均5クロック必要なCPUは、1秒間に何個の命令を実行できるか？", "opts": ["5億個", "2億個", "1億個", "50億個"], "ans": 1, "expl": "Đáp án: ②1 GHz = 10⁹ = 10億クロック/秒. Công thức: 実行命令数 = クロック周波数 ÷ 1命令クロック数 = 10億 ÷ 5 = 2億命令/秒.", "qJa": "Câu 4. クロック周波数が 1GHz、1命令に平均5クロック必要なCPUは、1秒間に何個の命令を実行できるか？", "qVi": "Câu 4. クロック周波数が 1GHz、1命令に平均5クロック必要なCPUは、1秒間に何個の命令を実行できるか？"}, {"q": "Câu 5. プロセッサによってフェッチされた命令の格納順序を表す図において、「a」に当てはまるレジスタはどれか？（平成30年度 過去問改）\n  主記憶 → [ a ] → 命令デコーダ", "opts": ["アキュムレーター", "命令レジスタ", "データキャッシュ", "プログラムレジスタ"], "ans": 1, "expl": "Đáp án: ②Quy trình fetch: lệnh từ 主記憶 → 命令レジスタ → 命令デコーダ (giải mã). PC chỉ lưu địa chỉ chứ không phải nơi lệnh tới sau khi fetch. Đây là câu thi thật 平成30年度.", "qJa": "Câu 5. プロセッサによってフェッチされた命令の格納順序を表す図において、「a」に当てはまるレジスタはどれか？（平成30年度 過去問改）\n  主記憶 → [ a ] → 命令デコーダ", "qVi": "Câu 5. プロセッサによってフェッチされた命令の格納順序を表す図において、「a」に当てはまるレジスタはどれか？（平成30年度 過去問改）\n  主記憶 → [ a ] → 命令デコーダ"}, {"q": "Câu 6. アドレス部の値が「20」、20番地には「25」、25番地には「データ」が入っている。アドレス指定方式は？（平成28年度 過去問改）", "opts": ["指標アドレス指定", "相対アドレス指定", "直接アドレス指定", "間接アドレス指定"], "ans": 3, "expl": "Đáp án: ④Truy cập 2 lần bộ nhớ: 20番地 → \"25\" → 25番地 → データ. Đây là 間接アドレス指定. Nếu 直接 thì sẽ lấy thẳng giá trị tại 20番地.", "qJa": "Câu 6. アドレス部の値が「20」、20番地には「25」、25番地には「データ」が入っている。アドレス指定方式は？（平成28年度 過去問改）", "qVi": "Câu 6. アドレス部の値が「20」、20番地には「25」、25番地には「データ」が入っている。アドレス指定方式は？（平成28年度 過去問改）"}, {"q": "Câu 7. 次のうち、内部割込みに分類されるものはどれか？", "opts": ["ゼロ除算による例外", "インターバルタイマによる時間経過", "プリンターの用紙切れ通知", "電源異常による機械チェック"], "ans": 0, "expl": "Đáp án: ①ゼロ除算 là lỗi sinh ra do chính chương trình đang chạy → 内部. Còn lại đều là 外部: タイマ (timer), プリンター (I/O), 電源 (machine check).", "qJa": "Câu 7. 次のうち、内部割込みに分類されるものはどれか？", "qVi": "Câu 7. 次のうち、内部割込みに分類されるものはどれか？"}, {"q": "Câu 8. 「2 MIPS」 とは何を意味するか？", "opts": ["1秒間に2クロックを発生させる", "1命令を実行するのに2秒かかる", "1秒間に200万個の命令を実行する", "CPUに2つのコアが搭載されている"], "ans": 2, "expl": "Đáp án: ③MIPS = Million Instructions Per Second. 2 MIPS = 2 triệu lệnh / giây. Từ đây tính được 平均命令実行時間 = 0.5 μs = 500 ns.", "qJa": "Câu 8. 「2 MIPS」 とは何を意味するか？", "qVi": "Câu 8. 「2 MIPS」 とは何を意味するか？"}], "available": true}</script></body></html>

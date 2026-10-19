@@ -1,98 +1,22 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="light" data-lang="dual">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bài 21: FE — FE Master</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/reader.css">
-</head>
-<body>
 
-<!-- Reading Progress Bar -->
-<div class="reading-progress-track">
-  <div class="reading-progress-bar" id="readingProgress"></div>
-</div>
-
-<!-- Minimal Sticky Top Header -->
-<header class="site-header">
-  <div class="header-container">
-    <div class="header-left">
-      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
-        <span class="text-ja">← ロードマップ</span>
-        <span class="text-vi">← Lộ trình</span>
-      </a>
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
-        <span class="sep">/</span>
-        <span>Mục tiêu 3</span>
-        <span class="sep">/</span>
-        <span class="current">Bài 21</span>
-      </nav>
-    </div>
-    <div class="header-right">
-      <div class="lang-selector">
-        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
-        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
-        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
-      </div>
-      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
-        <span id="zenIcon">📖</span>
-        <span id="zenText">Zen</span>
-      </button>
-      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
-        <span id="themeIcon">◐</span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- Main Two-Column Reader Layout -->
-<div class="page-container">
-
-  <!-- Left Content Column -->
-  <main class="main-content">
-
-    <div class="lesson-header">
-      <div class="lesson-meta-bar">
-        <span class="badge-lesson">BÀI 21 · CƠ SỞ LÝ THUYẾT</span>
-        <span class="badge-tag">MỤC TIÊU 3</span>
-        <span class="badge-tag">TRỌNG TÂM 科目A</span>
-      </div>
-      <h1 class="lesson-title">
-        FE
-      </h1>
-      <div class="lesson-stats">
-        <span>⏱ ~30-45 phút đọc</span>
-        <span>·</span>
-        <span>Active Recall & Flashcards</span>
-      </div>
-    </div>
-
-    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
-    <section class="content-section" id="sec-1">
-      <h2 class="section-heading">
-        <span class="num-badge">①</span>
-        <span class="text-ja">重要理論 (Theory)</span>
-        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
-      </h2>
-      <div class="lesson-body-content">
+<html data-reading-lang="dual" data-reading-theme="light" lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><meta content="light dark" name="color-scheme"/><title>Bài 21 · 実記憶・仮想記憶 (ページング) — FE Master</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/><link href="../assets/reader.css" rel="stylesheet"/><script defer="" src="../assets/reader.js"></script></head><body>
+<a class="skip-link" data-ja="本文へ" data-vi="Đến nội dung bài học" href="#lesson-content">Đến nội dung bài học</a>
+<header class="topbar"><div aria-label="Tiến độ đọc bài" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-track" role="progressbar"><div id="reader-progress"></div></div><div class="top-inner"><div class="top-left"><a class="reading-back" data-ja="← ロードマップへ" data-vi="← Quay lại lộ trình" href="../index.html" target="_top">← Quay lại lộ trình</a><nav aria-label="Breadcrumb" class="breadcrumb"><span>FE</span><span>/</span><span data-ja="目標3" data-vi="Mục tiêu 3">Mục tiêu 3</span><span>/</span><span data-ja="解説21" data-vi="Lý thuyết 21">Lý thuyết 21</span></nav></div><div class="reading-controls"><label class="sr-only" for="reading-language">Ngôn ngữ bài học</label><select id="reading-language"><option value="dual">Việt + 日本語</option><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select><button aria-label="Chế độ tập trung: ẩn sidebar" aria-pressed="false" id="zen-toggle" type="button">⊡ <span class="zen-label" data-ja="集中" data-vi="Tập trung">Tập trung</span></button><button aria-pressed="false" id="reading-theme" type="button">☾ Tối</button></div></div></header>
+<div class="layout"><main class="reading-main" id="lesson-content"><header class="lesson-hero"><span class="lesson-eyebrow" data-ja="レッスン21 · 理論" data-vi="BÀI 21 · LÝ THUYẾT">BÀI 21 · LÝ THUYẾT</span><h1><span class="reading-ja" lang="ja">実記憶・仮想記憶 (ページング)</span><span class="reading-vi" lang="vi">実記憶・仮想記憶 (ページング)</span></h1><div class="lesson-meta"><span data-ja="科目Aの基礎" data-vi="Trọng tâm 科目A">Trọng tâm 科目A</span><span data-ja="暗記カード24枚 · 確認問題10問" data-vi="24 flashcard · 10 câu ôn tập">24 flashcard · 10 câu ôn tập</span></div></header>
+<section class="lesson-part lesson-section" id="p1"><h2 class="lesson-part-title" data-ja="理論のまとめ" data-step="01" data-vi="Tóm tắt lý thuyết">Tóm tắt lý thuyết</h2>
 <div class="card">
-<h3>1.1 記憶管理 là gì? — Khái quát</h3>
-
-<div class="lang-block lang-jp"><span class="lbl">🇯🇵 日本語</span>
+<h3 id="lesson-21-topic-1">1.1 記憶管理 là gì? — Khái quát</h3>
+<div class="lang-block lang-jp reading-ja" lang="ja"><span class="lbl">🇯🇵 日本語</span>
 記憶管理とは、<b>記憶装置を効率的に利用するための機能</b>。記憶管理はさらに、主記憶装置を管理する「<b>主記憶管理（実記憶管理）</b>」と、仮想記憶を管理する「<b>仮想記憶管理</b>」の2つに分類される。基本情報技術者試験では<b>仮想記憶管理が頻出</b>。
 </div>
-<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
 <b>記憶管理 (Memory management)</b> = chức năng quản lý bộ nhớ một cách hiệu quả. Chia làm 2 loại: <b>主記憶管理 (実記憶管理)</b> = quản lý bộ nhớ chính, và <b>仮想記憶管理</b> = quản lý bộ nhớ ảo. FE hay hỏi về <b>仮想記憶 / paging</b>.
 </div>
-<div class="lang-block lang-en"><span class="lbl">🇬🇧 English</span>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block lang-en reading-en" lang="en"><span class="lbl">🇬🇧 English</span>
 Memory management efficiently allocates memory. It splits into <b>real (main) memory management</b> and <b>virtual memory management</b>. FE exam emphasizes the virtual / paging side.
-</div>
-
-<div class="ascii">
+</div></details>
+<pre class="ascii" tabindex="0">
        記憶管理 Memory Management
         │
         ├── 主記憶管理 / 実記憶管理 (Real)  ── Slide 第3回
@@ -100,74 +24,64 @@ Memory management efficiently allocates memory. It splits into <b>real (main) me
         │
         └── 仮想記憶管理 (Virtual)         ── Slide 第4回 + Yasashii p.203-
               セグメンテーション / ページング
+</pre>
 </div>
-</div>
-
-<!-- ===== 実記憶管理 ===== -->
+ ===== 実記憶管理 =====
 <div class="card">
-<h3>1.2 実記憶管理 — Slide 第3回</h3>
-
-<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+<h3 id="lesson-21-topic-2">1.2 実記憶管理 — Slide 第3回</h3>
+<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
 Bình thường chương trình "ngủ" trong <b>bộ nhớ phụ (補助記憶装置 HDD/SSD)</b>. Khi chạy, OS chuyển vào <b>主記憶装置 (RAM)</b>. Vì RAM dung lượng nhỏ và chứa nhiều chương trình cùng lúc → OS phải <b>quản lý không gian</b>.
 </div>
-
 <h4>(a) 固定区画方式 — Fixed Partition</h4>
-<table>
-<tr><th>特徴</th><th>○ Ưu điểm</th><th>✕ Nhược điểm</th></tr>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><th scope="col">特徴</th><th scope="col">○ Ưu điểm</th><th scope="col">✕ Nhược điểm</th></tr>
 <tr><td>Chia RAM thành các vùng <b>kích thước cố định</b> trước, mỗi chương trình nạp vào một vùng</td><td>Tốc độ nạp <b>nhanh</b> (đơn giản)</td><td>Hiệu suất nạp <b>kém</b> — chương trình nhỏ vẫn chiếm cả vùng → lãng phí</td></tr>
-</table>
-<div class="ascii">
+</table></div>
+<pre class="ascii" tabindex="0">
 [ RAM ] ┌──区画1──┐┌──区画2──┐┌──区画3──┐┌──区画4──┐
         │ ProgA   ││ ProgB   ││ (空き)  ││ (空き)  │
         └─────────┘└─────────┘└─────────┘└─────────┘
-</div>
-
+</pre>
 <h4>(b) 可変区画方式 — Variable Partition</h4>
-<table>
-<tr><th>特徴</th><th>○</th><th>✕</th></tr>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><th scope="col">特徴</th><th scope="col">○</th><th scope="col">✕</th></tr>
 <tr><td>Khi nạp, RAM được chia thành kích thước <b>vừa khít</b> với chương trình</td><td>Hiệu suất nạp <b>tốt</b>, có thể nạp chương trình lớn</td><td>Theo thời gian phát sinh <b>フラグメンテーション (fragmentation)</b></td></tr>
-</table>
-
-<h4>(c) フラグメンテーション & メモリコンパクション</h4>
-<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+</table></div>
+<h4>(c) フラグメンテーション &amp; メモリコンパクション</h4>
+<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
 Khi chương trình kết thúc và được giải phóng, RAM còn lại nhiều mảng nhỏ rời rạc → gọi là <b>フラグメンテーション (phân mảnh)</b>. Cách giải quyết: <b>メモリコンパクション (memory compaction)</b> — gom các chương trình lại liền nhau, tạo vùng trống lớn liên tục.
 </div>
-<div class="ascii">
+<pre class="ascii" tabindex="0">
 Trước compaction:  [A]   [B]   [   ]   [C]   [   ]   [D]   ← mảnh vụn
                               ▼ memory compaction
 Sau compaction:    [A][B][C][D] [               (空き連続)             ]
-</div>
-
+</pre>
 <h4>(d) オーバーレイ方式 — Overlay</h4>
-<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
 Khi chương trình <b>lớn hơn RAM</b>, chia chương trình thành nhiều <b>セグメント</b>, chỉ nạp segment cần thiết, thay phiên (交代) nạp từng phần.
 </div>
-
 <h4>(e) スワッピング方式 — Swapping</h4>
-<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
 Khi có ngắt từ chương trình ưu tiên cao, OS <b>tạm dừng</b> chương trình đang chạy, <b>đẩy nó xuống bộ nhớ phụ</b> (スワップアウト) để giải phóng RAM. Khi cần chạy lại thì <b>nạp lại</b> (スワップイン).
 </div>
-<div class="ascii">
+<pre class="ascii" tabindex="0">
 RAM   ──スワップアウト──►   補助記憶装置
 RAM   ◄──スワップイン────   補助記憶装置
-</div>
-
-<h4>(f) メモリリーク & ガーベージコレクション</h4>
-<table>
-<tr><th>Khái niệm</th><th>Ý nghĩa</th></tr>
+</pre>
+<h4>(f) メモリリーク &amp; ガーベージコレクション</h4>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><th scope="col">Khái niệm</th><th scope="col">Ý nghĩa</th></tr>
 <tr><td><b>メモリリーク (Memory leak)</b></td><td>Do bug của OS/chương trình, vùng nhớ không dùng nhưng <b>không được giải phóng</b> → RAM bị "rò rỉ"</td></tr>
 <tr><td><b>ガーベージコレクション (Garbage collection, GC)</b></td><td>Quét và <b>giải phóng vùng nhớ không còn được dùng</b> → giảm memory leak</td></tr>
-</table>
+</table></div>
 </div>
-
-<!-- ===== 仮想記憶管理 ===== -->
+ ===== 仮想記憶管理 =====
 <div class="card">
-<h3>1.3 仮想記憶管理 — Virtual memory (Slide 第4回 + Yasashii p.203-208)</h3>
-
-<div class="lang-block lang-jp"><span class="lbl">🇯🇵 日本語</span>
+<h3 id="lesson-21-topic-3">1.3 仮想記憶管理 — Virtual memory (Slide 第4回 + Yasashii p.203-208)</h3>
+<div class="lang-block lang-jp reading-ja" lang="ja"><span class="lbl">🇯🇵 日本語</span>
 <b>仮想記憶管理</b>とは、補助記憶装置の一部をあたかも主記憶装置であるかのように扱う方式。プログラムが主記憶の容量を超える大きさの場合でも、仮想記憶上に格納することで実行できる。OSが<b>論理的な記憶領域=仮想記憶</b>を作り、主記憶上の<b>物理的な記憶領域=実記憶</b>に対応付ける。
 </div>
-<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
 <b>仮想記憶 (Virtual memory)</b> = OS tạo một không gian <b>"giả"</b> có vẻ như là RAM rất lớn, thực ra một phần nằm trên <b>HDD/SSD</b>. Nhờ đó, <b>chương trình lớn hơn RAM thật</b> vẫn chạy được. Nguyên tắc:
 <ul>
 <li><b>仮想記憶 (Virtual)</b> = không gian logic OS tạo ra</li>
@@ -175,178 +89,153 @@ RAM   ◄──スワップイン────   補助記憶装置
 <li>OS ánh xạ <b>仮想アドレス ↔ 物理アドレス</b> qua bảng tra</li>
 </ul>
 </div>
-<div class="lang-block lang-en"><span class="lbl">🇬🇧 English</span>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block lang-en reading-en" lang="en"><span class="lbl">🇬🇧 English</span>
 Virtual memory treats part of secondary storage <b>as if</b> it were main memory. Programs bigger than RAM can run by being stored in virtual memory. OS creates a <b>logical address space</b> (virtual) mapped to the <b>physical address space</b> (real).
-</div>
-
+</div></details>
 <h4>動的アドレス変換機構 (DAT — Dynamic Address Translation)</h4>
-<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
 Đơn vị chuyển đổi địa chỉ — <b>MMU (Memory Management Unit)</b> — chuyển <b>地址 ảo → địa chỉ vật lý</b> trong lúc CPU chạy. Slide gọi là 動的アドレス変換機構.
 </div>
-
 <h4>2 phương thức chia bộ nhớ ảo</h4>
-<table>
-<tr><th>方式</th><th>Đơn vị chia</th><th>Đặc trưng</th><th>FE hay hỏi?</th></tr>
-<tr><td><b>セグメンテーション方式</b><br>(Segmentation)</td><td>セグメント<br>= <b>可変長</b> (độ dài thay đổi)</td><td>Chia theo đơn vị logic của chương trình (code, data, stack...)</td><td>Ít</td></tr>
-<tr><td><b>ページング方式</b><br>(Paging) ⭐</td><td>ページ<br>= <b>固定長</b> (độ dài cố định)</td><td>Chia đều mọi thứ thành page kích thước bằng nhau</td><td>RẤT HAY</td></tr>
-</table>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><th scope="col">方式</th><th scope="col">Đơn vị chia</th><th scope="col">Đặc trưng</th><th scope="col">FE hay hỏi?</th></tr>
+<tr><td><b>セグメンテーション方式</b><br/>(Segmentation)</td><td>セグメント<br/>= <b>可変長</b> (độ dài thay đổi)</td><td>Chia theo đơn vị logic của chương trình (code, data, stack...)</td><td>Ít</td></tr>
+<tr><td><b>ページング方式</b><br/>(Paging) ⭐</td><td>ページ<br/>= <b>固定長</b> (độ dài cố định)</td><td>Chia đều mọi thứ thành page kích thước bằng nhau</td><td>RẤT HAY</td></tr>
+</table></div>
 <div class="tip"><b>📌 Yasashii nhấn mạnh:</b> ページング方式のほうが出題頻度が圧倒的に高い — FE chủ yếu hỏi <b>paging</b>.</div>
 </div>
-
-<!-- ===== Paging ===== -->
+ ===== Paging =====
 <div class="card">
-<h3>1.4 ページング方式 — Paging chi tiết</h3>
-
-<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+<h3 id="lesson-21-topic-4">1.4 ページング方式 — Paging chi tiết</h3>
+<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
 Cả <b>仮想記憶 (ảo)</b> và <b>実記憶 (RAM thật)</b> đều được chia thành các <b>ページ (page) kích thước cố định</b>. CPU truy cập theo địa chỉ ảo; OS dùng <b>ページテーブル (page table)</b> để tra ra địa chỉ vật lý tương ứng.
 </div>
-
-<h4>仮想アドレス & 物理アドレス</h4>
+<h4>仮想アドレス &amp; 物理アドレス</h4>
 <ul>
 <li><b>仮想アドレス (Virtual address)</b>: địa chỉ trong không gian ảo (theo thứ tự từ đầu)</li>
 <li><b>物理アドレス (Physical address)</b>: địa chỉ thực trong RAM</li>
 <li><b>ページテーブル (Page table)</b>: bảng tra với 2 cột — cột địa chỉ ảo, cột địa chỉ vật lý tương ứng. <b>Số dòng = số page trong 仮想記憶</b>.</li>
 </ul>
-
 <div class="diagram">
-<svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
-  <style>
+<svg viewbox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+<style>
     .lbl{font-family:'Noto Sans JP',sans-serif;font-size:11px;fill:#cbd5e1}
     .lblb{font-family:'Noto Sans JP',sans-serif;font-size:12px;fill:#fbbf24;font-weight:700}
     .ttl{font-family:'Noto Sans JP',sans-serif;font-size:13px;fill:#7dd3fc;font-weight:700}
   </style>
-  <text x="60" y="20" class="ttl">CPU</text>
-  <rect x="20" y="30" width="80" height="60" fill="#1a2029" stroke="#7dd3fc" stroke-width="2" rx="6"/>
-  <text x="60" y="65" text-anchor="middle" class="lbl">CPU</text>
-  <text x="200" y="20" class="ttl">仮想記憶 Virtual</text>
-  <text x="170" y="35" class="lbl">仮想アドレス</text>
-  <g>
-    <rect x="170" y="40" width="80" height="30" fill="#3a1f24" stroke="#fda4af"/>
-    <text x="158" y="60" class="lbl">1</text>
-    <text x="210" y="60" text-anchor="middle" class="lblb">ページA</text>
-    <rect x="170" y="70" width="80" height="30" fill="#1a2029" stroke="#fda4af"/>
-    <text x="158" y="90" class="lbl">2</text>
-    <rect x="170" y="100" width="80" height="30" fill="#1a2029" stroke="#fda4af"/>
-    <text x="158" y="120" class="lbl">3</text>
-    <rect x="170" y="130" width="80" height="30" fill="#1a2029" stroke="#fda4af"/>
-    <text x="158" y="150" class="lbl">4</text>
-  </g>
-  <line x1="100" y1="60" x2="170" y2="55" stroke="#7dd3fc" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="380" y="20" class="ttl">ページテーブル</text>
-  <g>
-    <rect x="340" y="30" width="60" height="25" fill="#222a35" stroke="#a78bfa"/><text x="370" y="48" text-anchor="middle" class="lbl">仮想</text>
-    <rect x="400" y="30" width="60" height="25" fill="#222a35" stroke="#a78bfa"/><text x="430" y="48" text-anchor="middle" class="lbl">物理</text>
-    <rect x="340" y="55" width="60" height="25" fill="#3a1f24" stroke="#a78bfa"/><text x="370" y="73" text-anchor="middle" class="lblb">1</text>
-    <rect x="400" y="55" width="60" height="25" fill="#3a1f24" stroke="#a78bfa"/><text x="430" y="73" text-anchor="middle" class="lblb">2</text>
-    <rect x="340" y="80" width="60" height="25" fill="#1a2029" stroke="#a78bfa"/><text x="370" y="98" text-anchor="middle" class="lbl">2</text>
-    <rect x="400" y="80" width="60" height="25" fill="#1a2029" stroke="#a78bfa"/><text x="430" y="98" text-anchor="middle" class="lbl"> </text>
-    <rect x="340" y="105" width="60" height="25" fill="#1a2029" stroke="#a78bfa"/><text x="370" y="123" text-anchor="middle" class="lbl">3</text>
-    <rect x="400" y="105" width="60" height="25" fill="#1a2029" stroke="#a78bfa"/>
-    <rect x="340" y="130" width="60" height="25" fill="#1a2029" stroke="#a78bfa"/><text x="370" y="148" text-anchor="middle" class="lbl">4</text>
-    <rect x="400" y="130" width="60" height="25" fill="#1a2029" stroke="#a78bfa"/>
-  </g>
-  <line x1="250" y1="55" x2="340" y2="65" stroke="#fbbf24" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="580" y="20" class="ttl">実記憶 RAM</text>
-  <text x="538" y="35" class="lbl">物理アドレス</text>
-  <g>
-    <rect x="540" y="40" width="80" height="30" fill="#1a2029" stroke="#86efac"/>
-    <text x="528" y="60" class="lbl">1</text>
-    <rect x="540" y="70" width="80" height="30" fill="#3a1f24" stroke="#86efac"/>
-    <text x="528" y="90" class="lbl">2</text>
-    <text x="580" y="90" text-anchor="middle" class="lblb">ページA</text>
-    <rect x="540" y="100" width="80" height="30" fill="#1a2029" stroke="#86efac"/>
-    <text x="528" y="120" class="lbl">3</text>
-  </g>
-  <line x1="460" y1="68" x2="540" y2="80" stroke="#86efac" stroke-width="2" marker-end="url(#arr)"/>
-  <text x="350" y="200" text-anchor="middle" class="ttl">Luồng truy cập: CPU → 仮想記憶 → ページテーブル → 実記憶</text>
-  <defs>
-    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
-      <polygon points="0 0,8 4,0 8" fill="#fbbf24"/>
-    </marker>
-  </defs>
+<text class="ttl" x="60" y="20">CPU</text>
+<rect fill="#1a2029" height="60" rx="6" stroke="#7dd3fc" stroke-width="2" width="80" x="20" y="30"></rect>
+<text class="lbl" text-anchor="middle" x="60" y="65">CPU</text>
+<text class="ttl" x="200" y="20">仮想記憶 Virtual</text>
+<text class="lbl" x="170" y="35">仮想アドレス</text>
+<g>
+<rect fill="#3a1f24" height="30" stroke="#fda4af" width="80" x="170" y="40"></rect>
+<text class="lbl" x="158" y="60">1</text>
+<text class="lblb" text-anchor="middle" x="210" y="60">ページA</text>
+<rect fill="#1a2029" height="30" stroke="#fda4af" width="80" x="170" y="70"></rect>
+<text class="lbl" x="158" y="90">2</text>
+<rect fill="#1a2029" height="30" stroke="#fda4af" width="80" x="170" y="100"></rect>
+<text class="lbl" x="158" y="120">3</text>
+<rect fill="#1a2029" height="30" stroke="#fda4af" width="80" x="170" y="130"></rect>
+<text class="lbl" x="158" y="150">4</text>
+</g>
+<line marker-end="url(#arr)" stroke="#7dd3fc" stroke-width="2" x1="100" x2="170" y1="60" y2="55"></line>
+<text class="ttl" x="380" y="20">ページテーブル</text>
+<g>
+<rect fill="#222a35" height="25" stroke="#a78bfa" width="60" x="340" y="30"></rect><text class="lbl" text-anchor="middle" x="370" y="48">仮想</text>
+<rect fill="#222a35" height="25" stroke="#a78bfa" width="60" x="400" y="30"></rect><text class="lbl" text-anchor="middle" x="430" y="48">物理</text>
+<rect fill="#3a1f24" height="25" stroke="#a78bfa" width="60" x="340" y="55"></rect><text class="lblb" text-anchor="middle" x="370" y="73">1</text>
+<rect fill="#3a1f24" height="25" stroke="#a78bfa" width="60" x="400" y="55"></rect><text class="lblb" text-anchor="middle" x="430" y="73">2</text>
+<rect fill="#1a2029" height="25" stroke="#a78bfa" width="60" x="340" y="80"></rect><text class="lbl" text-anchor="middle" x="370" y="98">2</text>
+<rect fill="#1a2029" height="25" stroke="#a78bfa" width="60" x="400" y="80"></rect><text class="lbl" text-anchor="middle" x="430" y="98"> </text>
+<rect fill="#1a2029" height="25" stroke="#a78bfa" width="60" x="340" y="105"></rect><text class="lbl" text-anchor="middle" x="370" y="123">3</text>
+<rect fill="#1a2029" height="25" stroke="#a78bfa" width="60" x="400" y="105"></rect>
+<rect fill="#1a2029" height="25" stroke="#a78bfa" width="60" x="340" y="130"></rect><text class="lbl" text-anchor="middle" x="370" y="148">4</text>
+<rect fill="#1a2029" height="25" stroke="#a78bfa" width="60" x="400" y="130"></rect>
+</g>
+<line marker-end="url(#arr)" stroke="#fbbf24" stroke-width="2" x1="250" x2="340" y1="55" y2="65"></line>
+<text class="ttl" x="580" y="20">実記憶 RAM</text>
+<text class="lbl" x="538" y="35">物理アドレス</text>
+<g>
+<rect fill="#1a2029" height="30" stroke="#86efac" width="80" x="540" y="40"></rect>
+<text class="lbl" x="528" y="60">1</text>
+<rect fill="#3a1f24" height="30" stroke="#86efac" width="80" x="540" y="70"></rect>
+<text class="lbl" x="528" y="90">2</text>
+<text class="lblb" text-anchor="middle" x="580" y="90">ページA</text>
+<rect fill="#1a2029" height="30" stroke="#86efac" width="80" x="540" y="100"></rect>
+<text class="lbl" x="528" y="120">3</text>
+</g>
+<line marker-end="url(#arr)" stroke="#86efac" stroke-width="2" x1="460" x2="540" y1="68" y2="80"></line>
+<text class="ttl" text-anchor="middle" x="350" y="200">Luồng truy cập: CPU → 仮想記憶 → ページテーブル → 実記憶</text>
+<defs>
+<marker id="arr" markerheight="8" markerwidth="8" orient="auto" refx="6" refy="4">
+<polygon fill="#fbbf24" points="0 0,8 4,0 8"></polygon>
+</marker>
+</defs>
 </svg>
 </div>
-
 <h4>CPU truy cập page — 3 bước (Yasashii)</h4>
 <ol>
 <li>CPU đọc page A (仮想アドレス = 1) → tra ページテーブル dòng 1</li>
 <li>Dòng 1 cho biết 物理アドレス = 2 → CPU truy cập 実記憶 ô số 2</li>
 <li>CPU lấy được nội dung page A</li>
 </ol>
-
 <h4>ページフォールト・ページイン・ページアウト</h4>
-<table>
-<tr><th>用語</th><th>Khi nào xảy ra</th><th>Ý nghĩa</th></tr>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><th scope="col">用語</th><th scope="col">Khi nào xảy ra</th><th scope="col">Ý nghĩa</th></tr>
 <tr><td><b>ページフォールト (Page fault)</b></td><td>CPU cần một page nhưng page đó <b>không có trong 実記憶</b></td><td><b>Một loại interrupt</b> báo "trang đang cần không có trong RAM"</td></tr>
 <tr><td><b>ページイン (Page-in)</b></td><td>Sau page fault</td><td>OS đọc page cần từ <b>補助記憶 → 実記憶</b></td></tr>
 <tr><td><b>ページアウト (Page-out)</b></td><td>Khi 実記憶 đã đầy</td><td>OS chọn 1 page bỏ ra, ghi từ <b>実記憶 → 補助記憶</b> để lấy chỗ trống</td></tr>
-</table>
-
-<div class="tip"><b>🎯 Luồng đầy đủ Yasashii:</b><br>
+</table></div>
+<div class="tip"><b>🎯 Luồng đầy đủ Yasashii:</b><br/>
 仮想記憶へのアクセス → ページテーブル参照 → ページフォールト → 置き換えるページの決定 → ページアウト → ページイン</div>
 </div>
-
-<!-- ===== 置換 algorithm ===== -->
+ ===== 置換 algorithm =====
 <div class="card">
-<h3>1.5 ページ置き換えアルゴリズム — Page Replacement</h3>
-
-<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+<h3 id="lesson-21-topic-5">1.5 ページ置き換えアルゴリズム — Page Replacement</h3>
+<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
 Khi cần page-in nhưng 実記憶 hết chỗ → phải chọn page nào "đẩy ra" (置き換え). Cần chọn page mà <b>khó có khả năng dùng lại</b>, để tránh phải page-in lại ngay. Có 4 thuật toán chính (Yasashii có 3; Slide thêm LIFO):
 </div>
-
-<table>
-<tr><th>Thuật toán</th><th>Tiêu chí chọn để đẩy ra</th><th>Tên đầy đủ</th></tr>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><th scope="col">Thuật toán</th><th scope="col">Tiêu chí chọn để đẩy ra</th><th scope="col">Tên đầy đủ</th></tr>
 <tr><td><b>FIFO</b></td><td>Page <b>vào RAM sớm nhất</b> (cũ nhất theo thời điểm nạp)</td><td>First In First Out</td></tr>
 <tr><td><b>LIFO</b></td><td>Page <b>vào RAM mới nhất</b> (gần đây nhất nạp)</td><td>Last In First Out</td></tr>
 <tr><td><b>LRU</b> ⭐</td><td>Page <b>lâu nhất không được tham chiếu</b> (最後に参照されてからの経過時間が最も長い)</td><td>Least Recently Used</td></tr>
 <tr><td><b>LFU</b></td><td>Page có <b>số lần tham chiếu ít nhất</b> (参照頻度が最も少ない)</td><td>Least Frequently Used</td></tr>
-</table>
+</table></div>
 <div class="tip"><b>📌 Yasashii:</b> 基本情報技術者試験に出題されるのは主に <b>LRU</b>.</div>
 </div>
-
-<!-- ===== Thrashing ===== -->
+ ===== Thrashing =====
 <div class="card">
-<h3>1.6 スラッシング — Thrashing</h3>
-
-<div class="lang-block lang-jp"><span class="lbl">🇯🇵 日本語</span>
+<h3 id="lesson-21-topic-6">1.6 スラッシング — Thrashing</h3>
+<div class="lang-block lang-jp reading-ja" lang="ja"><span class="lbl">🇯🇵 日本語</span>
 <b>スラッシング</b>とは、仮想記憶管理において、割り当てられる実記憶の容量が小さいときに、ページアウトとページインが頻繁に起こる現象である。スラッシングが発生するとコンピュータ全体のスループットが低下する。
 </div>
-<div class="lang-block lang-vn"><span class="lbl">🇻🇳 Tiếng Việt</span>
+<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
 <b>スラッシング (Thrashing)</b> = hiện tượng <b>page-in/page-out xảy ra liên tục</b> khi RAM cấp cho chương trình quá nhỏ. Hệ quả: CPU phần lớn thời gian chỉ bận swap page, <b>スループット (throughput) toàn hệ thống giảm mạnh</b>.
 </div>
-<div class="lang-block lang-en"><span class="lbl">🇬🇧 English</span>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block lang-en reading-en" lang="en"><span class="lbl">🇬🇧 English</span>
 Thrashing happens when allocated real memory is too small — the system spends most time paging in and out, drastically reducing throughput.
-</div>
-<div class="ascii">
+</div></details>
+<pre class="ascii" tabindex="0">
               実記憶 ←→ 補助記憶
                   ↑↓ ↑↓ ↑↓
               ページアウト/イン が連続発生
                   ↓
               スループット低下
+</pre>
 </div>
-</div>
-
-<!-- ===================== PHẦN 2 — VÍ DỤ ===================== -->
-      </div>
-    </section>
-
-    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
-    <section class="content-section" id="sec-2">
-      <h2 class="section-heading">
-        <span class="num-badge">②</span>
-        <span class="text-ja">演習例題 (Worked Examples)</span>
-        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
-      </h2>
-      <div class="lesson-body-content">
+ ===================== PHẦN 2 — VÍ DỤ =====================
+</section><section class="lesson-part lesson-section" id="p2"><h2 class="lesson-part-title" data-ja="例題" data-step="02" data-vi="Ví dụ minh hoạ">Ví dụ minh hoạ</h2>
 <div class="card">
-<h3>Ví dụ 1: CPU truy cập page A — 3 bước (Yasashii)</h3>
+<h3 id="lesson-21-topic-7">Ví dụ 1: CPU truy cập page A — 3 bước (Yasashii)</h3>
 <div class="example"><span class="lbl">Tình huống</span>
 Page table có:
-<table>
-<tr><th>仮想アドレス</th><th>物理アドレス</th></tr>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><th scope="col">仮想アドレス</th><th scope="col">物理アドレス</th></tr>
 <tr><td>1</td><td>2</td></tr>
 <tr><td>2</td><td>(trống)</td></tr>
-</table>
+</table></div>
 CPU cần page có 仮想アドレス = 1 (page A).
 </div>
 <ol>
@@ -355,17 +244,16 @@ CPU cần page có 仮想アドレス = 1 (page A).
 <li>Lấy được nội dung của page A ✓</li>
 </ol>
 </div>
-
 <div class="card">
-<h3>Ví dụ 2: Phân biệt 3 thuật toán bằng bảng tham chiếu (Yasashii)</h3>
+<h3 id="lesson-21-topic-8">Ví dụ 2: Phân biệt 3 thuật toán bằng bảng tham chiếu (Yasashii)</h3>
 <div class="example"><span class="lbl">Đề bài</span>
 実記憶 chứa 3 page A, B, C với dữ liệu:
-<table>
-<tr><th>ページ</th><th>読み込んだ時刻</th><th>最後に参照した時刻</th><th>参照回数</th></tr>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><th scope="col">ページ</th><th scope="col">読み込んだ時刻</th><th scope="col">最後に参照した時刻</th><th scope="col">参照回数</th></tr>
 <tr><td>A</td><td>0:00</td><td>0:05</td><td>9</td></tr>
 <tr><td>B</td><td>0:02</td><td>0:03</td><td>4</td></tr>
 <tr><td>C</td><td>0:03</td><td>0:07</td><td>2</td></tr>
-</table>
+</table></div>
 Cần page-out 1 page. Hỏi mỗi thuật toán chọn page nào?
 </div>
 <ul>
@@ -374,23 +262,21 @@ Cần page-out 1 page. Hỏi mỗi thuật toán chọn page nào?
 <li><b>LFU</b>: số lần tham chiếu ít nhất → <b>C</b> (2 lần)</li>
 </ul>
 </div>
-
 <div class="card">
-<h3>Ví dụ 3: Mô phỏng FIFO/LIFO/LRU/LFU (Slide)</h3>
+<h3 id="lesson-21-topic-9">Ví dụ 3: Mô phỏng FIFO/LIFO/LRU/LFU (Slide)</h3>
 <div class="example"><span class="lbl">Đề bài</span>
 Frame RAM có thể chứa <b>3 page</b>. Thứ tự CPU truy cập: <code>1 2 1 1 3 2 3 3 4</code>. Khi page <code>4</code> đến, RAM đã đầy {1,2,3} — cần page-out 1 trong số đó.
 </div>
-<table>
-<tr><th>Thuật toán</th><th>Chọn đẩy ra</th><th>Lý do</th></tr>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<tr><th scope="col">Thuật toán</th><th scope="col">Chọn đẩy ra</th><th scope="col">Lý do</th></tr>
 <tr><td>FIFO</td><td><b>1</b></td><td>Page 1 vào sớm nhất</td></tr>
 <tr><td>LIFO</td><td><b>3</b></td><td>Page 3 vào muộn nhất (vào thứ 5)</td></tr>
 <tr><td>LRU</td><td><b>1</b></td><td>Sau lần tham chiếu cuối, page 1 đã <b>không được dùng lâu nhất</b> (cuối cùng = bước thứ 4)</td></tr>
 <tr><td>LFU</td><td><b>2</b></td><td>Page 2 được dùng <b>2 lần</b>, ít nhất (page 1: 3 lần, page 3: 3 lần)</td></tr>
-</table>
+</table></div>
 </div>
-
 <div class="card">
-<h3>Ví dụ 4: Tình huống thrashing</h3>
+<h3 id="lesson-21-topic-10">Ví dụ 4: Tình huống thrashing</h3>
 <div class="example"><span class="lbl">Tình huống</span>
 Bạn mở 30 tab Chrome + Photoshop + Video editor cùng lúc trên máy có RAM 4GB. Mỗi ứng dụng cần page mới liên tục, nhưng RAM gần như đầy.
 </div>
@@ -401,462 +287,5 @@ Bạn mở 30 tab Chrome + Photoshop + Video editor cùng lúc trên máy có RA
 <li>Giải pháp: tăng RAM, đóng bớt app, hoặc tăng kích thước paging file</li>
 </ul>
 </div>
-
-<!-- ===================== PHẦN 3 — FLASHCARD ===================== -->
-      </div>
-    </section>
-
-    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-3">
-      <h2 class="section-heading">
-        <span class="num-badge">③</span>
-        <span class="text-ja">暗記カード (Flashcards)</span>
-        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
-        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
-        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
-      </p>
-
-      <div class="fc-grid" id="fcGrid"></div>
-    </section>
-
-    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-4">
-      <h2 class="section-heading">
-        <span class="num-badge">④</span>
-        <span class="text-ja">確認テスト (10問)</span>
-        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
-        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
-        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
-      </p>
-
-      <div id="quizArea"></div>
-
-      <div class="quiz-result-box" id="quiz-result">
-        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
-        <div class="quiz-result-score" id="qScore">0 / 10</div>
-        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
-        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
-      </div>
-    </section>
-
-    <!-- Footer Navigation & Lesson Completion -->
-    <footer class="lesson-footer-nav">
-      <div class="completion-card">
-        <div>
-          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
-            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
-            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
-          </div>
-          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
-            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
-            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
-          </div>
-        </div>
-        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
-      </div>
-
-      <div class="footer-nav-buttons">
-        
-        <a href="20.html" class="nav-link-card prev">
-          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 20</span>
-            <span class="text-vi">Bài học 20</span>
-          </span>
-        </a>
-        
-        <a href="../kiem-tra/21.html" class="nav-link-card next">
-          <span class="nav-dir">KIỂM TRA / TEST →</span>
-          <span class="nav-target">
-            <span class="text-ja">確認テストに挑戦</span>
-            <span class="text-vi">Luyện thi trắc nghiệm</span>
-          </span>
-        </a>
-      </div>
-    </footer>
-
-  </main>
-
-  <!-- Right Sticky Sidebar -->
-  <aside class="sticky-sidebar">
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-        <span class="text-ja">目次 (TOC)</span>
-        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
-      </div>
-      <nav>
-        <ul class="toc-list" id="tocList">
-          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
-        </ul>
-      </nav>
-    </div>
-
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        <span class="text-ja">クイック復習</span>
-        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
-      </div>
-      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
-        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
-        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
-      </p>
-    </div>
-  </aside>
-
-</div>
-
-<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
-<script>
-const FLASHCARDS = [
-  {
-    "cat": "all",
-    "front": "記憶管理 chia làm mấy loại?",
-    "back": "2: 主記憶管理 (実記憶管理) + 仮想記憶管理 . FE chủ yếu hỏi virtual. Real"
-  },
-  {
-    "cat": "all",
-    "front": "固定区画方式 (Fixed)",
-    "back": "Chia RAM thành vùng kích thước cố định trước . Ưu: nạp nhanh. Nhược: hiệu suất kém (lãng phí). Real"
-  },
-  {
-    "cat": "all",
-    "front": "可変区画方式 (Variable)",
-    "back": "Khi nạp mới chia RAM khít với chương trình. Hiệu suất tốt, nhưng theo thời gian sinh フラグメンテーション . Real"
-  },
-  {
-    "cat": "all",
-    "front": "フラグメンテーション",
-    "back": "RAM bị phân mảnh thành nhiều ô trống nhỏ rời rạc sau khi chương trình kết thúc và giải phóng. Real"
-  },
-  {
-    "cat": "all",
-    "front": "メモリコンパクション",
-    "back": "Dồn các chương trình lại liền nhau → tạo vùng trống liên tục → giải quyết フラグメンテーション. Real"
-  },
-  {
-    "cat": "all",
-    "front": "オーバーレイ方式",
-    "back": "Khi chương trình > RAM, chia thành セグメント và nạp luân phiên chỉ phần đang cần. Real"
-  },
-  {
-    "cat": "all",
-    "front": "スワッピング (Swapping)",
-    "back": "Khi ngắt ưu tiên cao, tạm dừng chương trình hiện tại, đẩy nó xuống HDD (swap-out), sau đó nạp lại (swap-in). Real"
-  },
-  {
-    "cat": "all",
-    "front": "メモリリーク",
-    "back": "Vùng nhớ không dùng nhưng không được giải phóng do bug → RAM bị \"rò rỉ\" theo thời gian. Real"
-  },
-  {
-    "cat": "all",
-    "front": "ガーベージコレクション (GC)",
-    "back": "Tự động quét và giải phóng vùng nhớ không còn dùng → giảm memory leak. Real"
-  },
-  {
-    "cat": "all",
-    "front": "仮想記憶 là gì?",
-    "back": "Không gian bộ nhớ \"ảo\" do OS tạo ra, một phần thực ra nằm trên HDD. Cho phép chương trình lớn hơn RAM vẫn chạy được. Virt"
-  },
-  {
-    "cat": "all",
-    "front": "仮想アドレス vs 物理アドレス",
-    "back": "仮想アドレス = trong không gian ảo (logic). 物理アドレス = trong RAM thật. OS ánh xạ qua page table. Virt"
-  },
-  {
-    "cat": "all",
-    "front": "動的アドレス変換機構 (DAT/MMU)",
-    "back": "Bộ phận phần cứng chuyển 地址 ảo → vật lý trong khi CPU đang chạy. Virt"
-  },
-  {
-    "cat": "all",
-    "front": "セグメンテーション vs ページング",
-    "back": "Segmentation : chia theo セグメント 可変長 . Paging : chia theo ページ 固定長 . FE hỏi nhiều paging. Virt"
-  },
-  {
-    "cat": "all",
-    "front": "ページング方式",
-    "back": "Cả 仮想記憶 và 実記憶 đều chia thành các page kích thước cố định bằng nhau , đối ứng qua page table. Page"
-  },
-  {
-    "cat": "all",
-    "front": "ページテーブル",
-    "back": "Bảng 2 cột ( 仮想アドレス | 物理アドレス ). Số dòng = số page trong 仮想記憶 . Page"
-  },
-  {
-    "cat": "all",
-    "front": "ページフォールト",
-    "back": "Một interrupt xảy ra khi CPU truy cập page không có trong 実記憶 . Page"
-  },
-  {
-    "cat": "all",
-    "front": "ページイン (Page-in)",
-    "back": "Sau page fault, OS đọc page cần thiết từ 補助記憶 → 実記憶 . Page"
-  },
-  {
-    "cat": "all",
-    "front": "ページアウト (Page-out)",
-    "back": "Khi 実記憶 đầy, OS chọn 1 page và ghi nó từ 実記憶 → 補助記憶 để giải phóng chỗ. Page"
-  },
-  {
-    "cat": "all",
-    "front": "Luồng CPU truy cập page",
-    "back": "仮想記憶アクセス → ページテーブル参照 → (nếu fault) ページフォールト → 置き換えページ決定 → ページアウト → ページイン. Page"
-  },
-  {
-    "cat": "all",
-    "front": "スラッシング",
-    "back": "Hiện tượng page-in/out liên tục khi RAM cấp quá nhỏ. Làm スループット toàn hệ thống giảm . Page"
-  },
-  {
-    "cat": "all",
-    "front": "FIFO",
-    "back": "Đẩy ra page vào RAM sớm nhất (First In First Out). Algo"
-  },
-  {
-    "cat": "all",
-    "front": "LIFO",
-    "back": "Đẩy ra page vào RAM muộn nhất (Last In First Out). Slide có; Yasashii không nhấn mạnh. Algo"
-  },
-  {
-    "cat": "all",
-    "front": "LRU ⭐",
-    "back": "Least Recently Used — đẩy ra page có thời điểm tham chiếu cuối cũ nhất . FE chủ yếu hỏi LRU . Algo"
-  },
-  {
-    "cat": "all",
-    "front": "LFU",
-    "back": "Least Frequently Used — đẩy ra page có số lần tham chiếu ít nhất . Algo"
-  }
-];
-const QUIZ = [
-  {
-    "q": "記憶管理 chia làm 2 loại nào?",
-    "opts": [
-      "Cache + RAM",
-      "主記憶管理 (実記憶) + 仮想記憶管理",
-      "HDD + SSD",
-      "Stack + Heap"
-    ],
-    "ans": 1,
-    "expl": "記憶管理 = 主記憶 (RAM thật) + 仮想記憶 (ảo). FE chủ yếu hỏi virtual."
-  },
-  {
-    "q": "フラグメンテーション được giải quyết bằng cách nào?",
-    "opts": [
-      "Tăng RAM",
-      "メモリコンパクション (dồn lại)",
-      "ガーベージコレクション",
-      "オーバーレイ"
-    ],
-    "ans": 1,
-    "expl": "Compaction = dồn các chương trình lại liền nhau để tạo vùng trống liên tục."
-  },
-  {
-    "q": "オーバーレイ方式 dùng khi nào?",
-    "opts": [
-      "RAM dư thừa",
-      "Chương trình lớn hơn RAM",
-      "Có nhiều CPU",
-      "Disk hỏng"
-    ],
-    "ans": 1,
-    "expl": "Khi chương trình > RAM, chia thành segment và nạp luân phiên."
-  },
-  {
-    "q": "ページング方式 chia bộ nhớ thành đơn vị có đặc điểm gì?",
-    "opts": [
-      "可変長 (segment)",
-      "固定長 (page)",
-      "Không chia",
-      "Theo chương trình"
-    ],
-    "ans": 1,
-    "expl": "Paging chia thành ページ kích thước CỐ ĐỊNH bằng nhau. Segmentation mới là 可変長."
-  },
-  {
-    "q": "ページフォールト là gì?",
-    "opts": [
-      "Lỗi cấu hình RAM",
-      "Một loại interrupt khi page cần không có trong 実記憶",
-      "HDD hỏng",
-      "Page table sai"
-    ],
-    "ans": 1,
-    "expl": "Page fault = interrupt báo page cần không có trong RAM thật → kích hoạt page-in."
-  },
-  {
-    "q": "Hướng của ページアウト là gì?",
-    "opts": [
-      "RAM → HDD",
-      "HDD → RAM",
-      "CPU → RAM",
-      "RAM → CPU"
-    ],
-    "ans": 0,
-    "expl": "Page-OUT = đẩy page từ 実記憶 ra 補助記憶 để giải phóng chỗ."
-  },
-  {
-    "q": "LRU chọn đẩy ra page nào?",
-    "opts": [
-      "Page vào sớm nhất",
-      "Page có thời điểm tham chiếu cuối cũ nhất",
-      "Page tham chiếu ít nhất",
-      "Page vào muộn nhất"
-    ],
-    "ans": 1,
-    "expl": "LRU = Least Recently Used = lâu nhất chưa được dùng. FE hay hỏi nhất."
-  },
-  {
-    "q": "LFU chọn đẩy ra page nào?",
-    "opts": [
-      "Vào sớm nhất",
-      "Cũ nhất từ lần đọc cuối",
-      "Số lần tham chiếu ít nhất",
-      "Lớn nhất"
-    ],
-    "ans": 2,
-    "expl": "LFU = Least Frequently Used = ít được tham chiếu nhất."
-  },
-  {
-    "q": "スラッシング xảy ra khi nào?",
-    "opts": [
-      "RAM cấp quá ít → page-in/out liên tục",
-      "CPU quá nhanh",
-      "HDD quá nhanh",
-      "Page table rỗng"
-    ],
-    "ans": 0,
-    "expl": "Thrashing = page-in/out không ngừng do RAM cấp cho process quá nhỏ → throughput hệ thống giảm."
-  },
-  {
-    "q": "動的アドレス変換機構 (DAT/MMU) làm gì?",
-    "opts": [
-      "Chia page",
-      "Chuyển địa chỉ ảo → vật lý",
-      "Cache cho CPU",
-      "Quản lý disk"
-    ],
-    "ans": 1,
-    "expl": "DAT/MMU = phần cứng chuyển 仮想アドレス → 物理アドレス trong khi CPU đang chạy."
-  }
-];
-
-// Render Flashcards with reliable click-to-flip
-function renderFC() {
-  const grid = document.getElementById('fcGrid');
-  if (!grid) return;
-  grid.innerHTML = '';
-
-  FLASHCARDS.forEach(f => {
-    const card = document.createElement('div');
-    card.className = 'fc-card';
-    card.innerHTML = `
-      <div>
-        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
-        <div class="fc-front">${f.front}</div>
-        <div class="fc-back">${f.back}</div>
-      </div>
-      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
-    `;
-    card.addEventListener('click', () => card.classList.toggle('flipped'));
-    grid.appendChild(card);
-  });
-}
-
-// Render Interactive Quiz with tactile 4-option cards & instant feedback
-let quizScore = 0;
-let quizAnswered = 0;
-
-function renderQuiz() {
-  const area = document.getElementById('quizArea');
-  if (!area) return;
-  area.innerHTML = '';
-  quizScore = 0;
-  quizAnswered = 0;
-
-  QUIZ.forEach((item, idx) => {
-    const card = document.createElement('div');
-    card.className = 'quiz-q-card';
-    card.dataset.idx = idx;
-
-    let optsHtml = '';
-    item.opts.forEach((opt, oi) => {
-      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
-      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
-    });
-
-    card.innerHTML = `
-      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
-      <div class="q-text">${item.q}</div>
-      <div class="opts">${optsHtml}</div>
-      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
-    `;
-
-    card.querySelectorAll('.opt').forEach(optEl => {
-      optEl.addEventListener('click', () => {
-        if (card.classList.contains('locked')) return;
-        card.classList.add('locked');
-
-        const chosen = parseInt(optEl.dataset.oi, 10);
-        const correct = item.ans;
-
-        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
-        if (correctEl) correctEl.classList.add('correct');
-
-        if (chosen !== correct) {
-          optEl.classList.add('wrong');
-        } else {
-          quizScore++;
-        }
-
-        quizAnswered++;
-        if (quizAnswered === QUIZ.length) showQuizResult();
-      });
-    });
-
-    area.appendChild(card);
-  });
-
-  const resBox = document.getElementById('quiz-result');
-  if (resBox) resBox.classList.remove('show');
-}
-
-function showQuizResult() {
-  const pct = Math.round((quizScore / QUIZ.length) * 100);
-  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
-  let verdict = '';
-  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
-  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
-  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
-  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
-  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
-  const res = document.getElementById('quiz-result');
-  if (res) {
-    res.classList.add('show');
-    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
-
-function resetQuiz() {
-  renderQuiz();
-  const area = document.getElementById('quizArea');
-  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// Initialize on DOM ready
-renderFC();
-renderQuiz();
-</script>
-<script src="../assets/reader.js"></script>
-</body>
-</html>
+ ===================== PHẦN 3 — FLASHCARD =====================
+</section><section class="lesson-part lesson-section" id="p3"><h2 class="lesson-part-title" data-ja="暗記カード" data-step="03" data-vi="Flashcards · Bấm để lật">Flashcards · Bấm để lật</h2><div aria-label="Nhóm flashcard" class="fc-filter" id="fcFilter" role="group"></div><div class="fc-grid" id="fcGrid"></div></section><section class="lesson-part lesson-section" id="p4"><h2 class="lesson-part-title" data-ja="確認テスト · 10問" data-step="04" data-vi="Quiz ôn tập · 10 câu">Quiz ôn tập · 10 câu</h2><div class="reading-quiz-tools"><span class="reading-resume-note"></span><button class="btn" id="quiz-reset" type="button">↻ Làm lại</button></div><div id="quizArea"></div><div hidden="" id="quiz-result"><div class="score" id="qScore"></div><p class="verdict" id="qVerdict"></p></div></section><footer class="lesson-footer"><button aria-pressed="false" class="btn primary" id="complete-lesson" type="button">✓ Đã hoàn thành bài học</button><p data-ja="読了状態はテストの進捗とは別に、このブラウザに保存されます。" data-vi="Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra." id="completion-status" role="status">Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra.</p><a class="btn" data-ja="テストへ →" data-vi="Làm bài kiểm tra →" href="../kiem-tra/21.html">Làm bài kiểm tra →</a><nav aria-label="Điều hướng bài học" class="footer-nav"><a class="btn" data-ja="← 前のレッスン" data-vi="← Bài trước" href="20.html">← Bài trước</a><a class="btn" data-ja="ロードマップへ →" data-vi="Về lộ trình →" href="../index.html" target="_top">Về lộ trình →</a></nav></footer></main><aside aria-label="Mục lục và ôn tập" class="reading-sidebar"><nav class="lesson-toc"><h3 data-ja="このレッスンの内容" data-vi="TRONG BÀI HỌC NÀY">TRONG BÀI HỌC NÀY</h3><ul></ul></nav><div class="reading-vocab"><h3 data-ja="覚えたいFE用語" data-vi="Từ vựng FE cần nhớ">Từ vựng FE cần nhớ</h3><p data-ja="用語をクリックして意味を確認。" data-vi="Bấm thuật ngữ để tự kiểm tra nghĩa.">Bấm thuật ngữ để tự kiểm tra nghĩa.</p></div></aside></div><script id="lesson-data" type="application/json">{"number": 21, "cards": [{"cat": "all", "front": "記憶管理 chia làm mấy loại?", "back": "2: 主記憶管理 (実記憶管理) + 仮想記憶管理 . FE chủ yếu hỏi virtual. Real"}, {"cat": "all", "front": "固定区画方式 (Fixed)", "back": "Chia RAM thành vùng kích thước cố định trước . Ưu: nạp nhanh. Nhược: hiệu suất kém (lãng phí). Real"}, {"cat": "all", "front": "可変区画方式 (Variable)", "back": "Khi nạp mới chia RAM khít với chương trình. Hiệu suất tốt, nhưng theo thời gian sinh フラグメンテーション . Real"}, {"cat": "all", "front": "フラグメンテーション", "back": "RAM bị phân mảnh thành nhiều ô trống nhỏ rời rạc sau khi chương trình kết thúc và giải phóng. Real"}, {"cat": "all", "front": "メモリコンパクション", "back": "Dồn các chương trình lại liền nhau → tạo vùng trống liên tục → giải quyết フラグメンテーション. Real"}, {"cat": "all", "front": "オーバーレイ方式", "back": "Khi chương trình > RAM, chia thành セグメント và nạp luân phiên chỉ phần đang cần. Real"}, {"cat": "all", "front": "スワッピング (Swapping)", "back": "Khi ngắt ưu tiên cao, tạm dừng chương trình hiện tại, đẩy nó xuống HDD (swap-out), sau đó nạp lại (swap-in). Real"}, {"cat": "all", "front": "メモリリーク", "back": "Vùng nhớ không dùng nhưng không được giải phóng do bug → RAM bị \"rò rỉ\" theo thời gian. Real"}, {"cat": "all", "front": "ガーベージコレクション (GC)", "back": "Tự động quét và giải phóng vùng nhớ không còn dùng → giảm memory leak. Real"}, {"cat": "all", "front": "仮想記憶 là gì?", "back": "Không gian bộ nhớ \"ảo\" do OS tạo ra, một phần thực ra nằm trên HDD. Cho phép chương trình lớn hơn RAM vẫn chạy được. Virt"}, {"cat": "all", "front": "仮想アドレス vs 物理アドレス", "back": "仮想アドレス = trong không gian ảo (logic). 物理アドレス = trong RAM thật. OS ánh xạ qua page table. Virt"}, {"cat": "all", "front": "動的アドレス変換機構 (DAT/MMU)", "back": "Bộ phận phần cứng chuyển 地址 ảo → vật lý trong khi CPU đang chạy. Virt"}, {"cat": "all", "front": "セグメンテーション vs ページング", "back": "Segmentation : chia theo セグメント 可変長 . Paging : chia theo ページ 固定長 . FE hỏi nhiều paging. Virt"}, {"cat": "all", "front": "ページング方式", "back": "Cả 仮想記憶 và 実記憶 đều chia thành các page kích thước cố định bằng nhau , đối ứng qua page table. Page"}, {"cat": "all", "front": "ページテーブル", "back": "Bảng 2 cột ( 仮想アドレス | 物理アドレス ). Số dòng = số page trong 仮想記憶 . Page"}, {"cat": "all", "front": "ページフォールト", "back": "Một interrupt xảy ra khi CPU truy cập page không có trong 実記憶 . Page"}, {"cat": "all", "front": "ページイン (Page-in)", "back": "Sau page fault, OS đọc page cần thiết từ 補助記憶 → 実記憶 . Page"}, {"cat": "all", "front": "ページアウト (Page-out)", "back": "Khi 実記憶 đầy, OS chọn 1 page và ghi nó từ 実記憶 → 補助記憶 để giải phóng chỗ. Page"}, {"cat": "all", "front": "Luồng CPU truy cập page", "back": "仮想記憶アクセス → ページテーブル参照 → (nếu fault) ページフォールト → 置き換えページ決定 → ページアウト → ページイン. Page"}, {"cat": "all", "front": "スラッシング", "back": "Hiện tượng page-in/out liên tục khi RAM cấp quá nhỏ. Làm スループット toàn hệ thống giảm . Page"}, {"cat": "all", "front": "FIFO", "back": "Đẩy ra page vào RAM sớm nhất (First In First Out). Algo"}, {"cat": "all", "front": "LIFO", "back": "Đẩy ra page vào RAM muộn nhất (Last In First Out). Slide có; Yasashii không nhấn mạnh. Algo"}, {"cat": "all", "front": "LRU ⭐", "back": "Least Recently Used — đẩy ra page có thời điểm tham chiếu cuối cũ nhất . FE chủ yếu hỏi LRU . Algo"}, {"cat": "all", "front": "LFU", "back": "Least Frequently Used — đẩy ra page có số lần tham chiếu ít nhất . Algo"}], "quiz": [{"q": "記憶管理 chia làm 2 loại nào?", "opts": ["Cache + RAM", "主記憶管理 (実記憶) + 仮想記憶管理", "HDD + SSD", "Stack + Heap"], "ans": 1, "expl": "記憶管理 = 主記憶 (RAM thật) + 仮想記憶 (ảo). FE chủ yếu hỏi virtual.", "qJa": "記憶管理 chia làm 2 loại nào?", "qVi": "記憶管理 chia làm 2 loại nào?"}, {"q": "フラグメンテーション được giải quyết bằng cách nào?", "opts": ["Tăng RAM", "メモリコンパクション (dồn lại)", "ガーベージコレクション", "オーバーレイ"], "ans": 1, "expl": "Compaction = dồn các chương trình lại liền nhau để tạo vùng trống liên tục.", "qJa": "フラグメンテーション được giải quyết bằng cách nào?", "qVi": "フラグメンテーション được giải quyết bằng cách nào?"}, {"q": "オーバーレイ方式 dùng khi nào?", "opts": ["RAM dư thừa", "Chương trình lớn hơn RAM", "Có nhiều CPU", "Disk hỏng"], "ans": 1, "expl": "Khi chương trình > RAM, chia thành segment và nạp luân phiên.", "qJa": "オーバーレイ方式 dùng khi nào?", "qVi": "オーバーレイ方式 dùng khi nào?"}, {"q": "ページング方式 chia bộ nhớ thành đơn vị có đặc điểm gì?", "opts": ["可変長 (segment)", "固定長 (page)", "Không chia", "Theo chương trình"], "ans": 1, "expl": "Paging chia thành ページ kích thước CỐ ĐỊNH bằng nhau. Segmentation mới là 可変長.", "qJa": "ページング方式 chia bộ nhớ thành đơn vị có đặc điểm gì?", "qVi": "ページング方式 chia bộ nhớ thành đơn vị có đặc điểm gì?"}, {"q": "ページフォールト là gì?", "opts": ["Lỗi cấu hình RAM", "Một loại interrupt khi page cần không có trong 実記憶", "HDD hỏng", "Page table sai"], "ans": 1, "expl": "Page fault = interrupt báo page cần không có trong RAM thật → kích hoạt page-in.", "qJa": "ページフォールト là gì?", "qVi": "ページフォールト là gì?"}, {"q": "Hướng của ページアウト là gì?", "opts": ["RAM → HDD", "HDD → RAM", "CPU → RAM", "RAM → CPU"], "ans": 0, "expl": "Page-OUT = đẩy page từ 実記憶 ra 補助記憶 để giải phóng chỗ.", "qJa": "Hướng của ページアウト là gì?", "qVi": "Hướng của ページアウト là gì?"}, {"q": "LRU chọn đẩy ra page nào?", "opts": ["Page vào sớm nhất", "Page có thời điểm tham chiếu cuối cũ nhất", "Page tham chiếu ít nhất", "Page vào muộn nhất"], "ans": 1, "expl": "LRU = Least Recently Used = lâu nhất chưa được dùng. FE hay hỏi nhất.", "qJa": "LRU chọn đẩy ra page nào?", "qVi": "LRU chọn đẩy ra page nào?"}, {"q": "LFU chọn đẩy ra page nào?", "opts": ["Vào sớm nhất", "Cũ nhất từ lần đọc cuối", "Số lần tham chiếu ít nhất", "Lớn nhất"], "ans": 2, "expl": "LFU = Least Frequently Used = ít được tham chiếu nhất.", "qJa": "LFU chọn đẩy ra page nào?", "qVi": "LFU chọn đẩy ra page nào?"}, {"q": "スラッシング xảy ra khi nào?", "opts": ["RAM cấp quá ít → page-in/out liên tục", "CPU quá nhanh", "HDD quá nhanh", "Page table rỗng"], "ans": 0, "expl": "Thrashing = page-in/out không ngừng do RAM cấp cho process quá nhỏ → throughput hệ thống giảm.", "qJa": "スラッシング xảy ra khi nào?", "qVi": "スラッシング xảy ra khi nào?"}, {"q": "動的アドレス変換機構 (DAT/MMU) làm gì?", "opts": ["Chia page", "Chuyển địa chỉ ảo → vật lý", "Cache cho CPU", "Quản lý disk"], "ans": 1, "expl": "DAT/MMU = phần cứng chuyển 仮想アドレス → 物理アドレス trong khi CPU đang chạy.", "qJa": "動的アドレス変換機構 (DAT/MMU) làm gì?", "qVi": "動的アドレス変換機構 (DAT/MMU) làm gì?"}], "available": true}</script></body></html>

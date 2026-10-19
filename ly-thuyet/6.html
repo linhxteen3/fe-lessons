@@ -1,144 +1,62 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="light" data-lang="dual">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bài 06: 半加算器・全加算器と論理回路 — FE Master</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/reader.css">
-</head>
-<body>
 
-<!-- Reading Progress Bar -->
-<div class="reading-progress-track">
-  <div class="reading-progress-bar" id="readingProgress"></div>
+<html data-reading-lang="dual" data-reading-theme="light" lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><meta content="light dark" name="color-scheme"/><title>Bài 06 · 論理回路 — FE Master</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/><link href="../assets/reader.css" rel="stylesheet"/><script defer="" src="../assets/reader.js"></script></head><body>
+<a class="skip-link" data-ja="本文へ" data-vi="Đến nội dung bài học" href="#lesson-content">Đến nội dung bài học</a>
+<header class="topbar"><div aria-label="Tiến độ đọc bài" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-track" role="progressbar"><div id="reader-progress"></div></div><div class="top-inner"><div class="top-left"><a class="reading-back" data-ja="← ロードマップへ" data-vi="← Quay lại lộ trình" href="../index.html" target="_top">← Quay lại lộ trình</a><nav aria-label="Breadcrumb" class="breadcrumb"><span>FE</span><span>/</span><span data-ja="目標1" data-vi="Mục tiêu 1">Mục tiêu 1</span><span>/</span><span data-ja="解説6" data-vi="Lý thuyết 6">Lý thuyết 6</span></nav></div><div class="reading-controls"><label class="sr-only" for="reading-language">Ngôn ngữ bài học</label><select id="reading-language"><option value="dual">Việt + 日本語</option><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select><button aria-label="Chế độ tập trung: ẩn sidebar" aria-pressed="false" id="zen-toggle" type="button">⊡ <span class="zen-label" data-ja="集中" data-vi="Tập trung">Tập trung</span></button><button aria-pressed="false" id="reading-theme" type="button">☾ Tối</button></div></div></header>
+<div class="layout"><main class="reading-main" id="lesson-content"><header class="lesson-hero"><span class="lesson-eyebrow" data-ja="レッスン06 · 理論" data-vi="BÀI 06 · LÝ THUYẾT">BÀI 06 · LÝ THUYẾT</span><h1><span class="reading-ja" lang="ja">論理回路</span><span class="reading-vi" lang="vi">Mạch logic</span></h1><div class="lesson-meta"><span data-ja="科目Aの基礎" data-vi="Trọng tâm 科目A">Trọng tâm 科目A</span><span data-ja="暗記カード12枚 · 確認問題10問" data-vi="12 flashcard · 10 câu ôn tập">12 flashcard · 10 câu ôn tập</span></div></header>
+<section class="lesson-part lesson-section" id="p1"><h2 class="lesson-part-title" data-ja="理論のまとめ" data-step="01" data-vi="Tóm tắt lý thuyết">Tóm tắt lý thuyết</h2>
+<h3 id="lesson-6-topic-1">1. 加算器 (Adder) - Bộ cộng là gì?</h3>
+<div class="lang-block jp reading-ja" lang="ja">
+<span class="lang-label">🇯🇵 日本語</span><br/>
+<strong>加算器</strong>とは、<span class="highlight">論理演算を活用して疑似的に2進数の足し算を行う電子回路</span>のこと。半加算器と全加算器の2種類がある。
 </div>
-
-<!-- Minimal Sticky Top Header -->
-<header class="site-header">
-  <div class="header-container">
-    <div class="header-left">
-      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
-        <span class="text-ja">← ロードマップ</span>
-        <span class="text-vi">← Lộ trình</span>
-      </a>
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
-        <span class="sep">/</span>
-        <span>Mục tiêu 1</span>
-        <span class="sep">/</span>
-        <span class="current">Bài 06</span>
-      </nav>
-    </div>
-    <div class="header-right">
-      <div class="lang-selector">
-        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
-        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
-        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
-      </div>
-      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
-        <span id="zenIcon">📖</span>
-        <span id="zenText">Zen</span>
-      </button>
-      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
-        <span id="themeIcon">◐</span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- Main Two-Column Reader Layout -->
-<div class="page-container">
-
-  <!-- Left Content Column -->
-  <main class="main-content">
-
-    <div class="lesson-header">
-      <div class="lesson-meta-bar">
-        <span class="badge-lesson">BÀI 06 · CƠ SỞ LÝ THUYẾT</span>
-        <span class="badge-tag">MỤC TIÊU 1</span>
-        <span class="badge-tag">TRỌNG TÂM 科目A</span>
-      </div>
-      <h1 class="lesson-title">
-        半加算器・全加算器と論理回路
-      </h1>
-      <div class="lesson-stats">
-        <span>⏱ ~30-45 phút đọc</span>
-        <span>·</span>
-        <span>Active Recall & Flashcards</span>
-      </div>
-    </div>
-
-    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
-    <section class="content-section" id="sec-1">
-      <h2 class="section-heading">
-        <span class="num-badge">①</span>
-        <span class="text-ja">重要理論 (Theory)</span>
-        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
-      </h2>
-      <div class="lesson-body-content">
-<h2>📘 Phần 1 — Tóm tắt lý thuyết</h2>
-
-<h3>1. 加算器 (Adder) - Bộ cộng là gì?</h3>
-<div class="lang-block jp">
-  <span class="lang-label">🇯🇵 日本語</span><br>
-  <strong>加算器</strong>とは、<span class="highlight">論理演算を活用して疑似的に2進数の足し算を行う電子回路</span>のこと。半加算器と全加算器の2種類がある。
+<div class="lang-block vi reading-vi" lang="vi">
+<span class="lang-label">🇻🇳 Tiếng Việt</span><br/>
+<strong>Bộ cộng (Adder)</strong> là <span class="highlight">mạch điện tử mô phỏng phép cộng số nhị phân bằng cách dùng các phép toán logic</span>. Có 2 loại: bộ cộng nửa và bộ cộng đầy đủ.
 </div>
-<div class="lang-block vi">
-  <span class="lang-label">🇻🇳 Tiếng Việt</span><br>
-  <strong>Bộ cộng (Adder)</strong> là <span class="highlight">mạch điện tử mô phỏng phép cộng số nhị phân bằng cách dùng các phép toán logic</span>. Có 2 loại: bộ cộng nửa và bộ cộng đầy đủ.
-</div>
-<div class="lang-block en">
-  <span class="lang-label">🇬🇧 English</span><br>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block en reading-en" lang="en">
+<span class="lang-label">🇬🇧 English</span><br/>
   An <strong>Adder</strong> is <span class="highlight">an electronic circuit that performs binary addition using logic operations</span>. Two main types: half adder and full adder.
-</div>
-
+</div></details>
 <div class="example-box">
-  <div class="label">💡 Ví von đời thực:</div>
+<div class="label">💡 Ví von đời thực:</div>
   Hãy tưởng tượng máy tính giống một đứa bé chỉ biết bật/tắt công tắc (1/0). Bộ cộng giống như "bàn tính" được lắp từ các công tắc đó để máy có thể cộng số nhị phân.
 </div>
-
-<h3>2. 半加算器 (Half Adder - HA) - Bộ cộng nửa</h3>
-<div class="lang-block jp">
-  <span class="lang-label">🇯🇵 日本語</span><br>
-  <strong>半加算器</strong>は、<span class="highlight">2つの2進数を加算して同桁の値（S: Sum）と繰上り（C: Carry）を出力する回路</span>。<strong>下位桁からの繰上りを考慮しない</strong>。
+<h3 id="lesson-6-topic-2">2. 半加算器 (Half Adder - HA) - Bộ cộng nửa</h3>
+<div class="lang-block jp reading-ja" lang="ja">
+<span class="lang-label">🇯🇵 日本語</span><br/>
+<strong>半加算器</strong>は、<span class="highlight">2つの2進数を加算して同桁の値（S: Sum）と繰上り（C: Carry）を出力する回路</span>。<strong>下位桁からの繰上りを考慮しない</strong>。
 </div>
-<div class="lang-block vi">
-  <span class="lang-label">🇻🇳 Tiếng Việt</span><br>
-  <strong>Bộ cộng nửa</strong> là mạch <span class="highlight">cộng 2 bit nhị phân và xuất ra giá trị cùng hàng (S) và bit nhớ (C)</span>. <strong>KHÔNG xét đến bit nhớ từ hàng dưới</strong> mang lên.
+<div class="lang-block vi reading-vi" lang="vi">
+<span class="lang-label">🇻🇳 Tiếng Việt</span><br/>
+<strong>Bộ cộng nửa</strong> là mạch <span class="highlight">cộng 2 bit nhị phân và xuất ra giá trị cùng hàng (S) và bit nhớ (C)</span>. <strong>KHÔNG xét đến bit nhớ từ hàng dưới</strong> mang lên.
 </div>
-<div class="lang-block en">
-  <span class="lang-label">🇬🇧 English</span><br>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block en reading-en" lang="en">
+<span class="lang-label">🇬🇧 English</span><br/>
   A <strong>Half Adder</strong> adds 2 binary digits and outputs <span class="highlight">Sum (S) and Carry (C)</span>. It <strong>does NOT consider carry-in</strong> from a lower digit.
-</div>
-
+</div></details>
 <h4>📋 Bảng chân lý của 半加算器 (Truth Table)</h4>
-<table>
-  <thead>
-    <tr><th colspan="2">入力 (Input)</th><th colspan="2">出力 (Output)</th></tr>
-    <tr><th>X</th><th>Y</th><th>S (和=和の1桁目)</th><th>C (桁上がり=Carry)</th></tr>
-  </thead>
-  <tbody>
-    <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-    <tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
-    <tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
-    <tr><td>1</td><td>1</td><td>0</td><td>1</td></tr>
-  </tbody>
-</table>
-
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead>
+<tr><th colspan="2" scope="col">入力 (Input)</th><th colspan="2" scope="col">出力 (Output)</th></tr>
+<tr><th scope="col">X</th><th scope="col">Y</th><th scope="col">S (和=和の1桁目)</th><th scope="col">C (桁上がり=Carry)</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+</tbody>
+</table></div>
 <p>👉 Nhìn vào bảng:</p>
 <ul>
-  <li><strong>S (和の1桁目)</strong> = giống bảng chân lý <span class="highlight">XOR (排他的論理和)</span>: X ⊕ Y</li>
-  <li><strong>C (桁上がり)</strong> = giống bảng chân lý <span class="highlight">AND (論理積)</span>: X · Y</li>
+<li><strong>S (和の1桁目)</strong> = giống bảng chân lý <span class="highlight">XOR (排他的論理和)</span>: X ⊕ Y</li>
+<li><strong>C (桁上がり)</strong> = giống bảng chân lý <span class="highlight">AND (論理積)</span>: X · Y</li>
 </ul>
-
 <div class="formula">
-S = X ⊕ Y  &nbsp;(XOR)<br>
-C = X · Y  &nbsp;(AND)
+S = X ⊕ Y   (XOR)<br/>
+C = X · Y   (AND)
 </div>
-
 <h4>🔌 Sơ đồ mạch 半加算器</h4>
 <div class="ascii-diagram">
 入力                          出力
@@ -151,39 +69,36 @@ C = X · Y  &nbsp;(AND)
          │    │  回路   │
          └───▶└─────────┘
 </div>
-
-<h3>3. 全加算器 (Full Adder - FA) - Bộ cộng đầy đủ</h3>
-<div class="lang-block jp">
-  <span class="lang-label">🇯🇵 日本語</span><br>
-  <strong>全加算器</strong>とは、<span class="highlight">2進数のたし算において、下の位からの桁上がりを考慮する加算回路</span>。入力は<strong>3つ（X、Y、Z）</strong>。Z = 下位からの桁上がり。
+<h3 id="lesson-6-topic-3">3. 全加算器 (Full Adder - FA) - Bộ cộng đầy đủ</h3>
+<div class="lang-block jp reading-ja" lang="ja">
+<span class="lang-label">🇯🇵 日本語</span><br/>
+<strong>全加算器</strong>とは、<span class="highlight">2進数のたし算において、下の位からの桁上がりを考慮する加算回路</span>。入力は<strong>3つ（X、Y、Z）</strong>。Z = 下位からの桁上がり。
 </div>
-<div class="lang-block vi">
-  <span class="lang-label">🇻🇳 Tiếng Việt</span><br>
-  <strong>Bộ cộng đầy đủ</strong> là mạch cộng <span class="highlight">CÓ xét đến bit nhớ từ hàng dưới mang lên</span>. Có <strong>3 đầu vào (X, Y, Z)</strong> trong đó Z = carry-in từ hàng dưới.
+<div class="lang-block vi reading-vi" lang="vi">
+<span class="lang-label">🇻🇳 Tiếng Việt</span><br/>
+<strong>Bộ cộng đầy đủ</strong> là mạch cộng <span class="highlight">CÓ xét đến bit nhớ từ hàng dưới mang lên</span>. Có <strong>3 đầu vào (X, Y, Z)</strong> trong đó Z = carry-in từ hàng dưới.
 </div>
-<div class="lang-block en">
-  <span class="lang-label">🇬🇧 English</span><br>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block en reading-en" lang="en">
+<span class="lang-label">🇬🇧 English</span><br/>
   A <strong>Full Adder</strong> performs binary addition <span class="highlight">while considering the carry-in from the lower digit</span>. It has <strong>3 inputs (X, Y, Z)</strong> where Z is carry-in.
-</div>
-
+</div></details>
 <h4>📋 Bảng chân lý của 全加算器 (8 patterns)</h4>
-<table>
-  <thead>
-    <tr><th colspan="3">入力 (Input)</th><th colspan="2">出力 (Output)</th></tr>
-    <tr><th>X</th><th>Y</th><th>Z</th><th>C (桁上がり)</th><th>S (和の1桁目)</th></tr>
-  </thead>
-  <tbody>
-    <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-    <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
-    <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
-    <tr><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td></tr>
-    <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
-    <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
-    <tr><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
-    <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
-  </tbody>
-</table>
-
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead>
+<tr><th colspan="3" scope="col">入力 (Input)</th><th colspan="2" scope="col">出力 (Output)</th></tr>
+<tr><th scope="col">X</th><th scope="col">Y</th><th scope="col">Z</th><th scope="col">C (桁上がり)</th><th scope="col">S (和の1桁目)</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+</tbody>
+</table></div>
 <h4>🔌 Sơ đồ mạch 全加算器 (= 2 × 半加算器 + 1 × OR)</h4>
 <div class="ascii-diagram">
 下の位からの
@@ -203,532 +118,110 @@ C = X · Y  &nbsp;(AND)
               ▼
               S ─────▶ 和の1桁目
 </div>
-
-<h3>4. 半加算器と全加算器の使い分け - Khi nào dùng cái nào?</h3>
-<div class="lang-block jp">
-  <span class="lang-label">🇯🇵 日本語</span><br>
-  ・<strong>1桁目（最下位ビット）</strong>： 下位がないので桁上がりを考慮する必要がない → <span class="highlight">半加算器</span><br>
+<h3 id="lesson-6-topic-4">4. 半加算器と全加算器の使い分け - Khi nào dùng cái nào?</h3>
+<div class="lang-block jp reading-ja" lang="ja">
+<span class="lang-label">🇯🇵 日本語</span><br/>
+  ・<strong>1桁目（最下位ビット）</strong>： 下位がないので桁上がりを考慮する必要がない → <span class="highlight">半加算器</span><br/>
   ・<strong>2桁目以上</strong>： 下位からの桁上がりを考慮する必要がある → <span class="highlight">全加算器</span>
 </div>
-<div class="lang-block vi">
-  <span class="lang-label">🇻🇳 Tiếng Việt</span><br>
-  ・<strong>Bit hàng đơn vị (LSB)</strong>: không có hàng dưới → dùng <span class="highlight">Half Adder</span><br>
+<div class="lang-block vi reading-vi" lang="vi">
+<span class="lang-label">🇻🇳 Tiếng Việt</span><br/>
+  ・<strong>Bit hàng đơn vị (LSB)</strong>: không có hàng dưới → dùng <span class="highlight">Half Adder</span><br/>
   ・<strong>Bit từ hàng 2 trở lên</strong>: phải nhận carry từ dưới → dùng <span class="highlight">Full Adder</span>
 </div>
-<div class="lang-block en">
-  <span class="lang-label">🇬🇧 English</span><br>
-  ・<strong>LSB (1st bit)</strong>: no lower bit, no carry-in needed → use <span class="highlight">Half Adder</span><br>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block en reading-en" lang="en">
+<span class="lang-label">🇬🇧 English</span><br/>
+  ・<strong>LSB (1st bit)</strong>: no lower bit, no carry-in needed → use <span class="highlight">Half Adder</span><br/>
   ・<strong>2nd bit and above</strong>: must handle carry-in → use <span class="highlight">Full Adder</span>
-</div>
-
-<h3>5. 主な論理回路 (6 loại mạch logic chính)</h3>
-
-<table>
-  <thead>
-    <tr>
-      <th>回路名 / Tên mạch</th>
-      <th>論理式</th>
-      <th>説明 (Mô tả)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>AND (論理積)</strong></td>
-      <td>A · B</td>
-      <td>Cả 2 đầu vào đều là 1 → 1<br>(両方が1のときのみ1)</td>
-    </tr>
-    <tr>
-      <td><strong>OR (論理和)</strong></td>
-      <td>A + B</td>
-      <td>Ít nhất 1 đầu vào là 1 → 1<br>(少なくとも一方が1なら1)</td>
-    </tr>
-    <tr>
-      <td><strong>NOT (否定)</strong></td>
-      <td>Ā</td>
-      <td>Đảo ngược giá trị đầu vào<br>(入力の反対が出力)</td>
-    </tr>
-    <tr>
-      <td><strong>NAND (否定論理積)</strong></td>
-      <td>(A · B) gạch trên</td>
-      <td>AND rồi đảo ngược<br>(論理積の結果と逆)</td>
-    </tr>
-    <tr>
-      <td><strong>NOR (否定論理和)</strong></td>
-      <td>(A + B) gạch trên</td>
-      <td>OR rồi đảo ngược<br>(論理和の結果と逆)</td>
-    </tr>
-    <tr>
-      <td><strong>XOR (排他的論理和)</strong></td>
-      <td>A ⊕ B</td>
-      <td>2 đầu vào khác nhau → 1, giống nhau → 0<br>(異なるとき1、同じとき0)</td>
-    </tr>
-  </tbody>
-</table>
-
+</div></details>
+<h3 id="lesson-6-topic-5">5. 主な論理回路 (6 loại mạch logic chính)</h3>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th scope="col">回路名 / Tên mạch</th>
+<th scope="col">論理式</th>
+<th scope="col">説明 (Mô tả)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AND (論理積)</strong></td>
+<td>A · B</td>
+<td>Cả 2 đầu vào đều là 1 → 1<br/>(両方が1のときのみ1)</td>
+</tr>
+<tr>
+<td><strong>OR (論理和)</strong></td>
+<td>A + B</td>
+<td>Ít nhất 1 đầu vào là 1 → 1<br/>(少なくとも一方が1なら1)</td>
+</tr>
+<tr>
+<td><strong>NOT (否定)</strong></td>
+<td>Ā</td>
+<td>Đảo ngược giá trị đầu vào<br/>(入力の反対が出力)</td>
+</tr>
+<tr>
+<td><strong>NAND (否定論理積)</strong></td>
+<td>(A · B) gạch trên</td>
+<td>AND rồi đảo ngược<br/>(論理積の結果と逆)</td>
+</tr>
+<tr>
+<td><strong>NOR (否定論理和)</strong></td>
+<td>(A + B) gạch trên</td>
+<td>OR rồi đảo ngược<br/>(論理和の結果と逆)</td>
+</tr>
+<tr>
+<td><strong>XOR (排他的論理和)</strong></td>
+<td>A ⊕ B</td>
+<td>2 đầu vào khác nhau → 1, giống nhau → 0<br/>(異なるとき1、同じとき0)</td>
+</tr>
+</tbody>
+</table></div>
 <h4>📋 Bảng chân lý 6 mạch cơ bản</h4>
-<table>
-  <thead>
-    <tr><th>A</th><th>B</th><th>AND<br>(A·B)</th><th>OR<br>(A+B)</th><th>NAND</th><th>NOR</th><th>XOR<br>(A⊕B)</th><th>NOT A</th></tr>
-  </thead>
-  <tbody>
-    <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
-    <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
-    <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
-    <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-  </tbody>
-</table>
-
-</section>
-
-<!-- =============== PART 2: 例 =============== -->
-      </div>
-    </section>
-
-    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
-    <section class="content-section" id="sec-2">
-      <h2 class="section-heading">
-        <span class="num-badge">②</span>
-        <span class="text-ja">演習例題 (Worked Examples)</span>
-        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
-      </h2>
-      <div class="lesson-body-content">
-<h2>💡 Phần 2 — Ví dụ minh hoạ</h2>
-
-<h3>Ví dụ 1: 半加算器 hoạt động — Cộng 1 + 1</h3>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead>
+<tr><th scope="col">A</th><th scope="col">B</th><th scope="col">AND<br/>(A·B)</th><th scope="col">OR<br/>(A+B)</th><th scope="col">NAND</th><th scope="col">NOR</th><th scope="col">XOR<br/>(A⊕B)</th><th scope="col">NOT A</th></tr>
+</thead>
+<tbody>
+<tr><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+<tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+<tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+</tbody>
+</table></div>
+</section><section class="lesson-part lesson-section" id="p2"><h2 class="lesson-part-title" data-ja="例題" data-step="02" data-vi="Ví dụ minh hoạ">Ví dụ minh hoạ</h2>
+<h3 id="lesson-6-topic-6">💡 Phần 2 — Ví dụ minh hoạ</h3>
+<h3 id="lesson-6-topic-7">Ví dụ 1: 半加算器 hoạt động — Cộng 1 + 1</h3>
 <div class="example-box">
-  <div class="label">🔢 入力: X=1, Y=1</div>
-  Tính từng bước:<br>
-  ① S = X ⊕ Y = 1 ⊕ 1 = <strong>0</strong> (vì XOR cho ra 0 khi 2 đầu vào giống nhau)<br>
-  ② C = X · Y = 1 · 1 = <strong>1</strong> (vì AND cho ra 1 khi cả 2 đều là 1)<br>
+<div class="label">🔢 入力: X=1, Y=1</div>
+  Tính từng bước:<br/>
+  ① S = X ⊕ Y = 1 ⊕ 1 = <strong>0</strong> (vì XOR cho ra 0 khi 2 đầu vào giống nhau)<br/>
+  ② C = X · Y = 1 · 1 = <strong>1</strong> (vì AND cho ra 1 khi cả 2 đều là 1)<br/>
   → Kết quả: <strong>CS = 10</strong> (= 2 trong hệ thập phân, đúng vì 1+1=2)
 </div>
-
-<h3>Ví dụ 2: 全加算器 hoạt động — 平成21年・秋期 問25</h3>
+<h3 id="lesson-6-topic-8">Ví dụ 2: 全加算器 hoạt động — 平成21年・秋期 問25</h3>
 <div class="example-box">
-  <div class="label">🔢 入力: X=1, Y=0, Z=1</div>
-  Đây là bài toán thi thật. X, Y, Z là 3 bit cần cộng:<br>
-  &nbsp;&nbsp;&nbsp;X = 1<br>
-  &nbsp;&nbsp;&nbsp;Y = 0<br>
-  &nbsp;&nbsp;+ Z = 1<br>
-  &nbsp;&nbsp;━━━━━<br>
-  &nbsp;&nbsp;CS = <strong>10</strong> (= 2 trong hệ thập phân)<br><br>
-  → 桁上がり C = <strong>1</strong>, 和の1桁目 S = <strong>0</strong> &nbsp;<strong>（答）ウ</strong>
+<div class="label">🔢 入力: X=1, Y=0, Z=1</div>
+  Đây là bài toán thi thật. X, Y, Z là 3 bit cần cộng:<br/>
+     X = 1<br/>
+     Y = 0<br/>
+    + Z = 1<br/>
+    ━━━━━<br/>
+    CS = <strong>10</strong> (= 2 trong hệ thập phân)<br/><br/>
+  → 桁上がり C = <strong>1</strong>, 和の1桁目 S = <strong>0</strong>  <strong>（答）ウ</strong>
 </div>
-
-<h3>Ví dụ 3: 半加算器 = AND + XOR — 平成29年・春期 問22</h3>
+<h3 id="lesson-6-topic-9">Ví dụ 3: 半加算器 = AND + XOR — 平成29年・春期 問22</h3>
 <div class="example-box">
-  <div class="label">🧩 Đề: trong sơ đồ 半加算器, mạch A và mạch B là gì?</div>
-  Quan sát bảng chân lý:<br>
-  ・"1桁目" (S) ứng với XOR → A = <strong>排他的論理和 (XOR)</strong><br>
-  ・"桁上げ" (C) ứng với AND → B = <strong>論理積 (AND)</strong><br>
-  <strong>（答）ア</strong>
+<div class="label">🧩 Đề: trong sơ đồ 半加算器, mạch A và mạch B là gì?</div>
+  Quan sát bảng chân lý:<br/>
+  ・"1桁目" (S) ứng với XOR → A = <strong>排他的論理和 (XOR)</strong><br/>
+  ・"桁上げ" (C) ứng với AND → B = <strong>論理積 (AND)</strong><br/>
+<strong>（答）ア</strong>
 </div>
-
-<h3>Ví dụ 4: Logic gates trong đời thực</h3>
+<h3 id="lesson-6-topic-10">Ví dụ 4: Logic gates trong đời thực</h3>
 <div class="example-box">
-  <div class="label">🏪 So sánh với "tiêu chí chọn quán ăn"</div>
-  ・<strong>AND</strong>: quán phải <em>vừa rẻ vừa ngon</em> → cả 2 đúng mới chọn<br>
-  ・<strong>OR</strong>: quán chỉ cần <em>rẻ HOẶC ngon</em> → 1 trong 2 đúng là chọn<br>
+<div class="label">🏪 So sánh với "tiêu chí chọn quán ăn"</div>
+  ・<strong>AND</strong>: quán phải <em>vừa rẻ vừa ngon</em> → cả 2 đúng mới chọn<br/>
+  ・<strong>OR</strong>: quán chỉ cần <em>rẻ HOẶC ngon</em> → 1 trong 2 đúng là chọn<br/>
   ・<strong>XOR</strong>: quán chỉ rẻ HOẶC chỉ ngon (chứ không cả hai) → "tôi muốn quán đặc biệt!"
 </div>
-
-</section>
-
-<!-- =============== PART 3: Flashcard =============== -->
-      </div>
-    </section>
-
-    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-3">
-      <h2 class="section-heading">
-        <span class="num-badge">③</span>
-        <span class="text-ja">暗記カード (Flashcards)</span>
-        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
-        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
-        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
-      </p>
-
-      <div class="fc-grid" id="fcGrid"></div>
-    </section>
-
-    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-4">
-      <h2 class="section-heading">
-        <span class="num-badge">④</span>
-        <span class="text-ja">確認テスト (10問)</span>
-        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
-        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
-        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
-      </p>
-
-      <div id="quizArea"></div>
-
-      <div class="quiz-result-box" id="quiz-result">
-        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
-        <div class="quiz-result-score" id="qScore">0 / 10</div>
-        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
-        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
-      </div>
-    </section>
-
-    <!-- Footer Navigation & Lesson Completion -->
-    <footer class="lesson-footer-nav">
-      <div class="completion-card">
-        <div>
-          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
-            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
-            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
-          </div>
-          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
-            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
-            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
-          </div>
-        </div>
-        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
-      </div>
-
-      <div class="footer-nav-buttons">
-        
-        <a href="5.html" class="nav-link-card prev">
-          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 05</span>
-            <span class="text-vi">Bài học 05</span>
-          </span>
-        </a>
-        
-        <a href="7.html" class="nav-link-card next">
-          <span class="nav-dir">BÀI TIẾP THEO / NEXT →</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 07</span>
-            <span class="text-vi">Bài học 07</span>
-          </span>
-        </a>
-      </div>
-    </footer>
-
-  </main>
-
-  <!-- Right Sticky Sidebar -->
-  <aside class="sticky-sidebar">
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-        <span class="text-ja">目次 (TOC)</span>
-        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
-      </div>
-      <nav>
-        <ul class="toc-list" id="tocList">
-          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
-        </ul>
-      </nav>
-    </div>
-
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        <span class="text-ja">クイック復習</span>
-        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
-      </div>
-      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
-        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
-        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
-      </p>
-    </div>
-  </aside>
-
-</div>
-
-<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
-<script>
-const FLASHCARDS = [
-  {
-    "cat": "all",
-    "front": "加算器 (かさんき) là gì?",
-    "back": "Mạch điện tử thực hiện phép cộng nhị phân bằng các phép toán logic. Có 2 loại: 半加算器 và 全加算器."
-  },
-  {
-    "cat": "all",
-    "front": "半加算器 (HA) khác 全加算器 (FA) ở điểm nào?",
-    "back": "HA không xét carry-in (2 đầu vào), FA có xét carry-in từ hàng dưới (3 đầu vào)."
-  },
-  {
-    "cat": "all",
-    "front": "S và C trong 半加算器 là gì?",
-    "back": "S = Sum (和 = tổng cùng hàng), C = Carry (桁上がり = bit nhớ sang hàng trên)."
-  },
-  {
-    "cat": "all",
-    "front": "半加算器 dùng những mạch nào?",
-    "back": "XOR (排他的論理和) để tính S, và AND (論理積) để tính C."
-  },
-  {
-    "cat": "all",
-    "front": "全加算器 được cấu tạo từ?",
-    "back": "2 × 半加算器 + 1 × OR (論理和) gate."
-  },
-  {
-    "cat": "all",
-    "front": "AND (論理積) cho ra 1 khi nào?",
-    "back": "Khi CẢ 2 đầu vào đều là 1. (両方が1のときのみ1)"
-  },
-  {
-    "cat": "all",
-    "front": "OR (論理和) cho ra 1 khi nào?",
-    "back": "Khi ÍT NHẤT 1 đầu vào là 1. (少なくとも一方が1なら1)"
-  },
-  {
-    "cat": "all",
-    "front": "XOR (排他的論理和) cho ra 1 khi nào?",
-    "back": "Khi 2 đầu vào KHÁC NHAU. (異なるときに1、同じときに0)"
-  },
-  {
-    "cat": "all",
-    "front": "NAND khác AND ở điểm gì?",
-    "back": "NAND = NOT AND. Kết quả ngược lại AND. (0001 → 1110)"
-  },
-  {
-    "cat": "all",
-    "front": "Khi cộng 1 byte (8 bit), cần bao nhiêu HA và FA?",
-    "back": "1 × 半加算器 cho bit LSB + 7 × 全加算器 cho 7 bit còn lại."
-  },
-  {
-    "cat": "all",
-    "front": "MIL記号 là gì?",
-    "back": "Ký hiệu chuẩn để vẽ các loại cổng logic (AND, OR, NOT, XOR...) trong sơ đồ mạch."
-  },
-  {
-    "cat": "all",
-    "front": "真理値表 (しんりちひょう) là gì?",
-    "back": "Truth Table - Bảng liệt kê tất cả tổ hợp đầu vào và đầu ra tương ứng của 1 mạch logic."
-  }
-];
-const QUIZ = [
-  {
-    "q": "Q1. 半加算器 (Half Adder) có bao nhiêu đầu vào?",
-    "opts": [
-      "A. 1",
-      "B. 2",
-      "C. 3",
-      "D. 4"
-    ],
-    "ans": 1,
-    "expl": "半加算器 chỉ cộng 2 bit, không có carry-in."
-  },
-  {
-    "q": "Q2. Trong 半加算器, S (Sum) được tính bằng phép toán logic nào?",
-    "opts": [
-      "A. AND (論理積)",
-      "B. OR (論理和)",
-      "C. XOR (排他的論理和)",
-      "D. NOT (否定)"
-    ],
-    "ans": 2,
-    "expl": "S = X ⊕ Y (XOR). Vì XOR cho ra 1 khi 2 đầu vào khác nhau, đúng với cách cộng 0+1=1, 1+0=1, 1+1=10 (S=0)."
-  },
-  {
-    "q": "Q3. Trong 半加算器, C (Carry) được tính bằng phép toán logic nào?",
-    "opts": [
-      "A. AND (論理積)",
-      "B. OR (論理和)",
-      "C. XOR (排他的論理和)",
-      "D. NAND (否定論理積)"
-    ],
-    "ans": 0,
-    "expl": "C = X · Y (AND). Chỉ khi cả 2 đều là 1 mới sinh ra carry (vì 1+1=10)."
-  },
-  {
-    "q": "Q4. Khi cộng X=1, Y=1, Z=1 trong 全加算器, kết quả CS là?",
-    "opts": [
-      "A. CS = 00",
-      "B. CS = 01",
-      "C. CS = 10",
-      "D. CS = 11"
-    ],
-    "ans": 3,
-    "expl": "1+1+1 = 3 (thập phân) = 11 (nhị phân). Vậy C=1, S=1."
-  },
-  {
-    "q": "Q5. 全加算器 được cấu tạo từ những gì?",
-    "opts": [
-      "A. 1 半加算器 + 1 AND",
-      "B. 2 半加算器 + 1 OR (論理和)",
-      "C. 3 半加算器",
-      "D. 1 AND + 1 OR + 1 XOR"
-    ],
-    "ans": 1,
-    "expl": "全加算器 = 2 × 半加算器 + 1 × OR gate. 2 HA xử lý 3 đầu vào, OR gộp 2 carry lại."
-  },
-  {
-    "q": "Q6. Khi cộng 1 chuỗi 8-bit, mạch nào dùng cho bit LSB (hàng đơn vị)?",
-    "opts": [
-      "A. 半加算器, vì không có hàng dưới nên không cần carry-in",
-      "B. 全加算器, vì luôn cần xét carry",
-      "C. Tùy theo giá trị bit",
-      "D. Cần cả 2 mạch"
-    ],
-    "ans": 0,
-    "expl": "LSB không có hàng dưới → không có carry-in → 半加算器 là đủ."
-  },
-  {
-    "q": "Q7. Mạch XOR cho ra 1 trong trường hợp nào?",
-    "opts": [
-      "A. Cả 2 đầu vào là 0",
-      "B. Cả 2 đầu vào là 1",
-      "C. 2 đầu vào giống nhau",
-      "D. 2 đầu vào khác nhau"
-    ],
-    "ans": 3,
-    "expl": "XOR = 排他的論理和: khi 2 đầu vào KHÁC NHAU thì cho ra 1 (0⊕1=1, 1⊕0=1)."
-  },
-  {
-    "q": "Q8. Phát biểu nào về 全加算器 là ĐÚNG?",
-    "opts": [
-      "A. Có 2 đầu vào và 2 đầu ra",
-      "B. Không xét carry-in từ hàng dưới",
-      "C. Có 3 đầu vào (X, Y, carry-in) và 2 đầu ra (S, C)",
-      "D. Chỉ dùng được cho số 1 bit"
-    ],
-    "ans": 2,
-    "expl": "全加算器 nhận 3 input (X, Y, Z=carry-in) và xuất ra 2 output: S (sum) và C (carry-out). Có 8 patterns (2³=8)."
-  },
-  {
-    "q": "Q9. NAND là kết hợp của 2 phép toán nào?",
-    "opts": [
-      "A. AND + OR",
-      "B. AND + NOT",
-      "C. OR + NOT",
-      "D. XOR + NOT"
-    ],
-    "ans": 1,
-    "expl": "NAND = NOT AND = 否定論理積. Kết quả là AND rồi đảo ngược."
-  },
-  {
-    "q": "Q10. Cộng 2 số 1 byte (8 bit), tối thiểu cần bao nhiêu 全加算器?",
-    "opts": [
-      "A. 0 (chỉ cần 半加算器)",
-      "B. 1",
-      "C. 7",
-      "D. 8"
-    ],
-    "ans": 2,
-    "expl": "LSB (bit 1) dùng 半加算器, 7 bit còn lại (bit 2-8) cần 全加算器 để xét carry-in. Tổng: 1 HA + 7 FA."
-  }
-];
-
-// Render Flashcards with reliable click-to-flip
-function renderFC() {
-  const grid = document.getElementById('fcGrid');
-  if (!grid) return;
-  grid.innerHTML = '';
-
-  FLASHCARDS.forEach(f => {
-    const card = document.createElement('div');
-    card.className = 'fc-card';
-    card.innerHTML = `
-      <div>
-        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
-        <div class="fc-front">${f.front}</div>
-        <div class="fc-back">${f.back}</div>
-      </div>
-      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
-    `;
-    card.addEventListener('click', () => card.classList.toggle('flipped'));
-    grid.appendChild(card);
-  });
-}
-
-// Render Interactive Quiz with tactile 4-option cards & instant feedback
-let quizScore = 0;
-let quizAnswered = 0;
-
-function renderQuiz() {
-  const area = document.getElementById('quizArea');
-  if (!area) return;
-  area.innerHTML = '';
-  quizScore = 0;
-  quizAnswered = 0;
-
-  QUIZ.forEach((item, idx) => {
-    const card = document.createElement('div');
-    card.className = 'quiz-q-card';
-    card.dataset.idx = idx;
-
-    let optsHtml = '';
-    item.opts.forEach((opt, oi) => {
-      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
-      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
-    });
-
-    card.innerHTML = `
-      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
-      <div class="q-text">${item.q}</div>
-      <div class="opts">${optsHtml}</div>
-      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
-    `;
-
-    card.querySelectorAll('.opt').forEach(optEl => {
-      optEl.addEventListener('click', () => {
-        if (card.classList.contains('locked')) return;
-        card.classList.add('locked');
-
-        const chosen = parseInt(optEl.dataset.oi, 10);
-        const correct = item.ans;
-
-        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
-        if (correctEl) correctEl.classList.add('correct');
-
-        if (chosen !== correct) {
-          optEl.classList.add('wrong');
-        } else {
-          quizScore++;
-        }
-
-        quizAnswered++;
-        if (quizAnswered === QUIZ.length) showQuizResult();
-      });
-    });
-
-    area.appendChild(card);
-  });
-
-  const resBox = document.getElementById('quiz-result');
-  if (resBox) resBox.classList.remove('show');
-}
-
-function showQuizResult() {
-  const pct = Math.round((quizScore / QUIZ.length) * 100);
-  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
-  let verdict = '';
-  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
-  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
-  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
-  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
-  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
-  const res = document.getElementById('quiz-result');
-  if (res) {
-    res.classList.add('show');
-    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
-
-function resetQuiz() {
-  renderQuiz();
-  const area = document.getElementById('quizArea');
-  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// Initialize on DOM ready
-renderFC();
-renderQuiz();
-</script>
-<script src="../assets/reader.js"></script>
-</body>
-</html>
+</section><section class="lesson-part lesson-section" id="p3"><h2 class="lesson-part-title" data-ja="暗記カード" data-step="03" data-vi="Flashcards · Bấm để lật">Flashcards · Bấm để lật</h2><div aria-label="Nhóm flashcard" class="fc-filter" id="fcFilter" role="group"></div><div class="fc-grid" id="fcGrid"></div></section><section class="lesson-part lesson-section" id="p4"><h2 class="lesson-part-title" data-ja="確認テスト · 10問" data-step="04" data-vi="Quiz ôn tập · 10 câu">Quiz ôn tập · 10 câu</h2><div class="reading-quiz-tools"><span class="reading-resume-note"></span><button class="btn" id="quiz-reset" type="button">↻ Làm lại</button></div><div id="quizArea"></div><div hidden="" id="quiz-result"><div class="score" id="qScore"></div><p class="verdict" id="qVerdict"></p></div></section><footer class="lesson-footer"><button aria-pressed="false" class="btn primary" id="complete-lesson" type="button">✓ Đã hoàn thành bài học</button><p data-ja="読了状態はテストの進捗とは別に、このブラウザに保存されます。" data-vi="Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra." id="completion-status" role="status">Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra.</p><a class="btn" data-ja="テストへ →" data-vi="Làm bài kiểm tra →" href="../kiem-tra/6.html">Làm bài kiểm tra →</a><nav aria-label="Điều hướng bài học" class="footer-nav"><a class="btn" data-ja="← 前のレッスン" data-vi="← Bài trước" href="5.html">← Bài trước</a><a class="btn" data-ja="次のレッスン →" data-vi="Bài tiếp theo →" href="7.html">Bài tiếp theo →</a></nav></footer></main><aside aria-label="Mục lục và ôn tập" class="reading-sidebar"><nav class="lesson-toc"><h3 data-ja="このレッスンの内容" data-vi="TRONG BÀI HỌC NÀY">TRONG BÀI HỌC NÀY</h3><ul></ul></nav><div class="reading-vocab"><h3 data-ja="覚えたいFE用語" data-vi="Từ vựng FE cần nhớ">Từ vựng FE cần nhớ</h3><p data-ja="用語をクリックして意味を確認。" data-vi="Bấm thuật ngữ để tự kiểm tra nghĩa.">Bấm thuật ngữ để tự kiểm tra nghĩa.</p></div></aside></div><script id="lesson-data" type="application/json">{"number": 6, "cards": [{"cat": "all", "front": "加算器 (かさんき) là gì?", "back": "Mạch điện tử thực hiện phép cộng nhị phân bằng các phép toán logic. Có 2 loại: 半加算器 và 全加算器."}, {"cat": "all", "front": "半加算器 (HA) khác 全加算器 (FA) ở điểm nào?", "back": "HA không xét carry-in (2 đầu vào), FA có xét carry-in từ hàng dưới (3 đầu vào)."}, {"cat": "all", "front": "S và C trong 半加算器 là gì?", "back": "S = Sum (和 = tổng cùng hàng), C = Carry (桁上がり = bit nhớ sang hàng trên)."}, {"cat": "all", "front": "半加算器 dùng những mạch nào?", "back": "XOR (排他的論理和) để tính S, và AND (論理積) để tính C."}, {"cat": "all", "front": "全加算器 được cấu tạo từ?", "back": "2 × 半加算器 + 1 × OR (論理和) gate."}, {"cat": "all", "front": "AND (論理積) cho ra 1 khi nào?", "back": "Khi CẢ 2 đầu vào đều là 1. (両方が1のときのみ1)"}, {"cat": "all", "front": "OR (論理和) cho ra 1 khi nào?", "back": "Khi ÍT NHẤT 1 đầu vào là 1. (少なくとも一方が1なら1)"}, {"cat": "all", "front": "XOR (排他的論理和) cho ra 1 khi nào?", "back": "Khi 2 đầu vào KHÁC NHAU. (異なるときに1、同じときに0)"}, {"cat": "all", "front": "NAND khác AND ở điểm gì?", "back": "NAND = NOT AND. Kết quả ngược lại AND. (0001 → 1110)"}, {"cat": "all", "front": "Khi cộng 1 byte (8 bit), cần bao nhiêu HA và FA?", "back": "1 × 半加算器 cho bit LSB + 7 × 全加算器 cho 7 bit còn lại."}, {"cat": "all", "front": "MIL記号 là gì?", "back": "Ký hiệu chuẩn để vẽ các loại cổng logic (AND, OR, NOT, XOR...) trong sơ đồ mạch."}, {"cat": "all", "front": "真理値表 (しんりちひょう) là gì?", "back": "Truth Table - Bảng liệt kê tất cả tổ hợp đầu vào và đầu ra tương ứng của 1 mạch logic."}], "quiz": [{"q": "Q1. 半加算器 (Half Adder) có bao nhiêu đầu vào?", "opts": ["A. 1", "B. 2", "C. 3", "D. 4"], "ans": 1, "expl": "半加算器 chỉ cộng 2 bit, không có carry-in.", "qJa": "Q1. 半加算器 (Half Adder) có bao nhiêu đầu vào?", "qVi": "Q1. 半加算器 (Half Adder) có bao nhiêu đầu vào?"}, {"q": "Q2. Trong 半加算器, S (Sum) được tính bằng phép toán logic nào?", "opts": ["A. AND (論理積)", "B. OR (論理和)", "C. XOR (排他的論理和)", "D. NOT (否定)"], "ans": 2, "expl": "S = X ⊕ Y (XOR). Vì XOR cho ra 1 khi 2 đầu vào khác nhau, đúng với cách cộng 0+1=1, 1+0=1, 1+1=10 (S=0).", "qJa": "Q2. Trong 半加算器, S (Sum) được tính bằng phép toán logic nào?", "qVi": "Q2. Trong 半加算器, S (Sum) được tính bằng phép toán logic nào?"}, {"q": "Q3. Trong 半加算器, C (Carry) được tính bằng phép toán logic nào?", "opts": ["A. AND (論理積)", "B. OR (論理和)", "C. XOR (排他的論理和)", "D. NAND (否定論理積)"], "ans": 0, "expl": "C = X · Y (AND). Chỉ khi cả 2 đều là 1 mới sinh ra carry (vì 1+1=10).", "qJa": "Q3. Trong 半加算器, C (Carry) được tính bằng phép toán logic nào?", "qVi": "Q3. Trong 半加算器, C (Carry) được tính bằng phép toán logic nào?"}, {"q": "Q4. Khi cộng X=1, Y=1, Z=1 trong 全加算器, kết quả CS là?", "opts": ["A. CS = 00", "B. CS = 01", "C. CS = 10", "D. CS = 11"], "ans": 3, "expl": "1+1+1 = 3 (thập phân) = 11 (nhị phân). Vậy C=1, S=1.", "qJa": "Q4. Khi cộng X=1, Y=1, Z=1 trong 全加算器, kết quả CS là?", "qVi": "Q4. Khi cộng X=1, Y=1, Z=1 trong 全加算器, kết quả CS là?"}, {"q": "Q5. 全加算器 được cấu tạo từ những gì?", "opts": ["A. 1 半加算器 + 1 AND", "B. 2 半加算器 + 1 OR (論理和)", "C. 3 半加算器", "D. 1 AND + 1 OR + 1 XOR"], "ans": 1, "expl": "全加算器 = 2 × 半加算器 + 1 × OR gate. 2 HA xử lý 3 đầu vào, OR gộp 2 carry lại.", "qJa": "Q5. 全加算器 được cấu tạo từ những gì?", "qVi": "Q5. 全加算器 được cấu tạo từ những gì?"}, {"q": "Q6. Khi cộng 1 chuỗi 8-bit, mạch nào dùng cho bit LSB (hàng đơn vị)?", "opts": ["A. 半加算器, vì không có hàng dưới nên không cần carry-in", "B. 全加算器, vì luôn cần xét carry", "C. Tùy theo giá trị bit", "D. Cần cả 2 mạch"], "ans": 0, "expl": "LSB không có hàng dưới → không có carry-in → 半加算器 là đủ.", "qJa": "Q6. Khi cộng 1 chuỗi 8-bit, mạch nào dùng cho bit LSB (hàng đơn vị)?", "qVi": "Q6. Khi cộng 1 chuỗi 8-bit, mạch nào dùng cho bit LSB (hàng đơn vị)?"}, {"q": "Q7. Mạch XOR cho ra 1 trong trường hợp nào?", "opts": ["A. Cả 2 đầu vào là 0", "B. Cả 2 đầu vào là 1", "C. 2 đầu vào giống nhau", "D. 2 đầu vào khác nhau"], "ans": 3, "expl": "XOR = 排他的論理和: khi 2 đầu vào KHÁC NHAU thì cho ra 1 (0⊕1=1, 1⊕0=1).", "qJa": "Q7. Mạch XOR cho ra 1 trong trường hợp nào?", "qVi": "Q7. Mạch XOR cho ra 1 trong trường hợp nào?"}, {"q": "Q8. Phát biểu nào về 全加算器 là ĐÚNG?", "opts": ["A. Có 2 đầu vào và 2 đầu ra", "B. Không xét carry-in từ hàng dưới", "C. Có 3 đầu vào (X, Y, carry-in) và 2 đầu ra (S, C)", "D. Chỉ dùng được cho số 1 bit"], "ans": 2, "expl": "全加算器 nhận 3 input (X, Y, Z=carry-in) và xuất ra 2 output: S (sum) và C (carry-out). Có 8 patterns (2³=8).", "qJa": "Q8. Phát biểu nào về 全加算器 là ĐÚNG?", "qVi": "Q8. Phát biểu nào về 全加算器 là ĐÚNG?"}, {"q": "Q9. NAND là kết hợp của 2 phép toán nào?", "opts": ["A. AND + OR", "B. AND + NOT", "C. OR + NOT", "D. XOR + NOT"], "ans": 1, "expl": "NAND = NOT AND = 否定論理積. Kết quả là AND rồi đảo ngược.", "qJa": "Q9. NAND là kết hợp của 2 phép toán nào?", "qVi": "Q9. NAND là kết hợp của 2 phép toán nào?"}, {"q": "Q10. Cộng 2 số 1 byte (8 bit), tối thiểu cần bao nhiêu 全加算器?", "opts": ["A. 0 (chỉ cần 半加算器)", "B. 1", "C. 7", "D. 8"], "ans": 2, "expl": "LSB (bit 1) dùng 半加算器, 7 bit còn lại (bit 2-8) cần 全加算器 để xét carry-in. Tổng: 1 HA + 7 FA.", "qJa": "Q10. Cộng 2 số 1 byte (8 bit), tối thiểu cần bao nhiêu 全加算器?", "qVi": "Q10. Cộng 2 số 1 byte (8 bit), tối thiểu cần bao nhiêu 全加算器?"}], "available": true}</script></body></html>

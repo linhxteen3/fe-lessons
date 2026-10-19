@@ -21,7 +21,7 @@ const { chromium } = require('playwright');
     const page = await browser.newPage();
     await page.route('https://fonts.googleapis.com/**', route => route.abort());
     await page.route('https://fonts.gstatic.com/**', route => route.abort());
-    const paths = process.argv.length > 2 ? process.argv.slice(2) : ['index.html', ...['ly-thuyet', 'kiem-tra'].flatMap(dir =>
+    const paths = process.argv.length > 2 ? process.argv.slice(2) : ['index.html', ...['kiem-tra'].flatMap(dir =>
       fs.readdirSync(dir).filter(file => file.endsWith('.html')).map(file => `${dir}/${file}`))];
     const issues = [];
     for (const width of [1280, 390]) {
@@ -85,23 +85,7 @@ const { chromium } = require('playwright');
     }
     console.log(JSON.stringify(issues, null, 2));
     assert.deepEqual(issues, []);
-    for (const [number, nav] of [[9, 'mainnav'], [10, 'nav']]) {
-      await page.goto(`${origin}/ly-thuyet/${number}.html`);
-      await page.locator('.fe-toolbar-right a').waitFor();
-      await page.locator(`#${nav} button`).nth(1).click();
-      assert.equal(await page.locator(`#${nav} button`).nth(1).getAttribute('class'), 'active');
-      assert.ok(await page.locator('section.active').isVisible());
-    }
-    await page.setViewportSize({ width: 1280, height: 900 });
-    for (const number of [2, 8, 11, 12]) {
-      await page.goto(`${origin}/ly-thuyet/${number}.html`);
-      await page.locator('.fe-toolbar-right a').waitFor();
-      await page.screenshot({ path: require('node:path').join(require('node:os').tmpdir(), `fe-layout-${number}.png`) });
-    }
-    await page.goto(`${origin}/ly-thuyet/4.html`);
-    await page.locator('.flow').first().scrollIntoViewIfNeeded();
-    assert.equal(await page.locator('.flow .node').first().evaluate(el => getComputedStyle(el).backgroundColor), 'rgb(39, 39, 39)');
-    await page.screenshot({ path: require('node:path').join(require('node:os').tmpdir(), 'fe-preview-theory.png') });
+    // Theory interactions and responsive layout are covered by tests/reader.cjs.
     await page.goto(`${origin}/kiem-tra/13.html`);
     await page.locator('.quiz-option').first().click();
     assert.ok(await page.locator('.quiz-option.correct, .quiz-option.wrong').count());
@@ -159,13 +143,13 @@ const { chromium } = require('playwright');
     await page.locator('[data-track="a"]').click();
     await page.locator('[data-lesson="2"] .lesson-link').first().click();
     assert.ok(await page.locator('dialog[open]').isVisible());
-    await page.frameLocator('#frame').locator('.lesson-title').waitFor();
+    await page.frameLocator('#frame').locator('.lesson-hero h1').waitFor();
     assert.equal(await page.frameLocator('#frame').locator('.btn-done, .fe-toolbar button').count(), 0);
     await page.locator('#tabTest').click();
     await page.frameLocator('#frame').locator('.quiz-option').first().waitFor();
     await page.locator('#pClose').click();
     assert.equal(await page.locator('dialog[open]').count(), 0);
-    assert.equal(await page.evaluate(() => document.activeElement.id), 'resumeCourse');
+    await page.waitForFunction(() => document.activeElement.id === 'resumeCourse');
     for (const width of [1440, 390]) {
       await page.setViewportSize({ width, height: 1000 });
       await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));

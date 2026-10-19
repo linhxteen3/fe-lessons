@@ -1,768 +1,307 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="light" data-lang="dual">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bài 09: AI + 確率 (Xác suất) — FE Master</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/reader.css">
-</head>
-<body>
 
-<!-- Reading Progress Bar -->
-<div class="reading-progress-track">
-  <div class="reading-progress-bar" id="readingProgress"></div>
-</div>
+<html data-reading-lang="dual" data-reading-theme="light" lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><meta content="light dark" name="color-scheme"/><title>Bài 09 · AI + 確率 (xác suất) — FE Master</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/><link href="../assets/reader.css" rel="stylesheet"/><script defer="" src="../assets/reader.js"></script></head><body>
+<a class="skip-link" data-ja="本文へ" data-vi="Đến nội dung bài học" href="#lesson-content">Đến nội dung bài học</a>
+<header class="topbar"><div aria-label="Tiến độ đọc bài" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-track" role="progressbar"><div id="reader-progress"></div></div><div class="top-inner"><div class="top-left"><a class="reading-back" data-ja="← ロードマップへ" data-vi="← Quay lại lộ trình" href="../index.html" target="_top">← Quay lại lộ trình</a><nav aria-label="Breadcrumb" class="breadcrumb"><span>FE</span><span>/</span><span data-ja="目標1" data-vi="Mục tiêu 1">Mục tiêu 1</span><span>/</span><span data-ja="解説9" data-vi="Lý thuyết 9">Lý thuyết 9</span></nav></div><div class="reading-controls"><label class="sr-only" for="reading-language">Ngôn ngữ bài học</label><select id="reading-language"><option value="dual">Việt + 日本語</option><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select><button aria-label="Chế độ tập trung: ẩn sidebar" aria-pressed="false" id="zen-toggle" type="button">⊡ <span class="zen-label" data-ja="集中" data-vi="Tập trung">Tập trung</span></button><button aria-pressed="false" id="reading-theme" type="button">☾ Tối</button></div></div></header>
+<div class="layout"><main class="reading-main" id="lesson-content"><header class="lesson-hero"><span class="lesson-eyebrow" data-ja="レッスン09 · 理論" data-vi="BÀI 09 · LÝ THUYẾT">BÀI 09 · LÝ THUYẾT</span><h1><span class="reading-ja" lang="ja">AI + 確率 (xác suất)</span><span class="reading-vi" lang="vi">AI + 確率 (xác suất)</span></h1><div class="lesson-meta"><span data-ja="科目Aの基礎" data-vi="Trọng tâm 科目A">Trọng tâm 科目A</span><span data-ja="暗記カード10枚 · 確認問題6問" data-vi="10 flashcard · 6 câu ôn tập">10 flashcard · 6 câu ôn tập</span></div></header>
+<section class="lesson-part lesson-section" id="p1"><h2 class="lesson-part-title" data-ja="理論のまとめ" data-step="01" data-vi="Tóm tắt lý thuyết">Tóm tắt lý thuyết</h2>
 
-<!-- Minimal Sticky Top Header -->
-<header class="site-header">
-  <div class="header-container">
-    <div class="header-left">
-      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
-        <span class="text-ja">← ロードマップ</span>
-        <span class="text-vi">← Lộ trình</span>
-      </a>
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
-        <span class="sep">/</span>
-        <span>Mục tiêu 1</span>
-        <span class="sep">/</span>
-        <span class="current">Bài 09</span>
-      </nav>
-    </div>
-    <div class="header-right">
-      <div class="lang-selector">
-        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
-        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
-        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
-      </div>
-      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
-        <span id="zenIcon">📖</span>
-        <span id="zenText">Zen</span>
-      </button>
-      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
-        <span id="themeIcon">◐</span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- Main Two-Column Reader Layout -->
-<div class="page-container">
-
-  <!-- Left Content Column -->
-  <main class="main-content">
-
-    <div class="lesson-header">
-      <div class="lesson-meta-bar">
-        <span class="badge-lesson">BÀI 09 · CƠ SỞ LÝ THUYẾT</span>
-        <span class="badge-tag">MỤC TIÊU 1</span>
-        <span class="badge-tag">TRỌNG TÂM 科目A</span>
-      </div>
-      <h1 class="lesson-title">
-        AI + 確率 (Xác suất)
-      </h1>
-      <div class="lesson-stats">
-        <span>⏱ ~30-45 phút đọc</span>
-        <span>·</span>
-        <span>Active Recall & Flashcards</span>
-      </div>
-    </div>
-
-    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
-    <section class="content-section" id="sec-1">
-      <h2 class="section-heading">
-        <span class="num-badge">①</span>
-        <span class="text-ja">重要理論 (Theory)</span>
-        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
-      </h2>
-      <div class="lesson-body-content">
-<h2><span class="icon" style="background:rgba(124,111,247,0.2);color:var(--accent1)">📖</span> Phần 1 — Tóm tắt Lý thuyết</h2>
-
-  <!-- AI -->
-  <div class="card">
-    <div class="card-title">🤖 AI (人工知能 / Trí tuệ nhân tạo)</div>
-
-    <div class="lang-block">
-      <div class="lang-label lang-jp">🇯🇵 日本語</div>
-      <div class="lang-content">
+ AI
+<div class="card">
+<div class="card-title">🤖 AI (人工知能 / Trí tuệ nhân tạo)</div>
+<div class="lang-block reading-ja" lang="ja">
+<div class="lang-label lang-jp">🇯🇵 日本語</div>
+<div class="lang-content">
         AIとは、人間の知的なふるまいをコンピュータ上に再現する技術。機械学習・ニューラルネットワーク・ディープラーニングの3層で構成される。
       </div>
-    </div>
-    <div class="lang-block">
-      <div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
-      <div class="lang-content">
+</div>
+<div class="lang-block reading-vi" lang="vi">
+<div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
+<div class="lang-content">
         AI là công nghệ tái tạo hành vi thông minh của con người trên máy tính. Gồm 3 tầng lớp liên kết nhau: Máy học → Mạng nơ-ron → Học sâu.
       </div>
-    </div>
-    <div class="lang-block">
-      <div class="lang-label lang-en">🇬🇧 English</div>
-      <div class="lang-content">
+</div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block reading-en" lang="en">
+<div class="lang-label lang-en">🇬🇧 English</div>
+<div class="lang-content">
         AI is technology that replicates human-like intelligent behavior on computers, encompassing Machine Learning, Neural Networks, and Deep Learning.
       </div>
-    </div>
-
-    <div class="diagram">  [AI (人工知能)]
+</div></details>
+<div class="diagram">  [AI (人工知能)]
       ↓
   [機械学習 Machine Learning]
       ↓
   [ニューラルネットワーク Neural Network]
       ↓
   [ディープラーニング Deep Learning]</div>
-
-    <div class="ai-tree">
-      <div class="tree-node">
-        <div class="tree-head" style="background:rgba(124,111,247,0.2);color:var(--accent1)">
+<div class="ai-tree">
+<div class="tree-node">
+<div class="tree-head" style="background:rgba(124,111,247,0.2);color:var(--accent1)">
           🧠 機械学習 / Máy học (Machine Learning)
         </div>
-        <div class="tree-body">
-          <div class="tree-child" style="border-color:var(--accent2)">
-            <div class="tree-child-title" style="color:var(--accent2)">教師あり学習</div>
-            <div class="tree-child-desc">Học có giám sát — cung cấp INPUT + ĐÁNH NHÃN đúng/sai. Ví dụ: phân loại email spam.</div>
-          </div>
-          <div class="tree-child" style="border-color:var(--accent4)">
-            <div class="tree-child-title" style="color:var(--accent4)">教師なし学習</div>
-            <div class="tree-child-desc">Học không giám sát — chỉ cung cấp INPUT, không có nhãn. Máy tự phân nhóm.</div>
-          </div>
-          <div class="tree-child" style="border-color:var(--accent3)">
-            <div class="tree-child-title" style="color:var(--accent3)">強化学習</div>
-            <div class="tree-child-desc">Học tăng cường — học từ phần thưởng/hình phạt (thi không yêu cầu sâu).</div>
-          </div>
-          <div class="tree-child" style="border-color:var(--accent5)">
-            <div class="tree-child-title" style="color:var(--accent5)">ニューラルネットワーク</div>
-            <div class="tree-child-desc">Mô phỏng mạng nơ-ron thần kinh trong não người.</div>
-          </div>
-        </div>
-      </div>
+<div class="tree-body">
+<div class="tree-child" style="border-color:var(--accent2)">
+<div class="tree-child-title" style="color:var(--accent2)">教師あり学習</div>
+<div class="tree-child-desc">Học có giám sát — cung cấp INPUT + ĐÁNH NHÃN đúng/sai. Ví dụ: phân loại email spam.</div>
+</div>
+<div class="tree-child" style="border-color:var(--accent4)">
+<div class="tree-child-title" style="color:var(--accent4)">教師なし学習</div>
+<div class="tree-child-desc">Học không giám sát — chỉ cung cấp INPUT, không có nhãn. Máy tự phân nhóm.</div>
+</div>
+<div class="tree-child" style="border-color:var(--accent3)">
+<div class="tree-child-title" style="color:var(--accent3)">強化学習</div>
+<div class="tree-child-desc">Học tăng cường — học từ phần thưởng/hình phạt (thi không yêu cầu sâu).</div>
+</div>
+<div class="tree-child" style="border-color:var(--accent5)">
+<div class="tree-child-title" style="color:var(--accent5)">ニューラルネットワーク</div>
+<div class="tree-child-desc">Mô phỏng mạng nơ-ron thần kinh trong não người.</div>
+</div>
+</div>
+</div>
+</div>
+<h3 id="lesson-9-topic-1">⚡ Điểm thi quan trọng</h3>
+<div class="def-box">
+<span class="tag exam">出る!</span> <strong>機械学習</strong> = 人間の「学習能力」をコンピュータで再現<br/>
+<span class="tag exam">出る!</span> <strong>教師あり学習</strong> = 入力データ + 正解データ（両方必要）<br/>
+<span class="tag exam">出る!</span> <strong>教師なし学習</strong> = 入力データのみ（正解なし、自分でグループ分け）<br/>
+<span class="tag exam">出る!</span> <strong>ディープラーニング</strong> = ニューラルネットワークを何重にも重ねた機械学習
     </div>
-
-    <h3>⚡ Điểm thi quan trọng</h3>
-    <div class="def-box">
-      <span class="tag exam">出る!</span> <strong>機械学習</strong> = 人間の「学習能力」をコンピュータで再現<br>
-      <span class="tag exam">出る!</span> <strong>教師あり学習</strong> = 入力データ + 正解データ（両方必要）<br>
-      <span class="tag exam">出る!</span> <strong>教師なし学習</strong> = 入力データのみ（正解なし、自分でグループ分け）<br>
-      <span class="tag exam">出る!</span> <strong>ディープラーニング</strong> = ニューラルネットワークを何重にも重ねた機械学習
-    </div>
-
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>Thuật ngữ</th><th>Định nghĩa (Tiếng Việt)</th><th>Ví dụ thực tế</th></tr></thead>
-        <tbody>
-          <tr><td><strong>AI</strong></td><td>Tái hiện hành vi thông minh con người trên máy tính</td><td>Xe tự lái, chatbot</td></tr>
-          <tr><td><strong>機械学習</strong></td><td>Tái hiện năng lực học của con người</td><td>Lọc spam email</td></tr>
-          <tr><td><strong>教師あり学習</strong></td><td>Học với dữ liệu đầu vào + nhãn đúng sai</td><td>Phân loại ảnh mèo/chó</td></tr>
-          <tr><td><strong>教師なし学習</strong></td><td>Học chỉ với dữ liệu, máy tự phân nhóm</td><td>Gom nhóm khách hàng</td></tr>
-          <tr><td><strong>ニューラルネットワーク</strong></td><td>Mô phỏng mạng nơ-ron thần kinh não người</td><td>Nhận dạng giọng nói</td></tr>
-          <tr><td><strong>ディープラーニング</strong></td><td>Nhiều lớp neural network chồng lên nhau</td><td>ChatGPT, dịch tự động</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 確率 / XÁC SUẤT -->
-  <div class="card">
-    <div class="card-title">🎲 確率 / Xác suất (Probability)</div>
-
-    <div class="lang-block">
-      <div class="lang-label lang-jp">🇯🇵 日本語</div>
-      <div class="lang-content">
+<div class="tbl-wrap">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">Thuật ngữ</th><th scope="col">Định nghĩa (Tiếng Việt)</th><th scope="col">Ví dụ thực tế</th></tr></thead>
+<tbody>
+<tr><td><strong>AI</strong></td><td>Tái hiện hành vi thông minh con người trên máy tính</td><td>Xe tự lái, chatbot</td></tr>
+<tr><td><strong>機械学習</strong></td><td>Tái hiện năng lực học của con người</td><td>Lọc spam email</td></tr>
+<tr><td><strong>教師あり学習</strong></td><td>Học với dữ liệu đầu vào + nhãn đúng sai</td><td>Phân loại ảnh mèo/chó</td></tr>
+<tr><td><strong>教師なし学習</strong></td><td>Học chỉ với dữ liệu, máy tự phân nhóm</td><td>Gom nhóm khách hàng</td></tr>
+<tr><td><strong>ニューラルネットワーク</strong></td><td>Mô phỏng mạng nơ-ron thần kinh não người</td><td>Nhận dạng giọng nói</td></tr>
+<tr><td><strong>ディープラーニング</strong></td><td>Nhiều lớp neural network chồng lên nhau</td><td>ChatGPT, dịch tự động</td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+ 確率 / XÁC SUẤT
+<div class="card">
+<div class="card-title">🎲 確率 / Xác suất (Probability)</div>
+<div class="lang-block reading-ja" lang="ja">
+<div class="lang-label lang-jp">🇯🇵 日本語</div>
+<div class="lang-content">
         確率とは、ある事象が起きる可能性の度合いを0～1の数値で表したもの。すべての事象の確率の和は1になる。
       </div>
-    </div>
-    <div class="lang-block">
-      <div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
-      <div class="lang-content">
+</div>
+<div class="lang-block reading-vi" lang="vi">
+<div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
+<div class="lang-content">
         Xác suất là mức độ khả năng xảy ra của một sự kiện, biểu thị bằng số từ 0 đến 1. Tổng xác suất của tất cả các sự kiện = 1.
       </div>
-    </div>
-    <div class="lang-block">
-      <div class="lang-label lang-en">🇬🇧 English</div>
-      <div class="lang-content">
+</div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block reading-en" lang="en">
+<div class="lang-label lang-en">🇬🇧 English</div>
+<div class="lang-content">
         Probability is the measure of likelihood of an event occurring, expressed as a value between 0 and 1. Sum of all probabilities = 1.
       </div>
-    </div>
-
-    <div class="formula">P(A) = số trường hợp thuận lợi / tổng số trường hợp có thể</div>
-    <div class="formula">P(A) = 0 (không thể xảy ra) ～ P(A) = 1 (chắc chắn xảy ra)</div>
-
-    <h3>🎲 Ví dụ: Xúc xắc (サイコロ)</h3>
-    <div class="def-box teal">
-      Xúc xắc có 6 mặt (1~6), mỗi mặt có xác suất = <strong>1/6</strong><br>
+</div></details>
+<div class="formula">P(A) = số trường hợp thuận lợi / tổng số trường hợp có thể</div>
+<div class="formula">P(A) = 0 (không thể xảy ra) ～ P(A) = 1 (chắc chắn xảy ra)</div>
+<h3 id="lesson-9-topic-2">🎲 Ví dụ: Xúc xắc (サイコロ)</h3>
+<div class="def-box teal">
+      Xúc xắc có 6 mặt (1~6), mỗi mặt có xác suất = <strong>1/6</strong><br/>
       Tổng: 1/6 × 6 = <span class="hl">1 ✓</span>
-    </div>
-
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>Mặt xúc xắc</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr></thead>
-        <tbody>
-          <tr>
-            <td><strong>Xác suất</strong></td>
-            <td>1/6</td><td>1/6</td><td>1/6</td><td>1/6</td><td>1/6</td><td>1/6</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 期待値 -->
-  <div class="card">
-    <div class="card-title">📊 期待値 / Kỳ vọng (Expected Value)</div>
-
-    <div class="lang-block">
-      <div class="lang-label lang-jp">🇯🇵 日本語</div>
-      <div class="lang-content">
-        期待値とは「確率的に決まる平均値」。各値に確率を掛けて、すべてを合計する。<br>
+</div>
+<div class="tbl-wrap">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">Mặt xúc xắc</th><th scope="col">1</th><th scope="col">2</th><th scope="col">3</th><th scope="col">4</th><th scope="col">5</th><th scope="col">6</th></tr></thead>
+<tbody>
+<tr>
+<td><strong>Xác suất</strong></td>
+<td>1/6</td><td>1/6</td><td>1/6</td><td>1/6</td><td>1/6</td><td>1/6</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+ 期待値
+<div class="card">
+<div class="card-title">📊 期待値 / Kỳ vọng (Expected Value)</div>
+<div class="lang-block reading-ja" lang="ja">
+<div class="lang-label lang-jp">🇯🇵 日本語</div>
+<div class="lang-content">
+        期待値とは「確率的に決まる平均値」。各値に確率を掛けて、すべてを合計する。<br/>
         公式：E = Σ(値 × 確率)
       </div>
-    </div>
-    <div class="lang-block">
-      <div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
-      <div class="lang-content">
-        Kỳ vọng là <strong>"giá trị trung bình theo xác suất"</strong>. Giống như bạn chơi xổ số nhiều lần — kỳ vọng là số tiền trung bình bạn thắng mỗi lần chơi.<br>
+</div>
+<div class="lang-block reading-vi" lang="vi">
+<div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
+<div class="lang-content">
+        Kỳ vọng là <strong>"giá trị trung bình theo xác suất"</strong>. Giống như bạn chơi xổ số nhiều lần — kỳ vọng là số tiền trung bình bạn thắng mỗi lần chơi.<br/>
         Cách tính: nhân từng giá trị với xác suất của nó, rồi cộng tất cả lại.
       </div>
-    </div>
-    <div class="lang-block">
-      <div class="lang-label lang-en">🇬🇧 English</div>
-      <div class="lang-content">
+</div>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block reading-en" lang="en">
+<div class="lang-label lang-en">🇬🇧 English</div>
+<div class="lang-content">
         Expected Value = the probability-weighted average. Multiply each outcome by its probability and sum them all.
       </div>
-    </div>
-
-    <div class="formula">E = (Giá trị₁ × P₁) + (Giá trị₂ × P₂) + ... + (Giá trịₙ × Pₙ)</div>
-
-    <h3>Ví von dễ nhớ 🌟</h3>
-    <div class="def-box yellow">
+</div></details>
+<div class="formula">E = (Giá trị₁ × P₁) + (Giá trị₂ × P₂) + ... + (Giá trịₙ × Pₙ)</div>
+<h3 id="lesson-9-topic-3">Ví von dễ nhớ 🌟</h3>
+<div class="def-box yellow">
       Hãy tưởng tượng bạn chơi xúc xắc và được thưởng tiền bằng số mặt xúc xắc (1 mặt = 1 điểm). Nếu chơi 600 lần, bạn kỳ vọng mỗi lần trung bình được <strong>3.5 điểm</strong>. Đó chính là kỳ vọng!
     </div>
-
-    <div class="calc-box">
-      <strong style="color:var(--accent2)">Tính kỳ vọng xúc xắc:</strong><br><br>
-      <div class="calc-step">
-        <div class="step-num">1</div>
-        <div class="step-text">Liệt kê tất cả giá trị và xác suất: mặt 1,2,3,4,5,6 — mỗi mặt P = 1/6</div>
-      </div>
-      <div class="calc-step">
-        <div class="step-num">2</div>
-        <div class="step-text">Nhân mỗi giá trị × xác suất:<br>1×(1/6) + 2×(1/6) + 3×(1/6) + 4×(1/6) + 5×(1/6) + 6×(1/6)</div>
-      </div>
-      <div class="calc-step">
-        <div class="step-num">3</div>
-        <div class="step-text">= (1+2+3+4+5+6) / 6 = <span class="hl">21/6 = 3.5</span></div>
-      </div>
+<div class="calc-box">
+<strong style="color:var(--accent2)">Tính kỳ vọng xúc xắc:</strong><br/><br/>
+<div class="calc-step">
+<div class="step-num">1</div>
+<div class="step-text">Liệt kê tất cả giá trị và xác suất: mặt 1,2,3,4,5,6 — mỗi mặt P = 1/6</div>
+</div>
+<div class="calc-step">
+<div class="step-num">2</div>
+<div class="step-text">Nhân mỗi giá trị × xác suất:<br/>1×(1/6) + 2×(1/6) + 3×(1/6) + 4×(1/6) + 5×(1/6) + 6×(1/6)</div>
+</div>
+<div class="calc-step">
+<div class="step-num">3</div>
+<div class="step-text">= (1+2+3+4+5+6) / 6 = <span class="hl">21/6 = 3.5</span></div>
+</div>
+</div>
+<h3 id="lesson-9-topic-4">📦 Ứng dụng thực tế: Bài toán nhập hàng và lợi nhuận</h3>
+<div class="def-box teal">
+<strong>Bối cảnh bài thi (問題20-12):</strong> Cửa hàng nhập hàng X sản phẩm/ngày. Nếu bán hết → lãi 1000円/sản phẩm. Nếu ế → lỗ 300円/sản phẩm. Hỏi nhập bao nhiêu để kỳ vọng lợi nhuận tối đa?
     </div>
-
-    <h3>📦 Ứng dụng thực tế: Bài toán nhập hàng và lợi nhuận</h3>
-    <div class="def-box teal">
-      <strong>Bối cảnh bài thi (問題20-12):</strong> Cửa hàng nhập hàng X sản phẩm/ngày. Nếu bán hết → lãi 1000円/sản phẩm. Nếu ế → lỗ 300円/sản phẩm. Hỏi nhập bao nhiêu để kỳ vọng lợi nhuận tối đa?
-    </div>
-
-    <div class="diagram">  Hàng ngày bán được:
+<div class="diagram">  Hàng ngày bán được:
   [4 sp | P=30%] [5 sp | P=70%]  ← Ví dụ: nhập 5 sp
        ↓
   Kỳ vọng bán = 4×30% + 5×70% = 1.2 + 3.5 = 4.7 (sp)
   Kỳ vọng ế   = 5 - 4.7 = 0.3 (sp)
   Lợi nhuận kỳ vọng = 4.7×1000 - 0.3×300 = 4700 - 90 = 4,610 円</div>
-
-    <div class="tbl-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Số nhập (sp)</th>
-            <th>KV bán ra</th>
-            <th>KV hàng ế</th>
-            <th>KV lợi nhuận (円)</th>
-            <th>Kết quả</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>4</td><td>4.0</td><td>0.0</td><td>4,000</td><td></td></tr>
-          <tr><td>5</td><td>4.7</td><td>0.3</td><td>4,610</td><td></td></tr>
-          <tr style="background:rgba(107,203,119,0.08)"><td><strong>6</strong></td><td>5.1</td><td>0.9</td><td><strong style="color:var(--accent5)">4,830 ← MAX</strong></td><td><span class="tag">Đáp án: 6</span></td></tr>
-          <tr><td>7</td><td>5.2</td><td>1.8</td><td>4,660</td><td></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- AI + XÁC SUẤT TRONG ML -->
-  <div class="card">
-    <div class="card-title">🔗 AI + Xác suất — Mối liên hệ</div>
-
-    <div class="lang-block">
-      <div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
-      <div class="lang-content">
+<div class="tbl-wrap">
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead>
+<tr>
+<th scope="col">Số nhập (sp)</th>
+<th scope="col">KV bán ra</th>
+<th scope="col">KV hàng ế</th>
+<th scope="col">KV lợi nhuận (円)</th>
+<th scope="col">Kết quả</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>4</td><td>4.0</td><td>0.0</td><td>4,000</td><td></td></tr>
+<tr><td>5</td><td>4.7</td><td>0.3</td><td>4,610</td><td></td></tr>
+<tr style="background:rgba(107,203,119,0.08)"><td><strong>6</strong></td><td>5.1</td><td>0.9</td><td><strong style="color:var(--accent5)">4,830 ← MAX</strong></td><td><span class="tag">Đáp án: 6</span></td></tr>
+<tr><td>7</td><td>5.2</td><td>1.8</td><td>4,660</td><td></td></tr>
+</tbody>
+</table></div>
+</div>
+</div>
+ AI + XÁC SUẤT TRONG ML
+<div class="card">
+<div class="card-title">🔗 AI + Xác suất — Mối liên hệ</div>
+<div class="lang-block reading-vi" lang="vi">
+<div class="lang-label lang-vi">🇻🇳 Tiếng Việt</div>
+<div class="lang-content">
         Xác suất là nền tảng của AI và Machine Learning:
         <ul style="margin-top:.5rem;padding-left:1.2rem">
-          <li>Máy học dự đoán kết quả dựa trên <strong>xác suất</strong> từ dữ liệu học</li>
-          <li>Kỳ vọng được dùng để tối ưu hóa quyết định (ví dụ: bài toán nhập hàng)</li>
-          <li>AI trong sản xuất học cách tối ưu để giảm hàng lỗi — dựa trên thống kê và xác suất</li>
-        </ul>
-      </div>
-    </div>
-    <div class="lang-block">
-      <div class="lang-label lang-jp">🇯🇵 日本語</div>
-      <div class="lang-content">
+<li>Máy học dự đoán kết quả dựa trên <strong>xác suất</strong> từ dữ liệu học</li>
+<li>Kỳ vọng được dùng để tối ưu hóa quyết định (ví dụ: bài toán nhập hàng)</li>
+<li>AI trong sản xuất học cách tối ưu để giảm hàng lỗi — dựa trên thống kê và xác suất</li>
+</ul>
+</div>
+</div>
+<div class="lang-block reading-ja" lang="ja">
+<div class="lang-label lang-jp">🇯🇵 日本語</div>
+<div class="lang-content">
         確率は機械学習の基盤。モデルは確率的に予測を行い、期待値最大化で最適な判断をする。AIの工場活用例：ロボット自らが学習して作業効率を高める（強化学習）。
       </div>
-    </div>
-
-    <div class="diagram">  [AIの工場活用例（問題2-14）]
+</div>
+<div class="diagram">  [AIの工場活用例（問題2-14）]
 
   ✗ 間違い: アナリストが統計分析 → これはAIではなく人間の分析
   ✗ 間違い: ホストコンピュータがリアルタイム制御 → これはMtoM
   ✓ 正解:  ロボット自らが学んで作業の効率を高める → 機械学習
   ✗ 間違い: 累積生産量倍増で単位コスト減少 → 経験曲線</div>
-  </div>
-
-</section>
-
-<!-- ==============================
-     PHẦN 2: VÍ DỤ MINH HỌA
-=============================== -->
-      </div>
-    </section>
-
-    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
-    <section class="content-section" id="sec-2">
-      <h2 class="section-heading">
-        <span class="num-badge">②</span>
-        <span class="text-ja">演習例題 (Worked Examples)</span>
-        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
-      </h2>
-      <div class="lesson-body-content">
-<h2><span class="icon" style="background:rgba(0,212,170,0.2);color:var(--accent2)">💡</span> Phần 2 — Ví dụ Minh họa</h2>
-
-  <!-- AI Examples -->
-  <div class="card">
-    <div class="card-title">🤖 Ví dụ: AI & Máy học</div>
-
-    <h3>📧 Ví dụ 1: Lọc Spam Email</h3>
-    <div class="lang-block">
-      <div class="lang-label lang-vi">🇻🇳</div>
-      <div class="lang-content">
-        <strong>教師あり学習 (Học có giám sát):</strong><br>
-        → Dữ liệu học: 1000 email (đã đánh nhãn: spam/không spam)<br>
-        → Máy học quy luật, sau đó tự phân loại email mới<br><br>
-        <strong>教師なし学習 (Học không giám sát):</strong><br>
-        → Dữ liệu học: 1000 email (không đánh nhãn)<br>
+</div>
+</section><section class="lesson-part lesson-section" id="p2"><h2 class="lesson-part-title" data-ja="例題" data-step="02" data-vi="Ví dụ minh hoạ">Ví dụ minh hoạ</h2>
+<h3 id="lesson-9-topic-5"><span class="icon" style="background:rgba(0,212,170,0.2);color:var(--accent2)">💡</span> Phần 2 — Ví dụ Minh họa</h3>
+ AI Examples
+<div class="card">
+<div class="card-title">🤖 Ví dụ: AI &amp; Máy học</div>
+<h3 id="lesson-9-topic-6">📧 Ví dụ 1: Lọc Spam Email</h3>
+<div class="lang-block reading-vi" lang="vi">
+<div class="lang-label lang-vi">🇻🇳</div>
+<div class="lang-content">
+<strong>教師あり学習 (Học có giám sát):</strong><br/>
+        → Dữ liệu học: 1000 email (đã đánh nhãn: spam/không spam)<br/>
+        → Máy học quy luật, sau đó tự phân loại email mới<br/><br/>
+<strong>教師なし学習 (Học không giám sát):</strong><br/>
+        → Dữ liệu học: 1000 email (không đánh nhãn)<br/>
         → Máy tự phân nhóm theo đặc điểm giống nhau
       </div>
-    </div>
-    <div class="diagram">  教師あり学習:                   教師なし学習:
+</div>
+<div class="diagram">  教師あり学習:                   教師なし学習:
   [Email A] + [label: SPAM]      [Email A] (không nhãn)
   [Email B] + [label: OK]    →   [Email B] (không nhãn)
   [Email C] + [label: SPAM]      [Email C] (không nhãn)
        ↓ học                          ↓ học
   Model → dự đoán email mới     Model → tự phân nhóm</div>
-
-    <h3>🏭 Ví dụ 2: Robot nhà máy (bài thi)</h3>
-    <div class="def-box teal">
-      <strong>Câu hỏi (問題2-14):</strong> Ứng dụng máy học trong nhà máy sản xuất là gì?<br>
+<h3 id="lesson-9-topic-7">🏭 Ví dụ 2: Robot nhà máy (bài thi)</h3>
+<div class="def-box teal">
+<strong>Câu hỏi (問題2-14):</strong> Ứng dụng máy học trong nhà máy sản xuất là gì?<br/>
       → <span class="hl">Robot tự học để nâng cao hiệu quả làm việc</span> (không cần lập trình thủ công)
     </div>
-
-    <h3>🧠 Ví dụ 3: Deep Learning</h3>
-    <div class="lang-block">
-      <div class="lang-label lang-vi">🇻🇳</div>
-      <div class="lang-content">
+<h3 id="lesson-9-topic-8">🧠 Ví dụ 3: Deep Learning</h3>
+<div class="lang-block reading-vi" lang="vi">
+<div class="lang-label lang-vi">🇻🇳</div>
+<div class="lang-content">
         Ví von: Nếu mạng nơ-ron đơn giản giống như một tờ giấy lọc → Deep Learning giống như chồng hàng chục tờ giấy lọc lên nhau, mỗi lớp lọc ra một đặc điểm khác nhau (cạnh → hình dạng → mặt người → tên người).
       </div>
-    </div>
-    <div class="diagram">  Input (ảnh) → [Layer 1: phát hiện cạnh]
+</div>
+<div class="diagram">  Input (ảnh) → [Layer 1: phát hiện cạnh]
               → [Layer 2: phát hiện hình dạng]
               → [Layer 3: phát hiện bộ phận khuôn mặt]
               → [Layer N: nhận diện khuôn mặt]
               → Output (tên người)</div>
-  </div>
-
-  <!-- Probability Examples -->
-  <div class="card">
-    <div class="card-title">🎲 Ví dụ: Xác suất & Kỳ vọng</div>
-
-    <h3>🎯 Ví dụ 4: Kỳ vọng xúc xắc — tính từng bước</h3>
-    <div class="calc-box">
-      <strong style="color:var(--accent4)">Bài toán:</strong> Tung xúc xắc 1 lần. Kỳ vọng số điểm là bao nhiêu?<br><br>
-      <div class="calc-step"><div class="step-num">1</div>
-        <div class="step-text">Liệt kê: (1, 1/6), (2, 1/6), (3, 1/6), (4, 1/6), (5, 1/6), (6, 1/6)</div>
-      </div>
-      <div class="calc-step"><div class="step-num">2</div>
-        <div class="step-text">E = 1×(1/6) + 2×(1/6) + 3×(1/6) + 4×(1/6) + 5×(1/6) + 6×(1/6)</div>
-      </div>
-      <div class="calc-step"><div class="step-num">3</div>
-        <div class="step-text">E = (1+2+3+4+5+6) ÷ 6 = 21 ÷ 6 = <span class="hl">3.5</span></div>
-      </div>
-    </div>
-
-    <h3>🛒 Ví dụ 5: Tối ưu nhập hàng (Bài thi thực tế)</h3>
-    <div class="calc-box">
-      <strong style="color:var(--accent4)">Điều kiện:</strong><br>
-      • Lãi/sp bán được: 1,000円 | Lỗ/sp ế: 300円<br>
-      • Phân phối bán ra:<br>
-      &nbsp;&nbsp;4sp: 30% | 5sp: 30% | 6sp: 40% | 7sp: 10%<br><br>
-      <strong style="color:var(--accent2)">Tính với nhập 6 sản phẩm:</strong><br><br>
-      <div class="calc-step"><div class="step-num">1</div>
-        <div class="step-text">KV bán ra: 4×30% + 5×30% + 6×40% = 1.2 + 1.5 + 2.4 = 5.1 sp</div>
-      </div>
-      <div class="calc-step"><div class="step-num">2</div>
-        <div class="step-text">KV hàng ế: 6 - 5.1 = 0.9 sp</div>
-      </div>
-      <div class="calc-step"><div class="step-num">3</div>
-        <div class="step-text">KV lợi nhuận: 5.1 × 1000 - 0.9 × 300 = 5100 - 270 = <span class="hl">4,830円</span></div>
-      </div>
-    </div>
-
-    <h3>🔗 Ví dụ 6: Xác suất trong AI — Khi nào dùng?</h3>
-    <div class="def-box green">
-      <strong>AI dự đoán thời tiết (ví dụ):</strong><br>
-      Dữ liệu lịch sử: 100 ngày có mây → 70 ngày mưa<br>
-      → P(mưa | có mây) = 70/100 = <strong>0.7</strong><br>
-      → AI dự báo: "Xác suất mưa hôm nay: 70%"<br>
-      <br>
-      <span class="hl-teal">Kỳ vọng thiệt hại</span> nếu không mang ô: 0.7 × (-1000円) + 0.3 × 0 = -700円
-    </div>
-  </div>
-</section>
-
-<!-- ==============================
-     PHẦN 3: FLASHCARD
-=============================== -->
-      </div>
-    </section>
-
-    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-3">
-      <h2 class="section-heading">
-        <span class="num-badge">③</span>
-        <span class="text-ja">暗記カード (Flashcards)</span>
-        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
-        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
-        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
-      </p>
-
-      <div class="fc-grid" id="fcGrid"></div>
-    </section>
-
-    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-4">
-      <h2 class="section-heading">
-        <span class="num-badge">④</span>
-        <span class="text-ja">確認テスト (6問)</span>
-        <span class="text-vi">Luyện tập củng cố · 6 câu trắc nghiệm</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
-        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
-        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
-      </p>
-
-      <div id="quizArea"></div>
-
-      <div class="quiz-result-box" id="quiz-result">
-        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
-        <div class="quiz-result-score" id="qScore">0 / 6</div>
-        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
-        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
-      </div>
-    </section>
-
-    <!-- Footer Navigation & Lesson Completion -->
-    <footer class="lesson-footer-nav">
-      <div class="completion-card">
-        <div>
-          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
-            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
-            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
-          </div>
-          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
-            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
-            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
-          </div>
-        </div>
-        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
-      </div>
-
-      <div class="footer-nav-buttons">
-        
-        <a href="8.html" class="nav-link-card prev">
-          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 08</span>
-            <span class="text-vi">Bài học 08</span>
-          </span>
-        </a>
-        
-        <a href="10.html" class="nav-link-card next">
-          <span class="nav-dir">BÀI TIẾP THEO / NEXT →</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 10</span>
-            <span class="text-vi">Bài học 10</span>
-          </span>
-        </a>
-      </div>
-    </footer>
-
-  </main>
-
-  <!-- Right Sticky Sidebar -->
-  <aside class="sticky-sidebar">
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-        <span class="text-ja">目次 (TOC)</span>
-        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
-      </div>
-      <nav>
-        <ul class="toc-list" id="tocList">
-          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 6 câu</span></a></li>
-        </ul>
-      </nav>
-    </div>
-
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        <span class="text-ja">クイック復習</span>
-        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
-      </div>
-      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
-        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
-        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
-      </p>
-    </div>
-  </aside>
-
 </div>
-
-<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
-<script>
-const FLASHCARDS = [
-  {
-    "cat": "all",
-    "front": "機械学習",
-    "back": "人間の「学習能力」をコンピュータで再現する技術。データを与えることで自ら学習し予測できる。 Tái hiện năng lực học của con người trên máy tính. Máy tự học từ dữ liệu."
-  },
-  {
-    "cat": "all",
-    "front": "教師あり学習",
-    "back": "入力データ＋正解データの両方を与える学習。 例：メールと「スパム/非スパム」のラベルを一緒に学習。 Cung cấp cả dữ liệu đầu vào + nhãn đúng sai"
-  },
-  {
-    "cat": "all",
-    "front": "教師なし学習",
-    "back": "入力データのみ（正解なし）で学習。機械が独自にグループ分けを行う。 Chỉ cung cấp dữ liệu đầu vào, máy tự phân nhóm"
-  },
-  {
-    "cat": "all",
-    "front": "ディープラーニング",
-    "back": "ニューラルネットワークを何重にも重ねた構造の機械学習。 人間の脳神経回路を模倣。 Nhiều tầng neural network chồng lên nhau = học sâu"
-  },
-  {
-    "cat": "all",
-    "front": "期待値",
-    "back": "確率的に決まる平均値。 E = Σ(値 × 確率) Giá trị trung bình theo xác suất: E = Σ(giá trị × xác suất)"
-  },
-  {
-    "cat": "all",
-    "front": "確率",
-    "back": "事象が起きる可能性を0～1で表した値。全事象の確率の和=1。 Xác suất xảy ra của sự kiện, từ 0 đến 1. Tổng tất cả = 1"
-  },
-  {
-    "cat": "all",
-    "front": "ニューラルネットワーク",
-    "back": "人間の脳の「ニューロン（神経細胞）」の仕組みをコンピュータで再現した技術。 Mô phỏng tế bào thần kinh (nơ-ron) não người trên máy tính"
-  },
-  {
-    "cat": "all",
-    "front": "サイコロの期待値",
-    "back": "(1+2+3+4+5+6) ÷ 6 = 3.5 Mỗi mặt P=1/6, kỳ vọng = 3.5"
-  },
-  {
-    "cat": "all",
-    "front": "強化学習",
-    "back": "行動に対して報酬/罰を与えることで最適な行動を学習する手法。 Học từ phần thưởng / hình phạt để tối ưu hành động"
-  },
-  {
-    "cat": "all",
-    "front": "エキスパートシステム",
-    "back": "専門知識をルールとして入力し、そのルールで推論する。 （機械学習とは異なる） Hệ thống chuyên gia: nhập kiến thức thủ công dưới dạng quy tắc, rồi suy luận"
-  }
-];
-const QUIZ = [
-  {
-    "q": "Q1. AIにおける機械学習の説明として、最も適切なものはどれか。  (Mô tả đúng nhất về Machine Learning trong AI là gì?)",
-    "opts": [
-      "コンピュータが自然言語を処理して会話する技術",
-      "記憶したデータから特定のパターンを見つけ出すなどの、人が自然に行っている学習能力をコンピュータにもたせるための技術",
-      "特定の分野の専門知識をコンピュータに入力し、推論する技術（エキスパートシステム）"
-    ],
-    "ans": 1,
-    "expl": ""
-  },
-  {
-    "q": "Q2. 機械学習における教師あり学習の説明として、最も適切なものはどれか。  (Mô tả đúng về Supervised Learning là gì?)",
-    "opts": [
-      "入力データのみをコンピュータに与え、コンピュータが独自にグループ分けを行う",
-      "行動に対しての善し悪しを得点として与え、得点が最も多く得られるような方策を学習する",
-      "正解のデータを提示することによって、未知のデータに対して正誤を得ることを助ける"
-    ],
-    "ans": 2,
-    "expl": ""
-  },
-  {
-    "q": "Q3. サイコロを振ったとき、出た目の期待値はいくらか。  (Kỳ vọng của mặt xúc xắc khi tung là bao nhiêu?)",
-    "opts": [
-      "3",
-      "3.0",
-      "3.5"
-    ],
-    "ans": 2,
-    "expl": ""
-  },
-  {
-    "q": "Q4. AIにおけるディープラーニングの特徴はどれか。  (Đặc điểm của Deep Learning là gì?)",
-    "opts": [
-      "\"AならばBである\"というルールを人間があらかじめ設定し、推論する",
-      "確率的に高い判断ができる医療診断に限定された技術",
-      "人間の脳神経回路を模倣し、ニューラルネットワークを用いて、人間と同じような認識ができるようにするもの"
-    ],
-    "ans": 2,
-    "expl": ""
-  },
-  {
-    "q": "Q5. 商品の1日当たりの販売個数の予想確率が以下のとおりであるとき、仕入個数6個のときの利益の期待値を求めよ。（利益1,000円/個、廃棄300円/個） \n     4個:30%, 5個:30%, 6個:40%",
-    "opts": [
-      "4,000円",
-      "4,610円",
-      "4,830円"
-    ],
-    "ans": 2,
-    "expl": ""
-  },
-  {
-    "q": "Q6. 生産現場における機械学習の活用事例として、適切なものはどれか。  (Ví dụ ứng dụng Machine Learning trong nhà máy sản xuất là gì?)",
-    "opts": [
-      "工場における不良品の発生原因をツリー状に分解して整理し、アナリストが統計的に原因を探る",
-      "工場の生産設備を高速通信で接続し、ホストコンピュータがリアルタイム制御する",
-      "工場の生産ロボットに対して作業方法をプログラミングするのではなく、ロボット自らが学んで作業の効率を高める"
-    ],
-    "ans": 2,
-    "expl": ""
-  }
-];
-
-// Render Flashcards with reliable click-to-flip
-function renderFC() {
-  const grid = document.getElementById('fcGrid');
-  if (!grid) return;
-  grid.innerHTML = '';
-
-  FLASHCARDS.forEach(f => {
-    const card = document.createElement('div');
-    card.className = 'fc-card';
-    card.innerHTML = `
-      <div>
-        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
-        <div class="fc-front">${f.front}</div>
-        <div class="fc-back">${f.back}</div>
-      </div>
-      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
-    `;
-    card.addEventListener('click', () => card.classList.toggle('flipped'));
-    grid.appendChild(card);
-  });
-}
-
-// Render Interactive Quiz with tactile 4-option cards & instant feedback
-let quizScore = 0;
-let quizAnswered = 0;
-
-function renderQuiz() {
-  const area = document.getElementById('quizArea');
-  if (!area) return;
-  area.innerHTML = '';
-  quizScore = 0;
-  quizAnswered = 0;
-
-  QUIZ.forEach((item, idx) => {
-    const card = document.createElement('div');
-    card.className = 'quiz-q-card';
-    card.dataset.idx = idx;
-
-    let optsHtml = '';
-    item.opts.forEach((opt, oi) => {
-      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
-      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
-    });
-
-    card.innerHTML = `
-      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
-      <div class="q-text">${item.q}</div>
-      <div class="opts">${optsHtml}</div>
-      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
-    `;
-
-    card.querySelectorAll('.opt').forEach(optEl => {
-      optEl.addEventListener('click', () => {
-        if (card.classList.contains('locked')) return;
-        card.classList.add('locked');
-
-        const chosen = parseInt(optEl.dataset.oi, 10);
-        const correct = item.ans;
-
-        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
-        if (correctEl) correctEl.classList.add('correct');
-
-        if (chosen !== correct) {
-          optEl.classList.add('wrong');
-        } else {
-          quizScore++;
-        }
-
-        quizAnswered++;
-        if (quizAnswered === QUIZ.length) showQuizResult();
-      });
-    });
-
-    area.appendChild(card);
-  });
-
-  const resBox = document.getElementById('quiz-result');
-  if (resBox) resBox.classList.remove('show');
-}
-
-function showQuizResult() {
-  const pct = Math.round((quizScore / QUIZ.length) * 100);
-  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
-  let verdict = '';
-  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
-  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
-  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
-  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
-  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
-  const res = document.getElementById('quiz-result');
-  if (res) {
-    res.classList.add('show');
-    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
-
-function resetQuiz() {
-  renderQuiz();
-  const area = document.getElementById('quizArea');
-  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// Initialize on DOM ready
-renderFC();
-renderQuiz();
-</script>
-<script src="../assets/reader.js"></script>
-</body>
-</html>
+ Probability Examples
+<div class="card">
+<div class="card-title">🎲 Ví dụ: Xác suất &amp; Kỳ vọng</div>
+<h3 id="lesson-9-topic-9">🎯 Ví dụ 4: Kỳ vọng xúc xắc — tính từng bước</h3>
+<div class="calc-box">
+<strong style="color:var(--accent4)">Bài toán:</strong> Tung xúc xắc 1 lần. Kỳ vọng số điểm là bao nhiêu?<br/><br/>
+<div class="calc-step"><div class="step-num">1</div>
+<div class="step-text">Liệt kê: (1, 1/6), (2, 1/6), (3, 1/6), (4, 1/6), (5, 1/6), (6, 1/6)</div>
+</div>
+<div class="calc-step"><div class="step-num">2</div>
+<div class="step-text">E = 1×(1/6) + 2×(1/6) + 3×(1/6) + 4×(1/6) + 5×(1/6) + 6×(1/6)</div>
+</div>
+<div class="calc-step"><div class="step-num">3</div>
+<div class="step-text">E = (1+2+3+4+5+6) ÷ 6 = 21 ÷ 6 = <span class="hl">3.5</span></div>
+</div>
+</div>
+<h3 id="lesson-9-topic-10">🛒 Ví dụ 5: Tối ưu nhập hàng (Bài thi thực tế)</h3>
+<div class="calc-box">
+<strong style="color:var(--accent4)">Điều kiện:</strong><br/>
+      • Lãi/sp bán được: 1,000円 | Lỗ/sp ế: 300円<br/>
+      • Phân phối bán ra:<br/>
+        4sp: 30% | 5sp: 30% | 6sp: 40% | 7sp: 10%<br/><br/>
+<strong style="color:var(--accent2)">Tính với nhập 6 sản phẩm:</strong><br/><br/>
+<div class="calc-step"><div class="step-num">1</div>
+<div class="step-text">KV bán ra: 4×30% + 5×30% + 6×40% = 1.2 + 1.5 + 2.4 = 5.1 sp</div>
+</div>
+<div class="calc-step"><div class="step-num">2</div>
+<div class="step-text">KV hàng ế: 6 - 5.1 = 0.9 sp</div>
+</div>
+<div class="calc-step"><div class="step-num">3</div>
+<div class="step-text">KV lợi nhuận: 5.1 × 1000 - 0.9 × 300 = 5100 - 270 = <span class="hl">4,830円</span></div>
+</div>
+</div>
+<h3 id="lesson-9-topic-11">🔗 Ví dụ 6: Xác suất trong AI — Khi nào dùng?</h3>
+<div class="def-box green">
+<strong>AI dự đoán thời tiết (ví dụ):</strong><br/>
+      Dữ liệu lịch sử: 100 ngày có mây → 70 ngày mưa<br/>
+      → P(mưa | có mây) = 70/100 = <strong>0.7</strong><br/>
+      → AI dự báo: "Xác suất mưa hôm nay: 70%"<br/>
+<br/>
+<span class="hl-teal">Kỳ vọng thiệt hại</span> nếu không mang ô: 0.7 × (-1000円) + 0.3 × 0 = -700円
+    </div>
+</div>
+</section><section class="lesson-part lesson-section" id="p3"><h2 class="lesson-part-title" data-ja="暗記カード" data-step="03" data-vi="Flashcards · Bấm để lật">Flashcards · Bấm để lật</h2><div aria-label="Nhóm flashcard" class="fc-filter" id="fcFilter" role="group"></div><div class="fc-grid" id="fcGrid"></div></section><section class="lesson-part lesson-section" id="p4"><h2 class="lesson-part-title" data-ja="確認テスト · 6問" data-step="04" data-vi="Quiz ôn tập · 6 câu">Quiz ôn tập · 6 câu</h2><div class="reading-quiz-tools"><span class="reading-resume-note"></span><button class="btn" id="quiz-reset" type="button">↻ Làm lại</button></div><div id="quizArea"></div><div hidden="" id="quiz-result"><div class="score" id="qScore"></div><p class="verdict" id="qVerdict"></p></div></section><footer class="lesson-footer"><button aria-pressed="false" class="btn primary" id="complete-lesson" type="button">✓ Đã hoàn thành bài học</button><p data-ja="読了状態はテストの進捗とは別に、このブラウザに保存されます。" data-vi="Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra." id="completion-status" role="status">Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra.</p><a class="btn" data-ja="テストへ →" data-vi="Làm bài kiểm tra →" href="../kiem-tra/9.html">Làm bài kiểm tra →</a><nav aria-label="Điều hướng bài học" class="footer-nav"><a class="btn" data-ja="← 前のレッスン" data-vi="← Bài trước" href="8.html">← Bài trước</a><a class="btn" data-ja="次のレッスン →" data-vi="Bài tiếp theo →" href="10.html">Bài tiếp theo →</a></nav></footer></main><aside aria-label="Mục lục và ôn tập" class="reading-sidebar"><nav class="lesson-toc"><h3 data-ja="このレッスンの内容" data-vi="TRONG BÀI HỌC NÀY">TRONG BÀI HỌC NÀY</h3><ul></ul></nav><div class="reading-vocab"><h3 data-ja="覚えたいFE用語" data-vi="Từ vựng FE cần nhớ">Từ vựng FE cần nhớ</h3><p data-ja="用語をクリックして意味を確認。" data-vi="Bấm thuật ngữ để tự kiểm tra nghĩa.">Bấm thuật ngữ để tự kiểm tra nghĩa.</p></div></aside></div><script id="lesson-data" type="application/json">{"number": 9, "cards": [{"cat": "all", "front": "機械学習", "back": "人間の「学習能力」をコンピュータで再現する技術。データを与えることで自ら学習し予測できる。 Tái hiện năng lực học của con người trên máy tính. Máy tự học từ dữ liệu."}, {"cat": "all", "front": "教師あり学習", "back": "入力データ＋正解データの両方を与える学習。 例：メールと「スパム/非スパム」のラベルを一緒に学習。 Cung cấp cả dữ liệu đầu vào + nhãn đúng sai"}, {"cat": "all", "front": "教師なし学習", "back": "入力データのみ（正解なし）で学習。機械が独自にグループ分けを行う。 Chỉ cung cấp dữ liệu đầu vào, máy tự phân nhóm"}, {"cat": "all", "front": "ディープラーニング", "back": "ニューラルネットワークを何重にも重ねた構造の機械学習。 人間の脳神経回路を模倣。 Nhiều tầng neural network chồng lên nhau = học sâu"}, {"cat": "all", "front": "期待値", "back": "確率的に決まる平均値。 E = Σ(値 × 確率) Giá trị trung bình theo xác suất: E = Σ(giá trị × xác suất)"}, {"cat": "all", "front": "確率", "back": "事象が起きる可能性を0～1で表した値。全事象の確率の和=1。 Xác suất xảy ra của sự kiện, từ 0 đến 1. Tổng tất cả = 1"}, {"cat": "all", "front": "ニューラルネットワーク", "back": "人間の脳の「ニューロン（神経細胞）」の仕組みをコンピュータで再現した技術。 Mô phỏng tế bào thần kinh (nơ-ron) não người trên máy tính"}, {"cat": "all", "front": "サイコロの期待値", "back": "(1+2+3+4+5+6) ÷ 6 = 3.5 Mỗi mặt P=1/6, kỳ vọng = 3.5"}, {"cat": "all", "front": "強化学習", "back": "行動に対して報酬/罰を与えることで最適な行動を学習する手法。 Học từ phần thưởng / hình phạt để tối ưu hành động"}, {"cat": "all", "front": "エキスパートシステム", "back": "専門知識をルールとして入力し、そのルールで推論する。 （機械学習とは異なる） Hệ thống chuyên gia: nhập kiến thức thủ công dưới dạng quy tắc, rồi suy luận"}], "quiz": [{"q": "Q1. AIにおける機械学習の説明として、最も適切なものはどれか。  (Mô tả đúng nhất về Machine Learning trong AI là gì?)", "opts": ["コンピュータが自然言語を処理して会話する技術", "記憶したデータから特定のパターンを見つけ出すなどの、人が自然に行っている学習能力をコンピュータにもたせるための技術", "特定の分野の専門知識をコンピュータに入力し、推論する技術（エキスパートシステム）"], "ans": 1, "expl": "", "qJa": "Q1. AIにおける機械学習の説明として、最も適切なものはどれか。  (Mô tả đúng nhất về Machine Learning trong AI là gì?)", "qVi": "Q1. AIにおける機械学習の説明として、最も適切なものはどれか。  (Mô tả đúng nhất về Machine Learning trong AI là gì?)"}, {"q": "Q2. 機械学習における教師あり学習の説明として、最も適切なものはどれか。  (Mô tả đúng về Supervised Learning là gì?)", "opts": ["入力データのみをコンピュータに与え、コンピュータが独自にグループ分けを行う", "行動に対しての善し悪しを得点として与え、得点が最も多く得られるような方策を学習する", "正解のデータを提示することによって、未知のデータに対して正誤を得ることを助ける"], "ans": 2, "expl": "", "qJa": "Q2. 機械学習における教師あり学習の説明として、最も適切なものはどれか。  (Mô tả đúng về Supervised Learning là gì?)", "qVi": "Q2. 機械学習における教師あり学習の説明として、最も適切なものはどれか。  (Mô tả đúng về Supervised Learning là gì?)"}, {"q": "Q3. サイコロを振ったとき、出た目の期待値はいくらか。  (Kỳ vọng của mặt xúc xắc khi tung là bao nhiêu?)", "opts": ["3", "3.0", "3.5"], "ans": 2, "expl": "", "qJa": "Q3. サイコロを振ったとき、出た目の期待値はいくらか。  (Kỳ vọng của mặt xúc xắc khi tung là bao nhiêu?)", "qVi": "Q3. サイコロを振ったとき、出た目の期待値はいくらか。  (Kỳ vọng của mặt xúc xắc khi tung là bao nhiêu?)"}, {"q": "Q4. AIにおけるディープラーニングの特徴はどれか。  (Đặc điểm của Deep Learning là gì?)", "opts": ["\"AならばBである\"というルールを人間があらかじめ設定し、推論する", "確率的に高い判断ができる医療診断に限定された技術", "人間の脳神経回路を模倣し、ニューラルネットワークを用いて、人間と同じような認識ができるようにするもの"], "ans": 2, "expl": "", "qJa": "Q4. AIにおけるディープラーニングの特徴はどれか。  (Đặc điểm của Deep Learning là gì?)", "qVi": "Q4. AIにおけるディープラーニングの特徴はどれか。  (Đặc điểm của Deep Learning là gì?)"}, {"q": "Q5. 商品の1日当たりの販売個数の予想確率が以下のとおりであるとき、仕入個数6個のときの利益の期待値を求めよ。（利益1,000円/個、廃棄300円/個） \n     4個:30%, 5個:30%, 6個:40%", "opts": ["4,000円", "4,610円", "4,830円"], "ans": 2, "expl": "", "qJa": "Q5. 商品の1日当たりの販売個数の予想確率が以下のとおりであるとき、仕入個数6個のときの利益の期待値を求めよ。（利益1,000円/個、廃棄300円/個） \n     4個:30%, 5個:30%, 6個:40%", "qVi": "Q5. 商品の1日当たりの販売個数の予想確率が以下のとおりであるとき、仕入個数6個のときの利益の期待値を求めよ。（利益1,000円/個、廃棄300円/個） \n     4個:30%, 5個:30%, 6個:40%"}, {"q": "Q6. 生産現場における機械学習の活用事例として、適切なものはどれか。  (Ví dụ ứng dụng Machine Learning trong nhà máy sản xuất là gì?)", "opts": ["工場における不良品の発生原因をツリー状に分解して整理し、アナリストが統計的に原因を探る", "工場の生産設備を高速通信で接続し、ホストコンピュータがリアルタイム制御する", "工場の生産ロボットに対して作業方法をプログラミングするのではなく、ロボット自らが学んで作業の効率を高める"], "ans": 2, "expl": "", "qJa": "Q6. 生産現場における機械学習の活用事例として、適切なものはどれか。  (Ví dụ ứng dụng Machine Learning trong nhà máy sản xuất là gì?)", "qVi": "Q6. 生産現場における機械学習の活用事例として、適切なものはどれか。  (Ví dụ ứng dụng Machine Learning trong nhà máy sản xuất là gì?)"}], "available": true}</script></body></html>

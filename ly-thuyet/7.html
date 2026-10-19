@@ -1,144 +1,63 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="light" data-lang="dual">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bài 07: 計算式の表し方（逆ポーランド）+ Stack — FE Master</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/reader.css">
-</head>
-<body>
 
-<!-- Reading Progress Bar -->
-<div class="reading-progress-track">
-  <div class="reading-progress-bar" id="readingProgress"></div>
-</div>
-
-<!-- Minimal Sticky Top Header -->
-<header class="site-header">
-  <div class="header-container">
-    <div class="header-left">
-      <a href="../index.html" class="back-btn" title="Quay lại Lộ trình">
-        <span class="text-ja">← ロードマップ</span>
-        <span class="text-vi">← Lộ trình</span>
-      </a>
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <a href="../index.html"><span class="text-ja">FE学習</span><span class="text-vi">Lộ trình FE</span></a>
-        <span class="sep">/</span>
-        <span>Mục tiêu 1</span>
-        <span class="sep">/</span>
-        <span class="current">Bài 07</span>
-      </nav>
-    </div>
-    <div class="header-right">
-      <div class="lang-selector">
-        <button class="lang-btn active" data-mode="dual" title="Song ngữ">🌐 Song ngữ</button>
-        <button class="lang-btn" data-mode="ja" title="Chế độ phòng thi tiếng Nhật">🇯🇵 日本語</button>
-        <button class="lang-btn" data-mode="vi" title="Chế độ đọc nhanh tiếng Việt">🇻🇳 Tiếng Việt</button>
-      </div>
-      <button class="icon-btn" id="zenModeBtn" title="Chế độ tập trung (ẩn sidebar)">
-        <span id="zenIcon">📖</span>
-        <span id="zenText">Zen</span>
-      </button>
-      <button class="icon-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối">
-        <span id="themeIcon">◐</span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- Main Two-Column Reader Layout -->
-<div class="page-container">
-
-  <!-- Left Content Column -->
-  <main class="main-content">
-
-    <div class="lesson-header">
-      <div class="lesson-meta-bar">
-        <span class="badge-lesson">BÀI 07 · CƠ SỞ LÝ THUYẾT</span>
-        <span class="badge-tag">MỤC TIÊU 1</span>
-        <span class="badge-tag">TRỌNG TÂM 科目A</span>
-      </div>
-      <h1 class="lesson-title">
-        計算式の表し方（逆ポーランド）+ Stack
-      </h1>
-      <div class="lesson-stats">
-        <span>⏱ ~30-45 phút đọc</span>
-        <span>·</span>
-        <span>Active Recall & Flashcards</span>
-      </div>
-    </div>
-
-    <!-- PHẦN 1: TÓM TẮT LÝ THUYẾT -->
-    <section class="content-section" id="sec-1">
-      <h2 class="section-heading">
-        <span class="num-badge">①</span>
-        <span class="text-ja">重要理論 (Theory)</span>
-        <span class="text-vi">Tóm tắt lý thuyết cốt lõi</span>
-      </h2>
-      <div class="lesson-body-content">
-<h2>📘 Phần 1 — Tóm tắt lý thuyết</h2>
-
-<h3>1. 3 cách biểu diễn biểu thức tính toán (3 種類の表記法)</h3>
-<div class="lang-block jp">
-  <span class="lang-label">🇯🇵 日本語</span><br>
+<html data-reading-lang="dual" data-reading-theme="light" lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><meta content="light dark" name="color-scheme"/><title>Bài 07 · 計算式の表し方 (逆ポーランド) — FE Master</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/><link href="../assets/reader.css" rel="stylesheet"/><script defer="" src="../assets/reader.js"></script></head><body>
+<a class="skip-link" data-ja="本文へ" data-vi="Đến nội dung bài học" href="#lesson-content">Đến nội dung bài học</a>
+<header class="topbar"><div aria-label="Tiến độ đọc bài" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-track" role="progressbar"><div id="reader-progress"></div></div><div class="top-inner"><div class="top-left"><a class="reading-back" data-ja="← ロードマップへ" data-vi="← Quay lại lộ trình" href="../index.html" target="_top">← Quay lại lộ trình</a><nav aria-label="Breadcrumb" class="breadcrumb"><span>FE</span><span>/</span><span data-ja="目標1" data-vi="Mục tiêu 1">Mục tiêu 1</span><span>/</span><span data-ja="解説7" data-vi="Lý thuyết 7">Lý thuyết 7</span></nav></div><div class="reading-controls"><label class="sr-only" for="reading-language">Ngôn ngữ bài học</label><select id="reading-language"><option value="dual">Việt + 日本語</option><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select><button aria-label="Chế độ tập trung: ẩn sidebar" aria-pressed="false" id="zen-toggle" type="button">⊡ <span class="zen-label" data-ja="集中" data-vi="Tập trung">Tập trung</span></button><button aria-pressed="false" id="reading-theme" type="button">☾ Tối</button></div></div></header>
+<div class="layout"><main class="reading-main" id="lesson-content"><header class="lesson-hero"><span class="lesson-eyebrow" data-ja="レッスン07 · 理論" data-vi="BÀI 07 · LÝ THUYẾT">BÀI 07 · LÝ THUYẾT</span><h1><span class="reading-ja" lang="ja">計算式の表し方 (逆ポーランド)</span><span class="reading-vi" lang="vi">計算式の表し方 (逆ポーランド)</span></h1><div class="lesson-meta"><span data-ja="科目Aの基礎" data-vi="Trọng tâm 科目A">Trọng tâm 科目A</span><span data-ja="暗記カード12枚 · 確認問題10問" data-vi="12 flashcard · 10 câu ôn tập">12 flashcard · 10 câu ôn tập</span></div></header>
+<section class="lesson-part lesson-section" id="p1"><h2 class="lesson-part-title" data-ja="理論のまとめ" data-step="01" data-vi="Tóm tắt lý thuyết">Tóm tắt lý thuyết</h2>
+<h3 id="lesson-7-topic-1">1. 3 cách biểu diễn biểu thức tính toán (3 種類の表記法)</h3>
+<div class="lang-block jp reading-ja" lang="ja">
+<span class="lang-label">🇯🇵 日本語</span><br/>
   計算式を表す方法には3種類あります：<strong>中置記法 (ちゅうちきほう)</strong>、<strong>前置記法 (ぜんちきほう / ポーランド表記法)</strong>、<strong>後置記法 (こうちきほう / 逆ポーランド表記法)</strong>。
 </div>
-<div class="lang-block vi">
-  <span class="lang-label">🇻🇳 Tiếng Việt</span><br>
+<div class="lang-block vi reading-vi" lang="vi">
+<span class="lang-label">🇻🇳 Tiếng Việt</span><br/>
   Có 3 cách biểu diễn biểu thức tính toán: <strong>Ký pháp trung tố (Infix)</strong>, <strong>Ký pháp tiền tố (Prefix / Polish notation)</strong>, và <strong>Ký pháp hậu tố (Postfix / Reverse Polish notation - RPN)</strong>.
 </div>
-<div class="lang-block en">
-  <span class="lang-label">🇬🇧 English</span><br>
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block en reading-en" lang="en">
+<span class="lang-label">🇬🇧 English</span><br/>
   Three notations exist for arithmetic expressions: <strong>Infix</strong>, <strong>Prefix (Polish notation)</strong>, and <strong>Postfix (Reverse Polish notation)</strong>.
-</div>
-
-<table>
-  <thead>
-    <tr><th>表記法 (Notation)</th><th>別名 (Tên khác)</th><th>例: 1+2</th><th>演算子の位置</th></tr>
-  </thead>
-  <tbody>
-    <tr><td><strong>中置記法</strong> (Infix)</td><td>なし / Không có</td><td>1 + 2</td><td>数字の<strong>間 (giữa)</strong></td></tr>
-    <tr><td><strong>前置記法</strong> (Prefix)</td><td>ポーランド表記法</td><td>+ 1 2</td><td>数字の<strong>前 (trước)</strong></td></tr>
-    <tr><td><strong>後置記法</strong> (Postfix)</td><td>逆ポーランド表記法</td><td>1 2 +</td><td>数字の<strong>後ろ (sau)</strong></td></tr>
-  </tbody>
-</table>
-
+</div></details>
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead>
+<tr><th scope="col">表記法 (Notation)</th><th scope="col">別名 (Tên khác)</th><th scope="col">例: 1+2</th><th scope="col">演算子の位置</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>中置記法</strong> (Infix)</td><td>なし / Không có</td><td>1 + 2</td><td>数字の<strong>間 (giữa)</strong></td></tr>
+<tr><td><strong>前置記法</strong> (Prefix)</td><td>ポーランド表記法</td><td>+ 1 2</td><td>数字の<strong>前 (trước)</strong></td></tr>
+<tr><td><strong>後置記法</strong> (Postfix)</td><td>逆ポーランド表記法</td><td>1 2 +</td><td>数字の<strong>後ろ (sau)</strong></td></tr>
+</tbody>
+</table></div>
 <div class="important-note">
-  <div class="label">⚠️ 試験には「これ」が出る！(Đề thi tập trung vào):</div>
+<div class="label">⚠️ 試験には「これ」が出る！(Đề thi tập trung vào):</div>
   Đề thi FE chỉ ra <strong>後置記法 (逆ポーランド表記法)</strong>. Hai loại còn lại (中置・前置) <strong>KHÔNG xuất hiện</strong> trong đề. Vì sao? Vì máy tính dùng RPN bên trong để tính toán cùng với cấu trúc Stack.
 </div>
-
-<h3>2. 中置記法 (Ký pháp trung tố)</h3>
-<div class="lang-block jp">
-  <span class="lang-label">🇯🇵 日本語</span><br>
-  <strong>中置記法</strong>とは、<span class="highlight">数字の間に「+」や「−」などの演算子を置く表記法</span>です。私たちが普段利用している表記法。演算子を値と値の「中」に「置」くので中置記法と呼ばれます。
+<h3 id="lesson-7-topic-2">2. 中置記法 (Ký pháp trung tố)</h3>
+<div class="lang-block jp reading-ja" lang="ja">
+<span class="lang-label">🇯🇵 日本語</span><br/>
+<strong>中置記法</strong>とは、<span class="highlight">数字の間に「+」や「−」などの演算子を置く表記法</span>です。私たちが普段利用している表記法。演算子を値と値の「中」に「置」くので中置記法と呼ばれます。
 </div>
-<div class="lang-block vi">
-  <span class="lang-label">🇻🇳 Tiếng Việt</span><br>
-  <strong>Ký pháp trung tố</strong> là cách viết <span class="highlight">đặt toán tử (+, −...) ở GIỮA các số</span>. Đây là cách chúng ta hay dùng hàng ngày như "1 + 2".
+<div class="lang-block vi reading-vi" lang="vi">
+<span class="lang-label">🇻🇳 Tiếng Việt</span><br/>
+<strong>Ký pháp trung tố</strong> là cách viết <span class="highlight">đặt toán tử (+, −...) ở GIỮA các số</span>. Đây là cách chúng ta hay dùng hàng ngày như "1 + 2".
 </div>
-<div class="lang-block en">
-  <span class="lang-label">🇬🇧 English</span><br>
-  <strong>Infix notation</strong> places operators <span class="highlight">BETWEEN the numbers</span> — the everyday math style like "1 + 2".
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block en reading-en" lang="en">
+<span class="lang-label">🇬🇧 English</span><br/>
+<strong>Infix notation</strong> places operators <span class="highlight">BETWEEN the numbers</span> — the everyday math style like "1 + 2".
+</div></details>
+<h3 id="lesson-7-topic-3">3. 前置記法 (Ký pháp tiền tố / Polish notation)</h3>
+<div class="lang-block jp reading-ja" lang="ja">
+<span class="lang-label">🇯🇵 日本語</span><br/>
+<strong>前置記法</strong>とは、<span class="highlight">数字の前に演算子を置く表記法</span>です。前置記法では数と数を<strong>スペース</strong>で区切ります (「1」と「2」がくっついて「12」と読めてしまうため)。ポーランドの論理学者<strong>ヤン・ウカシェヴィチ</strong>が考案したことから、<strong>ポーランド表記法</strong>とも呼ばれます。前置記法を用いると、数式に<strong>括弧 (カッコ) を付ける必要がなくなります</strong>。
 </div>
-
-<h3>3. 前置記法 (Ký pháp tiền tố / Polish notation)</h3>
-<div class="lang-block jp">
-  <span class="lang-label">🇯🇵 日本語</span><br>
-  <strong>前置記法</strong>とは、<span class="highlight">数字の前に演算子を置く表記法</span>です。前置記法では数と数を<strong>スペース</strong>で区切ります (「1」と「2」がくっついて「12」と読めてしまうため)。ポーランドの論理学者<strong>ヤン・ウカシェヴィチ</strong>が考案したことから、<strong>ポーランド表記法</strong>とも呼ばれます。前置記法を用いると、数式に<strong>括弧 (カッコ) を付ける必要がなくなります</strong>。
+<div class="lang-block vi reading-vi" lang="vi">
+<span class="lang-label">🇻🇳 Tiếng Việt</span><br/>
+<strong>Ký pháp tiền tố</strong> đặt <span class="highlight">toán tử TRƯỚC các số</span>. Phải có <strong>khoảng trắng</strong> giữa các số (không thì "1" và "2" dính thành "12"). Do nhà logic Ba Lan <strong>Jan Łukasiewicz</strong> sáng tạo, nên gọi là <strong>Polish notation</strong>. Ưu điểm: <strong>không cần dấu ngoặc</strong>.
 </div>
-<div class="lang-block vi">
-  <span class="lang-label">🇻🇳 Tiếng Việt</span><br>
-  <strong>Ký pháp tiền tố</strong> đặt <span class="highlight">toán tử TRƯỚC các số</span>. Phải có <strong>khoảng trắng</strong> giữa các số (không thì "1" và "2" dính thành "12"). Do nhà logic Ba Lan <strong>Jan Łukasiewicz</strong> sáng tạo, nên gọi là <strong>Polish notation</strong>. Ưu điểm: <strong>không cần dấu ngoặc</strong>.
-</div>
-<div class="lang-block en">
-  <span class="lang-label">🇬🇧 English</span><br>
-  <strong>Prefix notation</strong> places operators <span class="highlight">BEFORE the numbers</span>. Spaces separate numbers. Invented by Polish logician <strong>Jan Łukasiewicz</strong> → "Polish notation". Advantage: <strong>no parentheses needed</strong>.
-</div>
-
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block en reading-en" lang="en">
+<span class="lang-label">🇬🇧 English</span><br/>
+<strong>Prefix notation</strong> places operators <span class="highlight">BEFORE the numbers</span>. Spaces separate numbers. Invented by Polish logician <strong>Jan Łukasiewicz</strong> → "Polish notation". Advantage: <strong>no parentheses needed</strong>.
+</div></details>
 <h4>📐 Cách chuyển: 中置 (1 + 2) × 3 → 前置 × + 1 2 3</h4>
 <div class="ascii-diagram">
 ①  中置記法:     (1 + 2) × 3
@@ -150,23 +69,21 @@
 ④  前置記法:     × + 1 2 3
 
 ★ ルール: 計算の優先順位が高い演算子から順に前に出し、
-   最後に括弧を取る。優先順位: 括弧 > かけ算・わり算 > たし算・ひき算
+   最後に括弧を取る。優先順位: 括弧 &gt; かけ算・わり算 &gt; たし算・ひき算
 </div>
-
-<h3>4. 後置記法 / 逆ポーランド表記法 (Postfix / RPN) ⭐ Trọng tâm</h3>
-<div class="lang-block jp">
-  <span class="lang-label">🇯🇵 日本語</span><br>
-  <strong>後置記法</strong>とは、<span class="highlight">数字の後ろに演算子を置く表記法</span>です。表記ルールは、演算子を後ろに置くこと以外、前置記法と同じです。後置記法は<strong>逆ポーランド表記法</strong>とも呼ばれます。
+<h3 id="lesson-7-topic-4">4. 後置記法 / 逆ポーランド表記法 (Postfix / RPN) ⭐ Trọng tâm</h3>
+<div class="lang-block jp reading-ja" lang="ja">
+<span class="lang-label">🇯🇵 日本語</span><br/>
+<strong>後置記法</strong>とは、<span class="highlight">数字の後ろに演算子を置く表記法</span>です。表記ルールは、演算子を後ろに置くこと以外、前置記法と同じです。後置記法は<strong>逆ポーランド表記法</strong>とも呼ばれます。
 </div>
-<div class="lang-block vi">
-  <span class="lang-label">🇻🇳 Tiếng Việt</span><br>
-  <strong>Ký pháp hậu tố</strong> đặt <span class="highlight">toán tử SAU các số</span>. Quy tắc giống tiền tố, chỉ khác chỗ đặt toán tử. Còn gọi là <strong>逆ポーランド表記法 (Reverse Polish Notation - RPN)</strong>.
+<div class="lang-block vi reading-vi" lang="vi">
+<span class="lang-label">🇻🇳 Tiếng Việt</span><br/>
+<strong>Ký pháp hậu tố</strong> đặt <span class="highlight">toán tử SAU các số</span>. Quy tắc giống tiền tố, chỉ khác chỗ đặt toán tử. Còn gọi là <strong>逆ポーランド表記法 (Reverse Polish Notation - RPN)</strong>.
 </div>
-<div class="lang-block en">
-  <span class="lang-label">🇬🇧 English</span><br>
-  <strong>Postfix notation</strong> places operators <span class="highlight">AFTER the numbers</span>. Also called <strong>Reverse Polish Notation (RPN)</strong>. Same rules as prefix, except operator goes after.
-</div>
-
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block en reading-en" lang="en">
+<span class="lang-label">🇬🇧 English</span><br/>
+<strong>Postfix notation</strong> places operators <span class="highlight">AFTER the numbers</span>. Also called <strong>Reverse Polish Notation (RPN)</strong>. Same rules as prefix, except operator goes after.
+</div></details>
 <h4>📐 Cách chuyển: 中置 (1 + 2) × 3 → 後置 1 2 + 3 ×</h4>
 <div class="ascii-diagram">
 ①  中置記法:     (1 + 2) × 3
@@ -177,72 +94,50 @@
                   ↓ カッコを取る
 ④  後置記法:     1 2 + 3 ×
 </div>
-
-<h3>5. Stack (スタック) — Cấu trúc dữ liệu LIFO</h3>
-<div class="lang-block jp">
-  <span class="lang-label">🇯🇵 日本語</span><br>
-  <strong>スタック</strong>とは、<span class="highlight">後入先出 (LIFO: Last In First Out)</span> で処理を行うデータ構造。後に入ったデータから処理を行う。コンピュータは、<strong>逆ポーランド表記法</strong>と<strong>スタックの仕組み</strong>を組み合わせて計算を行っています。
+<h3 id="lesson-7-topic-5">5. Stack (スタック) — Cấu trúc dữ liệu LIFO</h3>
+<div class="lang-block jp reading-ja" lang="ja">
+<span class="lang-label">🇯🇵 日本語</span><br/>
+<strong>スタック</strong>とは、<span class="highlight">後入先出 (LIFO: Last In First Out)</span> で処理を行うデータ構造。後に入ったデータから処理を行う。コンピュータは、<strong>逆ポーランド表記法</strong>と<strong>スタックの仕組み</strong>を組み合わせて計算を行っています。
 </div>
-<div class="lang-block vi">
-  <span class="lang-label">🇻🇳 Tiếng Việt</span><br>
-  <strong>Stack (ngăn xếp)</strong> là cấu trúc dữ liệu <span class="highlight">LIFO (Last In First Out)</span> — vào sau ra trước. Máy tính kết hợp <strong>逆ポーランド表記法 + Stack</strong> để tính biểu thức.
+<div class="lang-block vi reading-vi" lang="vi">
+<span class="lang-label">🇻🇳 Tiếng Việt</span><br/>
+<strong>Stack (ngăn xếp)</strong> là cấu trúc dữ liệu <span class="highlight">LIFO (Last In First Out)</span> — vào sau ra trước. Máy tính kết hợp <strong>逆ポーランド表記法 + Stack</strong> để tính biểu thức.
 </div>
-<div class="lang-block en">
-  <span class="lang-label">🇬🇧 English</span><br>
-  <strong>Stack</strong> is a <span class="highlight">LIFO (Last In First Out)</span> data structure. Computers combine <strong>RPN + Stack</strong> to evaluate expressions internally.
-</div>
-
+<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block en reading-en" lang="en">
+<span class="lang-label">🇬🇧 English</span><br/>
+<strong>Stack</strong> is a <span class="highlight">LIFO (Last In First Out)</span> data structure. Computers combine <strong>RPN + Stack</strong> to evaluate expressions internally.
+</div></details>
 <div class="example-box">
-  <div class="label">💡 Ví von đời thực — Chồng đĩa rửa bát:</div>
+<div class="label">💡 Ví von đời thực — Chồng đĩa rửa bát:</div>
   Tưởng tượng bạn xếp chồng đĩa: đĩa mới đặt lên TRÊN cùng. Khi lấy ra, bạn cũng lấy từ TRÊN cùng. Đĩa đặt vào cuối cùng sẽ được lấy ra đầu tiên → đó chính là LIFO. Stack hoạt động y hệt vậy.
 </div>
-
 <h4>🔧 2 thao tác chính trên Stack:</h4>
-<table>
-  <thead><tr><th>操作 (Thao tác)</th><th>意味</th><th>Ví von</th></tr></thead>
-  <tbody>
-    <tr><td><strong>Push (プッシュ)</strong></td><td>データをスタックに入れる<br>(Đẩy dữ liệu vào)</td><td>Đặt thêm 1 đĩa lên trên chồng</td></tr>
-    <tr><td><strong>Pop (ポップ)</strong></td><td>スタックからデータを取り出す<br>(Lấy dữ liệu ra)</td><td>Cầm đĩa trên cùng xuống</td></tr>
-  </tbody>
-</table>
-
-<h3>6. Quy trình tính 逆ポーランド + Stack (từng bước)</h3>
-
+<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
+<thead><tr><th scope="col">操作 (Thao tác)</th><th scope="col">意味</th><th scope="col">Ví von</th></tr></thead>
+<tbody>
+<tr><td><strong>Push (プッシュ)</strong></td><td>データをスタックに入れる<br/>(Đẩy dữ liệu vào)</td><td>Đặt thêm 1 đĩa lên trên chồng</td></tr>
+<tr><td><strong>Pop (ポップ)</strong></td><td>スタックからデータを取り出す<br/>(Lấy dữ liệu ra)</td><td>Cầm đĩa trên cùng xuống</td></tr>
+</tbody>
+</table></div>
+<h3 id="lesson-7-topic-6">6. Quy trình tính 逆ポーランド + Stack (từng bước)</h3>
 <div class="formula">
-<strong>Quy tắc xử lý (đọc biểu thức RPN từ TRÁI sang PHẢI):</strong><br>
-① Gặp <strong>SỐ</strong>     → Push vào Stack<br>
-② Gặp <strong>TOÁN TỬ</strong> → Pop 2 số ra (số 2 trước, số 1 sau), tính, rồi Push kết quả vào<br>
+<strong>Quy tắc xử lý (đọc biểu thức RPN từ TRÁI sang PHẢI):</strong><br/>
+① Gặp <strong>SỐ</strong>     → Push vào Stack<br/>
+② Gặp <strong>TOÁN TỬ</strong> → Pop 2 số ra (số 2 trước, số 1 sau), tính, rồi Push kết quả vào<br/>
 ③ Cuối cùng còn lại 1 số trên Stack — đó là kết quả.
 </div>
-
-</section>
-
-<!-- =============== PART 2: 例 =============== -->
-      </div>
-    </section>
-
-    <!-- PHẦN 2: VÍ DỤ MINH HỌA -->
-    <section class="content-section" id="sec-2">
-      <h2 class="section-heading">
-        <span class="num-badge">②</span>
-        <span class="text-ja">演習例題 (Worked Examples)</span>
-        <span class="text-vi">Ví dụ minh hoạ & từng bước giải</span>
-      </h2>
-      <div class="lesson-body-content">
-<h2>💡 Phần 2 — Ví dụ minh hoạ</h2>
-
-<h3>Ví dụ 1: Chuyển 中置 → 後置 (例: (1+2) × 3)</h3>
+</section><section class="lesson-part lesson-section" id="p2"><h2 class="lesson-part-title" data-ja="例題" data-step="02" data-vi="Ví dụ minh hoạ">Ví dụ minh hoạ</h2>
+<h3 id="lesson-7-topic-7">💡 Phần 2 — Ví dụ minh hoạ</h3>
+<h3 id="lesson-7-topic-8">Ví dụ 1: Chuyển 中置 → 後置 (例: (1+2) × 3)</h3>
 <div class="example-box">
-  <div class="label">📝 Lời giải từng bước:</div>
-  <strong>中置記法:</strong> (1 + 2) × 3<br>
-  Bước 1: chuyển phép cộng "1+2" sang hậu tố → "1 2 +"<br>
-  Bước 2: thay vào → (1 2 +) × 3<br>
-  Bước 3: chuyển phép nhân sang hậu tố → (1 2 +) 3 ×<br>
+<div class="label">📝 Lời giải từng bước:</div>
+<strong>中置記法:</strong> (1 + 2) × 3<br/>
+  Bước 1: chuyển phép cộng "1+2" sang hậu tố → "1 2 +"<br/>
+  Bước 2: thay vào → (1 2 +) × 3<br/>
+  Bước 3: chuyển phép nhân sang hậu tố → (1 2 +) 3 ×<br/>
   Bước 4: bỏ ngoặc → <strong>1 2 + 3 ×</strong> ← Kết quả 後置記法
 </div>
-
-<h3>Ví dụ 2: Tính giá trị "1 2 + 3 ×" bằng Stack (chính là (1+2)×3 = 9)</h3>
-
+<h3 id="lesson-7-topic-9">Ví dụ 2: Tính giá trị "1 2 + 3 ×" bằng Stack (chính là (1+2)×3 = 9)</h3>
 <div class="ascii-diagram">
 読み込み      操作              スタックの状態
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -256,60 +151,57 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 最終結果: 9  ✓
 </div>
-
 <h4>🎨 Minh hoạ Stack trực quan:</h4>
 <div class="stack-row">
-  <div class="stack-step">
-    <div class="stack-box">
-      <div class="stack-cell empty">·</div>
-      <div class="stack-cell empty">·</div>
-      <div class="stack-cell filled">1</div>
-    </div>
-    <div class="stack-label">Push 1</div>
-  </div>
-  <div class="stack-step">
-    <div class="stack-box">
-      <div class="stack-cell empty">·</div>
-      <div class="stack-cell filled">2</div>
-      <div class="stack-cell filled">1</div>
-    </div>
-    <div class="stack-label">Push 2</div>
-  </div>
-  <div class="stack-step">
-    <div class="stack-box">
-      <div class="stack-cell empty">·</div>
-      <div class="stack-cell empty">·</div>
-      <div class="stack-cell filled">3</div>
-    </div>
-    <div class="stack-label">+ : 1+2=3</div>
-  </div>
-  <div class="stack-step">
-    <div class="stack-box">
-      <div class="stack-cell empty">·</div>
-      <div class="stack-cell filled">3</div>
-      <div class="stack-cell filled">3</div>
-    </div>
-    <div class="stack-label">Push 3</div>
-  </div>
-  <div class="stack-step">
-    <div class="stack-box">
-      <div class="stack-cell empty">·</div>
-      <div class="stack-cell empty">·</div>
-      <div class="stack-cell filled">9</div>
-    </div>
-    <div class="stack-label">× : 3×3=9</div>
-  </div>
+<div class="stack-step">
+<div class="stack-box">
+<div class="stack-cell empty">·</div>
+<div class="stack-cell empty">·</div>
+<div class="stack-cell filled">1</div>
 </div>
-
-<h3>Ví dụ 3: Chuyển a × (b + c) → 後置記法</h3>
+<div class="stack-label">Push 1</div>
+</div>
+<div class="stack-step">
+<div class="stack-box">
+<div class="stack-cell empty">·</div>
+<div class="stack-cell filled">2</div>
+<div class="stack-cell filled">1</div>
+</div>
+<div class="stack-label">Push 2</div>
+</div>
+<div class="stack-step">
+<div class="stack-box">
+<div class="stack-cell empty">·</div>
+<div class="stack-cell empty">·</div>
+<div class="stack-cell filled">3</div>
+</div>
+<div class="stack-label">+ : 1+2=3</div>
+</div>
+<div class="stack-step">
+<div class="stack-box">
+<div class="stack-cell empty">·</div>
+<div class="stack-cell filled">3</div>
+<div class="stack-cell filled">3</div>
+</div>
+<div class="stack-label">Push 3</div>
+</div>
+<div class="stack-step">
+<div class="stack-box">
+<div class="stack-cell empty">·</div>
+<div class="stack-cell empty">·</div>
+<div class="stack-cell filled">9</div>
+</div>
+<div class="stack-label">× : 3×3=9</div>
+</div>
+</div>
+<h3 id="lesson-7-topic-10">Ví dụ 3: Chuyển a × (b + c) → 後置記法</h3>
 <div class="example-box">
-  <div class="label">📝 Phân tích:</div>
-  Bước 1: (b + c) → b c +<br>
-  Bước 2: a × (b c +) → a (b c +) ×<br>
+<div class="label">📝 Phân tích:</div>
+  Bước 1: (b + c) → b c +<br/>
+  Bước 2: a × (b c +) → a (b c +) ×<br/>
   Bước 3: bỏ ngoặc → <strong>a b c + ×</strong>
 </div>
-
-<h3>Ví dụ 4: Tính "5 3 − 2 ×" bằng Stack (= (5−3)×2 = 4)</h3>
+<h3 id="lesson-7-topic-11">Ví dụ 4: Tính "5 3 − 2 ×" bằng Stack (= (5−3)×2 = 4)</h3>
 <div class="ascii-diagram">
 読み込み      操作              スタック
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -326,11 +218,10 @@
 ★ 注意: 引き算/割り算では順序が重要!
         後にPushされた数が右側のオペランドになる
 </div>
-
-<h3>Ví dụ 5: Push/Pop sequence (từ sách Algorithm chương 3)</h3>
+<h3 id="lesson-7-topic-12">Ví dụ 5: Push/Pop sequence (từ sách Algorithm chương 3)</h3>
 <div class="example-box">
-  <div class="label">📝 Thứ tự: Push A, Push B, Push C, Pop, Pop, Push D, Pop, Pop</div>
-  <div class="ascii-diagram">
+<div class="label">📝 Thứ tự: Push A, Push B, Push C, Pop, Pop, Push D, Pop, Pop</div>
+<div class="ascii-diagram">
 Push A:  [A]
 Push B:  [A, B]
 Push C:  [A, B, C]
@@ -343,404 +234,4 @@ Pop  →   取り出し: A    残: []
 ★ 取り出した順序: C, B, D, A (LIFO の特徴)
 </div>
 </div>
-
-</section>
-
-<!-- =============== PART 3: Flashcard =============== -->
-      </div>
-    </section>
-
-    <!-- PHẦN 3: FLASHCARDS TƯƠNG TÁC (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-3">
-      <h2 class="section-heading">
-        <span class="num-badge">③</span>
-        <span class="text-ja">暗記カード (Flashcards)</span>
-        <span class="text-vi">Flashcards thuật ngữ · Bấm để lật</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:16px">
-        <span class="text-ja">カードをクリックして裏面の定義・意味を確認できます。</span>
-        <span class="text-vi">Nhấp chuột hoặc chạm vào thẻ để kiểm tra trí nhớ định nghĩa tiếng Nhật và tiếng Việt.</span>
-      </p>
-
-      <div class="fc-grid" id="fcGrid"></div>
-    </section>
-
-    <!-- PHẦN 4: QUIZ TRẮC NGHIỆM TỰ CHẤM ĐIỂM (EXACT LESSON 1 ENGINE) -->
-    <section class="content-section" id="sec-4">
-      <h2 class="section-heading">
-        <span class="num-badge">④</span>
-        <span class="text-ja">確認テスト (10問)</span>
-        <span class="text-vi">Luyện tập củng cố · 10 câu trắc nghiệm</span>
-      </h2>
-      <p style="color:var(--text-muted);font-size:0.92rem;margin-bottom:20px">
-        <span class="text-ja">選択肢をクリックすると即座に正誤判定と解説が表示されます。</span>
-        <span class="text-vi">Chọn đáp án tốt nhất. Hệ thống sẽ khóa và hiển thị phản hồi ngay lập tức để ghi nhớ chủ động.</span>
-      </p>
-
-      <div id="quizArea"></div>
-
-      <div class="quiz-result-box" id="quiz-result">
-        <div style="font-family:var(--font-mono);font-size:0.8rem;letter-spacing:0.1em;color:var(--text-muted)">TEST RESULT · 採点結果</div>
-        <div class="quiz-result-score" id="qScore">0 / 10</div>
-        <div id="qVerdict" style="font-size:1.1rem;font-weight:700;color:var(--text-main);margin-bottom:16px"></div>
-        <button class="btn-complete" onclick="resetQuiz()">↻ もう一度解く / LÀM LẠI</button>
-      </div>
-    </section>
-
-    <!-- Footer Navigation & Lesson Completion -->
-    <footer class="lesson-footer-nav">
-      <div class="completion-card">
-        <div>
-          <div style="font-weight:700;font-size:1.05rem;color:var(--text-main)">
-            <span class="text-ja">このレッスンの学習を完了しましたか？</span>
-            <span class="text-vi">Bạn đã hoàn thành bài học này?</span>
-          </div>
-          <div style="font-size:0.86rem;color:var(--text-muted);margin-top:2px">
-            <span class="text-ja">完了マークをつけると、ロードマップに進捗が保存されます。</span>
-            <span class="text-vi">Đánh dấu để lưu tiến độ học tập trên trang tổng quan.</span>
-          </div>
-        </div>
-        <button class="btn-complete" id="markDoneBtn">✓ Đánh dấu đã xong</button>
-      </div>
-
-      <div class="footer-nav-buttons">
-        
-        <a href="6.html" class="nav-link-card prev">
-          <span class="nav-dir">← BÀI TRƯỚC / PREV</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 06</span>
-            <span class="text-vi">Bài học 06</span>
-          </span>
-        </a>
-        
-        <a href="8.html" class="nav-link-card next">
-          <span class="nav-dir">BÀI TIẾP THEO / NEXT →</span>
-          <span class="nav-target">
-            <span class="text-ja">レッスン 08</span>
-            <span class="text-vi">Bài học 08</span>
-          </span>
-        </a>
-      </div>
-    </footer>
-
-  </main>
-
-  <!-- Right Sticky Sidebar -->
-  <aside class="sticky-sidebar">
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-        <span class="text-ja">目次 (TOC)</span>
-        <span class="text-vi">MỤC LỤC BÀI HỌC</span>
-      </div>
-      <nav>
-        <ul class="toc-list" id="tocList">
-          <li><a href="#sec-1" class="toc-link active"><span class="text-ja">① 重要理論</span><span class="text-vi">① Tóm tắt lý thuyết</span></a></li>
-          <li><a href="#sec-2" class="toc-link"><span class="text-ja">② 演習例題</span><span class="text-vi">② Ví dụ minh hoạ</span></a></li>
-          <li><a href="#sec-3" class="toc-link"><span class="text-ja">③ 暗記カード</span><span class="text-vi">③ Flashcards</span></a></li>
-          <li><a href="#sec-4" class="toc-link"><span class="text-ja">④ 確認テスト</span><span class="text-vi">④ Quiz 10 câu</span></a></li>
-        </ul>
-      </nav>
-    </div>
-
-    <div class="sidebar-card">
-      <div class="sidebar-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        <span class="text-ja">クイック復習</span>
-        <span class="text-vi">HỌC CHỦ ĐỘNG</span>
-      </div>
-      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:8px">
-        <span class="text-ja">カードをクリックして暗記・確認テストで理解度を測りましょう。</span>
-        <span class="text-vi">Nhấp vào thẻ để lật flashcard và làm bài trắc nghiệm bên dưới.</span>
-      </p>
-    </div>
-  </aside>
-
-</div>
-
-<!-- EXACT LESSON 1 ENGINE FOR FLASHCARDS & QUIZ -->
-<script>
-const FLASHCARDS = [
-  {
-    "cat": "all",
-    "front": "中置記法 là gì?",
-    "back": "Cách viết đặt toán tử ở GIỮA các số. Ví dụ: 1 + 2. Đây là cách thông thường ta dùng hàng ngày."
-  },
-  {
-    "cat": "all",
-    "front": "前置記法 (ポーランド表記法) là gì?",
-    "back": "Đặt toán tử TRƯỚC các số: + 1 2. Do Jan Łukasiewicz (Ba Lan) sáng tạo. Không cần ngoặc."
-  },
-  {
-    "cat": "all",
-    "front": "後置記法 (逆ポーランド表記法) là gì?",
-    "back": "Đặt toán tử SAU các số: 1 2 +. Còn gọi là Reverse Polish Notation (RPN). Máy tính dùng cách này nội bộ."
-  },
-  {
-    "cat": "all",
-    "front": "Tại sao FE thi 逆ポーランド mà không thi 前置/中置?",
-    "back": "Vì máy tính dùng 逆ポーランド + Stack để tính nội bộ. Đề tập trung kiểm tra kiến thức kỹ thuật thực tế."
-  },
-  {
-    "cat": "all",
-    "front": "Stack (スタック) là gì?",
-    "back": "Cấu trúc dữ liệu LIFO (Last In First Out) — vào sau ra trước. Như chồng đĩa: lấy đĩa trên cùng."
-  },
-  {
-    "cat": "all",
-    "front": "LIFO viết tắt của gì?",
-    "back": "Last In First Out — phần tử thêm vào sau cùng sẽ được lấy ra đầu tiên. Đặc trưng của Stack."
-  },
-  {
-    "cat": "all",
-    "front": "Push (プッシュ) là thao tác gì?",
-    "back": "Đẩy 1 phần tử dữ liệu lên đầu (top) của Stack. Như đặt thêm 1 đĩa lên chồng đĩa."
-  },
-  {
-    "cat": "all",
-    "front": "Pop (ポップ) là thao tác gì?",
-    "back": "Lấy phần tử trên đầu (top) của Stack ra. Như cầm đĩa trên cùng xuống."
-  },
-  {
-    "cat": "all",
-    "front": "Chuyển (1+2)×3 sang 逆ポーランド = ?",
-    "back": "1 2 + 3 × — đẩy mỗi toán tử ra sau cặp toán hạng tương ứng, rồi bỏ ngoặc."
-  },
-  {
-    "cat": "all",
-    "front": "Khi gặp toán tử trong RPN, làm gì với Stack?",
-    "back": "Pop 2 số trên cùng ra, tính toán, rồi Push kết quả vào Stack lại."
-  },
-  {
-    "cat": "all",
-    "front": "Khi gặp SỐ trong RPN, làm gì với Stack?",
-    "back": "Push (đẩy) số đó vào Stack — chưa tính gì cả."
-  },
-  {
-    "cat": "all",
-    "front": "Ưu điểm của 前置/後置 so với 中置?",
-    "back": "Không cần dấu ngoặc (括弧不要). Thứ tự tính toán được xác định rõ ràng từ vị trí toán tử."
-  }
-];
-const QUIZ = [
-  {
-    "q": "Q1. Cách viết \"1 + 2\" được gọi là gì?",
-    "opts": [
-      "A. 前置記法 (Prefix)",
-      "B. 中置記法 (Infix)",
-      "C. 後置記法 (Postfix)",
-      "D. 逆ポーランド表記法"
-    ],
-    "ans": 1,
-    "expl": "Toán tử + ở GIỮA 2 số nên là 中置記法 (Infix)."
-  },
-  {
-    "q": "Q2. Tên khác của 後置記法 là gì?",
-    "opts": [
-      "A. ポーランド表記法",
-      "B. 逆ポーランド表記法",
-      "C. ヨーロッパ表記法",
-      "D. 中置記法"
-    ],
-    "ans": 1,
-    "expl": "後置記法 = 逆ポーランド表記法 (Reverse Polish Notation). ポーランド表記法 là tên của 前置記法."
-  },
-  {
-    "q": "Q3. Chuyển biểu thức 中置 \"(1 + 2) × 3\" sang 後置記法 sẽ ra:",
-    "opts": [
-      "A. × + 1 2 3",
-      "B. 1 + 2 × 3",
-      "C. 1 2 + 3 ×",
-      "D. 3 × 1 2 +"
-    ],
-    "ans": 2,
-    "expl": "Đầu tiên (1+2) → 1 2 +. Rồi nhân với 3: (1 2 +) 3 × = 1 2 + 3 ×. Đáp án A là 前置記法."
-  },
-  {
-    "q": "Q4. Stack là cấu trúc dữ liệu hoạt động theo nguyên tắc nào?",
-    "opts": [
-      "A. FIFO (First In First Out)",
-      "B. LIFO (Last In First Out)",
-      "C. FILO (First In Last Out) — same as LIFO",
-      "D. Random Access"
-    ],
-    "ans": 1,
-    "expl": "Stack hoạt động theo LIFO — phần tử thêm sau cùng được lấy ra đầu tiên. FIFO là của Queue (キュー)."
-  },
-  {
-    "q": "Q5. Thực hiện các thao tác: Push 5, Push 7, Pop, Push 3, Pop. Phần tử cuối cùng được Pop là gì?",
-    "opts": [
-      "A. 5",
-      "B. 7",
-      "C. 3",
-      "D. Stack rỗng"
-    ],
-    "ans": 2,
-    "expl": "Push 5→[5], Push 7→[5,7], Pop trả 7→[5], Push 3→[5,3], Pop cuối cùng trả 3 (là phần tử mới nhất ở top)."
-  },
-  {
-    "q": "Q6. Tính giá trị biểu thức 逆ポーランド \"4 5 + 2 ×\":",
-    "opts": [
-      "A. 14",
-      "B. 18",
-      "C. 20",
-      "D. 22"
-    ],
-    "ans": 1,
-    "expl": "Push 4→[4], Push 5→[4,5], +: 4+5=9→[9], Push 2→[9,2], ×: 9×2=18. Tương đương (4+5)×2."
-  },
-  {
-    "q": "Q7. Trong đề thi FE, loại ký pháp nào thường xuất hiện?",
-    "opts": [
-      "A. 中置記法 (Infix)",
-      "B. 前置記法 (Polish)",
-      "C. 後置記法 / 逆ポーランド表記法 (RPN)",
-      "D. Tất cả 3 loại đều thường gặp"
-    ],
-    "ans": 2,
-    "expl": "Sách ghi rõ: 基本情報技術者試験では「後置記法（逆ポーランド表記法）」が出題される. Vì máy tính dùng RPN+Stack nội bộ."
-  },
-  {
-    "q": "Q8. Chuyển biểu thức \"a × (b + c)\" sang 後置記法:",
-    "opts": [
-      "A. × a + b c",
-      "B. a b c + ×",
-      "C. a + b c ×",
-      "D. a × b c +"
-    ],
-    "ans": 1,
-    "expl": "(b+c)→b c +. Sau đó a × (b c +) → a (b c +) × → bỏ ngoặc → a b c + ×."
-  },
-  {
-    "q": "Q9. Khi gặp một TOÁN TỬ trong biểu thức 逆ポーランド khi xử lý bằng Stack, ta cần làm gì?",
-    "opts": [
-      "A. Push toán tử vào Stack",
-      "B. Bỏ qua, đi tiếp",
-      "C. Pop 2 số ra, tính kết quả, rồi Push kết quả vào Stack",
-      "D. Xóa toàn bộ Stack rồi bắt đầu lại"
-    ],
-    "ans": 2,
-    "expl": "Toán tử lấy 2 toán hạng (số) ở top, áp dụng phép tính, rồi đẩy kết quả ngược lại vào Stack."
-  },
-  {
-    "q": "Q10. Tính giá trị 逆ポーランド \"8 2 − 3 ×\":",
-    "opts": [
-      "A. 18",
-      "B. 22",
-      "C. 6",
-      "D. 30"
-    ],
-    "ans": 0,
-    "expl": "Push 8→[8], Push 2→[8,2], −: 8−2=6→[6], Push 3→[6,3], ×: 6×3=18. Tương đương (8−2)×3."
-  }
-];
-
-// Render Flashcards with reliable click-to-flip
-function renderFC() {
-  const grid = document.getElementById('fcGrid');
-  if (!grid) return;
-  grid.innerHTML = '';
-
-  FLASHCARDS.forEach(f => {
-    const card = document.createElement('div');
-    card.className = 'fc-card';
-    card.innerHTML = `
-      <div>
-        <span class="fc-cat">${f.cat || 'FE VOCAB'}</span>
-        <div class="fc-front">${f.front}</div>
-        <div class="fc-back">${f.back}</div>
-      </div>
-      <div class="fc-hint">▸ クリックで反転 / Nhấp để lật</div>
-    `;
-    card.addEventListener('click', () => card.classList.toggle('flipped'));
-    grid.appendChild(card);
-  });
-}
-
-// Render Interactive Quiz with tactile 4-option cards & instant feedback
-let quizScore = 0;
-let quizAnswered = 0;
-
-function renderQuiz() {
-  const area = document.getElementById('quizArea');
-  if (!area) return;
-  area.innerHTML = '';
-  quizScore = 0;
-  quizAnswered = 0;
-
-  QUIZ.forEach((item, idx) => {
-    const card = document.createElement('div');
-    card.className = 'quiz-q-card';
-    card.dataset.idx = idx;
-
-    let optsHtml = '';
-    item.opts.forEach((opt, oi) => {
-      const letter = ['A', 'B', 'C', 'D'][oi] || String(oi + 1);
-      optsHtml += `<div class="opt" data-oi="${oi}"><span class="ltr">${letter}</span><span>${opt}</span></div>`;
-    });
-
-    card.innerHTML = `
-      <div class="q-num">問 ${idx + 1} / ${QUIZ.length}</div>
-      <div class="q-text">${item.q}</div>
-      <div class="opts">${optsHtml}</div>
-      <div class="expl">${item.expl || '<b>Đã hoàn thành câu hỏi.</b>'}</div>
-    `;
-
-    card.querySelectorAll('.opt').forEach(optEl => {
-      optEl.addEventListener('click', () => {
-        if (card.classList.contains('locked')) return;
-        card.classList.add('locked');
-
-        const chosen = parseInt(optEl.dataset.oi, 10);
-        const correct = item.ans;
-
-        const correctEl = card.querySelector(`.opt[data-oi="${correct}"]`);
-        if (correctEl) correctEl.classList.add('correct');
-
-        if (chosen !== correct) {
-          optEl.classList.add('wrong');
-        } else {
-          quizScore++;
-        }
-
-        quizAnswered++;
-        if (quizAnswered === QUIZ.length) showQuizResult();
-      });
-    });
-
-    area.appendChild(card);
-  });
-
-  const resBox = document.getElementById('quiz-result');
-  if (resBox) resBox.classList.remove('show');
-}
-
-function showQuizResult() {
-  const pct = Math.round((quizScore / QUIZ.length) * 100);
-  document.getElementById('qScore').textContent = `${quizScore} / ${QUIZ.length}`;
-  let verdict = '';
-  if (pct >= 90) verdict = '🏆 合格点到達！完璧に理解できています。/ Xuất sắc!';
-  else if (pct >= 70) verdict = '👍 合格圏内です。間違えた問題を確認しましょう。/ Rất tốt!';
-  else if (pct >= 50) verdict = '📚 あと一歩！復習して再挑戦しましょう。/ Khá!';
-  else verdict = '💪 もう一度本文を読んで挑戦してみましょう！/ Hãy đọc lại nhé!';
-  document.getElementById('qVerdict').textContent = `${verdict} (${pct}%)`;
-  const res = document.getElementById('quiz-result');
-  if (res) {
-    res.classList.add('show');
-    res.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-}
-
-function resetQuiz() {
-  renderQuiz();
-  const area = document.getElementById('quizArea');
-  if (area) area.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// Initialize on DOM ready
-renderFC();
-renderQuiz();
-</script>
-<script src="../assets/reader.js"></script>
-</body>
-</html>
+</section><section class="lesson-part lesson-section" id="p3"><h2 class="lesson-part-title" data-ja="暗記カード" data-step="03" data-vi="Flashcards · Bấm để lật">Flashcards · Bấm để lật</h2><div aria-label="Nhóm flashcard" class="fc-filter" id="fcFilter" role="group"></div><div class="fc-grid" id="fcGrid"></div></section><section class="lesson-part lesson-section" id="p4"><h2 class="lesson-part-title" data-ja="確認テスト · 10問" data-step="04" data-vi="Quiz ôn tập · 10 câu">Quiz ôn tập · 10 câu</h2><div class="reading-quiz-tools"><span class="reading-resume-note"></span><button class="btn" id="quiz-reset" type="button">↻ Làm lại</button></div><div id="quizArea"></div><div hidden="" id="quiz-result"><div class="score" id="qScore"></div><p class="verdict" id="qVerdict"></p></div></section><footer class="lesson-footer"><button aria-pressed="false" class="btn primary" id="complete-lesson" type="button">✓ Đã hoàn thành bài học</button><p data-ja="読了状態はテストの進捗とは別に、このブラウザに保存されます。" data-vi="Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra." id="completion-status" role="status">Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra.</p><a class="btn" data-ja="テストへ →" data-vi="Làm bài kiểm tra →" href="../kiem-tra/7.html">Làm bài kiểm tra →</a><nav aria-label="Điều hướng bài học" class="footer-nav"><a class="btn" data-ja="← 前のレッスン" data-vi="← Bài trước" href="6.html">← Bài trước</a><a class="btn" data-ja="次のレッスン →" data-vi="Bài tiếp theo →" href="8.html">Bài tiếp theo →</a></nav></footer></main><aside aria-label="Mục lục và ôn tập" class="reading-sidebar"><nav class="lesson-toc"><h3 data-ja="このレッスンの内容" data-vi="TRONG BÀI HỌC NÀY">TRONG BÀI HỌC NÀY</h3><ul></ul></nav><div class="reading-vocab"><h3 data-ja="覚えたいFE用語" data-vi="Từ vựng FE cần nhớ">Từ vựng FE cần nhớ</h3><p data-ja="用語をクリックして意味を確認。" data-vi="Bấm thuật ngữ để tự kiểm tra nghĩa.">Bấm thuật ngữ để tự kiểm tra nghĩa.</p></div></aside></div><script id="lesson-data" type="application/json">{"number": 7, "cards": [{"cat": "all", "front": "中置記法 là gì?", "back": "Cách viết đặt toán tử ở GIỮA các số. Ví dụ: 1 + 2. Đây là cách thông thường ta dùng hàng ngày."}, {"cat": "all", "front": "前置記法 (ポーランド表記法) là gì?", "back": "Đặt toán tử TRƯỚC các số: + 1 2. Do Jan Łukasiewicz (Ba Lan) sáng tạo. Không cần ngoặc."}, {"cat": "all", "front": "後置記法 (逆ポーランド表記法) là gì?", "back": "Đặt toán tử SAU các số: 1 2 +. Còn gọi là Reverse Polish Notation (RPN). Máy tính dùng cách này nội bộ."}, {"cat": "all", "front": "Tại sao FE thi 逆ポーランド mà không thi 前置/中置?", "back": "Vì máy tính dùng 逆ポーランド + Stack để tính nội bộ. Đề tập trung kiểm tra kiến thức kỹ thuật thực tế."}, {"cat": "all", "front": "Stack (スタック) là gì?", "back": "Cấu trúc dữ liệu LIFO (Last In First Out) — vào sau ra trước. Như chồng đĩa: lấy đĩa trên cùng."}, {"cat": "all", "front": "LIFO viết tắt của gì?", "back": "Last In First Out — phần tử thêm vào sau cùng sẽ được lấy ra đầu tiên. Đặc trưng của Stack."}, {"cat": "all", "front": "Push (プッシュ) là thao tác gì?", "back": "Đẩy 1 phần tử dữ liệu lên đầu (top) của Stack. Như đặt thêm 1 đĩa lên chồng đĩa."}, {"cat": "all", "front": "Pop (ポップ) là thao tác gì?", "back": "Lấy phần tử trên đầu (top) của Stack ra. Như cầm đĩa trên cùng xuống."}, {"cat": "all", "front": "Chuyển (1+2)×3 sang 逆ポーランド = ?", "back": "1 2 + 3 × — đẩy mỗi toán tử ra sau cặp toán hạng tương ứng, rồi bỏ ngoặc."}, {"cat": "all", "front": "Khi gặp toán tử trong RPN, làm gì với Stack?", "back": "Pop 2 số trên cùng ra, tính toán, rồi Push kết quả vào Stack lại."}, {"cat": "all", "front": "Khi gặp SỐ trong RPN, làm gì với Stack?", "back": "Push (đẩy) số đó vào Stack — chưa tính gì cả."}, {"cat": "all", "front": "Ưu điểm của 前置/後置 so với 中置?", "back": "Không cần dấu ngoặc (括弧不要). Thứ tự tính toán được xác định rõ ràng từ vị trí toán tử."}], "quiz": [{"q": "Q1. Cách viết \"1 + 2\" được gọi là gì?", "opts": ["A. 前置記法 (Prefix)", "B. 中置記法 (Infix)", "C. 後置記法 (Postfix)", "D. 逆ポーランド表記法"], "ans": 1, "expl": "Toán tử + ở GIỮA 2 số nên là 中置記法 (Infix).", "qJa": "Q1. Cách viết \"1 + 2\" được gọi là gì?", "qVi": "Q1. Cách viết \"1 + 2\" được gọi là gì?"}, {"q": "Q2. Tên khác của 後置記法 là gì?", "opts": ["A. ポーランド表記法", "B. 逆ポーランド表記法", "C. ヨーロッパ表記法", "D. 中置記法"], "ans": 1, "expl": "後置記法 = 逆ポーランド表記法 (Reverse Polish Notation). ポーランド表記法 là tên của 前置記法.", "qJa": "Q2. Tên khác của 後置記法 là gì?", "qVi": "Q2. Tên khác của 後置記法 là gì?"}, {"q": "Q3. Chuyển biểu thức 中置 \"(1 + 2) × 3\" sang 後置記法 sẽ ra:", "opts": ["A. × + 1 2 3", "B. 1 + 2 × 3", "C. 1 2 + 3 ×", "D. 3 × 1 2 +"], "ans": 2, "expl": "Đầu tiên (1+2) → 1 2 +. Rồi nhân với 3: (1 2 +) 3 × = 1 2 + 3 ×. Đáp án A là 前置記法.", "qJa": "Q3. Chuyển biểu thức 中置 \"(1 + 2) × 3\" sang 後置記法 sẽ ra:", "qVi": "Q3. Chuyển biểu thức 中置 \"(1 + 2) × 3\" sang 後置記法 sẽ ra:"}, {"q": "Q4. Stack là cấu trúc dữ liệu hoạt động theo nguyên tắc nào?", "opts": ["A. FIFO (First In First Out)", "B. LIFO (Last In First Out)", "C. FILO (First In Last Out) — same as LIFO", "D. Random Access"], "ans": 1, "expl": "Stack hoạt động theo LIFO — phần tử thêm sau cùng được lấy ra đầu tiên. FIFO là của Queue (キュー).", "qJa": "Q4. Stack là cấu trúc dữ liệu hoạt động theo nguyên tắc nào?", "qVi": "Q4. Stack là cấu trúc dữ liệu hoạt động theo nguyên tắc nào?"}, {"q": "Q5. Thực hiện các thao tác: Push 5, Push 7, Pop, Push 3, Pop. Phần tử cuối cùng được Pop là gì?", "opts": ["A. 5", "B. 7", "C. 3", "D. Stack rỗng"], "ans": 2, "expl": "Push 5→[5], Push 7→[5,7], Pop trả 7→[5], Push 3→[5,3], Pop cuối cùng trả 3 (là phần tử mới nhất ở top).", "qJa": "Q5. Thực hiện các thao tác: Push 5, Push 7, Pop, Push 3, Pop. Phần tử cuối cùng được Pop là gì?", "qVi": "Q5. Thực hiện các thao tác: Push 5, Push 7, Pop, Push 3, Pop. Phần tử cuối cùng được Pop là gì?"}, {"q": "Q6. Tính giá trị biểu thức 逆ポーランド \"4 5 + 2 ×\":", "opts": ["A. 14", "B. 18", "C. 20", "D. 22"], "ans": 1, "expl": "Push 4→[4], Push 5→[4,5], +: 4+5=9→[9], Push 2→[9,2], ×: 9×2=18. Tương đương (4+5)×2.", "qJa": "Q6. Tính giá trị biểu thức 逆ポーランド \"4 5 + 2 ×\":", "qVi": "Q6. Tính giá trị biểu thức 逆ポーランド \"4 5 + 2 ×\":"}, {"q": "Q7. Trong đề thi FE, loại ký pháp nào thường xuất hiện?", "opts": ["A. 中置記法 (Infix)", "B. 前置記法 (Polish)", "C. 後置記法 / 逆ポーランド表記法 (RPN)", "D. Tất cả 3 loại đều thường gặp"], "ans": 2, "expl": "Sách ghi rõ: 基本情報技術者試験では「後置記法（逆ポーランド表記法）」が出題される. Vì máy tính dùng RPN+Stack nội bộ.", "qJa": "Q7. Trong đề thi FE, loại ký pháp nào thường xuất hiện?", "qVi": "Q7. Trong đề thi FE, loại ký pháp nào thường xuất hiện?"}, {"q": "Q8. Chuyển biểu thức \"a × (b + c)\" sang 後置記法:", "opts": ["A. × a + b c", "B. a b c + ×", "C. a + b c ×", "D. a × b c +"], "ans": 1, "expl": "(b+c)→b c +. Sau đó a × (b c +) → a (b c +) × → bỏ ngoặc → a b c + ×.", "qJa": "Q8. Chuyển biểu thức \"a × (b + c)\" sang 後置記法:", "qVi": "Q8. Chuyển biểu thức \"a × (b + c)\" sang 後置記法:"}, {"q": "Q9. Khi gặp một TOÁN TỬ trong biểu thức 逆ポーランド khi xử lý bằng Stack, ta cần làm gì?", "opts": ["A. Push toán tử vào Stack", "B. Bỏ qua, đi tiếp", "C. Pop 2 số ra, tính kết quả, rồi Push kết quả vào Stack", "D. Xóa toàn bộ Stack rồi bắt đầu lại"], "ans": 2, "expl": "Toán tử lấy 2 toán hạng (số) ở top, áp dụng phép tính, rồi đẩy kết quả ngược lại vào Stack.", "qJa": "Q9. Khi gặp một TOÁN TỬ trong biểu thức 逆ポーランド khi xử lý bằng Stack, ta cần làm gì?", "qVi": "Q9. Khi gặp một TOÁN TỬ trong biểu thức 逆ポーランド khi xử lý bằng Stack, ta cần làm gì?"}, {"q": "Q10. Tính giá trị 逆ポーランド \"8 2 − 3 ×\":", "opts": ["A. 18", "B. 22", "C. 6", "D. 30"], "ans": 0, "expl": "Push 8→[8], Push 2→[8,2], −: 8−2=6→[6], Push 3→[6,3], ×: 6×3=18. Tương đương (8−2)×3.", "qJa": "Q10. Tính giá trị 逆ポーランド \"8 2 − 3 ×\":", "qVi": "Q10. Tính giá trị 逆ポーランド \"8 2 − 3 ×\":"}], "available": true}</script></body></html>
