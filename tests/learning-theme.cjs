@@ -72,7 +72,7 @@ const { chromium } = require('playwright');
           }
         }
         const result = await page.evaluate(isHome => ({
-          theme: !!document.querySelector(isHome ? 'link[href$="home.css"]' : 'link[href$="learning.css"]'),
+          theme: !!document.querySelector(isHome ? 'link[href$="home.css"]' : 'link[href$="learning.css"], style[data-source="learning.css"]'),
           overflow: document.documentElement.scrollWidth > innerWidth + 1, offenders: [...document.querySelectorAll("body *")].filter(e => e.getBoundingClientRect().right > innerWidth + 1).slice(0, 8).map(e => e.tagName + "." + e.className),
           invisible: [...document.querySelectorAll('body *')].filter(el => {
             const style = getComputedStyle(el);
@@ -136,7 +136,7 @@ const { chromium } = require('playwright');
     await page.locator('#q').fill('');
     await page.locator('#expandGoals').click();
     assert.equal(await page.locator('.goal[open]').count(), 10);
-    assert.equal(await page.locator('.lesson-node:disabled').count(), 41);
+    assert.equal(await page.locator('.lesson-node:disabled').count(), catalog.lessons.filter(l => !l.theory && !l.test).length);
     await page.locator('[data-track="b"]').click();
     assert.equal(await page.locator('.practice-step').count(), 6);
     assert.ok(await page.locator('#subjectB').isVisible());

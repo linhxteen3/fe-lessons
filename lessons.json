@@ -150,21 +150,21 @@
     },
     {
       "stt": 22,
+      "topic": "ハードウェア入出力",
+      "theory": "ly-thuyet/22.html",
+      "test": "kiem-tra/22.html",
+      "status": "todo"
+    },
+    {
+      "stt": 23,
       "topic": "ファイル管理+Ôn Ch.1-5",
       "theory": null,
       "test": null,
       "status": "todo"
     },
     {
-      "stt": 23,
-      "topic": "MILESTONE: 50 câu tổng GĐ1",
-      "theory": null,
-      "test": null,
-      "status": "todo"
-    },
-    {
       "stt": 24,
-      "topic": "ハードウェア入出力",
+      "topic": "MILESTONE: 50 câu tổng GĐ1",
       "theory": null,
       "test": null,
       "status": "todo"

@@ -72,13 +72,13 @@
         19,
         20,
         21,
-        24,
         22,
-        23
+        23,
+        24
       ],
-      "goal": "CPU, bộ nhớ, I/O, hiệu năng, độ tin cậy, hệ điều hành và quản lý tệp. Bài 23 là checkpoint ôn tích lũy của tài liệu gốc, không phải đề thi FE đầy đủ.",
+      "goal": "CPU, bộ nhớ, I/O, hiệu năng, độ tin cậy, hệ điều hành và quản lý tệp. Bài 24 là checkpoint ôn tích lũy của tài liệu gốc, không phải đề thi FE đầy đủ.",
       "checkpoint": "Tính được thời gian xử lý, cache, MTBF/MTTR và mô phỏng thay trang; phân biệt task, job và interrupt.",
-      "goalJa": "CPU、メモリ、入出力、性能、信頼性、OS、ファイル管理を学びます。レッスン23は元の教材の総合復習で、本試験形式の模試ではありません。",
+      "goalJa": "CPU、メモリ、入出力、性能、信頼性、OS、ファイル管理を学びます。レッスン24は元の教材の総合復習で、本試験形式の模試ではありません。",
       "checkpointJa": "処理時間、キャッシュ、MTBF・MTTRを計算し、ページ置換を追います。タスク・ジョブ・割込みを区別します。"
     },
     {
