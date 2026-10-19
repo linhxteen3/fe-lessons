@@ -1,291 +1,290 @@
 <!DOCTYPE html>
 
-<html data-reading-lang="dual" data-reading-theme="light" lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><meta content="light dark" name="color-scheme"/><title>Bài 21 · 実記憶・仮想記憶 (ページング) — FE Master</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;family=Noto+Sans+JP:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/><link href="../assets/reader.css" rel="stylesheet"/><script defer="" src="../assets/reader.js"></script></head><body>
+<html data-reading-lang="dual" data-reading-theme="light" lang="vi"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/><meta content="light dark" name="color-scheme"/><title>Bài 21 · 実記憶・仮想記憶 (ページング) — FE Master</title><style>
+:root { color-scheme:light; --bg:#F8FAFC; --surface:#fff; --soft:#F1F5F9; --text:#1E293B; --muted:#64748B; --line:#E2E8F0; --accent:#4F46E5; --tint:#EEF2FF; --tip-bg:#FFFBEB; --tip-text:#92400E; --tip-line:#F59E0B; --good-bg:#F0FDF4; --good:#166534; --bad-bg:#FEF2F2; --bad:#991B1B; --text-dim:var(--muted); --sans:Inter,"Noto Sans JP","Segoe UI",sans-serif; --mono:"JetBrains Mono",Consolas,monospace; }
+html[data-reading-theme="dark"] { color-scheme:dark; --bg:#111827; --surface:#192333; --soft:#222e40; --text:#E2E8F0; --muted:#a6b4c7; --line:#334155; --accent:#a5b4fc; --tint:#293352; --tip-bg:#342c1d; --tip-text:#fde68a; --tip-line:#fbbf24; --good-bg:#17372a; --good:#bbf7d0; --bad-bg:#41292d; --bad:#fecaca; }
+* { box-sizing:border-box; } html { scroll-behavior:smooth; scroll-padding-top:90px; } body { margin:0; background:var(--bg); color:var(--text); font:400 16.5px/1.75 var(--sans); -webkit-font-smoothing:antialiased; } button,select { font:inherit; color:inherit; } button { cursor:pointer; } button:disabled { cursor:default; } a { color:var(--accent); text-decoration:none; } a:hover { text-decoration:underline; } [hidden] { display:none!important; } button:focus-visible,a:focus-visible,summary:focus-visible,select:focus-visible,[tabindex]:focus-visible { outline:3px solid var(--accent); outline-offset:4px; }
+h1,h2,h3,h4,p { margin:0 0 1.25rem; } h1,h2,h3,h4 { line-height:1.4; font-weight:700; } h1 { font:700 clamp(28px,3.5vw,38px)/1.4 "Plus Jakarta Sans",var(--sans); letter-spacing:-.7px; } h1 span { display:block; font:inherit; margin-top:6px; } h2 { font-size:23px; letter-spacing:-.4px; } h3 { font-size:19px; } h4 { font-size:16.5px; margin-top:28px; } b,strong { font-weight:650; }
+.topbar { position:sticky; top:0; height:56px; z-index:20; background:var(--surface); border-bottom:1px solid var(--line); }
+.top-inner { max-width:1320px; height:100%; margin:auto; padding:0 28px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.top-left { display:flex; align-items:center; gap:22px; } .reading-back { color:var(--text); font-size:13px; font-weight:600; white-space:nowrap; }
+.breadcrumb { display:flex; gap:10px; color:var(--muted); font-size:11px; } .reading-controls { display:flex; gap:8px; align-items:center; }
+.reading-controls button,.reading-controls select { border:1px solid var(--line); background:var(--surface); border-radius:7px; padding:6px 10px; font-size:12px; line-height:1.6; }
+.reading-controls button:hover { background:var(--soft); } .reading-controls button[aria-pressed="true"] { background:var(--tint); color:var(--accent); }
+.progress-track { position:absolute; top:0; left:0; height:3px; width:100%; } #reader-progress { width:0; height:3px; background:var(--accent); }
+.layout { display:grid; grid-template-columns:minmax(0,720px) 280px; justify-content:center; gap:64px; max-width:1160px; width:calc(100% - 64px); margin:48px auto 80px; align-items:start; }
+.reading-main { width:100%; min-width:0; max-width:720px; } .lesson-hero { padding-bottom:30px; margin-bottom:32px; border-bottom:1px solid var(--line); }
+.lesson-eyebrow { display:inline-block; background:var(--tint); color:var(--accent); border-radius:5px; font-size:10px; font-weight:700; letter-spacing:.08em; padding:4px 9px; margin-bottom:18px; }
+.lesson-meta { display:flex; gap:8px 16px; flex-wrap:wrap; color:var(--muted); font-size:12px; margin:20px 0 12px; } .subtitle { color:var(--muted); font-size:14px; margin:0; }
+.lesson-recap { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:22px 24px; margin-bottom:40px; box-shadow:0 1px 3px #00000008; }
+.lesson-recap h2 { font-size:14px; margin:0 0 16px; } .lesson-recap dl { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; margin:0; } .lesson-recap dt { color:var(--accent); font-size:13px; font-weight:600; margin-bottom:8px; } .lesson-recap dd { font-size:13px; margin:0; line-height:1.8; }
+.lesson-part { margin:0 0 52px; } .lesson-part-title { display:flex; align-items:center; gap:12px; padding-bottom:18px; border-bottom:1px solid var(--line); margin-bottom:28px; }
+.lesson-part-title::before { content:attr(data-step); font:600 12px/1 var(--sans); background:var(--tint); color:var(--accent); border-radius:6px; padding:8px; }
+.lesson-part-title .num { font:600 12px/1 var(--sans); background:var(--tint); color:var(--accent); border-radius:6px; padding:8px; }
+.reading-topic { border-bottom:1px solid var(--line); padding-bottom:32px; margin-bottom:32px; scroll-margin-top:0; } .reading-topic:last-child { border:0; padding-bottom:0; margin-bottom:0; }
+.lang-row { margin-bottom:20px; } .lang-row .label { display:block; font-size:10px; font-weight:600; letter-spacing:.06em; color:var(--muted); margin-bottom:8px; }
+.lang-row .content { font-size:16.5px; line-height:1.75; } .lang-row.jp { padding-left:18px; border-left:2px solid var(--line); } .lang-block { margin-bottom:24px; }
+.english-note { color:var(--muted); font-size:13px; margin:12px 0 20px; } .english-note summary { cursor:pointer; padding:5px 0; } .english-note .lang-row { background:var(--soft); padding:16px; border-radius:8px; margin-top:12px; }
+.bullets { margin:0 0 24px; padding-left:22px; } .bullets li { padding:4px 0; }
+.callout { background:var(--tip-bg); color:var(--tip-text); border-left:4px solid var(--tip-line); border-radius:0 8px 8px 0; margin:24px 0; padding:18px 20px; font-size:15px; } .callout .head { font-size:11px; font-weight:700; margin-bottom:8px; }
+pre.ascii { font:400 12px/1.9 var(--mono); white-space:pre; background:var(--soft); border:1px solid var(--line); padding:18px 20px; border-radius:8px; overflow:auto; margin:24px 0; }
+code { font:500 .88em var(--mono); background:var(--tint); color:var(--accent); padding:2px 5px; border-radius:4px; }
+.table-scroll { overflow:auto; border:1px solid var(--line); border-radius:8px; background:var(--surface); margin:24px 0; }
+table { width:100%; border-collapse:collapse; font-size:13px; text-align:left; } th { background:var(--soft); font-weight:600; white-space:nowrap; } th,td { padding:12px 14px; border-bottom:1px solid var(--line); } tr:last-child td { border:0; } td:not(:first-child) { font:400 12px var(--mono); white-space:nowrap; }
+.example-box,.quiz-q,.quick-check { background:var(--surface); border:1px solid var(--line); box-shadow:0 1px 3px #00000008; border-radius:10px; padding:24px; margin:24px 0; }
+.ex-tag { display:block; color:var(--accent); font-size:11px; font-weight:700; margin-bottom:16px; } .step { border-left:2px solid var(--line); padding:8px 0 8px 16px; margin:10px 0; font-size:15px; }
+.fc-filter { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; } .fc-filter button { background:var(--surface); border:1px solid var(--line); border-radius:6px; padding:6px 10px; font-size:12px; } .fc-filter button.active { color:var(--accent); background:var(--tint); border-color:var(--accent); }
+.fc-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; } .fc-card { text-align:left; align-self:start; background:var(--surface); border:1px solid var(--line); padding:18px; border-radius:8px; font-size:14px; } .fc-card:hover,.fc-card.flipped { border-color:var(--accent); } .fc-card.flipped { background:var(--tint); }
+.fc-cat,.hint { display:block; color:var(--muted); font-size:10px; margin-bottom:8px; } .fc-front { display:block; font-weight:600; } .fc-back { display:block; margin-top:12px; } .hint { margin-top:12px; margin-bottom:0; }
+.qnum,.quick-label { font-size:10px; font-weight:700; letter-spacing:.05em; color:var(--accent); margin-bottom:14px; } .qtext { font-weight:600; margin-bottom:20px; } .opts { display:grid; gap:8px; }
+.opt { display:flex; align-items:start; gap:12px; width:100%; text-align:left; background:var(--surface); border:1px solid var(--line); padding:12px 14px; border-radius:7px; font-size:14px; } .opt:hover:not(:disabled) { background:var(--tint); border-color:var(--accent); } .opt:disabled { opacity:1; }
+.opt.correct { background:var(--good-bg); color:var(--good); border-color:var(--good); } .opt.wrong { background:var(--bad-bg); color:var(--bad); border-color:var(--bad); } .ltr { font:400 12px var(--mono); color:var(--muted); } .answer-mark { margin-left:auto; font-weight:700; }
+.expl { margin-top:16px; padding:14px 16px; border-radius:7px; background:var(--soft); font-size:14px; } .expl>strong { display:block; margin-bottom:8px; }
+.quick-check { border-top:3px solid var(--accent); } .reading-quiz-tools { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:20px; } .reading-resume-note { font-size:12px; color:var(--muted); }
+.btn { background:var(--surface); border:1px solid var(--line); border-radius:7px; font-size:13px; font-weight:600; padding:10px 16px; } .btn.primary { background:#4F46E5; color:#fff; border-color:#4F46E5; } .btn:disabled { color:var(--muted); opacity:.6; }
+#quiz-result { text-align:center; background:var(--tint); border:1px solid var(--line); padding:24px; border-radius:10px; } .score { font-size:32px; font-weight:700; } .verdict { margin-top:12px; font-size:14px; }
+.reading-sidebar { position:sticky; top:80px; width:280px; max-height:calc(100vh - 104px); overflow:auto; padding-right:4px; scrollbar-width:thin; }
+.lesson-toc { margin-bottom:28px; } .lesson-toc h3 { font-size:10px; font-weight:700; letter-spacing:.08em; color:var(--muted); margin-bottom:16px; } .lesson-toc ul { list-style:none; padding:0; margin:0; border-left:1px solid var(--line); } .lesson-toc a { display:block; padding:7px 12px; margin-left:-1px; border-left:2px solid transparent; font-size:12px; line-height:1.6; color:var(--muted); }
+.lesson-toc a.reading-subitem { padding-left:22px; font-size:11px; } .lesson-toc a[aria-current="location"] { color:var(--accent); background:var(--tint); border-color:var(--accent); font-weight:600; } .lesson-toc a:hover { text-decoration:none; color:var(--accent); }
+.reading-vocab { background:var(--surface); border:1px solid var(--line); box-shadow:0 1px 3px #00000008; border-radius:10px; padding:18px; } .reading-vocab h3 { font-size:13px; margin-bottom:8px; } .reading-vocab p { font-size:11px; color:var(--muted); }
+.vocab-toggle { background:transparent; border:0; border-bottom:1px solid var(--line); padding:12px 0; display:block; width:100%; text-align:left; font-size:13px; font-weight:600; } .vocab-meaning { display:block; margin-top:10px; font-size:12px; font-weight:400; color:var(--accent); }
+.reading-ja,.reading-vi { display:block; } .reading-ja+.reading-vi { margin-top:12px; }
+html[data-reading-lang="vi"] .reading-ja,html[data-reading-lang="vi"] .lang-row.jp,html[data-reading-lang="ja"] .reading-vi,html[data-reading-lang="ja"] .lang-row.vn,html[data-reading-lang="ja"] .english-note,html[data-reading-lang="dual"] .lesson-recap>.reading-ja { display:none!important; }
+.source { font-size:12px; color:var(--muted); border-top:1px solid var(--line); padding-top:24px; }
+.lesson-footer { background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:28px; text-align:center; margin-top:32px; } .lesson-footer h2 { font-size:19px; } .lesson-footer p { font-size:13px; color:var(--muted); } .footer-nav { display:flex; justify-content:space-between; gap:12px; border-top:1px solid var(--line); margin-top:24px; padding-top:20px; } #completion-status { min-height:24px; margin:12px 0 0; }
+body.zen .layout { grid-template-columns:minmax(0,720px); } body.zen .reading-sidebar { display:none; }
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+@media(max-width:1050px) { .layout { gap:32px; width:calc(100% - 40px); } .breadcrumb { display:none; } }
+@media(max-width:800px) { .layout { display:flex; flex-direction:column; width:calc(100% - 32px); margin-top:28px; gap:32px; } .reading-sidebar { position:static; width:100%; max-height:none; overflow:visible; } .top-inner { padding:0 12px; gap:8px; } .top-left { gap:0; } .reading-back { font-size:11px; } .reading-controls { gap:4px; } .reading-controls button,.reading-controls select { padding:5px 7px; font-size:11px; } .zen-label { display:none; } .fc-grid,.lesson-recap dl { grid-template-columns:minmax(0,1fr); } .lesson-recap dl { gap:14px; } .example-box,.quiz-q,.quick-check { padding:18px; } h1 { font-size:27px; } .lesson-footer { padding:20px 16px; } .footer-nav { flex-wrap:wrap; } }
+@media(prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+
+/* Legacy document content inherits the same reading tokens. */
+:root { --green:var(--good); --red:var(--bad); --yellow:var(--tip-text); --blue:var(--accent); --purple:var(--accent); --accent-primary:var(--accent); --text-main:var(--text); --text-muted:var(--muted); --bg-surface:var(--surface); --border-light:var(--line); }
+.lang,.l { display:block; margin-bottom:20px; line-height:1.75; }
+.lang.jp,.l-jp { padding-left:18px; border-left:2px solid var(--line); }
+.flag,.lang-label { font-size:11px; color:var(--muted); display:block; margin-bottom:8px; }
+.card,.panel { margin-bottom:28px; }
+.box,.formula,.code,.code-block,.mono,.exp-line { overflow-x:auto; padding:16px 20px; border:1px solid var(--line); border-radius:8px; background:var(--soft); font-family:var(--mono); }
+.formula,.exp-line { margin:16px 0; }
+.example,.eg,.ex { margin:20px 0; padding:22px; background:var(--surface); border:1px solid var(--line); border-radius:10px; }
+.tip,.warn,.note,.exam-tip { margin:20px 0; padding:16px 20px; background:var(--tip-bg); color:var(--tip-text); border-left:4px solid var(--tip-line); border-radius:0 8px 8px 0; }
+.flow,.flow-row,.stack-vis,.queue-vis,.hero-grid,.grid2,.grid-2 { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin:20px 0; }
+.node,.flow-node { padding:12px 18px; border:1px solid var(--line); border-radius:8px; background:var(--surface); }
+svg,img { max-width:100%; height:auto; }
+.reading-topic [style*="font-size"] { max-width:100%; }
+.original-source { margin-top:12px; font-size:13px; color:var(--muted); }
+.original-source summary { cursor:pointer; }
+.empty-lesson { padding:28px; background:var(--surface); border:1px solid var(--line); border-radius:10px; }
+.skip-link { position:fixed; left:16px; top:-100px; z-index:100; background:var(--surface); padding:10px; }
+.skip-link:focus { top:8px; }
+
+.fc-card { padding:0; overflow:hidden; }
+.fc-toggle { display:block; width:100%; padding:18px; text-align:left; background:transparent; border:0; font-size:14px; color:var(--text); }
+.fc-card .fc-back { padding:0 18px 18px; margin-top:0; }
+.fc-toggle:focus-visible { outline-offset:-4px; }
+
+:root { --a1:var(--accent); --a2:var(--good); --a3:var(--accent); --a4:var(--tip-text); --a5:var(--accent); --a6:var(--accent); --accent1:var(--accent); --accent2:var(--accent); --accent3:var(--good); --accent4:var(--tip-text); --accent5:var(--accent); --mute:var(--muted); --hi:var(--tint); --linear:var(--accent); --hash:var(--good); --binary:var(--accent); }
+
+.reading-main, .reading-sidebar { overflow-wrap:anywhere; }
+
+.lesson-one .lesson-hero h1 { font-size:clamp(32px,5vw,46px); }
+
+:root { --bg:#f8fafc; --card-bg:#ffffff; --text:#1e293b; --text-muted:#64748b; --primary:#2563eb; --primary-light:#eff6ff; --border:#e2e8f0; --success:#16a34a; --success-bg:#dcfce7; --danger:#dc2626; --danger-bg:#fee2e2; --warning:#d97706; --warning-bg:#fef3c7; --surface:var(--card-bg); --muted:var(--text-muted); --accent:var(--primary); --tint:var(--primary-light); --line:var(--border); --good:var(--success); --good-bg:var(--success-bg); --bad:var(--danger); --bad-bg:var(--danger-bg); --tip-bg:var(--warning-bg); --tip-text:var(--warning); --tip-line:var(--warning); }
+html[data-reading-theme="dark"], [data-theme="dark"] { --bg:#0f172a; --card-bg:#1e293b; --text:#f1f5f9; --text-muted:#94a3b8; --primary:#3b82f6; --primary-light:#1e3a8a; --border:#334155; --success-bg:#064e3b; --danger-bg:#7f1d1d; --warning-bg:#78350f; --surface:var(--card-bg); --muted:var(--text-muted); --accent:var(--primary); --tint:var(--primary-light); --line:var(--border); --good-bg:var(--success-bg); --bad-bg:var(--danger-bg); --tip-bg:var(--warning-bg); }
+
+/* Match the supplied reference: one reading column and distinct topic cards. */
+.layout,body.zen .layout { display:flex; flex-direction:column; gap:24px; max-width:960px; width:calc(100% - 40px); margin:24px auto 60px; }
+.reading-main { max-width:none; width:100%; }
+.topbar { height:auto; min-height:62px; }
+.top-inner { max-width:1000px; min-height:62px; padding:12px 20px; flex-wrap:wrap; }
+.breadcrumb { display:none; }
+.reading-controls { flex-wrap:wrap; }
+.lesson-hero { margin-bottom:32px; padding:22px 0 24px; }
+h1 { font-size:clamp(25px,3.5vw,34px); letter-spacing:-.4px; }
+.lesson-part { margin-bottom:40px; }
+.lesson-part-title { font-size:22px; border-bottom:2px solid var(--primary); padding-bottom:10px; margin:30px 0 18px; }
+.lesson-part-title::before { background:none; padding:0; font-size:20px; }
+#p1 > .card,#p2 > .card { background:var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:24px; margin-bottom:20px; }
+.card h3 { color:var(--primary); font-size:19px; margin-bottom:16px; }
+.card p { margin-bottom:12px; }
+.card p:last-child { margin-bottom:0; }
+.card ul,.card ol { margin:12px 0; padding-left:24px; }
+.card li { margin-bottom:12px; }
+.card > .reading-ja + .reading-vi,.card > .reading-vi + .reading-ja { margin-top:20px; padding-top:20px; border-top:1px dashed var(--border); }
+.card .ascii { white-space:pre-wrap; background:var(--bg); border:1px dashed var(--border); border-radius:10px; padding:18px; color:var(--primary); font-size:14px; }
+.card .example-box { background:var(--primary-light); border-left:4px solid var(--primary); border-radius:6px; padding:14px 16px; margin:14px 0; }
+.card .mnemonic-box { background:var(--warning-bg); border-left:4px solid var(--warning); border-radius:6px; padding:14px 16px; margin:14px 0 0; }
+.flow-diagram { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:10px; margin:16px 0; padding:18px; background:var(--bg); border:1px dashed var(--border); border-radius:10px; }
+.flow-step { border:2px solid var(--primary); background:var(--card-bg); padding:8px 14px; border-radius:8px; font-weight:600; text-align:center; }
+.flow-arrow { color:var(--primary); font-weight:700; }
+.reading-sidebar { order:-1; width:100%; max-height:none; position:static; padding:0; overflow:visible; }
+.reading-sidebar details { background:var(--card-bg); border:1px solid var(--border); border-radius:10px; padding:14px 20px; }
+.reading-sidebar summary { cursor:pointer; font-weight:600; color:var(--primary); }
+.reading-sidebar .lesson-toc { margin-top:16px; }
+.reading-sidebar .lesson-toc ul { columns:2; column-gap:28px; }
+.reading-sidebar .lesson-toc li { break-inside:avoid; }
+.reading-vocab { margin-top:18px; }
+.fc-grid { grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; }
+.quiz-q,.quick-check { background:var(--card-bg); border-radius:12px; }
+@media(max-width:600px) {
+ .layout,body.zen .layout { width:calc(100% - 24px); margin-top:16px; gap:12px; }
+ .top-inner { padding:10px 12px; gap:10px; }
+ #p1 > .card,#p2 > .card { padding:18px; }
+ .lesson-hero { padding-top:10px; }
+ .reading-sidebar .lesson-toc ul { columns:1; }
+ .lesson-part-title { font-size:20px; }
+ .fc-grid { grid-template-columns:minmax(0,1fr); }
+ .flow-diagram { padding:12px; gap:8px; }
+ .flow-step { padding:7px 10px; font-size:14px; }
+}
+
+@media(min-width:801px) {
+ .layout { display:grid; grid-template-columns:minmax(0,1fr) 280px; max-width:1200px; gap:32px; align-items:start; }
+ .reading-sidebar { order:0; position:sticky; top:86px; width:280px; max-height:calc(100vh - 106px); overflow:auto; }
+ .reading-sidebar details { padding:16px; }
+ .reading-sidebar .lesson-toc ul { columns:1; }
+ body.zen .layout { display:flex; max-width:960px; }
+}
+</style></head><body>
 <a class="skip-link" data-ja="本文へ" data-vi="Đến nội dung bài học" href="#lesson-content">Đến nội dung bài học</a>
 <header class="topbar"><div aria-label="Tiến độ đọc bài" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-track" role="progressbar"><div id="reader-progress"></div></div><div class="top-inner"><div class="top-left"><a class="reading-back" data-ja="← ロードマップへ" data-vi="← Quay lại lộ trình" href="../index.html" target="_top">← Quay lại lộ trình</a><nav aria-label="Breadcrumb" class="breadcrumb"><span>FE</span><span>/</span><span data-ja="目標3" data-vi="Mục tiêu 3">Mục tiêu 3</span><span>/</span><span data-ja="解説21" data-vi="Lý thuyết 21">Lý thuyết 21</span></nav></div><div class="reading-controls"><label class="sr-only" for="reading-language">Ngôn ngữ bài học</label><select id="reading-language"><option value="dual">Việt + 日本語</option><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select><button aria-label="Chế độ tập trung: ẩn sidebar" aria-pressed="false" id="zen-toggle" type="button">⊡ <span class="zen-label" data-ja="集中" data-vi="Tập trung">Tập trung</span></button><button aria-pressed="false" id="reading-theme" type="button">☾ Tối</button></div></div></header>
-<div class="layout"><main class="reading-main" id="lesson-content"><header class="lesson-hero"><span class="lesson-eyebrow" data-ja="レッスン21 · 理論" data-vi="BÀI 21 · LÝ THUYẾT">BÀI 21 · LÝ THUYẾT</span><h1><span class="reading-ja" lang="ja">実記憶・仮想記憶 (ページング)</span><span class="reading-vi" lang="vi">実記憶・仮想記憶 (ページング)</span></h1><div class="lesson-meta"><span data-ja="科目Aの基礎" data-vi="Trọng tâm 科目A">Trọng tâm 科目A</span><span data-ja="暗記カード24枚 · 確認問題10問" data-vi="24 flashcard · 10 câu ôn tập">24 flashcard · 10 câu ôn tập</span></div></header>
-<section class="lesson-part lesson-section" id="p1"><h2 class="lesson-part-title" data-ja="理論のまとめ" data-step="01" data-vi="Tóm tắt lý thuyết">Tóm tắt lý thuyết</h2>
-<div class="card">
-<h3 id="lesson-21-topic-1">1.1 記憶管理 là gì? — Khái quát</h3>
-<div class="lang-block lang-jp reading-ja" lang="ja"><span class="lbl">🇯🇵 日本語</span>
-記憶管理とは、<b>記憶装置を効率的に利用するための機能</b>。記憶管理はさらに、主記憶装置を管理する「<b>主記憶管理（実記憶管理）</b>」と、仮想記憶を管理する「<b>仮想記憶管理</b>」の2つに分類される。基本情報技術者試験では<b>仮想記憶管理が頻出</b>。
-</div>
-<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
-<b>記憶管理 (Memory management)</b> = chức năng quản lý bộ nhớ một cách hiệu quả. Chia làm 2 loại: <b>主記憶管理 (実記憶管理)</b> = quản lý bộ nhớ chính, và <b>仮想記憶管理</b> = quản lý bộ nhớ ảo. FE hay hỏi về <b>仮想記憶 / paging</b>.
-</div>
-<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block lang-en reading-en" lang="en"><span class="lbl">🇬🇧 English</span>
-Memory management efficiently allocates memory. It splits into <b>real (main) memory management</b> and <b>virtual memory management</b>. FE exam emphasizes the virtual / paging side.
-</div></details>
-<pre class="ascii" tabindex="0">
-       記憶管理 Memory Management
-        │
-        ├── 主記憶管理 / 実記憶管理 (Real)  ── Slide 第3回
-        │     固定区画 / 可変区画 / オーバーレイ / スワッピング ...
-        │
-        └── 仮想記憶管理 (Virtual)         ── Slide 第4回 + Yasashii p.203-
-              セグメンテーション / ページング
-</pre>
-</div>
- ===== 実記憶管理 =====
-<div class="card">
-<h3 id="lesson-21-topic-2">1.2 実記憶管理 — Slide 第3回</h3>
-<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
-Bình thường chương trình "ngủ" trong <b>bộ nhớ phụ (補助記憶装置 HDD/SSD)</b>. Khi chạy, OS chuyển vào <b>主記憶装置 (RAM)</b>. Vì RAM dung lượng nhỏ và chứa nhiều chương trình cùng lúc → OS phải <b>quản lý không gian</b>.
-</div>
-<h4>(a) 固定区画方式 — Fixed Partition</h4>
-<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
-<tr><th scope="col">特徴</th><th scope="col">○ Ưu điểm</th><th scope="col">✕ Nhược điểm</th></tr>
-<tr><td>Chia RAM thành các vùng <b>kích thước cố định</b> trước, mỗi chương trình nạp vào một vùng</td><td>Tốc độ nạp <b>nhanh</b> (đơn giản)</td><td>Hiệu suất nạp <b>kém</b> — chương trình nhỏ vẫn chiếm cả vùng → lãng phí</td></tr>
-</table></div>
-<pre class="ascii" tabindex="0">
-[ RAM ] ┌──区画1──┐┌──区画2──┐┌──区画3──┐┌──区画4──┐
-        │ ProgA   ││ ProgB   ││ (空き)  ││ (空き)  │
-        └─────────┘└─────────┘└─────────┘└─────────┘
-</pre>
-<h4>(b) 可変区画方式 — Variable Partition</h4>
-<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
-<tr><th scope="col">特徴</th><th scope="col">○</th><th scope="col">✕</th></tr>
-<tr><td>Khi nạp, RAM được chia thành kích thước <b>vừa khít</b> với chương trình</td><td>Hiệu suất nạp <b>tốt</b>, có thể nạp chương trình lớn</td><td>Theo thời gian phát sinh <b>フラグメンテーション (fragmentation)</b></td></tr>
-</table></div>
-<h4>(c) フラグメンテーション &amp; メモリコンパクション</h4>
-<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
-Khi chương trình kết thúc và được giải phóng, RAM còn lại nhiều mảng nhỏ rời rạc → gọi là <b>フラグメンテーション (phân mảnh)</b>. Cách giải quyết: <b>メモリコンパクション (memory compaction)</b> — gom các chương trình lại liền nhau, tạo vùng trống lớn liên tục.
-</div>
-<pre class="ascii" tabindex="0">
-Trước compaction:  [A]   [B]   [   ]   [C]   [   ]   [D]   ← mảnh vụn
-                              ▼ memory compaction
-Sau compaction:    [A][B][C][D] [               (空き連続)             ]
-</pre>
-<h4>(d) オーバーレイ方式 — Overlay</h4>
-<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
-Khi chương trình <b>lớn hơn RAM</b>, chia chương trình thành nhiều <b>セグメント</b>, chỉ nạp segment cần thiết, thay phiên (交代) nạp từng phần.
-</div>
-<h4>(e) スワッピング方式 — Swapping</h4>
-<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
-Khi có ngắt từ chương trình ưu tiên cao, OS <b>tạm dừng</b> chương trình đang chạy, <b>đẩy nó xuống bộ nhớ phụ</b> (スワップアウト) để giải phóng RAM. Khi cần chạy lại thì <b>nạp lại</b> (スワップイン).
-</div>
-<pre class="ascii" tabindex="0">
-RAM   ──スワップアウト──►   補助記憶装置
-RAM   ◄──スワップイン────   補助記憶装置
-</pre>
-<h4>(f) メモリリーク &amp; ガーベージコレクション</h4>
-<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
-<tr><th scope="col">Khái niệm</th><th scope="col">Ý nghĩa</th></tr>
-<tr><td><b>メモリリーク (Memory leak)</b></td><td>Do bug của OS/chương trình, vùng nhớ không dùng nhưng <b>không được giải phóng</b> → RAM bị "rò rỉ"</td></tr>
-<tr><td><b>ガーベージコレクション (Garbage collection, GC)</b></td><td>Quét và <b>giải phóng vùng nhớ không còn được dùng</b> → giảm memory leak</td></tr>
-</table></div>
-</div>
- ===== 仮想記憶管理 =====
-<div class="card">
-<h3 id="lesson-21-topic-3">1.3 仮想記憶管理 — Virtual memory (Slide 第4回 + Yasashii p.203-208)</h3>
-<div class="lang-block lang-jp reading-ja" lang="ja"><span class="lbl">🇯🇵 日本語</span>
-<b>仮想記憶管理</b>とは、補助記憶装置の一部をあたかも主記憶装置であるかのように扱う方式。プログラムが主記憶の容量を超える大きさの場合でも、仮想記憶上に格納することで実行できる。OSが<b>論理的な記憶領域=仮想記憶</b>を作り、主記憶上の<b>物理的な記憶領域=実記憶</b>に対応付ける。
-</div>
-<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
-<b>仮想記憶 (Virtual memory)</b> = OS tạo một không gian <b>"giả"</b> có vẻ như là RAM rất lớn, thực ra một phần nằm trên <b>HDD/SSD</b>. Nhờ đó, <b>chương trình lớn hơn RAM thật</b> vẫn chạy được. Nguyên tắc:
-<ul>
-<li><b>仮想記憶 (Virtual)</b> = không gian logic OS tạo ra</li>
-<li><b>実記憶 (Real)</b> = RAM vật lý</li>
-<li>OS ánh xạ <b>仮想アドレス ↔ 物理アドレス</b> qua bảng tra</li>
-</ul>
-</div>
-<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block lang-en reading-en" lang="en"><span class="lbl">🇬🇧 English</span>
-Virtual memory treats part of secondary storage <b>as if</b> it were main memory. Programs bigger than RAM can run by being stored in virtual memory. OS creates a <b>logical address space</b> (virtual) mapped to the <b>physical address space</b> (real).
-</div></details>
-<h4>動的アドレス変換機構 (DAT — Dynamic Address Translation)</h4>
-<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
-Đơn vị chuyển đổi địa chỉ — <b>MMU (Memory Management Unit)</b> — chuyển <b>地址 ảo → địa chỉ vật lý</b> trong lúc CPU chạy. Slide gọi là 動的アドレス変換機構.
-</div>
-<h4>2 phương thức chia bộ nhớ ảo</h4>
-<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
-<tr><th scope="col">方式</th><th scope="col">Đơn vị chia</th><th scope="col">Đặc trưng</th><th scope="col">FE hay hỏi?</th></tr>
-<tr><td><b>セグメンテーション方式</b><br/>(Segmentation)</td><td>セグメント<br/>= <b>可変長</b> (độ dài thay đổi)</td><td>Chia theo đơn vị logic của chương trình (code, data, stack...)</td><td>Ít</td></tr>
-<tr><td><b>ページング方式</b><br/>(Paging) ⭐</td><td>ページ<br/>= <b>固定長</b> (độ dài cố định)</td><td>Chia đều mọi thứ thành page kích thước bằng nhau</td><td>RẤT HAY</td></tr>
-</table></div>
-<div class="tip"><b>📌 Yasashii nhấn mạnh:</b> ページング方式のほうが出題頻度が圧倒的に高い — FE chủ yếu hỏi <b>paging</b>.</div>
-</div>
- ===== Paging =====
-<div class="card">
-<h3 id="lesson-21-topic-4">1.4 ページング方式 — Paging chi tiết</h3>
-<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
-Cả <b>仮想記憶 (ảo)</b> và <b>実記憶 (RAM thật)</b> đều được chia thành các <b>ページ (page) kích thước cố định</b>. CPU truy cập theo địa chỉ ảo; OS dùng <b>ページテーブル (page table)</b> để tra ra địa chỉ vật lý tương ứng.
-</div>
-<h4>仮想アドレス &amp; 物理アドレス</h4>
-<ul>
-<li><b>仮想アドレス (Virtual address)</b>: địa chỉ trong không gian ảo (theo thứ tự từ đầu)</li>
-<li><b>物理アドレス (Physical address)</b>: địa chỉ thực trong RAM</li>
-<li><b>ページテーブル (Page table)</b>: bảng tra với 2 cột — cột địa chỉ ảo, cột địa chỉ vật lý tương ứng. <b>Số dòng = số page trong 仮想記憶</b>.</li>
-</ul>
-<div class="diagram">
-<svg viewbox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
-<style>
-    .lbl{font-family:'Noto Sans JP',sans-serif;font-size:11px;fill:#cbd5e1}
-    .lblb{font-family:'Noto Sans JP',sans-serif;font-size:12px;fill:#fbbf24;font-weight:700}
-    .ttl{font-family:'Noto Sans JP',sans-serif;font-size:13px;fill:#7dd3fc;font-weight:700}
-  </style>
-<text class="ttl" x="60" y="20">CPU</text>
-<rect fill="#1a2029" height="60" rx="6" stroke="#7dd3fc" stroke-width="2" width="80" x="20" y="30"></rect>
-<text class="lbl" text-anchor="middle" x="60" y="65">CPU</text>
-<text class="ttl" x="200" y="20">仮想記憶 Virtual</text>
-<text class="lbl" x="170" y="35">仮想アドレス</text>
-<g>
-<rect fill="#3a1f24" height="30" stroke="#fda4af" width="80" x="170" y="40"></rect>
-<text class="lbl" x="158" y="60">1</text>
-<text class="lblb" text-anchor="middle" x="210" y="60">ページA</text>
-<rect fill="#1a2029" height="30" stroke="#fda4af" width="80" x="170" y="70"></rect>
-<text class="lbl" x="158" y="90">2</text>
-<rect fill="#1a2029" height="30" stroke="#fda4af" width="80" x="170" y="100"></rect>
-<text class="lbl" x="158" y="120">3</text>
-<rect fill="#1a2029" height="30" stroke="#fda4af" width="80" x="170" y="130"></rect>
-<text class="lbl" x="158" y="150">4</text>
-</g>
-<line marker-end="url(#arr)" stroke="#7dd3fc" stroke-width="2" x1="100" x2="170" y1="60" y2="55"></line>
-<text class="ttl" x="380" y="20">ページテーブル</text>
-<g>
-<rect fill="#222a35" height="25" stroke="#a78bfa" width="60" x="340" y="30"></rect><text class="lbl" text-anchor="middle" x="370" y="48">仮想</text>
-<rect fill="#222a35" height="25" stroke="#a78bfa" width="60" x="400" y="30"></rect><text class="lbl" text-anchor="middle" x="430" y="48">物理</text>
-<rect fill="#3a1f24" height="25" stroke="#a78bfa" width="60" x="340" y="55"></rect><text class="lblb" text-anchor="middle" x="370" y="73">1</text>
-<rect fill="#3a1f24" height="25" stroke="#a78bfa" width="60" x="400" y="55"></rect><text class="lblb" text-anchor="middle" x="430" y="73">2</text>
-<rect fill="#1a2029" height="25" stroke="#a78bfa" width="60" x="340" y="80"></rect><text class="lbl" text-anchor="middle" x="370" y="98">2</text>
-<rect fill="#1a2029" height="25" stroke="#a78bfa" width="60" x="400" y="80"></rect><text class="lbl" text-anchor="middle" x="430" y="98"> </text>
-<rect fill="#1a2029" height="25" stroke="#a78bfa" width="60" x="340" y="105"></rect><text class="lbl" text-anchor="middle" x="370" y="123">3</text>
-<rect fill="#1a2029" height="25" stroke="#a78bfa" width="60" x="400" y="105"></rect>
-<rect fill="#1a2029" height="25" stroke="#a78bfa" width="60" x="340" y="130"></rect><text class="lbl" text-anchor="middle" x="370" y="148">4</text>
-<rect fill="#1a2029" height="25" stroke="#a78bfa" width="60" x="400" y="130"></rect>
-</g>
-<line marker-end="url(#arr)" stroke="#fbbf24" stroke-width="2" x1="250" x2="340" y1="55" y2="65"></line>
-<text class="ttl" x="580" y="20">実記憶 RAM</text>
-<text class="lbl" x="538" y="35">物理アドレス</text>
-<g>
-<rect fill="#1a2029" height="30" stroke="#86efac" width="80" x="540" y="40"></rect>
-<text class="lbl" x="528" y="60">1</text>
-<rect fill="#3a1f24" height="30" stroke="#86efac" width="80" x="540" y="70"></rect>
-<text class="lbl" x="528" y="90">2</text>
-<text class="lblb" text-anchor="middle" x="580" y="90">ページA</text>
-<rect fill="#1a2029" height="30" stroke="#86efac" width="80" x="540" y="100"></rect>
-<text class="lbl" x="528" y="120">3</text>
-</g>
-<line marker-end="url(#arr)" stroke="#86efac" stroke-width="2" x1="460" x2="540" y1="68" y2="80"></line>
-<text class="ttl" text-anchor="middle" x="350" y="200">Luồng truy cập: CPU → 仮想記憶 → ページテーブル → 実記憶</text>
-<defs>
-<marker id="arr" markerheight="8" markerwidth="8" orient="auto" refx="6" refy="4">
-<polygon fill="#fbbf24" points="0 0,8 4,0 8"></polygon>
-</marker>
-</defs>
-</svg>
-</div>
-<h4>CPU truy cập page — 3 bước (Yasashii)</h4>
-<ol>
-<li>CPU đọc page A (仮想アドレス = 1) → tra ページテーブル dòng 1</li>
-<li>Dòng 1 cho biết 物理アドレス = 2 → CPU truy cập 実記憶 ô số 2</li>
-<li>CPU lấy được nội dung page A</li>
-</ol>
-<h4>ページフォールト・ページイン・ページアウト</h4>
-<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
-<tr><th scope="col">用語</th><th scope="col">Khi nào xảy ra</th><th scope="col">Ý nghĩa</th></tr>
-<tr><td><b>ページフォールト (Page fault)</b></td><td>CPU cần một page nhưng page đó <b>không có trong 実記憶</b></td><td><b>Một loại interrupt</b> báo "trang đang cần không có trong RAM"</td></tr>
-<tr><td><b>ページイン (Page-in)</b></td><td>Sau page fault</td><td>OS đọc page cần từ <b>補助記憶 → 実記憶</b></td></tr>
-<tr><td><b>ページアウト (Page-out)</b></td><td>Khi 実記憶 đã đầy</td><td>OS chọn 1 page bỏ ra, ghi từ <b>実記憶 → 補助記憶</b> để lấy chỗ trống</td></tr>
-</table></div>
-<div class="tip"><b>🎯 Luồng đầy đủ Yasashii:</b><br/>
-仮想記憶へのアクセス → ページテーブル参照 → ページフォールト → 置き換えるページの決定 → ページアウト → ページイン</div>
-</div>
- ===== 置換 algorithm =====
-<div class="card">
-<h3 id="lesson-21-topic-5">1.5 ページ置き換えアルゴリズム — Page Replacement</h3>
-<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
-Khi cần page-in nhưng 実記憶 hết chỗ → phải chọn page nào "đẩy ra" (置き換え). Cần chọn page mà <b>khó có khả năng dùng lại</b>, để tránh phải page-in lại ngay. Có 4 thuật toán chính (Yasashii có 3; Slide thêm LIFO):
-</div>
-<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
-<tr><th scope="col">Thuật toán</th><th scope="col">Tiêu chí chọn để đẩy ra</th><th scope="col">Tên đầy đủ</th></tr>
-<tr><td><b>FIFO</b></td><td>Page <b>vào RAM sớm nhất</b> (cũ nhất theo thời điểm nạp)</td><td>First In First Out</td></tr>
-<tr><td><b>LIFO</b></td><td>Page <b>vào RAM mới nhất</b> (gần đây nhất nạp)</td><td>Last In First Out</td></tr>
-<tr><td><b>LRU</b> ⭐</td><td>Page <b>lâu nhất không được tham chiếu</b> (最後に参照されてからの経過時間が最も長い)</td><td>Least Recently Used</td></tr>
-<tr><td><b>LFU</b></td><td>Page có <b>số lần tham chiếu ít nhất</b> (参照頻度が最も少ない)</td><td>Least Frequently Used</td></tr>
-</table></div>
-<div class="tip"><b>📌 Yasashii:</b> 基本情報技術者試験に出題されるのは主に <b>LRU</b>.</div>
-</div>
- ===== Thrashing =====
-<div class="card">
-<h3 id="lesson-21-topic-6">1.6 スラッシング — Thrashing</h3>
-<div class="lang-block lang-jp reading-ja" lang="ja"><span class="lbl">🇯🇵 日本語</span>
-<b>スラッシング</b>とは、仮想記憶管理において、割り当てられる実記憶の容量が小さいときに、ページアウトとページインが頻繁に起こる現象である。スラッシングが発生するとコンピュータ全体のスループットが低下する。
-</div>
-<div class="lang-block lang-vn reading-vi" lang="vi"><span class="lbl">🇻🇳 Tiếng Việt</span>
-<b>スラッシング (Thrashing)</b> = hiện tượng <b>page-in/page-out xảy ra liên tục</b> khi RAM cấp cho chương trình quá nhỏ. Hệ quả: CPU phần lớn thời gian chỉ bận swap page, <b>スループット (throughput) toàn hệ thống giảm mạnh</b>.
-</div>
-<details class="english-note"><summary>English · Tham khảo</summary><div class="lang-block lang-en reading-en" lang="en"><span class="lbl">🇬🇧 English</span>
-Thrashing happens when allocated real memory is too small — the system spends most time paging in and out, drastically reducing throughput.
-</div></details>
-<pre class="ascii" tabindex="0">
-              実記憶 ←→ 補助記憶
-                  ↑↓ ↑↓ ↑↓
-              ページアウト/イン が連続発生
-                  ↓
-              スループット低下
-</pre>
-</div>
- ===================== PHẦN 2 — VÍ DỤ =====================
-</section><section class="lesson-part lesson-section" id="p2"><h2 class="lesson-part-title" data-ja="例題" data-step="02" data-vi="Ví dụ minh hoạ">Ví dụ minh hoạ</h2>
-<div class="card">
-<h3 id="lesson-21-topic-7">Ví dụ 1: CPU truy cập page A — 3 bước (Yasashii)</h3>
-<div class="example"><span class="lbl">Tình huống</span>
-Page table có:
-<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
-<tr><th scope="col">仮想アドレス</th><th scope="col">物理アドレス</th></tr>
-<tr><td>1</td><td>2</td></tr>
-<tr><td>2</td><td>(trống)</td></tr>
-</table></div>
-CPU cần page có 仮想アドレス = 1 (page A).
-</div>
-<ol>
-<li>CPU đọc 仮想記憶 ô 1 → page A. Tra ページテーブル dòng "1"</li>
-<li>Dòng 1: cột 物理アドレス = 2 → CPU truy cập 実記憶 ô 2</li>
-<li>Lấy được nội dung của page A ✓</li>
-</ol>
-</div>
-<div class="card">
-<h3 id="lesson-21-topic-8">Ví dụ 2: Phân biệt 3 thuật toán bằng bảng tham chiếu (Yasashii)</h3>
-<div class="example"><span class="lbl">Đề bài</span>
-実記憶 chứa 3 page A, B, C với dữ liệu:
-<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
-<tr><th scope="col">ページ</th><th scope="col">読み込んだ時刻</th><th scope="col">最後に参照した時刻</th><th scope="col">参照回数</th></tr>
-<tr><td>A</td><td>0:00</td><td>0:05</td><td>9</td></tr>
-<tr><td>B</td><td>0:02</td><td>0:03</td><td>4</td></tr>
-<tr><td>C</td><td>0:03</td><td>0:07</td><td>2</td></tr>
-</table></div>
-Cần page-out 1 page. Hỏi mỗi thuật toán chọn page nào?
-</div>
-<ul>
-<li><b>FIFO</b>: vào sớm nhất → <b>A</b> (0:00)</li>
-<li><b>LRU</b>: tham chiếu cuối cùng lâu nhất → <b>B</b> (0:03, cũ nhất so với A=0:05, C=0:07)</li>
-<li><b>LFU</b>: số lần tham chiếu ít nhất → <b>C</b> (2 lần)</li>
-</ul>
-</div>
-<div class="card">
-<h3 id="lesson-21-topic-9">Ví dụ 3: Mô phỏng FIFO/LIFO/LRU/LFU (Slide)</h3>
-<div class="example"><span class="lbl">Đề bài</span>
-Frame RAM có thể chứa <b>3 page</b>. Thứ tự CPU truy cập: <code>1 2 1 1 3 2 3 3 4</code>. Khi page <code>4</code> đến, RAM đã đầy {1,2,3} — cần page-out 1 trong số đó.
-</div>
-<div aria-label="Bảng tham chiếu · 参照表" class="table-scroll" role="region" tabindex="0"><table>
-<tr><th scope="col">Thuật toán</th><th scope="col">Chọn đẩy ra</th><th scope="col">Lý do</th></tr>
-<tr><td>FIFO</td><td><b>1</b></td><td>Page 1 vào sớm nhất</td></tr>
-<tr><td>LIFO</td><td><b>3</b></td><td>Page 3 vào muộn nhất (vào thứ 5)</td></tr>
-<tr><td>LRU</td><td><b>1</b></td><td>Sau lần tham chiếu cuối, page 1 đã <b>không được dùng lâu nhất</b> (cuối cùng = bước thứ 4)</td></tr>
-<tr><td>LFU</td><td><b>2</b></td><td>Page 2 được dùng <b>2 lần</b>, ít nhất (page 1: 3 lần, page 3: 3 lần)</td></tr>
-</table></div>
-</div>
-<div class="card">
-<h3 id="lesson-21-topic-10">Ví dụ 4: Tình huống thrashing</h3>
-<div class="example"><span class="lbl">Tình huống</span>
-Bạn mở 30 tab Chrome + Photoshop + Video editor cùng lúc trên máy có RAM 4GB. Mỗi ứng dụng cần page mới liên tục, nhưng RAM gần như đầy.
-</div>
-<ul>
-<li>Mỗi lần CPU dùng app khác → page fault → page-out của app này, page-in app kia</li>
-<li>CPU dành 90% thời gian chỉ để swap page → thực sự chạy chương trình rất ít</li>
-<li>Bạn thấy máy "đứng hình", quạt chạy điên cuồng → đây chính là <b>スラッシング</b></li>
-<li>Giải pháp: tăng RAM, đóng bớt app, hoặc tăng kích thước paging file</li>
-</ul>
-</div>
- ===================== PHẦN 3 — FLASHCARD =====================
-</section><section class="lesson-part lesson-section" id="p3"><h2 class="lesson-part-title" data-ja="暗記カード" data-step="03" data-vi="Flashcards · Bấm để lật">Flashcards · Bấm để lật</h2><div aria-label="Nhóm flashcard" class="fc-filter" id="fcFilter" role="group"></div><div class="fc-grid" id="fcGrid"></div></section><section class="lesson-part lesson-section" id="p4"><h2 class="lesson-part-title" data-ja="確認テスト · 10問" data-step="04" data-vi="Quiz ôn tập · 10 câu">Quiz ôn tập · 10 câu</h2><div class="reading-quiz-tools"><span class="reading-resume-note"></span><button class="btn" id="quiz-reset" type="button">↻ Làm lại</button></div><div id="quizArea"></div><div hidden="" id="quiz-result"><div class="score" id="qScore"></div><p class="verdict" id="qVerdict"></p></div></section><footer class="lesson-footer"><button aria-pressed="false" class="btn primary" id="complete-lesson" type="button">✓ Đã hoàn thành bài học</button><p data-ja="読了状態はテストの進捗とは別に、このブラウザに保存されます。" data-vi="Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra." id="completion-status" role="status">Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra.</p><a class="btn" data-ja="テストへ →" data-vi="Làm bài kiểm tra →" href="../kiem-tra/21.html">Làm bài kiểm tra →</a><nav aria-label="Điều hướng bài học" class="footer-nav"><a class="btn" data-ja="← 前のレッスン" data-vi="← Bài trước" href="20.html">← Bài trước</a><a class="btn" data-ja="ロードマップへ →" data-vi="Về lộ trình →" href="../index.html" target="_top">Về lộ trình →</a></nav></footer></main><aside aria-label="Mục lục và ôn tập" class="reading-sidebar"><nav class="lesson-toc"><h3 data-ja="このレッスンの内容" data-vi="TRONG BÀI HỌC NÀY">TRONG BÀI HỌC NÀY</h3><ul></ul></nav><div class="reading-vocab"><h3 data-ja="覚えたいFE用語" data-vi="Từ vựng FE cần nhớ">Từ vựng FE cần nhớ</h3><p data-ja="用語をクリックして意味を確認。" data-vi="Bấm thuật ngữ để tự kiểm tra nghĩa.">Bấm thuật ngữ để tự kiểm tra nghĩa.</p></div></aside></div><script id="lesson-data" type="application/json">{"number": 21, "cards": [{"cat": "all", "front": "記憶管理 chia làm mấy loại?", "back": "2: 主記憶管理 (実記憶管理) + 仮想記憶管理 . FE chủ yếu hỏi virtual. Real"}, {"cat": "all", "front": "固定区画方式 (Fixed)", "back": "Chia RAM thành vùng kích thước cố định trước . Ưu: nạp nhanh. Nhược: hiệu suất kém (lãng phí). Real"}, {"cat": "all", "front": "可変区画方式 (Variable)", "back": "Khi nạp mới chia RAM khít với chương trình. Hiệu suất tốt, nhưng theo thời gian sinh フラグメンテーション . Real"}, {"cat": "all", "front": "フラグメンテーション", "back": "RAM bị phân mảnh thành nhiều ô trống nhỏ rời rạc sau khi chương trình kết thúc và giải phóng. Real"}, {"cat": "all", "front": "メモリコンパクション", "back": "Dồn các chương trình lại liền nhau → tạo vùng trống liên tục → giải quyết フラグメンテーション. Real"}, {"cat": "all", "front": "オーバーレイ方式", "back": "Khi chương trình > RAM, chia thành セグメント và nạp luân phiên chỉ phần đang cần. Real"}, {"cat": "all", "front": "スワッピング (Swapping)", "back": "Khi ngắt ưu tiên cao, tạm dừng chương trình hiện tại, đẩy nó xuống HDD (swap-out), sau đó nạp lại (swap-in). Real"}, {"cat": "all", "front": "メモリリーク", "back": "Vùng nhớ không dùng nhưng không được giải phóng do bug → RAM bị \"rò rỉ\" theo thời gian. Real"}, {"cat": "all", "front": "ガーベージコレクション (GC)", "back": "Tự động quét và giải phóng vùng nhớ không còn dùng → giảm memory leak. Real"}, {"cat": "all", "front": "仮想記憶 là gì?", "back": "Không gian bộ nhớ \"ảo\" do OS tạo ra, một phần thực ra nằm trên HDD. Cho phép chương trình lớn hơn RAM vẫn chạy được. Virt"}, {"cat": "all", "front": "仮想アドレス vs 物理アドレス", "back": "仮想アドレス = trong không gian ảo (logic). 物理アドレス = trong RAM thật. OS ánh xạ qua page table. Virt"}, {"cat": "all", "front": "動的アドレス変換機構 (DAT/MMU)", "back": "Bộ phận phần cứng chuyển 地址 ảo → vật lý trong khi CPU đang chạy. Virt"}, {"cat": "all", "front": "セグメンテーション vs ページング", "back": "Segmentation : chia theo セグメント 可変長 . Paging : chia theo ページ 固定長 . FE hỏi nhiều paging. Virt"}, {"cat": "all", "front": "ページング方式", "back": "Cả 仮想記憶 và 実記憶 đều chia thành các page kích thước cố định bằng nhau , đối ứng qua page table. Page"}, {"cat": "all", "front": "ページテーブル", "back": "Bảng 2 cột ( 仮想アドレス | 物理アドレス ). Số dòng = số page trong 仮想記憶 . Page"}, {"cat": "all", "front": "ページフォールト", "back": "Một interrupt xảy ra khi CPU truy cập page không có trong 実記憶 . Page"}, {"cat": "all", "front": "ページイン (Page-in)", "back": "Sau page fault, OS đọc page cần thiết từ 補助記憶 → 実記憶 . Page"}, {"cat": "all", "front": "ページアウト (Page-out)", "back": "Khi 実記憶 đầy, OS chọn 1 page và ghi nó từ 実記憶 → 補助記憶 để giải phóng chỗ. Page"}, {"cat": "all", "front": "Luồng CPU truy cập page", "back": "仮想記憶アクセス → ページテーブル参照 → (nếu fault) ページフォールト → 置き換えページ決定 → ページアウト → ページイン. Page"}, {"cat": "all", "front": "スラッシング", "back": "Hiện tượng page-in/out liên tục khi RAM cấp quá nhỏ. Làm スループット toàn hệ thống giảm . Page"}, {"cat": "all", "front": "FIFO", "back": "Đẩy ra page vào RAM sớm nhất (First In First Out). Algo"}, {"cat": "all", "front": "LIFO", "back": "Đẩy ra page vào RAM muộn nhất (Last In First Out). Slide có; Yasashii không nhấn mạnh. Algo"}, {"cat": "all", "front": "LRU ⭐", "back": "Least Recently Used — đẩy ra page có thời điểm tham chiếu cuối cũ nhất . FE chủ yếu hỏi LRU . Algo"}, {"cat": "all", "front": "LFU", "back": "Least Frequently Used — đẩy ra page có số lần tham chiếu ít nhất . Algo"}], "quiz": [{"q": "記憶管理 chia làm 2 loại nào?", "opts": ["Cache + RAM", "主記憶管理 (実記憶) + 仮想記憶管理", "HDD + SSD", "Stack + Heap"], "ans": 1, "expl": "記憶管理 = 主記憶 (RAM thật) + 仮想記憶 (ảo). FE chủ yếu hỏi virtual.", "qJa": "記憶管理 chia làm 2 loại nào?", "qVi": "記憶管理 chia làm 2 loại nào?"}, {"q": "フラグメンテーション được giải quyết bằng cách nào?", "opts": ["Tăng RAM", "メモリコンパクション (dồn lại)", "ガーベージコレクション", "オーバーレイ"], "ans": 1, "expl": "Compaction = dồn các chương trình lại liền nhau để tạo vùng trống liên tục.", "qJa": "フラグメンテーション được giải quyết bằng cách nào?", "qVi": "フラグメンテーション được giải quyết bằng cách nào?"}, {"q": "オーバーレイ方式 dùng khi nào?", "opts": ["RAM dư thừa", "Chương trình lớn hơn RAM", "Có nhiều CPU", "Disk hỏng"], "ans": 1, "expl": "Khi chương trình > RAM, chia thành segment và nạp luân phiên.", "qJa": "オーバーレイ方式 dùng khi nào?", "qVi": "オーバーレイ方式 dùng khi nào?"}, {"q": "ページング方式 chia bộ nhớ thành đơn vị có đặc điểm gì?", "opts": ["可変長 (segment)", "固定長 (page)", "Không chia", "Theo chương trình"], "ans": 1, "expl": "Paging chia thành ページ kích thước CỐ ĐỊNH bằng nhau. Segmentation mới là 可変長.", "qJa": "ページング方式 chia bộ nhớ thành đơn vị có đặc điểm gì?", "qVi": "ページング方式 chia bộ nhớ thành đơn vị có đặc điểm gì?"}, {"q": "ページフォールト là gì?", "opts": ["Lỗi cấu hình RAM", "Một loại interrupt khi page cần không có trong 実記憶", "HDD hỏng", "Page table sai"], "ans": 1, "expl": "Page fault = interrupt báo page cần không có trong RAM thật → kích hoạt page-in.", "qJa": "ページフォールト là gì?", "qVi": "ページフォールト là gì?"}, {"q": "Hướng của ページアウト là gì?", "opts": ["RAM → HDD", "HDD → RAM", "CPU → RAM", "RAM → CPU"], "ans": 0, "expl": "Page-OUT = đẩy page từ 実記憶 ra 補助記憶 để giải phóng chỗ.", "qJa": "Hướng của ページアウト là gì?", "qVi": "Hướng của ページアウト là gì?"}, {"q": "LRU chọn đẩy ra page nào?", "opts": ["Page vào sớm nhất", "Page có thời điểm tham chiếu cuối cũ nhất", "Page tham chiếu ít nhất", "Page vào muộn nhất"], "ans": 1, "expl": "LRU = Least Recently Used = lâu nhất chưa được dùng. FE hay hỏi nhất.", "qJa": "LRU chọn đẩy ra page nào?", "qVi": "LRU chọn đẩy ra page nào?"}, {"q": "LFU chọn đẩy ra page nào?", "opts": ["Vào sớm nhất", "Cũ nhất từ lần đọc cuối", "Số lần tham chiếu ít nhất", "Lớn nhất"], "ans": 2, "expl": "LFU = Least Frequently Used = ít được tham chiếu nhất.", "qJa": "LFU chọn đẩy ra page nào?", "qVi": "LFU chọn đẩy ra page nào?"}, {"q": "スラッシング xảy ra khi nào?", "opts": ["RAM cấp quá ít → page-in/out liên tục", "CPU quá nhanh", "HDD quá nhanh", "Page table rỗng"], "ans": 0, "expl": "Thrashing = page-in/out không ngừng do RAM cấp cho process quá nhỏ → throughput hệ thống giảm.", "qJa": "スラッシング xảy ra khi nào?", "qVi": "スラッシング xảy ra khi nào?"}, {"q": "動的アドレス変換機構 (DAT/MMU) làm gì?", "opts": ["Chia page", "Chuyển địa chỉ ảo → vật lý", "Cache cho CPU", "Quản lý disk"], "ans": 1, "expl": "DAT/MMU = phần cứng chuyển 仮想アドレス → 物理アドレス trong khi CPU đang chạy.", "qJa": "動的アドレス変換機構 (DAT/MMU) làm gì?", "qVi": "動的アドレス変換機構 (DAT/MMU) làm gì?"}], "available": true}</script></body></html>
+<div class="layout"><main class="reading-main" id="lesson-content"><header class="lesson-hero"><span class="lesson-eyebrow" data-ja="レッスン21 · 理論" data-vi="BÀI 21 · LÝ THUYẾT">BÀI 21 · LÝ THUYẾT</span><h1><span class="reading-ja" lang="ja">実記憶・仮想記憶 (ページング)</span><span class="reading-vi" lang="vi">Bộ nhớ thực · Bộ nhớ ảo · Phân trang</span></h1><div class="lesson-meta"><span data-ja="科目Aの基礎" data-vi="Trọng tâm 科目A">Trọng tâm 科目A</span><span data-ja="暗記カード24枚 · 確認問題10問" data-vi="24 flashcard · 10 câu ôn tập">24 flashcard · 10 câu ôn tập</span></div></header>
+<section class="lesson-part lesson-section" id="p1"><h2 class="lesson-part-title" data-ja="理論のまとめ" data-step="01" data-vi="Tóm tắt lý thuyết">Tóm tắt lý thuyết</h2><div class="card"><h3 id="lesson-21-topic-1" data-vi="1.1 Vì sao OS phải quản lý bộ nhớ?" data-ja="1.1 なぜ記憶管理が必要か">1.1 Vì sao OS phải quản lý bộ nhớ?</h3><div class="reading-vi" lang="vi"><p>Chương trình được lưu ở bộ nhớ phụ (HDD/SSD). Khi chạy, phần cần thực thi phải được nạp vào bộ nhớ chính (RAM). Vì nhiều chương trình cùng dùng RAM có dung lượng giới hạn, OS phải quản lý vùng nhớ.</p><p><b>実記憶</b> là vùng nhớ vật lý trong RAM. <b>仮想記憶</b> là không gian nhớ logic do OS tạo ra, sử dụng một phần bộ nhớ phụ như thể là bộ nhớ chính. Nhờ chỉ đưa phần cần thiết vào RAM, có thể chạy chương trình lớn hơn dung lượng RAM.</p><p class="example-box"><b>Cách hình dung:</b> RAM là mặt bàn làm việc; bộ nhớ phụ là nơi cất tài liệu. Chỉ tài liệu đang cần mới được đưa lên bàn. Đây là ví von để hiểu cơ chế, không phải một thiết bị nhớ mới.</p></div><div class="reading-ja" lang="ja"><p>プログラムは補助記憶装置に保存され、実行時に必要な部分が主記憶装置へ読み込まれます。複数のプログラムが容量に限りのある主記憶を使うため、OSによる管理が必要です。</p><p><b>実記憶</b>は主記憶装置上の物理的な領域、<b>仮想記憶</b>はOSが作る論理的な領域です。補助記憶装置の一部を主記憶のように扱い、必要な部分を主記憶へ読み込むことで、主記憶より大きいプログラムを実行できます。</p><p class="example-box">主記憶を作業机、補助記憶を資料の保管場所と考えると、必要な資料だけを机へ出すイメージです。</p></div></div><div class="card"><h3 id="lesson-21-topic-2" data-vi="1.2 Quản lý bộ nhớ thực" data-ja="1.2 実記憶管理">1.2 Quản lý bộ nhớ thực</h3><div class="reading-vi" lang="vi"><ul><li><b>固定区画方式 — phân vùng cố định:</b> chia vùng trước khi nạp. Đơn giản, nạp nhanh nhưng chương trình nhỏ vẫn chiếm cả vùng. Ví dụ nguồn: vùng 8 MB chứa chương trình 4 MB thì thừa 4 MB; chương trình 12 MB không vừa vùng này.</li><li><b>可変区画方式 — phân vùng thay đổi:</b> cấp vùng theo kích thước chương trình khi nạp. Dùng vùng nhớ hiệu quả hơn, nhưng khi chương trình kết thúc, các khoảng trống có thể nằm rải rác.</li><li><b>フラグメンテーション — phân mảnh:</b> vùng trống bị chia nhỏ. <b>メモリコンパクション</b> dồn các chương trình lại để tạo khoảng trống liên tục; khác với giải phóng rác.</li><li><b>オーバーレイ:</b> chia chương trình lớn thành các phần và luân phiên nạp phần cần dùng.</li><li><b>スワッピング:</b> tạm đưa chương trình từ RAM ra bộ nhớ phụ (swap-out), rồi nạp trở lại (swap-in). Tài liệu minh họa bằng tình huống chương trình ưu tiên cao cần RAM.</li><li><b>メモリリーク:</b> bộ nhớ không còn cần nhưng chưa được giải phóng. <b>ガーベージコレクション</b> là cơ chế tự động thu hồi vùng nhớ không còn dùng; không nhầm với compaction.</li></ul></div><div class="reading-ja" lang="ja"><ul><li><b>固定区画方式:</b> あらかじめ決めた区画へ読み込みます。読込みは速い一方、8 MBの区画に4 MBのプログラムを入れると4 MBが無駄になり、12 MBは入りません。</li><li><b>可変区画方式:</b> 読込み時に必要な大きさで区画を確保します。効率はよいものの、解放が繰り返されると空き領域が点在します。</li><li><b>フラグメンテーション:</b> 記憶領域の断片化。<b>メモリコンパクション</b>でプログラムをまとめ、連続した空き領域を作ります。</li><li><b>オーバーレイ:</b> 大きなプログラムを分割し、必要な部分を交代で読み込みます。</li><li><b>スワッピング:</b> プログラムを主記憶から補助記憶へ退避し、必要時に戻します。資料では優先度の高いプログラムの割込みを例にしています。</li><li><b>メモリリーク:</b> 不要になった領域が解放されない状態。<b>ガーベージコレクション</b>は不要な領域を自動回収する仕組みで、コンパクションとは区別します。</li></ul></div></div><div class="card"><h3 id="lesson-21-topic-3" data-vi="1.3 Paging và bảng trang" data-ja="1.3 ページングとページテーブル">1.3 Paging và bảng trang</h3><div class="reading-vi" lang="vi"><p><b>セグメンテーション</b> chia theo đoạn có độ dài thay đổi (可変長). <b>ページング</b> chia không gian ảo và bộ nhớ thực thành các vùng có kích thước cố định (固定長). Bài này tập trung vào paging theo sách chính.</p><p>Địa chỉ trong không gian ảo gọi là <b>仮想アドレス</b>; địa chỉ trong RAM gọi là <b>物理アドレス</b>. <b>ページテーブル</b> lưu quan hệ tương ứng. Trong mô hình bảng đơn giản của sách, mỗi trang ảo tương ứng một dòng; không phải mỗi trang ảo đều đang nằm trong RAM.</p><p><b>動的アドレス変換 (DAT)</b> chuyển địa chỉ ảo sang địa chỉ vật lý trong lúc thực thi. OS quản lý ánh xạ; cơ chế chuyển đổi dùng ánh xạ đó để truy cập RAM.</p><div class="flow-diagram"><span class="flow-step">CPU</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-step">Địa chỉ ảo</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-step">Bảng trang</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-step">RAM</span></div></div><div class="reading-ja" lang="ja"><p><b>セグメンテーション</b>は可変長のセグメント、<b>ページング</b>は固定長のページに分割する方式です。ここでは主教材に従いページングを中心に学びます。</p><p>仮想記憶のアドレスを<b>仮想アドレス</b>、実記憶のアドレスを<b>物理アドレス</b>と呼び、<b>ページテーブル</b>で対応付けます。教材の単純な表では仮想ページごとに1行が対応しますが、すべてのページが主記憶にあるわけではありません。</p><p><b>動的アドレス変換（DAT）</b>は実行中に仮想アドレスを物理アドレスへ変換します。OSが管理する対応関係を使って実記憶へアクセスします。</p><div class="flow-diagram"><span class="flow-step">CPU</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-step">仮想アドレス</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-step">ページテーブル</span><span class="flow-arrow" aria-hidden="true">→</span><span class="flow-step">実記憶</span></div></div></div><div class="card"><h3 id="lesson-21-topic-4" data-vi="1.4 Page fault → page-in / page-out" data-ja="1.4 ページフォールトからページインへ">1.4 Page fault → page-in / page-out</h3><div class="reading-vi" lang="vi"><p><b>ページフォールト</b> là ngắt xảy ra khi truy cập trang không có trong RAM. Đây là tình huống OS phải xử lý, không có nghĩa RAM bị hỏng.</p><ol><li>Tra bảng trang. Nếu trang đã có trong RAM: truy cập trực tiếp, không cần page-in.</li><li>Nếu trang chưa có: xảy ra page fault.</li><li>Nếu còn vùng trống trong RAM: nạp trang cần từ <b>bộ nhớ phụ → RAM</b> (<b>ページイン</b>).</li><li>Nếu RAM đã đầy: chọn trang thay thế; theo mô hình trong sách, đưa trang ra <b>RAM → bộ nhớ phụ</b> (<b>ページアウト</b>), rồi page-in trang cần.</li></ol><p class="mnemonic-box"><b>Nhớ chiều:</b> IN = vào RAM; OUT = ra khỏi RAM. Page fault không phải lần nào cũng cần page-out: còn chỗ trống thì chỉ cần nạp vào.</p></div><div class="reading-ja" lang="ja"><p><b>ページフォールト</b>は実記憶に存在しないページへのアクセスで発生する割込みです。RAMの故障という意味ではありません。</p><ol><li>ページテーブルを参照し、ページが実記憶にあれば、そのままアクセスします。</li><li>実記憶になければページフォールトが発生します。</li><li>空きがあれば、必要なページを<b>補助記憶 → 実記憶</b>へ読み込みます（<b>ページイン</b>）。</li><li>空きがなければ、置き換えるページを決めます。教材のモデルでは<b>実記憶 → 補助記憶</b>へ書き出し（<b>ページアウト</b>）、必要なページを読み込みます。</li></ol><p class="mnemonic-box">INは実記憶へ、OUTは実記憶から。空きがある場合、ページアウトは不要です。</p></div></div><div class="card"><h3 id="lesson-21-topic-5" data-vi="1.5 Chọn trang thay thế: FIFO / LRU / LFU" data-ja="1.5 ページの置き換え方式">1.5 Chọn trang thay thế: FIFO / LRU / LFU</h3><div class="reading-vi" lang="vi"><p>Khi phải lấy chỗ cho trang mới, cần chọn trang đẩy ra. Ba tiêu chí trong sách chính:</p><ul><li><b>FIFO:</b> nhìn <b>thời điểm nạp</b>, đẩy trang vào sớm nhất.</li><li><b>LRU:</b> nhìn <b>lần tham chiếu cuối</b>, đẩy trang lâu nhất chưa dùng. Dùng lại một trang sẽ cập nhật lần tham chiếu cuối, không làm nó trở thành trang mới nạp theo FIFO.</li><li><b>LFU:</b> nhìn <b>số lần tham chiếu</b>, đẩy trang có số lần ít nhất.</li></ul><p>Bản slide Nhật còn có <b>LIFO</b>: đẩy trang được nạp vào muộn nhất. Đây là phần bổ sung; sách chính tập trung ba cách trên, đặc biệt LRU.</p></div><div class="reading-ja" lang="ja"><p>新しいページのために空きを作るとき、追い出すページを選びます。主教材の3方式は次のとおりです。</p><ul><li><b>FIFO:</b> 読み込んだ時刻が最も古いページ。</li><li><b>LRU:</b> 最後に参照した時刻が最も古いページ。再参照は最終参照時刻を更新しますが、FIFOの読込み順は変えません。</li><li><b>LFU:</b> 参照回数が最も少ないページ。</li></ul><p>日本語スライドには、最後に読み込んだページを追い出す<b>LIFO</b>もあります。補足として区別し、主教材の3方式、特にLRUを押さえましょう。</p></div></div><div class="card"><h3 id="lesson-21-topic-6" data-vi="1.6 Thrashing: đổi trang quá thường xuyên" data-ja="1.6 スラッシング">1.6 Thrashing: đổi trang quá thường xuyên</h3><div class="reading-vi" lang="vi"><p>Khi dung lượng RAM được cấp quá nhỏ so với dữ liệu cần dùng, page-out và page-in diễn ra thường xuyên: đó là <b>スラッシング</b>. Hệ thống mất nhiều thời gian trao đổi trang, nên <b>スループット</b> (khả năng xử lý) giảm.</p><p class="mnemonic-box"><b>Phân biệt:</b> page fault là một sự kiện thiếu trang; thrashing là tình trạng trao đổi trang quá thường xuyên làm hiệu năng giảm. Không kết luận thrashing chỉ từ một lần page fault.</p></div><div class="reading-ja" lang="ja"><p>扱うデータに比べて割り当てられた実記憶が小さいと、ページアウトとページインが頻発します。これを<b>スラッシング</b>といい、コンピュータ全体の<b>スループット</b>が低下します。</p><p>ページフォールトはページが実記憶にないときの割込みです。スラッシングはページの出し入れが頻発して効率が低下する状態なので、1回のページフォールトとは区別します。</p></div></div></section><section class="lesson-part lesson-section" id="p2"><h2 class="lesson-part-title" data-ja="例題" data-step="02" data-vi="Ví dụ minh hoạ">Ví dụ minh hoạ</h2><div class="card"><h3 id="lesson-21-topic-7" data-vi="Ví dụ 1 · Địa chỉ ảo 1 → vị trí RAM 2" data-ja="例1 · 仮想アドレス1 → 物理アドレス2">Ví dụ 1 · Địa chỉ ảo 1 → vị trí RAM 2</h3><div class="reading-vi" lang="vi"><p>Theo hình trong sách tr.205: trang A ở địa chỉ ảo 1; dòng 1 của bảng trang chỉ đến địa chỉ vật lý 2. CPU tra dòng 1 rồi lấy A từ vị trí 2 trong RAM. Không lấy dữ liệu từ một “RAM ảo” riêng.</p><pre class="ascii" tabindex="0">A: ảo 1 → bảng trang [1 → 2] → RAM 2</pre><p>Nếu trang cần không ở RAM nhưng RAM còn chỗ: page fault → page-in. Nếu RAM hết chỗ: page fault → chọn trang thay thế → page-out → page-in (mô hình sách tr.206).</p></div><div class="reading-ja" lang="ja"><p>教材p.205の図では、ページAの仮想アドレスは1、対応する物理アドレスは2です。ページテーブルの1の行を調べ、実記憶の2からAを読み取ります。</p><pre class="ascii" tabindex="0">A: 仮想1 → ページテーブル [1 → 2] → 実記憶2</pre><p>必要なページが実記憶になく、空きがある場合は、ページフォールト → ページイン。空きがない場合は、ページフォールト → 置換ページの決定 → ページアウト → ページインです（p.206のモデル）。</p></div></div><div class="card"><h3 id="lesson-21-topic-8" data-vi="Ví dụ 2 · Cùng một bảng, ba đáp án khác nhau" data-ja="例2 · 同じ表で3方式を比較">Ví dụ 2 · Cùng một bảng, ba đáp án khác nhau</h3><div class="reading-vi" lang="vi"><p>Dữ liệu từ sách tr.207. Cần đẩy một trang ra:</p><div class="table-scroll" role="region" aria-label="FIFO LRU LFU" tabindex="0"><table><tr><th scope="col">Page</th><th scope="col">FIFO · 読込み</th><th scope="col">LRU · 最終参照</th><th scope="col">LFU · 回数</th></tr><tr><td>A</td><td>0:00</td><td>0:05</td><td>9</td></tr><tr><td>B</td><td>0:02</td><td>0:03</td><td>4</td></tr><tr><td>C</td><td>0:03</td><td>0:07</td><td>2</td></tr></table></div><ul><li>FIFO → <b>A</b>: nạp lúc 0:00, sớm nhất.</li><li>LRU → <b>B</b>: tham chiếu cuối lúc 0:03, cũ nhất.</li><li>LFU → <b>C</b>: chỉ được tham chiếu 2 lần, ít nhất.</li></ul><p class="mnemonic-box">Mẹo: chọn đúng cột trước, rồi tìm giá trị nhỏ nhất. Đừng dùng số lần tham chiếu để trả lời LRU.</p></div><div class="reading-ja" lang="ja"><p>教材p.207のデータです。1ページを追い出します。</p><div class="table-scroll" role="region" aria-label="FIFO LRU LFU" tabindex="0"><table><tr><th scope="col">Page</th><th scope="col">FIFO · 読込み</th><th scope="col">LRU · 最終参照</th><th scope="col">LFU · 回数</th></tr><tr><td>A</td><td>0:00</td><td>0:05</td><td>9</td></tr><tr><td>B</td><td>0:02</td><td>0:03</td><td>4</td></tr><tr><td>C</td><td>0:03</td><td>0:07</td><td>2</td></tr></table></div><ul><li>FIFO → <b>A</b>: 読込み時刻0:00が最も古い。</li><li>LRU → <b>B</b>: 最終参照時刻0:03が最も古い。</li><li>LFU → <b>C</b>: 参照回数2が最も少ない。</li></ul><p class="mnemonic-box">最初に見る列を決め、その列の最小値を選びます。LRUで参照回数を見ないようにしましょう。</p></div></div><div class="card"><h3 id="lesson-21-topic-9" data-vi="Ví dụ 3 · Theo dõi chuỗi tham chiếu" data-ja="例3 · 参照列を追跡する">Ví dụ 3 · Theo dõi chuỗi tham chiếu</h3><div class="reading-vi" lang="vi"><p>Slide 35–40: RAM ban đầu trống, chứa tối đa 3 trang. Chuỗi: <code>1 2 1 1 3 2 3 3 4</code>. Trước bước cuối, RAM chứa {1, 2, 3}.</p><ul><li>Thứ tự nạp: 1 → 2 → 3. FIFO đẩy <b>1</b>; LIFO đẩy <b>3</b>.</li><li>Lần dùng cuối: 1 ở bước 4; 2 ở bước 6; 3 ở bước 8. LRU đẩy <b>1</b>.</li><li>Số lần dùng: 1 có 3 lần; 2 có 2 lần; 3 có 3 lần. LFU đẩy <b>2</b>.</li></ul><p>Ở các bước truy cập lại trang đã có, không nạp thêm trang; chỉ cập nhật thông tin tham chiếu phù hợp với thuật toán.</p></div><div class="reading-ja" lang="ja"><p>スライド35–40より。実記憶は最初は空で3ページ分。参照列は<code>1 2 1 1 3 2 3 3 4</code>です。最後の4の直前には{1, 2, 3}があります。</p><ul><li>読込み順: 1 → 2 → 3。FIFOは<b>1</b>、LIFOは<b>3</b>を追い出します。</li><li>最終参照: 1は4番目、2は6番目、3は8番目。LRUは<b>1</b>です。</li><li>参照回数: 1は3回、2は2回、3は3回。LFUは<b>2</b>です。</li></ul><p>既に実記憶にあるページの再参照ではページインせず、方式に応じた参照情報を更新します。</p></div></div><div class="card"><h3 id="lesson-21-topic-10" data-vi="Nguồn đối chiếu và điểm cần đọc cẩn thận" data-ja="出典と読み方の注意">Nguồn đối chiếu và điểm cần đọc cẩn thận</h3><div class="reading-vi" lang="vi"><ul><li><b>Nguồn chính:</b> ichibanyashashi, chương 6, tr.203–208: khái niệm, bảng trang, luồng paging, bảng A/B/C và thrashing.</li><li><b>Bổ sung:</b> FE_JP, tài liệu phần mềm, slide 17–23 (bộ nhớ thực), 25–40 (DAT, paging và chuỗi tham chiếu).</li><li><b>Đối chiếu thuật ngữ:</b> FE_VN, tài liệu Phần cứng &amp; Phần mềm &amp; Cấu trúc hệ thống, mục 2.2.5, các nhãn Trang 34–37.</li></ul><p>Bản Việt ở Trang 37 ghi chiều page-in là “bộ nhớ thực vào bộ nhớ ảo”. Bài này theo cả hai nguồn Nhật: <b>bộ nhớ phụ → bộ nhớ thực</b>. Bảng trang hai cột là mô hình minh họa của sách; bản Việt còn mô tả bit lỗi trang, không nên hiểu mọi bảng trang thực tế chỉ có hai cột.</p></div><div class="reading-ja" lang="ja"><ul><li><b>主教材:</b> ichibanyashashi 第6章 p.203–208。概念、ページテーブル、ページングの流れ、A/B/Cの表、スラッシング。</li><li><b>補足:</b> FE_JP ソフトウェア資料、スライド17–23（実記憶管理）、25–40（DAT、ページング、参照列）。</li><li><b>用語の照合:</b> FE_VN ハードウェア・ソフトウェア・システム構成資料、2.2.5、ページ表示34–37。</li></ul><p>ベトナム語資料のページ表示37ではページインの方向が逆に記述されています。本レッスンは両日本語資料に従い、<b>補助記憶 → 実記憶</b>とします。2列のページテーブルは教材の説明用モデルです。ベトナム語資料ではページフォールトビットも扱っています。</p></div></div></section><section class="lesson-part lesson-section" id="p3"><h2 class="lesson-part-title" data-ja="暗記カード" data-step="03" data-vi="Flashcards · Bấm để lật">Flashcards · Bấm để lật</h2><div aria-label="Nhóm flashcard" class="fc-filter" id="fcFilter" role="group"></div><div class="fc-grid" id="fcGrid"></div></section><section class="lesson-part lesson-section" id="p4"><h2 class="lesson-part-title" data-ja="確認テスト · 10問" data-step="04" data-vi="Quiz ôn tập · 10 câu">Quiz ôn tập · 10 câu</h2><div class="reading-quiz-tools"><span class="reading-resume-note"></span><button class="btn" id="quiz-reset" type="button">↻ Làm lại</button></div><div id="quizArea"></div><div hidden="" id="quiz-result"><div class="score" id="qScore"></div><p class="verdict" id="qVerdict"></p></div></section><footer class="lesson-footer"><button aria-pressed="false" class="btn primary" id="complete-lesson" type="button">✓ Đã hoàn thành bài học</button><p data-ja="読了状態はテストの進捗とは別に、このブラウザに保存されます。" data-vi="Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra." id="completion-status" role="status">Trạng thái đọc lưu trên trình duyệt, riêng với tiến độ kiểm tra.</p><a class="btn" data-ja="テストへ →" data-vi="Làm bài kiểm tra →" href="../kiem-tra/21.html">Làm bài kiểm tra →</a><nav aria-label="Điều hướng bài học" class="footer-nav"><a class="btn" data-ja="← 前のレッスン" data-vi="← Bài trước" href="20.html">← Bài trước</a><a class="btn" data-ja="ロードマップへ →" data-vi="Về lộ trình →" href="../index.html" target="_top">Về lộ trình →</a></nav></footer></main><aside aria-label="Mục lục và ôn tập" class="reading-sidebar"><details open><summary data-vi="Mục lục bài học · Bấm để mở" data-ja="目次 · クリックして開く">Mục lục bài học · Bấm để mở</summary><nav class="lesson-toc"><h3 data-ja="このレッスンの内容" data-vi="TRONG BÀI HỌC NÀY">TRONG BÀI HỌC NÀY</h3><ul></ul></nav><div class="reading-vocab"><h3 data-ja="覚えたいFE用語" data-vi="Từ vựng FE cần nhớ">Từ vựng FE cần nhớ</h3><p data-ja="用語をクリックして意味を確認。" data-vi="Bấm thuật ngữ để tự kiểm tra nghĩa.">Bấm thuật ngữ để tự kiểm tra nghĩa.</p></div></details></aside></div><script id="lesson-data" type="application/json">{"number": 21, "cards": [{"cat": "Memory", "front": "記憶管理 chia làm mấy loại?", "back": "2: 主記憶管理 (実記憶管理) + 仮想記憶管理 . FE chủ yếu hỏi virtual.", "frontJa": "記憶管理の分類", "backJa": "主記憶管理（実記憶管理）と仮想記憶管理。"}, {"cat": "Memory", "front": "固定区画方式 (Fixed)", "back": "Chia RAM thành vùng kích thước cố định trước . Ưu: nạp nhanh. Nhược: hiệu suất kém (lãng phí).", "frontJa": "固定区画方式", "backJa": "あらかじめ決めた大きさの区画へ読み込む。小さいプログラムでは空きが無駄になる。"}, {"cat": "Memory", "front": "可変区画方式 (Variable)", "back": "Khi nạp mới chia RAM khít với chương trình. Hiệu suất tốt, nhưng theo thời gian sinh フラグメンテーション .", "frontJa": "可変区画方式", "backJa": "読込み時に必要な大きさで区画を確保する。断片化が起こり得る。"}, {"cat": "Memory", "front": "フラグメンテーション", "back": "RAM bị phân mảnh thành nhiều ô trống nhỏ rời rạc sau khi chương trình kết thúc và giải phóng.", "frontJa": "フラグメンテーション", "backJa": "解放を繰り返すことで空き領域が細かく分かれる状態。"}, {"cat": "Memory", "front": "メモリコンパクション", "back": "Dồn các chương trình lại liền nhau → tạo vùng trống liên tục → giải quyết フラグメンテーション.", "frontJa": "メモリコンパクション", "backJa": "プログラムをまとめて連続した空き領域を作る。"}, {"cat": "Memory", "front": "オーバーレイ方式", "back": "Khi chương trình > RAM, chia thành セグメント và nạp luân phiên chỉ phần đang cần.", "frontJa": "オーバーレイ方式", "backJa": "プログラムを分割し、必要な部分を交代で主記憶へ読み込む。"}, {"cat": "Memory", "front": "スワッピング (Swapping)", "back": "Khi ngắt ưu tiên cao, tạm dừng chương trình hiện tại, đẩy nó xuống HDD (swap-out), sau đó nạp lại (swap-in).", "frontJa": "スワッピング", "backJa": "プログラムを補助記憶へ退避し、必要時に主記憶へ戻す。"}, {"cat": "Memory", "front": "メモリリーク", "back": "Vùng nhớ không dùng nhưng không được giải phóng do bug → RAM bị \"rò rỉ\" theo thời gian.", "frontJa": "メモリリーク", "backJa": "不要な領域が解放されず、使用できない状態が続く。"}, {"cat": "Memory", "front": "ガーベージコレクション (GC)", "back": "Cơ chế tự động thu hồi vùng nhớ không còn dùng; phân biệt với compaction (dồn vùng nhớ).", "frontJa": "ガーベージコレクション", "backJa": "不要になった記憶領域を自動的に回収する仕組み。"}, {"cat": "Memory", "front": "仮想記憶 là gì?", "back": "Không gian bộ nhớ \"ảo\" do OS tạo ra, một phần thực ra nằm trên HDD. Cho phép chương trình lớn hơn RAM vẫn chạy được.", "frontJa": "仮想記憶とは", "backJa": "OSが作る論理的な記憶領域。補助記憶の一部を主記憶のように扱う。"}, {"cat": "Memory", "front": "仮想アドレス vs 物理アドレス", "back": "仮想アドレス = trong không gian ảo (logic). 物理アドレス = trong RAM thật. OS ánh xạ qua page table.", "frontJa": "仮想アドレスと物理アドレス", "backJa": "仮想記憶のアドレスと実記憶のアドレス。ページテーブルで対応付ける。"}, {"cat": "Memory", "front": "動的アドレス変換機構 (DAT/MMU)", "back": "Bộ phận phần cứng chuyển địa chỉ ảo → vật lý trong khi CPU đang chạy.", "frontJa": "動的アドレス変換（DAT）", "backJa": "実行中に仮想アドレスを物理アドレスへ変換する。"}, {"cat": "Memory", "front": "セグメンテーション vs ページング", "back": "Segmentation : chia theo セグメント 可変長 . Paging : chia theo ページ 固定長 . FE hỏi nhiều paging.", "frontJa": "セグメンテーションとページング", "backJa": "セグメントは可変長、ページは固定長。"}, {"cat": "concept", "front": "ページング方式", "back": "Cả 仮想記憶 và 実記憶 đều chia thành các page kích thước cố định bằng nhau , đối ứng qua page table.", "frontJa": "ページング方式", "backJa": "仮想記憶と実記憶を固定長の領域に分割して対応付ける。"}, {"cat": "concept", "front": "ページテーブル", "back": "Bảng ánh xạ trang ảo sang vị trí trong RAM. Hai cột là mô hình minh họa của sách, không phải giới hạn của mọi bảng trang.", "frontJa": "ページテーブル", "backJa": "仮想ページと実記憶の対応を管理する表。教材では単純な2列の表で説明する。"}, {"cat": "concept", "front": "ページフォールト", "back": "Một interrupt xảy ra khi CPU truy cập page không có trong 実記憶 .", "frontJa": "ページフォールト", "backJa": "実記憶にないページへのアクセスで発生する割込み。"}, {"cat": "concept", "front": "ページイン (Page-in)", "back": "Sau page fault, OS đọc page cần thiết từ 補助記憶 → 実記憶 .", "frontJa": "ページイン", "backJa": "必要なページを補助記憶から実記憶へ読み込む。"}, {"cat": "concept", "front": "ページアウト (Page-out)", "back": "Khi 実記憶 đầy, OS chọn 1 page và ghi nó từ 実記憶 → 補助記憶 để giải phóng chỗ.", "frontJa": "ページアウト", "backJa": "教材のモデルでは、実記憶のページを補助記憶へ書き出して空きを作る。"}, {"cat": "concept", "front": "Luồng CPU truy cập page", "back": "Trang có trong RAM: truy cập. Chưa có: page fault. RAM còn chỗ: page-in; RAM đầy: chọn trang thay thế → page-out → page-in (mô hình sách).", "frontJa": "ページアクセスの流れ", "backJa": "実記憶にあればアクセス。なければページフォールト。空きがあればページイン、なければ置換ページを決めてページアウト後にページイン。"}, {"cat": "concept", "front": "スラッシング", "back": "Hiện tượng page-in/out liên tục khi RAM cấp quá nhỏ. Làm スループット toàn hệ thống giảm .", "frontJa": "スラッシング", "backJa": "実記憶の割当てが小さく、ページの出し入れが頻発してスループットが低下する。"}, {"cat": "concept", "front": "FIFO", "back": "Đẩy ra page vào RAM sớm nhất (First In First Out).", "frontJa": "FIFO", "backJa": "最も先に読み込んだページを追い出す。"}, {"cat": "concept", "front": "LIFO", "back": "Đẩy ra page vào RAM muộn nhất (Last In First Out). Slide có; Yasashii không nhấn mạnh.", "frontJa": "LIFO（補足）", "backJa": "最後に読み込んだページを追い出す。日本語スライドの補足。"}, {"cat": "concept", "front": "LRU ⭐", "back": "Least Recently Used — đẩy ra page có thời điểm tham chiếu cuối cũ nhất . FE chủ yếu hỏi LRU .", "frontJa": "LRU", "backJa": "最後に参照してから最も長い時間が経ったページを追い出す。"}, {"cat": "concept", "front": "LFU", "back": "Least Frequently Used — đẩy ra page có số lần tham chiếu ít nhất .", "frontJa": "LFU", "backJa": "参照回数が最も少ないページを追い出す。"}], "quiz": [{"q": "記憶管理 chia làm 2 loại nào?", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Cache + RAM</span><span class=\"reading-ja\" lang=\"ja\">キャッシュとRAM</span>", "<span class=\"reading-vi\" lang=\"vi\">主記憶管理 (実記憶) + 仮想記憶管理</span><span class=\"reading-ja\" lang=\"ja\">主記憶管理と仮想記憶管理</span>", "<span class=\"reading-vi\" lang=\"vi\">HDD + SSD</span><span class=\"reading-ja\" lang=\"ja\">HDDとSSD</span>", "<span class=\"reading-vi\" lang=\"vi\">Stack + Heap</span><span class=\"reading-ja\" lang=\"ja\">スタックとヒープ</span>"], "ans": 1, "expl": "記憶管理 = 主記憶 (RAM thật) + 仮想記憶 (ảo). FE chủ yếu hỏi virtual.", "qJa": "記憶管理の2つの分類はどれか。", "qVi": "記憶管理 chia làm 2 loại nào?", "explJa": "主記憶管理は物理的な主記憶を、仮想記憶管理は論理的な記憶領域を管理します。"}, {"q": "フラグメンテーション được giải quyết bằng cách nào?", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Tăng RAM</span><span class=\"reading-ja\" lang=\"ja\">RAMの増設</span>", "<span class=\"reading-vi\" lang=\"vi\">メモリコンパクション (dồn lại)</span><span class=\"reading-ja\" lang=\"ja\">メモリコンパクション</span>", "<span class=\"reading-vi\" lang=\"vi\">ガーベージコレクション</span><span class=\"reading-ja\" lang=\"ja\">ガーベージコレクション</span>", "<span class=\"reading-vi\" lang=\"vi\">オーバーレイ</span><span class=\"reading-ja\" lang=\"ja\">オーバーレイ</span>"], "ans": 1, "expl": "Compaction = dồn các chương trình lại liền nhau để tạo vùng trống liên tục.", "qJa": "点在する空き領域をまとめる方法はどれか。", "qVi": "フラグメンテーション được giải quyết bằng cách nào?", "explJa": "コンパクションはプログラムをまとめて連続した空きを作ります。"}, {"q": "オーバーレイ方式 dùng khi nào?", "opts": ["<span class=\"reading-vi\" lang=\"vi\">RAM dư thừa</span><span class=\"reading-ja\" lang=\"ja\">主記憶が余っている</span>", "<span class=\"reading-vi\" lang=\"vi\">Chương trình lớn hơn RAM</span><span class=\"reading-ja\" lang=\"ja\">プログラムが主記憶より大きい</span>", "<span class=\"reading-vi\" lang=\"vi\">Có nhiều CPU</span><span class=\"reading-ja\" lang=\"ja\">CPUが複数ある</span>", "<span class=\"reading-vi\" lang=\"vi\">Disk hỏng</span><span class=\"reading-ja\" lang=\"ja\">ディスクが故障した</span>"], "ans": 1, "expl": "Khi chương trình > RAM, chia thành segment và nạp luân phiên.", "qJa": "オーバーレイ方式が扱う状況はどれか。", "qVi": "オーバーレイ方式 dùng khi nào?", "explJa": "プログラムを分割し、必要な部分を交代で読み込みます。"}, {"q": "ページング方式 chia bộ nhớ thành đơn vị có đặc điểm gì?", "opts": ["<span class=\"reading-vi\" lang=\"vi\">可変長 (segment)</span><span class=\"reading-ja\" lang=\"ja\">可変長</span>", "<span class=\"reading-vi\" lang=\"vi\">固定長 (page)</span><span class=\"reading-ja\" lang=\"ja\">固定長</span>", "<span class=\"reading-vi\" lang=\"vi\">Không chia</span><span class=\"reading-ja\" lang=\"ja\">分割しない</span>", "<span class=\"reading-vi\" lang=\"vi\">Theo chương trình</span><span class=\"reading-ja\" lang=\"ja\">プログラムごとに異なる長さ</span>"], "ans": 1, "expl": "Paging chia thành ページ kích thước CỐ ĐỊNH bằng nhau. Segmentation mới là 可変長.", "qJa": "ページングの分割単位の特徴はどれか。", "qVi": "ページング方式 chia bộ nhớ thành đơn vị có đặc điểm gì?", "explJa": "ページは固定長、セグメントは可変長です。"}, {"q": "ページフォールト là gì?", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Lỗi cấu hình RAM</span><span class=\"reading-ja\" lang=\"ja\">RAMの設定ミス</span>", "<span class=\"reading-vi\" lang=\"vi\">Một loại interrupt khi page cần không có trong 実記憶</span><span class=\"reading-ja\" lang=\"ja\">実記憶にないページへのアクセスによる割込み</span>", "<span class=\"reading-vi\" lang=\"vi\">HDD hỏng</span><span class=\"reading-ja\" lang=\"ja\">HDDの故障</span>", "<span class=\"reading-vi\" lang=\"vi\">Page table sai</span><span class=\"reading-ja\" lang=\"ja\">ページテーブルの誤り</span>"], "ans": 1, "expl": "Page fault = interrupt báo page cần không có trong RAM thật → kích hoạt page-in.", "qJa": "ページフォールトとは何か。", "qVi": "ページフォールト là gì?", "explJa": "必要なページが実記憶にないときに発生する割込みです。"}, {"q": "Hướng của ページアウト là gì?", "opts": ["<span class=\"reading-vi\" lang=\"vi\">RAM → HDD</span><span class=\"reading-ja\" lang=\"ja\">実記憶 → 補助記憶</span>", "<span class=\"reading-vi\" lang=\"vi\">HDD → RAM</span><span class=\"reading-ja\" lang=\"ja\">補助記憶 → 実記憶</span>", "<span class=\"reading-vi\" lang=\"vi\">CPU → RAM</span><span class=\"reading-ja\" lang=\"ja\">CPU → 実記憶</span>", "<span class=\"reading-vi\" lang=\"vi\">RAM → CPU</span><span class=\"reading-ja\" lang=\"ja\">実記憶 → CPU</span>"], "ans": 0, "expl": "Page-OUT = đẩy page từ 実記憶 ra 補助記憶 để giải phóng chỗ.", "qJa": "ページアウトの方向はどれか。", "qVi": "Hướng của ページアウト là gì?", "explJa": "OUTは実記憶から補助記憶への書出しです。"}, {"q": "LRU chọn đẩy ra page nào?", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Page vào sớm nhất</span><span class=\"reading-ja\" lang=\"ja\">最初に読み込んだページ</span>", "<span class=\"reading-vi\" lang=\"vi\">Page có thời điểm tham chiếu cuối cũ nhất</span><span class=\"reading-ja\" lang=\"ja\">最終参照時刻が最も古いページ</span>", "<span class=\"reading-vi\" lang=\"vi\">Page tham chiếu ít nhất</span><span class=\"reading-ja\" lang=\"ja\">参照回数が最少のページ</span>", "<span class=\"reading-vi\" lang=\"vi\">Page vào muộn nhất</span><span class=\"reading-ja\" lang=\"ja\">最後に読み込んだページ</span>"], "ans": 1, "expl": "LRU = Least Recently Used = lâu nhất chưa được dùng. FE hay hỏi nhất.", "qJa": "LRUが追い出すページはどれか。", "qVi": "LRU chọn đẩy ra page nào?", "explJa": "LRUは最後に参照してから最も長く使われていないページを選びます。"}, {"q": "LFU chọn đẩy ra page nào?", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Vào sớm nhất</span><span class=\"reading-ja\" lang=\"ja\">最初に読み込んだページ</span>", "<span class=\"reading-vi\" lang=\"vi\">Cũ nhất từ lần đọc cuối</span><span class=\"reading-ja\" lang=\"ja\">最終参照時刻が最も古いページ</span>", "<span class=\"reading-vi\" lang=\"vi\">Số lần tham chiếu ít nhất</span><span class=\"reading-ja\" lang=\"ja\">参照回数が最少のページ</span>", "<span class=\"reading-vi\" lang=\"vi\">Lớn nhất</span><span class=\"reading-ja\" lang=\"ja\">最大のページ</span>"], "ans": 2, "expl": "LFU = Least Frequently Used = ít được tham chiếu nhất.", "qJa": "LFUが追い出すページはどれか。", "qVi": "LFU chọn đẩy ra page nào?", "explJa": "LFUは参照回数を比較します。"}, {"q": "スラッシング xảy ra khi nào?", "opts": ["<span class=\"reading-vi\" lang=\"vi\">RAM cấp quá ít → page-in/out liên tục</span><span class=\"reading-ja\" lang=\"ja\">実記憶の割当てが小さくページの出し入れが頻発する</span>", "<span class=\"reading-vi\" lang=\"vi\">CPU quá nhanh</span><span class=\"reading-ja\" lang=\"ja\">CPUが速すぎる</span>", "<span class=\"reading-vi\" lang=\"vi\">HDD quá nhanh</span><span class=\"reading-ja\" lang=\"ja\">HDDが速すぎる</span>", "<span class=\"reading-vi\" lang=\"vi\">Page table rỗng</span><span class=\"reading-ja\" lang=\"ja\">ページテーブルが空である</span>"], "ans": 0, "expl": "Thrashing = page-in/out không ngừng do RAM cấp cho process quá nhỏ → throughput hệ thống giảm.", "qJa": "スラッシングが発生する状況はどれか。", "qVi": "スラッシング xảy ra khi nào?", "explJa": "頻繁なページイン・ページアウトにより、全体のスループットが低下します。"}, {"q": "動的アドレス変換機構 (DAT/MMU) làm gì?", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Chia page</span><span class=\"reading-ja\" lang=\"ja\">ページを分割する</span>", "<span class=\"reading-vi\" lang=\"vi\">Chuyển địa chỉ ảo → vật lý</span><span class=\"reading-ja\" lang=\"ja\">仮想アドレスを物理アドレスへ変換する</span>", "<span class=\"reading-vi\" lang=\"vi\">Cache cho CPU</span><span class=\"reading-ja\" lang=\"ja\">CPUのキャッシュを作る</span>", "<span class=\"reading-vi\" lang=\"vi\">Quản lý disk</span><span class=\"reading-ja\" lang=\"ja\">ディスクを管理する</span>"], "ans": 1, "expl": "DAT/MMU = phần cứng chuyển 仮想アドレス → 物理アドレス trong khi CPU đang chạy.", "qJa": "動的アドレス変換は何をするか。", "qVi": "動的アドレス変換機構 (DAT/MMU) làm gì?", "explJa": "実行中に仮想アドレスと実記憶のアドレスを対応付けます。"}], "available": true}</script><script>/* Shared Lesson 01 reading layout and interactions, used by lessons 01–21. */
+'use strict';
+const LESSON = JSON.parse(document.getElementById('lesson-data').textContent);
+const FLASHCARDS = LESSON.cards;
+const QUIZ = LESSON.quiz;
+const readerStorage = {
+  get(key, fallback) { try { return JSON.parse(localStorage.getItem('fe-lessons:v1:' + key)) ?? fallback; } catch { return fallback; } },
+  set(key,value) { try { localStorage.setItem('fe-lessons:v1:' + key,JSON.stringify(value)); return true; } catch { return false; } }
+};
+if (!Number.isInteger(LESSON.number) || !Array.isArray(FLASHCARDS) || !Array.isArray(QUIZ) ||
+    QUIZ.some(q => !Array.isArray(q.opts) || q.opts.length < 2 || !Number.isInteger(q.ans) || q.ans < 0 || q.ans >= q.opts.length)) {
+  throw new Error('Invalid lesson data');
+}
+let language = readerStorage.get('reading-language','dual');
+if (!['vi','ja','dual'].includes(language)) language='dual';
+const t=(vi,ja)=>language==='ja'?ja:vi;
+const escapeHTML=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function bilingual(vi,ja) {
+  if (!ja) return language==='ja'
+    ? `<details class="original-source"><summary>原文の解説（ベトナム語）を表示</summary><div lang="vi">${vi}</div></details>`
+    : `<span class="reading-vi" lang="vi">${vi}</span>`;
+  return `<span class="reading-ja" lang="ja">${ja}</span><span class="reading-vi" lang="vi">${vi}</span>`;
+}
+const key='theory:'+LESSON.number;
+const saved=readerStorage.get(key,[]);
+const picks=QUIZ.map((q,i)=>Number.isInteger(saved?.[i])&&saved[i]>=0&&saved[i]<q.opts.length?saved[i]:null);
+const quickPicks={};
+let category='all';
+const categories={
+ unit:['Bit / Byte / Đơn vị','ビット・バイト・単位'],base:['Cơ số','基数'],weight:['Trọng số','桁の重み'],dec:['Số thập phân','小数'],concept:['Khái niệm','概念'],to10:['Đổi sang hệ 10','10進数へ'],from10:['Đổi từ hệ 10','10進数から'],basic:['Cơ bản','基本'],term:['Thuật ngữ','用語'],other:['Khác','その他'],quick:['Ôn nhanh','復習'],shortcut:['Mẹo tính','計算の工夫'],Architecture:['Kiến trúc','アーキテクチャ'],Cache:['Bộ nhớ đệm','キャッシュ'],Config:['Cấu hình','構成'],HDD:['HDD','HDD'],'Hieu nang':['Hiệu năng','性能'],IO:['Vào / Ra','入出力'],MTBF:['MTBF / MTTR','MTBF / MTTR'],Memory:['Bộ nhớ','メモリ'],Performance:['Hiệu năng','性能'],Pipeline:['Pipeline','パイプライン'],RAID:['RAID','RAID'],Reliability:['Độ tin cậy','信頼性'],Speed:['Tốc độ','速度'],Storage:['Lưu trữ','記憶装置'],Write:['Ghi dữ liệu','書込み']
+};
+function categoryLabel(value) {const labels=categories[value]||[value,value];return t(...labels);}
+function renderFilters() {
+  const filters=document.getElementById('fcFilter');if(!filters)return;
+  filters.replaceChildren();
+  ['all',...new Set(FLASHCARDS.map(card=>card.cat).filter(cat=>cat!=='all'))].forEach(cat=>{
+    const button=document.createElement('button');button.type='button';button.dataset.cat=cat;button.classList.toggle('active',cat===category);button.setAttribute('aria-pressed',String(cat===category));button.textContent=cat==='all'?t('Tất cả','すべて'):categoryLabel(cat);
+    button.onclick=()=>{category=cat;renderFilters();renderCards();};filters.append(button);
+  });
+}
+function renderCards() {
+  const grid=document.getElementById('fcGrid');if(!grid)return;grid.replaceChildren();
+  FLASHCARDS.forEach(card=>{
+    if(category!=='all'&&card.cat!==category)return;
+    const wrapper=document.createElement('div');wrapper.className='fc-card';
+    const button=document.createElement('button');button.type='button';button.className='fc-toggle';button.setAttribute('aria-expanded','false');
+    button.innerHTML=`<span class="fc-cat">${escapeHTML(categoryLabel(card.cat))}</span><span class="fc-front">${language==='ja'?(card.frontJa||card.front):card.front}</span><span class="hint">${t('Bấm để lật thẻ','クリックして答えを表示')}</span>`;
+    const back=document.createElement('div');back.className='fc-back';back.hidden=true;back.innerHTML=bilingual(card.back,card.backJa);
+    button.onclick=()=>{const open=button.getAttribute('aria-expanded')!=='true';button.setAttribute('aria-expanded',String(open));wrapper.classList.toggle('flipped',open);back.hidden=!open;button.querySelector('.hint').textContent=open?t('Bấm để úp thẻ','クリックして閉じる'):t('Bấm để lật thẻ','クリックして答えを表示');};
+    wrapper.append(button,back);grid.append(wrapper);
+  });
+}
+function questionCard(question,index,quick=false) {
+  const card=document.createElement('div');card.className=quick?'quick-check':'quiz-q';
+  const headingId=(quick?'quick-':'question-')+index;
+  card.setAttribute('role','group');card.setAttribute('aria-labelledby',headingId);
+  card.innerHTML=`<div class="${quick?'quick-label':'qnum'}">${quick?t('QUICK CHECK · KIỂM TRA NHANH','QUICK CHECK · 理解度チェック'):t('Câu','問題')+' '+(index+1)+' / '+QUIZ.length}</div><div class="qtext" id="${headingId}">${bilingual(question.qVi||question.q,question.qJa||question.q)}</div><div class="opts"></div><div class="expl" role="status" hidden></div>`;
+  const options=card.querySelector('.opts');
+  function choose(choice,restoring=false) {
+    if(card.classList.contains('locked'))return;
+    card.classList.add('locked');
+    options.querySelectorAll('button').forEach((button,i)=>{
+      button.disabled=true;button.setAttribute('aria-pressed',String(i===choice));
+      if(i===question.ans||i===choice){button.classList.add(i===question.ans?'correct':'wrong');const mark=document.createElement('span');mark.className='answer-mark';mark.textContent=i===question.ans?'✓':'✕';button.append(mark);}
+    });
+    const explanation=card.querySelector('.expl');explanation.hidden=false;
+    explanation.innerHTML=`<strong>${choice===question.ans?t('✓ Chính xác','✓ 正解'):t('✕ Chưa đúng','✕ 不正解')} · ${t('Đáp án','正解')}: ${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[question.ans]}</strong>${bilingual(question.expl||question.why||'',question.explJa||question.expl_ja)}`;
+    if(quick)quickPicks[index]=choice;
+    else if(!restoring){picks[index]=choice;readerStorage.set(key,picks);updateResult();}
+  }
+  const displayedOptions=language==='ja'&&Array.isArray(question.optsJa)&&question.optsJa.length===question.opts.length?question.optsJa:question.opts;
+  displayedOptions.forEach((option,i)=>{
+    const button=document.createElement('button');button.type='button';button.className='opt';button.setAttribute('aria-pressed','false');button.innerHTML=`<span class="ltr">${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[i]}.</span><span>${option}</span>`;button.onclick=()=>choose(i);options.append(button);
+  });
+  const choice=quick?quickPicks[index]:picks[index];
+  if(Number.isInteger(choice))choose(choice,true);
+  return card;
+}
+function renderQuiz() {
+  const area=document.getElementById('quizArea');if(!area)return;
+  area.replaceChildren(...QUIZ.map((question,i)=>questionCard(question,i)));updateResult();
+}
+function updateResult() {
+  const result=document.getElementById('quiz-result');if(!result)return;
+  result.hidden=!picks.every(pick=>pick!==null);
+  document.getElementById('qScore').textContent=picks.filter((pick,i)=>pick===QUIZ[i].ans).length+' / '+QUIZ.length;
+  document.getElementById('qVerdict').textContent=t('Xem lại các câu sai để củng cố kiến thức.','間違えた問題を復習して理解を深めましょう。');
+  document.querySelector('.reading-resume-note').textContent=picks.some(pick=>pick!==null)?t('Đã khôi phục câu trả lời đã lưu.','保存済みの回答を表示しています。'):t('Chọn đáp án để xem lời giải.','回答を選ぶと解説が表示されます。');
+  document.getElementById('quiz-reset').textContent=t('↻ Làm lại','↻ やり直す');
+}
+const reset=document.getElementById('quiz-reset');if(reset)reset.onclick=()=>{picks.fill(null);readerStorage.set(key,picks);renderQuiz();document.querySelector('#quizArea button')?.focus();};
+function renderQuickChecks() {
+  document.querySelectorAll('.quick-check').forEach(card=>card.remove());if(!QUIZ.length)return;
+  const positions=LESSON.number===1?[[document.querySelector('#topic-1'),1],[document.querySelector('#topic-5'),6]]:[[document.querySelector('#p1'),0],[document.querySelector('#p1'),Math.min(1,QUIZ.length-1)]];
+  positions.forEach(([target,index])=>{if(target&&QUIZ[index])target.append(questionCard(QUIZ[index],index,true));});
+}
+const toc=document.querySelector('.lesson-toc ul');
+const targets=[...document.querySelectorAll('.lesson-part > h2, .lesson-part h3[id]')].map(heading=>{
+  const target=heading.parentElement.classList.contains('lesson-part')?heading.parentElement:heading;
+  const li=document.createElement('li');const link=document.createElement('a');link.href='#'+target.id;
+  if(heading.tagName==='H3')link.className='reading-subitem';li.append(link);toc.append(li);return {heading,target,link};
+});
+const vocab=document.querySelector('.reading-vocab');
+if(vocab)FLASHCARDS.slice(0,5).forEach((card,i)=>{
+  const item=document.createElement('div');const button=document.createElement('button');button.type='button';button.className='vocab-toggle';button.setAttribute('aria-expanded','false');button.dataset.index=i;
+  const meaning=document.createElement('div');meaning.className='vocab-meaning';meaning.hidden=true;
+  button.onclick=()=>{const open=button.getAttribute('aria-expanded')!=='true';button.setAttribute('aria-expanded',String(open));meaning.hidden=!open;};item.append(button,meaning);vocab.append(item);
+});
+let scheduled=false;
+function updateReading() {
+  scheduled=false;let active=targets[0];targets.forEach(item=>{if(item.target.getBoundingClientRect().top<=150)active=item;});
+  targets.forEach(item=>{if(item===active)item.link.setAttribute('aria-current','location');else item.link.removeAttribute('aria-current');});
+  const main=document.querySelector('.reading-main');const total=Math.max(1,main.offsetHeight-innerHeight+56);const percent=Math.round(Math.max(0,Math.min(1,(scrollY-main.offsetTop+56)/total))*100);
+  document.getElementById('reader-progress').style.width=percent+'%';document.querySelector('.progress-track').setAttribute('aria-valuenow',String(percent));
+}
+function scheduleReading(){if(!scheduled){scheduled=true;requestAnimationFrame(updateReading);}}
+window.addEventListener('scroll',scheduleReading,{passive:true});window.addEventListener('resize',scheduleReading);new ResizeObserver(scheduleReading).observe(document.querySelector('.reading-main'));document.fonts?.ready.then(scheduleReading);
+const selector=document.getElementById('reading-language');
+const themeButton=document.getElementById('reading-theme');
+function updateThemeButton(){const dark=document.documentElement.dataset.readingTheme==='dark';themeButton.textContent=dark?t('☀ Sáng','☀ ライト'):t('☾ Tối','☾ ダーク');themeButton.setAttribute('aria-pressed',String(dark));}
+const completion=document.getElementById('complete-lesson');
+function showCompletion(){if(!completion)return;const complete=readerStorage.get('reader-complete:'+LESSON.number,false);completion.setAttribute('aria-pressed',String(complete));completion.textContent=complete?t('✓ Đã hoàn thành · Bấm để bỏ đánh dấu','✓ 完了 · クリックして解除'):t('✓ Đã hoàn thành bài học','✓ このレッスンを完了する');}
+if(completion)completion.onclick=()=>{const value=completion.getAttribute('aria-pressed')!=='true';const saved=readerStorage.set('reader-complete:'+LESSON.number,value);showCompletion();document.getElementById('completion-status').textContent=saved?t('Đã lưu trạng thái đọc trên trình duyệt này.','このブラウザに読了状態を保存しました。'):t('Trình duyệt không cho phép lưu.','このブラウザでは保存できません。');};
+function applyLanguage(value) {
+  language=value;document.documentElement.dataset.readingLang=value;document.documentElement.lang=value==='ja'?'ja':'vi';selector.value=value;
+  document.querySelectorAll('[data-vi][data-ja]').forEach(el=>el.textContent=language==='dual'&&el.dataset.dual?el.dataset.dual:t(el.dataset.vi,el.dataset.ja));
+  document.querySelectorAll('[data-aria-vi][data-aria-ja]').forEach(el=>el.setAttribute('aria-label',t(el.dataset.ariaVi,el.dataset.ariaJa)));
+  targets.forEach(item=>item.link.textContent=item.heading.textContent.trim());
+  document.querySelectorAll('.vocab-toggle').forEach(button=>{const card=FLASHCARDS[Number(button.dataset.index)];button.innerHTML=language==='ja'?(card.frontJa||card.front):card.front;button.nextElementSibling.innerHTML=bilingual(card.back,card.backJa);});
+  renderFilters();renderCards();renderQuiz();renderQuickChecks();showCompletion();updateThemeButton();scheduleReading();
+}
+selector.onchange=()=>{readerStorage.set('reading-language',selector.value);applyLanguage(selector.value);};
+document.documentElement.dataset.readingTheme=readerStorage.get('reading-theme','light')==='dark'?'dark':'light';
+themeButton.onclick=()=>{const theme=document.documentElement.dataset.readingTheme==='dark'?'light':'dark';readerStorage.set('reading-theme',theme);document.documentElement.dataset.readingTheme=theme;updateThemeButton();};
+const zenButton=document.getElementById('zen-toggle');
+function applyZen(value){document.body.classList.toggle('zen',value);zenButton.setAttribute('aria-pressed',String(value));scheduleReading();}
+applyZen(readerStorage.get('reader-zen',false));zenButton.onclick=()=>{const value=!document.body.classList.contains('zen');readerStorage.set('reader-zen',value);applyZen(value);};
+applyLanguage(language);updateReading();
+</script></body></html>
