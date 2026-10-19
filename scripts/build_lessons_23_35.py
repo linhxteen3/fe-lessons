@@ -160,7 +160,7 @@ def make_test(n,bank):
     template=re.sub(r'(<script type="application/json" id="quiz-data">).*?(</script>)',lambda m:m[1]+json_text(bank)+m[2],template,count=1,flags=re.S)
     # Keep all UI colors from earlier tests. Bound the new source header on phones.
     template=template.replace('</head>','<style>.lesson-sources { margin:20px 0; padding:18px; border:1px solid #444; border-radius:12px; font-size:13px; overflow-wrap:anywhere; } .lesson-sources h2 { font-size:16px; } .lesson-sources h2,#quiz-app h2,#quiz-app h3 { color:var(--text) !important; } .lesson-sources ul { padding-left:20px; } .lesson-sources li { margin:8px 0; } .lesson-sources p { font-size:12px; } </style></head>')
-    return template
+    return re.sub(r'(?m)^[ \t]+$', '', template)
 
 def run():
     SOURCES[23].append('Phần ôn Ch.1–5: câu đã có ở bài 1,5,8,10,13,15,19,21; xem ref từng lời giải. Chủ đề nền tảng từ ichibanyashashi 第1–5章 và phần bộ nhớ ở 第6章.')

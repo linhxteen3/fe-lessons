@@ -21,12 +21,12 @@
   --br-border-press: #D1D5DB;
   --br-border-hover: #CBD5E1;
   --br-border-dark: #191919;
-  
+
   --br-text: #111827;
   --br-text-secondary: #4B5563;
   --br-text-muted: #6B7280;
   --br-text-subtle: #9CA3AF;
-  
+
   /* Primary Brilliant Accents */
   --br-black: #191919;
   --br-black-press: #000000;
@@ -34,18 +34,18 @@
   --br-green-dark: #16A34A;
   --br-green-bg: #F0FDF4;
   --br-green-border: #BBF7D0;
-  
+
   --br-blue: #4F46E5;
   --br-blue-alt: #2563EB;
   --br-blue-dark: #3730A3;
   --br-blue-bg: #EEF2FF;
   --br-blue-border: #C7D2FE;
-  
+
   --br-red: #EF4444;
   --br-red-dark: #DC2626;
   --br-red-bg: #FEF2F2;
   --br-red-border: #FECACA;
-  
+
   --br-yellow: #F59E0B;
   --br-yellow-dark: #D97706;
   --br-yellow-bg: #FFFBEB;
@@ -1283,7 +1283,7 @@ window.Brilliant = {
     try {
       const data = JSON.parse(localStorage.getItem('fe-lessons:v1:streak')) || { lastDate: '', count: 1 };
       const today = new Date().toISOString().slice(0, 10);
-      
+
       if (!data.lastDate) {
         data.lastDate = today;
         data.count = 1;
