@@ -8,6 +8,7 @@ import re
 import sqlite3
 from pathlib import Path
 from lesson_batch_data import DATA
+from theory_explanations import enhance
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG = json.loads((ROOT/'lessons.json').read_text(encoding='utf-8'))
@@ -149,7 +150,7 @@ const lessonContents=document.querySelector('.reading-sidebar details');
 function fitLessonContents(){lessonContents.open=!lessonSmallScreen.matches;}
 fitLessonContents();lessonSmallScreen.addEventListener('change',fitLessonContents);
 </script>"""
-    return template.replace('</body>',responsive_toc+'</body>')
+    return enhance(n,template.replace('</body>',responsive_toc+'</body>'))
 
 def make_test(n,bank):
     existing=ROOT/f'kiem-tra/{n}.html'

@@ -64,6 +64,10 @@ FE試験の範囲は多岐にわたり、市販の参考書や学習サイトだ
 
 23〜35の教材本文は `scripts/lesson_batch_data.py`、組立てと計算問題の検証は `scripts/build_lessons_23_35.py` にあります。再生成は `python scripts/build_lessons_23_35.py`、ブラウザでの動作確認は `node tests/lessons-23-35.cjs` です。再生成すると対象のHTMLは置き換わるため、本文の修正は生成元にも反映してください。
 
+## 理解を助ける解説
+
+追加した理論ページは、目的と仕組みの説明、身近な例と限界、役割や流れの図、途中過程を開ける例題を備えています。短い定義は用語確認へ分離しました。説明の原稿は `scripts/theory_explanations.py`、適用は `python scripts/enrich_theory.py`、表示と既存学習データの保持の確認は `node tests/theory-explanations.cjs` です。本文だけを改善する場合はこの適用手順を使い、40問のテストを再生成する必要はありません。
+
 ## テストの日本語表示
 
 既存と追加のテストには、見た目を保ったままベトナム語・日本語の切替を追加しています。`qJa`・`optsJa`・`whyJa`・`detailsJa`・必要な`extraJa`を使い、元の問題、選択肢、正解番号、進捗保存キーは変更しません。切替には`assets/quiz.js`を使い、独立HTMLの更新には`python scripts/sync_quiz_runtime.py`を使います。確認は`node tests/quiz-japanese.cjs`です。
