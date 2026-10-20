@@ -1,6 +1,7 @@
 """Teaching prose and worked reasoning; short concept cards remain lookup material."""
 import html
 import re
+from pathlib import Path
 from bs4 import BeautifulSoup
 
 FLOWS = {
@@ -120,7 +121,8 @@ def enhance(n,text):
         units.append('<article class="card teaching-unit">'+title+body+'</article>')
     assert len(units)==4,n
     intro=dual('<p>Đọc cơ chế và ví von trước, lần theo sơ đồ, rồi tự giải ví dụ trước khi mở lời giải. Phần tra cứu giữ các định nghĩa ngắn để ôn lại sau khi đã hiểu.</p>','<p>仕組みと身近な例を読み、図で関係を追い、解説を開く前に例題を解きます。短い用語説明は理解後の確認に使ってください。</p>')
-    body='<div class="teaching-intro">'+intro+flow(n)+comparison(n)+'</div>'+''.join(units)
+    simulation=Path(__file__).with_name('normalization_lab.html').read_text(encoding='utf-8') if n==30 else ''
+    body='<div class="teaching-intro">'+intro+flow(n)+comparison(n)+'</div>'+simulation+''.join(units)
     if n in [21,22]:
         preserved=soup.select_one('.preserved-theory .reference-body')
         original=preserved.decode_contents() if preserved else match[2]

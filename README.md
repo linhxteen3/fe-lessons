@@ -66,6 +66,8 @@ FE試験の範囲は多岐にわたり、市販の参考書や学習サイトだ
 
 ## 理解を助ける解説
 
+レッスン30には正規化の操作例があります。重複した顧客名の更新不一致を試し、1NF・2NF・3NFへ進め、結合して明細が保たれることを確認できます。`scripts/normalization_lab.html`を生成時に埋め込むため、完成HTMLはオフラインでも動作します。確認は`node tests/normalization-lab.cjs`です。
+
 追加した理論ページは、目的と仕組みの説明、身近な例と限界、役割や流れの図、途中過程を開ける例題を備えています。短い定義は用語確認へ分離しました。説明の原稿は `scripts/theory_explanations.py`、適用は `python scripts/enrich_theory.py`、表示と既存学習データの保持の確認は `node tests/theory-explanations.cjs` です。本文だけを改善する場合はこの適用手順を使い、40問のテストを再生成する必要はありません。
 
 ## テストの日本語表示

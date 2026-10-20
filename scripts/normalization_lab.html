@@ -1,0 +1,152 @@
+<style id="normalization-lab-styles">
+.normalization-lab{border-top:4px solid var(--primary,var(--accent))!important}
+.normalization-lab .reading-ja{margin:0;padding:0;border:0}
+.normalization-lab .reading-vi,.normalization-lab .reading-ja{white-space:normal}
+.normalization-lab button .reading-ja,.normalization-lab th .reading-ja{display:block;font-size:.88em}
+.lab-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;list-style:none;padding:0;margin:20px 0}
+.lab-steps li{padding:12px 6px;border:1px solid var(--border,var(--line));border-radius:8px;text-align:center;font-size:12px}
+.lab-steps li[aria-current="step"]{border:2px solid var(--primary,var(--accent));background:var(--primary-light,var(--tint));font-weight:700}
+.lab-toolbar,.lab-demo-actions,.lab-prediction-actions{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.normalization-lab button{font:inherit;font-size:13px;padding:10px 14px;border:1px solid var(--border,var(--line));border-radius:8px;background:var(--card-bg,var(--surface));color:var(--text);cursor:pointer;line-height:1.5}
+.normalization-lab button:disabled{opacity:.5;cursor:default}
+.normalization-lab button:focus-visible,.lab-table-scroll:focus-visible{outline:3px solid var(--primary,var(--accent));outline-offset:3px}
+.normalization-lab button.lab-primary{background:var(--primary,var(--accent));color:white;border-color:var(--primary,var(--accent))}
+.normalization-lab button[aria-pressed="true"]{border:2px solid var(--primary,var(--accent));background:var(--primary-light,var(--tint))}
+.lab-prediction,.lab-explanation{padding:16px;border-radius:8px;background:var(--primary-light,var(--tint));margin:18px 0}
+.lab-prediction p,.lab-explanation p{margin:8px 0;line-height:1.8}
+.lab-rules{margin:16px 0;font-size:13px}.lab-rules summary{cursor:pointer;font-weight:600;color:var(--primary,var(--accent))}
+.lab-metrics{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}.lab-metrics>span{padding:7px 10px;border:1px solid var(--border,var(--line));border-radius:6px;font-size:12px}
+.lab-item{display:flex;align-items:center;gap:7px;margin:4px 0;white-space:nowrap}.lab-item .reading-vi,.lab-item .reading-ja{display:inline}
+html[data-reading-lang="dual"] .lab-item .reading-ja::before{content:" / "}
+.lab-table-scroll{overflow:auto;max-width:100%;margin:10px 0 24px;border:1px solid var(--border,var(--line));border-radius:8px}
+.normalization-lab table{width:100%;min-width:380px;border-collapse:collapse;font-size:13px;margin:0}
+.normalization-lab table.lab-wide{min-width:730px}.normalization-lab table.lab-small{min-width:240px}
+.normalization-lab caption{text-align:left;padding:12px;font-weight:700;color:var(--text);background:var(--soft,var(--card-bg))}
+.normalization-lab th,.normalization-lab td{padding:10px 12px;border:1px solid var(--border,var(--line));text-align:left;vertical-align:top}
+.normalization-lab th{background:var(--soft,var(--card-bg));white-space:nowrap}
+.normalization-lab .lab-key{font-family:var(--mono,monospace);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
+.normalization-lab td.lab-changed{background:var(--primary-light,var(--tint));box-shadow:inset 3px 0 var(--primary,var(--accent));font-weight:700}
+.normalization-lab td.lab-moved{background:var(--primary-light,var(--tint));box-shadow:inset 0 -3px var(--primary,var(--accent))}
+.normalization-lab td.lab-conflict{background:var(--danger-bg,#fee2e2);box-shadow:inset 3px 0 var(--danger,#dc2626);font-weight:700}
+.lab-change-tag{display:block;font-size:11px;font-weight:600;margin-top:4px}
+.lab-conflict-note{padding:14px;border:2px solid var(--danger,#dc2626);border-radius:8px;margin:14px 0}
+.lab-dependencies{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}.lab-dependencies code{display:block;padding:10px;border:1px dashed var(--primary,var(--accent));border-radius:8px;font-size:12px;overflow-wrap:anywhere}
+.lab-legend,.lab-source{font-size:12px;line-height:1.8}.lab-joined summary{cursor:pointer;font-weight:700;color:var(--primary,var(--accent))}
+@media(max-width:800px){.lab-toolbar button{flex:1 1 125px}.lab-steps{gap:4px}.lab-steps li{padding:9px 3px;font-size:11px}.normalization-lab th,.normalization-lab td{padding:8px}.lab-prediction,.lab-explanation{padding:12px}}
+</style>
+<article class="card normalization-lab" id="normalization-lab" aria-labelledby="lesson-30-simulation">
+  <h3 id="lesson-30-simulation" data-vi="Thử trực tiếp: tách bảng từng bước" data-ja="体験：表を順に正規化する">Thử trực tiếp: tách bảng từng bước</h3>
+  <div class="reading-vi" lang="vi"><p>Một khách xuất hiện trên nhiều đơn. Hãy thử đổi tên ở một chỗ, quan sát điều gì xảy ra rồi tách bảng để mỗi thông tin được giữ đúng nơi.</p></div>
+  <div class="reading-ja" lang="ja"><p>同じ顧客が複数の注文に現れます。一か所の名前を変更して問題を確かめ、その後で表を分解します。</p></div>
+  <details class="lab-rules"><summary><span class="reading-vi" lang="vi">Giả thiết của ví dụ và cách đọc bảng</span><span class="reading-ja" lang="ja">例の前提と表の読み方</span></summary>
+    <div class="reading-vi" lang="vi"><ul><li>Mỗi đơn thuộc một khách; mỗi sản phẩm xuất hiện tối đa một dòng trong một đơn.</li><li>CustomerID xác định tên và thành phố hiện hành. ProductID xác định tên sản phẩm. Ví dụ không lưu lịch sử đổi tên hay địa chỉ theo từng đơn.</li><li>Khóa dòng hàng là (OrderID, ProductID); cả cặp xác định Qty. Các mã gạch chân là khóa chính của bảng đang hiển thị.</li><li>Dữ liệu nhỏ do biên soạn để minh họa quy tắc trong tài liệu. Mâu thuẫn do sửa một chỗ phải được xử lý trước khi tách tiếp.</li></ul></div>
+    <div class="reading-ja" lang="ja"><ul><li>一注文は一顧客に属し、同じ商品は一注文に一明細までです。</li><li>CustomerIDで現在の名前と都市、ProductIDで商品名が決まります。注文時点の名前・住所の履歴は扱いません。</li><li>明細のキーは(OrderID, ProductID)で、組全体でQtyが決まります。下線のコードは各表の主キーです。</li><li>教材の規則を示す自作データです。変更で不一致が生じた場合は修正してから分解します。</li></ul></div>
+  </details>
+  <div class="lab-prediction">
+    <strong class="reading-vi" lang="vi">Dự đoán trước khi thử</strong><strong class="reading-ja" lang="ja">操作前に予想する</strong>
+    <p><span class="reading-vi" lang="vi">Ở bảng ban đầu, sửa tên C01 trong đơn O101. Tên trong O102 có tự đổi không?</span><span class="reading-ja" lang="ja">最初の表でO101のC01の名前を直すと、O102の名前も自動で変わるでしょうか。</span></p>
+    <div class="lab-prediction-actions"><button type="button" data-lab-predict="yes" aria-pressed="false"><span class="reading-vi" lang="vi">Có, cùng mã sẽ tự đổi</span><span class="reading-ja" lang="ja">同じコードなので変わる</span></button><button type="button" data-lab-predict="no" aria-pressed="false"><span class="reading-vi" lang="vi">Không, có thể lệch nhau</span><span class="reading-ja" lang="ja">変わらず不一致になり得る</span></button></div>
+    <div id="lab-prediction-result" role="status"></div>
+  </div>
+  <ol class="lab-steps" aria-label="Chuẩn hóa / 正規化">
+    <li data-lab-stage="0"><b>0</b><br><span class="reading-vi" lang="vi">Nhóm lặp</span><span class="reading-ja" lang="ja">繰返し項目</span></li>
+    <li data-lab-stage="1"><b>1NF</b><br><span class="reading-vi" lang="vi">Mỗi ô một giá trị</span><span class="reading-ja" lang="ja">各項目を単一値へ</span></li>
+    <li data-lab-stage="2"><b>2NF</b><br><span class="reading-vi" lang="vi">Bỏ phụ thuộc bộ phận</span><span class="reading-ja" lang="ja">部分従属を除く</span></li>
+    <li data-lab-stage="3"><b>3NF</b><br><span class="reading-vi" lang="vi">Bỏ phụ thuộc bắc cầu</span><span class="reading-ja" lang="ja">推移的従属を除く</span></li>
+  </ol>
+  <div class="lab-toolbar"><button type="button" data-lab-action="prev"><span class="reading-vi" lang="vi">← Bước trước</span><span class="reading-ja" lang="ja">← 前の段階</span></button><button type="button" data-lab-action="next" class="lab-primary"></button><button type="button" data-lab-action="play" aria-pressed="false"><span class="reading-vi" lang="vi">▶ Chạy từng bước</span><span class="reading-ja" lang="ja">▶ 順に再生</span></button><button type="button" data-lab-action="reset"><span class="reading-vi" lang="vi">↻ Làm lại</span><span class="reading-ja" lang="ja">↻ 最初から</span></button></div>
+  <div class="lab-explanation" id="lab-explanation" role="status" aria-live="polite" aria-atomic="true"></div>
+  <div class="lab-demo-actions"><button type="button" data-lab-action="rename"></button><button type="button" data-lab-action="repair" hidden><span class="reading-vi" lang="vi">Sửa tên cho nhất quán</span><span class="reading-ja" lang="ja">名前の不一致を修正</span></button></div>
+  <div id="lab-conflict" class="lab-conflict-note" hidden role="status"></div>
+  <div id="lab-metrics" class="lab-metrics"></div>
+  <div class="lab-dependencies" id="lab-dependencies" aria-label="Phụ thuộc hàm / 関数従属"></div>
+  <div id="lab-tables"></div>
+  <details class="lab-joined" id="lab-joined" hidden><summary><span class="reading-vi" lang="vi">Ghép lại để kiểm tra: vẫn đủ 4 dòng hàng</span><span class="reading-ja" lang="ja">結合して確認：元の4明細を保つ</span></summary><div id="lab-joined-table"></div></details>
+  <p class="lab-legend"><span class="reading-vi" lang="vi">Gạch xanh: phần dữ liệu đang được tách ở bước này. Nhãn “đã đổi”: ô vừa cập nhật. Viền đỏ + nhãn “lệch”: cùng C01 nhưng khác tên. Bảng rộng cuộn ngang bên trong.</span><span class="reading-ja" lang="ja">青い下線はこの段階で分ける項目、「変更」は更新した項目、赤と「不一致」は同じC01で異なる名前です。横長の表は表の中を横スクロールできます。</span></p>
+  <p class="lab-source"><span class="reading-vi" lang="vi">Cơ sở: ichibanyashashi 09-03; FE_JP tài liệu DB, slide 19–40; FE_VN phần thiết kế và chuẩn hóa. Tên và đơn hàng là dữ liệu minh họa tự tạo.</span><span class="reading-ja" lang="ja">根拠：ichibanyashashi 09-03、FE_JP DB資料スライド19〜40、FE_VN設計・正規化。名前と注文は自作の例です。</span></p>
+  <noscript><p>Cần bật JavaScript để dùng mô phỏng. Phần lý thuyết và ví dụ bên dưới vẫn đọc được. / 操作にはJavaScriptが必要です。下の解説と例題はそのまま読めます。</p></noscript>
+</article>
+<script id="normalization-lab-script">
+(() => {
+  const root=document.getElementById('normalization-lab');
+  if(!root)return;
+  const orders=[{id:'O101',customer:'C01',items:[['P01',2],['P02',1]]},{id:'O102',customer:'C01',items:[['P01',3]]},{id:'O103',customer:'C02',items:[['P02',2]]}];
+  const products={P01:['Bút','ペン'],P02:['Vở','ノート']};
+  const cities={C01:'Tokyo',C02:'Osaka'};
+  let stage=0,names={C01:'An',C02:'Bình'},overrides={},changed=false,timer=null;
+  const el=id=>root.querySelector('#lab-'+id);
+  const button=action=>root.querySelector('[data-lab-action="'+action+'"]');
+  const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const tr=(vi,ja)=>'<span class="reading-vi" lang="vi">'+esc(vi)+'</span><span class="reading-ja" lang="ja">'+esc(ja)+'</span>';
+  const name=order=>overrides[order.id]??names[order.customer];
+  const conflict=()=>new Set(orders.filter(o=>o.customer==='C01').map(name)).size>1;
+  const flat=()=>orders.flatMap(o=>o.items.map(([product,qty])=>({order:o.id,customer:o.customer,name:name(o),city:cities[o.customer],product,qty})));
+  const col={order:['Mã đơn','注文ID'],customer:['Mã khách','顧客ID'],name:['Tên khách','顧客名'],city:['Thành phố','都市'],product:['Mã hàng','商品ID'],productName:['Tên hàng','商品名'],qty:['Số lượng','数量'],items:['Danh sách hàng trong một ô','一項目内の商品一覧']};
+  const explanations=[
+    ['Một đơn đang giữ cả danh sách hàng trong một ô. Tên C01 cũng được chép vào O101 và O102. Hãy thử đổi một chỗ để thấy lỗi cập nhật, rồi sửa nhất quán trước khi đi tiếp.','一注文に商品の一覧をまとめています。C01の名前も二つの注文に重複しています。一か所だけ変更して問題を確認し、不一致があれば修正します。'],
+    ['1NF: tách nhóm lặp thành từng dòng hàng, mỗi ô một giá trị theo miền đã chọn. Có 4 dòng với khóa (OrderID, ProductID). Tên khách và tên hàng vẫn lặp; 1NF chưa loại phụ thuộc bộ phận.','1NF：繰返しを一明細ずつの行にし、各項目を単一値にします。4行のキーは(OrderID, ProductID)。顧客名と商品名の重複や部分従属はまだ残ります。'],
+    ['2NF: tách thông tin chỉ phụ thuộc OrderID sang Orders, chỉ phụ thuộc ProductID sang Products. Lines giữ cả cặp khóa và Qty. Orders vẫn có OrderID → CustomerID → tên/thành phố: phụ thuộc bắc cầu chưa được bỏ.','2NF：OrderIDだけで決まる情報をOrders、ProductIDだけで決まる情報をProductsへ分け、Linesに複合キーとQtyを残します。Ordersには顧客IDを経由する推移的従属が残ります。'],
+    ['3NF: đưa tên và thành phố sang Customers, khóa CustomerID; Orders chỉ tham chiếu mã khách. Thử đổi tên C01: chỉ một ô lưu tên cần sửa. Có thể ghép lại qua các mã để xem đủ 4 dòng, không mất số lượng.','3NF：名前と都市をCustomerIDがキーのCustomersへ分け、Ordersには顧客IDを残します。C01の名前は保存先の一項目を直せば済みます。キーで結合すると4明細と数量を再現できます。']
+  ];
+  function table(id,title,columns,rows,keys=[]){
+    const header=columns.map(c=>'<th scope="col"'+(keys.includes(c)?' class="lab-key"':'')+'>'+tr(...col[c])+'</th>').join('');
+    const body=rows.map(row=>'<tr'+(row.order?' data-order="'+esc(row.order)+'"':'')+(row.customer?' data-customer="'+esc(row.customer)+'"':'')+'>'+columns.map(c=>{
+      let value=c==='productName'?tr(...products[row.product]):esc(row[c]??'');
+      if(c==='items')value=row.items.map(([p,q])=>'<div class="lab-item"><code>'+esc(p)+'</code><span>'+tr(...products[p])+'</span><b>× '+q+'</b></div>').join('');
+      const affected=c==='name'&&row.customer==='C01';
+      const bad=affected&&conflict();
+      const edited=affected&&changed&&(stage===3||changed==='all'||row.order==='O101');
+      const moved=!changed&&((stage===1&&['product','productName','qty'].includes(c))||(stage===2&&((id==='Products'&&c==='productName')||(id==='Orders'&&['customer','name','city'].includes(c))))||(stage===3&&id==='Customers'));
+      return '<td data-column="'+c+'"'+(bad?' class="lab-conflict"':edited?' class="lab-changed"':moved?' class="lab-moved"':'')+'>'+value+((bad||edited)?'<span class="lab-change-tag">'+tr(bad?'⚠ Lệch':'✓ Đã đổi',bad?'⚠ 不一致':'✓ 変更')+'</span>':'')+'</td>';
+    }).join('')+'</tr>').join('');
+    return '<div class="lab-table-scroll" tabindex="0" aria-label="'+esc(id)+'"><table data-table="'+esc(id)+'" class="'+(columns.length>5?'lab-wide':columns.length<=3?'lab-small':'')+'"><caption>'+esc(id)+' · '+tr(...title)+'</caption><thead><tr>'+header+'</tr></thead><tbody>'+body+'</tbody></table></div>';
+  }
+  function stop(){if(timer!==null){clearInterval(timer);timer=null;}button('play').innerHTML=tr('▶ Chạy từng bước','▶ 順に再生');button('play').setAttribute('aria-pressed','false');}
+  function render(){
+    const invalid=conflict(),rows=flat();
+    root.dataset.stage=String(stage);
+    root.querySelectorAll('[data-lab-stage]').forEach((node,i)=>{if(i===stage)node.setAttribute('aria-current','step');else node.removeAttribute('aria-current');});
+    button('prev').disabled=stage===0;
+    button('next').disabled=stage===3||invalid;
+    button('next').innerHTML=stage===3?tr('✓ Đã tới 3NF','✓ 3NFまで完了'):tr('Tách sang '+(stage+1)+'NF →',(stage+1)+'NFへ分解 →');
+    button('play').disabled=stage===3||invalid;
+    button('rename').innerHTML=tr((stage===3?'Đổi một ô Customers: ':'Chỉ sửa O101: ')+name(orders[0])+' → '+(name(orders[0])==='An'?'Anh':'An'),(stage===3?'Customersの一項目を変更：':'O101だけ変更：')+name(orders[0])+' → '+(name(orders[0])==='An'?'Anh':'An'));
+    button('repair').hidden=!invalid;
+    el('explanation').innerHTML=tr(...explanations[stage]);
+    el('conflict').hidden=!invalid;
+    el('conflict').innerHTML=invalid?tr('Cùng CustomerID=C01 nhưng có hai tên khác nhau. Mô phỏng đang giữ lỗi để bạn thấy; hãy “Sửa tên cho nhất quán” trước khi tách tiếp. Chuẩn hóa không tự chọn tên đúng.','同じCustomerID=C01に異なる名前があります。不一致を見せた状態です。修正してから分解します。正規化だけで正しい名前を決めることはできません。'):'';
+    const storedNames=[2,3,2,1][stage];
+    el('metrics').innerHTML='<span>'+tr('Bảng lưu: '+[1,1,3,4][stage],'保存する表：'+[1,1,3,4][stage])+'</span><span>'+tr('Chỗ lưu tên C01: '+storedNames,'C01名の保存箇所：'+storedNames)+'</span><span>'+tr('Dòng hàng: '+rows.length,'明細数：'+rows.length)+'</span>';
+    const deps=stage===2?['OrderID → CustomerID → CustomerName, City']:stage===3?['Orders.CustomerID → Customers.CustomerID','Lines.OrderID → Orders.OrderID','Lines.ProductID → Products.ProductID']:['OrderID → CustomerID','ProductID → ProductName','(OrderID, ProductID) → Qty'];
+    el('dependencies').innerHTML=deps.map(d=>'<code>'+esc(d)+'</code>').join('');
+    if(stage===0)el('tables').innerHTML=table('OrderSheet',['Đơn và nhóm hàng lặp','注文と繰返し項目'],['order','customer','name','city','items'],orders.map(o=>({order:o.id,customer:o.customer,name:name(o),city:cities[o.customer],items:o.items})),['order']);
+    else if(stage===1)el('tables').innerHTML=table('FlatLines',['Một dòng cho mỗi mặt hàng trong đơn','注文の商品ごとに一行'],['order','customer','name','city','product','productName','qty'],rows,['order','product']);
+    else{
+      let output=table('Orders',['Đơn hàng','注文'],stage===2?['order','customer','name','city']:['order','customer'],orders.map(o=>({order:o.id,customer:o.customer,name:name(o),city:cities[o.customer]})),['order']);
+      if(stage===3)output+=table('Customers',['Thông tin khách lưu một nơi','顧客情報を一か所に保存'],['customer','name','city'],Object.keys(names).map(customer=>({customer,name:names[customer],city:cities[customer]})),['customer']);
+      output+=table('Products',['Thông tin sản phẩm','商品情報'],['product','productName'],Object.keys(products).map(product=>({product})),['product']);
+      output+=table('Lines',['Số lượng phụ thuộc cả cặp khóa','数量は複合キー全体で決まる'],['order','product','qty'],rows,['order','product']);
+      el('tables').innerHTML=output;
+    }
+    el('joined').hidden=stage!==3;
+    if(stage===3){
+      const orderTable=orders.map(o=>({order:o.id,customer:o.customer}));
+      const customerTable=Object.keys(names).map(customer=>({customer,name:names[customer],city:cities[customer]}));
+      const lines=rows.map(({order,product,qty})=>({order,product,qty}));
+      const joined=lines.map(line=>{const order=orderTable.find(o=>o.order===line.order);const customer=customerTable.find(c=>c.customer===order.customer);return {...line,...order,...customer};});
+      el('joined-table').innerHTML='<p>'+tr('Ghép Lines → Orders theo OrderID, rồi Orders → Customers theo CustomerID; tra tên hàng bằng ProductID. Đây là kết quả xem, không phải chép tên trở lại bảng lưu.','LinesとOrdersをOrderID、OrdersとCustomersをCustomerIDで結合し、ProductIDで商品名を参照します。これは参照結果で、名前を保存表へ複写するものではありません。')+'</p>'+table('JoinedView',['Kết quả ghép lại','結合した参照結果'],['order','customer','name','city','product','productName','qty'],joined);
+    }else el('joined-table').replaceChildren();
+  }
+  function advance(){if(conflict()||stage===3){stop();return;}stage++;changed=false;if(stage===3)stop();render();}
+  button('next').onclick=()=>{stop();advance();};
+  button('prev').onclick=()=>{stop();stage=Math.max(0,stage-1);changed=false;render();};
+  button('play').onclick=()=>{if(timer!==null){stop();return;}if(stage===3||conflict())return;timer=setInterval(advance,4000);button('play').innerHTML=tr('Ⅱ Tạm dừng','Ⅱ 一時停止');button('play').setAttribute('aria-pressed','true');};
+  button('rename').onclick=()=>{stop();const next=name(orders[0])==='An'?'Anh':'An';if(stage===3){names.C01=next;overrides={};}else overrides.O101=next;changed=true;render();};
+  button('repair').onclick=()=>{stop();names.C01=name(orders[0]);overrides={};changed='all';render();};
+  button('reset').onclick=()=>{stop();stage=0;names={C01:'An',C02:'Bình'};overrides={};changed=false;el('joined').open=false;el('prediction-result').replaceChildren();root.querySelectorAll('[data-lab-predict]').forEach(b=>b.setAttribute('aria-pressed','false'));render();};
+  root.querySelectorAll('[data-lab-predict]').forEach(b=>b.onclick=()=>{root.querySelectorAll('[data-lab-predict]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));el('prediction-result').innerHTML=tr(b.dataset.labPredict==='no'?'Đúng. Đây là hai bản chép riêng. Bấm “Chỉ sửa O101” để kiểm chứng.':'Chưa đúng. Hai ô là hai bản chép riêng; cùng mã không tự làm chúng đồng bộ. Hãy thử bên dưới.',b.dataset.labPredict==='no'?'正解です。別々の複写なので、O101だけ変更して確かめましょう。':'同じコードでも自動同期はしません。別々の複写を実際に変更して確かめましょう。');});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
+  window.addEventListener('pagehide',stop);
+  render();
+})();
+</script>
