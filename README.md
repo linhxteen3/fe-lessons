@@ -2,7 +2,7 @@
 
 個人の学習効率を高めるために、独学で開発したWebアプリケーションです。基本情報技術者試験（FE）の受験対策として、日々の学習内容と進捗状況を一元管理する目的で制作しました。
 
-**🔗 デモ:** https://linhxteen3.github.io/fe-lessons/
+**🔗 デモ:** [https://linhxteen3.github.io/fe-lessons/](https://linhxteen3.github.io/fe-lessons/)
 
 ---
 
@@ -20,8 +20,8 @@ FE試験の範囲は多岐にわたり、市販の参考書や学習サイトだ
 
 ## 技術構成
 
-| 項目 | 内容 |
-|---|---|
+| **項目** | **内容** |
+| ------- | ------- |
 | フロントエンド | HTML / CSS / JavaScript |
 | データ管理 | JSON（`lessons.json`）でレッスン内容を外部管理し、動的に描画 |
 | ホスティング | GitHub Pages |
@@ -39,47 +39,10 @@ FE試験の範囲は多岐にわたり、市販の参考書や学習サイトだ
 - 科目Bの擬似言語・トレース・情報セキュリティ事例演習を拡充
 - 本試験形式に合わせた模擬演習を追加予定
 
-*このリポジトリは学習用個人プロジェクトです。
+\*このリポジトリは学習用個人プロジェクトです。
 
 ## ロードマップの根拠
 
 `roadmap.json` は元の61項目を10目標にまとめた個人向けの提案です。IPAの公式認定カリキュラムやシラバス全範囲の網羅性を保証するものではありません。未公開教材も目標内に表示します。試験情報は2026年10月17日時点で[IPA FE試験情報](https://www.ipa.go.jp/shiken/kubun/fe.html)、シラバスVer.9.2、試験要綱Ver.5.6を参照しています。
 
-ゲストの進捗はブラウザのlocalStorageに保存されます。Googleログイン後はFirebase AuthenticationのUIDごとに分離し、Cloud Firestoreと同期します。初期設定は [FIREBASE_SETUP.md](FIREBASE_SETUP.md) を参照してください。手動の完了切替は使用せず、全問回答して提出すると完了になります。
-
-
-## 共通の理論ページ（レッスン01〜21）
-
-理論ページは `assets/reader.css` と `assets/reader.js` を共通で使用します。本文の最大幅は720px、右の追従目次は280pxです。日本語・ベトナム語・併記、明暗テーマ、集中モード、暗記カード、回答後に解説を表示する確認問題に対応しています。
-
-- 元の351枚の暗記カードと189問の確認問題を維持しています。問題数・選択肢数は元の教材に合わせています。
-- レッスン14は追加教材と同じ独立HTMLで、オブジェクト指向とUMLを学べます（暗記カード20枚・確認問題10問）。
-- 日本語訳のないカード・解説は原文を保持し、日本語モードでは「原文の解説」から参照できます。
-- 読了状態と本文内の練習回答はブラウザに保存します。読了ボタンは科目A/Bの合格や本テスト完了を意味しません。
-- 動作確認：`node tests/reader.cjs`。既存のホーム・本テストとの連携確認：`node tests/learning-theme.cjs index.html`（PlaywrightとEdgeを使用）。
-
-## 追加教材（レッスン22〜35）
-
-レッスン22・23・25・26・29〜35には、出典を冒頭に示した独立HTMLの解説と40問の演習があります。レッスン24は50問の累積復習のみです。27はハードウェア・UI・マルチメディア、28はUI・マルチメディアの復習を追加しました。新規演習は教材から作成した練習であり、公式過去問の転載ではありません。
-
-23〜35の教材本文は `scripts/lesson_batch_data.py`、組立てと計算問題の検証は `scripts/build_lessons_23_35.py` にあります。再生成は `python scripts/build_lessons_23_35.py`、ブラウザでの動作確認は `node tests/lessons-23-35.cjs` です。再生成すると対象のHTMLは置き換わるため、本文の修正は生成元にも反映してください。
-
-## 理解を助ける解説
-
-レッスン21（FIFO/LRU）、31（SQLの段階処理）、35（IPv4 /0〜/30）、53（クリティカルパス）にも操作例があります。生成元は `scripts/concept_labs.html`、確認は `node tests/concept-labs.cjs`。`theory_explanations.enhance`で各HTMLに埋め込まれ、外部通信なしで動作します。
-
-レッスン30には正規化の操作例があります。重複した顧客名の更新不一致を試し、1NF・2NF・3NFへ進め、結合して明細が保たれることを確認できます。`scripts/normalization_lab.html`を生成時に埋め込むため、完成HTMLはオフラインでも動作します。確認は`node tests/normalization-lab.cjs`です。
-
-追加した理論ページは、目的と仕組みの説明、身近な例と限界、役割や流れの図、途中過程を開ける例題を備えています。短い定義は用語確認へ分離しました。説明の原稿は `scripts/theory_explanations.py`、適用は `python scripts/enrich_theory.py`、表示と既存学習データの保持の確認は `node tests/theory-explanations.cjs` です。本文だけを改善する場合はこの適用手順を使い、40問のテストを再生成する必要はありません。
-
-## テストの日本語表示
-
-既存と追加のテストには、見た目を保ったままベトナム語・日本語の切替を追加しています。`qJa`・`optsJa`・`whyJa`・`detailsJa`・必要な`extraJa`を使い、元の問題、選択肢、正解番号、進捗保存キーは変更しません。切替には`assets/quiz.js`を使い、独立HTMLの更新には`python scripts/sync_quiz_runtime.py`を使います。確認は`node tests/quiz-japanese.cjs`です。
-
-## 残りの教材（14・36〜61）
-
-14、36、37、39〜42、47〜50、52〜55、57〜61に独立した解説と40問の演習を追加しています。復習専用の27、28、38、43、44、51、56は40問、45は80問です。各ページ冒頭に使用資料の名前と範囲を記載しています。53のEVMは追加資料としてNSFの公式Gold Cardを明示し、61の法務はPPC・METI・文化庁の資料も照合しています。
-
-本文は `scripts/remaining_lesson_data.py`、生成は `python scripts/build_remaining_lessons.py`、確認は `node tests/remaining-lessons.cjs` です。元の問題の識別番号と既存の進捗を維持し、教材原本は公開しません。
-
-翻訳は既存の日本語を優先し、不足部分に機械翻訳の下書きと用語・数式の修正を加えています。補助スクリプト`add_quiz_japanese.py`は公開済み教材の下書き作成用で、非公開の資料を送る用途には使いません。ブラウザでの受験中は翻訳APIを呼びません。本文を再生成した場合、元の文章が一致する日本語欄だけを引き継ぐため、新規・変更箇所は再確認が必要です。
+ゲストの進捗はブラウザのlocalStorageに保存されます。Googleログイン後はFirebase AuthenticationのUIDごとに分離し、Cloud Firestoreと同期します。初期設定は [FIREBASE_SETUP.md](https://github.com/linhxteen3/fe-lessons/blob/main/FIREBASE_SETUP.md) を参照してください。手動の完了切替は使用せず、全問回答して提出すると完了になります。
