@@ -13,6 +13,18 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
   const total = questions.length;
+  let showingResult = false;
+  const languageBox = document.createElement('div');
+  languageBox.className = 'quiz-language';
+  languageBox.innerHTML = '<label for="quiz-language">Tiếng Việt / 日本語</label> <select id="quiz-language" aria-label="Ngôn ngữ / 言語"><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select>';
+  const controlsHost = document.querySelector('.lesson-hero');
+  if (controlsHost) controlsHost.append(languageBox);
+  else app.before(languageBox);
+  const languageSelect = languageBox.querySelector('select');
+  languageSelect.value = FE.read('language', 'vi') === 'ja' ? 'ja' : 'vi';
+  const languageStyle = document.createElement('style');
+  languageStyle.textContent = '.quiz-language{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin:16px 0;font-size:13px}.quiz-language select{font:inherit;background:#252525;color:#f5f5f5;border:1px solid #444;border-radius:8px;padding:8px 12px}.quiz-language select:focus-visible{outline:2px solid #a579ef;outline-offset:3px}';
+  document.head.append(languageStyle);
   const number = Number(location.pathname.match(/\/(\d+)\.html$/)[1]);
   // Reuse the existing Bài 01 attempt format and storage keys for every lesson.
   const saved = FE.read('test:' + number, {});
@@ -20,7 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const picks = questions.map((q, i) => Number.isInteger(saved?.picks?.[i]) && saved.picks[i] >= 0 && saved.picks[i] < 4 ? saved.picks[i] : null);
   let current = Number.isInteger(saved?.cur) ? Math.max(0, Math.min(total - 1, saved.cur)) : 0;
   const letters = ['A', 'B', 'C', 'D'];
-  const levels = { easy: FE.t("易 Dễ"), med: FE.t("中 Trung bình"), hard: FE.t("難 Khó"), review: FE.t("Ôn tập") };
+  const levelNames = () => FE.read('language', 'vi') === 'ja'
+    ? {easy:'易しい',med:'標準',hard:'難しい',review:'復習'}
+    : {easy:'易 Dễ',med:'中 Trung bình',hard:'難 Khó',review:'Ôn tập'};
   // The bank is authored HTML from this repository, just like the original lessons.
   const format = value => String(value || '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
   const stats = () => {
@@ -31,7 +45,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const save = () => FE.write('test:' + number, { cur: current, picks, total, updatedAt: new Date().toISOString() });
   function jump(index) { current = index; save(); render(); }
   function render() {
-    const q = questions[current];
+    showingResult = false;
+    const original = questions[current];
+    const japanese = FE.read('language', 'vi') === 'ja';
+    const q = japanese ? {...original, q:original.qJa || original.jp || original.q, jp:'', opts:original.optsJa || original.opts,
+      why:original.whyJa ?? original.why, details:original.detailsJa || original.details, extra:original.extraJa || original.extra} : original;
+    const levels = levelNames();
     const answered = picks[current] !== null;
     const { done, correct, wrong } = stats();
     app.innerHTML = `
@@ -80,10 +99,14 @@ document.addEventListener('DOMContentLoaded', () => {
       toggle.setAttribute('aria-expanded', String(!panel.hidden));
     };
   }
-  function showResult() {
+  function showResult(record = true) {
+    showingResult = true;
     const { done, correct, wrong } = stats();
-    FE.write('test-result:' + number, { answered: done, correct, total, submittedAt: new Date().toISOString() });
-    if (done === total) FE.write('status:' + number, 'p4');
+    if (record) {
+      FE.write('test-result:' + number, { answered: done, correct, total, submittedAt: new Date().toISOString() });
+      if (done === total) FE.write('status:' + number, 'p4');
+    }
+    const levels = levelNames();
     const percent = Math.round(correct / total * 100);
     app.innerHTML = `<section class="quiz-result">
       <h2>${FE.t("Kết quả")}</h2><div class="quiz-score">${correct} / ${total}</div><p>${percent}${FE.t("% đúng")}</p>
@@ -98,6 +121,20 @@ document.addEventListener('DOMContentLoaded', () => {
     app.querySelector('#quiz-reset').onclick = () => { picks.fill(null); jump(0); };
     app.querySelector('#quiz-review').onclick = () => jump(0);
     app.querySelector('#quiz-mistakes').onclick = () => jump(picks.findIndex((p, i) => p !== null && p !== questions[i].ans));
+    FE.translateUI();
   }
+  languageSelect.onchange = () => {
+    const explanationOpen = app.querySelector('#quiz-explanation')?.hidden === false;
+    FE.write('language', languageSelect.value);
+    if (showingResult) showResult(false);
+    else {
+      render();
+      if (explanationOpen) {
+        app.querySelector('#quiz-explanation').hidden = false;
+        app.querySelector('#quiz-explain-toggle').setAttribute('aria-expanded','true');
+      }
+    }
+    FE.translateUI();
+  };
   render();
 });

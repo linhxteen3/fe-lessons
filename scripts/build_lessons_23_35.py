@@ -152,6 +152,16 @@ fitLessonContents();lessonSmallScreen.addEventListener('change',fitLessonContent
     return template.replace('</body>',responsive_toc+'</body>')
 
 def make_test(n,bank):
+    existing=ROOT/f'kiem-tra/{n}.html'
+    if existing.exists():
+        match=re.search(r'<script[^>]*id="quiz-data"[^>]*>(.*?)</script>',existing.read_text(encoding='utf-8'),re.S)
+        if match:
+            def signature(q): return json.dumps([q['q'],q['opts'],q.get('why'),q.get('details'),q.get('extra')],ensure_ascii=False)
+            previous={signature(q):q for q in json.loads(match[1])}
+            for q in bank:
+                old=previous.get(signature(q),{})
+                for key in ['qJa','optsJa','whyJa','detailsJa','extraJa']:
+                    if key in old: q[key]=old[key]
     template=(ROOT/'kiem-tra/22.html').read_text(encoding='utf-8')
     template=template.replace(LESSONS[22]['topic'],esc(LESSONS[n]['topic']))
     template=template.replace('(40問)',f'({len(bank)}問)')
