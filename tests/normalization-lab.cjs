@@ -27,10 +27,28 @@ const data=s=>JSON.parse(s.match(/<script[^>]*id="lesson-data"[^>]*>([\s\S]*?)<\
    return [cell.dataset.column,clone.textContent.trim()];
   }))));
   await page.locator('#reading-language').selectOption('vi');
+  const story=lab.locator('#lab-story'),storyAction=a=>story.locator(`[data-story="${a}"]`);
+  assert.equal(await lab.locator('.lab-advanced').getAttribute('open'),null);
+  assert.deepEqual(await story.locator('[data-story-saved-name]').allTextContents(),['An','An']);
+  assert(!/1NF|2NF|3NF|CustomerID|OrderID/.test(await story.innerText()));
+  await storyAction('next').click();assert.deepEqual(await story.locator('[data-story-saved-name]').allTextContents(),['Anh','An']);
+  await storyAction('next').click();assert.equal(await story.locator('[data-story-saved-name]').count(),0);assert.equal(await story.locator('[data-story-book-name]').textContent(),'Anh');
+  await storyAction('next').click();assert.equal(await story.locator('[data-story-book-name]').textContent(),'Ánh');
+  for(const i of [0,1]){await story.locator(`[data-story-open="${i}"]`).click();assert.equal(await story.locator(`[data-story-looked-up="${i}"] b`).textContent(),'Ánh');}
+  await story.locator('[data-story-open="0"]').click();assert.equal(await story.locator('[data-story-looked-up="0"]').count(),0);
+  await storyAction('next').click();assert((await story.innerText()).includes('1NF'));assert(await storyAction('next').isDisabled());
+  await page.locator('#reading-language').selectOption('ja');assert(await story.locator('#lab-story-task .reading-ja').isVisible());assert(!await story.locator('#lab-story-task .reading-vi').isVisible());
+  await page.setViewportSize({width:390,height:844});
+  for(let i=4;i>=0;i--){assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`story mobile ${i}`);if(i)await storyAction('prev').click();}
+  await storyAction('next').focus();await page.keyboard.press('Enter');assert.equal(await story.getAttribute('data-step'),'1');await storyAction('reset').click();assert.equal(await story.getAttribute('data-step'),'0');assert.deepEqual(await story.locator('[data-story-saved-name]').allTextContents(),['An','An']);
+  await page.setViewportSize({width:1191,height:768});await page.locator('#reading-language').selectOption('vi');
   const q=data(html).quiz[0];await page.locator('#quizArea .quiz-q').first().locator('button').nth(q.ans).click();
   assert.equal(await page.locator('#qScore').textContent(),'1 / 10');
+  await lab.locator('.lab-advanced>summary').click();
   await stage(0);assert.equal(await table('OrderSheet').locator('tbody tr').count(),3);
+  assert.equal(await lab.locator('.lab-detail-data').getAttribute('open'),null);
   assert.ok(await action('prev').isDisabled());
+  await lab.locator('.lab-prediction>summary').click();
   await lab.locator('[data-lab-predict="yes"]').click();assert.ok((await lab.locator('#lab-prediction-result').innerText()).includes('Chưa đúng'));
   await lab.locator('[data-lab-predict="no"]').click();assert.ok((await lab.locator('#lab-prediction-result').innerText()).includes('Đúng'));
   await action('rename').click();assert.ok(await action('next').isDisabled());assert.ok(await action('play').isDisabled());assert.ok(await lab.locator('#lab-conflict').isVisible());
@@ -53,7 +71,7 @@ const data=s=>JSON.parse(s.match(/<script[^>]*id="lesson-data"[^>]*>([\s\S]*?)<\
   assert.equal(await table('Customers').locator('tbody tr').count(),2);
   assert.equal(await table('Customers').locator('tr[data-customer="C01"] [data-column="name"]').count(),1);
   assert.ok(await action('next').isDisabled());assert.ok(await action('play').isDisabled());
-  await lab.locator('#lab-joined summary').click();
+  await lab.locator('.lab-detail-data>summary').click();await lab.locator('#lab-joined summary').click();
   const joined=await read('JoinedView');
   assert.deepEqual(joined.map(r=>[r.order,r.customer,r.product,r.qty]),flat.map(r=>[r.order,r.customer,r.product,r.qty]));
   const oldName=(await read('Customers'))[0].name;
@@ -79,12 +97,15 @@ const data=s=>JSON.parse(s.match(/<script[^>]*id="lesson-data"[^>]*>([\s\S]*?)<\
   await action('reset').click();await action('play').click();await action('reset').click();await page.clock.fastForward(8000);await stage(0);
   assert.equal(await page.locator('#qScore').textContent(),'1 / 10');
   await page.reload();await stage(0);assert.equal(await page.locator('#qScore').textContent(),'1 / 10');
-  await page.setViewportSize({width:1191,height:768});await page.locator('#lesson-30-simulation').evaluate(n=>n.scrollIntoView({block:'start',behavior:'instant'}));
+  await page.setViewportSize({width:1191,height:768});await page.locator('#reading-language').selectOption('vi');await page.locator('#reading-theme').click();await page.locator('#lab-story').evaluate(n=>n.scrollIntoView({block:'start',behavior:'instant'}));
   await page.screenshot({path:path.join(os.tmpdir(),'fe-normalization-desktop.png')});
-  await action('rename').click();await lab.locator('#lab-conflict').scrollIntoViewIfNeeded();
+  await storyAction('next').click();await story.evaluate(n=>n.scrollIntoView({block:'start',behavior:'instant'}));await page.screenshot({path:path.join(os.tmpdir(),'fe-normalization-story-conflict.png')});
+  await storyAction('next').click();await storyAction('next').click();for(const i of [0,1])await story.locator(`[data-story-open="${i}"]`).click();
+  await story.evaluate(n=>n.scrollIntoView({block:'start',behavior:'instant'}));await page.screenshot({path:path.join(os.tmpdir(),'fe-normalization-story-book.png')});
+  await lab.locator('.lab-advanced>summary').click();await action('rename').click();await lab.locator('#lab-conflict').scrollIntoViewIfNeeded();
   await page.screenshot({path:path.join(os.tmpdir(),'fe-normalization-conflict.png')});
   await action('repair').click();for(let i=0;i<3;i++)await action('next').click();
-  await page.setViewportSize({width:390,height:844});await lab.locator('#lab-tables').scrollIntoViewIfNeeded();
+  await page.setViewportSize({width:390,height:844});await lab.locator('#lab-story').evaluate(n=>n.scrollIntoView({block:'start',behavior:'instant'}));
   await page.screenshot({path:path.join(os.tmpdir(),'fe-normalization-mobile.png')});
   assert.deepEqual(errors,[]);
   console.log('Normalization simulation passed: UNF/1NF/2NF/3NF, update anomalies, dependencies, lossless data, controls, Japanese, mobile, keyboard and saved learning.');

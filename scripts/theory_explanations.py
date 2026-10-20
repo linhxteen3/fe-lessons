@@ -124,6 +124,9 @@ def enhance(n,text):
     simulation=Path(__file__).with_name('normalization_lab.html').read_text(encoding='utf-8') if n==30 else ''
     if n in (21,31,35,53):
         simulation=Path(__file__).with_name('concept_labs.html').read_text(encoding='utf-8').replace('__LESSON__',str(n))
+    if n in (21,31,35):
+        story=Path(__file__).with_name('beginner_labs.html').read_text(encoding='utf-8').replace('__LESSON__',str(n))
+        simulation=simulation.replace('<div data-intro>',story+'<details class="story-advanced"><summary><span class="reading-vi" lang="vi">Học tiếp: thuật ngữ và mô phỏng có thể đổi dữ liệu</span><span class="reading-ja" lang="ja">次に学ぶ：用語とデータを変えられる操作例</span></summary><div data-intro>',1).replace('</article>','</details></article>',1)
     body='<div class="teaching-intro">'+intro+flow(n)+comparison(n)+'</div>'+simulation+''.join(units)
     if n in [21,22]:
         preserved=soup.select_one('.preserved-theory .reference-body')

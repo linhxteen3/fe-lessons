@@ -20,7 +20,11 @@
  q('[data-action=prev]').innerHTML=tr('← Bước trước','← 前の段階');q('[data-action=next]').innerHTML=tr('Bước tiếp →','次の段階 →');q('[data-action=reset]').innerHTML=tr('↻ Làm lại','↻ 最初から');
  const note=(v,j)=>`<div class="note">${tr(v,j)}</div>`;
  function draw(){render();q('[data-action=prev]').disabled=step===0;q('[data-action=next]').disabled=step===max;root.dataset.step=step;}
- function setup(v,j,intro,ja,inputs,source){q('h3').innerHTML=tr(v,j);q('h3').dataset.vi=v;q('h3').dataset.ja=j;q('[data-intro]').innerHTML=note(intro,ja);q('[data-inputs]').innerHTML=inputs;q('[data-source]').innerHTML=tr('Ví dụ tự biên soạn theo nguồn đã ghi ở đầu bài. '+source,'冒頭の出典に基づく自作例。'+source);}
+ function setup(v,j,intro,ja,inputs,source){
+  const titles={21:['Thử làm việc với bàn chỉ đủ ba tập giấy','体験：書類が3冊だけ置ける机'],31:['Thử tìm quầy bán hàng đạt yêu cầu','体験：条件を満たす売場を探す'],35:['Thử tìm nhóm địa chỉ của một máy tính','体験：PCのアドレス範囲を探す']};
+  if(titles[n])[v,j]=titles[n];
+  q('h3').innerHTML=tr(v,j);q('h3').dataset.vi=v;q('h3').dataset.ja=j;q('[data-intro]').innerHTML=note(intro,ja);q('[data-inputs]').innerHTML=inputs;q('[data-source]').innerHTML=tr('Ví dụ tự biên soạn theo nguồn đã ghi ở đầu bài. '+source,'冒頭の出典に基づく自作例。'+source);
+ }
  if(n===21){
   setup('Thử trực tiếp: FIFO và LRU','体験：FIFOとLRU','Dự đoán: với 1,2,3,1,4 và 3 khung, trang nào bị đẩy ra ở lượt cuối? Bấm từng bước để đối chiếu.','予想：3枠に1,2,3,1,4を参照すると、最後にどのページが追い出されますか。',label('Chuỗi trang (0–99, tối đa 30)','参照列（0～99、最大30個）','<input id="refs" value="1,2,3,1,4,2,5,1,2,3,4,5">')+label('Số khung','枠数','<select id="frames"><option>3</option><option>4</option><option>2</option></select>')+'<button type="button" id="apply">'+tr('Áp dụng','適用')+'</button>','ichibanyashashi 第6章：ページ置換方式 / FE_JP ソフトウェア / FE_VN 2.2.5');
   let refs,capacity;

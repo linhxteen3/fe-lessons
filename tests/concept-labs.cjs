@@ -17,6 +17,35 @@ const {chromium}=require('playwright');
    const lab=page.locator('#concept-lab'),next=()=>lab.locator('[data-action=next]').click();
    const end=async()=>{while(!await lab.locator('[data-action=next]').isDisabled())await next();};
    const reset=()=>lab.locator('[data-action=reset]').click();
+   if(n!==53){
+    const story=page.locator('#beginner-lab'),action=a=>story.locator(`[data-story="${a}"]`);
+    const storyEnd=async()=>{while(!await action('next').isDisabled())await action('next').click();};
+    await page.locator('#reading-language').selectOption('vi');assert.equal(await lab.locator('.story-advanced').getAttribute('open'),null);
+    if(n===21){
+     assert.equal(await story.getAttribute('data-slots'),'');
+     for(let i=0;i<4;i++)await action('next').click();assert.equal(await story.getAttribute('data-slots'),'A,B,C');
+     await action('next').click();assert.equal(await story.getAttribute('data-slots'),'D,B,C');
+     await story.locator('[data-policy-choice=LRU]').click();assert.equal(await story.getAttribute('data-slots'),'A,D,C');
+     await story.locator('[data-policy-choice=FIFO]').click();assert.equal(await story.getAttribute('data-slots'),'D,B,C');
+    }
+    if(n===31){
+     await action('next').click();assert.equal(await story.locator('.story-removed').count(),1);
+     await action('next').click();assert.equal(await story.getAttribute('data-totals'),'A:200,B:700');
+     await action('next').click();assert.equal(await story.locator('.story-removed').count(),1);assert((await story.locator('.story-removed').textContent()).includes('200'));
+    }
+    if(n===35){
+     for(let i=0;i<3;i++)await action('next').click();assert.equal(await story.getAttribute('data-hosts'),'62');
+     await story.locator('[data-smaller]').click();assert.equal(await story.getAttribute('data-hosts'),'30');assert((await story.locator('[data-story-feedback]').innerText()).includes('158'));
+     await story.locator('[data-smaller]').click();assert.equal(await story.getAttribute('data-hosts'),'62');
+    }
+    await storyEnd();await page.locator('#reading-language').selectOption('ja');assert(await story.locator('[data-story-task] .reading-ja').isVisible());assert(!await story.locator('[data-story-task] .reading-vi').isVisible());
+    await page.setViewportSize({width:390,height:844});
+    while(true){assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`story mobile ${n}`);if(await action('prev').isDisabled())break;await action('prev').click();}
+    await action('next').focus();await page.keyboard.press('Enter');assert.equal(await story.getAttribute('data-step'),'1');await action('reset').click();assert.equal(await story.getAttribute('data-step'),'0');
+    await page.locator('#reading-language').selectOption('vi');await page.setViewportSize({width:1191,height:768});
+    await story.evaluate(el=>el.scrollIntoView({block:'start',behavior:'instant'}));await page.screenshot({path:path.join(process.env.TEMP,`fe-story-${n}.png`)});
+    await lab.locator('.story-advanced>summary').click();
+   }
    if(n===21){
     await page.locator('#refs').fill('1,2,3,1,4');await page.locator('#apply').click();await end();
     assert.equal(await lab.locator('[data-policy=FIFO] tbody tr').last().locator('td').last().textContent(),'1');

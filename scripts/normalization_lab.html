@@ -32,22 +32,41 @@ html[data-reading-lang="dual"] .lab-item .reading-ja::before{content:" / "}
 .lab-conflict-note{padding:14px;border:2px solid var(--danger,#dc2626);border-radius:8px;margin:14px 0}
 .lab-dependencies{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}.lab-dependencies code{display:block;padding:10px;border:1px dashed var(--primary,var(--accent));border-radius:8px;font-size:12px;overflow-wrap:anywhere}
 .lab-legend,.lab-source{font-size:12px;line-height:1.8}.lab-joined summary{cursor:pointer;font-weight:700;color:var(--primary,var(--accent))}
+.normalization-lab .lab-steps{margin:14px 0;border-radius:14px;background:var(--soft,var(--card-bg));padding:5px;gap:4px}
+.normalization-lab .lab-steps li{border:0;border-radius:10px;padding:9px 4px}
+.normalization-lab .lab-steps li[aria-current="step"]{border:0;box-shadow:inset 0 0 0 2px var(--primary,var(--accent))}
+.lab-stage-canvas{background:var(--soft,var(--card-bg));border:1px solid var(--border,var(--line));border-radius:14px;padding:20px;margin:16px 0}
+.lab-stage-caption{text-align:center;font-size:13px;margin-bottom:14px;line-height:1.7}
+.lab-schema-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.lab-schema-card{border:1px solid var(--primary,var(--accent));border-radius:10px;background:var(--card-bg,var(--surface));padding:12px;min-width:0}
+.lab-schema-card strong{display:block;color:var(--primary,var(--accent));margin-bottom:8px}
+.lab-memory{border-left:4px solid var(--primary,var(--accent));padding:14px 16px;background:var(--soft,var(--card-bg));border-radius:0 10px 10px 0;margin:16px 0;line-height:1.8}.lab-memory strong{display:block;margin-bottom:6px}
+.lab-advanced>summary{cursor:pointer;font-weight:600;line-height:1.7;padding:16px 0;color:var(--primary,var(--accent))}.lab-schema-card p{font-size:14px;line-height:1.8;margin:10px 0}.lab-schema-card b{font-size:20px}.lab-detail-data{margin:18px 0}.lab-detail-data>summary{cursor:pointer;font-weight:600;color:var(--primary,var(--accent));padding:12px 0}.normalization-lab .lab-toolbar,.normalization-lab .lab-demo-actions{justify-content:center}.normalization-lab .lab-explanation{background:transparent;padding:0;line-height:1.8}
+@media(max-width:540px){.lab-stage-canvas{padding:12px}.lab-schema-grid{grid-template-columns:1fr}.lab-schema-card{padding:10px}.normalization-lab .lab-steps li{font-size:10px}.lab-name-copy{flex:1 1 90px}}
 @media(max-width:800px){.lab-toolbar button{flex:1 1 125px}.lab-steps{gap:4px}.lab-steps li{padding:9px 3px;font-size:11px}.normalization-lab th,.normalization-lab td{padding:8px}.lab-prediction,.lab-explanation{padding:12px}}
 </style>
 <article class="card normalization-lab" id="normalization-lab" aria-labelledby="lesson-30-simulation">
-  <h3 id="lesson-30-simulation" data-vi="Thử trực tiếp: tách bảng từng bước" data-ja="体験：表を順に正規化する">Thử trực tiếp: tách bảng từng bước</h3>
+  <h3 id="lesson-30-simulation" data-vi="Thử làm chủ cửa hàng: sửa tên khách ở đâu?" data-ja="店主になって体験：顧客名はどこで直す？">Thử làm chủ cửa hàng: sửa tên khách ở đâu?</h3>
+  <div id="lab-story">
+    <p id="lab-story-progress"></p>
+    <div id="lab-story-task" role="status" aria-live="polite" aria-atomic="true"></div>
+    <div class="lab-stage-canvas" id="lab-story-scene"></div>
+    <div class="lab-toolbar"><button type="button" data-story="prev"></button><button type="button" data-story="next" class="lab-primary"></button><button type="button" data-story="reset"></button></div>
+    <div class="lab-memory" id="lab-story-why"></div>
+  </div>
+  <details class="lab-advanced"><summary><span class="reading-vi" lang="vi">Học tiếp: từng bước 1NF → 2NF → 3NF và dữ liệu đầy đủ</span><span class="reading-ja" lang="ja">次に学ぶ：1NF → 2NF → 3NFと全データ</span></summary>
   <div class="reading-vi" lang="vi"><p>Một khách xuất hiện trên nhiều đơn. Hãy thử đổi tên ở một chỗ, quan sát điều gì xảy ra rồi tách bảng để mỗi thông tin được giữ đúng nơi.</p></div>
   <div class="reading-ja" lang="ja"><p>同じ顧客が複数の注文に現れます。一か所の名前を変更して問題を確かめ、その後で表を分解します。</p></div>
   <details class="lab-rules"><summary><span class="reading-vi" lang="vi">Giả thiết của ví dụ và cách đọc bảng</span><span class="reading-ja" lang="ja">例の前提と表の読み方</span></summary>
     <div class="reading-vi" lang="vi"><ul><li>Mỗi đơn thuộc một khách; mỗi sản phẩm xuất hiện tối đa một dòng trong một đơn.</li><li>CustomerID xác định tên và thành phố hiện hành. ProductID xác định tên sản phẩm. Ví dụ không lưu lịch sử đổi tên hay địa chỉ theo từng đơn.</li><li>Khóa dòng hàng là (OrderID, ProductID); cả cặp xác định Qty. Các mã gạch chân là khóa chính của bảng đang hiển thị.</li><li>Dữ liệu nhỏ do biên soạn để minh họa quy tắc trong tài liệu. Mâu thuẫn do sửa một chỗ phải được xử lý trước khi tách tiếp.</li></ul></div>
     <div class="reading-ja" lang="ja"><ul><li>一注文は一顧客に属し、同じ商品は一注文に一明細までです。</li><li>CustomerIDで現在の名前と都市、ProductIDで商品名が決まります。注文時点の名前・住所の履歴は扱いません。</li><li>明細のキーは(OrderID, ProductID)で、組全体でQtyが決まります。下線のコードは各表の主キーです。</li><li>教材の規則を示す自作データです。変更で不一致が生じた場合は修正してから分解します。</li></ul></div>
   </details>
-  <div class="lab-prediction">
+  <details class="lab-prediction"><summary><strong class="reading-vi" lang="vi">Tự dự đoán trước khi thử</strong><strong class="reading-ja" lang="ja">操作前に予想する</strong></summary>
     <strong class="reading-vi" lang="vi">Dự đoán trước khi thử</strong><strong class="reading-ja" lang="ja">操作前に予想する</strong>
     <p><span class="reading-vi" lang="vi">Ở bảng ban đầu, sửa tên C01 trong đơn O101. Tên trong O102 có tự đổi không?</span><span class="reading-ja" lang="ja">最初の表でO101のC01の名前を直すと、O102の名前も自動で変わるでしょうか。</span></p>
     <div class="lab-prediction-actions"><button type="button" data-lab-predict="yes" aria-pressed="false"><span class="reading-vi" lang="vi">Có, cùng mã sẽ tự đổi</span><span class="reading-ja" lang="ja">同じコードなので変わる</span></button><button type="button" data-lab-predict="no" aria-pressed="false"><span class="reading-vi" lang="vi">Không, có thể lệch nhau</span><span class="reading-ja" lang="ja">変わらず不一致になり得る</span></button></div>
     <div id="lab-prediction-result" role="status"></div>
-  </div>
+  </details>
   <ol class="lab-steps" aria-label="Chuẩn hóa / 正規化">
     <li data-lab-stage="0"><b>0</b><br><span class="reading-vi" lang="vi">Nhóm lặp</span><span class="reading-ja" lang="ja">繰返し項目</span></li>
     <li data-lab-stage="1"><b>1NF</b><br><span class="reading-vi" lang="vi">Mỗi ô một giá trị</span><span class="reading-ja" lang="ja">各項目を単一値へ</span></li>
@@ -55,15 +74,19 @@ html[data-reading-lang="dual"] .lab-item .reading-ja::before{content:" / "}
     <li data-lab-stage="3"><b>3NF</b><br><span class="reading-vi" lang="vi">Bỏ phụ thuộc bắc cầu</span><span class="reading-ja" lang="ja">推移的従属を除く</span></li>
   </ol>
   <div class="lab-toolbar"><button type="button" data-lab-action="prev"><span class="reading-vi" lang="vi">← Bước trước</span><span class="reading-ja" lang="ja">← 前の段階</span></button><button type="button" data-lab-action="next" class="lab-primary"></button><button type="button" data-lab-action="play" aria-pressed="false"><span class="reading-vi" lang="vi">▶ Chạy từng bước</span><span class="reading-ja" lang="ja">▶ 順に再生</span></button><button type="button" data-lab-action="reset"><span class="reading-vi" lang="vi">↻ Làm lại</span><span class="reading-ja" lang="ja">↻ 最初から</span></button></div>
-  <div class="lab-explanation" id="lab-explanation" role="status" aria-live="polite" aria-atomic="true"></div>
   <div class="lab-demo-actions"><button type="button" data-lab-action="rename"></button><button type="button" data-lab-action="repair" hidden><span class="reading-vi" lang="vi">Sửa tên cho nhất quán</span><span class="reading-ja" lang="ja">名前の不一致を修正</span></button></div>
   <div id="lab-conflict" class="lab-conflict-note" hidden role="status"></div>
+  <div class="lab-explanation" id="lab-explanation" role="status" aria-live="polite" aria-atomic="true"></div>
+  <aside class="lab-memory" id="lab-memory"></aside>
+  <details class="lab-detail-data"><summary><span class="reading-vi" lang="vi">Xem dữ liệu đầy đủ và kiểm tra các khóa</span><span class="reading-ja" lang="ja">全データとキーを確認する</span></summary>
   <div id="lab-metrics" class="lab-metrics"></div>
   <div class="lab-dependencies" id="lab-dependencies" aria-label="Phụ thuộc hàm / 関数従属"></div>
   <div id="lab-tables"></div>
   <details class="lab-joined" id="lab-joined" hidden><summary><span class="reading-vi" lang="vi">Ghép lại để kiểm tra: vẫn đủ 4 dòng hàng</span><span class="reading-ja" lang="ja">結合して確認：元の4明細を保つ</span></summary><div id="lab-joined-table"></div></details>
   <p class="lab-legend"><span class="reading-vi" lang="vi">Gạch xanh: phần dữ liệu đang được tách ở bước này. Nhãn “đã đổi”: ô vừa cập nhật. Viền đỏ + nhãn “lệch”: cùng C01 nhưng khác tên. Bảng rộng cuộn ngang bên trong.</span><span class="reading-ja" lang="ja">青い下線はこの段階で分ける項目、「変更」は更新した項目、赤と「不一致」は同じC01で異なる名前です。横長の表は表の中を横スクロールできます。</span></p>
+  </details>
   <p class="lab-source"><span class="reading-vi" lang="vi">Cơ sở: ichibanyashashi 09-03; FE_JP tài liệu DB, slide 19–40; FE_VN phần thiết kế và chuẩn hóa. Tên và đơn hàng là dữ liệu minh họa tự tạo.</span><span class="reading-ja" lang="ja">根拠：ichibanyashashi 09-03、FE_JP DB資料スライド19〜40、FE_VN設計・正規化。名前と注文は自作の例です。</span></p>
+  </details>
   <noscript><p>Cần bật JavaScript để dùng mô phỏng. Phần lý thuyết và ví dụ bên dưới vẫn đọc được. / 操作にはJavaScriptが必要です。下の解説と例題はそのまま読めます。</p></noscript>
 </article>
 <script id="normalization-lab-script">
@@ -78,6 +101,60 @@ html[data-reading-lang="dual"] .lab-item .reading-ja::before{content:" / "}
   const button=action=>root.querySelector('[data-lab-action="'+action+'"]');
   const esc=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const tr=(vi,ja)=>'<span class="reading-vi" lang="vi">'+esc(vi)+'</span><span class="reading-ja" lang="ja">'+esc(ja)+'</span>';
+  let storyStep=0,openedOrders=new Set();
+  const storyButton=action=>root.querySelector('[data-story="'+action+'"]');
+  const storyTasks=[
+    ['Bạn bán bút và vở. Khách An mua hai lần nên bạn ghi hai tờ đơn dưới đây. Cả hai đều là cùng một người.','あなたはペンとノートを売っています。Anさんが2回買物をしたので、注文用紙が2枚あります。どちらも同じ人です。'],
+    ['Khách báo: “Tên đúng của tôi là Anh”. Bạn vừa sửa đơn thứ nhất. Hãy nhìn tên trên đơn thứ hai: nó vẫn là An.','顧客から「正しい名前はAnhです」と連絡があり、1枚目を直しました。2枚目を見ると、まだAnのままです。'],
+    ['Khách đã xác nhận tên Anh. Bạn ghi tên đúng vào một sổ khách hàng riêng. Đặt mã C01 cho người này; hai đơn chỉ ghi mã để tìm tới đúng trang sổ.','顧客に正しい名前Anhを確認しました。顧客名簿へ一度だけ記録し、この人にC01という番号を付けます。二つの注文は番号で名簿を参照します。'],
+    ['Giả sử khách yêu cầu đổi tên hiển thị thành Ánh. Bạn vừa sửa đúng một chỗ trong sổ khách hàng. Bấm mở từng đơn để kiểm tra tên mà đơn đọc được.','今度は表示名をÁnhに変えてほしいと頼まれたとします。名簿の一か所だけを直しました。各注文を開き、読み取る名前を確かめましょう。'],
+    ['Bạn vừa thấy vì sao nên lưu thông tin khách riêng với đơn hàng. Bây giờ mới gắn tên kiến thức cho những việc đã làm.','顧客情報を注文から分けて保存する理由を体験しました。ここで初めて、行ったことを用語で整理します。']
+  ];
+  const storyWhy=[
+    ['Đang lưu thế nào?','どう保存している？','Mỗi tờ đơn đang giữ một bản tên khách riêng. Chưa có sổ khách hàng dùng chung. Bạn chưa cần nhớ thuật ngữ nào; hãy thử sửa tên trước.','各注文に名前を別々に書き写しています。共有の顧客名簿はありません。用語を覚える前に、名前を直してみましょう。'],
+    ['Vì sao tên không tự đổi?','なぜ自動で変わらない？','Hai tên là hai bản ghi riêng, giống hai tờ giấy. Sửa một tờ không sửa tờ kia. Khi nhân viên nhìn hai đơn, họ không biết tên nào mới đúng. Đây là lỗi do cập nhật không đồng nhất.','二つの名前は別々の記録です。紙を一枚直しても、もう一枚は変わりません。店員はどちらが正しいか判断できなくなります。これが更新時の不整合です。'],
+    ['C01 dùng để làm gì?','C01は何のため？','C01 chỉ là nhãn của một khách, như số thẻ thư viện. Đơn ghi C01 nghĩa là “hãy tìm người số C01 trong sổ khách hàng”. Không dùng tên làm mã vì hai người có thể trùng tên. Trước khi tách, vẫn phải xác nhận tên đúng; tách bảng không tự sửa dữ liệu sai.','C01は図書館カードの番号のような識別用の印です。注文のC01は「名簿のC01を探す」という意味です。同姓同名があるため名前と番号は分けます。分割前に正しい名前の確認は必要で、表を分けるだけでは誤りは直りません。'],
+    ['Vì sao hai đơn đọc được tên mới?','なぜ両方の注文で新しい名前が読める？','Mỗi lần mở đơn, mô phỏng lấy mã C01 trên đơn rồi tìm tên trong sổ. Nó không chép tên mới vào hai đơn. Chỉ có một bản tên đang được lưu. Đây là ví dụ xem tên hiện tại, không phải lưu tên tại thời điểm mua hàng.','注文を開くたびに、注文のC01で名簿の名前を探します。新しい名前を注文へ複写したのではありません。保存先は一つです。この例は現在の名前を表示し、購入時点の名前の履歴は保存しません。'],
+    ['💡 Điều cần nhớ trước tiên','💡 まず覚えたいこと','Đừng chỉ nhớ “tách bảng”. Hãy hỏi: thông tin này nói về khách, đơn hay sản phẩm, và nên lưu ở đâu để không phải sửa nhiều bản? Câu chuyện vừa rồi chỉ làm rõ vấn đề tên khách; phần mở rộng bên dưới mới đi đủ các bước chuẩn hóa.','「表を分ける」だけを暗記せず、顧客・注文・商品のどれについての情報か、何度も修正せずに済む保存先はどこかを考えます。この物語は顧客名の問題に絞った例です。正規化の全段階は下の解説で学びます。']
+  ];
+  function storyRender(){
+    const customerBook={C01:storyStep===3?'Ánh':'Anh'};
+    el('story').dataset.step=String(storyStep);
+    el('story-progress').innerHTML=tr('Bước '+(storyStep+1)+'/5 · Câu chuyện cửa hàng','段階 '+(storyStep+1)+'/5 · お店の物語');
+    el('story-task').innerHTML='<p>'+tr(...storyTasks[storyStep])+'</p>';
+    const card=(title,body)=>'<div class="lab-schema-card"><strong>'+title+'</strong>'+body+'</div>';
+    let scene='';
+    if(storyStep<4){
+      if(storyStep>=2){
+        scene=card(tr('📒 Sổ khách hàng — chỉ lưu một lần','📒 顧客名簿：一度だけ保存'),'<p>'+tr('Mã khách: C01','顧客番号：C01')+'</p><p>'+tr('Tên: ','名前：')+'<b data-story-book-name>'+esc(customerBook.C01)+'</b></p>')+'<p class="lab-stage-caption">'+tr('Khi mở đơn: đọc mã C01 → tìm C01 trong sổ → lấy tên khách.','注文を開く：番号C01を読む → 名簿のC01を探す → 名前を取得。')+'</p>';
+      }
+      scene+='<div class="lab-schema-grid">'+orders.slice(0,2).map((o,i)=>{
+        const title=tr('🧾 Đơn thứ '+(i+1),'🧾 注文 '+(i+1));
+        const items=o.items.map(([p,qty])=>tr(products[p][0]+' × '+qty,products[p][1]+' × '+qty)).join('<br>');
+        let body='<p>'+items+'</p>';
+        if(storyStep<2){const value=storyStep===1&&i===0?'Anh':'An';body+='<p>'+tr('Tên khách ghi trên đơn:','注文に書いた顧客名：')+'<br><b data-story-saved-name>'+value+'</b></p>'+(storyStep===1?'<p>'+tr(i===0?'✓ Đã sửa':'⚠ Vẫn là tên cũ',i===0?'✓ 修正済み':'⚠ 古い名前のまま')+'</p>':'');}
+        else{body+='<p>'+tr('Lưu trên đơn: mã khách C01. Không lưu tên.','注文に保存：顧客番号C01。名前は保存しません。')+'</p>';if(storyStep===3){body+='<button type="button" data-story-open="'+i+'" aria-expanded="'+openedOrders.has(i)+'">'+tr('Mở đơn thứ '+(i+1),'注文'+(i+1)+'を開く')+'</button>';if(openedOrders.has(i)){body+='<p data-story-looked-up="'+i+'">'+tr('Tên đọc từ sổ: ','名簿から取得した名前：')+'<b>'+esc(customerBook[o.customer])+'</b></p>';}}}
+        return card(title,body);
+      }).join('')+'</div>';
+    }else{
+      scene='<div class="lab-schema-grid">'+[
+        ['Mã và khóa','番号とキー','C01 giúp nhận đúng một khách. Một cột mã không trùng và không rỗng có thể được chọn làm khóa chính: nhờ đó mỗi dòng có dấu nhận diện riêng.','C01で一人の顧客を特定します。重複も空欄もない番号列は主キーに選べ、各行を区別できます。'],
+        ['1NF — mỗi ô một giá trị','1NF：各項目を単一値に','Đơn thứ nhất mua 2 bút và 1 vở. Tách danh sách đó thành hai dòng hàng; không nhét cả danh sách vào một ô. Tên khách lúc này vẫn có thể bị lặp.','注文1のペン2本とノート1冊を、それぞれの明細行へ分けます。一項目に一覧を詰め込みません。顧客名の重複は残り得ます。'],
+        ['2NF — cần cả hai mã hay chỉ một?','2NF：二つのIDが必要？','Để biết số lượng, cần biết cả đơn nào và sản phẩm nào. Nhưng tên sản phẩm chỉ cần mã sản phẩm; hãy đưa tên đó sang bảng sản phẩm riêng.','数量を知るには注文と商品の両IDが必要です。一方、商品名は商品IDだけで決まるので、商品表へ分けます。'],
+        ['3NF — tên nói về khách','3NF：名前は顧客の情報','Đơn xác định khách; khách xác định tên. Đưa tên sang sổ khách hàng, đơn chỉ giữ mã khách để tra. Đó là phần bạn vừa thử; đây chưa phải toàn bộ định nghĩa của 3NF.','注文から顧客、顧客から名前が決まります。名前を顧客表へ分け、注文は顧客番号で参照します。これは先ほどの体験で、3NFの定義全体を示すものではありません。']
+      ].map(([v,j,a,b])=>card(tr(v,j),'<p>'+tr(a,b)+'</p>')).join('')+'</div>';
+    }
+    el('story-scene').innerHTML=scene;
+    const [title,titleJa,why,whyJa]=storyWhy[storyStep];el('story-why').innerHTML='<strong>'+tr(title,titleJa)+'</strong>'+tr(why,whyJa);
+    storyButton('prev').innerHTML=tr('← Xem lại bước trước','← 前の段階');storyButton('prev').disabled=storyStep===0;
+    const actions=[['Thử sửa tên ở đơn thứ nhất →','注文1の名前を直す →'],['Thử làm sổ khách hàng riêng →','顧客名簿を別に作る →'],['Đổi tên trong sổ: Anh → Ánh','名簿の名前を変更：Anh → Ánh'],['Hiểu rồi, gọi tên kiến thức →','用語で整理する →'],['✓ Đã xem xong câu chuyện','✓ 物語はここまで']];
+    storyButton('next').innerHTML=tr(...actions[storyStep]);storyButton('next').disabled=storyStep===4;storyButton('reset').innerHTML=tr('↻ Thử lại từ đầu','↻ 最初から');
+  }
+  storyButton('next').onclick=()=>{storyStep=Math.min(4,storyStep+1);openedOrders.clear();storyRender();};
+  storyButton('prev').onclick=()=>{storyStep=Math.max(0,storyStep-1);openedOrders.clear();storyRender();};
+  storyButton('reset').onclick=()=>{storyStep=0;openedOrders.clear();storyRender();};
+  el('story-scene').onclick=e=>{const target=e.target.closest('[data-story-open]');if(!target)return;const i=Number(target.dataset.storyOpen);if(openedOrders.has(i))openedOrders.delete(i);else openedOrders.add(i);storyRender();el('story-scene').querySelector('[data-story-open="'+i+'"]').focus();};
+  storyRender();
   const name=order=>overrides[order.id]??names[order.customer];
   const conflict=()=>new Set(orders.filter(o=>o.customer==='C01').map(name)).size>1;
   const flat=()=>orders.flatMap(o=>o.items.map(([product,qty])=>({order:o.id,customer:o.customer,name:name(o),city:cities[o.customer],product,qty})));

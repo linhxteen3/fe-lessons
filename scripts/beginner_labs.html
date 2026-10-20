@@ -1,0 +1,103 @@
+<style>
+.beginner-lab [data-story="next"]{background:var(--primary,var(--accent));border-color:var(--primary,var(--accent));color:white}
+.beginner-lab{scroll-margin-top:90px}.beginner-lab .story-scene{border:1px solid var(--border,var(--line));border-radius:12px;padding:18px;background:var(--soft,var(--card-bg));margin:16px 0}.beginner-lab .story-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.beginner-lab .story-card{border:1px solid var(--primary,var(--accent));background:var(--card-bg,var(--surface));border-radius:10px;padding:14px;min-width:0;line-height:1.8}.beginner-lab .story-card strong{display:block;color:var(--primary,var(--accent));margin-bottom:8px}.beginner-lab .story-slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}.beginner-lab .story-slot{border:2px dashed var(--border,var(--line));padding:14px 5px;text-align:center;border-radius:9px;min-width:0}.beginner-lab .story-slot.filled{border-style:solid;border-color:var(--primary,var(--accent));background:var(--primary-light,var(--tint))}.beginner-lab .story-slot b{display:block;font-size:25px}.beginner-lab .story-why{border-left:4px solid var(--primary,var(--accent));padding:14px 16px;background:var(--soft,var(--card-bg));line-height:1.8;border-radius:0 10px 10px 0}.beginner-lab .story-why strong{display:block;margin-bottom:8px}.beginner-lab .story-removed{opacity:.7;border-style:dashed}.beginner-lab .story-removed b{text-decoration:line-through}.beginner-lab .story-range{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}.beginner-lab .story-range>span{border:1px solid var(--border,var(--line));border-radius:8px;padding:10px;flex:1 1 80px;text-align:center}.beginner-lab .story-range .selected{border:2px solid var(--primary,var(--accent));background:var(--primary-light,var(--tint));font-weight:700}.beginner-lab [data-story-feedback]{line-height:1.8}.concept-lab>.story-advanced>summary{cursor:pointer;padding:18px 0;color:var(--primary,var(--accent));font-weight:600;line-height:1.7}.beginner-lab button[aria-pressed="true"]{border:2px solid var(--primary,var(--accent));background:var(--primary-light,var(--tint))}@media(max-width:540px){.beginner-lab .story-scene{padding:12px}.beginner-lab .story-cards{grid-template-columns:1fr}.beginner-lab .story-slot{font-size:12px}.beginner-lab .controls button{flex:1 1 110px}}
+</style>
+<div class="beginner-lab" id="beginner-lab">
+<p data-story-progress></p><div data-story-task role="status" aria-live="polite" aria-atomic="true"></div>
+<div class="story-scene" data-story-scene></div>
+<div class="controls"><button type="button" data-story="prev"></button><button type="button" data-story="next"></button><button type="button" data-story="reset"></button></div>
+<aside class="story-why" data-story-why></aside>
+</div>
+<script>
+(()=>{
+ 'use strict';
+ const lesson=__LESSON__,root=document.getElementById('beginner-lab'),q=s=>root.querySelector(s);
+ const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const tr=(vi,ja)=>`<span class="reading-vi" lang="vi">${esc(vi)}</span><span class="reading-ja" lang="ja">${esc(ja)}</span>`;
+ const card=(title,body,removed=false)=>`<div class="story-card${removed?' story-removed':''}"><strong>${title}</strong>${body}</div>`;
+ const cards=items=>'<div class="story-cards">'+items.join('')+'</div>';
+ let step=0,policy='FIFO',prefix=26,render,max;
+ function show(task,scene,why,action){q('[data-story-task]').innerHTML='<p>'+tr(...task)+'</p>';q('[data-story-scene]').innerHTML=scene;q('[data-story-why]').innerHTML='<strong>'+tr('💡 Vì sao lại như vậy?','💡 なぜそうなる？')+'</strong>'+tr(...why);q('[data-story=next]').innerHTML=tr(...action);}
+ function draw(){render();root.dataset.step=step;q('[data-story-progress]').innerHTML=tr(`Bước ${step+1}/${max+1} · Hiểu qua một câu chuyện`,`段階 ${step+1}/${max+1} · 物語で理解する`);q('[data-story=prev]').innerHTML=tr('← Xem lại','← 前へ');q('[data-story=prev]').disabled=step===0;q('[data-story=next]').disabled=step===max;q('[data-story=reset]').innerHTML=tr('↻ Thử lại từ đầu','↻ 最初から');}
+ if(lesson===21){
+  max=6;
+  const tasks=[
+   ['Bạn có một bàn chỉ đủ ba tập giấy và một tủ chứa nhiều tập. Muốn đọc tập nào, bạn phải để nó lên bàn. Bàn đang trống; hãy lấy tập A.','机には書類が3冊まで置け、棚にはたくさん入ります。読むには机へ持ってきます。空の机にAを出しましょう。'],
+   ['Bạn vừa lấy A từ tủ lên bàn. Một trong ba chỗ đã có giấy. Tiếp theo cần đọc B.','棚からAを机に出し、1枠を使いました。次はBを読みます。'],
+   ['A và B đã ở trên bàn. Bạn cần thêm C, vẫn còn đúng một chỗ trống.','AとBが机にあり、空きは1枠。Cも必要です。'],
+   ['Bàn đã đầy A, B, C. Bây giờ bạn muốn đọc lại A. Có cần đi lấy giấy từ tủ nữa không?','机はA・B・Cで一杯です。Aをもう一度読みたいとき、棚へ取りに行く必要はありますか。'],
+   ['Không cần: A vẫn ở trên bàn. Nhưng tiếp theo bạn cần D, mà cả ba chỗ đều đã kín. Muốn đặt D xuống phải cất một tập khác đi.','不要です。Aは机にあります。しかし次に必要なDは棚にあり、机に空きがありません。Dを置くにはどれかを片付けます。'],
+   ['Bạn vừa lấy D. Hãy đổi cách chọn tập phải cất đi: “đến trước” hay “lâu chưa đọc”. Quan sát chỗ của A và B.','Dを取り出しました。片付ける基準を「先に来たもの」と「長く読んでいないもの」で切り替え、AとBの位置を見ましょう。'],
+   ['Giờ gắn tên kiến thức: bàn ví như RAM, tủ ví như bộ nhớ phụ. Từng tập giấy ví như một trang dữ liệu, mỗi chỗ trên bàn ví như một khung chứa trang.','ここで用語へつなげます。机はRAM、棚は補助記憶、書類1冊はデータのページ、机の各枠はページを入れるフレームに相当します。']
+  ];
+  const why=[
+   ['Bàn gần và tiện đọc nhưng ít chỗ; tủ chứa được nhiều hơn nhưng phải đi lấy. Ví von này giúp hiểu việc chuyển dữ liệu; trang dữ liệu thật có kích thước cố định, không phải tập giấy tùy lớn nhỏ.','机は手元で使いやすい反面、置ける量が限られます。棚には多く入りますが取りに行く必要があります。これは移動のたとえで、実際のページは固定長です。'],
+   ['A chưa có trên bàn nên phải lấy từ tủ. Khi trang chưa có trong RAM, hệ điều hành phải xử lý việc đưa nó vào.','Aが机になかったため棚から取り出しました。ページがRAMにない場合、OSが読込みを処理します。'],
+   ['Vẫn còn chỗ trống nên đưa B vào không cần cất A đi. Chưa phải lúc chọn tập để thay.','空き枠があるので、Bを出してもAを片付ける必要はありません。置換対象を選ぶのはまだ先です。'],
+   ['A đến sớm nhất, nhưng cả ba tập hiện đều đang nằm trên bàn. Hãy phân biệt “đã đến lúc nào” với “vừa đọc lúc nào”.','最初に来たのはAですが、今は3冊とも机にあります。「いつ来たか」と「いつ読んだか」は別です。'],
+   ['Đọc lại A không làm nó được mang đến muộn hơn, nhưng làm A trở thành tập vừa được đọc. Vì thế hai cách chọn có thể cho kết quả khác nhau.','Aを再び読んでも到着順は変わりませんが、最終利用は新しくなります。そのため二つの選び方は違う結果になります。'],
+   ['Chọn đến trước: cất A vì A được đưa lên bàn đầu tiên. Chọn lâu chưa đọc: cất B vì A vừa được đọc lại, C được đọc sau B. Không có cách nào luôn tốt hơn với mọi chuỗi sử dụng.','到着順なら最初に来たAを片付けます。最終利用順なら、Aを再利用しCはBより後に読んだのでBを片付けます。どちらも全ての参照列で常に優れるわけではありません。'],
+   ['FIFO là thay trang được nạp sớm nhất. LRU là thay trang lâu không được dùng nhất. HIT: trang đã có trong RAM. Page fault: trang chưa ở RAM; còn chỗ thì nạp vào, hết chỗ mới cần chọn trang thay. Ví dụ giả sử trang hợp lệ đã có trên bộ nhớ phụ và không mô tả ghi lại trang đã sửa.','FIFOは最初に読み込んだページ、LRUは最後の利用が最も古いページを置換します。HITはRAMにある状態、ページフォールトはRAMにない状態です。空きがあれば読込み、なければ置換します。有効なページが補助記憶にあると仮定し、変更済みページの書戻しは省略しています。']
+  ];
+  render=()=>{
+   const slots=step===0?[]:step===1?['A']:step===2?['A','B']:step<5?['A','B','C']:policy==='FIFO'?['D','B','C']:['A','D','C'];
+   root.dataset.slots=slots.join(',');
+   let scene='<p>'+tr('🗄 Tủ: A, B, C, D · ví như chỗ lưu dữ liệu lớn hơn','🗄 棚：A・B・C・D · より大きなデータ保存先')+'</p><p>'+tr('↓ Lấy tập cần đọc lên bàn','↓ 必要な書類を机へ')+'</p><div class="story-slots">'+[0,1,2].map(i=>`<div class="story-slot${slots[i]?' filled':''}">${tr('Chỗ '+(i+1),'枠 '+(i+1))}<b>${slots[i]||'—'}</b>${slots[i]?tr('Tập '+slots[i],slots[i]+'の書類'):tr('Trống','空き')}</div>`).join('')+'</div>';
+   if(step===4)scene+='<p>'+tr('✓ Vừa đọc lại A · Không lấy thêm từ tủ','✓ Aを再利用 · 棚からの読込みなし')+'</p>';
+   if(step>=5)scene+='<div class="controls">'+['FIFO','LRU'].map(p=>`<button type="button" data-policy-choice="${p}" aria-pressed="${p===policy}">${p==='FIFO'?tr('Cất tập đến trước','先に来たものを片付ける'):tr('Cất tập lâu chưa đọc','長く読んでいないものを片付ける')}</button>`).join('')+'</div><p data-story-feedback>'+tr(policy==='FIFO'?'A ra → D vào. B và C vẫn ở trên bàn.':'B ra → D vào. A vừa đọc nên được giữ lại.',policy==='FIFO'?'Aを出す → Dを入れる。BとCは残ります。':'Bを出す → Dを入れる。再利用したAは残ります。')+'</p>';
+   const actions=[['Lấy A lên bàn →','Aを机へ →'],['Lấy B lên bàn →','Bを机へ →'],['Lấy C lên bàn →','Cを机へ →'],['Thử đọc lại A →','Aをもう一度読む →'],['Lấy D: phải cất tập nào? →','Dを出す：どれを片付ける？ →'],['Gọi tên kiến thức vừa học →','用語で整理する →'],['✓ Đã xem xong','✓ ここまで']];
+   show(tasks[step],scene,why[step],actions[step]);
+  };
+ }
+ if(lesson===31){
+  max=4;const sales=[['A',100],['A',200],['B',300],['B',400]];
+  const tasks=[
+   ['Bạn quản lý hai quầy A và B. Có bốn hóa đơn bên dưới, số tiền tính bằng nghìn đồng. Bạn cần tìm quầy có tổng ít nhất 400, nhưng chỉ tính hóa đơn từ 150 trở lên.','AとBの売場を管理しています。下は4枚の伝票で、金額の単位は千ドンです。150以上の伝票だけを合計し、合計400以上の売場を探します。'],
+   ['Trước tiên xét từng hóa đơn. Tờ 100 nhỏ hơn 150 nên bị loại; ba tờ còn lại được giữ để tính tổng.','まず伝票を一枚ずつ選びます。100は150未満なので除き、残りの3枚で合計を計算します。'],
+   ['Gom các hóa đơn còn lại theo quầy rồi cộng tiền. A chỉ còn tờ 200; B có 300 và 400. Tờ 100 đã bị loại nên không cộng lại.','残った伝票を売場別にまとめて足します。Aは200だけ、Bは300と400です。除いた100は合計に戻しません。'],
+   ['Bây giờ xét từng tổng của quầy. A được 200 nên chưa đạt 400. B được 700 nên được giữ lại. Đây là lọc quầy sau khi cộng, khác với lọc hóa đơn lúc đầu.','次に売場の合計を選びます。Aの200は400未満、Bの700は条件を満たします。これは集計後の売場の選択で、最初の伝票の選択とは違います。'],
+   ['Bạn đã tự làm các bước của một truy vấn SQL. Bây giờ hãy đối chiếu từng công việc với câu lệnh bên dưới; không cần học thuộc câu lệnh trước khi hiểu việc nó làm.','SQLの問合せと同じ作業を行いました。今から各作業とSQLの句を照合しましょう。動作を理解する前に文を丸暗記する必要はありません。']
+  ];
+  const why=[
+   ['Có hai yêu cầu khác nhau: chọn tờ hóa đơn nào được tính và chọn quầy nào có tổng đạt yêu cầu. Cùng là “lọc”, nhưng lọc hai đối tượng khác nhau.','「集計する伝票」と「合計の条件を満たす売場」という二つの条件があります。同じ選択でも対象が違います。'],
+   ['Trong SQL, chọn từng dòng trước khi cộng gọi là WHERE. Một hóa đơn ở ví dụ này tương ứng một dòng dữ liệu.','SQLで集計前の行を選ぶ句がWHEREです。この例では伝票一枚がデータの一行です。'],
+   ['Gom dòng cùng quầy gọi là GROUP BY. Phép cộng gọi là SUM. Không có dòng nào của một quầy sau khi lọc thì bước này không tự tạo nhóm cho quầy đó.','同じ売場の行をまとめるのがGROUP BY、合計を求めるのがSUMです。選択後に行がない売場のグループは自動で作られません。'],
+   ['Chọn nhóm sau khi tính tổng gọi là HAVING. WHERE hỏi “hóa đơn này có được tính không?”, HAVING hỏi “tổng quầy này có đạt không?”.','集計後のグループを選ぶ句がHAVINGです。WHEREは「この伝票を集計するか」、HAVINGは「この売場の合計が条件を満たすか」を問います。'],
+   ['Kết quả là quầy B, tổng 700. SELECT chọn cột để đưa ra kết quả. Trong cách đọc logic của ví dụ: lấy dữ liệu → lọc dòng → gom nhóm và tính tổng → lọc nhóm → xuất cột. Ví dụ không có NULL; không có ORDER BY nên không bảo đảm thứ tự các dòng kết quả.','結果は売場B、合計700です。SELECTは出力する列を選びます。論理的にはデータ取得 → 行選択 → グループ化・集計 → グループ選択 → 列の出力です。例にNULLはなく、ORDER BYがないため結果の行順は保証しません。']
+  ];
+  render=()=>{
+   let scene;
+   if(step<2)scene=cards(sales.map(([shop,amount],i)=>card(tr('Hóa đơn '+(i+1)+' · Quầy '+shop,'伝票 '+(i+1)+' · 売場 '+shop),'<b>'+amount+'</b><p>'+tr(step===1?(amount<150?'✕ Không tính: dưới 150':'✓ Giữ lại: từ 150 trở lên'):'Chưa lọc hóa đơn',step===1?(amount<150?'✕ 除く：150未満':'✓ 残す：150以上'):'まだ選択していない')+'</p>',step===1&&amount<150)));
+   else{const groups=Object.entries(sales.filter(r=>r[1]>=150).reduce((a,[s,v])=>{(a[s]??=[]).push(v);return a;},{}));root.dataset.totals=groups.map(([s,values])=>s+':'+values.reduce((a,b)=>a+b,0)).join(',');scene=cards(groups.map(([s,values])=>{const total=values.reduce((a,b)=>a+b,0);return card(tr('Quầy '+s,'売場 '+s),'<b>'+values.join(' + ')+(values.length>1?' = '+total:'')+'</b><p>'+tr(step>=3?(total>=400?'✓ Đạt tổng ít nhất 400':'✕ Loại quầy: tổng dưới 400'):'Đã cộng các hóa đơn được giữ',step>=3?(total>=400?'✓ 合計400以上':'✕ 売場を除く：合計400未満'):'残した伝票の合計')+'</p>',step>=3&&total<400);}));}
+   if(step===4)scene+='<pre>SELECT dept, SUM(amount) AS total\nFROM sales\nWHERE amount &gt;= 150\nGROUP BY dept\nHAVING SUM(amount) &gt;= 400;</pre><p>'+tr('dept = quầy · amount = tiền hóa đơn · total = tổng','dept＝売場 · amount＝伝票金額 · total＝合計')+'</p>';
+   const actions=[['Chỉ giữ hóa đơn từ 150 →','150以上の伝票を残す →'],['Gom theo quầy và cộng tiền →','売場別に合計する →'],['Chọn quầy có tổng từ 400 →','合計400以上の売場を選ぶ →'],['Xem cách viết bằng SQL →','SQLと照合する →'],['✓ Đã xem xong','✓ ここまで']];
+   show(tasks[step],scene,why[step],actions[step]);
+  };
+ }
+ if(lesson===35){
+  max=4;
+  const tasks=[
+   ['Một máy tính có địa chỉ 192.168.1.130. Bạn cần biết nó thuộc nhóm địa chỉ nào và còn bao nhiêu địa chỉ để cấp cho các máy khác. Hãy xem nhóm nhỏ chứa số cuối 130.','あるPCのアドレスは192.168.1.130です。どのアドレス範囲に属し、他のPCに何個割り当てられるか調べます。末尾130を含むグループを見ましょう。'],
+   ['Trong ví dụ, các địa chỉ cùng bắt đầu bằng 192.168.1 được chia thành nhóm 64 địa chỉ. Số cuối 130 nằm trong nhóm 128–191, không phải nhóm 64–127.','この例では192.168.1で始まる範囲を64アドレスずつに分けます。末尾130は64～127ではなく128～191のグループです。'],
+   ['Nhóm có 64 địa chỉ nhưng không cấp hết cho máy. Địa chỉ đầu 128 dùng để gọi tên cả mạng; địa chỉ cuối 191 dùng để gửi tới toàn bộ máy trong mạng.','64個全てをPCに割り当てるわけではありません。先頭の128はネットワーク全体を表し、末尾の191はネットワーク内全体への送信に使います。'],
+   ['Máy được dùng các số cuối 129–190: có 62 địa chỉ. Hãy thử chia nhóm nhỏ hơn rồi xem phạm vi và số máy thay đổi.','PCに使える末尾は129～190の62個です。グループを小さくして、範囲と割当数の変化を見ましょう。'],
+   ['Giờ nối với ký hiệu trong bài: IPv4 có 32 bit. Prefix cho biết bao nhiêu bit dùng để nhận diện mạng; các bit còn lại tạo số địa chỉ trong một nhóm.','ここで記号につなげます。IPv4は32ビットです。プレフィックスはネットワークを識別するビット数を示し、残りのビットでグループ内のアドレス数が決まります。']
+  ];
+  render=()=>{
+   const block=2**(32-prefix),net=Math.floor(130/block)*block,last=net+block-1;root.dataset.network='192.168.1.'+net;root.dataset.hosts=block-2;
+   let scene=card(tr('💻 Địa chỉ máy tính','💻 PCのアドレス'),'<b>192.168.1.130</b>');
+   if(step>=1)scene+='<p>'+tr('Số cuối của địa chỉ · những dải không chồng lên nhau','アドレスの末尾 · 範囲は重ならない')+'</p><div class="story-range">'+Array.from({length:256/block},(_,i)=>`<span class="${i*block===net?'selected':''}">${i*block}–${(i+1)*block-1}${i*block===net?'<br>'+tr('✓ Có máy .130','✓ .130を含む'):''}</span>`).join('')+'</div>';
+   if(step>=2)scene+=cards([card(tr('Đầu nhóm: tên của mạng','先頭：ネットワークを表す'),'<b>192.168.1.'+net+'</b><p>'+tr('Không cấp cho một máy riêng','PC一台には割り当てない')+'</p>'),card(tr('Cuối nhóm: gửi cho cả mạng','末尾：ネットワーク全体へ'),'<b>192.168.1.'+last+'</b><p>'+tr('Địa chỉ broadcast, không cấp cho máy riêng','ブロードキャスト。PC一台には割り当てない')+'</p>')]);
+   if(step>=3)scene+='<p data-story-feedback>'+tr(`Máy dùng: 192.168.1.${net+1} đến 192.168.1.${last-1}. ${block} − 2 = ${block-2} địa chỉ.`,`PC用：192.168.1.${net+1}～192.168.1.${last-1}。${block} − 2 = ${block-2}個。`)+'</p>';
+   if(step===3)scene+='<button type="button" data-smaller>'+tr(prefix===26?'Thử chia thành nhóm 32 địa chỉ':'Quay lại nhóm 64 địa chỉ',prefix===26?'32アドレスのグループに分ける':'64アドレスのグループに戻す')+'</button>';
+   if(step===4)scene+=card(tr('Cách đọc /'+prefix,'/'+prefix+'の読み方'),'<p>'+tr(`${prefix} bit mạng + ${32-prefix} bit còn lại = 32 bit. Mỗi bit có hai giá trị 0 hoặc 1, nên ${32-prefix} bit tạo 2^${32-prefix} = ${block} địa chỉ. Dành hai địa chỉ đầu và cuối, còn ${block-2} cho máy.`,`${prefix}ネットワークビット + 残り${32-prefix}ビット = 32ビット。各ビットは0か1なので、${32-prefix}ビットで2^${32-prefix} = ${block}アドレス。先頭と末尾を予約し、PC用は${block-2}個です。`)+'</p>');
+   const why=step===0?['Ví von: địa chỉ gồm phần tên khu và phần số nhà. Nhưng không được mặc định ba số đầu luôn là mạng: ranh giới thật do prefix quyết định. Ví dụ này bắt đầu với /26.','住所の地区名と番地にたとえられます。ただし先頭3数値が常にネットワーク部とは限りません。境界はプレフィックスで決まり、この例は/26から始めます。']:step===1?['130 lớn hơn hoặc bằng 128 và nhỏ hơn 192, nên thuộc dải 128–191. Dải này được tính từ quy tắc chia nhóm đã cho; không phải cứ nhìn một IP là tự biết được ranh giới mạng.','130は128以上192未満なので128～191に入ります。与えられた分割規則で範囲が決まります。IPだけで境界が分かるわけではありません。']:step===2?['Địa chỉ mạng và broadcast có việc riêng nên không tính vào chỗ cấp cho máy trong mô hình subnet thông thường này. Vì vậy 64 địa chỉ chỉ cấp được 62 máy.','ネットワークとブロードキャストは専用の役割があるため、通常のサブネットではPCへ割り当てません。64個でもPC用は62個です。']:step===3?['Nhóm nhỏ hơn thì ít chỗ cấp cho máy hơn. Với .130, nhóm 32 địa chỉ là 128–159, máy dùng 129–158: còn 30 địa chỉ. Địa chỉ .130 vẫn ở trong nhóm, nhưng ranh giới cuối đã đổi.','小さく分けると割当可能数は減ります。.130を含む32個の範囲は128～159、PC用は129～158の30個です。.130は残りますが末尾の境界が変わります。']:['Subnet là nhóm địa chỉ vừa xem. /26 nghĩa là 26 bit mạng và 6 bit còn lại; /27 để lại 5 bit nên nhóm nhỏ hơn. Phần nâng cao bên dưới cho thử bit và phép AND. Quy tắc trừ 2 ở đây dùng cho subnet thông thường; /31 và /32 có cách dùng riêng.','サブネットは先ほどのアドレス群です。/26は26ネットワークビットと残り6ビット、/27は残り5ビットで範囲が小さくなります。下の発展ではビットとANDを試せます。2個引く規則は通常のサブネット向けで、/31・/32は特例です。'];
+   const actions=[['Tìm nhóm chứa .130 →','.130を含むグループを探す →'],['Xem hai địa chỉ dành riêng →','予約する二つのアドレスを見る →'],['Đếm chỗ còn lại cho máy →','PCに使える数を数える →'],['Hiểu ký hiệu /26, /27 →','/26・/27の意味へ →'],['✓ Đã xem xong','✓ ここまで']];
+   show(tasks[step],scene,why,actions[step]);
+  };
+ }
+ q('[data-story=next]').onclick=()=>{step=Math.min(max,step+1);draw();};q('[data-story=prev]').onclick=()=>{step=Math.max(0,step-1);if(lesson===35&&step<3)prefix=26;draw();};q('[data-story=reset]').onclick=()=>{step=0;policy='FIFO';prefix=26;draw();};
+ q('[data-story-scene]').onclick=e=>{const choice=e.target.closest('[data-policy-choice]');if(choice){policy=choice.dataset.policyChoice;draw();q(`[data-policy-choice="${policy}"]`).focus();}if(e.target.closest('[data-smaller]')){prefix=prefix===26?27:26;draw();q('[data-smaller]').focus();}};
+ draw();
+})();
+</script>
