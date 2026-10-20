@@ -122,6 +122,8 @@ def enhance(n,text):
     assert len(units)==4,n
     intro=dual('<p>Đọc cơ chế và ví von trước, lần theo sơ đồ, rồi tự giải ví dụ trước khi mở lời giải. Phần tra cứu giữ các định nghĩa ngắn để ôn lại sau khi đã hiểu.</p>','<p>仕組みと身近な例を読み、図で関係を追い、解説を開く前に例題を解きます。短い用語説明は理解後の確認に使ってください。</p>')
     simulation=Path(__file__).with_name('normalization_lab.html').read_text(encoding='utf-8') if n==30 else ''
+    if n in (21,31,35,53):
+        simulation=Path(__file__).with_name('concept_labs.html').read_text(encoding='utf-8').replace('__LESSON__',str(n))
     body='<div class="teaching-intro">'+intro+flow(n)+comparison(n)+'</div>'+simulation+''.join(units)
     if n in [21,22]:
         preserved=soup.select_one('.preserved-theory .reference-body')
