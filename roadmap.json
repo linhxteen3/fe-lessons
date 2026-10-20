@@ -232,10 +232,10 @@
         14
       ],
       "practice": "Tham số, giá trị trả về, phạm vi biến, đệ quy; tự trace tìm kiếm/sắp xếp trên dữ liệu nhỏ.",
-      "gap": "Có ví dụ tìm kiếm/sắp xếp; chưa có lộ trình luyện hàm/đệ quy và các bài đọc chương trình đầy đủ. Mục 14 hiện chưa có tài liệu.",
+      "gap": "Có ví dụ tìm kiếm/sắp xếp và bài 14 về OOP/UML; vẫn cần bổ sung lộ trình luyện hàm/đệ quy và các bài đọc chương trình đầy đủ theo 科目B.",
       "titleJa": "関数・再帰・アルゴリズム",
       "practiceJa": "引数、戻り値、変数のスコープ、再帰を学び、小さなデータで探索・整列を追います。",
-      "gapJa": "探索・整列の例はありますが、関数・再帰とプログラム読解の体系的な演習は未整備です。項目14は教材未公開です。"
+      "gapJa": "探索・整列とレッスン14のOOP・UML教材があります。科目B形式の関数・再帰とプログラム読解の体系的な演習は引き続き必要です。"
     },
     {
       "title": "Giải quyết vấn đề bằng lập trình",
@@ -263,10 +263,10 @@
         43
       ],
       "practice": "Đọc tình huống về xác thực, phân quyền, nhật ký, lừa đảo, xử lý sự cố và kiểm soát rủi ro; chọn biện pháp theo ngữ cảnh.",
-      "gap": "Các mục bảo mật mới có tên trong danh mục, chưa có trang học. Cần bổ sung cả nền tảng 科目A và thực hành tình huống 科目B.",
+      "gap": "Bài 39–42 đã có lý thuyết và bài kiểm tra, bài 43 là ôn bảo mật. Đây là nền tảng và câu luyện ngắn; vẫn cần bộ tình huống dài theo định dạng 科目B.",
       "titleJa": "情報セキュリティの事例演習",
       "practiceJa": "認証、権限、ログ、詐欺、インシデント対応、リスク管理の事例を読み、状況に合う対策を選びます。",
-      "gapJa": "セキュリティ項目は一覧のみで、学習ページは未公開です。科目Aの基礎と科目Bの事例演習の両方を追加する必要があります。"
+      "gapJa": "39〜42に解説と演習、43に復習を追加しました。基礎と短い設問のため、科目B形式の長文事例演習は引き続き必要です。"
     },
     {
       "title": "Luyện đề 科目B có bấm giờ",

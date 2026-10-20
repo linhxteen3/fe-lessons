@@ -10,8 +10,11 @@ const bank=text=>JSON.parse(text.match(/<script[^>]*id="quiz-data"[^>]*>([\s\S]*
  const files=fs.readdirSync('kiem-tra').filter(f=>/^\d+\.html$/.test(f)).sort((a,b)=>parseInt(a)-parseInt(b));
  for(const f of files){
   const current=bank(fs.readFileSync(path.join('kiem-tra',f),'utf8'));
-  const before=bank(execFileSync('git',['show',`HEAD:kiem-tra/${f}`],{encoding:'utf8',maxBuffer:10*1024*1024}));
-  assert.deepEqual(current.map(q=>[q.q,q.opts,q.ans]),before.map(q=>[q.q,q.opts,q.ans]),`original answers/order ${f}`);
+  const tracked=execFileSync('git',['ls-files',`kiem-tra/${f}`],{encoding:'utf8'}).trim();
+  if(tracked){
+   const before=bank(execFileSync('git',['show',`HEAD:kiem-tra/${f}`],{encoding:'utf8',maxBuffer:10*1024*1024}));
+   assert.deepEqual(current.map(q=>[q.q,q.opts,q.ans]),before.map(q=>[q.q,q.opts,q.ans]),`original answers/order ${f}`);
+  }
   current.forEach((q,i)=>{
    assert.ok(q.qJa,`Japanese question ${f}:${i}`);
    assert.equal(q.optsJa.length,4);assert.ok(q.optsJa.every(o=>typeof o==='string'&&o.length));

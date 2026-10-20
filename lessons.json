@@ -95,8 +95,8 @@
     {
       "stt": 14,
       "topic": "OOP+UML + 過去問 Ch.3",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/14.html",
+      "test": "kiem-tra/14.html",
       "status": "done"
     },
     {
@@ -187,14 +187,14 @@
       "stt": 27,
       "topic": "過去問 Ch.7+Ch.8",
       "theory": null,
-      "test": null,
+      "test": "kiem-tra/27.html",
       "status": "todo"
     },
     {
       "stt": 28,
       "topic": "Ôn nhẹ tuần 6",
       "theory": null,
-      "test": null,
+      "test": "kiem-tra/28.html",
       "status": "todo"
     },
     {
@@ -249,71 +249,71 @@
     {
       "stt": 36,
       "topic": "ネットワーク機器・DNS DHCP NAT",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/36.html",
+      "test": "kiem-tra/36.html",
       "status": "todo"
     },
     {
       "stt": 37,
       "topic": "その他重要範囲 (HTTP Email)",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/37.html",
+      "test": "kiem-tra/37.html",
       "status": "todo"
     },
     {
       "stt": 38,
       "topic": "NW過去問 + Ôn nhẹ",
       "theory": null,
-      "test": null,
+      "test": "kiem-tra/38.html",
       "status": "todo"
     },
     {
       "stt": 39,
       "topic": "セキュリティ基本+CIA",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/39.html",
+      "test": "kiem-tra/39.html",
       "status": "todo"
     },
     {
       "stt": 40,
       "topic": "サイバー攻撃 · Tấn công mạng",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/40.html",
+      "test": "kiem-tra/40.html",
       "status": "todo"
     },
     {
       "stt": 41,
       "topic": "暗号化・デジタル署名",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/41.html",
+      "test": "kiem-tra/41.html",
       "status": "todo"
     },
     {
       "stt": 42,
       "topic": "ネットワークセキュリティ",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/42.html",
+      "test": "kiem-tra/42.html",
       "status": "todo"
     },
     {
       "stt": 43,
       "topic": "Security過去問",
       "theory": null,
-      "test": null,
+      "test": "kiem-tra/43.html",
       "status": "todo"
     },
     {
       "stt": 44,
       "topic": "Ôn điểm yếu Ch.6-11",
       "theory": null,
-      "test": null,
+      "test": "kiem-tra/44.html",
       "status": "todo"
     },
     {
       "stt": 45,
       "topic": "MILESTONE: 80 câu tổng GĐ1+2",
       "theory": null,
-      "test": null,
+      "test": "kiem-tra/45.html",
       "status": "todo"
     },
     {
@@ -326,106 +326,106 @@
     {
       "stt": 47,
       "topic": "システム開発の流れ",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/47.html",
+      "test": "kiem-tra/47.html",
       "status": "todo"
     },
     {
       "stt": 48,
       "topic": "システム開発手法",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/48.html",
+      "test": "kiem-tra/48.html",
       "status": "todo"
     },
     {
       "stt": 49,
       "topic": "業務モデリング · UML DFD",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/49.html",
+      "test": "kiem-tra/49.html",
       "status": "todo"
     },
     {
       "stt": 50,
       "topic": "モジュール分割+テスト手法",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/50.html",
+      "test": "kiem-tra/50.html",
       "status": "todo"
     },
     {
       "stt": 51,
       "topic": "Ôn Ch.12-13 + 過去問",
       "theory": null,
-      "test": null,
+      "test": "kiem-tra/51.html",
       "status": "todo"
     },
     {
       "stt": 52,
       "topic": "プロジェクトマネジメント (PMBOK)",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/52.html",
+      "test": "kiem-tra/52.html",
       "status": "todo"
     },
     {
       "stt": 53,
       "topic": "PERT/CPM・WBS・EVM",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/53.html",
+      "test": "kiem-tra/53.html",
       "status": "todo"
     },
     {
       "stt": 54,
       "topic": "ITサービスマネジメント (ITIL)",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/54.html",
+      "test": "kiem-tra/54.html",
       "status": "todo"
     },
     {
       "stt": 55,
       "topic": "システム監査・運用",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/55.html",
+      "test": "kiem-tra/55.html",
       "status": "todo"
     },
     {
       "stt": 56,
       "topic": "Ôn Ch.14-15 + 過去問",
       "theory": null,
-      "test": null,
+      "test": "kiem-tra/56.html",
       "status": "todo"
     },
     {
       "stt": 57,
       "topic": "システム戦略・企画",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/57.html",
+      "test": "kiem-tra/57.html",
       "status": "todo"
     },
     {
       "stt": 58,
       "topic": "経営戦略 (SWOT PPM BSC)",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/58.html",
+      "test": "kiem-tra/58.html",
       "status": "todo"
     },
     {
       "stt": 59,
       "topic": "ビジネスインダストリ+IoT/AI",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/59.html",
+      "test": "kiem-tra/59.html",
       "status": "todo"
     },
     {
       "stt": 60,
       "topic": "企業活動 (OR・IE+会計+線形計画)",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/60.html",
+      "test": "kiem-tra/60.html",
       "status": "todo"
     },
     {
       "stt": 61,
       "topic": "法務+Ôn GĐ3",
-      "theory": null,
-      "test": null,
+      "theory": "ly-thuyet/61.html",
+      "test": "kiem-tra/61.html",
       "status": "todo"
     }
   ]

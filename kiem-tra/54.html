@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>FE 模擬試験 — ITサービスマネジメント (ITIL) (40問)</title>
+
+
+<style>/**
+ * Brilliant.org Design System for FE Lessons
+ * Colors: White/Off-white canvas, Deep Black (#191919), Brilliant Green (#22C55E), Brilliant Blue (#4F46E5)
+ * Tactile 3D Cards & Buttons: 2px solid border with 4px solid bottom border, translateY(2px) on active.
+ */
+
+:root {
+  --br-bg: #FFFFFF;
+  --br-canvas: #F9FAFB;
+  --br-surface: #FFFFFF;
+  --br-surface-alt: #F3F4F6;
+  --br-border: #E5E7EB;
+  --br-border-press: #D1D5DB;
+  --br-border-hover: #CBD5E1;
+  --br-border-dark: #191919;
+
+  --br-text: #111827;
+  --br-text-secondary: #4B5563;
+  --br-text-muted: #6B7280;
+  --br-text-subtle: #9CA3AF;
+
+  /* Primary Brilliant Accents */
+  --br-black: #191919;
+  --br-black-press: #000000;
+  --br-green: #22C55E;
+  --br-green-dark: #16A34A;
+  --br-green-bg: #F0FDF4;
+  --br-green-border: #BBF7D0;
+
+  --br-blue: #4F46E5;
+  --br-blue-alt: #2563EB;
+  --br-blue-dark: #3730A3;
+  --br-blue-bg: #EEF2FF;
+  --br-blue-border: #C7D2FE;
+
+  --br-red: #EF4444;
+  --br-red-dark: #DC2626;
+  --br-red-bg: #FEF2F2;
+  --br-red-border: #FECACA;
+
+  --br-yellow: #F59E0B;
+  --br-yellow-dark: #D97706;
+  --br-yellow-bg: #FFFBEB;
+  --br-yellow-border: #FDE68A;
+
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "DM Mono", Menlo, Consolas, monospace;
+}
+
+/* ── UNIVERSAL RESETS & OVERRIDES (Clears legacy dark/paper styles) ── */
+html {
+  scroll-behavior: smooth;
+  color-scheme: light !important;
+}
+
+body {
+  background-color: var(--br-canvas) !important;
+  background-image: none !important;
+  color: var(--br-text) !important;
+  font-family: var(--font-sans) !important;
+  line-height: 1.65 !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Remove paper grain textures from old templates */
+body::before, body::after {
+  display: none !important;
+}
+
+a {
+  color: var(--br-blue);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* ── TOP PROGRESS BAR (Bite-Sized Flow) ── */
+.br-progress-track {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 6px;
+  background: var(--br-border);
+  z-index: 1000;
+  overflow: hidden;
+}
+.br-progress-bar {
+  height: 100%;
+  background: var(--br-green);
+  width: 0%;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0 4px 4px 0;
+}
+
+/* ── TACTILE 3D CARDS ── */
+.br-card,
+.card,
+.row,
+section,
+section.part,
+.part,
+.truth-card,
+.nav-panel,
+.example,
+.tip,
+.warn,
+.callout,
+.breakdown-card,
+.bk-card,
+.tri,
+.lang-block,
+.fc,
+header.hero,
+.hero,
+.container {
+  background: #FFFFFF !important;
+  border: 2px solid var(--br-border) !important;
+  border-bottom: 4px solid var(--br-border-press) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03) !important;
+  color: var(--br-text) !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.br-card:hover,
+.row:hover,
+.card:hover {
+  border-color: var(--br-border-hover) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* ── TACTILE 3D BUTTONS ── */
+.br-btn,
+.btn,
+.toggle-btn,
+.chip,
+.qnav-btn,
+.nav-cell,
+.tab,
+.explain-btn,
+.quicknav-toggle,
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-sans) !important;
+  font-weight: 700 !important;
+  border: 2px solid var(--br-border) !important;
+  border-bottom: 4px solid var(--br-border-press) !important;
+  border-radius: 12px !important;
+  background: #FFFFFF !important;
+  color: var(--br-text) !important;
+  cursor: pointer !important;
+  padding: 9px 18px !important;
+  transition: transform 0.08s ease, border-bottom-width 0.08s ease, background-color 0.12s ease !important;
+  user-select: none !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+}
+
+.br-btn:hover,
+.btn:hover,
+button:hover,
+.chip:hover,
+.qnav-btn:hover {
+  border-color: var(--br-border-hover) !important;
+  background: var(--br-canvas) !important;
+}
+
+.br-btn:active,
+.btn:active,
+.toggle-btn:active,
+.chip:active,
+.qnav-btn:active,
+.nav-cell:active,
+button:active {
+  transform: translateY(2px) !important;
+  border-bottom-width: 2px !important;
+}
+
+/* Primary Brilliant Black Tactile Button ("Tiếp tục" / Continue / Next) */
+.br-btn-primary,
+.btn-primary,
+.btn-next,
+#nextBtn,
+.actions .btn[data-t="theory"],
+.btn-continue {
+  background: var(--br-black) !important;
+  color: #FFFFFF !important;
+  border: 2px solid var(--br-black) !important;
+  border-bottom: 4px solid var(--br-black-press) !important;
+}
+.br-btn-primary:hover,
+.btn-primary:hover,
+.btn-next:hover,
+#nextBtn:hover,
+.actions .btn[data-t="theory"]:hover {
+  background: #2D2D2D !important;
+  border-color: #2D2D2D !important;
+}
+.br-btn-primary:active,
+.btn-primary:active,
+.btn-next:active,
+#nextBtn:active {
+  transform: translateY(2px) !important;
+  border-bottom-width: 2px !important;
+}
+
+/* Brilliant Green Tactile Button (Complete / Success) */
+.br-btn-green,
+.toggle-btn.p0 {
+  background: var(--br-green) !important;
+  color: #FFFFFF !important;
+  border: 2px solid var(--br-green) !important;
+  border-bottom: 4px solid var(--br-green-dark) !important;
+}
+.br-btn-green:hover,
+.toggle-btn.p0:hover {
+  background: var(--br-green-dark) !important;
+}
+.br-btn-green:active,
+.toggle-btn.p0:active {
+  transform: translateY(2px) !important;
+  border-bottom-width: 2px !important;
+}
+
+/* Disabled state */
+.btn:disabled,
+button:disabled,
+.btn[disabled] {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+  transform: none !important;
+  border-bottom-width: 4px !important;
+}
+
+/* ── TACTILE 3D QUIZ OPTIONS ── */
+.option,
+.opt,
+.choice {
+  background: #FFFFFF !important;
+  border: 2px solid var(--br-border) !important;
+  border-bottom: 4px solid var(--br-border-press) !important;
+  border-radius: 14px !important;
+  color: var(--br-text) !important;
+  padding: 14px 18px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  transition: all 0.1s ease !important;
+  user-select: none !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+}
+
+.option:hover:not(.disabled):not(.locked),
+.opt:hover:not(.locked) {
+  border-color: #93C5FD !important;
+  background: #F8FAFC !important;
+}
+
+.option:active:not(.disabled):not(.locked),
+.opt:active:not(.locked) {
+  transform: translateY(2px) !important;
+  border-bottom-width: 2px !important;
+}
+
+/* Selected state (Blue highlight) */
+.option.selected,
+.opt.selected {
+  border-color: var(--br-blue) !important;
+  border-bottom-color: var(--br-blue-dark) !important;
+  background: var(--br-blue-bg) !important;
+  color: #312E81 !important;
+}
+
+/* Correct state (Green tactile) */
+.option.correct,
+.opt.correct,
+.qnav-btn.answered.right,
+.qjump button.done {
+  border-color: var(--br-green) !important;
+  border-bottom-color: var(--br-green-dark) !important;
+  background: var(--br-green-bg) !important;
+  color: #15803D !important;
+  font-weight: 600 !important;
+}
+.option.correct .letter,
+.opt.correct .lbl {
+  background: var(--br-green) !important;
+  color: #FFFFFF !important;
+}
+
+/* Wrong state (Red tactile) */
+.option.wrong,
+.opt.wrong,
+.qnav-btn.answered.wrong,
+.qjump button.miss {
+  border-color: var(--br-red) !important;
+  border-bottom-color: var(--br-red-dark) !important;
+  background: var(--br-red-bg) !important;
+  color: #B91C1C !important;
+}
+.option.wrong .letter,
+.opt.wrong .lbl {
+  background: var(--br-red) !important;
+  color: #FFFFFF !important;
+}
+
+/* ── STREAK COMPONENT (⚡) ── */
+.br-streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 99px;
+  background: var(--br-yellow-bg);
+  border: 2px solid var(--br-yellow-border);
+  border-bottom: 4px solid var(--br-yellow);
+  color: var(--br-yellow-dark);
+  font-weight: 700;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: transform 0.08s ease, border-bottom-width 0.08s ease;
+  user-select: none;
+}
+.br-streak-badge:active {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+}
+.br-streak-fire {
+  font-size: 16px;
+  animation: pulse-fire 1.5s ease-in-out infinite alternate;
+}
+@keyframes pulse-fire {
+  from { transform: scale(1); }
+  to { transform: scale(1.18); }
+}
+
+/* ── ROBOT TUTOR (Gia sư Robot Mascot + Speech Bubble) ── */
+.br-tutor {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin: 22px 0;
+  padding: 16px 20px;
+  background: var(--br-green-bg);
+  border: 2px solid var(--br-green-border);
+  border-bottom: 4px solid #86EFAC;
+  border-radius: 16px;
+  box-shadow: 0 2px 6px rgba(34, 197, 94, 0.06);
+}
+.br-tutor-mascot {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+}
+.br-tutor-bubble {
+  flex: 1;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #14532D;
+}
+.br-tutor-bubble b, .br-tutor-bubble strong {
+  color: #052E16;
+}
+.br-tutor-title {
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #16A34A;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── LEARNING TOOLBAR (fe-toolbar in site.js) ── */
+.fe-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 2px solid var(--br-border);
+  font: 600 13.5px var(--font-sans);
+}
+.fe-toolbar a, .fe-toolbar button {
+  min-height: 38px;
+  padding: 6px 14px !important;
+  font-size: 13px !important;
+}
+
+/* ── TYPOGRAPHY & SECTIONS ── */
+h1, h2, h3, h4, .hero-title, .title, .part-title {
+  color: var(--br-text) !important;
+  font-family: var(--font-sans) !important;
+  letter-spacing: -0.02em !important;
+  font-weight: 700 !important;
+}
+
+/* Tri-language block styling */
+.lang-block, .tri {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 20px !important;
+}
+.lang-row, .tri .lang {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  line-height: 1.6;
+  font-size: 14.5px;
+}
+.lang-row .label, .tri .lang span {
+  font-weight: 700;
+  font-size: 12px;
+  min-width: 90px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--br-surface-alt);
+  color: var(--br-text-secondary);
+}
+.lang-row.jp .label { background: #FEE2E2; color: #991B1B; }
+.lang-row.vn .label { background: #DCFCE7; color: #166534; }
+.lang-row.en .label { background: #DBEAFE; color: #1E40AF; }
+
+/* Callout & Hint */
+.callout, .tip, .warn {
+  padding: 16px 20px !important;
+  margin: 18px 0 !important;
+}
+.callout .head, .tip .head, .warn .head {
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.callout { background: var(--br-blue-bg) !important; border-color: var(--br-blue-border) !important; }
+.tip { background: var(--br-yellow-bg) !important; border-color: var(--br-yellow-border) !important; }
+.warn { background: var(--br-red-bg) !important; border-color: var(--br-red-border) !important; }
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #FFFFFF !important;
+  font-size: 14px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--br-border);
+}
+th, td {
+  padding: 10px 14px;
+  border: 1px solid var(--br-border) !important;
+  color: var(--br-text) !important;
+}
+th {
+  background: var(--br-surface-alt) !important;
+  font-weight: 700 !important;
+}
+
+/* Code blocks */
+code, pre, .ascii, .box {
+  font-family: var(--font-mono) !important;
+  background: var(--br-surface-alt) !important;
+  color: #1F2937 !important;
+  border-radius: 8px;
+}
+code {
+  padding: 2px 6px;
+  font-size: 0.9em;
+}
+pre, .ascii, .box {
+  padding: 14px 18px;
+  border: 1px solid var(--br-border);
+  overflow-x: auto;
+}
+
+/* Flashcards */
+.fc {
+  cursor: pointer;
+  min-height: 160px;
+  padding: 20px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: transform 0.15s ease, border-color 0.15s ease !important;
+}
+.fc:hover {
+  transform: translateY(-2px) !important;
+  border-color: var(--br-blue-alt) !important;
+}
+
+/* Explanation Accordion */
+.explain {
+  background: var(--br-surface-alt) !important;
+  border: 2px solid var(--br-border) !important;
+  border-left: 6px solid var(--br-blue) !important;
+  border-radius: 10px !important;
+  padding: 16px 20px !important;
+  margin-top: 14px;
+  color: var(--br-text) !important;
+}
+
+/* Navigation Jump Grid in Quizzes */
+.qjump, .nav-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 6px;
+}
+.qjump button, .nav-cell, .qnav-btn {
+  padding: 8px 0 !important;
+  font-size: 12px !important;
+  font-family: var(--font-mono) !important;
+}
+.nav-cell.current, .qjump button.cur, .qnav-btn.current {
+  border-color: var(--br-black) !important;
+  background: var(--br-black) !important;
+  color: #FFFFFF !important;
+}
+</style>
+<style>@import url('./brilliant.css');
+
+/* =========================================================
+   BRILLIANT.ORG THEME OVERRIDE CHO FE-LESSONS
+   ========================================================= */
+:root {
+  --bg: #1d1d1d !important;
+  --surface: #1d1d1d !important;
+  --surface2: #272727 !important;
+  --ink: #f5f5f5 !important;
+  --text-dim: #aaaaaa !important;
+  --border: #383838 !important;
+  --border-dark: #454545 !important;
+
+  /* Bảng màu đặc trưng của Brilliant */
+  --brilliant-green: #22C55E;
+  --brilliant-green-dark: #16A34A;
+  --brilliant-green-bg: #17372b;
+
+  --brilliant-blue: #3B82F6;
+  --brilliant-blue-dark: #2563EB;
+  --brilliant-blue-bg: #29213b;
+
+  --brilliant-amber: #F59E0B;
+  --brilliant-amber-bg: #392e19;
+
+  --brilliant-red: #EF4444;
+  --brilliant-red-dark: #DC2626;
+  --brilliant-red-bg: #402327;
+}
+
+body {
+  background-color: var(--bg) !important;
+  color: var(--ink) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", sans-serif !important;
+}
+
+.wrap {
+  max-width: 860px !important;
+  margin: 0 auto !important;
+  padding: 32px 20px 100px !important;
+}
+
+/* ── FE Toolbar and Shared Navigation (Brilliant.org Style) ── */
+.fe-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 24px;
+  background: rgba(29, 29, 29, 0.96);
+  backdrop-filter: blur(10px);
+  border-bottom: 2px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.fe-toolbar-left,
+.fe-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.fe-toolbar a,
+.fe-toolbar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 6px 14px !important;
+  border: 2px solid var(--border) !important;
+  border-bottom: 3.5px solid var(--border-dark) !important;
+  border-radius: 10px !important;
+  background: #1d1d1d !important;
+  color: var(--ink) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: transform 0.08s ease, border-bottom-width 0.08s ease, background 0.1s ease !important;
+}
+
+.fe-toolbar a:hover,
+.fe-toolbar button:hover {
+  background: var(--surface2) !important;
+  border-color: #CBD5E1 !important;
+}
+
+.fe-toolbar a:active,
+.fe-toolbar button:active {
+  transform: translateY(2px) !important;
+  border-bottom-width: 2px !important;
+}
+
+.fe-toolbar .btn-done {
+  background: var(--brilliant-green) !important;
+  color: #1d1d1d !important;
+  border-color: var(--brilliant-green) !important;
+  border-bottom-color: var(--brilliant-green-dark) !important;
+}
+.fe-toolbar .btn-done:hover {
+  background: var(--brilliant-green-dark) !important;
+}
+
+/* ── Tiêu đề từng phần (Part Title) kiểu Brilliant ── */
+.part-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 22px !important;
+  font-weight: 800 !important;
+  color: var(--ink) !important;
+  margin: 40px 0 20px !important;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border);
+}
+.part-title .num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #f5f5f5;
+  color: #1d1d1d;
+  font-size: 16px;
+  box-shadow: 0 3px 0 #000000;
+}
+
+/* ── Thẻ Flashcard 3D nổi khối ── */
+#fcFilter {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+#fcFilter button {
+  padding: 8px 16px;
+  border-radius: 99px;
+  border: 2px solid var(--border);
+  border-bottom-width: 4px;
+  background: #1d1d1d;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: transform 0.08s, border-color 0.15s, background 0.15s;
+}
+#fcFilter button:active {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+}
+#fcFilter button.active {
+  background: #f5f5f5;
+  color: #1d1d1d;
+  border-color: #f5f5f5;
+  box-shadow: 0 2px 0 #000;
+}
+
+.fc-card {
+  background: #1d1d1d !important;
+  border: 2px solid var(--border) !important;
+  border-bottom-width: 5px !important;
+  border-radius: 16px !important;
+  padding: 20px !important;
+  cursor: pointer;
+  transition: transform 0.1s, border-color 0.15s, background 0.15s !important;
+}
+.fc-card:hover {
+  border-color: var(--brilliant-blue) !important;
+  background: #141414 !important;
+}
+.fc-card:active {
+  transform: translateY(3px) !important;
+  border-bottom-width: 2px !important;
+}
+.fc-card.flipped {
+  border-color: var(--brilliant-green) !important;
+  background: var(--brilliant-green-bg) !important;
+}
+.fc-cat {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #272727;
+  color: #bcbcbc;
+  margin-bottom: 10px;
+}
+
+/* ── Khung Câu hỏi Trắc nghiệm (Quiz 3D Tactile Cards) ── */
+.quiz-q {
+  background: #1d1d1d !important;
+  border: 2px solid var(--border) !important;
+  border-bottom-width: 5px !important;
+  border-radius: 18px !important;
+  padding: 24px !important;
+  margin-bottom: 24px !important;
+}
+.quiz-q .qnum {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--brilliant-blue-dark);
+  margin-bottom: 8px;
+}
+.quiz-q .qtext {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  line-height: 1.5 !important;
+  color: var(--ink) !important;
+  margin-bottom: 18px !important;
+}
+
+/* Các nút chọn đáp án A, B, C, D */
+.quiz-q .opts {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.quiz-q .opt {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px !important;
+  background: #1d1d1d !important;
+  border: 2px solid var(--border) !important;
+  border-bottom-width: 4px !important;
+  border-radius: 14px !important;
+  font-size: 15.5px !important;
+  font-weight: 600 !important;
+  color: var(--ink) !important;
+  cursor: pointer;
+  transition: transform 0.08s, border-color 0.15s, background 0.15s !important;
+}
+.quiz-q .opt:hover {
+  border-color: var(--border-dark) !important;
+  background: #141414 !important;
+}
+.quiz-q .opt:active {
+  transform: translateY(2px) !important;
+  border-bottom-width: 2px !important;
+}
+.quiz-q .opt .ltr {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 2px solid var(--border-dark);
+  font-weight: 800;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+/* Trạng thái Đúng / Sai kiểu Brilliant */
+.quiz-q .opt.correct {
+  border-color: var(--brilliant-green) !important;
+  border-bottom-color: var(--brilliant-green-dark) !important;
+  background: var(--brilliant-green-bg) !important;
+  color: #99e5bd !important;
+}
+.quiz-q .opt.correct .ltr {
+  background: var(--brilliant-green);
+  border-color: var(--brilliant-green);
+  color: #1d1d1d;
+}
+
+.quiz-q .opt.wrong {
+  border-color: var(--brilliant-red) !important;
+  border-bottom-color: var(--brilliant-red-dark) !important;
+  background: var(--brilliant-red-bg) !important;
+  color: #ffb5bd !important;
+}
+.quiz-q .opt.wrong .ltr {
+  background: var(--brilliant-red);
+  border-color: var(--brilliant-red);
+  color: #1d1d1d;
+}
+
+/* Khung Gợi ý (Hint) và Giải thích (Explanation) */
+.quiz-hint-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 8px 14px;
+  border-radius: 99px;
+  border: 2px solid #FDE68A;
+  border-bottom-width: 3px;
+  background: var(--brilliant-amber-bg);
+  color: #f1cd62;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+.quiz-hint-box {
+  display: none;
+  margin-top: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--brilliant-amber-bg);
+  border: 2px solid #FDE68A;
+  color: #f1cd62;
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+.quiz-hint-box.show { display: block; }
+
+.quiz-q .expl {
+  margin-top: 14px;
+  padding: 16px 18px !important;
+  border-radius: 14px !important;
+  background: var(--brilliant-green-bg) !important;
+  border: 2px solid #BBF7D0 !important;
+  color: #99e5bd !important;
+  font-size: 14.5px !important;
+  line-height: 1.6 !important;
+}
+
+@media (max-width: 640px) {
+  .fe-toolbar {
+    padding: 8px 12px;
+  }
+  .fe-toolbar a, .fe-toolbar button {
+    font-size: 12px !important;
+    padding: 5px 10px !important;
+  }
+}
+</style>
+<script>/* Guest progress stays on this browser; account progress has a separate namespace. */
+window.FE = {
+  owner: (() => { try { return localStorage.getItem('fe-lessons:account') || ''; } catch { return ''; } })(),
+  isProgress: key => /^(activity|test|test-result|status):([1-9]|[1-5][0-9]|6[01])$/.test(key),
+  prefix(owner) { return owner ? 'fe-lessons:user:' + owner + ':' : 'fe-lessons:v1:'; },
+  record(key, owner = this.owner) {
+    try { return JSON.parse(localStorage.getItem(this.prefix(owner) + key)); }
+    catch { return null; }
+  },
+  read(key, fallback) {
+    const owner = this.isProgress(key) ? this.owner : '';
+    const record = this.record(key, owner);
+    return (owner ? record?.value : record) ?? fallback;
+  },
+  keys(owner = this.owner) {
+    const prefix = this.prefix(owner);
+    return Object.keys(localStorage).filter(key => key.startsWith(prefix))
+      .map(key => key.slice(prefix.length)).filter(key => this.isProgress(key));
+  },
+  validRecord(key, record) {
+    if (!this.isProgress(key) || !record || !Number.isSafeInteger(record.updatedAt) || record.updatedAt < 0) return false;
+    const value = record.value;
+    if (key.startsWith('status:')) return value === 'p4';
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+    if (key.startsWith('activity:')) return typeof value.startedAt === 'string' && Number.isFinite(Date.parse(value.startedAt));
+    if (key.startsWith('test:')) return Number.isInteger(value.cur) && value.cur >= 0 && value.cur < 100 &&
+      Array.isArray(value.picks) && value.picks.length <= 100 && value.picks.every(n => n === null || Number.isInteger(n) && n >= 0 && n < 4);
+    return Number.isInteger(value.total) && value.total > 0 && value.total <= 100 &&
+      Number.isInteger(value.answered) && value.answered >= 0 && value.answered <= value.total &&
+      Number.isInteger(value.correct) && value.correct >= 0 && value.correct <= value.answered;
+  },
+  putRecord(key, record, owner = this.owner) {
+    if (!owner || !this.validRecord(key, record)) return false;
+    try { localStorage.setItem(this.prefix(owner) + key, JSON.stringify(record)); return true; }
+    catch { document.documentElement.dataset.storageUnavailable = 'true'; return false; }
+  },
+  write(key, value) {
+    const owner = this.isProgress(key) ? this.owner : '';
+    try {
+      if (this.isProgress(key) && (localStorage.getItem('fe-lessons:account') || '') !== this.owner) return;
+      if (owner) {
+        const previous = this.record(key);
+        if (JSON.stringify(previous?.value) === JSON.stringify(value)) return;
+        if (!this.putRecord(key, { value, updatedAt: Math.max(Date.now(), (previous?.updatedAt || 0) + 1) })) return;
+      } else localStorage.setItem(this.prefix('') + key, JSON.stringify(value));
+      if (this.isProgress(key)) window.dispatchEvent(new CustomEvent('fe-progress', { detail: key }));
+    } catch { document.documentElement.dataset.storageUnavailable = 'true'; }
+  }
+};
+window.addEventListener('storage', event => {
+  if (event.key === 'fe-lessons:account' && (event.newValue || '') !== FE.owner) location.reload();
+});
+
+FE.translations = {
+  "Đăng nhập Google": "Googleでログイン",
+  "Lộ trình": "ロードマップ",
+  "Kỳ thi FE": "FE試験",
+  "Tiến độ": "進捗",
+  "Lộ trình FE": "FE 学習ロードマップ",
+  "Tiến độ học": "学習の進捗",
+  "Mục tiêu học tập": "学習目標",
+  "Tiếp tục học": "学習を続ける",
+  "Tiếp tục học ↗": "学習を続ける ↗",
+  "Lý thuyết": "解説",
+  "Luyện tập": "練習",
+  "Kiểm tra": "テスト",
+  "Mở tất cả mục tiêu ↓": "すべて展開 ↓",
+  "Thu gọn mục tiêu ↑": "折りたたむ ↑",
+  "Đang lưu trên trình duyệt này.": "このブラウザに一時保存しています。",
+  "Đã hoàn thành": "完了",
+  "Chưa có nội dung": "準備中",
+  "Đang học": "学習中",
+  "TIẾP TỤC Ở ĐÂY": "ここから再開",
+  "BẮT ĐẦU Ở ĐÂY": "ここから開始",
+  "⌂ Trang chủ": "⌂ ホーム",
+  "← Bài trước": "← 前のレッスン",
+  "Bài sau →": "次のレッスン →",
+  "📝 Kiểm tra 40 câu": "📝 テスト",
+  "📖 Đọc lý thuyết": "📖 解説を読む",
+  "← Câu trước": "← 前の問題",
+  "✓ Nộp bài": "✓ 提出",
+  "Câu tiếp →": "次の問題 →",
+  "📖 Xem giải thích": "📖 解説を見る",
+  "Kết quả": "結果",
+  "↻ Làm lại từ đầu": "↻ 最初からやり直す",
+  "Xem lại từng câu": "回答を確認",
+  "Ôn câu sai": "間違えた問題を復習",
+  "Điều hướng nhanh": "問題一覧",
+  "Chọn số để chuyển câu · Xanh: đúng · Đỏ: sai": "番号を選択 · 緑：正解 · 赤：不正解",
+  "Ôn tập": "復習",
+  "易 Dễ": "易",
+  "中 Trung bình": "中",
+  "難 Khó": "難",
+  "ngày": "日",
+  "bài học": "レッスン",
+  "mục tiêu": "目標",
+  "bài đã hoàn thành": "レッスン完了",
+  "61 bài · số thứ tự gốc": "全61レッスン · 元の番号順",
+  "Kiến thức nền tảng": "基礎知識",
+  "Tư duy thực hành": "実践力",
+  "Đến lộ trình học": "学習ロードマップへ",
+  "Đang tải bài học…": "レッスンを読み込み中…",
+  "Đang kiểm tra tài liệu…": "教材を確認中…",
+  "Không tải được dữ liệu. Hãy tải lại trang để xem đủ lộ trình.": "データを読み込めませんでした。ページを再読み込みしてください。",
+  "Không tìm thấy bài phù hợp. Hãy thử từ khóa khác.": "該当するレッスンがありません。別のキーワードをお試しください。",
+  "KNOW YOUR DESTINATION": "試験について",
+  "Hai môn thi. Hai cách rèn luyện.": "科目A・科目Bの学習方法",
+  "Kiến thức IT tổng quát": "IT全般の基礎知識",
+  "60 câu": "60問",
+  "90 phút": "90分",
+  "20 câu": "20問",
+  "100 phút": "100分",
+  "Công nghệ · Quản lý · Chiến lược. Các bài kiểm tra theo chủ đề giúp củng cố kiến thức cho môn này.": "テクノロジ・マネジメント・ストラテジ。テーマ別テストで知識を定着させます。",
+  "Vận dụng & giải quyết vấn đề": "知識の活用と問題解決",
+  "16 câu thuật toán/lập trình và 4 câu an toàn thông tin. Luyện giả mã, trace và tình huống thực tế song song.": "アルゴリズム・プログラミング16問、情報セキュリティ4問。擬似言語、トレース、事例問題を並行して練習します。",
+  "Quiz theo bài chưa phải đề mô phỏng đủ cấu trúc FE. Các checkpoint 50/80 câu là mốc ôn của tài liệu gốc. Đề công khai có thể chỉ là một phần câu hỏi; cần nguồn luyện bổ sung cho buổi thi thử đủ số câu.": "各レッスンのテストは本試験形式の模試ではありません。50問・80問の確認テストは元の教材の復習区分です。公開問題は一部の場合があるため、模試には追加の問題が必要です。",
+  "Lộ trình do FE Master đề xuất từ 61 mục tài liệu của bạn. Thông tin kỳ thi đối chiếu IPA ngày": "教材の61項目を基にFE Masterが提案する学習順です。IPAの試験情報の確認日：",
+  "↑ Về đầu lộ trình": "↑ ロードマップの先頭へ",
+  "↗ Tab mới": "↗ 新しいタブ",
+  "Tìm bài học, chủ đề…": "レッスン・テーマを検索…",
+  "Tìm bài học": "レッスンを検索",
+  "Đóng bài học": "レッスンを閉じる",
+  "Bài học": "レッスン",
+  "Điều hướng chính": "メインナビゲーション",
+  "Chuỗi ngày học": "連続学習日数",
+  "Tổng quan khóa học": "コース概要",
+  "Tiến độ học của bạn": "学習の進捗",
+  "Tiến độ hoàn thành": "完了状況",
+  "Chọn lộ trình": "学習コースを選択",
+  "Các mục tiêu và bài học": "目標とレッスン",
+  "Nội dung bài": "レッスンの内容",
+  "Nội dung bài học": "レッスンの内容",
+  "MỤC TIÊU": "目標",
+  "ĐÍCH ĐẾN CỦA CHẶNG": "到達目標",
+  "bài có nội dung": "レッスン公開中",
+  "Nội dung sẽ bổ sung": "教材は準備中です",
+  "Bài": "レッスン",
+  "Chưa có nội dung bài học.": "教材はまだありません。",
+  "Chưa tải được danh mục. Hãy tải lại trang.": "一覧を読み込めません。ページを再読み込みしてください。",
+  "CẦN BỔ SUNG": "今後の追加内容",
+  "PRACTICE IN PARALLEL": "並行して練習",
+  "Từ hiểu kiến thức": "知識の理解から",
+  "đến đọc được chương trình.": "プログラムを読み解く力へ",
+  "Bắt đầu sau mục tiêu 02, luyện song song với 科目A. Đây là hướng ôn bổ trợ sử dụng bài gốc, không thêm bài hay đổi số thứ tự của danh mục 61 bài.": "目標02の後から科目Aと並行して練習します。元の教材を使った補助学習であり、61レッスンの番号や数は変更しません。",
+  "Đề mẫu & quy ước IPA ↗": "IPAサンプル問題・表記規則 ↗",
+  "Cấu trúc kỳ thi FE": "FE試験の構成",
+  "Quy chế thi Ver.5.6": "試験要綱 Ver.5.6",
+  "Đề mẫu IPA và quy ước giả mã": "IPAサンプル問題・擬似言語の規則",
+  "Đề công khai IPA": "IPA公開問題",
+  "Câu": "問題",
+  "Đã làm:": "回答済み：",
+  "Đúng:": "正解：",
+  "Sai:": "不正解：",
+  "Chưa trả lời:": "未回答：",
+  "✓ Chính xác!": "✓ 正解！",
+  "✕ Chưa đúng.": "✕ 不正解。",
+  "Đáp án đúng:": "正解：",
+  "chưa trả lời": "未回答",
+  "đúng": "正解",
+  "sai": "不正解",
+  "% đúng": "% 正解",
+  "🏆 Xuất sắc — Bạn đã nắm vững chủ đề!": "🏆 よく理解できています！",
+  "👍 Khá — Ôn lại các câu sai để tiến bộ hơn.": "👍 間違えた問題を復習しましょう。",
+  "💪 Cần luyện thêm — Đọc lại lý thuyết và thử lại nhé.": "💪 解説を読み直して、もう一度挑戦しましょう。",
+  "Không tải được câu hỏi. Hãy tải lại trang.": "問題を読み込めません。ページを再読み込みしてください。",
+  "Tiến độ trả lời": "回答の進捗",
+  "Điều hướng câu hỏi": "問題ナビゲーション",
+  "▸ MỤC LỤC": "▸ 目次",
+  "Mục lục bài học": "レッスンの目次",
+  "Điều hướng học tập": "学習ナビゲーション",
+  "Chuỗi ngày học tập liên tiếp": "連続学習日数",
+  "LÝ THUYẾT": "解説",
+  "KIỂM TRA": "テスト",
+  "BÀI": "レッスン"
+};
+FE.t = text => FE.read('language', 'vi') === 'ja' ? (FE.translations[text] || text) : text;
+FE.translateUI = () => {
+  document.documentElement.lang = FE.read('language', 'vi');
+  document.querySelectorAll('[data-ui]').forEach(el => el.textContent = FE.t(el.dataset.ui));
+  for (const attr of ['aria-label', 'placeholder', 'title']) {
+    document.querySelectorAll('[' + attr + ']').forEach(el => el.setAttribute(attr, FE.t(el.getAttribute(attr))));
+  }
+};
+
+function initLessonLayout(type, number) {
+  document.body.classList.add('lesson-page', type === 'ly-thuyet' ? 'lesson-theory' : 'lesson-test');
+  const shell = document.createElement('div');
+  shell.className = 'lesson-shell';
+  const original = document.querySelector('body > .wrap, body > .container') ||
+    (document.querySelector('body > main header') ? document.querySelector('body > main') : null);
+  if (original) {
+    original.classList.add('lesson-shell');
+  } else {
+    const content = [...document.body.children].filter(el => !['SCRIPT', 'STYLE'].includes(el.tagName));
+    document.body.prepend(shell);
+    shell.append(...content);
+  }
+  const root = original || shell;
+  let heading = root.querySelector('h1');
+  let hero = root.querySelector('header, .hero, .header');
+  if (!hero) {
+    hero = document.createElement('header');
+    if (heading) {
+      heading.before(hero);
+      const info = heading.nextElementSibling;
+      hero.append(heading);
+      if (info?.matches('.sub, .meta, .subtitle')) hero.append(info);
+    } else root.prepend(hero);
+  }
+  if (!heading) {
+    heading = document.createElement('h1');
+    const badge = hero.querySelector('.kanji-badge');
+    heading.textContent = badge?.textContent || document.title;
+    badge?.remove();
+    hero.prepend(heading);
+  }
+  // Keep live counters and existing event listeners when unifying the header.
+  const details = document.createElement('div');
+  details.className = 'lesson-details';
+  heading.remove();
+  details.append(...hero.childNodes);
+  const eyebrow = document.createElement('div');
+  eyebrow.className = 'lesson-eyebrow';
+  eyebrow.textContent = `${FE.t("BÀI")} ${number.padStart(2, '0')} · ${type === 'ly-thuyet' ? FE.t('LÝ THUYẾT') : FE.t('KIỂM TRA')}`;
+  hero.replaceChildren(eyebrow, heading, details);
+  hero.classList.add('lesson-hero');
+  heading.classList.add('lesson-title');
+
+  if (type !== 'ly-thuyet') return;
+  // Flat documents become the same part cards as 基数変換; tab sections stay intact.
+  root.querySelectorAll('h2').forEach(h => {
+    if (h.parentElement !== root && h.parentElement.tagName !== 'MAIN') return;
+    const part = document.createElement('section');
+    h.before(part);
+    part.append(h);
+    while (part.nextSibling && !(part.nextSibling.nodeType === 1 && part.nextSibling.matches('h2, footer, script'))) {
+      part.append(part.nextSibling);
+    }
+  });
+  const parts = [...root.querySelectorAll('section')].filter(s => s.querySelector('h2') && !s.parentElement.closest('section'));
+  const partLabel = text => text.trim().replace(/^[^\p{L}]+/u, '').replace(/^(?:Phần|PART)\s*\d+\s*[—–:.\-/]?\s*/i, '');
+  parts.forEach((part, index) => {
+    part.classList.add('lesson-part');
+    if (!part.id) part.id = `lesson-part-${index + 1}`;
+    const title = part.querySelector('h2');
+    const label = title.cloneNode(true);
+    label.querySelectorAll('.num, .icon, .ic, small').forEach(el => el.remove());
+    title.title = title.textContent.trim();
+    title.textContent = partLabel(label.textContent);
+    title.classList.add('lesson-part-title');
+    title.dataset.part = String(index + 1).padStart(2, '0');
+  });
+  let toc = root.querySelector('nav');
+  if (!toc) {
+    toc = document.createElement('nav');
+    hero.after(toc);
+    parts.forEach(part => {
+      const link = document.createElement('a');
+      link.href = '#' + part.id;
+      link.textContent = part.querySelector('h2').textContent;
+      toc.append(link);
+    });
+  }
+  const items = [...toc.querySelectorAll('a, button')];
+  const label = document.createElement('h3');
+  label.textContent = FE.t('▸ MỤC LỤC');
+  const list = document.createElement('ul');
+  items.forEach(item => {
+    item.textContent = partLabel(item.textContent);
+    const li = document.createElement('li');
+    li.append(item);
+    list.append(li);
+  });
+  toc.replaceChildren(label, list);
+  toc.classList.add('lesson-toc');
+  toc.setAttribute('aria-label', 'Mục lục bài học');
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const page = location.pathname.match(/\/(ly-thuyet|kiem-tra)\/(\d+)\.html$/);
+  const base = page ? '../' : './';
+
+  // Inject brilliant.js if not present
+  if (!window.Brilliant) {
+    const script = document.createElement('script');
+    script.src = base + 'assets/brilliant.js';
+    document.head.appendChild(script);
+  }
+
+  // Setup toolbar for lesson pages
+  if (page) {
+    initLessonLayout(page[1], page[2]);
+    const bar = document.createElement('nav');
+    bar.className = 'fe-toolbar';
+    bar.setAttribute('aria-label', 'Điều hướng học tập');
+
+    const leftGroup = document.createElement('div');
+    leftGroup.className = 'fe-toolbar-left';
+
+    const home = document.createElement('a');
+    home.href = base + 'index.html';
+    home.textContent = FE.t('⌂ Trang chủ');
+    home.target = '_top';
+    leftGroup.append(home);
+
+    const rightGroup = document.createElement('div');
+    rightGroup.className = 'fe-toolbar-right';
+
+    bar.append(leftGroup, rightGroup);
+    document.body.prepend(bar);
+
+    try {
+      if (location.protocol === 'file:') return;
+      const response = await fetch(base + 'lessons.json');
+      if (!response.ok) throw new Error('catalog unavailable');
+      const { lessons } = await response.json();
+      const id = Number(page[2]);
+      const kind = page[1] === 'ly-thuyet' ? 'theory' : 'test';
+      const current = lessons.find(l => l.stt === id);
+      if (current) {
+        const title = document.querySelector('.lesson-title');
+        title.title = title.textContent.trim();
+        const [name, ...translation] = current.topic.split(' · ');
+        title.textContent = name;
+        if (translation.length) {
+          const subtitle = document.createElement('span');
+          subtitle.textContent = translation.join(' · ');
+          title.append(document.createElement('br'), subtitle);
+        }
+      }
+      const available = lessons.filter(l => l[kind]).sort((a, b) => a.stt - b.stt);
+      const index = available.findIndex(l => l.stt === id);
+
+      const addLink = (parent, label, path) => {
+        if (!path) return;
+        const a = document.createElement('a');
+        a.textContent = FE.t(label);
+        a.href = base + path;
+        parent.append(a);
+      };
+
+      addLink(leftGroup, '← Bài trước', available[index - 1]?.[kind]);
+      addLink(leftGroup, 'Bài sau →', available[index + 1]?.[kind]);
+
+      // Switch between theory and test
+      addLink(rightGroup, kind === 'theory' ? '📝 Kiểm tra 40 câu' : '📖 Đọc lý thuyết', current?.[kind === 'theory' ? 'test' : 'theory']);
+
+      // Streak badge in toolbar
+      const streakVal = (window.Brilliant && window.Brilliant.getStreak) ? window.Brilliant.getStreak() : 1;
+      const streakBadge = document.createElement('div');
+      streakBadge.className = 'br-streak-badge';
+      streakBadge.title = 'Chuỗi ngày học tập liên tiếp';
+      streakBadge.innerHTML = `<span class="br-streak-fire">⚡</span> ${streakVal}`;
+      rightGroup.append(streakBadge);
+      FE.translateUI();
+    } catch {
+      /* Fallback retains basic home button */
+    }
+  }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Skip only our lesson iframe, not a browser preview that embeds the whole site.
+  try {
+    if (window.parent !== window && window.parent.document.querySelector('#frame')?.contentWindow === window) return;
+  } catch { /* A cross-origin preview still needs its own authentication UI. */ }
+  if (location.protocol === 'file:') return;
+  const script = document.createElement('script');
+  script.type = 'module';
+  script.src = new URL('../assets/auth.js', location.href).href;
+  document.head.append(script);
+});
+</script>
+<script>/**
+ * Brilliant.org Interactivity & Streak Engine for FE Lessons
+ */
+
+window.Brilliant = {
+  // SVG Icon of the Brilliant Emerald Gem Mascot
+  mascotSvg: `
+    <svg viewBox="0 0 100 100" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gemGrad" x1="15" y1="15" x2="85" y2="85" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#4ADE80"/>
+          <stop offset="50%" stop-color="#22C55E"/>
+          <stop offset="100%" stop-color="#16A34A"/>
+        </linearGradient>
+        <filter id="gemShadow" x="-10%" y="-10%" width="120%" height="120%">
+          <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#15803D" flood-opacity="0.25"/>
+        </filter>
+      </defs>
+      <rect x="18" y="18" width="64" height="64" rx="20" transform="rotate(45 50 50)" fill="url(#gemGrad)" filter="url(#gemShadow)"/>
+      <!-- Inner eye/sensor -->
+      <rect x="36" y="36" width="28" height="28" rx="8" fill="#FFFFFF"/>
+      <rect x="42" y="42" width="16" height="16" rx="4" fill="#0F172A"/>
+      <circle cx="47" cy="47" r="3" fill="#38BDF8"/>
+    </svg>
+  `,
+
+  // Streak logic (Daily study streak calculation)
+  getStreak() {
+    try {
+      const data = JSON.parse(localStorage.getItem('fe-lessons:v1:streak')) || { lastDate: '', count: 1 };
+      const today = new Date().toISOString().slice(0, 10);
+
+      if (!data.lastDate) {
+        data.lastDate = today;
+        data.count = 1;
+        localStorage.setItem('fe-lessons:v1:streak', JSON.stringify(data));
+        return data.count;
+      }
+
+      if (data.lastDate === today) {
+        return data.count;
+      }
+
+      const last = new Date(data.lastDate);
+      const now = new Date(today);
+      const diffDays = Math.round((now - last) / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 1) {
+        data.count += 1;
+      } else if (diffDays > 1) {
+        data.count = 1; // Streak reset if a day was skipped
+      }
+      data.lastDate = today;
+      localStorage.setItem('fe-lessons:v1:streak', JSON.stringify(data));
+      return data.count;
+    } catch {
+      return 1;
+    }
+  },
+
+  // Setup reading scroll progress bar
+  initReadingProgressBar() {
+    let track = document.querySelector('.br-progress-track');
+    if (!track) {
+      track = document.createElement('div');
+      track.className = 'br-progress-track';
+      track.innerHTML = '<div class="br-progress-bar" id="brReadingBar"></div>';
+      document.body.prepend(track);
+    }
+
+    const bar = document.getElementById('brReadingBar') || track.querySelector('.br-progress-bar');
+    if (!bar) return;
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? Math.min(100, Math.max(0, (scrollTop / docHeight) * 100)) : 0;
+      bar.style.width = progress + '%';
+    }, { passive: true });
+  },
+
+  // Helper to create a Robot Tutor bubble
+  createTutor(message, title = 'Gia sư Robot') {
+    const tutor = document.createElement('div');
+    tutor.className = 'br-tutor';
+    tutor.innerHTML = `
+      <div class="br-tutor-mascot">${this.mascotSvg}</div>
+      <div class="br-tutor-bubble">
+        <div class="br-tutor-title">⚡ ${title}</div>
+        <div>${message}</div>
+      </div>
+    `;
+    return tutor;
+  },
+
+  // Initialize page decorations
+  init() {
+    const streak = this.getStreak();
+    document.querySelectorAll('.br-streak-val, #streakCount, #streakVal').forEach(el => {
+      el.textContent = streak;
+    });
+
+    // Auto-inject Reading progress on theory pages
+    if (location.pathname.includes('ly-thuyet')) {
+      this.initReadingProgressBar();
+
+      // If page doesn't already have a tutor, inject one at top of first section
+      const firstPart = document.querySelector('.part, section');
+      if (firstPart && !document.querySelector('.br-tutor')) {
+        const welcome = this.createTutor(
+          'Chào bạn! Hãy học từng bước nhỏ (Bite-sized), ghi nhớ từ khoá tiếng Nhật và làm thử bài tập ngay bên dưới để hiểu sâu bản chất nhé!',
+          'Gia sư FE'
+        );
+        firstPart.prepend(welcome);
+      }
+    }
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  Brilliant.init();
+});
+</script>
+<style data-source="learning.css">/* Final shared theme: legacy lesson templates retain their content and behavior. */
+:root {
+  --br-green: #04a777; --br-green-dark: #038c64; --br-green-bg: #17372b;
+  --br-blue: #a579ef; --br-blue-dark: #c4a4f5; --br-blue-bg: #29213b;
+  --br-text-secondary: #dedede; --br-text-subtle: #aaaaaa;
+  --font-sans: "Plus Jakarta Sans", Inter, "Segoe UI", "Noto Sans JP", system-ui, sans-serif;
+  --font-mono: Consolas, "SF Mono", monospace;
+  --bg: #141414 !important; --bg2: #272727 !important; --bg3: #272727 !important;
+  --bg-2: #1d1d1d !important; --bg-3: #272727 !important;
+  --panel: #1d1d1d !important; --panel2: #272727 !important; --panel-2: #272727 !important;
+  --card: #1d1d1d !important; --card2: #141414 !important; --code: #272727 !important;
+  --text: #f5f5f5 !important; --txt: #f5f5f5 !important; --fg: #f5f5f5 !important;
+  --ink: #f5f5f5 !important; --muted: #aaaaaa !important; --mute: #aaaaaa !important;
+  --dim: #aaaaaa !important; --fg2: #bcbcbc !important; --text-dim: #aaaaaa !important;
+  --border: #383838 !important; --line: #383838 !important;
+  --accent: #a579ef !important; --accent2: #c4a4f5 !important; --accent-2: #04a777 !important;
+  --green: #79dca2 !important; --ok: #79dca2 !important; --good: #79dca2 !important;
+  --red: #ff9da8 !important; --bad: #ff9da8 !important; --ng: #ff9da8 !important;
+  --yellow: #f1cd62 !important; --orange: #ffc489 !important; --pink: #f4afd2 !important;
+  --jp: #c4a4f5 !important; --vi: #79dca2 !important; --vn: #79dca2 !important; --en: #f1cd62 !important;
+  --a1: #c4a4f5 !important; --a2: #79dca2 !important; --a3: #c4a4f5 !important;
+  --a4: #f1cd62 !important; --a5: #f4afd2 !important; --a6: #93dce7 !important;
+  --accent1: #c4a4f5 !important; --accent3: #79dca2 !important;
+  --accent4: #f1cd62 !important; --accent5: #f4afd2 !important;
+  --easy: #79dca2 !important; --med: #f1cd62 !important; --mid: #f1cd62 !important; --hard: #ff9da8 !important;
+  --brilliant-green: #04a777; --brilliant-green-dark: #038c64; --brilliant-green-bg: #17372b;
+}
+body { margin: 0; padding: 0 !important; font-size: 16px; background: #141414 !important; }
+body > .wrap, body > .container, body > main,
+body > header, body > .hero, body > h1, body > .sub,
+body > nav:not(.fe-toolbar), body > .callout, body > h2,
+body > h3, body > .lang, body > .panel, body > .grid2,
+body > .flash, body > .quiz-q, body > table, body > .tags,
+body > p, body > button, body > .stack-vis, body > .queue-vis {
+  width: min(960px, calc(100% - 40px)); max-width: 960px !important;
+  margin-left: auto !important; margin-right: auto !important;
+}
+body > .wrap, body > .container { padding: 28px 0 80px !important; }
+body > .container { background: transparent !important; border: 0 !important; box-shadow: none !important; }
+body > main { padding: 0 0 80px !important; }
+header:not(.fe-toolbar), .header, .hero {
+  background: #1d1d1d !important; color: #f5f5f5 !important;
+  border: 2px solid #383838 !important; border-bottom: 4px solid #454545 !important;
+  border-radius: 24px !important; padding: 28px 32px !important;
+  text-align: left !important; margin-bottom: 24px !important;
+}
+body > header, body > .hero, body > h1 { margin-top: 28px !important; }
+h1 { font-size: clamp(24px, 3.5vw, 36px) !important; line-height: 1.3 !important; }
+h2 { font-size: 22px !important; line-height: 1.4; margin: 28px 0 16px; }
+h3 { font-size: 18px !important; margin: 24px 0 12px; }
+.sub, .subtitle, header p, header .meta { color: #bcbcbc !important; }
+.hero-grid { max-width: none; gap: 24px; }
+.kanji-badge { font-family: var(--font-sans); font-size: clamp(36px, 7vw, 64px); }
+section, .part, .question-card, .q-card, .panel {
+  border: 2px solid #383838 !important; border-radius: 16px !important;
+  background: #1d1d1d !important; color: #f5f5f5 !important;
+  padding: 24px !important; margin-bottom: 24px;
+}
+section section, section .part { box-shadow: none !important; }
+.flow .node, .step, .qz, .progress-wrap, .stack-vis, .queue-vis, .mono {
+  background: #272727 !important; color: #f5f5f5 !important; border-radius: 12px;
+}
+.tri .jp, .lang.jp, .fc-back .jp { color: #c4a4f5 !important; }
+.tri .vi, .tri .vn, .lang.vi, .lang.vn { color: #79dca2 !important; }
+.tri .en, .lang.en { color: #f1cd62 !important; }
+.tri .lang { display: block; }
+.tri .lang span { min-width: 0; padding: 0; background: transparent; color: inherit; }
+.q-text, .qtext, .q-vn, .qz-q { color: #f5f5f5 !important; }
+.q-jp, .progress-info { color: #bcbcbc !important; }
+.bar-fill, .progress-fill, .prog-fill { background: #04a777 !important; }
+.bar, .progress-bar { background: #383838 !important; }
+.option.incorrect, .opt.incorrect, .qz-opt.ng { background: #402327 !important; color: #ffb5bd !important; border-color: #ef4444 !important; }
+.qz-opt.ok, .quiz-q .ans { background: #17372b !important; color: #99e5bd !important; border-color: #04a777 !important; }
+.tag-easy, .d-easy { background: #17372b !important; color: #99e5bd !important; }
+.tag-med, .d-med { background: #392e19 !important; color: #f1cd62 !important; }
+.tag-hard, .d-hard { background: #402327 !important; color: #ffb5bd !important; }
+button.active, .tab.active, #fcFilter button.active { background: #29213b !important; border-color: #a579ef !important; color: #c4a4f5 !important; }
+.option .letter, .opt .lbl { color: #c4a4f5; }
+.option.correct .letter, .opt.correct .lbl { background: #79dca2 !important; color: #1d1d1d !important; }
+.option.wrong .letter, .opt.wrong .lbl { background: #ff9da8 !important; color: #1d1d1d !important; }
+.fe-toolbar { margin: 0 !important; justify-content: space-between; }
+body > nav:not(.fe-toolbar) { position: static; border-radius: 12px; background: #1d1d1d; padding: 12px; }
+:focus-visible { outline: 3px solid #a579ef; outline-offset: 4px; }
+input, select, textarea { color: #f5f5f5; background: #1d1d1d; font: inherit; accent-color: #79dca2; }
+section[id], h2[id] { scroll-margin-top: 140px; }
+@media (max-width: 640px) {
+  table { display: block; max-width: 100%; overflow-x: auto; }
+  .qjump button, .jump button, .jbtn { min-width: 0 !important; padding: 8px 0 !important; }
+  .jump, .jumpgrid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  body > .wrap, body > .container, body > main, body > header, body > .hero,
+  body > h1, body > .sub, body > nav:not(.fe-toolbar) { width: calc(100% - 24px); }
+  header:not(.fe-toolbar), .header, .hero, section, .part, .question-card, .q-card, .panel { padding: 20px 16px !important; }
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-meta { text-align: left; }
+  .qjump, .nav-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .fe-toolbar { position: static; }
+  .grid2 { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* All lesson templates use the 基数変換 header, contents and part structure. */
+body.lesson-page { width: 100% !important; max-width: none !important; margin: 0 !important; }
+.lesson-page *, .lesson-page *::before, .lesson-page *::after { box-sizing: border-box; }
+.lesson-shell > main { width: 100%; max-width: none; margin: 0; padding: 0; }
+body.lesson-page > .lesson-shell {
+  width: min(960px, calc(100% - 40px)) !important;
+  max-width: 960px !important; margin: 0 auto !important;
+  padding: 28px 0 80px !important; border: 0 !important;
+  background: transparent !important; box-shadow: none !important;
+}
+.lesson-page .lesson-hero {
+  width: 100% !important; margin: 0 0 24px !important;
+  padding: 32px 28px !important; border-radius: 24px !important;
+  box-shadow: 0 2px 6px #11182708 !important;
+}
+.lesson-hero::before, .lesson-hero::after { display: none !important; }
+.lesson-eyebrow {
+  display: table; font: 700 11px/1.5 var(--font-sans);
+  letter-spacing: .1em; color: #c4a4f5; background: #29213b;
+  border: 1px solid #bfdbfe; border-radius: 999px;
+  padding: 5px 12px; margin-bottom: 14px;
+}
+.lesson-page h1.lesson-title {
+  font: 800 36px/1.25 var(--font-sans) !important;
+  letter-spacing: -.5px !important; padding: 0 !important;
+  border: 0 !important; margin: 0 0 12px !important;
+  color: #f5f5f5 !important; text-align: left !important;
+}
+.lesson-title span { font: inherit !important; color: inherit !important; }
+.lesson-details { color: #bcbcbc; font: 400 15px/1.7 var(--font-sans); }
+.lesson-details .hero-grid { display: contents; }
+.lesson-details .hero-meta { text-align: left; border: 0; padding: 0; letter-spacing: 0; }
+.lesson-details .sub, .lesson-details .subtitle { margin: 0 0 16px !important; font: inherit !important; letter-spacing: 0 !important; opacity: 1; }
+.lesson-details .tag, .lesson-details .flag-row, .lesson-details .hero-grid > div:empty { display: none; }
+.lesson-details .meta { justify-content: flex-start; gap: 8px; margin: 12px 0 0; }
+.lesson-details .meta span, .lesson-details .badge, .lesson-details .tags span {
+  display: inline-block; padding: 5px 10px; background: #272727;
+  border: 1px solid #383838; border-radius: 8px; color: #bcbcbc;
+  font: 400 12px/1.6 var(--font-sans); letter-spacing: 0;
+}
+.lesson-page nav.lesson-toc {
+  display: block !important; position: static !important; width: 100% !important;
+  max-width: none !important; margin: 0 0 24px !important; padding: 20px !important;
+  border: 2px solid #383838 !important; border-bottom: 4px solid #454545 !important;
+  border-radius: 16px !important; background: #1d1d1d !important;
+}
+.lesson-toc h3 { margin: 0 0 12px !important; padding: 0 !important; border: 0 !important; font-size: 13px !important; letter-spacing: .1em !important; }
+.lesson-page .lesson-toc ul { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; list-style: none; margin: 0; padding: 0; }
+.lesson-page .lesson-toc a, .lesson-page .lesson-toc button {
+  display: flex !important; align-items: center; justify-content: flex-start;
+  width: 100%; height: 100%; min-height: 44px; margin: 0 !important; padding: 10px 12px !important;
+  border: 1px solid #383838 !important; border-radius: 8px !important;
+  color: #dedede !important; background: #141414 !important; box-shadow: none !important;
+  font: 600 14px/1.5 var(--font-sans) !important; letter-spacing: 0 !important; text-align: left;
+}
+.lesson-toc a::before, .lesson-toc a::after { display: none !important; }
+.lesson-toc small { display: none; }
+.lesson-page .lesson-toc a:hover, .lesson-page .lesson-toc button:hover, .lesson-page .lesson-toc button.active { color: #c4a4f5 !important; background: #29213b !important; border-color: #a579ef !important; }
+.lesson-page .lesson-part { margin: 0 0 24px !important; padding: 26px !important; border-radius: 16px !important; }
+.lesson-page .lesson-part-title {
+  display: flex; align-items: center; gap: 12px;
+  font: 700 22px/1.4 var(--font-sans) !important;
+  margin: 0 0 22px !important; padding: 0 0 12px !important;
+  border: 0 !important; border-bottom: 2px solid #383838 !important;
+}
+.lesson-part-title::before { content: attr(data-part); flex-shrink: 0; padding: 5px 9px; border-radius: 8px; background: #f5f5f5; color: #1d1d1d; font-size: 14px; }
+.lesson-part-title .num, .lesson-part-title .icon, .lesson-part-title .ic, .lesson-part-title small, .lesson-part .sect-num { display: none !important; }
+.lesson-part .sect-head { margin: 0; padding: 0; border: 0; display: block; }
+.lesson-page .lang-row, .lesson-page .lang:not(.tri) { font-family: var(--font-sans) !important; }
+.lesson-page .lang-block { border: 0 !important; padding: 0 !important; box-shadow: none !important; background: transparent !important; }
+.lesson-page .lang-row, .lesson-page .tri > .lang, .lesson-page .lesson-part > .lang {
+  display: block !important; padding: 14px 18px !important; margin: 10px 0 !important;
+  background: #141414 !important; border: 0; border-left: 4px solid #383838;
+  border-radius: 10px; color: #dedede !important; font-size: 16px !important;
+}
+.lesson-page .lang-row.jp, .lesson-page .lang.jp { border-left-color: #a579ef !important; }
+.lesson-page .lang-row.vn, .lesson-page .lang.vn, .lesson-page .lang.vi { border-left-color: #04a777 !important; }
+.lesson-page .lang-row.en, .lesson-page .lang.en { border-left-color: #d97706 !important; }
+.lesson-page .lang .tag, .lesson-page .lang .flag, .lesson-page .lang-row .label { display: table; width: auto; min-width: 0; margin: 0 0 6px; padding: 2px 8px; font: 700 11px/1.6 var(--font-sans); letter-spacing: .03em; }
+@media (max-width: 640px) {
+  body.lesson-page > .lesson-shell { width: calc(100% - 24px) !important; padding-top: 20px !important; }
+  .lesson-page .lesson-hero, .lesson-page .lesson-part { padding: 20px 16px !important; }
+  .lesson-page h1.lesson-title { font-size: 28px !important; }
+  .lesson-page .lesson-toc ul { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Shared dark controls also cover the older embedded practice widgets. */
+body.lesson-page { font-family: "Segoe UI", "Noto Sans JP", system-ui, sans-serif !important; }
+.lesson-page button, .lesson-page input, .lesson-page select { font-family: inherit !important; }
+.lesson-page button:not(.correct):not(.wrong):not(.ok):not(.ng):not(.quiz-primary):not(.done):not(.miss):not(.active) {
+  background-color: #272727 !important; color: #f5f5f5 !important; border-color: #454545 !important;
+}
+.lesson-page .fe-toolbar { background: #1d1d1d; }
+</style>
+<style>/* Test layout shared by all lessons; 基数変換 is the reference. */
+.quiz-progress { margin: 0 0 24px; padding: 16px 20px; background: #1d1d1d; border: 2px solid #383838; border-radius: 16px; }
+.quiz-progress-track { height: 10px; background: #272727; overflow: hidden; border-radius: 99px; }
+.quiz-progress-track > div { height: 100%; background: #04a777; border-radius: inherit; }
+.quiz-meta { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-top: 12px; font-size: 14px; color: #bcbcbc; }
+.quiz-question-card, .quiz-jump-card, .quiz-result { background: #1d1d1d !important; border: 2px solid #383838 !important; border-bottom: 4px solid #454545 !important; border-radius: 16px !important; padding: 24px !important; margin-bottom: 24px; }
+.quiz-question-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 18px; }
+.quiz-number { padding: 5px 10px; background: #29213b; color: #c4a4f5; font-size: 13px; font-weight: 700; border-radius: 8px; }
+.quiz-level { padding: 4px 10px; font-size: 12px; font-weight: 700; border-radius: 8px; }
+.quiz-level.easy { color: #99e5bd; background: #17372b; }
+.quiz-level.med { color: #f1cd62; background: #392e19; }
+.quiz-level.hard { color: #ffb5bd; background: #402327; }
+.quiz-level.review { color: #c4a4f5; background: #29213b; }
+.quiz-question-text { font-size: 18px; font-weight: 600; line-height: 1.65; color: #f5f5f5; }
+.quiz-question-jp { margin-top: 10px; padding-left: 12px; border-left: 3px solid #383838; font-size: 15px; color: #bcbcbc; }
+.quiz-extra { margin-top: 16px; overflow-x: auto; }
+.quiz-options { display: grid; gap: 12px; margin: 22px 0 0; }
+.lesson-test button.quiz-option { display: flex; align-items: flex-start; justify-content: flex-start; gap: 14px; width: 100%; padding: 16px 18px !important; border-radius: 12px !important; font-size: 16px; font-weight: 400 !important; text-align: left; line-height: 1.6; }
+.quiz-letter { min-width: 24px; font-weight: 700; color: #c4a4f5; }
+.quiz-answer-mark { margin-left: auto; font-weight: 800; }
+.lesson-test button.quiz-option:disabled { opacity: 1 !important; cursor: default !important; }
+.lesson-test button.quiz-option.correct { background: #17372b !important; color: #99e5bd !important; border-color: #04a777 !important; }
+.lesson-test button.quiz-option.wrong { background: #402327 !important; color: #ffb5bd !important; border-color: #ef4444 !important; }
+.quiz-option.correct .quiz-letter { color: #99e5bd; }
+.quiz-option.wrong .quiz-letter { color: #ffb5bd; }
+.quiz-feedback { margin: 16px 0; font-weight: 600; }
+.quiz-good { color: #79dca2; }
+.quiz-bad { color: #ff9da8; }
+.quiz-explanation { margin-top: 16px; padding: 18px; background: #141414; border: 1px solid #383838; border-left: 4px solid #a579ef; border-radius: 12px; color: #dedede; }
+.quiz-explanation h3 { margin: 0 0 12px !important; font-size: 16px !important; }
+.quiz-explanation p { margin: 10px 0; }
+.quiz-explanation .lbl { font-weight: 700; margin-right: 8px; }
+.quiz-reference { color: #bcbcbc; font-size: 13px; }
+.quiz-actions, .quiz-result-actions { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.quiz-actions > button { flex: 1; min-height: 46px; }
+.lesson-test button.quiz-primary { background: #f5f5f5 !important; border-color: #f5f5f5 !important; border-bottom-color: #000 !important; color: #1d1d1d !important; }
+.quiz-jump-card h2 { margin: 0 0 6px !important; font-size: 16px !important; }
+.quiz-jump-card p { color: #aaaaaa; font-size: 13px; margin-bottom: 16px; }
+.quiz-jump-grid { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 8px; }
+.quiz-jump-grid button { padding: 8px 0 !important; min-width: 0; }
+.quiz-jump-grid button.done { background: #17372b !important; color: #99e5bd !important; border-color: #04a777 !important; }
+.quiz-jump-grid button.miss { background: #402327 !important; color: #ffb5bd !important; border-color: #ef4444 !important; }
+.quiz-jump-grid button[aria-current] { outline: 3px solid #a579ef; outline-offset: 2px; }
+.quiz-result { text-align: center; }
+.quiz-result h2 { margin: 0; }
+.quiz-score { margin: 16px 0 0; font-size: 48px; font-weight: 800; color: #f5f5f5; }
+.quiz-verdict { font-size: 18px; margin: 16px 0; }
+.quiz-breakdown { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 24px 0; }
+.quiz-breakdown > div { padding: 16px; background: #141414; border: 1px solid #383838; border-radius: 12px; }
+.quiz-breakdown strong { display: block; font-size: 24px; margin-top: 8px; }
+.quiz-result-actions { justify-content: center; }
+@media (max-width: 640px) {
+  .quiz-question-card, .quiz-jump-card, .quiz-result { padding: 20px 16px !important; }
+  .quiz-jump-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .quiz-breakdown { grid-template-columns: 1fr; }
+  .quiz-question-text { font-size: 17px; }
+  .lesson-test button.quiz-option { padding: 14px 12px !important; }
+}
+</style>
+<script>/* One question flow for every test, based on 基数変換. */
+document.addEventListener('DOMContentLoaded', () => {
+  const app = document.getElementById('quiz-app');
+  if (!app) return;
+  let questions;
+  try {
+    questions = JSON.parse(document.getElementById('quiz-data').textContent);
+    if (!Array.isArray(questions) || !questions.length || questions.some(q =>
+      !Array.isArray(q.opts) || q.opts.length !== 4 || !Number.isInteger(q.ans) || q.ans < 0 || q.ans > 3 ||
+      !['easy', 'med', 'hard', 'review'].includes(q.d))) throw new Error('Invalid question bank');
+  } catch {
+    app.textContent = FE.t("Không tải được câu hỏi. Hãy tải lại trang.");
+    return;
+  }
+  const total = questions.length;
+  let showingResult = false;
+  const languageBox = document.createElement('div');
+  languageBox.className = 'quiz-language';
+  languageBox.innerHTML = '<label for="quiz-language">Tiếng Việt / 日本語</label> <select id="quiz-language" aria-label="Ngôn ngữ / 言語"><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select>';
+  const controlsHost = document.querySelector('.lesson-hero');
+  if (controlsHost) controlsHost.append(languageBox);
+  else app.before(languageBox);
+  const languageSelect = languageBox.querySelector('select');
+  languageSelect.value = FE.read('language', 'vi') === 'ja' ? 'ja' : 'vi';
+  const languageStyle = document.createElement('style');
+  languageStyle.textContent = '.quiz-language{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin:16px 0;font-size:13px}.quiz-language select{font:inherit;background:#252525;color:#f5f5f5;border:1px solid #444;border-radius:8px;padding:8px 12px}.quiz-language select:focus-visible{outline:2px solid #a579ef;outline-offset:3px}';
+  document.head.append(languageStyle);
+  const number = Number(location.pathname.match(/\/(\d+)\.html$/)[1]);
+  // Reuse the existing Bài 01 attempt format and storage keys for every lesson.
+  const saved = FE.read('test:' + number, {});
+  if (!FE.read('activity:' + number, null)) FE.write('activity:' + number, { startedAt: new Date().toISOString() });
+  const picks = questions.map((q, i) => Number.isInteger(saved?.picks?.[i]) && saved.picks[i] >= 0 && saved.picks[i] < 4 ? saved.picks[i] : null);
+  let current = Number.isInteger(saved?.cur) ? Math.max(0, Math.min(total - 1, saved.cur)) : 0;
+  const letters = ['A', 'B', 'C', 'D'];
+  const levelNames = () => FE.read('language', 'vi') === 'ja'
+    ? {easy:'易しい',med:'標準',hard:'難しい',review:'復習'}
+    : {easy:'易 Dễ',med:'中 Trung bình',hard:'難 Khó',review:'Ôn tập'};
+  // The bank is authored HTML from this repository, just like the original lessons.
+  const format = value => String(value || '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+  const stats = () => {
+    const done = picks.filter(p => p !== null).length;
+    const correct = picks.filter((p, i) => p === questions[i].ans).length;
+    return { done, correct, wrong: done - correct };
+  };
+  const save = () => FE.write('test:' + number, { cur: current, picks, total, updatedAt: new Date().toISOString() });
+  function jump(index) { current = index; save(); render(); }
+  function render() {
+    showingResult = false;
+    const original = questions[current];
+    const japanese = FE.read('language', 'vi') === 'ja';
+    const q = japanese ? {...original, q:original.qJa || original.jp || original.q, jp:'', opts:original.optsJa || original.opts,
+      why:original.whyJa ?? original.why, details:original.detailsJa || original.details, extra:original.extraJa || original.extra} : original;
+    const levels = levelNames();
+    const answered = picks[current] !== null;
+    const { done, correct, wrong } = stats();
+    app.innerHTML = `
+      <div class="quiz-progress" aria-label="Tiến độ trả lời">
+        <div class="quiz-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${done}"><div style="width:${done / total * 100}%"></div></div>
+        <div class="quiz-meta"><span>${FE.t("Câu")} <strong>${current + 1}</strong> / ${total}</span><span>${FE.t("Đã làm:")} <strong>${done}</strong> · ${FE.t("Đúng:")} <strong class="quiz-good">${correct}</strong> · ${FE.t("Sai:")} <strong class="quiz-bad">${wrong}</strong></span></div>
+      </div>
+      <section class="quiz-question-card" aria-label="${FE.t("Câu")} ${current + 1}">
+        <div class="quiz-question-head"><span class="quiz-number">${FE.t("Câu")} ${current + 1}/${total}</span><span class="quiz-level ${q.d}">${levels[q.d]}</span></div>
+        <div class="quiz-question-text">${format(q.q)}</div>
+        ${q.jp ? `<div class="quiz-question-jp" lang="ja">${format(q.jp)}</div>` : ''}
+        ${q.extra ? `<div class="quiz-extra">${format(q.extra)}</div>` : ''}
+        <div class="quiz-options">${q.opts.map((option, i) => `
+          <button type="button" class="quiz-option ${answered ? (i === q.ans ? 'correct' : i === picks[current] ? 'wrong' : '') : ''}" data-pick="${i}" aria-pressed="${i === picks[current]}" ${answered ? 'disabled' : ''}>
+            <span class="quiz-letter">${letters[i]}.</span><span>${format(option)}</span>
+            ${answered && i === q.ans ? '<span class="quiz-answer-mark">✓</span>' : answered && i === picks[current] ? '<span class="quiz-answer-mark">✕</span>' : ''}
+          </button>`).join('')}</div>
+        ${answered ? `<p class="quiz-feedback ${picks[current] === q.ans ? 'quiz-good' : 'quiz-bad'}" role="status">${picks[current] === q.ans ? FE.t("✓ Chính xác!") : FE.t("✕ Chưa đúng.")} ${FE.t("Đáp án đúng:")} ${letters[q.ans]}.</p>
+          <button type="button" id="quiz-explain-toggle" aria-expanded="false" aria-controls="quiz-explanation">${FE.t("📖 Xem giải thích")}</button>
+          <div class="quiz-explanation" id="quiz-explanation" hidden>
+            <h3>${FE.t("Đáp án đúng:")} ${letters[q.ans]}</h3>
+            ${q.why ? `<div>${format(q.why)}</div>` : ''}
+            ${(q.details || []).map(detail => `<p>${format(detail)}</p>`).join('')}
+            ${q.ref ? `<p class="quiz-reference">📌 FE Syllabus: ${format(q.ref)}</p>` : ''}
+          </div>` : ''}
+        <div class="quiz-actions"><button type="button" id="quiz-prev" ${current === 0 ? 'disabled' : ''}>${FE.t("← Câu trước")}</button><button type="button" class="quiz-primary" id="quiz-next">${current === total - 1 ? FE.t("✓ Nộp bài") : FE.t("Câu tiếp →")}</button></div>
+      </section>
+      <nav class="quiz-jump-card" aria-label="Điều hướng câu hỏi">
+        <h2>${FE.t("Điều hướng nhanh")}</h2><p>${FE.t("Chọn số để chuyển câu · Xanh: đúng · Đỏ: sai")}</p>
+        <div class="quiz-jump-grid">${questions.map((item, i) => `<button type="button" data-jump="${i}" class="${picks[i] === null ? '' : picks[i] === item.ans ? 'done' : 'miss'}" ${i === current ? 'aria-current="step"' : ''} aria-label="${FE.t("Câu")} ${i + 1}, ${picks[i] === null ? FE.t("chưa trả lời") : picks[i] === item.ans ? FE.t("đúng") : FE.t("sai")}">${i + 1}</button>`).join('')}</div>
+      </nav>`;
+    FE.translateUI();
+    app.querySelectorAll('[data-pick]').forEach(button => button.onclick = () => {
+      picks[current] = Number(button.dataset.pick);
+      save();
+      render();
+      app.querySelector('#quiz-explain-toggle').focus({ preventScroll: true });
+    });
+    app.querySelectorAll('[data-jump]').forEach(button => button.onclick = () => jump(Number(button.dataset.jump)));
+    app.querySelector('#quiz-prev').onclick = () => jump(current - 1);
+    app.querySelector('#quiz-next').onclick = () => current === total - 1 ? showResult() : jump(current + 1);
+    const toggle = app.querySelector('#quiz-explain-toggle');
+    if (toggle) toggle.onclick = () => {
+      const panel = app.querySelector('#quiz-explanation');
+      panel.hidden = !panel.hidden;
+      toggle.setAttribute('aria-expanded', String(!panel.hidden));
+    };
+  }
+  function showResult(record = true) {
+    showingResult = true;
+    const { done, correct, wrong } = stats();
+    if (record) {
+      FE.write('test-result:' + number, { answered: done, correct, total, submittedAt: new Date().toISOString() });
+      if (done === total) FE.write('status:' + number, 'p4');
+    }
+    const levels = levelNames();
+    const percent = Math.round(correct / total * 100);
+    app.innerHTML = `<section class="quiz-result">
+      <h2>${FE.t("Kết quả")}</h2><div class="quiz-score">${correct} / ${total}</div><p>${percent}${FE.t("% đúng")}</p>
+      <p class="quiz-verdict">${percent >= 80 ? FE.t("🏆 Xuất sắc — Bạn đã nắm vững chủ đề!") : percent >= 60 ? FE.t("👍 Khá — Ôn lại các câu sai để tiến bộ hơn.") : FE.t("💪 Cần luyện thêm — Đọc lại lý thuyết và thử lại nhé.")}</p>
+      <p>${FE.t("Đã làm:")} ${done} · ${FE.t("Sai:")} ${wrong} · ${FE.t("Chưa trả lời:")} ${total - done}</p>
+      <div class="quiz-breakdown">${Object.entries(levels).filter(([level]) => questions.some(q => q.d === level)).map(([level, label]) => {
+        const indices = questions.map((q, i) => q.d === level ? i : -1).filter(i => i >= 0);
+        return `<div><span>${label}</span><strong>${indices.filter(i => picks[i] === questions[i].ans).length} / ${indices.length}</strong></div>`;
+      }).join('')}</div>
+      <div class="quiz-result-actions"><button class="quiz-primary" id="quiz-reset">${FE.t("↻ Làm lại từ đầu")}</button><button id="quiz-review">${FE.t("Xem lại từng câu")}</button><button id="quiz-mistakes" ${wrong === 0 ? 'disabled' : ''}>${FE.t("Ôn câu sai")}</button></div>
+    </section>`;
+    app.querySelector('#quiz-reset').onclick = () => { picks.fill(null); jump(0); };
+    app.querySelector('#quiz-review').onclick = () => jump(0);
+    app.querySelector('#quiz-mistakes').onclick = () => jump(picks.findIndex((p, i) => p !== null && p !== questions[i].ans));
+    FE.translateUI();
+  }
+  languageSelect.onchange = () => {
+    const explanationOpen = app.querySelector('#quiz-explanation')?.hidden === false;
+    FE.write('language', languageSelect.value);
+    if (showingResult) showResult(false);
+    else {
+      render();
+      if (explanationOpen) {
+        app.querySelector('#quiz-explanation').hidden = false;
+        app.querySelector('#quiz-explain-toggle').setAttribute('aria-expanded','true');
+      }
+    }
+    FE.translateUI();
+  };
+  render();
+});
+</script>
+<style>.lesson-sources { margin:20px 0; padding:18px; border:1px solid #444; border-radius:12px; font-size:13px; overflow-wrap:anywhere; } .lesson-sources h2 { font-size:16px; } .lesson-sources h2,#quiz-app h2,#quiz-app h3 { color:var(--text) !important; } .lesson-sources ul { padding-left:20px; } .lesson-sources li { margin:8px 0; } .lesson-sources p { font-size:12px; } </style></head>
+<body>
+<div class="wrap">
+<header>
+<h1>FE 模擬試験 — ITサービスマネジメント (ITIL)</h1>
+<div class="sub">40 câu · ITサービスマネジメント (ITIL) · Bài luyện biên soạn theo nguồn</div>
+</header>
+<section class="lesson-sources" aria-label="Tài liệu dùng để biên soạn"><h2 data-vi="Tài liệu dùng để biên soạn" data-ja="この教材の出典">Tài liệu dùng để biên soạn · 出典</h2><ul><li>ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足</li><li>FE_JP/10_マネジメント分野コース資料.md · đối chiếu thuật ngữ và ví dụ / 用語と例の照合</li><li>FE_VN/10&amp;11_Chiến lược quản lý.md · đối chiếu giải thích / 説明の照合</li></ul><div class="reading-vi" lang="vi"><p>Giải thích và tình huống luyện do biên soạn từ các nguồn trên; không phải bản chép đề thi chính thức.</p></div><div class="reading-ja" lang="ja"><p>説明と演習の事例は上記教材を基に作成しています。公式過去問の転載ではありません。</p></div></section><div id="quiz-app"></div>
+</div>
+<script type="application/json" id="quiz-data">[{"d": "easy", "q": "Chọn mô tả đúng nhất của ITサービスマネジメント.", "jp": "「ITサービスマネジメント」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Quản lý dịch vụ IT để đáp ứng nhu cầu và giá trị cho khách hàng.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Tập kiến thức và thực hành quản lý dịch vụ IT.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Thỏa thuận về mức dịch vụ giữa bên cung cấp và bên sử dụng.<\/span>"], "ans": 0, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>ITサービスマネジメント<\/b>: Quản lý dịch vụ IT để đáp ứng nhu cầu và giá trị cho khách hàng.<\/p><p>Trong ví dụ: Không chỉ sửa máy mà quản lý chất lượng dịch vụ cung cấp.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">ITサービスマネジメント: Quản lý dịch vụ IT để đáp ứng nhu cầu và giá trị cho khách hàng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">サービスデスク: Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ITIL: Tập kiến thức và thực hành quản lý dịch vụ IT.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">SLA: Thỏa thuận về mức dịch vụ giữa bên cung cấp và bên sử dụng.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「ITサービスマネジメント」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">顧客のニーズと価値を満たすようITサービスを管理すること。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">利用者とサービス提供者の連絡窓口。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">ITサービス管理の知識や実践をまとめた枠組み。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">提供者と利用者が合意したサービス水準。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>ITサービスマネジメント<\/b>: 顧客のニーズと価値を満たすようITサービスを管理すること。<\/p><p>例: 機器だけでなく提供するサービスの品質を管理する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">ITサービスマネジメント: 顧客のニーズと価値を満たすようITサービスを管理すること。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">サービスデスク: 利用者とサービス提供者の連絡窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ITIL: ITサービス管理の知識や実践をまとめた枠組み。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">SLA: 提供者と利用者が合意したサービス水準。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của ITIL.", "jp": "「ITIL」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Thỏa thuận về mức dịch vụ giữa bên cung cấp và bên sử dụng.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Thống nhất, đo lường và cải thiện mức dịch vụ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Tập kiến thức và thực hành quản lý dịch vụ IT.<\/span>"], "ans": 3, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>ITIL<\/b>: Tập kiến thức và thực hành quản lý dịch vụ IT.<\/p><p>Trong ví dụ: Dùng hướng dẫn thực hành quản lý dịch vụ làm tham chiếu.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">SLA: Thỏa thuận về mức dịch vụ giữa bên cung cấp và bên sử dụng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">サービスデスク: Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">サービスレベル管理: Thống nhất, đo lường và cải thiện mức dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ITIL: Tập kiến thức và thực hành quản lý dịch vụ IT.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「ITIL」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">提供者と利用者が合意したサービス水準。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">利用者とサービス提供者の連絡窓口。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">サービス水準を合意し測定・改善する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">ITサービス管理の知識や実践をまとめた枠組み。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>ITIL<\/b>: ITサービス管理の知識や実践をまとめた枠組み。<\/p><p>例: サービス管理の実践知識を参照する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">SLA: 提供者と利用者が合意したサービス水準。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">サービスデスク: 利用者とサービス提供者の連絡窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">サービスレベル管理: サービス水準を合意し測定・改善する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ITIL: ITサービス管理の知識や実践をまとめた枠組み。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của SLA.", "jp": "「SLA」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Thống nhất, đo lường và cải thiện mức dịch vụ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Tập kiến thức và thực hành quản lý dịch vụ IT.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Thỏa thuận về mức dịch vụ giữa bên cung cấp và bên sử dụng.<\/span>"], "ans": 3, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>SLA<\/b>: Thỏa thuận về mức dịch vụ giữa bên cung cấp và bên sử dụng.<\/p><p>Trong ví dụ: Hai bên thống nhất khả dụng và thời gian phản hồi.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">サービスレベル管理: Thống nhất, đo lường và cải thiện mức dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">サービスデスク: Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ITIL: Tập kiến thức và thực hành quản lý dịch vụ IT.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">SLA: Thỏa thuận về mức dịch vụ giữa bên cung cấp và bên sử dụng.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「SLA」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">サービス水準を合意し測定・改善する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">利用者とサービス提供者の連絡窓口。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">ITサービス管理の知識や実践をまとめた枠組み。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">提供者と利用者が合意したサービス水準。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>SLA<\/b>: 提供者と利用者が合意したサービス水準。<\/p><p>例: 可用性や応答時間の水準を双方で合意する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">サービスレベル管理: サービス水準を合意し測定・改善する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">サービスデスク: 利用者とサービス提供者の連絡窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ITIL: ITサービス管理の知識や実践をまとめた枠組み。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">SLA: 提供者と利用者が合意したサービス水準。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của サービスレベル管理.", "jp": "「サービスレベル管理」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Thống nhất, đo lường và cải thiện mức dịch vụ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Thỏa thuận về mức dịch vụ giữa bên cung cấp và bên sử dụng.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Quản lý dịch vụ IT để đáp ứng nhu cầu và giá trị cho khách hàng.<\/span>"], "ans": 0, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>サービスレベル管理<\/b>: Thống nhất, đo lường và cải thiện mức dịch vụ.<\/p><p>Trong ví dụ: So chỉ số vận hành thực tế với mức đã cam kết.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">サービスレベル管理: Thống nhất, đo lường và cải thiện mức dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">サービスデスク: Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">SLA: Thỏa thuận về mức dịch vụ giữa bên cung cấp và bên sử dụng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ITサービスマネジメント: Quản lý dịch vụ IT để đáp ứng nhu cầu và giá trị cho khách hàng.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「サービスレベル管理」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">サービス水準を合意し測定・改善する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">利用者とサービス提供者の連絡窓口。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">提供者と利用者が合意したサービス水準。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">顧客のニーズと価値を満たすようITサービスを管理すること。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>サービスレベル管理<\/b>: サービス水準を合意し測定・改善する活動。<\/p><p>例: 実績を合意した水準と比較して改善する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">サービスレベル管理: サービス水準を合意し測定・改善する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">サービスデスク: 利用者とサービス提供者の連絡窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">SLA: 提供者と利用者が合意したサービス水準。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ITサービスマネジメント: 顧客のニーズと価値を満たすようITサービスを管理すること。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của サービスデスク.", "jp": "「サービスデスク」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Tập kiến thức và thực hành quản lý dịch vụ IT.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Quản lý dịch vụ IT để đáp ứng nhu cầu và giá trị cho khách hàng.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Thống nhất, đo lường và cải thiện mức dịch vụ.<\/span>"], "ans": 1, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>サービスデスク<\/b>: Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/p><p>Trong ví dụ: Người dùng báo lỗi và hỏi hỗ trợ tại cùng một đầu mối.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">ITIL: Tập kiến thức và thực hành quản lý dịch vụ IT.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">サービスデスク: Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ITサービスマネジメント: Quản lý dịch vụ IT để đáp ứng nhu cầu và giá trị cho khách hàng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">サービスレベル管理: Thống nhất, đo lường và cải thiện mức dịch vụ.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「サービスデスク」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">ITサービス管理の知識や実践をまとめた枠組み。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">利用者とサービス提供者の連絡窓口。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">顧客のニーズと価値を満たすようITサービスを管理すること。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">サービス水準を合意し測定・改善する活動。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>サービスデスク<\/b>: 利用者とサービス提供者の連絡窓口。<\/p><p>例: 利用者が障害や問い合わせを一つの窓口へ伝える。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">ITIL: ITサービス管理の知識や実践をまとめた枠組み。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">サービスデスク: 利用者とサービス提供者の連絡窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ITサービスマネジメント: 顧客のニーズと価値を満たすようITサービスを管理すること。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">サービスレベル管理: サービス水準を合意し測定・改善する活動。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của インシデント管理.", "jp": "「インシデント管理」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Tìm và xử lý nguyên nhân của sự cố để giảm tái diễn.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/span>"], "ans": 3, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>インシデント管理<\/b>: Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/p><p>Trong ví dụ: Dùng biện pháp tạm để dịch vụ hoạt động lại trước.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">ワークアラウンド: Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">問題管理: Tìm và xử lý nguyên nhân của sự cố để giảm tái diễn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">既知の誤り: Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">インシデント管理: Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「インシデント管理」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">恒久解決まで影響を軽減する回避方法。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">インシデントの原因を調べ再発を防ぐ活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">分析済みで原因や回避方法を記録した問題。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">通常のサービスを早く回復し影響を抑える活動。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>インシデント管理<\/b>: 通常のサービスを早く回復し影響を抑える活動。<\/p><p>例: まず暫定手段でサービスを再開する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">ワークアラウンド: 恒久解決まで影響を軽減する回避方法。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">問題管理: インシデントの原因を調べ再発を防ぐ活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">既知の誤り: 分析済みで原因や回避方法を記録した問題。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">インシデント管理: 通常のサービスを早く回復し影響を抑える活動。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của 問題管理.", "jp": "「問題管理」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Tìm và xử lý nguyên nhân của sự cố để giảm tái diễn.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/span>"], "ans": 2, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>問題管理<\/b>: Tìm và xử lý nguyên nhân của sự cố để giảm tái diễn.<\/p><p>Trong ví dụ: Nhiều lỗi lặp lại cần xác định nguyên nhân gốc.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">ワークアラウンド: Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">インシデント管理: Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">問題管理: Tìm và xử lý nguyên nhân của sự cố để giảm tái diễn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">既知の誤り: Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「問題管理」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">恒久解決まで影響を軽減する回避方法。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">通常のサービスを早く回復し影響を抑える活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">インシデントの原因を調べ再発を防ぐ活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">分析済みで原因や回避方法を記録した問題。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>問題管理<\/b>: インシデントの原因を調べ再発を防ぐ活動。<\/p><p>例: 繰り返す障害の根本原因を調べる。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">ワークアラウンド: 恒久解決まで影響を軽減する回避方法。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">インシデント管理: 通常のサービスを早く回復し影響を抑える活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">問題管理: インシデントの原因を調べ再発を防ぐ活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">既知の誤り: 分析済みで原因や回避方法を記録した問題。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của 既知の誤り.", "jp": "「既知の誤り」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Tìm và xử lý nguyên nhân của sự cố để giảm tái diễn.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/span>"], "ans": 0, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>既知の誤り<\/b>: Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/p><p>Trong ví dụ: Nhân viên hỗ trợ tra hồ sơ nguyên nhân đã biết.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">既知の誤り: Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">問題管理: Tìm và xử lý nguyên nhân của sự cố để giảm tái diễn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ワークアラウンド: Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">インシデント管理: Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「既知の誤り」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">分析済みで原因や回避方法を記録した問題。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">インシデントの原因を調べ再発を防ぐ活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">恒久解決まで影響を軽減する回避方法。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">通常のサービスを早く回復し影響を抑える活動。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>既知の誤り<\/b>: 分析済みで原因や回避方法を記録した問題。<\/p><p>例: 担当者が分析済みの原因や対処法を参照する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">既知の誤り: 分析済みで原因や回避方法を記録した問題。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">問題管理: インシデントの原因を調べ再発を防ぐ活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ワークアラウンド: 恒久解決まで影響を軽減する回避方法。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">インシデント管理: 通常のサービスを早く回復し影響を抑える活動。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của ワークアラウンド.", "jp": "「ワークアラウンド」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Tìm và xử lý nguyên nhân của sự cố để giảm tái diễn.<\/span>"], "ans": 0, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>ワークアラウンド<\/b>: Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/p><p>Trong ví dụ: Chuyển sang máy dự phòng trong khi điều tra nguyên nhân.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">ワークアラウンド: Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">既知の誤り: Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">インシデント管理: Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">問題管理: Tìm và xử lý nguyên nhân của sự cố để giảm tái diễn.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「ワークアラウンド」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">恒久解決まで影響を軽減する回避方法。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">分析済みで原因や回避方法を記録した問題。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">通常のサービスを早く回復し影響を抑える活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">インシデントの原因を調べ再発を防ぐ活動。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>ワークアラウンド<\/b>: 恒久解決まで影響を軽減する回避方法。<\/p><p>例: 原因調査中は代替機で業務を続ける。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">ワークアラウンド: 恒久解決まで影響を軽減する回避方法。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">既知の誤り: 分析済みで原因や回避方法を記録した問題。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">インシデント管理: 通常のサービスを早く回復し影響を抑える活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">問題管理: インシデントの原因を調べ再発を防ぐ活動。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của 変更管理.", "jp": "「変更管理」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Đánh giá và kiểm soát rủi ro khi thay đổi dịch vụ.<\/span>"], "ans": 3, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>変更管理<\/b>: Đánh giá và kiểm soát rủi ro khi thay đổi dịch vụ.<\/p><p>Trong ví dụ: Duyệt thay đổi cấu hình trước triển khai.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">ワークアラウンド: Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">既知の誤り: Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">インシデント管理: Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">変更管理: Đánh giá và kiểm soát rủi ro khi thay đổi dịch vụ.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「変更管理」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">恒久解決まで影響を軽減する回避方法。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">分析済みで原因や回避方法を記録した問題。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">通常のサービスを早く回復し影響を抑える活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">サービス変更のリスクを評価して統制する活動。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>変更管理<\/b>: サービス変更のリスクを評価して統制する活動。<\/p><p>例: 設定変更の影響を確認して承認する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">ワークアラウンド: 恒久解決まで影響を軽減する回避方法。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">既知の誤り: 分析済みで原因や回避方法を記録した問題。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">インシデント管理: 通常のサービスを早く回復し影響を抑える活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">変更管理: サービス変更のリスクを評価して統制する活動。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của リリース管理.", "jp": "「リリース管理」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Quản lý thông tin cấu hình và quan hệ của các thành phần dịch vụ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Chuẩn bị duy trì hoặc phục hồi dịch vụ IT sau gián đoạn lớn.<\/span>"], "ans": 0, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>リリース管理<\/b>: Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/p><p>Trong ví dụ: Điều phối phiên bản, lịch triển khai và thông báo bàn giao.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">リリース管理: Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">可用性管理: Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">構成管理: Quản lý thông tin cấu hình và quan hệ của các thành phần dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ITサービス継続管理: Chuẩn bị duy trì hoặc phục hồi dịch vụ IT sau gián đoạn lớn.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「リリース管理」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">新しい版を利用できるよう計画して導入する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">要求水準でサービスを利用できるよう管理する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">サービスを構成する要素と関係の情報を管理する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">重大な中断時にITサービスを継続・復旧するための管理。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>リリース管理<\/b>: 新しい版を利用できるよう計画して導入する活動。<\/p><p>例: 版と導入日程と利用案内をまとめて管理する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">リリース管理: 新しい版を利用できるよう計画して導入する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">可用性管理: 要求水準でサービスを利用できるよう管理する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">構成管理: サービスを構成する要素と関係の情報を管理する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ITサービス継続管理: 重大な中断時にITサービスを継続・復旧するための管理。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của 構成管理.", "jp": "「構成管理」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Bảo đảm năng lực tài nguyên đáp ứng tải hiện tại và tương lai.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Quản lý thông tin cấu hình và quan hệ của các thành phần dịch vụ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/span>"], "ans": 1, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>構成管理<\/b>: Quản lý thông tin cấu hình và quan hệ của các thành phần dịch vụ.<\/p><p>Trong ví dụ: Biết ứng dụng phụ thuộc máy chủ và cấu hình nào.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">キャパシティ管理: Bảo đảm năng lực tài nguyên đáp ứng tải hiện tại và tương lai.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">構成管理: Quản lý thông tin cấu hình và quan hệ của các thành phần dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">リリース管理: Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">可用性管理: Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「構成管理」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">現在と将来の需要に応じた処理能力を確保する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">サービスを構成する要素と関係の情報を管理する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">新しい版を利用できるよう計画して導入する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">要求水準でサービスを利用できるよう管理する活動。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>構成管理<\/b>: サービスを構成する要素と関係の情報を管理する活動。<\/p><p>例: アプリがどの機器や設定に依存するか把握する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">キャパシティ管理: 現在と将来の需要に応じた処理能力を確保する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">構成管理: サービスを構成する要素と関係の情報を管理する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">リリース管理: 新しい版を利用できるよう計画して導入する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">可用性管理: 要求水準でサービスを利用できるよう管理する活動。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của 可用性管理.", "jp": "「可用性管理」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Bảo đảm năng lực tài nguyên đáp ứng tải hiện tại và tương lai.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Quản lý thông tin cấu hình và quan hệ của các thành phần dịch vụ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/span>"], "ans": 3, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>可用性管理<\/b>: Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/p><p>Trong ví dụ: Theo dõi thời gian hoạt động và cơ chế dự phòng.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">キャパシティ管理: Bảo đảm năng lực tài nguyên đáp ứng tải hiện tại và tương lai.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">リリース管理: Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">構成管理: Quản lý thông tin cấu hình và quan hệ của các thành phần dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">可用性管理: Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「可用性管理」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">現在と将来の需要に応じた処理能力を確保する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">新しい版を利用できるよう計画して導入する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">サービスを構成する要素と関係の情報を管理する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">要求水準でサービスを利用できるよう管理する活動。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>可用性管理<\/b>: 要求水準でサービスを利用できるよう管理する活動。<\/p><p>例: 稼働時間と冗長化の仕組みを管理する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">キャパシティ管理: 現在と将来の需要に応じた処理能力を確保する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">リリース管理: 新しい版を利用できるよう計画して導入する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">構成管理: サービスを構成する要素と関係の情報を管理する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">可用性管理: 要求水準でサービスを利用できるよう管理する活動。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của キャパシティ管理.", "jp": "「キャパシティ管理」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Quản lý thông tin cấu hình và quan hệ của các thành phần dịch vụ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Bảo đảm năng lực tài nguyên đáp ứng tải hiện tại và tương lai.<\/span>"], "ans": 3, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>キャパシティ管理<\/b>: Bảo đảm năng lực tài nguyên đáp ứng tải hiện tại và tương lai.<\/p><p>Trong ví dụ: Dự báo tải tăng để lên kế hoạch bổ sung năng lực.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">リリース管理: Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">可用性管理: Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">構成管理: Quản lý thông tin cấu hình và quan hệ của các thành phần dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">キャパシティ管理: Bảo đảm năng lực tài nguyên đáp ứng tải hiện tại và tương lai.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「キャパシティ管理」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">新しい版を利用できるよう計画して導入する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">要求水準でサービスを利用できるよう管理する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">サービスを構成する要素と関係の情報を管理する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">現在と将来の需要に応じた処理能力を確保する活動。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>キャパシティ管理<\/b>: 現在と将来の需要に応じた処理能力を確保する活動。<\/p><p>例: 負荷増加を予測し必要な処理能力を計画する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">リリース管理: 新しい版を利用できるよう計画して導入する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">可用性管理: 要求水準でサービスを利用できるよう管理する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">構成管理: サービスを構成する要素と関係の情報を管理する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">キャパシティ管理: 現在と将来の需要に応じた処理能力を確保する活動。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của ITサービス継続管理.", "jp": "「ITサービス継続管理」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Chuẩn bị duy trì hoặc phục hồi dịch vụ IT sau gián đoạn lớn.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Bảo đảm năng lực tài nguyên đáp ứng tải hiện tại và tương lai.<\/span>"], "ans": 0, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>ITサービス継続管理<\/b>: Chuẩn bị duy trì hoặc phục hồi dịch vụ IT sau gián đoạn lớn.<\/p><p>Trong ví dụ: Có phương án địa điểm dự phòng để phục hồi dịch vụ.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">ITサービス継続管理: Chuẩn bị duy trì hoặc phục hồi dịch vụ IT sau gián đoạn lớn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">リリース管理: Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">可用性管理: Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">キャパシティ管理: Bảo đảm năng lực tài nguyên đáp ứng tải hiện tại và tương lai.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「ITサービス継続管理」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">重大な中断時にITサービスを継続・復旧するための管理。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">新しい版を利用できるよう計画して導入する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">要求水準でサービスを利用できるよう管理する活動。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">現在と将来の需要に応じた処理能力を確保する活動。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>ITサービス継続管理<\/b>: 重大な中断時にITサービスを継続・復旧するための管理。<\/p><p>例: 大きな障害に備え代替拠点で復旧する計画を用意する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">ITサービス継続管理: 重大な中断時にITサービスを継続・復旧するための管理。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">リリース管理: 新しい版を利用できるよう計画して導入する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">可用性管理: 要求水準でサービスを利用できるよう管理する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">キャパシティ管理: 現在と将来の需要に応じた処理能力を確保する活動。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của PDCA.", "jp": "「PDCA」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Bộ phận hỗ trợ đặt gần người dùng tại địa điểm đó.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/span>"], "ans": 1, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>PDCA<\/b>: Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/p><p>Trong ví dụ: Dựa kết quả đo mức dịch vụ để sửa cách vận hành.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">ローカルサービスデスク: Bộ phận hỗ trợ đặt gần người dùng tại địa điểm đó.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">PDCA: Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">集中サービスデスク: Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">フォローザサン: Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「PDCA」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">利用者の拠点近くに設置する窓口。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">計画、実行、点検、改善を繰り返すサイクル。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">複数拠点の対応を一か所へ集約した窓口。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">時差のある拠点を引き継いで継続対応する方式。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>PDCA<\/b>: 計画、実行、点検、改善を繰り返すサイクル。<\/p><p>例: 水準の測定結果から運用を改善する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">ローカルサービスデスク: 利用者の拠点近くに設置する窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">PDCA: 計画、実行、点検、改善を繰り返すサイクル。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">集中サービスデスク: 複数拠点の対応を一か所へ集約した窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">フォローザサン: 時差のある拠点を引き継いで継続対応する方式。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của ローカルサービスデスク.", "jp": "「ローカルサービスデスク」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Bộ phận hỗ trợ đặt gần người dùng tại địa điểm đó.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/span>"], "ans": 1, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>ローカルサービスデスク<\/b>: Bộ phận hỗ trợ đặt gần người dùng tại địa điểm đó.<\/p><p>Trong ví dụ: Mỗi chi nhánh có nhóm hỗ trợ trực tiếp tại chỗ.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">PDCA: Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ローカルサービスデスク: Bộ phận hỗ trợ đặt gần người dùng tại địa điểm đó.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">フォローザサン: Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">集中サービスデスク: Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「ローカルサービスデスク」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">計画、実行、点検、改善を繰り返すサイクル。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">利用者の拠点近くに設置する窓口。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">時差のある拠点を引き継いで継続対応する方式。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">複数拠点の対応を一か所へ集約した窓口。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>ローカルサービスデスク<\/b>: 利用者の拠点近くに設置する窓口。<\/p><p>例: 各支店に利用者向けの現地窓口を置く。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">PDCA: 計画、実行、点検、改善を繰り返すサイクル。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ローカルサービスデスク: 利用者の拠点近くに設置する窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">フォローザサン: 時差のある拠点を引き継いで継続対応する方式。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">集中サービスデスク: 複数拠点の対応を一か所へ集約した窓口。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của 集中サービスデスク.", "jp": "「集中サービスデスク」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Bộ phận hỗ trợ đặt gần người dùng tại địa điểm đó.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/span>"], "ans": 2, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>集中サービスデスク<\/b>: Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/p><p>Trong ví dụ: Một trung tâm tiếp nhận yêu cầu toàn công ty.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">ローカルサービスデスク: Bộ phận hỗ trợ đặt gần người dùng tại địa điểm đó.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">フォローザサン: Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">集中サービスデスク: Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">PDCA: Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「集中サービスデスク」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">利用者の拠点近くに設置する窓口。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">時差のある拠点を引き継いで継続対応する方式。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">複数拠点の対応を一か所へ集約した窓口。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">計画、実行、点検、改善を繰り返すサイクル。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>集中サービスデスク<\/b>: 複数拠点の対応を一か所へ集約した窓口。<\/p><p>例: 会社全体の問い合わせを一つのセンターで受ける。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">ローカルサービスデスク: 利用者の拠点近くに設置する窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">フォローザサン: 時差のある拠点を引き継いで継続対応する方式。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">集中サービスデスク: 複数拠点の対応を一か所へ集約した窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">PDCA: 計画、実行、点検、改善を繰り返すサイクル。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của バーチャルサービスデスク.", "jp": "「バーチャルサービスデスク」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Các nhóm phân tán cùng tạo một đầu mối nhờ kết nối IT.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/span>"], "ans": 2, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>バーチャルサービスデスク<\/b>: Các nhóm phân tán cùng tạo một đầu mối nhờ kết nối IT.<\/p><p>Trong ví dụ: Người dùng thấy một đầu mối dù nhân sự ở nhiều nơi.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">集中サービスデスク: Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">フォローザサン: Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">バーチャルサービスデスク: Các nhóm phân tán cùng tạo một đầu mối nhờ kết nối IT.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">PDCA: Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「バーチャルサービスデスク」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">複数拠点の対応を一か所へ集約した窓口。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">時差のある拠点を引き継いで継続対応する方式。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">離れた担当者がITを使い一体の窓口として対応する形。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">計画、実行、点検、改善を繰り返すサイクル。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>バーチャルサービスデスク<\/b>: 離れた担当者がITを使い一体の窓口として対応する形。<\/p><p>例: 担当者は各地にいても利用者には一つの窓口に見える。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">集中サービスデスク: 複数拠点の対応を一か所へ集約した窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">フォローザサン: 時差のある拠点を引き継いで継続対応する方式。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">バーチャルサービスデスク: 離れた担当者がITを使い一体の窓口として対応する形。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">PDCA: 計画、実行、点検、改善を繰り返すサイクル。<\/div>"]}, {"d": "easy", "q": "Chọn mô tả đúng nhất của フォローザサン.", "jp": "「フォローザサン」の説明として最も適切なものはどれか。", "opts": ["<span class=\"reading-vi\" lang=\"vi\">Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Các nhóm phân tán cùng tạo một đầu mối nhờ kết nối IT.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/span>", "<span class=\"reading-vi\" lang=\"vi\">Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/span>"], "ans": 2, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>フォローザサン<\/b>: Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/p><p>Trong ví dụ: Đội ca ngày ở mỗi khu vực lần lượt nhận việc hỗ trợ.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">集中サービスデスク: Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">バーチャルサービスデスク: Các nhóm phân tán cùng tạo một đầu mối nhờ kết nối IT.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">フォローザサン: Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">PDCA: Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "「フォローザサン」の説明として最も適切なものはどれか。", "optsJa": ["<span class=\"reading-ja\" lang=\"ja\">複数拠点の対応を一か所へ集約した窓口。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">離れた担当者がITを使い一体の窓口として対応する形。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">時差のある拠点を引き継いで継続対応する方式。<\/span>", "<span class=\"reading-ja\" lang=\"ja\">計画、実行、点検、改善を繰り返すサイクル。<\/span>"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>フォローザサン<\/b>: 時差のある拠点を引き継いで継続対応する方式。<\/p><p>例: 地域ごとの日中担当が順に対応を引き継ぐ。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">集中サービスデスク: 複数拠点の対応を一か所へ集約した窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">バーチャルサービスデスク: 離れた担当者がITを使い一体の窓口として対応する形。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">フォローザサン: 時差のある拠点を引き継いで継続対応する方式。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">PDCA: 計画、実行、点検、改善を繰り返すサイクル。<\/div>"]}, {"d": "med", "q": "Không chỉ sửa máy mà quản lý chất lượng dịch vụ cung cấp. Chọn mục phù hợp nhất với tình huống.", "jp": "機器だけでなく提供するサービスの品質を管理する。 最も適切な項目を選べ。", "opts": ["サービスデスク", "ITIL", "SLA", "ITサービスマネジメント"], "ans": 3, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>ITサービスマネジメント<\/b>: Quản lý dịch vụ IT để đáp ứng nhu cầu và giá trị cho khách hàng.<\/p><p>Trong ví dụ: Không chỉ sửa máy mà quản lý chất lượng dịch vụ cung cấp.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">サービスデスク: Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ITIL: Tập kiến thức và thực hành quản lý dịch vụ IT.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">SLA: Thỏa thuận về mức dịch vụ giữa bên cung cấp và bên sử dụng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ITサービスマネジメント: Quản lý dịch vụ IT để đáp ứng nhu cầu và giá trị cho khách hàng.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "機器だけでなく提供するサービスの品質を管理する。 最も適切な項目を選べ。", "optsJa": ["サービスデスク", "ITIL", "SLA", "ITサービスマネジメント"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>ITサービスマネジメント<\/b>: 顧客のニーズと価値を満たすようITサービスを管理すること。<\/p><p>例: 機器だけでなく提供するサービスの品質を管理する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">サービスデスク: 利用者とサービス提供者の連絡窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ITIL: ITサービス管理の知識や実践をまとめた枠組み。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">SLA: 提供者と利用者が合意したサービス水準。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ITサービスマネジメント: 顧客のニーズと価値を満たすようITサービスを管理すること。<\/div>"]}, {"d": "med", "q": "Dùng hướng dẫn thực hành quản lý dịch vụ làm tham chiếu. Chọn mục phù hợp nhất với tình huống.", "jp": "サービス管理の実践知識を参照する。 最も適切な項目を選べ。", "opts": ["サービスデスク", "サービスレベル管理", "ITIL", "SLA"], "ans": 2, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>ITIL<\/b>: Tập kiến thức và thực hành quản lý dịch vụ IT.<\/p><p>Trong ví dụ: Dùng hướng dẫn thực hành quản lý dịch vụ làm tham chiếu.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">サービスデスク: Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">サービスレベル管理: Thống nhất, đo lường và cải thiện mức dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ITIL: Tập kiến thức và thực hành quản lý dịch vụ IT.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">SLA: Thỏa thuận về mức dịch vụ giữa bên cung cấp và bên sử dụng.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "サービス管理の実践知識を参照する。 最も適切な項目を選べ。", "optsJa": ["サービスデスク", "サービスレベル管理", "ITIL", "SLA"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>ITIL<\/b>: ITサービス管理の知識や実践をまとめた枠組み。<\/p><p>例: サービス管理の実践知識を参照する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">サービスデスク: 利用者とサービス提供者の連絡窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">サービスレベル管理: サービス水準を合意し測定・改善する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ITIL: ITサービス管理の知識や実践をまとめた枠組み。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">SLA: 提供者と利用者が合意したサービス水準。<\/div>"]}, {"d": "med", "q": "Hai bên thống nhất khả dụng và thời gian phản hồi. Chọn mục phù hợp nhất với tình huống.", "jp": "可用性や応答時間の水準を双方で合意する。 最も適切な項目を選べ。", "opts": ["サービスデスク", "ITIL", "SLA", "サービスレベル管理"], "ans": 2, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>SLA<\/b>: Thỏa thuận về mức dịch vụ giữa bên cung cấp và bên sử dụng.<\/p><p>Trong ví dụ: Hai bên thống nhất khả dụng và thời gian phản hồi.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">サービスデスク: Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ITIL: Tập kiến thức và thực hành quản lý dịch vụ IT.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">SLA: Thỏa thuận về mức dịch vụ giữa bên cung cấp và bên sử dụng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">サービスレベル管理: Thống nhất, đo lường và cải thiện mức dịch vụ.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "可用性や応答時間の水準を双方で合意する。 最も適切な項目を選べ。", "optsJa": ["サービスデスク", "ITIL", "SLA", "サービスレベル管理"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>SLA<\/b>: 提供者と利用者が合意したサービス水準。<\/p><p>例: 可用性や応答時間の水準を双方で合意する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">サービスデスク: 利用者とサービス提供者の連絡窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ITIL: ITサービス管理の知識や実践をまとめた枠組み。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">SLA: 提供者と利用者が合意したサービス水準。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">サービスレベル管理: サービス水準を合意し測定・改善する活動。<\/div>"]}, {"d": "med", "q": "So chỉ số vận hành thực tế với mức đã cam kết. Chọn mục phù hợp nhất với tình huống.", "jp": "実績を合意した水準と比較して改善する。 最も適切な項目を選べ。", "opts": ["サービスデスク", "SLA", "ITサービスマネジメント", "サービスレベル管理"], "ans": 3, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>サービスレベル管理<\/b>: Thống nhất, đo lường và cải thiện mức dịch vụ.<\/p><p>Trong ví dụ: So chỉ số vận hành thực tế với mức đã cam kết.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">サービスデスク: Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">SLA: Thỏa thuận về mức dịch vụ giữa bên cung cấp và bên sử dụng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ITサービスマネジメント: Quản lý dịch vụ IT để đáp ứng nhu cầu và giá trị cho khách hàng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">サービスレベル管理: Thống nhất, đo lường và cải thiện mức dịch vụ.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "実績を合意した水準と比較して改善する。 最も適切な項目を選べ。", "optsJa": ["サービスデスク", "SLA", "ITサービスマネジメント", "サービスレベル管理"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>サービスレベル管理<\/b>: サービス水準を合意し測定・改善する活動。<\/p><p>例: 実績を合意した水準と比較して改善する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">サービスデスク: 利用者とサービス提供者の連絡窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">SLA: 提供者と利用者が合意したサービス水準。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ITサービスマネジメント: 顧客のニーズと価値を満たすようITサービスを管理すること。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">サービスレベル管理: サービス水準を合意し測定・改善する活動。<\/div>"]}, {"d": "med", "q": "Người dùng báo lỗi và hỏi hỗ trợ tại cùng một đầu mối. Chọn mục phù hợp nhất với tình huống.", "jp": "利用者が障害や問い合わせを一つの窓口へ伝える。 最も適切な項目を選べ。", "opts": ["サービスデスク", "ITサービスマネジメント", "サービスレベル管理", "ITIL"], "ans": 0, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>サービスデスク<\/b>: Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/p><p>Trong ví dụ: Người dùng báo lỗi và hỏi hỗ trợ tại cùng một đầu mối.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">サービスデスク: Đầu mối liên hệ giữa người dùng và nhà cung cấp dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ITサービスマネジメント: Quản lý dịch vụ IT để đáp ứng nhu cầu và giá trị cho khách hàng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">サービスレベル管理: Thống nhất, đo lường và cải thiện mức dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ITIL: Tập kiến thức và thực hành quản lý dịch vụ IT.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "利用者が障害や問い合わせを一つの窓口へ伝える。 最も適切な項目を選べ。", "optsJa": ["サービスデスク", "ITサービスマネジメント", "サービスレベル管理", "ITIL"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>サービスデスク<\/b>: 利用者とサービス提供者の連絡窓口。<\/p><p>例: 利用者が障害や問い合わせを一つの窓口へ伝える。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">サービスデスク: 利用者とサービス提供者の連絡窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ITサービスマネジメント: 顧客のニーズと価値を満たすようITサービスを管理すること。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">サービスレベル管理: サービス水準を合意し測定・改善する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ITIL: ITサービス管理の知識や実践をまとめた枠組み。<\/div>"]}, {"d": "med", "q": "Dùng biện pháp tạm để dịch vụ hoạt động lại trước. Chọn mục phù hợp nhất với tình huống.", "jp": "まず暫定手段でサービスを再開する。 最も適切な項目を選べ。", "opts": ["問題管理", "既知の誤り", "インシデント管理", "ワークアラウンド"], "ans": 2, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>インシデント管理<\/b>: Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/p><p>Trong ví dụ: Dùng biện pháp tạm để dịch vụ hoạt động lại trước.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">問題管理: Tìm và xử lý nguyên nhân của sự cố để giảm tái diễn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">既知の誤り: Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">インシデント管理: Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ワークアラウンド: Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "まず暫定手段でサービスを再開する。 最も適切な項目を選べ。", "optsJa": ["問題管理", "既知の誤り", "インシデント管理", "ワークアラウンド"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>インシデント管理<\/b>: 通常のサービスを早く回復し影響を抑える活動。<\/p><p>例: まず暫定手段でサービスを再開する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">問題管理: インシデントの原因を調べ再発を防ぐ活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">既知の誤り: 分析済みで原因や回避方法を記録した問題。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">インシデント管理: 通常のサービスを早く回復し影響を抑える活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ワークアラウンド: 恒久解決まで影響を軽減する回避方法。<\/div>"]}, {"d": "med", "q": "Nhiều lỗi lặp lại cần xác định nguyên nhân gốc. Chọn mục phù hợp nhất với tình huống.", "jp": "繰り返す障害の根本原因を調べる。 最も適切な項目を選べ。", "opts": ["インシデント管理", "問題管理", "既知の誤り", "ワークアラウンド"], "ans": 1, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>問題管理<\/b>: Tìm và xử lý nguyên nhân của sự cố để giảm tái diễn.<\/p><p>Trong ví dụ: Nhiều lỗi lặp lại cần xác định nguyên nhân gốc.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">インシデント管理: Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">問題管理: Tìm và xử lý nguyên nhân của sự cố để giảm tái diễn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">既知の誤り: Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ワークアラウンド: Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "繰り返す障害の根本原因を調べる。 最も適切な項目を選べ。", "optsJa": ["インシデント管理", "問題管理", "既知の誤り", "ワークアラウンド"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>問題管理<\/b>: インシデントの原因を調べ再発を防ぐ活動。<\/p><p>例: 繰り返す障害の根本原因を調べる。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">インシデント管理: 通常のサービスを早く回復し影響を抑える活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">問題管理: インシデントの原因を調べ再発を防ぐ活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">既知の誤り: 分析済みで原因や回避方法を記録した問題。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ワークアラウンド: 恒久解決まで影響を軽減する回避方法。<\/div>"]}, {"d": "med", "q": "Nhân viên hỗ trợ tra hồ sơ nguyên nhân đã biết. Chọn mục phù hợp nhất với tình huống.", "jp": "担当者が分析済みの原因や対処法を参照する。 最も適切な項目を選べ。", "opts": ["問題管理", "ワークアラウンド", "インシデント管理", "既知の誤り"], "ans": 3, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>既知の誤り<\/b>: Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/p><p>Trong ví dụ: Nhân viên hỗ trợ tra hồ sơ nguyên nhân đã biết.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">問題管理: Tìm và xử lý nguyên nhân của sự cố để giảm tái diễn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ワークアラウンド: Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">インシデント管理: Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">既知の誤り: Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "担当者が分析済みの原因や対処法を参照する。 最も適切な項目を選べ。", "optsJa": ["問題管理", "ワークアラウンド", "インシデント管理", "既知の誤り"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>既知の誤り<\/b>: 分析済みで原因や回避方法を記録した問題。<\/p><p>例: 担当者が分析済みの原因や対処法を参照する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">問題管理: インシデントの原因を調べ再発を防ぐ活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ワークアラウンド: 恒久解決まで影響を軽減する回避方法。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">インシデント管理: 通常のサービスを早く回復し影響を抑える活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">既知の誤り: 分析済みで原因や回避方法を記録した問題。<\/div>"]}, {"d": "med", "q": "Chuyển sang máy dự phòng trong khi điều tra nguyên nhân. Chọn mục phù hợp nhất với tình huống.", "jp": "原因調査中は代替機で業務を続ける。 最も適切な項目を選べ。", "opts": ["既知の誤り", "インシデント管理", "問題管理", "ワークアラウンド"], "ans": 3, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>ワークアラウンド<\/b>: Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/p><p>Trong ví dụ: Chuyển sang máy dự phòng trong khi điều tra nguyên nhân.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">既知の誤り: Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">インシデント管理: Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">問題管理: Tìm và xử lý nguyên nhân của sự cố để giảm tái diễn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ワークアラウンド: Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "原因調査中は代替機で業務を続ける。 最も適切な項目を選べ。", "optsJa": ["既知の誤り", "インシデント管理", "問題管理", "ワークアラウンド"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>ワークアラウンド<\/b>: 恒久解決まで影響を軽減する回避方法。<\/p><p>例: 原因調査中は代替機で業務を続ける。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">既知の誤り: 分析済みで原因や回避方法を記録した問題。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">インシデント管理: 通常のサービスを早く回復し影響を抑える活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">問題管理: インシデントの原因を調べ再発を防ぐ活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ワークアラウンド: 恒久解決まで影響を軽減する回避方法。<\/div>"]}, {"d": "med", "q": "Duyệt thay đổi cấu hình trước triển khai. Chọn mục phù hợp nhất với tình huống.", "jp": "設定変更の影響を確認して承認する。 最も適切な項目を選べ。", "opts": ["既知の誤り", "インシデント管理", "変更管理", "ワークアラウンド"], "ans": 2, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>変更管理<\/b>: Đánh giá và kiểm soát rủi ro khi thay đổi dịch vụ.<\/p><p>Trong ví dụ: Duyệt thay đổi cấu hình trước triển khai.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">既知の誤り: Vấn đề đã phân tích và biết nguyên nhân hoặc cách xử lý tạm theo hồ sơ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">インシデント管理: Khôi phục dịch vụ bình thường nhanh, giảm ảnh hưởng gián đoạn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">変更管理: Đánh giá và kiểm soát rủi ro khi thay đổi dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ワークアラウンド: Cách tránh hoặc giảm ảnh hưởng khi chưa sửa triệt để.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "設定変更の影響を確認して承認する。 最も適切な項目を選べ。", "optsJa": ["既知の誤り", "インシデント管理", "変更管理", "ワークアラウンド"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>変更管理<\/b>: サービス変更のリスクを評価して統制する活動。<\/p><p>例: 設定変更の影響を確認して承認する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">既知の誤り: 分析済みで原因や回避方法を記録した問題。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">インシデント管理: 通常のサービスを早く回復し影響を抑える活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">変更管理: サービス変更のリスクを評価して統制する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ワークアラウンド: 恒久解決まで影響を軽減する回避方法。<\/div>"]}, {"d": "med", "q": "Điều phối phiên bản, lịch triển khai và thông báo bàn giao. Chọn mục phù hợp nhất với tình huống.", "jp": "版と導入日程と利用案内をまとめて管理する。 最も適切な項目を選べ。", "opts": ["可用性管理", "構成管理", "ITサービス継続管理", "リリース管理"], "ans": 3, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>リリース管理<\/b>: Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/p><p>Trong ví dụ: Điều phối phiên bản, lịch triển khai và thông báo bàn giao.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">可用性管理: Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">構成管理: Quản lý thông tin cấu hình và quan hệ của các thành phần dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ITサービス継続管理: Chuẩn bị duy trì hoặc phục hồi dịch vụ IT sau gián đoạn lớn.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">リリース管理: Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "版と導入日程と利用案内をまとめて管理する。 最も適切な項目を選べ。", "optsJa": ["可用性管理", "構成管理", "ITサービス継続管理", "リリース管理"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>リリース管理<\/b>: 新しい版を利用できるよう計画して導入する活動。<\/p><p>例: 版と導入日程と利用案内をまとめて管理する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">可用性管理: 要求水準でサービスを利用できるよう管理する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">構成管理: サービスを構成する要素と関係の情報を管理する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ITサービス継続管理: 重大な中断時にITサービスを継続・復旧するための管理。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">リリース管理: 新しい版を利用できるよう計画して導入する活動。<\/div>"]}, {"d": "med", "q": "Biết ứng dụng phụ thuộc máy chủ và cấu hình nào. Chọn mục phù hợp nhất với tình huống.", "jp": "アプリがどの機器や設定に依存するか把握する。 最も適切な項目を選べ。", "opts": ["構成管理", "リリース管理", "可用性管理", "キャパシティ管理"], "ans": 0, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>構成管理<\/b>: Quản lý thông tin cấu hình và quan hệ của các thành phần dịch vụ.<\/p><p>Trong ví dụ: Biết ứng dụng phụ thuộc máy chủ và cấu hình nào.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">構成管理: Quản lý thông tin cấu hình và quan hệ của các thành phần dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">リリース管理: Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">可用性管理: Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">キャパシティ管理: Bảo đảm năng lực tài nguyên đáp ứng tải hiện tại và tương lai.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "アプリがどの機器や設定に依存するか把握する。 最も適切な項目を選べ。", "optsJa": ["構成管理", "リリース管理", "可用性管理", "キャパシティ管理"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>構成管理<\/b>: サービスを構成する要素と関係の情報を管理する活動。<\/p><p>例: アプリがどの機器や設定に依存するか把握する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">構成管理: サービスを構成する要素と関係の情報を管理する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">リリース管理: 新しい版を利用できるよう計画して導入する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">可用性管理: 要求水準でサービスを利用できるよう管理する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">キャパシティ管理: 現在と将来の需要に応じた処理能力を確保する活動。<\/div>"]}, {"d": "med", "q": "Theo dõi thời gian hoạt động và cơ chế dự phòng. Chọn mục phù hợp nhất với tình huống.", "jp": "稼働時間と冗長化の仕組みを管理する。 最も適切な項目を選べ。", "opts": ["リリース管理", "構成管理", "可用性管理", "キャパシティ管理"], "ans": 2, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>可用性管理<\/b>: Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/p><p>Trong ví dụ: Theo dõi thời gian hoạt động và cơ chế dự phòng.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">リリース管理: Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">構成管理: Quản lý thông tin cấu hình và quan hệ của các thành phần dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">可用性管理: Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">キャパシティ管理: Bảo đảm năng lực tài nguyên đáp ứng tải hiện tại và tương lai.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "稼働時間と冗長化の仕組みを管理する。 最も適切な項目を選べ。", "optsJa": ["リリース管理", "構成管理", "可用性管理", "キャパシティ管理"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>可用性管理<\/b>: 要求水準でサービスを利用できるよう管理する活動。<\/p><p>例: 稼働時間と冗長化の仕組みを管理する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">リリース管理: 新しい版を利用できるよう計画して導入する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">構成管理: サービスを構成する要素と関係の情報を管理する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">可用性管理: 要求水準でサービスを利用できるよう管理する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">キャパシティ管理: 現在と将来の需要に応じた処理能力を確保する活動。<\/div>"]}, {"d": "med", "q": "Dự báo tải tăng để lên kế hoạch bổ sung năng lực. Chọn mục phù hợp nhất với tình huống.", "jp": "負荷増加を予測し必要な処理能力を計画する。 最も適切な項目を選べ。", "opts": ["可用性管理", "構成管理", "キャパシティ管理", "リリース管理"], "ans": 2, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>キャパシティ管理<\/b>: Bảo đảm năng lực tài nguyên đáp ứng tải hiện tại và tương lai.<\/p><p>Trong ví dụ: Dự báo tải tăng để lên kế hoạch bổ sung năng lực.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">可用性管理: Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">構成管理: Quản lý thông tin cấu hình và quan hệ của các thành phần dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">キャパシティ管理: Bảo đảm năng lực tài nguyên đáp ứng tải hiện tại và tương lai.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">リリース管理: Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "負荷増加を予測し必要な処理能力を計画する。 最も適切な項目を選べ。", "optsJa": ["可用性管理", "構成管理", "キャパシティ管理", "リリース管理"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>キャパシティ管理<\/b>: 現在と将来の需要に応じた処理能力を確保する活動。<\/p><p>例: 負荷増加を予測し必要な処理能力を計画する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">可用性管理: 要求水準でサービスを利用できるよう管理する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">構成管理: サービスを構成する要素と関係の情報を管理する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">キャパシティ管理: 現在と将来の需要に応じた処理能力を確保する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">リリース管理: 新しい版を利用できるよう計画して導入する活動。<\/div>"]}, {"d": "med", "q": "Có phương án địa điểm dự phòng để phục hồi dịch vụ. Chọn mục phù hợp nhất với tình huống.", "jp": "大きな障害に備え代替拠点で復旧する計画を用意する。 最も適切な項目を選べ。", "opts": ["リリース管理", "可用性管理", "キャパシティ管理", "ITサービス継続管理"], "ans": 3, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>ITサービス継続管理<\/b>: Chuẩn bị duy trì hoặc phục hồi dịch vụ IT sau gián đoạn lớn.<\/p><p>Trong ví dụ: Có phương án địa điểm dự phòng để phục hồi dịch vụ.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">リリース管理: Lập kế hoạch và quản lý đưa phiên bản mới vào sử dụng.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">可用性管理: Quản lý khả năng dịch vụ sử dụng được theo mức yêu cầu.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">キャパシティ管理: Bảo đảm năng lực tài nguyên đáp ứng tải hiện tại và tương lai.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ITサービス継続管理: Chuẩn bị duy trì hoặc phục hồi dịch vụ IT sau gián đoạn lớn.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "大きな障害に備え代替拠点で復旧する計画を用意する。 最も適切な項目を選べ。", "optsJa": ["リリース管理", "可用性管理", "キャパシティ管理", "ITサービス継続管理"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>ITサービス継続管理<\/b>: 重大な中断時にITサービスを継続・復旧するための管理。<\/p><p>例: 大きな障害に備え代替拠点で復旧する計画を用意する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">リリース管理: 新しい版を利用できるよう計画して導入する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">可用性管理: 要求水準でサービスを利用できるよう管理する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">キャパシティ管理: 現在と将来の需要に応じた処理能力を確保する活動。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ITサービス継続管理: 重大な中断時にITサービスを継続・復旧するための管理。<\/div>"]}, {"d": "med", "q": "Dựa kết quả đo mức dịch vụ để sửa cách vận hành. Chọn mục phù hợp nhất với tình huống.", "jp": "水準の測定結果から運用を改善する。 最も適切な項目を選べ。", "opts": ["PDCA", "集中サービスデスク", "フォローザサン", "ローカルサービスデスク"], "ans": 0, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>PDCA<\/b>: Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/p><p>Trong ví dụ: Dựa kết quả đo mức dịch vụ để sửa cách vận hành.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">PDCA: Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">集中サービスデスク: Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">フォローザサン: Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ローカルサービスデスク: Bộ phận hỗ trợ đặt gần người dùng tại địa điểm đó.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "水準の測定結果から運用を改善する。 最も適切な項目を選べ。", "optsJa": ["PDCA", "集中サービスデスク", "フォローザサン", "ローカルサービスデスク"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>PDCA<\/b>: 計画、実行、点検、改善を繰り返すサイクル。<\/p><p>例: 水準の測定結果から運用を改善する。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">PDCA: 計画、実行、点検、改善を繰り返すサイクル。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">集中サービスデスク: 複数拠点の対応を一か所へ集約した窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">フォローザサン: 時差のある拠点を引き継いで継続対応する方式。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ローカルサービスデスク: 利用者の拠点近くに設置する窓口。<\/div>"]}, {"d": "med", "q": "Mỗi chi nhánh có nhóm hỗ trợ trực tiếp tại chỗ. Chọn mục phù hợp nhất với tình huống.", "jp": "各支店に利用者向けの現地窓口を置く。 最も適切な項目を選べ。", "opts": ["ローカルサービスデスク", "フォローザサン", "集中サービスデスク", "PDCA"], "ans": 0, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>ローカルサービスデスク<\/b>: Bộ phận hỗ trợ đặt gần người dùng tại địa điểm đó.<\/p><p>Trong ví dụ: Mỗi chi nhánh có nhóm hỗ trợ trực tiếp tại chỗ.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">ローカルサービスデスク: Bộ phận hỗ trợ đặt gần người dùng tại địa điểm đó.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">フォローザサン: Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">集中サービスデスク: Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">PDCA: Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "各支店に利用者向けの現地窓口を置く。 最も適切な項目を選べ。", "optsJa": ["ローカルサービスデスク", "フォローザサン", "集中サービスデスク", "PDCA"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>ローカルサービスデスク<\/b>: 利用者の拠点近くに設置する窓口。<\/p><p>例: 各支店に利用者向けの現地窓口を置く。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">ローカルサービスデスク: 利用者の拠点近くに設置する窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">フォローザサン: 時差のある拠点を引き継いで継続対応する方式。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">集中サービスデスク: 複数拠点の対応を一か所へ集約した窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">PDCA: 計画、実行、点検、改善を繰り返すサイクル。<\/div>"]}, {"d": "med", "q": "Một trung tâm tiếp nhận yêu cầu toàn công ty. Chọn mục phù hợp nhất với tình huống.", "jp": "会社全体の問い合わせを一つのセンターで受ける。 最も適切な項目を選べ。", "opts": ["フォローザサン", "集中サービスデスク", "PDCA", "ローカルサービスデスク"], "ans": 1, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>集中サービスデスク<\/b>: Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/p><p>Trong ví dụ: Một trung tâm tiếp nhận yêu cầu toàn công ty.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">フォローザサン: Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">集中サービスデスク: Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">PDCA: Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">ローカルサービスデスク: Bộ phận hỗ trợ đặt gần người dùng tại địa điểm đó.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "会社全体の問い合わせを一つのセンターで受ける。 最も適切な項目を選べ。", "optsJa": ["フォローザサン", "集中サービスデスク", "PDCA", "ローカルサービスデスク"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>集中サービスデスク<\/b>: 複数拠点の対応を一か所へ集約した窓口。<\/p><p>例: 会社全体の問い合わせを一つのセンターで受ける。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">フォローザサン: 時差のある拠点を引き継いで継続対応する方式。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">集中サービスデスク: 複数拠点の対応を一か所へ集約した窓口。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">PDCA: 計画、実行、点検、改善を繰り返すサイクル。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">ローカルサービスデスク: 利用者の拠点近くに設置する窓口。<\/div>"]}, {"d": "med", "q": "Người dùng thấy một đầu mối dù nhân sự ở nhiều nơi. Chọn mục phù hợp nhất với tình huống.", "jp": "担当者は各地にいても利用者には一つの窓口に見える。 最も適切な項目を選べ。", "opts": ["フォローザサン", "バーチャルサービスデスク", "PDCA", "集中サービスデスク"], "ans": 1, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>バーチャルサービスデスク<\/b>: Các nhóm phân tán cùng tạo một đầu mối nhờ kết nối IT.<\/p><p>Trong ví dụ: Người dùng thấy một đầu mối dù nhân sự ở nhiều nơi.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">フォローザサン: Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">バーチャルサービスデスク: Các nhóm phân tán cùng tạo một đầu mối nhờ kết nối IT.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">PDCA: Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">集中サービスデスク: Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "担当者は各地にいても利用者には一つの窓口に見える。 最も適切な項目を選べ。", "optsJa": ["フォローザサン", "バーチャルサービスデスク", "PDCA", "集中サービスデスク"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>バーチャルサービスデスク<\/b>: 離れた担当者がITを使い一体の窓口として対応する形。<\/p><p>例: 担当者は各地にいても利用者には一つの窓口に見える。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">フォローザサン: 時差のある拠点を引き継いで継続対応する方式。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">バーチャルサービスデスク: 離れた担当者がITを使い一体の窓口として対応する形。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">PDCA: 計画、実行、点検、改善を繰り返すサイクル。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">集中サービスデスク: 複数拠点の対応を一か所へ集約した窓口。<\/div>"]}, {"d": "med", "q": "Đội ca ngày ở mỗi khu vực lần lượt nhận việc hỗ trợ. Chọn mục phù hợp nhất với tình huống.", "jp": "地域ごとの日中担当が順に対応を引き継ぐ。 最も適切な項目を選べ。", "opts": ["バーチャルサービスデスク", "フォローザサン", "PDCA", "集中サービスデスク"], "ans": 1, "why": "<div class=\"reading-vi\" lang=\"vi\"><p><b>フォローザサン<\/b>: Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/p><p>Trong ví dụ: Đội ca ngày ở mỗi khu vực lần lượt nhận việc hỗ trợ.<\/p><\/div>", "details": ["<div class=\"reading-vi\" lang=\"vi\">バーチャルサービスデスク: Các nhóm phân tán cùng tạo một đầu mối nhờ kết nối IT.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">フォローザサン: Chuyển hỗ trợ giữa các vùng múi giờ để phục vụ liên tục.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">PDCA: Chu trình kế hoạch, thực hiện, đánh giá rồi cải tiến dịch vụ.<\/div>", "<div class=\"reading-vi\" lang=\"vi\">集中サービスデスク: Tập trung đầu mối hỗ trợ nhiều nơi tại một trung tâm.<\/div>"], "ref": "ichibanyashashi/15_第15章_サービスマネジメントとシステム監査.md · 15-01 サービスマネジメント; 15-02 SLA; 15-03 サービスデスク; FE_VN chỉ bổ trợ quản lý / 管理の補足", "qJa": "地域ごとの日中担当が順に対応を引き継ぐ。 最も適切な項目を選べ。", "optsJa": ["バーチャルサービスデスク", "フォローザサン", "PDCA", "集中サービスデスク"], "whyJa": "<div class=\"reading-ja\" lang=\"ja\"><p><b>フォローザサン<\/b>: 時差のある拠点を引き継いで継続対応する方式。<\/p><p>例: 地域ごとの日中担当が順に対応を引き継ぐ。<\/p><\/div>", "detailsJa": ["<div class=\"reading-ja\" lang=\"ja\">バーチャルサービスデスク: 離れた担当者がITを使い一体の窓口として対応する形。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">フォローザサン: 時差のある拠点を引き継いで継続対応する方式。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">PDCA: 計画、実行、点検、改善を繰り返すサイクル。<\/div>", "<div class=\"reading-ja\" lang=\"ja\">集中サービスデスク: 複数拠点の対応を一か所へ集約した窓口。<\/div>"]}]</script>
+</body>
+</html>

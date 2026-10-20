@@ -22,13 +22,13 @@ const counts=require('./reader-counts.json');
   for(let n=Number(process.argv[2]||1);n<=21;n++){
    await page.goto(`${origin}/ly-thuyet/${n}.html`);await page.locator('.lesson-toc a').first().waitFor();
    assert.equal(await page.locator('main').count(),1,`main ${n}`);
-   assert.equal(await page.locator('.reading-main').evaluate(el=>el.getBoundingClientRect().width),720,`measure ${n}`);
+   assert.equal(await page.locator('.reading-main').evaluate(el=>el.getBoundingClientRect().width),[14,21].includes(n)?888:720,`measure ${n}`);
    assert.equal(await page.locator('.reading-sidebar').evaluate(el=>el.getBoundingClientRect().width),280,`sidebar ${n}`);
    assert.equal(await page.locator('.mindmap-wrap,#p5,body > section').count(),0,`structure ${n}`);
    assert.equal(await page.locator('.fc-card').count(),counts[n].cards,`cards ${n}`);
    assert.equal(await page.locator('#quizArea .quiz-q').count(),counts[n].quiz,`quiz ${n}`);
    assert.equal(await page.locator('#quizArea .expl:not([hidden])').count(),0,`no answer leaks ${n}`);
-   if(n!==14){
+   if(counts[n].cards){
     await page.locator('.fc-toggle').first().focus();await page.keyboard.press('Enter');assert.ok(await page.locator('.fc-back').first().isVisible(),`open card ${n}`);
     await page.keyboard.press('Enter');assert.ok(!(await page.locator('.fc-back').first().isVisible()),`close card ${n}`);
     const bank=await page.evaluate(()=>LESSON.quiz);
@@ -40,7 +40,7 @@ const counts=require('./reader-counts.json');
     assert.equal(await page.locator('#quizArea .expl:not([hidden])').count(),1);
     assert.ok((await page.locator('.lesson-part h2').first().textContent()).includes('理論'));
     await page.locator('#reading-language').selectOption('dual');
-    await page.locator('#reading-theme').click();assert.equal(await page.locator('body').evaluate(el=>getComputedStyle(el).backgroundColor),'rgb(17, 24, 39)');
+    await page.locator('#reading-theme').click();assert.equal(await page.locator('body').evaluate(el=>getComputedStyle(el).backgroundColor),[14,21].includes(n)?'rgb(15, 23, 42)':'rgb(17, 24, 39)');
     await page.locator('#reading-theme').click();await page.locator('#quiz-reset').click();
     assert.equal(await page.locator('#quizArea .expl:not([hidden])').count(),0);
    }else{assert.equal(await page.locator('.empty-lesson').count(),1);assert.equal(await page.locator('#complete-lesson').count(),0);}

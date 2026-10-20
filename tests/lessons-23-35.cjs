@@ -12,7 +12,7 @@ const bankOf=(file,id)=>JSON.parse(fs.readFileSync(file,'utf8').match(new RegExp
  const catalog=JSON.parse(fs.readFileSync('lessons.json','utf8')).lessons;
  const ids=JSON.parse(fs.readFileSync('roadmap.json','utf8')).stages.flatMap(s=>s.lessons);
  assert.equal(ids.length,61);assert.equal(new Set(ids).size,61);
- for(const n of [27,28]){const l=catalog.find(l=>l.stt===n);assert.equal(l.theory,null);assert.equal(l.test,null);}
+ for(const n of [27,28]){const l=catalog.find(l=>l.stt===n);assert.equal(l.theory,null);assert.equal(l.test,`kiem-tra/${n}.html`);}
  assert.equal(catalog.find(l=>l.stt===24).theory,null);
  for(const n of tests){
   const file=`kiem-tra/${n}.html`,bank=bankOf(file,'quiz-data');
