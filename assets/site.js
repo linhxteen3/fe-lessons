@@ -310,6 +310,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.body.prepend(bar);
 
     try {
+      if (location.protocol === 'file:') return;
       const response = await fetch(base + 'lessons.json');
       if (!response.ok) throw new Error('catalog unavailable');
       const { lessons } = await response.json();
@@ -363,6 +364,7 @@ document.addEventListener('DOMContentLoaded', () => {
   try {
     if (window.parent !== window && window.parent.document.querySelector('#frame')?.contentWindow === window) return;
   } catch { /* A cross-origin preview still needs its own authentication UI. */ }
+  if (location.protocol === 'file:') return;
   const script = document.createElement('script');
   script.type = 'module';
   script.src = new URL('auth.js', document.querySelector('script[src$="assets/site.js"]').src).href;

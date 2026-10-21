@@ -1,0 +1,11 @@
+{
+  "name": "fe-lessons",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/content.cjs",
+    "test:browser": "node --test --test-concurrency=1 tests/*.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

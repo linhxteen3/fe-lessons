@@ -119,7 +119,7 @@ const selector=document.getElementById('reading-language');
 const themeButton=document.getElementById('reading-theme');
 function updateThemeButton(){const dark=document.documentElement.dataset.readingTheme==='dark';themeButton.textContent=dark?t('☀ Sáng','☀ ライト'):t('☾ Tối','☾ ダーク');themeButton.setAttribute('aria-pressed',String(dark));}
 const completion=document.getElementById('complete-lesson');
-function showCompletion(){if(!completion)return;const complete=readerStorage.get('reader-complete:'+LESSON.number,false);completion.setAttribute('aria-pressed',String(complete));completion.textContent=complete?t('✓ Đã hoàn thành · Bấm để bỏ đánh dấu','✓ 完了 · クリックして解除'):t('✓ Đã hoàn thành bài học','✓ このレッスンを完了する');}
+function showCompletion(){if(!completion)return;const complete=readerStorage.get('reader-complete:'+LESSON.number,false);completion.setAttribute('aria-pressed',String(complete));completion.textContent=complete?t('✓ Đã đọc · Bấm để bỏ đánh dấu','✓ 読了 · クリックして解除'):t('✓ Đánh dấu đã đọc','✓ 読了にする');}
 if(completion)completion.onclick=()=>{const value=completion.getAttribute('aria-pressed')!=='true';const saved=readerStorage.set('reader-complete:'+LESSON.number,value);showCompletion();document.getElementById('completion-status').textContent=saved?t('Đã lưu trạng thái đọc trên trình duyệt này.','このブラウザに読了状態を保存しました。'):t('Trình duyệt không cho phép lưu.','このブラウザでは保存できません。');};
 function applyLanguage(value) {
   language=value;document.documentElement.dataset.readingLang=value;document.documentElement.lang=value==='ja'?'ja':'vi';selector.value=value;

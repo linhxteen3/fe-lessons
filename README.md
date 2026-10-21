@@ -13,7 +13,7 @@ FE試験の範囲は多岐にわたり、市販の参考書や学習サイトだ
 ## 主な機能
 
 - **学習ロードマップ**：元の61レッスンと番号を保持し、10の学習目標に整理。科目Aと科目Bの学習方針を分けて表示
-- **進捗の自動保存**：全レッスンの解答と現在位置をブラウザに保存。全問に解答して提出すると自動的に完了。以前の完了記録も保持
+- **進捗の自動保存**：確認テストの解答と現在位置を保存。全問に解答して提出すると自動的に完了。理論の復習問題と読了マークは端末内に別途保存
 - **理論パート**：各分野の要点をまとめたレッスンコンテンツ
 - **演習パート**：各レッスンの確認テスト（現在は10・40・41問の教材あり）。科目A・科目Bの本試験全体を再現した模試ではありません
 - **検索**：タイトル・番号から検索し、目標内の必要なレッスンへアクセス
@@ -45,4 +45,11 @@ FE試験の範囲は多岐にわたり、市販の参考書や学習サイトだ
 
 `roadmap.json` は元の61項目を10目標にまとめた個人向けの提案です。IPAの公式認定カリキュラムやシラバス全範囲の網羅性を保証するものではありません。未公開教材も目標内に表示します。試験情報は2026年10月17日時点で[IPA FE試験情報](https://www.ipa.go.jp/shiken/kubun/fe.html)、シラバスVer.9.2、試験要綱Ver.5.6を参照しています。
 
-ゲストの進捗はブラウザのlocalStorageに保存されます。Googleログイン後はFirebase AuthenticationのUIDごとに分離し、Cloud Firestoreと同期します。初期設定は [FIREBASE_SETUP.md](https://github.com/linhxteen3/fe-lessons/blob/main/FIREBASE_SETUP.md) を参照してください。手動の完了切替は使用せず、全問回答して提出すると完了になります。
+ゲストの進捗はブラウザのlocalStorageに保存されます。Googleログイン後は確認テストの解答・結果・学習進捗をFirebase AuthenticationのUIDごとに分離し、Cloud Firestoreと同期します。理論の復習問題と読了マークはアカウント共通の端末内保存で、同期対象ではありません。初期設定は [FIREBASE_SETUP.md](https://github.com/linhxteen3/fe-lessons/blob/main/FIREBASE_SETUP.md) を参照してください。全問回答して提出するとレッスン完了になり、理論の読了マークとは別に管理します。
+
+## ローカル実行とテスト
+
+`python -m http.server 8000` を実行し、http://localhost:8000 を開きます。ビルドは不要です。
+Node.js 22以降で `npm test` を実行すると、教材データと共有ファイルへの参照を検査できます。
+ブラウザテストは `npm install`、必要なら `npx playwright install msedge` の後に
+`npm run test:browser` で実行します。ファイル構成と開発手順は [DEVELOPMENT.md](DEVELOPMENT.md) を参照してください。

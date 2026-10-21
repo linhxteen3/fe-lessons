@@ -43,6 +43,12 @@ const counts=require('./reader-counts.json');
     await page.locator('#reading-theme').click();assert.equal(await page.locator('body').evaluate(el=>getComputedStyle(el).backgroundColor),[14,21].includes(n)?'rgb(15, 23, 42)':'rgb(17, 24, 39)');
     await page.locator('#reading-theme').click();await page.locator('#quiz-reset').click();
     assert.equal(await page.locator('#quizArea .expl:not([hidden])').count(),0);
+    const completion=page.locator('#complete-lesson');
+    assert.equal(await completion.textContent(),'✓ Đánh dấu đã đọc');
+    await completion.click();
+    assert.equal(await completion.textContent(),'✓ Đã đọc · Bấm để bỏ đánh dấu');
+    assert.equal(await page.evaluate(n=>JSON.parse(localStorage.getItem('fe-lessons:v1:reader-complete:'+n)),n),true);
+    await completion.click();
    }else{assert.equal(await page.locator('.empty-lesson').count(),1);assert.equal(await page.locator('#complete-lesson').count(),0);}
    await page.setViewportSize({width:390,height:844});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`mobile overflow ${n}: `+JSON.stringify(await page.evaluate(()=>[...document.querySelectorAll('body *')].filter(e=>e.getBoundingClientRect().right>innerWidth+1&&!e.closest('.table-scroll')).slice(0,6).map(e=>({tag:e.tagName,cls:e.className,width:e.getBoundingClientRect().width})))));
    if([1,5,9,15,21].includes(n))await page.screenshot({path:path.join(require('node:os').tmpdir(),`fe-reader-${n}-mobile.png`)});

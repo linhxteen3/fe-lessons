@@ -22,6 +22,7 @@ const {chromium}=require('playwright');
   assert.ok((await page.locator('.source-intro').innerText()).includes('Lesson 04-04'));
   assert.ok(await page.evaluate(()=>document.querySelector('.reading-sidebar').getBoundingClientRect().left>=document.querySelector('main').getBoundingClientRect().right));
   await page.locator('#reading-language').selectOption('ja');
+  await page.locator('#p1 .preserved-theory > summary').click();
   assert.ok((await page.locator('#lesson-22-topic-1').innerText()).includes('入力装置'));
   await page.locator('.fc-toggle').first().click();assert.ok(await page.locator('.fc-back').first().isVisible());
   await page.locator('#zen-toggle').click();assert.ok(!(await page.locator('.reading-sidebar').isVisible()));
