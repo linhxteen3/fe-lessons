@@ -21,6 +21,7 @@ const counts=require('./reader-counts.json');
   const origin=`http://127.0.0.1:${server.address().port}`;
   for(let n=Number(process.argv[2]||1);n<=21;n++){
    await page.goto(`${origin}/ly-thuyet/${n}.html`);await page.locator('.lesson-toc a').first().waitFor();
+   assert.equal(await page.locator('.lesson-hero').evaluate(el=>getComputedStyle(el).animationName),'none',`reduced motion ${n}`);
    assert.equal(await page.locator('main').count(),1,`main ${n}`);
    assert.equal(await page.locator('.reading-main').evaluate(el=>el.getBoundingClientRect().width),[14,21].includes(n)?888:720,`measure ${n}`);
    assert.equal(await page.locator('.reading-sidebar').evaluate(el=>el.getBoundingClientRect().width),280,`sidebar ${n}`);
@@ -103,6 +104,11 @@ const counts=require('./reader-counts.json');
   const topic=page.locator('.reading-subitem').nth(3);const hash=await topic.getAttribute('href');await topic.click();
   await page.waitForFunction(hash=>document.querySelector('.lesson-toc a[aria-current="location"]')?.getAttribute('href')===hash,hash);
   await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:path.join(require('node:os').tmpdir(),'fe-reader-shared-desktop.png')});
-  assert.deepEqual(errors,[]);console.log('All 21 pages passed; resume/score, preferences and scrollspy verified.');
+  await page.emulateMedia({reducedMotion:'no-preference'});
+  await page.goto(`${origin}/ly-thuyet/1.html`);
+  assert.equal(await page.locator('.lesson-hero').evaluate(el=>getComputedStyle(el).animationName),'reading-enter');
+  await page.locator('.fc-toggle').first().click();
+  assert.equal(await page.locator('.fc-back').first().evaluate(el=>getComputedStyle(el).animationName),'reading-answer');
+  assert.deepEqual(errors,[]);console.log('All 21 pages passed; motion, resume/score, preferences and scrollspy verified.');
  }finally{await browser.close();server.close();}
 })();

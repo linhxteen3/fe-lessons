@@ -5,6 +5,13 @@ const { test } = require('node:test');
 const catalog = JSON.parse(fs.readFileSync('lessons.json', 'utf8')).lessons;
 const roadmap = JSON.parse(fs.readFileSync('roadmap.json', 'utf8'));
 
+test('Every published theory loads the shared reading layout', () => {
+  for (const lesson of catalog.filter(lesson => lesson.theory)) {
+    const html = fs.readFileSync(lesson.theory, 'utf8');
+    assert.equal((html.match(/href="\.\.\/assets\/theory-layout\.css"/g) || []).length, 1, lesson.theory);
+  }
+});
+
 function data(file, id) {
   const html = fs.readFileSync(file, 'utf8');
   const match = html.match(new RegExp(`<script[^>]*id="${id}"[^>]*>([\\s\\S]*?)</script>`));

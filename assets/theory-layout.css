@@ -1,0 +1,80 @@
+/* Reading layout only: keep each lesson's palette and interactive content. */
+:root { --reading-ease: cubic-bezier(.2,.7,.2,1); }
+.reading-main { min-width: 0; }
+.lesson-hero {
+  position: relative;
+  padding: 32px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--surface);
+  border-top: 4px solid var(--accent);
+}
+.lesson-hero h1 { margin-bottom: 0; text-wrap: balance; }
+html[data-reading-lang="dual"] .lesson-hero h1 span + span { font-size: .68em; color: var(--muted); margin-top: 16px; font-weight: 500; }
+.lesson-eyebrow { font-size: 12px; letter-spacing: 0; border-radius: 6px; }
+.lesson-recap { border-radius: 16px; box-shadow: none; padding: 24px; }
+.lesson-recap h2 { font-size: 16px; }
+.lesson-recap dt, .lesson-recap dd { font-size: 14px; }
+.lesson-part-title { align-items: baseline; padding-bottom: 16px; gap: 14px; }
+.reading-topic {
+  padding: 28px;
+  margin-bottom: 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.reading-topic:last-child { border: 1px solid var(--line); padding-bottom: 28px; }
+.reading-topic > h3 { padding-bottom: 18px; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+.lang-row .label { font-size: 12px; letter-spacing: 0; }
+.lang-row .content { line-height: 1.85; }
+.lang-row.jp, .lang.jp, .l-jp { border-color: var(--accent); }
+.reading-sidebar .lesson-toc h3 { font-size: 13px; letter-spacing: 0; }
+.lesson-toc a { border-radius: 0 8px 8px 0; padding: 9px 12px; font-size: 13px; }
+.lesson-toc a.reading-subitem { font-size: 12px; }
+.reading-sidebar > .lesson-toc { padding: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; }
+.reading-vocab { border-radius: 16px; box-shadow: none; }
+.reading-controls button, .reading-controls select { min-height: 36px; border-radius: 8px; }
+.fc-card, .example-box, .quiz-q, .quick-check { box-shadow: none; border-radius: 12px; }
+.fc-card, .opt, .btn, .reading-controls button, .lesson-toc a, .vocab-toggle {
+  transition: transform 160ms var(--reading-ease), background-color 160ms, border-color 160ms;
+}
+.fc-card:focus-within { border-color: var(--accent); }
+.btn:active, .reading-controls button:active { transform: translateY(1px); }
+.lesson-toc a:focus-visible, button:focus-visible, select:focus-visible { transition: none; }
+@keyframes reading-enter {
+  from { opacity: .3; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes reading-answer {
+  from { opacity: .4; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lesson-hero { animation: reading-enter 480ms var(--reading-ease); }
+  .lesson-recap { animation: reading-enter 600ms var(--reading-ease); }
+  .fc-back:not([hidden]), .expl:not([hidden]), .vocab-meaning:not([hidden]), details[open] > .reference-body {
+    animation: reading-answer 240ms var(--reading-ease);
+  }
+  @supports (animation-timeline: view()) {
+    .reading-topic, .teaching-unit {
+      animation: reading-enter linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 20%;
+    }
+  }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .fc-card:hover { transform: translateY(-3px); }
+  .opt:not(:disabled):hover { transform: translateX(3px); }
+}
+@media (max-width: 800px) {
+  .lesson-hero { padding: 24px 20px; border-radius: 16px; }
+  .lesson-recap { padding: 20px; }
+  .reading-topic, .reading-topic:last-child { padding: 20px 16px; border-radius: 12px; }
+  .reading-controls button, .reading-controls select { min-height: 40px; }
+  .reading-topic > h3 { font-size: 19px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

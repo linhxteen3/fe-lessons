@@ -1,0 +1,192 @@
+/* Lesson 01 classroom prototype; the original reader stays available separately. */
+html:has(body.classroom) {
+  color-scheme: dark;
+  --bg: #181818; --surface: #222222; --soft: #292929; --text: #f2f2f2;
+  --muted: #b2b5b3; --line: #3d4140; --accent: #43d995; --tint: #20382c;
+  --tip-bg: #332e20; --tip-text: #f0d795; --tip-line: #b89a53;
+  --good-bg: #20382c; --good: #83e7b7; --bad-bg: #3d2429; --bad: #ffa6b0;
+  --lab-button: #167746; --lab-button-ink: #ffffff;
+  --lab-orange: #ffb36b; --lab-orange-soft: #3a2c20;
+}
+.classroom #reading-theme { display: none; }
+.classroom .reading-main { display: grid; grid-template-columns: minmax(0,1fr) 184px; gap: 0 28px; align-items: start; }
+.classroom .lesson-hero { grid-column: 1 / -1; }
+.classroom .reading-main > :not(.lesson-hero):not(.classroom-toolbar) { grid-column: 1; min-width: 0; }
+.classroom .classroom-toolbar { grid-column: 2; grid-row: 2 / span 10; position: sticky; top: 84px; flex-direction: column; overflow-x: visible; }
+.classroom .btn.primary { background: var(--lab-button); color: var(--lab-button-ink); border-color: var(--lab-button); }
+.classroom .classroom-toolbar button { text-align: left; border-color: transparent; background: transparent; border-radius: 8px; }
+.classroom .classroom-toolbar button[aria-current], .classroom .classroom-toolbar button[aria-pressed="true"] { background: var(--tint); color: var(--accent); border-color: var(--line); }
+.classroom .bit-lab { padding: 28px; border-radius: 14px; }
+.classroom .layout { max-width: 1240px; }
+.classroom .lesson-part > .reading-topic { background: var(--surface); }
+.classroom .lesson-hero h1 { color: var(--text); }
+.classroom .bit-switch[aria-pressed="true"] strong { text-shadow: 0 0 24px var(--accent); }
+.classroom .lab-heading h2 { font-size: 30px; }
+.extra-labs { margin-top: 40px; }
+.experiment { padding-top: 32px; margin-top: 32px; border-top: 1px solid var(--line); }
+.experiment-number { color: var(--lab-orange); font-size: 13px; }
+.experiment h2 { margin: 12px 0; font-size: 26px; }
+.experiment > p { color: var(--muted); font-size: 15px; }
+.experiment label { display: block; margin: 16px 0 8px; font-size: 14px; }
+.experiment select { max-width: 100%; min-height: 44px; }
+.experiment input[type="range"] { width: 100%; min-height: 44px; accent-color: var(--lab-orange); cursor: pointer; touch-action: pan-y; }
+.unit-ladder { display: flex; gap: 8px; justify-content: space-between; margin: 12px 0 20px; }
+.unit-ladder button { flex: 1; min-width: 0; min-height: 44px; text-align: center; padding: 10px 4px; background: var(--soft); border: 1px solid var(--line); border-radius: 8px; font-size: 14px; }
+.unit-ladder button[aria-pressed="true"] { color: var(--lab-orange); border-color: var(--lab-orange); background: var(--lab-orange-soft); }
+#unit-result, #fraction-result { display: block; padding: 20px; background: var(--soft); border-radius: 10px; font: 500 16px/1.8 var(--mono); overflow-wrap: anywhere; }
+.encoding-flow { display: flex; gap: 24px; align-items: center; margin: 24px 0; }
+.character-stage { font-size: 48px; min-width: 84px; text-align: center; background: var(--soft); border-radius: 12px; padding: 8px; }
+.codepoint-stage { font-family: var(--mono); overflow-wrap: anywhere; min-width: 0; }
+.encoded-bytes > p { color: var(--muted); font-size: 14px; }
+.encoded-bytes > div { display: flex; flex-wrap: wrap; gap: 12px; }
+.encoded-bytes span { padding: 16px; background: var(--soft); border: 1px solid var(--line); border-radius: 10px; text-align: center; }
+.encoded-bytes strong { display: block; font: 600 24px var(--mono); color: var(--accent); }
+.encoded-bytes small { display: block; margin-top: 8px; font: 12px var(--mono); }
+.fraction-controls { display: flex; gap: 12px; margin: 24px 0; }
+.fraction-bit { background: var(--soft); border: 1px solid var(--line); padding: 16px 24px; border-radius: 10px; min-height: 80px; }
+.fraction-bit strong, .fraction-bit span { display: block; }
+.fraction-bit strong { font-size: 24px; }
+.fraction-bit span { color: var(--muted); }
+.fraction-bit[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); background: var(--tint); }
+.fraction-meter { display: grid; grid-template-columns: repeat(8,minmax(0,1fr)); gap: 4px; height: 32px; margin-bottom: 20px; }
+.fraction-meter span { background: var(--soft); border: 1px solid var(--line); border-radius: 4px; transition: background-color 200ms; }
+.fraction-meter .filled { background: var(--accent); }
+.fraction-challenge { margin-top: 20px; font-size: 14px; }
+#fraction-feedback { color: var(--accent); min-height: 28px; }
+@media (max-width: 600px) {
+  .classroom .bit-lab { padding: 24px 16px; }
+  .encoding-flow { gap: 12px; }
+  .codepoint-stage { font-size: 13px; }
+  .fraction-bit { padding: 12px 20px; }
+}
+.classroom .layout, .classroom.zen .layout { display: block; max-width: 1240px; }
+.classroom .reading-main { max-width: none; }
+.classroom .reading-sidebar, .classroom #zen-toggle { display: none; }
+.classroom .lesson-hero { border: 0; background: none; padding: 0 0 24px; margin-bottom: 12px; }
+.classroom .lesson-hero h1 { font-size: 36px; }
+.classroom-toolbar { display: flex; gap: 8px; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 12px; margin: 0 0 32px; scroll-margin-top: 84px; }
+.classroom-toolbar button { flex-shrink: 0; padding: 12px 16px; font-size: 13px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.classroom-toolbar button[aria-current], .classroom-toolbar button[aria-pressed="true"] { background: var(--tint); color: var(--accent); border-color: var(--accent); }
+.bit-lab { border: 1px solid var(--line); background: var(--surface); border-radius: 20px; padding: 36px; }
+.lab-heading > span { color: var(--accent); font-size: 13px; }
+.lab-heading h2 { font-size: 32px; letter-spacing: -.8px; margin: 12px 0; }
+.lab-heading p { color: var(--muted); max-width: 65ch; }
+.byte-switches { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 10px; margin: 32px 0; }
+.bit-switch { min-width: 0; padding: 12px 4px; border: 1px solid var(--line); border-radius: 12px; background: var(--soft); display: flex; flex-direction: column; gap: 8px; align-items: center; transition: transform 180ms, background-color 180ms, border-color 180ms; }
+.bit-switch strong { font: 700 36px/1.2 var(--mono); }
+.bit-switch span { font-size: 12px; color: var(--muted); }
+.bit-switch[aria-pressed="true"] { background: var(--tint); border-color: var(--accent); color: var(--accent); transform: translateY(-4px); }
+.byte-result { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 24px; background: var(--soft); border-radius: 12px; font-variant-numeric: tabular-nums; }
+.byte-result div { min-width: 0; }
+.byte-result div > span { display: block; font-size: 13px; color: var(--muted); }
+.byte-result strong { font: 600 clamp(18px, 2.7vw, 30px)/1.6 var(--mono); }
+.lab-inspector, .base-controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 24px; font-size: 14px; }
+.lab-inspector p { margin: 0; font-family: var(--mono); }
+.bit-lab select { background: var(--surface); border: 1px solid var(--line); padding: 8px 12px; border-radius: 8px; }
+#base-output { font: 600 18px var(--mono); color: var(--accent); }
+#byte-reset { margin-left: auto; }
+.lab-question { border-top: 1px solid var(--line); margin-top: 32px; padding-top: 28px; }
+.lab-question h3 { font-size: 18px; }
+.lab-answers { display: flex; gap: 12px; }
+.lab-answers .btn { min-width: 72px; }
+.lab-answers [aria-pressed="true"] { background: var(--tint); border-color: var(--accent); }
+#lab-feedback { min-height: 28px; margin: 20px 0 0; }
+.classroom-next { display: block; margin: 28px 0 0 auto; }
+.classroom .lesson-footer { margin-top: 40px; }
+@media (prefers-reduced-motion: no-preference) {
+  .classroom .lesson-part:not([hidden]), .bit-lab:not([hidden]) { animation: reading-enter 320ms var(--reading-ease); }
+}
+@media (max-width: 600px) {
+  .classroom .layout { width: calc(100% - 24px); margin-top: 24px; }
+  .classroom .lesson-hero h1 { font-size: 28px; }
+  .classroom-toolbar { flex-wrap: nowrap; overflow-x: auto; padding: 4px 4px 12px; }
+  .classroom-toolbar button { flex-shrink: 0; }
+  .bit-lab { padding: 24px 16px; }
+  .lab-heading h2 { font-size: 26px; }
+  .byte-switches { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .bit-switch { padding: 12px 2px; border-radius: 8px; min-height: 104px; }
+  .bit-switch strong { font-size: 25px; }
+  .bit-switch span { font-size: 10px; }
+  .byte-result { flex-wrap: wrap; padding: 16px; gap: 12px; }
+  .byte-result > div:first-child { flex-basis: 100%; }
+  .byte-result > span:first-of-type { display: none; }
+  .lab-inspector, .base-controls { gap: 10px; }
+  .lab-inspector label, .base-controls label { flex-basis: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .bit-switch { transition: none; transform: none; } }
+
+.radix-lab { padding: 24px 0; }
+.radix-intro { color: var(--muted); font-size: 15px; }
+.radix-controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.radix-controls select { min-height: 44px; padding: 8px 12px; background: var(--soft); border: 1px solid var(--line); border-radius: 8px; }
+.radix-symbols { display: flex; flex-wrap: wrap; gap: 6px; margin: 20px 0; }
+.radix-symbols span { padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; font-family: var(--mono); color: var(--muted); }
+.radix-digits { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0; }
+.radix-digit { min-width: 72px; padding: 16px; background: var(--soft); border: 1px solid var(--line); border-bottom-width: 4px; border-radius: 10px; text-align: center; }
+.radix-digit small, .radix-digit strong { display: block; }
+.radix-digit small { color: var(--muted); font: 12px var(--mono); }
+.radix-digit strong { font: 600 36px var(--mono); margin: 8px 0; }
+.radix-digit.changed { background: var(--lab-orange-soft); border-color: var(--lab-orange); color: var(--lab-orange); }
+.radix-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+#radix-equation { display: block; margin-top: 20px; font: 14px/1.8 var(--mono); overflow-wrap: anywhere; }
+#radix-feedback { min-height: 54px; color: var(--lab-orange); margin: 16px 0 0; }
+.radix-reference { padding-top: 16px; border-top: 1px solid var(--line); }
+.radix-reference > summary { cursor: pointer; color: var(--muted); padding: 12px 0; }
+.reading-experiment > p { font-size: 15px; color: var(--muted); }
+.reading-experiment select { background: var(--soft); border: 1px solid var(--line); padding: 10px; border-radius: 8px; min-height: 44px; }
+.weight-direction { margin: 24px 0 16px; color: var(--lab-orange) !important; }
+.weight-digits { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 20px; }
+.weight-digit { padding: 12px; background: var(--soft); border: 1px solid var(--line); border-radius: 10px; min-width: 64px; }
+.weight-digit strong, .weight-digit small { display: block; }
+.weight-digit strong { font: 600 30px var(--mono); margin: 8px 0; }
+.weight-digit small { font-size: 12px; }
+.weight-digit[aria-pressed="true"], .decimal-choices [aria-pressed="true"] { border-color: var(--lab-orange); color: var(--lab-orange); background: var(--lab-orange-soft); }
+.decimal-dot { font-size: 32px; }
+#weight-selected, .weight-total { display: block; padding: 16px; margin-bottom: 16px; background: var(--soft); border-radius: 8px; overflow-wrap: anywhere; font-size: 15px; }
+#weight-selected { color: var(--lab-orange); }
+.decimal-choices { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0; }
+.decimal-anatomy { display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px; padding: 24px 16px; border: 1px solid var(--line); border-radius: 12px; }
+.decimal-anatomy > div { min-width: 0; }
+.decimal-anatomy strong { font: 600 clamp(22px,3vw,34px) var(--mono); overflow-wrap: anywhere; }
+.decimal-anatomy > div:first-child strong { color: var(--accent); }
+.decimal-anatomy > div:last-child strong { color: var(--lab-orange); }
+.decimal-anatomy div > span { display: block; font-size: 13px; color: var(--muted); margin-top: 8px; }
+.repeating-digits { text-decoration: overline; text-decoration-color: var(--lab-orange); }
+.decimal-type { color: var(--lab-orange); }
+.example-solution > summary { cursor: pointer; color: var(--lab-orange); min-height: 44px; padding: 10px 0; }
+@media (prefers-reduced-motion: no-preference) { .radix-digit.changed { animation: classroom-flip 300ms var(--reading-ease); } }
+@media (max-width: 700px) {
+  .classroom .reading-main { grid-template-columns: minmax(0,1fr) 120px; gap: 0 12px; }
+  .classroom .classroom-toolbar button { white-space: normal; padding: 10px 8px; }
+  .classroom .classroom-toolbar { padding: 0; }
+}
+@media (max-width: 500px) {
+  .classroom .reading-main { display: block; }
+  .classroom .classroom-toolbar { position: static; align-items: stretch; margin-left: auto; width: 160px; }
+}
+
+/* Depth explains the switch state; movement happens only on interaction. */
+.classroom { --switch-shadow: #101713; --switch-edge: #293c32; }
+.classroom .byte-switches { perspective: 1000px; padding: 12px 0; }
+.classroom .bit-switch {
+  position: relative;
+  border-bottom-width: 5px;
+  box-shadow: 0 7px 0 var(--switch-shadow);
+}
+.classroom .bit-switch strong { text-shadow: none; }
+.classroom .fraction-bit { border-bottom-width: 4px; }
+#byte-demo[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); background: var(--tint); }
+.classroom .base-controls { gap: 12px; }
+@keyframes classroom-flip {
+  from { opacity: .5; transform: perspective(900px) rotateX(-12deg) translateY(8px); }
+  to { opacity: 1; transform: perspective(900px) rotateX(0) translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .classroom .bit-switch { transform: rotateX(9deg); transform-origin: center bottom; transition: transform 220ms var(--reading-ease), background-color 220ms, border-color 220ms; }
+  .classroom .bit-switch[aria-pressed="true"] { transform: translateY(-8px) rotateX(-5deg); }
+  .classroom .bit-switch:active { transform: translateY(4px) rotateX(2deg); }
+  .classroom .fc-card.flipped .fc-back { transform-origin: center top; animation: classroom-flip 380ms var(--reading-ease); }
+  .classroom .encoded-bytes span { animation: classroom-flip 380ms var(--reading-ease); }
+  .classroom .fraction-bit { transition: transform 220ms var(--reading-ease), background-color 220ms; }
+  .classroom .fraction-bit[aria-pressed="true"] { transform: perspective(700px) translateY(-4px) rotateX(-8deg); }
+}
