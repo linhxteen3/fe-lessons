@@ -1,5 +1,5 @@
 const $ = selector => document.querySelector(selector);
-let DATA = [], ROADMAP = null, currentLesson = null, track = 'a', expanded = false;
+let DATA = [], ROADMAP = null, currentLesson = null, lastViewedLesson = null, track = 'a', expanded = false;
 
 function nextLesson() {
   const unfinished = DATA.filter(l => (l.theory || l.test) && l.status !== 'p4');
@@ -98,6 +98,7 @@ function renderSubjectB() {
 function openPane(lesson, kind) {
   if (!lesson[kind]) return;
   currentLesson = lesson;
+  lastViewedLesson = lesson;
   FE.write('activity:' + lesson.stt, { startedAt: new Date().toISOString() });
   $('#pPstt').textContent = String(lesson.stt).padStart(2, '0');
   $('#pTopic').textContent = lesson.topic;
@@ -106,7 +107,7 @@ function openPane(lesson, kind) {
   showTab(kind);
   $('#pane').showModal();
   document.body.style.overflow = 'hidden';
-  refreshProgress();
+  if (ROADMAP) refreshProgress();
 }
 function showTab(kind) {
   const src = currentLesson?.[kind];
@@ -120,8 +121,9 @@ function closePane() { $('#pane').close(); }
 $('#pane').addEventListener('close', () => {
   document.body.style.overflow = '';
   $('#frame').src = 'about:blank';
+  if (currentLesson) lastViewedLesson = currentLesson;
   currentLesson = null;
-  refreshProgress();
+  if (ROADMAP) refreshProgress();
   $('#resumeCourse').focus({ preventScroll: true });
 });
 $('#pane').onclick = event => { if (event.target === $('#pane')) closePane(); };
@@ -190,3 +192,66 @@ $('#accountTop').onclick = () => {
     setTimeout(() => $('#toast').classList.remove('show'), 6000);
   }
 };
+
+window.addEventListener('fe-pomodoro-break', () => {
+  const pane = $('#pane');
+  const frame = $('#frame');
+  const showBreakToast = () => {
+    const toast = $('#toast');
+    if (toast) {
+      toast.textContent = FE.read('language', 'vi') === 'ja'
+        ? '☕ 休憩時間です！リラックスコーナーで一息つきましょう。'
+        : '☕ Đến giờ giải lao 5 phút! Hãy thư giãn một chút nhé.';
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 6000);
+    }
+  };
+  const scrollFrameToRelax = () => {
+    try {
+      const doc = $('#frame')?.contentDocument;
+      const relax = doc?.getElementById('lesson-relax');
+      if (relax) {
+        relax.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } catch {
+      // Cross-origin fallback
+    }
+  };
+
+  let targetLesson = currentLesson || lastViewedLesson;
+  if (!targetLesson) {
+    targetLesson = DATA.find(l => l.stt === 1) || {
+      stt: 1,
+      topic: 'n進数の概念 · Khái niệm n進数',
+      theory: 'ly-thuyet/1.html',
+      test: 'kiem-tra/1.html'
+    };
+  }
+
+  let navigated = false;
+  if (pane && pane.open) {
+    if (currentLesson?.theory && $('#tabTheory')?.getAttribute('aria-pressed') !== 'true') {
+      showTab('theory');
+      navigated = true;
+    }
+  } else {
+    showBreakToast();
+    if (pane && targetLesson?.theory) {
+      openPane(targetLesson, 'theory');
+      navigated = true;
+    }
+  }
+
+  const activeLesson = pane?.open ? (currentLesson || targetLesson) : targetLesson;
+  if (frame && activeLesson?.theory) {
+    const isTheoryLoaded = !navigated
+      && frame.contentDocument?.readyState === 'complete'
+      && frame.contentDocument?.location?.pathname?.includes(activeLesson.theory);
+    if (isTheoryLoaded) {
+      scrollFrameToRelax();
+    } else {
+      frame.addEventListener('load', scrollFrameToRelax, { once: true });
+    }
+  }
+});
+
