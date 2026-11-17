@@ -14,7 +14,15 @@
   const getLang = () => document.getElementById('reading-language')?.value || document.documentElement.dataset.readingLang || 'dual';
   const tr = (vi, ja) => getLang() === 'ja' ? ja : vi;
 
-  // Ensure standalone lesson pages also have the floating Pomodoro widget and break auto-scroll
+  // Ensure standalone lesson pages also have the floating Pomodoro widget, Japanese font link, and break auto-scroll
+  if (location.protocol.startsWith('http') && location.hostname !== '127.0.0.1') {
+    if (!document.querySelector('link[href*="BIZ+UDPGothic"]')) {
+      const jpFont = document.createElement('link');
+      jpFont.rel = 'stylesheet';
+      jpFont.href = 'https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap';
+      document.head.append(jpFont);
+    }
+  }
   if (window === window.top && location.protocol.startsWith('http') && location.hostname !== '127.0.0.1') {
     if (!document.querySelector('link[href$="pomodoro.css"]')) {
       const pomoCss = document.createElement('link');
@@ -197,7 +205,7 @@
       hero.prepend(back, document.createElement('br'));
     }
     const loadSeq = async () => {
-      for (const src of ['../assets/classroom.js', '../assets/classroom-labs.js', '../assets/classroom-clarity.js']) {
+      for (const src of ['../assets/classroom.js?v=2', '../assets/classroom-labs.js?v=2', '../assets/classroom-clarity.js?v=2']) {
         await new Promise((resolve) => {
           const s = document.createElement('script');
           s.src = src;
@@ -225,8 +233,8 @@
     hero.prepend(back, document.createElement('br'));
   }
 
-  // Build 5-Step Classroom Toolbar & Micro-Lab Container (#bit-lab)
-  const classroomSteps = ['bit-lab', 'p1', 'p2', 'p3', 'p4'];
+  // Build 6-Step Classroom Toolbar & Micro-Lab Container (#bit-lab)
+  const classroomSteps = ['bit-lab', 'p1', 'p2', 'p3', 'p4', 'lesson-relax'];
   let classroomStep = 0;
   let classroomAll = false;
   const classroomLabels = [
@@ -234,7 +242,8 @@
     ['Hiểu kiến thức', '理論を学ぶ'],
     ['Xem ví dụ', '例を読む'],
     ['Lật thẻ ôn tập', '暗記カード'],
-    ['Tự kiểm tra', '確認テスト']
+    ['Tự kiểm tra', '確認テスト'],
+    ['☕ Góc thư giãn', '☕ ひと休み']
   ];
 
   const classroomToolbar = document.createElement('nav');

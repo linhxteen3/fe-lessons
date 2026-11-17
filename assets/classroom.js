@@ -1,13 +1,14 @@
 'use strict';
 const classroomMain = document.querySelector('.reading-main');
-const classroomSteps = ['bit-lab', 'p1', 'p2', 'p3', 'p4'];
+const classroomSteps = ['bit-lab', 'p1', 'p2', 'p3', 'p4', 'lesson-relax'];
 let classroomStep = 0;
 let classroomAll = false;
 let byteValue = 0;
 let selectedBit = 0;
 const classroomLabels = [
   ['Thử với 8 bit', '8ビットを試す'], ['Hiểu kiến thức', '理論を学ぶ'],
-  ['Xem ví dụ', '例を読む'], ['Lật thẻ ôn tập', '暗記カード'], ['Tự kiểm tra', '確認テスト']
+  ['Xem ví dụ', '例を読む'], ['Lật thẻ ôn tập', '暗記カード'], ['Tự kiểm tra', '確認テスト'],
+  ['☕ Góc thư giãn', '☕ ひと休み']
 ];
 const classroomToolbar = document.createElement('nav');
 classroomToolbar.className = 'classroom-toolbar';
@@ -38,7 +39,10 @@ function renderClassroomNavigation(scroll = false) {
   all.setAttribute('aria-pressed', String(classroomAll));
   all.onclick = () => { classroomAll = !classroomAll; renderClassroomNavigation(); };
   classroomToolbar.append(all);
-  classroomSteps.forEach((id, index) => { document.getElementById(id).hidden = !classroomAll && index !== classroomStep; });
+  classroomSteps.forEach((id, index) => {
+    const el = document.getElementById(id);
+    if (el) el.hidden = !classroomAll && index !== classroomStep;
+  });
   document.querySelector('.lesson-recap').hidden = !classroomAll && classroomStep !== 1;
   const relaxSection = document.getElementById('lesson-relax');
   if (relaxSection) relaxSection.hidden = false;

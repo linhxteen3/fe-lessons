@@ -12,7 +12,7 @@
 .quiz-level.hard { color: #ffb5bd; background: #402327; }
 .quiz-level.review { color: #c4a4f5; background: #29213b; }
 .quiz-question-text { font-size: 18px; font-weight: 600; line-height: 1.65; color: #f5f5f5; }
-.quiz-question-jp { margin-top: 10px; padding-left: 12px; border-left: 3px solid #383838; font-size: 15px; color: #bcbcbc; }
+.quiz-question-jp { margin-top: 10px; padding-left: 12px; border-left: 3px solid #383838; font-size: 15.5px; line-height: 1.85; letter-spacing: 0.03em; font-family: "BIZ UDPGothic", "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", Meiryo, sans-serif; color: #bcbcbc; }
 .quiz-extra { margin-top: 16px; overflow-x: auto; }
 .quiz-options { display: grid; gap: 12px; margin: 22px 0 0; }
 .lesson-test button.quiz-option { display: flex; align-items: flex-start; justify-content: flex-start; gap: 14px; width: 100%; padding: 16px 18px !important; border-radius: 12px !important; font-size: 16px; font-weight: 400 !important; text-align: left; line-height: 1.6; }
