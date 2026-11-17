@@ -211,6 +211,7 @@ window.addEventListener('fe-pomodoro-break', () => {
       const doc = $('#frame')?.contentDocument;
       const relax = doc?.getElementById('lesson-relax');
       if (relax) {
+        relax.hidden = false;
         relax.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     } catch {

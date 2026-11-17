@@ -261,6 +261,9 @@ test('Relax Content Section: DOM compliance across all 51 published theory lesso
     // Offline-first SVG icon
     assert.ok(relaxSlice.includes('<svg class="relax-icon"'), `${lesson.theory}: Must have inline SVG icon`);
     assert.ok(!/<img[^>]+src=["']https?:\/\//i.test(relaxSlice), `${lesson.theory}: Must not reference external network images`);
+
+    // Interactive Classroom engine wired
+    assert.ok(html.includes('assets/classroom-all.js'), `${lesson.theory}: Must load assets/classroom-all.js`);
   }
 });
 
