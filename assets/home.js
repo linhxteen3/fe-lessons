@@ -107,7 +107,7 @@ function openPane(lesson, kind) {
   showTab(kind);
   if (!$('#pane').open) $('#pane').showModal();
   const pf = document.getElementById('pomodoroFloating');
-  if (pf && $('#pane').contains && !$('#pane').contains(pf)) $('#pane').appendChild(pf);
+  if (pf && $('#pane').contains && !$('#pane').contains(pf)) $('#pane').appendChild?.(pf);
   document.body.style.overflow = 'hidden';
   if (ROADMAP) refreshProgress();
 }
@@ -123,7 +123,7 @@ function closePane() { $('#pane').close(); }
 $('#pane').addEventListener('close', () => {
   document.body.style.overflow = '';
   const pf = document.getElementById('pomodoroFloating');
-  if (pf && $('#pane').contains(pf)) document.body.appendChild(pf);
+  if (pf && $('#pane').contains?.(pf)) document.body.appendChild?.(pf);
   $('#frame').src = 'about:blank';
   if (currentLesson) lastViewedLesson = currentLesson;
   currentLesson = null;
