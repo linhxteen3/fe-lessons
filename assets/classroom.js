@@ -41,7 +41,7 @@ function renderClassroomNavigation(scroll = false) {
   classroomSteps.forEach((id, index) => { document.getElementById(id).hidden = !classroomAll && index !== classroomStep; });
   document.querySelector('.lesson-recap').hidden = !classroomAll && classroomStep !== 1;
   const relaxSection = document.getElementById('lesson-relax');
-  if (relaxSection) relaxSection.hidden = !classroomAll && classroomStep !== 4;
+  if (relaxSection) relaxSection.hidden = false;
   classroomNext.hidden = classroomAll || classroomStep === classroomSteps.length - 1;
   classroomNext.textContent = t('Phần tiếp theo', '次のステップ');
   classroomNext.onclick = () => { classroomStep++; renderClassroomNavigation(true); };

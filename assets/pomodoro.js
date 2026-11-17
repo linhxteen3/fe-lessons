@@ -368,8 +368,20 @@
     if (resetBtn) resetBtn.onclick = () => reset();
   }
 
+  function syncDialogPosition() {
+    if (typeof document === 'undefined' || !floatingElement) return;
+    const pane = typeof document.getElementById === 'function' ? document.getElementById('pane') : null;
+    if (!pane || typeof pane.contains !== 'function') return;
+    if (pane.open && !pane.contains(floatingElement)) {
+      pane.appendChild(floatingElement);
+    } else if (!pane.open && pane.contains(floatingElement)) {
+      document.body.appendChild(floatingElement);
+    }
+  }
+
   function renderAll() {
     if (floatingElement) {
+      syncDialogPosition();
       renderWidget(floatingElement);
     }
     mountedContainers.forEach(container => {
@@ -412,17 +424,14 @@
 
   function handleDialogSync() {
     if (typeof document === 'undefined') return;
-    const pane = document.getElementById('pane');
-    if (!pane || pane._pomoObserved) return;
+    const pane = typeof document.getElementById === 'function' ? document.getElementById('pane') : null;
+    if (!pane) return;
+    syncDialogPosition();
+    if (pane._pomoObserved) return;
     pane._pomoObserved = true;
 
     const observer = new MutationObserver(() => {
-      if (!floatingElement) return;
-      if (pane.open && !pane.contains(floatingElement)) {
-        pane.appendChild(floatingElement);
-      } else if (!pane.open && pane.contains(floatingElement)) {
-        document.body.appendChild(floatingElement);
-      }
+      syncDialogPosition();
     });
     observer.observe(pane, { attributes: true, attributeFilter: ['open'] });
   }
@@ -536,6 +545,9 @@
       document.addEventListener('DOMContentLoaded', autoInit);
     } else {
       autoInit();
+      if (typeof document.addEventListener === 'function') {
+        document.addEventListener('DOMContentLoaded', handleDialogSync);
+      }
     }
   }
 })(typeof window !== 'undefined' ? window : globalThis);

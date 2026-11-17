@@ -14,6 +14,28 @@
   const getLang = () => document.getElementById('reading-language')?.value || document.documentElement.dataset.readingLang || 'dual';
   const tr = (vi, ja) => getLang() === 'ja' ? ja : vi;
 
+  // Ensure standalone lesson pages also have the floating Pomodoro widget and break auto-scroll
+  if (window === window.top && location.protocol.startsWith('http') && location.hostname !== '127.0.0.1') {
+    if (!document.querySelector('link[href$="pomodoro.css"]')) {
+      const pomoCss = document.createElement('link');
+      pomoCss.rel = 'stylesheet';
+      pomoCss.href = '../assets/pomodoro.css';
+      document.head.append(pomoCss);
+    }
+    if (!window.PomodoroTimer && !document.querySelector('script[src$="pomodoro.js"]')) {
+      const pomoScript = document.createElement('script');
+      pomoScript.src = '../assets/pomodoro.js';
+      document.head.append(pomoScript);
+    }
+    window.addEventListener('fe-pomodoro-break', () => {
+      const relaxEl = document.getElementById('lesson-relax');
+      if (relaxEl) {
+        relaxEl.hidden = false;
+        relaxEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
+
   if (isExplicitOriginal) {
     const hero = document.querySelector('.lesson-hero');
     if (hero && !hero.querySelector('.classroom-switch')) {
@@ -254,7 +276,7 @@
     const recap = document.querySelector('.lesson-recap');
     if (recap) recap.hidden = !classroomAll && classroomStep !== 1;
     const relax = document.getElementById('lesson-relax');
-    if (relax) relax.hidden = !classroomAll && classroomStep !== 4;
+    if (relax) relax.hidden = false;
 
     classroomNext.hidden = classroomAll || classroomStep === classroomSteps.length - 1;
     classroomNext.textContent = tr('Phần tiếp theo →', '次のステップ →');

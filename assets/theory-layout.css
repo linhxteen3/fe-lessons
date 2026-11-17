@@ -1,5 +1,6 @@
 /* Reading layout only: keep each lesson's palette and interactive content. */
 @import url("classroom.css");
+@import url("pomodoro.css");
 :root { --reading-ease: cubic-bezier(.2,.7,.2,1); }
 .reading-main { min-width: 0; }
 .lesson-hero {
