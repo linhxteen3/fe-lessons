@@ -16,10 +16,10 @@
 
   // Ensure standalone lesson pages also have the floating Pomodoro widget, Japanese font link, and break auto-scroll
   if (location.protocol.startsWith('http') && location.hostname !== '127.0.0.1') {
-    if (!document.querySelector('link[href*="BIZ+UDPGothic"]')) {
+    if (!document.querySelector('link[href*="Sawarabi+Mincho"]')) {
       const jpFont = document.createElement('link');
       jpFont.rel = 'stylesheet';
-      jpFont.href = 'https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap';
+      jpFont.href = 'https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap';
       document.head.append(jpFont);
     }
   }

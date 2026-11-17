@@ -1,11 +1,11 @@
 /* Reading layout only: keep each lesson's palette and interactive content. */
-@import url("https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap");
 @import url("classroom.css");
 @import url("pomodoro.css");
 :root {
   --reading-ease: cubic-bezier(.2,.7,.2,1);
-  --font-jp: "BIZ UDPGothic", "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", sans-serif;
-  --sans: Inter, "BIZ UDPGothic", "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", "Segoe UI", sans-serif;
+  --font-jp: "Sawarabi Mincho", "Yu Mincho", "Hiragino Mincho ProN", "BIZ UDPMincho", serif;
+  --sans: Inter, "Sawarabi Mincho", "Yu Mincho", "Hiragino Mincho ProN", "Segoe UI", sans-serif;
 }
 body {
   font-family: var(--sans);
