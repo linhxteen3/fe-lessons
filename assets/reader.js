@@ -50,6 +50,15 @@ function renderCards() {
     wrapper.append(button,back);grid.append(wrapper);
   });
 }
+let readerCatTimer=null;
+function flashReaderCat(isCorrect){
+  let pop=document.getElementById('reader-cat-pop');
+  if(!pop){pop=document.createElement('div');pop.id='reader-cat-pop';pop.className='reader-cat-pop';pop.setAttribute('aria-hidden','true');pop.innerHTML='<img alt="">';document.body.append(pop);}
+  pop.querySelector('img').src=isCorrect?'../assets/cats/love.jpg':'../assets/cats/grumpy.jpg';
+  pop.classList.remove('show','ok','ng');void pop.offsetWidth;
+  pop.classList.add('show',isCorrect?'ok':'ng');
+  clearTimeout(readerCatTimer);readerCatTimer=setTimeout(()=>pop.classList.remove('show'),1100);
+}
 function questionCard(question,index,quick=false) {
   const card=document.createElement('div');card.className=quick?'quick-check':'quiz-q';
   const headingId=(quick?'quick-':'question-')+index;
@@ -65,6 +74,7 @@ function questionCard(question,index,quick=false) {
     });
     const explanation=card.querySelector('.expl');explanation.hidden=false;
     explanation.innerHTML=`<strong>${choice===question.ans?t('✓ Chính xác','✓ 正解'):t('✕ Chưa đúng','✕ 不正解')} · ${t('Đáp án','正解')}: ${'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[question.ans]}</strong>${bilingual(question.expl||question.why||'',question.explJa||question.expl_ja)}`;
+    if(!restoring)flashReaderCat(choice===question.ans);
     if(quick)quickPicks[index]=choice;
     else if(!restoring){picks[index]=choice;readerStorage.set(key,picks);updateResult();}
   }

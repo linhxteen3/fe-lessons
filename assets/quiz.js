@@ -43,6 +43,25 @@ document.addEventListener('DOMContentLoaded', () => {
     return { done, correct, wrong: done - correct };
   };
   const save = () => FE.write('test:' + number, { cur: current, picks, total, updatedAt: new Date().toISOString() });
+  let catPopupTimer = null;
+  function flashCat(isCorrect) {
+    let pop = document.getElementById('quiz-cat-pop');
+    if (!pop) {
+      pop = document.createElement('div');
+      pop.id = 'quiz-cat-pop';
+      pop.className = 'quiz-cat-pop';
+      pop.setAttribute('aria-hidden', 'true');
+      pop.innerHTML = '<img alt="">';
+      document.body.append(pop);
+    }
+    const img = pop.querySelector('img');
+    img.src = isCorrect ? '../assets/cats/love.jpg' : '../assets/cats/grumpy.jpg';
+    pop.classList.remove('show', 'ok', 'ng');
+    void pop.offsetWidth;
+    pop.classList.add('show', isCorrect ? 'ok' : 'ng');
+    clearTimeout(catPopupTimer);
+    catPopupTimer = setTimeout(() => pop.classList.remove('show'), 1100);
+  }
   function jump(index) { current = index; save(); render(); }
   function render() {
     showingResult = false;
@@ -84,9 +103,11 @@ document.addEventListener('DOMContentLoaded', () => {
       </nav>`;
     FE.translateUI();
     app.querySelectorAll('[data-pick]').forEach(button => button.onclick = () => {
-      picks[current] = Number(button.dataset.pick);
+      const choice = Number(button.dataset.pick);
+      picks[current] = choice;
       save();
       render();
+      flashCat(choice === questions[current].ans);
       app.querySelector('#quiz-explain-toggle').focus({ preventScroll: true });
     });
     app.querySelectorAll('[data-jump]').forEach(button => button.onclick = () => jump(Number(button.dataset.jump)));
