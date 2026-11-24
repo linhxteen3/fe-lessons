@@ -1,4 +1,5 @@
 /* Test layout shared by all lessons; 基数変換 is the reference. */
+.hero .meta, .lesson-hero .meta, header .meta { display: none !important; }
 .quiz-progress { margin: 0 0 24px; padding: 16px 20px; background: #1d1d1d; border: 2px solid #383838; border-radius: 16px; }
 .quiz-progress-track { height: 10px; background: #272727; overflow: hidden; border-radius: 99px; }
 .quiz-progress-track > div { height: 100%; background: #04a777; border-radius: inherit; }

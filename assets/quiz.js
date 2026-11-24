@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let showingResult = false;
   const languageBox = document.createElement('div');
   languageBox.className = 'quiz-language';
-  languageBox.innerHTML = '<button type="button" id="quiz-keys-toggle" class="quiz-keys-toggle" aria-expanded="false" aria-controls="quiz-keys-panel">⌨ Phím tắt</button><label for="quiz-language">Tiếng Việt / 日本語</label> <select id="quiz-language" aria-label="Ngôn ngữ / 言語"><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select>';
+  languageBox.innerHTML = '<button type="button" id="quiz-reset-all" class="quiz-keys-toggle">↻ Làm lại tất cả</button><button type="button" id="quiz-keys-toggle" class="quiz-keys-toggle" aria-expanded="false" aria-controls="quiz-keys-panel">⌨ Phím tắt</button><label for="quiz-language">Tiếng Việt / 日本語</label> <select id="quiz-language" aria-label="Ngôn ngữ / 言語"><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select>';
   const keysPanel = document.createElement('div');
   keysPanel.id = 'quiz-keys-panel';
   keysPanel.className = 'quiz-keys-panel';
@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   else app.before(languageBox, keysPanel);
   const languageSelect = languageBox.querySelector('select');
   const keysToggle = languageBox.querySelector('#quiz-keys-toggle');
+  const resetAllBtn = languageBox.querySelector('#quiz-reset-all');
   languageSelect.value = FE.read('language', 'vi') === 'ja' ? 'ja' : 'vi';
   const languageStyle = document.createElement('style');
   languageStyle.textContent = '.quiz-language{display:flex;justify-content:flex-end;align-items:center;flex-wrap:wrap;gap:10px;margin:16px 0;font-size:13px}.quiz-language select{font:inherit;background:#252525;color:#f5f5f5;border:1px solid #444;border-radius:8px;padding:8px 12px}.quiz-language select:focus-visible{outline:2px solid #a579ef;outline-offset:3px}';
@@ -48,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderKeysPanel() {
     const ja = FE.read('language', 'vi') === 'ja';
     keysToggle.textContent = ja ? '⌨ ショートカット' : '⌨ Phím tắt';
+    resetAllBtn.textContent = ja ? '↻ すべてやり直す' : '↻ Làm lại tất cả';
     const labels = ja
       ? { opt0: 'A', opt1: 'B', opt2: 'C', opt3: 'D', prev: '前へ', next: '次へ' }
       : { opt0: 'A', opt1: 'B', opt2: 'C', opt3: 'D', prev: 'Câu trước', next: 'Câu tiếp' };
@@ -78,6 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
     keysToggle.setAttribute('aria-expanded', String(!keysPanel.hidden));
     if (keysPanel.hidden) recordingSlot = null;
     renderKeysPanel();
+  };
+  resetAllBtn.onclick = () => {
+    const ja = FE.read('language', 'vi') === 'ja';
+    if (stats().done > 0 && !confirm(ja ? 'すべての回答をリセットして最初からやり直しますか？' : 'Xóa tất cả đáp án đã chọn và làm lại từ đầu?')) return;
+    picks.fill(null);
+    jump(0);
   };
   const number = Number(location.pathname.match(/\/(\d+)\.html$/)[1]);
   // Reuse the existing Bài 01 attempt format and storage keys for every lesson.

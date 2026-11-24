@@ -48,6 +48,13 @@ const { chromium } = require('playwright');
     await page.keyboard.press('ArrowRight');
     assert.equal(await page.textContent('.quiz-option[data-pick="0"] .quiz-kbd'), '1', 'Reset should restore key 1');
 
+    // Verify redundant hero .meta pills are hidden and "Làm lại tất cả" resets answers
+    assert.equal(await page.isVisible('.hero .meta'), false, 'Hero .meta pills should be hidden');
+    page.once('dialog', d => d.accept());
+    await page.click('#quiz-reset-all');
+    assert.match(await page.textContent('.quiz-number'), /1\//, 'Reset all should return to question 1');
+    assert.equal(await page.getAttribute('.quiz-option[data-pick="0"]', 'aria-pressed'), 'false', 'Reset all should clear previous answer');
+
     console.log('Quiz keyboard shortcuts and custom keybindings passed.');
   } finally {
     await browser.close();
