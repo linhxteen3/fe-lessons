@@ -19,6 +19,23 @@ function refreshProgress() {
   $('#progBarFill').style.width = percent + '%';
   $('#courseProgress').setAttribute('aria-valuemax', DATA.length);
   $('#courseProgress').setAttribute('aria-valuenow', done);
+  const progressCard = $('#progress');
+  if (progressCard) {
+    let cat = progressCard.querySelector('.progress-cat');
+    if (!cat) {
+      cat = document.createElement('img');
+      cat.className = 'progress-cat';
+      cat.alt = '';
+      cat.setAttribute('aria-hidden', 'true');
+      cat.loading = 'lazy';
+      progressCard.querySelector('.section-topline')?.prepend(cat);
+    }
+    cat.src = percent >= 100 ? 'assets/cats/love.jpg'
+      : percent >= 80 ? 'assets/cats/cool-flowers.jpg'
+      : percent >= 40 ? 'assets/cats/coffee.jpg'
+      : percent > 0 ? 'assets/cats/work.jpg'
+      : 'assets/cats/grumpy.jpg';
+  }
   $('#availability').textContent = FE.read('language', 'vi') === 'ja' ? `完了まであと ${DATA.length - done} レッスン` : `Còn ${DATA.length - done} bài để hoàn thành`;
   const next = nextLesson();
   $('#continueTopic').textContent = next ? `${FE.t("Bài")} ${String(next.stt).padStart(2, '0')} · ${next.topic}` : FE.t("Chưa có nội dung bài học.");

@@ -43,6 +43,7 @@
 .quiz-jump-grid button.miss { background: #402327 !important; color: #ffb5bd !important; border-color: #ef4444 !important; }
 .quiz-jump-grid button[aria-current] { outline: 3px solid #a579ef; outline-offset: 2px; }
 .quiz-result { text-align: center; }
+.quiz-result-cat { width: 120px; height: 120px; border-radius: 16px; object-fit: cover; border: 2px solid #383838; margin: 0 auto 14px; display: block; }
 .quiz-result h2 { margin: 0; }
 .quiz-score { margin: 16px 0 0; font-size: 48px; font-weight: 800; color: #f5f5f5; }
 .quiz-verdict { font-size: 18px; margin: 16px 0; }

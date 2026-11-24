@@ -83,10 +83,27 @@ function renderQuiz() {
 function updateResult() {
   const result=document.getElementById('quiz-result');if(!result)return;
   result.hidden=!picks.every(pick=>pick!==null);
-  document.getElementById('qScore').textContent=picks.filter((pick,i)=>pick===QUIZ[i].ans).length+' / '+QUIZ.length;
+  const correct=picks.filter((pick,i)=>pick===QUIZ[i].ans).length;
+  const percent=QUIZ.length?Math.round(correct/QUIZ.length*100):0;
+  let cat=result.querySelector('.reader-result-cat');
+  if(!cat){cat=document.createElement('img');cat.className='reader-result-cat';cat.alt='';cat.setAttribute('aria-hidden','true');cat.loading='lazy';result.prepend(cat);}
+  cat.src=percent>=80?'../assets/cats/heart-paws.jpg':percent>=60?'../assets/cats/cool-flowers.jpg':'../assets/cats/confused.jpg';
+  document.getElementById('qScore').textContent=correct+' / '+QUIZ.length;
   document.getElementById('qVerdict').textContent=t('Xem lại các câu sai để củng cố kiến thức.','間違えた問題を復習して理解を深めましょう。');
   document.querySelector('.reading-resume-note').textContent=picks.some(pick=>pick!==null)?t('Đã khôi phục câu trả lời đã lưu.','保存済みの回答を表示しています。'):t('Chọn đáp án để xem lời giải.','回答を選ぶと解説が表示されます。');
   document.getElementById('quiz-reset').textContent=t('↻ Làm lại','↻ やり直す');
+}
+const RELAX_CATS=['work.jpg','coffee.jpg','heart-paws.jpg','cool-flowers.jpg','love.jpg','grumpy.jpg','loading.jpg','confused.jpg'];
+const relaxMedia=document.querySelector('#lesson-relax .relax-media');
+if(relaxMedia){
+  const relaxImg=document.createElement('img');
+  relaxImg.className='relax-cat';
+  relaxImg.src='../assets/cats/'+RELAX_CATS[LESSON.number%RELAX_CATS.length];
+  relaxImg.alt='';
+  relaxImg.setAttribute('aria-hidden','true');
+  relaxImg.loading='lazy';
+  relaxMedia.classList.add('has-cat');
+  relaxMedia.replaceChildren(relaxImg);
 }
 const reset=document.getElementById('quiz-reset');if(reset)reset.onclick=()=>{picks.fill(null);readerStorage.set(key,picks);renderQuiz();document.querySelector('#quizArea button')?.focus();};
 function renderQuickChecks() {

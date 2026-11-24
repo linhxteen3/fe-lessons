@@ -1227,3 +1227,9 @@ iframe {
 
 #accountTop { border-color:#a579ef; }
 @media (max-width:700px) { .header-actions #resumeTop { display:none; } }
+
+.progress-card .section-topline { align-items:center; gap:12px; }
+.progress-card .section-topline h2 { margin-right:auto; }
+.progress-cat { width:44px; height:44px; border-radius:12px; object-fit:cover; border:1px solid #383838; flex-shrink:0; }
+.empty { display:flex; flex-direction:column; align-items:center; gap:14px; }
+.empty-cat { width:124px; height:124px; border-radius:16px; object-fit:cover; border:1px solid #383838; }

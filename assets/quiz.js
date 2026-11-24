@@ -108,7 +108,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const levels = levelNames();
     const percent = Math.round(correct / total * 100);
+    const resultCat = percent >= 80 ? '../assets/cats/love.jpg'
+      : percent >= 60 ? '../assets/cats/cool-flowers.jpg'
+      : percent >= 30 ? '../assets/cats/coffee.jpg'
+      : '../assets/cats/grumpy.jpg';
     app.innerHTML = `<section class="quiz-result">
+      <img class="quiz-result-cat" src="${resultCat}" alt="" aria-hidden="true" loading="lazy">
       <h2>${FE.t("Kết quả")}</h2><div class="quiz-score">${correct} / ${total}</div><p>${percent}${FE.t("% đúng")}</p>
       <p class="quiz-verdict">${percent >= 80 ? FE.t("🏆 Xuất sắc — Bạn đã nắm vững chủ đề!") : percent >= 60 ? FE.t("👍 Khá — Ôn lại các câu sai để tiến bộ hơn.") : FE.t("💪 Cần luyện thêm — Đọc lại lý thuyết và thử lại nhé.")}</p>
       <p>${FE.t("Đã làm:")} ${done} · ${FE.t("Sai:")} ${wrong} · ${FE.t("Chưa trả lời:")} ${total - done}</p>

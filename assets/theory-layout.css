@@ -128,6 +128,28 @@ html[data-reading-lang="dual"] .lesson-hero h1 span + span { font-size: .68em; c
   color: var(--accent);
   flex-shrink: 0;
 }
+.relax-media.has-cat {
+  width: 96px;
+  height: 96px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--soft);
+}
+.relax-cat {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.reader-result-cat {
+  width: 108px;
+  height: 108px;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  margin: 0 auto 12px;
+  display: block;
+}
 .relax-icon {
   width: 26px;
   height: 26px;
