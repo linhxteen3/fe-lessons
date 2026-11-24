@@ -160,12 +160,12 @@ html[data-reading-lang="dual"] .lesson-hero h1 span + span { font-size: .68em; c
   opacity: 0;
 }
 .reader-cat-pop img {
-  width: 170px;
-  height: 170px;
+  width: min(260px, 68vw);
+  height: min(260px, 68vw);
   object-fit: cover;
-  border-radius: 22px;
+  border-radius: 26px;
   border: 3px solid var(--line);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 22px 54px rgba(0, 0, 0, 0.5);
   transform: scale(0.75);
 }
 .reader-cat-pop.ok img { border-color: #22c55e; }
