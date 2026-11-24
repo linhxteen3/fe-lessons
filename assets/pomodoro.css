@@ -31,7 +31,10 @@
 .coro-card {
   width: 280px;
   padding: 16px 20px 20px;
-  background: var(--pomo-glass-bg);
+  background-color: var(--pomo-glass-bg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--pomo-glass-border);
@@ -39,16 +42,25 @@
   box-shadow: var(--pomo-glass-shadow);
   color: #f8fafc;
   box-sizing: border-box;
+  overflow: hidden;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, border-color 0.2s ease;
   transform-origin: bottom right;
 }
 
 .coro-card.mode-study {
   border-top: 2px solid var(--pomo-focus-accent);
+  background-image:
+    linear-gradient(180deg, rgba(15, 20, 30, 0.66) 0%, rgba(15, 20, 30, 0.5) 45%, rgba(15, 20, 30, 0.72) 100%),
+    url('./pomodoro-study-cat.jpg');
+  background-position: center 38%;
 }
 
 .coro-card.mode-break {
   border-top: 2px solid var(--pomo-break-accent);
+  background-image:
+    linear-gradient(180deg, rgba(15, 20, 30, 0.72) 0%, rgba(15, 20, 30, 0.58) 48%, rgba(15, 20, 30, 0.76) 100%),
+    url('./pomodoro-break-cat.jpg');
+  background-position: center 35%;
 }
 
 /* Header: Mode Badge Tabs & Minimize Button */
@@ -61,7 +73,7 @@
 
 .coro-mode-tabs {
   display: inline-flex;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(15, 20, 30, 0.58);
   padding: 3px;
   border-radius: 9999px;
   gap: 2px;
@@ -74,7 +86,7 @@
   border-radius: 9999px;
   font-size: 11px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255, 255, 255, 0.8);
   cursor: pointer;
   transition: all 0.15s ease;
 }
@@ -84,13 +96,13 @@
 }
 
 .coro-mode-btn.active.tab-study {
-  background: rgba(34, 197, 94, 0.2);
+  background: rgba(34, 197, 94, 0.28);
   color: var(--pomo-focus-accent);
   box-shadow: 0 0 10px var(--pomo-focus-glow);
 }
 
 .coro-mode-btn.active.tab-break {
-  background: rgba(245, 158, 11, 0.2);
+  background: rgba(245, 158, 11, 0.28);
   color: var(--pomo-break-accent);
   box-shadow: 0 0 10px var(--pomo-break-glow);
 }
@@ -100,8 +112,8 @@
   height: 26px;
   border: none;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.6);
+  background: rgba(15, 20, 30, 0.52);
+  color: rgba(255, 255, 255, 0.82);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -155,7 +167,7 @@
   color: #ffffff;
   line-height: 1.05;
   margin: 0;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85);
 }
 
 .coro-mode-label {
@@ -165,6 +177,10 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-top: 6px;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  background: rgba(15, 20, 30, 0.56);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
 }
 
 .mode-study .coro-mode-label {
@@ -229,10 +245,10 @@
 .coro-sub-btn {
   width: 36px;
   height: 36px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.7);
+  background: rgba(15, 20, 30, 0.54);
+  color: rgba(255, 255, 255, 0.85);
   cursor: pointer;
   display: flex;
   align-items: center;

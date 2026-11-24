@@ -719,3 +719,16 @@ test('Break Auto-Scroll Behavior: home.js waits for frame load on tab switch and
   assert.equal(scrollCalls.length, 1, 'Must scroll to #lesson-relax after reopened lesson finishes loading');
   assert.equal(scrollCalls[0].path, '/ly-thuyet/2.html');
 });
+
+test('Pomodoro Timer: Study and break cat background images exist and are wired in pomodoro.css', () => {
+  const assetsDir = path.join(__dirname, '..', 'assets');
+  const studyImg = path.join(assetsDir, 'pomodoro-study-cat.jpg');
+  const breakImg = path.join(assetsDir, 'pomodoro-break-cat.jpg');
+
+  assert.ok(fs.existsSync(studyImg) && fs.statSync(studyImg).size > 0, 'assets/pomodoro-study-cat.jpg must exist and be non-empty');
+  assert.ok(fs.existsSync(breakImg) && fs.statSync(breakImg).size > 0, 'assets/pomodoro-break-cat.jpg must exist and be non-empty');
+
+  const css = fs.readFileSync(path.join(assetsDir, 'pomodoro.css'), 'utf8');
+  assert.match(css, /\.coro-card\.mode-study\s*\{[^}]*url\(['"]?\.\/pomodoro-study-cat\.jpg['"]?\)/, 'pomodoro.css must bind pomodoro-study-cat.jpg to .coro-card.mode-study');
+  assert.match(css, /\.coro-card\.mode-break\s*\{[^}]*url\(['"]?\.\/pomodoro-break-cat\.jpg['"]?\)/, 'pomodoro.css must bind pomodoro-break-cat.jpg to .coro-card.mode-break');
+});
