@@ -18,7 +18,18 @@
 .quiz-options { display: grid; gap: 12px; margin: 22px 0 0; }
 .lesson-test button.quiz-option { display: flex; align-items: flex-start; justify-content: flex-start; gap: 14px; width: 100%; padding: 16px 18px !important; border-radius: 12px !important; font-size: 16px; font-weight: 400 !important; text-align: left; line-height: 1.6; }
 .quiz-letter { min-width: 24px; font-weight: 700; color: #c4a4f5; }
+.quiz-kbd { margin-left: auto; padding: 2px 7px; border-radius: 6px; border: 1px solid #3c3c3c; background: #141414; color: #9c9c9c; font-family: ui-monospace, Consolas, monospace; font-size: 12px; font-weight: 600; line-height: 1.4; flex-shrink: 0; }
 .quiz-answer-mark { margin-left: auto; font-weight: 800; }
+.quiz-keys-toggle { font: inherit; background: #252525; color: #f5f5f5; border: 1px solid #444; border-radius: 8px; padding: 8px 12px; cursor: pointer; }
+.quiz-keys-toggle[aria-expanded="true"] { border-color: #a579ef; color: #c4a4f5; }
+.quiz-keys-panel { margin: 0 0 18px; padding: 14px 16px; background: #181818; border: 1px solid #383838; border-radius: 14px; font-size: 13px; color: #bcbcbc; }
+.quiz-keys-head { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
+.quiz-keys-reset { font: inherit; font-size: 12px; padding: 5px 10px; border-radius: 7px; background: #252525; color: #dedede; border: 1px solid #444; cursor: pointer; }
+.quiz-keys-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(115px, 1fr)); gap: 8px; }
+.quiz-key-btn { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; border-radius: 10px; background: #202020; border: 1px solid #3c3c3c; color: #f5f5f5; font: inherit; cursor: pointer; }
+.quiz-key-btn kbd { padding: 2px 7px; border-radius: 6px; background: #141414; border: 1px solid #4a4a4a; font-family: ui-monospace, Consolas, monospace; font-size: 12px; color: #c4a4f5; }
+.quiz-key-btn.recording { border-color: #a579ef; background: #29213b; }
+.quiz-key-btn.recording kbd { color: #f1cd62; border-color: #f1cd62; }
 .lesson-test button.quiz-option:disabled { opacity: 1 !important; cursor: default !important; }
 .lesson-test button.quiz-option.correct { background: #17372b !important; color: #99e5bd !important; border-color: #04a777 !important; }
 .lesson-test button.quiz-option.wrong { background: #402327 !important; color: #ffb5bd !important; border-color: #ef4444 !important; }

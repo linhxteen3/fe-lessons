@@ -16,15 +16,69 @@ document.addEventListener('DOMContentLoaded', () => {
   let showingResult = false;
   const languageBox = document.createElement('div');
   languageBox.className = 'quiz-language';
-  languageBox.innerHTML = '<label for="quiz-language">Tiếng Việt / 日本語</label> <select id="quiz-language" aria-label="Ngôn ngữ / 言語"><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select>';
+  languageBox.innerHTML = '<button type="button" id="quiz-keys-toggle" class="quiz-keys-toggle" aria-expanded="false" aria-controls="quiz-keys-panel">⌨ Phím tắt</button><label for="quiz-language">Tiếng Việt / 日本語</label> <select id="quiz-language" aria-label="Ngôn ngữ / 言語"><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select>';
+  const keysPanel = document.createElement('div');
+  keysPanel.id = 'quiz-keys-panel';
+  keysPanel.className = 'quiz-keys-panel';
+  keysPanel.hidden = true;
   const controlsHost = document.querySelector('.lesson-hero');
-  if (controlsHost) controlsHost.append(languageBox);
-  else app.before(languageBox);
+  if (controlsHost) controlsHost.append(languageBox, keysPanel);
+  else app.before(languageBox, keysPanel);
   const languageSelect = languageBox.querySelector('select');
+  const keysToggle = languageBox.querySelector('#quiz-keys-toggle');
   languageSelect.value = FE.read('language', 'vi') === 'ja' ? 'ja' : 'vi';
   const languageStyle = document.createElement('style');
-  languageStyle.textContent = '.quiz-language{display:flex;justify-content:flex-end;align-items:center;gap:10px;margin:16px 0;font-size:13px}.quiz-language select{font:inherit;background:#252525;color:#f5f5f5;border:1px solid #444;border-radius:8px;padding:8px 12px}.quiz-language select:focus-visible{outline:2px solid #a579ef;outline-offset:3px}';
+  languageStyle.textContent = '.quiz-language{display:flex;justify-content:flex-end;align-items:center;flex-wrap:wrap;gap:10px;margin:16px 0;font-size:13px}.quiz-language select{font:inherit;background:#252525;color:#f5f5f5;border:1px solid #444;border-radius:8px;padding:8px 12px}.quiz-language select:focus-visible{outline:2px solid #a579ef;outline-offset:3px}';
   document.head.append(languageStyle);
+  const DEFAULT_KEYS = { opt0: '1', opt1: '2', opt2: '3', opt3: '4', prev: 'arrowleft', next: 'arrowright' };
+  const KEY_SLOTS = ['opt0', 'opt1', 'opt2', 'opt3', 'prev', 'next'];
+  const normKey = key => key === ' ' ? 'space' : String(key || '').toLowerCase();
+  const keyLabel = key => ({ arrowleft: '←', arrowright: '→', arrowup: '↑', arrowdown: '↓', space: 'Space', enter: 'Enter' }[key] || String(key || '').toUpperCase());
+  const loadKeys = () => {
+    const raw = FE.read('quiz-keys', null);
+    const out = { ...DEFAULT_KEYS };
+    if (raw && typeof raw === 'object') {
+      KEY_SLOTS.forEach(slot => { if (typeof raw[slot] === 'string' && raw[slot].trim()) out[slot] = normKey(raw[slot]); });
+    }
+    return out;
+  };
+  let keys = loadKeys();
+  let recordingSlot = null;
+  const saveKeys = () => FE.write('quiz-keys', keys);
+  function renderKeysPanel() {
+    const ja = FE.read('language', 'vi') === 'ja';
+    keysToggle.textContent = ja ? '⌨ ショートカット' : '⌨ Phím tắt';
+    const labels = ja
+      ? { opt0: 'A', opt1: 'B', opt2: 'C', opt3: 'D', prev: '前へ', next: '次へ' }
+      : { opt0: 'A', opt1: 'B', opt2: 'C', opt3: 'D', prev: 'Câu trước', next: 'Câu tiếp' };
+    keysPanel.innerHTML = `
+      <div class="quiz-keys-head">
+        <span>${ja ? 'ボタンをクリックして割り当てるキーを押してください（Escでキャンセル）' : 'Bấm vào một ô rồi nhấn phím bất kỳ trên bàn phím để đổi (Esc để hủy)'}</span>
+        <button type="button" class="quiz-keys-reset" id="quiz-keys-reset">${ja ? '初期設定に戻す' : 'Mặc định'}</button>
+      </div>
+      <div class="quiz-keys-grid">${KEY_SLOTS.map(slot => `
+        <button type="button" class="quiz-key-btn ${recordingSlot === slot ? 'recording' : ''}" data-slot="${slot}">
+          <span>${labels[slot]}</span>
+          <kbd>${recordingSlot === slot ? (ja ? '入力待ち…' : 'Nhấn phím…') : keyLabel(keys[slot])}</kbd>
+        </button>`).join('')}</div>`;
+    keysPanel.querySelectorAll('[data-slot]').forEach(btn => btn.onclick = () => {
+      recordingSlot = recordingSlot === btn.dataset.slot ? null : btn.dataset.slot;
+      renderKeysPanel();
+    });
+    keysPanel.querySelector('#quiz-keys-reset').onclick = () => {
+      recordingSlot = null;
+      keys = { ...DEFAULT_KEYS };
+      saveKeys();
+      renderKeysPanel();
+      if (!showingResult) render();
+    };
+  }
+  keysToggle.onclick = () => {
+    keysPanel.hidden = !keysPanel.hidden;
+    keysToggle.setAttribute('aria-expanded', String(!keysPanel.hidden));
+    if (keysPanel.hidden) recordingSlot = null;
+    renderKeysPanel();
+  };
   const number = Number(location.pathname.match(/\/(\d+)\.html$/)[1]);
   // Reuse the existing Bài 01 attempt format and storage keys for every lesson.
   const saved = FE.read('test:' + number, {});
@@ -63,6 +117,14 @@ document.addEventListener('DOMContentLoaded', () => {
     catPopupTimer = setTimeout(() => pop.classList.remove('show'), 1100);
   }
   function jump(index) { current = index; save(); render(); }
+  function pickAnswer(choice) {
+    if (picks[current] !== null || choice < 0 || choice > 3) return;
+    picks[current] = choice;
+    save();
+    render();
+    flashCat(choice === questions[current].ans);
+    app.querySelector('#quiz-explain-toggle')?.focus({ preventScroll: true });
+  }
   function render() {
     showingResult = false;
     const original = questions[current];
@@ -85,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="quiz-options">${q.opts.map((option, i) => `
           <button type="button" class="quiz-option ${answered ? (i === q.ans ? 'correct' : i === picks[current] ? 'wrong' : '') : ''}" data-pick="${i}" aria-pressed="${i === picks[current]}" ${answered ? 'disabled' : ''}>
             <span class="quiz-letter">${letters[i]}.</span><span>${format(option)}</span>
-            ${answered && i === q.ans ? '<span class="quiz-answer-mark">✓</span>' : answered && i === picks[current] ? '<span class="quiz-answer-mark">✕</span>' : ''}
+            ${answered && i === q.ans ? '<span class="quiz-answer-mark">✓</span>' : answered && i === picks[current] ? '<span class="quiz-answer-mark">✕</span>' : `<kbd class="quiz-kbd" aria-hidden="true">${keyLabel(keys['opt' + i])}</kbd>`}
           </button>`).join('')}</div>
         ${answered ? `<p class="quiz-feedback ${picks[current] === q.ans ? 'quiz-good' : 'quiz-bad'}" role="status">${picks[current] === q.ans ? FE.t("✓ Chính xác!") : FE.t("✕ Chưa đúng.")} ${FE.t("Đáp án đúng:")} ${letters[q.ans]}.</p>
           <button type="button" id="quiz-explain-toggle" aria-expanded="false" aria-controls="quiz-explanation">${FE.t("📖 Xem giải thích")}</button>
@@ -102,14 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="quiz-jump-grid">${questions.map((item, i) => `<button type="button" data-jump="${i}" class="${picks[i] === null ? '' : picks[i] === item.ans ? 'done' : 'miss'}" ${i === current ? 'aria-current="step"' : ''} aria-label="${FE.t("Câu")} ${i + 1}, ${picks[i] === null ? FE.t("chưa trả lời") : picks[i] === item.ans ? FE.t("đúng") : FE.t("sai")}">${i + 1}</button>`).join('')}</div>
       </nav>`;
     FE.translateUI();
-    app.querySelectorAll('[data-pick]').forEach(button => button.onclick = () => {
-      const choice = Number(button.dataset.pick);
-      picks[current] = choice;
-      save();
-      render();
-      flashCat(choice === questions[current].ans);
-      app.querySelector('#quiz-explain-toggle').focus({ preventScroll: true });
-    });
+    app.querySelectorAll('[data-pick]').forEach(button => button.onclick = () => pickAnswer(Number(button.dataset.pick)));
     app.querySelectorAll('[data-jump]').forEach(button => button.onclick = () => jump(Number(button.dataset.jump)));
     app.querySelector('#quiz-prev').onclick = () => jump(current - 1);
     app.querySelector('#quiz-next').onclick = () => current === total - 1 ? showResult() : jump(current + 1);
@@ -161,6 +216,35 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     FE.translateUI();
+    renderKeysPanel();
   };
+  document.addEventListener('keydown', e => {
+    if (recordingSlot) {
+      if (['Shift', 'Control', 'Alt', 'Meta', 'CapsLock', 'Tab'].includes(e.key)) return;
+      e.preventDefault();
+      if (e.key === 'Escape') { recordingSlot = null; renderKeysPanel(); return; }
+      const nextKey = normKey(e.key);
+      const conflict = KEY_SLOTS.find(s => s !== recordingSlot && keys[s] === nextKey);
+      if (conflict) keys[conflict] = keys[recordingSlot];
+      keys[recordingSlot] = nextKey;
+      recordingSlot = null;
+      saveKeys();
+      renderKeysPanel();
+      if (!showingResult) render();
+      return;
+    }
+    if (e.ctrlKey || e.metaKey || e.altKey || showingResult) return;
+    const tag = e.target?.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || e.target?.isContentEditable) return;
+    const pressed = normKey(e.key);
+    const optIndex = ['opt0', 'opt1', 'opt2', 'opt3'].findIndex(slot => keys[slot] === pressed);
+    if (optIndex !== -1) {
+      if (picks[current] === null) { e.preventDefault(); pickAnswer(optIndex); }
+      return;
+    }
+    if (pressed === keys.prev && current > 0) { e.preventDefault(); jump(current - 1); }
+    else if (pressed === keys.next) { e.preventDefault(); current === total - 1 ? showResult() : jump(current + 1); }
+  });
+  renderKeysPanel();
   render();
 });

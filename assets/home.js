@@ -148,6 +148,7 @@ $('#pane').addEventListener('close', () => {
 });
 $('#pane').onclick = event => { if (event.target === $('#pane')) closePane(); };
 $('#pClose').onclick = closePane;
+$('#frame').addEventListener('load', () => { if ($('#pane').open) try { $('#frame').contentWindow?.focus(); } catch {} });
 $('#tabTheory').onclick = () => showTab('theory');
 $('#tabTest').onclick = () => showTab('test');
 $('#resumeCourse').onclick = $('#resumeTop').onclick = () => {
