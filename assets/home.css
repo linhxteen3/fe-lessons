@@ -132,9 +132,16 @@ button,a {
   right:0;
   background:#fff
 }
-.main-nav a > span[aria-hidden="true"] {
-  font-size:23px;
-  font-weight:400
+.main-nav a > .nav-icon {
+  width:19px;
+  height:19px;
+  flex-shrink:0;
+  color:#8f8f8f;
+  transition:color .15s ease
+}
+.main-nav a:hover > .nav-icon,
+.main-nav a.active > .nav-icon {
+  color:var(--green)
 }
 .header-actions {
   margin-left:auto;
@@ -363,23 +370,25 @@ button,a {
 .track-tabs {
   display:flex;
   border-bottom:1px solid #3b3b3b;
-  gap:28px;
-  margin-bottom:23px
+  gap:36px;
+  margin-bottom:24px;
+  scroll-margin-top:110px
 }
 .track-tabs button {
   position:relative;
   background:transparent;
   color:#8d8d8d;
   text-align:left;
-  padding:0 0 14px;
-  font-size:18px;
-  font-weight:750
+  padding:0 0 16px;
+  font-size:26px;
+  font-weight:800;
+  line-height:1.2
 }
 .track-tabs button span {
   display:block;
-  font-size:11px;
-  font-weight:450;
-  margin-top:3px
+  font-size:14px;
+  font-weight:500;
+  margin-top:5px
 }
 .track-tabs button[aria-pressed=true] {
   color:#fff

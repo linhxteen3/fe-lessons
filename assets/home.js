@@ -36,7 +36,6 @@ function refreshProgress() {
       : percent > 0 ? 'assets/cats/work.jpg'
       : 'assets/cats/grumpy.jpg';
   }
-  $('#availability').textContent = FE.read('language', 'vi') === 'ja' ? `完了まであと ${DATA.length - done} レッスン` : `Còn ${DATA.length - done} bài để hoàn thành`;
   const next = nextLesson();
   $('#continueTopic').textContent = next ? `${FE.t("Bài")} ${String(next.stt).padStart(2, '0')} · ${next.topic}` : FE.t("Chưa có nội dung bài học.");
   $('#resumeCourse').disabled = $('#resumeTop').disabled = !next;
@@ -63,7 +62,7 @@ function render() {
     details.className = 'goal';
     details.dataset.goal = String(index);
     details.open = !!query || expanded || openGoals.has(String(index)) || (firstRender && stage.lessons.includes(next?.stt));
-    details.innerHTML = `<summary><span class="goal-emblem" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span><span class="goal-heading"><span class="goal-eyebrow">${FE.t("MỤC TIÊU")} ${String(index + 1).padStart(2, '0')} <span>· ${stage.area}</span></span><h3><span lang="vi">${stage.title}</span><span class="goal-jp" lang="ja">${stage.jp}</span></h3></span><span class="goal-count">${completed}/${lessons.length}<span class="goal-chevron" aria-hidden="true"></span></span></summary><div class="goal-body"><p class="goal-description">${FE.read("language", "vi") === "ja" ? stage.goalJa : stage.goal}</p><div class="goal-status">${lessons.length} ${FE.t("bài học")} <span>·</span> ${ready ? ready + ' ' + FE.t('bài có nội dung') : FE.t('Nội dung sẽ bổ sung')}</div><ol class="lesson-path"></ol><div class="checkpoint"><span>${FE.t("ĐÍCH ĐẾN CỦA CHẶNG")}</span><p>${FE.read("language", "vi") === "ja" ? stage.checkpointJa : stage.checkpoint}</p></div></div>`;
+    details.innerHTML = `<summary><span class="goal-emblem" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span><span class="goal-heading"><span class="goal-eyebrow">${FE.t("MỤC TIÊU")} ${String(index + 1).padStart(2, '0')} <span>· ${stage.area}</span></span><h3><span lang="vi">${stage.title}</span><span class="goal-jp" lang="ja">${stage.jp}</span></h3></span><span class="goal-count">${completed}/${lessons.length}<span class="goal-chevron" aria-hidden="true"></span></span></summary><div class="goal-body"><p class="goal-description">${FE.read("language", "vi") === "ja" ? stage.goalJa : stage.goal}</p><div class="goal-status">${lessons.length} ${FE.t("bài học")}</div><ol class="lesson-path"></ol><div class="checkpoint"><span>${FE.t("ĐÍCH ĐẾN CỦA CHẶNG")}</span><p>${FE.read("language", "vi") === "ja" ? stage.checkpointJa : stage.checkpoint}</p></div></div>`;
     const path = details.querySelector('.lesson-path');
     matched.forEach((lesson, i) => {
       const ready = !!(lesson.theory || lesson.test);
