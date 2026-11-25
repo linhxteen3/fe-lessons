@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B3 · 関数・再帰・アルゴリズム — 3問 — FE Master</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script src="../assets/site.js"></script>
+<link rel="stylesheet" href="../assets/brilliant.css">
+<script src="../assets/brilliant.js"></script>
+<link rel="stylesheet" href="../assets/learning.css">
+<link rel="stylesheet" href="../assets/quiz.css">
+<script src="../assets/quiz.js" defer></script>
+</head>
+<body class="lesson-test">
+<div class="wrap">
+<header class="hero lesson-hero">
+<div class="tag">科目B · B3 · ĐỀ CHÍNH THỨC IPA (3 CÂU)</div>
+<h1 class="title">B3 · 関数・再帰・アルゴリズム — 3問</h1>
+<p class="subtitle">Hàm, đệ quy &amp; Thuật toán · Nguồn: IPA 科目B サンプル問題 (2022-12-26)</p>
+</header>
+<div id="quiz-app"></div>
+<p style="text-align:center;margin:12px 0 28px"><a href="b3.html" style="color:#c4a4f5;text-decoration:underline">← Xem lại hướng dẫn &amp; quy ước 科目B</a></p>
+</div>
+<script type="application/json" id="quiz-data">[{"d": "easy", "ans": 5, "q": "Hàm đệ quy `factorial(n)` tính giai thừa $n!$ của số nguyên không âm $n$ ($0! = 1$). Chọn biểu thức điền vào `[a]`.", "qJa": "非負の整数 n の階乗を返す再帰関数 factorial の [a] に入れる正しい答えを選べ。", "code": "○整数型: factorial(整数型: n)\n  if (n ＝ 0)\n    return 1\n  endif\n  return [a]", "opts": ["(n － 1) × factorial(n)", "factorial(n － 1)", "n", "n × (n － 1)", "n × factorial(1)", "n × factorial(n － 1)"], "optsJa": ["(n － 1) × factorial(n)", "factorial(n － 1)", "n", "n × (n － 1)", "n × factorial(1)", "n × factorial(n － 1)"], "why": "Định nghĩa đệ quy giai thừa: $n! = n \\times (n - 1)!$ với điểm dừng $0! = 1$. Do đó `[a]` là **`n × factorial(n － 1)`**.", "whyJa": "階乗の再帰定義は n! = n × (n − 1)! なので **n × factorial(n － 1)** が正解です。", "ref": "科目B · 再帰処理", "source": "IPA 科目B サンプル問題（20問）セット (2022-12-26) · 問7", "sourceUrl": "https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_qs.pdf"}, {"d": "med", "ans": 0, "q": "Chỉ số mảng bắt đầu từ 1. Truyền mảng nào vào `binSort(data)` để mảng trả về **không chứa phần tử chưa định nghĩa (未定義)** và được sắp xếp tăng dần?", "qJa": "関数 binSort の戻り値に未定義の要素が含まれず昇順に並ぶ引数を選べ。", "code": "○整数型の配列: binSort(整数型の配列: data)\n  整数型: n ← dataの要素数\n  整数型の配列: bins ← {n個の未定義の値}\n  整数型: i\n  for (i を 1 から n まで 1 ずつ増やす)\n    bins[data[i]] ← data[i]\n  endfor\n  return bins", "opts": ["{2, 6, 3, 1, 4, 5}", "{3, 1, 4, 4, 5, 2}", "{4, 2, 1, 5, 6, 2}", "{5, 3, 4, 3, 2, 6}"], "optsJa": ["{2, 6, 3, 1, 4, 5}", "{3, 1, 4, 4, 5, 2}", "{4, 2, 1, 5, 6, 2}", "{5, 3, 4, 3, 2, 6}"], "why": "`bins[data[i]] ← data[i]` đặt giá trị `v` vào đúng vị trí `v`. Để toàn bộ `n = 6` ô `bins[1..6]` đều được lấp đầy (không có ô trống `未定義`), `data` phải chứa đủ các số từ 1 đến 6 không trùng lặp → **`{2, 6, 3, 1, 4, 5}`**.", "whyJa": "bins の全要素 1〜6 が埋まるには、data に 1〜6 が重複なく全て含まれる必要があります。重複がないのは **{2, 6, 3, 1, 4, 5}** のみです。", "ref": "科目B · ビンソート（バケットソート）の前提条件", "source": "IPA 科目B サンプル問題（20問）セット (2022-12-26) · 問11", "sourceUrl": "https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_qs.pdf"}, {"d": "hard", "ans": 2, "q": "Hàm tìm kiếm nhị phân `search(data, target)` (trên mảng tăng dần không trùng) dưới đây **có lỗi (bug)** dẫn đến vòng lặp vô hạn. Trường hợp nào sau đây gây vòng lặp vô hạn?", "qJa": "2分探索の関数 search には不具合がある。無限ループになるケースはどれか。", "code": "○整数型: search(整数型の配列: data, 整数型: target)\n  整数型: low, high, middle\n  low ← 1\n  high ← dataの要素数\n  while (low ≦ high)\n    middle ← (low ＋ high) ÷ 2 の商\n    if (data[middle] ＜ target)\n      low ← middle\n    elseif (data[middle] ＞ target)\n      high ← middle\n    else\n      return middle\n    endif\n  endwhile\n  return －1", "opts": ["Mảng có 1 phần tử và `target` bằng phần tử đó", "Mảng có 2 phần tử và `target` bằng phần tử đầu tiên", "Mảng có 2 phần tử và `target` bằng phần tử cuối cùng", "Mảng có chứa phần tử giá trị -1"], "optsJa": ["要素数が 1 で，target がその要素の値と等しい", "要素数が 2 で，target が data の先頭要素の値と等しい", "要素数が 2 で，target が data の末尾要素の値と等しい", "要素に－1 が含まれている"], "why": "Lỗi ở `low ← middle` (đáng ra phải là `middle + 1`). Khi mảng có 2 phần tử (`low=1, high=2`) và `target = data[2]`: `middle = (1+2)÷2 = 1`, `data[1] < target` nên gán `low ← 1` → `low, high` mãi là `1, 2` → **vòng lặp vô hạn**!", "whyJa": "要素数 2 で末尾要素を探すとき、low=1, high=2 → middle=1 → data[1] < target により low ← 1 となり、low と high が変化せず無限ループになります（正しくは low ← middle ＋ 1）。", "ref": "科目B · 2分探索・境界値と不具合の発見", "source": "IPA 科目B サンプル問題（20問）セット (2022-12-26) · 問13", "sourceUrl": "https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_qs.pdf"}]</script>
+</body>
+</html>

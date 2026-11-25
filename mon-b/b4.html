@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html data-reading-lang="dual" data-reading-theme="light" lang="vi">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="light dark" name="color-scheme"/>
+<title>B4 · プログラミングによる問題解決 — FE Master</title>
+<link href="../assets/reader.css" rel="stylesheet"/>
+<link href="../assets/theory-layout.css" rel="stylesheet"/>
+<script defer src="../assets/reader.js"></script>
+</head>
+<body>
+<a class="skip-link" data-ja="本文へ" data-vi="Đến nội dung bài học" href="#lesson-content">Đến nội dung bài học</a>
+<header class="topbar"><div aria-label="Tiến độ đọc bài" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-track" data-aria-ja="読了の進捗" data-aria-vi="Tiến độ đọc bài" role="progressbar"><div id="reader-progress"></div></div><div class="top-inner"><div class="top-left"><a class="reading-back" data-ja="← ロードマップへ" data-vi="← Quay lại lộ trình" href="../index.html" target="_top">← Quay lại lộ trình</a><nav aria-label="Breadcrumb" class="breadcrumb"><span>FE</span><span>/</span><span>科目B</span><span>/</span><span>B4</span></nav></div><div class="reading-controls"><label class="sr-only" for="reading-language">Ngôn ngữ</label><select id="reading-language"><option value="dual">Việt + 日本語</option><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select><button aria-pressed="false" id="zen-toggle" type="button">⊡ <span class="zen-label" data-ja="集中" data-vi="Tập trung">Tập trung</span></button><button aria-pressed="false" id="reading-theme" type="button">☾ Tối</button></div></div></header>
+<div class="layout"><main class="reading-main" id="lesson-content">
+<header class="lesson-hero"><span class="lesson-eyebrow" data-ja="科目B · B4 理論ガイド" data-vi="科目B · B4 HƯỚNG DẪN CHÍNH THỨC">科目B · B4 HƯỚNG DẪN CHÍNH THỨC</span><h1><span class="reading-ja" lang="ja">プログラミングによる問題解決</span><span class="reading-vi" lang="vi">Giải quyết vấn đề bằng lập trình</span></h1></header>
+<aside aria-label="Ý chính của chặng" class="lesson-recap"><div class="reading-ja" lang="ja"><h2>3つの要点</h2><dl><div><dt>入出力の確認</dt><dd>仕様の具体例（入力→出力）を最初に押さえる。</dd></div><div><dt>ビット・符号化・統計</dt><dd>シフト演算、2のべき乗での剰余・商、切り上げ計算が頻出。</dd></div><div><dt>問題モデル化</dt><dd>ゲーム木・符号化・統計指標など実務題材を擬似言語に落とす。</dd></div></dl></div><div class="reading-vi" lang="vi"><h2>Nhớ 3 ý chính · 3つの要点</h2><dl><div><dt>Đọc Input / Output trước</dt><dd>Xác định kiểu đầu vào, đầu ra và ví dụ minh họa của đề trước khi đọc code.</dd></div><div><dt>Bit, Mã hóa & Thống kê</dt><dd>Nắm dịch bit <code><< >></code>, chia lấy dư/thương <code>2ⁿ</code> và làm tròn lên.</dd></div><div><dt>Mô hình hóa bài toán</dt><dd>Cây trò chơi Minimax (問15), mã hóa UTF-8 (問16), thống kê phân vị (問14).</dd></div></dl></div></aside>
+<section class="lesson-part lesson-section" id="p1"><h2 class="lesson-part-title" data-ja="公式ルールと解法ポイント" data-step="01" data-vi="Quy ước chính thức &amp; Cách làm bài">Quy ước chính thức &amp; Cách làm bài</h2>
+<article class="reading-topic" id="topic-01">
+<h3 class="sub" data-dual="01. 長文アルゴリズム問題の4ステップ解法 · Quy trình 4 bước giải câu 科目B ứng dụng dài" data-ja="01. 長文アルゴリズム問題の4ステップ解法" data-vi="01. Quy trình 4 bước giải câu 科目B ứng dụng dài" id="lesson-b4-topic-01">01. 長文アルゴリズム問題の4ステップ解法 · Quy trình 4 bước giải câu 科目B ứng dụng dài</h3>
+<div class="lang-block">
+<div class="lang-row jp reading-ja" lang="ja"><span class="label">日本語</span><div class="content">応用問題（UTF-8符号化、五数要約、ミニマックス法など）は、①問題文の具体例を確認 → ②空欄周辺の変数を特定 → ③具体値でトレース → ④境界確認の4手順で解きます。</div></div>
+<div class="lang-row vn reading-vi" lang="vi"><span class="label">Tiếng Việt</span><div class="content">Các câu ứng dụng (問6, 問14, 問15, 問16 trong Đề mẫu IPA và các câu đề công khai 2023–2026) thường mô tả bài toán thực tế như mã hóa UTF-8, đảo bit, thống kê hoặc trò chơi. Áp dụng 4 bước:
+1. Đọc ví dụ cụ thể trong đề (vd: chữ 「あ」 = `3042₁₆` trong 問16).
+2. Khoanh vùng đúng dòng có chỗ trống `[a]` và biến nào đổi giá trị ở đó.
+3. Thử thay giá trị từ ví dụ vào từng đáp án.
+4. Kiểm tra lại bằng 1 trường hợp biên.</div></div>
+</div>
+<pre class="ascii" tabindex="0">Ví dụ áp dụng trên UTF-8 (IPA 問16):
+Mẫu 3 byte: 1110xxxx 10xxxxxx 10xxxxxx
+  Byte 3 chứa 6 bit thấp nhất → chia 2⁶ = 64 lấy dư
+  Dịch bỏ 6 bit vừa lấy       → chia 2⁶ = 64 lấy thương
+  Byte 2 chứa 6 bit tiếp theo → tiếp tục chia 64!</pre>
+<div class="callout"><div class="head">Lưu ý khi làm đề 科目B</div>Đừng cố hiểu toàn bộ lý thuyết ngoài đề — mọi quy tắc đặc thù (như cách mã hóa UTF-8 hay luật Minimax) đều được IPA định nghĩa đầy đủ ngay trong đề bài.</div>
+</article>
+</section>
+<section class="lesson-part" id="p2"><h2 class="lesson-part-title" data-ja="用語カード" data-step="02" data-vi="Flashcard ôn nhanh">Flashcard ôn nhanh</h2><div class="fc-filter" id="fcFilter"></div><div class="fc-grid" id="fcGrid"></div></section>
+<div class="source"><h3>Nguồn chính thức &amp; Tham khảo đối chiếu · 公式出典</h3><ul><li><a href="https://www.ipa.go.jp/shiken/syllabus/doe3um0000002djj-att/shiken_yougo_ver5_1.pdf" target="_blank" rel="noopener">IPA 試験で使用する用語・プログラム言語など Ver.5.1 (擬似言語仕様 PDF) ↗</a></li><li><a href="https://www.ipa.go.jp/shiken/syllabus/omgdg50000005kpe-att/syllabus_fe_ver9_2.pdf" target="_blank" rel="noopener">IPA 基本情報技術者試験 シラバス Ver.9.2 (PDF) ↗</a></li><li><a href="https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_qs.pdf" target="_blank" rel="noopener">IPA 科目B サンプル問題（20問）セット 問題PDF (2022-12-26) ↗</a></li><li><a href="https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_ans.pdf" target="_blank" rel="noopener">IPA 科目B サンプル問題（20問）セット 解答例PDF ↗</a></li><li><a href="https://www.ipa.go.jp/shiken/mondai-kaiotu/sg_fe/koukai/index.html" target="_blank" rel="noopener">IPA 公開問題一覧（2023〜2026年度） ↗</a></li><li><a href="https://www.fe-siken.com/fekakomon_b.php" target="_blank" rel="noopener">基本情報技術者試験ドットコム — 過去問道場（科目B・全50問） ↗</a></li></ul></div>
+<footer class="lesson-footer"><h2 data-ja="公式問題で演習しよう" data-vi="Thực hành ngay với đề chính thức IPA">Thực hành ngay với đề chính thức IPA</h2><p data-ja="このテーマの IPA 公式サンプル問題に挑戦できます。" data-vi="Các câu hỏi trích từ Đề mẫu chính thức IPA (có đầy đủ nguồn và lời giải trace).">Các câu hỏi trích từ Đề mẫu chính thức IPA (có đầy đủ nguồn và lời giải trace).</p><div class="footer-nav"><a class="btn" href="../index.html" target="_top">← Lộ trình 科目B</a><a class="btn primary" href="b4-test.html">Làm bài tập B4 →</a></div></footer>
+</main>
+<aside class="reading-sidebar"><nav aria-label="Mục lục" class="lesson-toc"><h3 data-ja="目次" data-vi="MỤC LỤC">MỤC LỤC</h3><ul></ul></nav><section class="reading-vocab"><h3 data-ja="重要ポイント" data-vi="Điểm cần nhớ">Điểm cần nhớ</h3><p data-ja="クリックして確認" data-vi="Bấm để xem giải thích">Bấm để xem giải thích</p></section></aside>
+</div>
+<script id="lesson-data" type="application/json">{"number": 4, "cards": [{"cat": "basic", "front": "Muốn tách 6 bit thấp nhất của số nguyên dương `cp` bằng phép chia, chia cho số nào?", "frontJa": "下位6ビットを割り算で取り出すときの除数は？", "back": "Chia cho $2^6 =$ <b>64</b>: phần dư là 6 bit thấp nhất, phần thương là phần còn lại sau khi dịch phải 6 bit.", "backJa": "2⁶ = <b>64</b>（余りが下位6ビット、商が右6ビットシフト）。"}], "quiz": []}</script>
+</body></html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html data-reading-lang="dual" data-reading-theme="light" lang="vi">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="light dark" name="color-scheme"/>
+<title>B3 · 関数・再帰・アルゴリズム — FE Master</title>
+<link href="../assets/reader.css" rel="stylesheet"/>
+<link href="../assets/theory-layout.css" rel="stylesheet"/>
+<script defer src="../assets/reader.js"></script>
+</head>
+<body>
+<a class="skip-link" data-ja="本文へ" data-vi="Đến nội dung bài học" href="#lesson-content">Đến nội dung bài học</a>
+<header class="topbar"><div aria-label="Tiến độ đọc bài" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-track" data-aria-ja="読了の進捗" data-aria-vi="Tiến độ đọc bài" role="progressbar"><div id="reader-progress"></div></div><div class="top-inner"><div class="top-left"><a class="reading-back" data-ja="← ロードマップへ" data-vi="← Quay lại lộ trình" href="../index.html" target="_top">← Quay lại lộ trình</a><nav aria-label="Breadcrumb" class="breadcrumb"><span>FE</span><span>/</span><span>科目B</span><span>/</span><span>B3</span></nav></div><div class="reading-controls"><label class="sr-only" for="reading-language">Ngôn ngữ</label><select id="reading-language"><option value="dual">Việt + 日本語</option><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select><button aria-pressed="false" id="zen-toggle" type="button">⊡ <span class="zen-label" data-ja="集中" data-vi="Tập trung">Tập trung</span></button><button aria-pressed="false" id="reading-theme" type="button">☾ Tối</button></div></div></header>
+<div class="layout"><main class="reading-main" id="lesson-content">
+<header class="lesson-hero"><span class="lesson-eyebrow" data-ja="科目B · B3 理論ガイド" data-vi="科目B · B3 HƯỚNG DẪN CHÍNH THỨC">科目B · B3 HƯỚNG DẪN CHÍNH THỨC</span><h1><span class="reading-ja" lang="ja">関数・再帰・アルゴリズム</span><span class="reading-vi" lang="vi">Hàm, đệ quy &amp; Thuật toán</span></h1></header>
+<aside aria-label="Ý chính của chặng" class="lesson-recap"><div class="reading-ja" lang="ja"><h2>3つの要点</h2><dl><div><dt>再帰処理</dt><dd>終了条件（基底ケース）と再帰呼出しの引数の変化を確認する。</dd></div><div><dt>2分探索の境界</dt><dd>low / high の更新に +1 / -1 が抜けると要素数2などで無限ループになる。</dd></div><div><dt>整列と前提条件</dt><dd>ビンソート・クイックソート・マージソート等の前提と境界条件を押さえる。</dd></div></dl></div><div class="reading-vi" lang="vi"><h2>Nhớ 3 ý chính · 3つの要点</h2><dl><div><dt>Đệ quy (再帰)</dt><dd>Luôn kiểm tra <b>điều kiện dừng (base case)</b> trước rồi mới trace lời gọi nhỏ hơn.</dd></div><div><dt>Tìm kiếm nhị phân</dt><dd>Cập nhật <code>low ← middle ＋ 1</code> và <code>high ← middle － 1</code> để tránh lặp vô hạn.</dd></div><div><dt>Sắp xếp & Độ phức tạp</dt><dd>Hiểu điều kiện áp dụng của từng thuật toán (như binSort cần không trùng giá trị).</dd></div></dl></div></aside>
+<section class="lesson-part lesson-section" id="p1"><h2 class="lesson-part-title" data-ja="公式ルールと解法ポイント" data-step="01" data-vi="Quy ước chính thức &amp; Cách làm bài">Quy ước chính thức &amp; Cách làm bài</h2>
+<article class="reading-topic" id="topic-01">
+<h3 class="sub" data-dual="01. 再帰関数のトレース手順 · Trace hàm đệ quy bằng ngăn xếp gọi hàm" data-ja="01. 再帰関数のトレース手順" data-vi="01. Trace hàm đệ quy bằng ngăn xếp gọi hàm" id="lesson-b3-topic-01">01. 再帰関数のトレース手順 · Trace hàm đệ quy bằng ngăn xếp gọi hàm</h3>
+<div class="lang-block">
+<div class="lang-row jp reading-ja" lang="ja"><span class="label">日本語</span><div class="content">再帰関数は終了条件に到達するまで呼び出しを積み上げ、戻り値を逆順に展開してトレースします。</div></div>
+<div class="lang-row vn reading-vi" lang="vi"><span class="label">Tiếng Việt</span><div class="content">Mỗi lần hàm tự gọi chính nó (ví dụ `factorial(n)` trong IPA サンプル 問7), hãy viết từng tầng gọi xuống cho tới khi gặp điều kiện dừng `n ＝ 0` rồi nhân ngược lên.</div></div>
+</div>
+<pre class="ascii" tabindex="0">Trace factorial(4) (IPA 問7):
+factorial(4) = 4 × factorial(3)
+  factorial(3) = 3 × factorial(2)
+    factorial(2) = 2 × factorial(1)
+      factorial(1) = 1 × factorial(0)
+        factorial(0) = 1   ← Điều kiện dừng
+→ Trả ngược lên: 1 → 1 → 2 → 6 → 24</pre>
+<div class="callout"><div class="head">Lưu ý khi làm đề 科目B</div>Luôn thử với `n = 0, 1, 2` trước để loại nhanh các đáp án sai điểm dừng hoặc lặp vô hạn.</div>
+</article><article class="reading-topic" id="topic-02">
+<h3 class="sub" data-dual="02. 探索・整列の境界値とバグ発見 · Bẫy điều kiện biên trong Tìm kiếm &amp; Sắp xếp" data-ja="02. 探索・整列の境界値とバグ発見" data-vi="02. Bẫy điều kiện biên trong Tìm kiếm &amp; Sắp xếp" id="lesson-b3-topic-02">02. 探索・整列の境界値とバグ発見 · Bẫy điều kiện biên trong Tìm kiếm &amp; Sắp xếp</h3>
+<div class="lang-block">
+<div class="lang-row jp reading-ja" lang="ja"><span class="label">日本語</span><div class="content">科目Bでは、2分探索などのプログラムに潜む不具合を境界値テストで見抜く問題がよく出題されます。</div></div>
+<div class="lang-row vn reading-vi" lang="vi"><span class="label">Tiếng Việt</span><div class="content">Đề 科目B rất hay cho sẵn một hàm tìm kiếm/sắp xếp có <b>lỗi ẩn (不具合)</b> (như IPA サンプル 問13) và hỏi bộ test nào làm hàm lặp vô hạn hoặc trả sai kết quả.</div></div>
+</div>
+<pre class="ascii" tabindex="0">Kiểm tra biên 2 phần tử trong search(data, target) (IPA 問13):
+data = {10, 20}, target = 20
+Vòng 1: low=1, high=2 → middle=(1+2)÷2=1 → data[1]=10 &lt; 20
+  Nếu viết sai: low ← middle (vẫn bằng 1!) → LẶP VÔ HẠN
+  Viết đúng:    low ← middle ＋ 1 (= 2) → tìm ra data[2]</pre>
+<div class="callout"><div class="head">Lưu ý khi làm đề 科目B</div>Mẹo thi IPA: gặp câu hỏi tìm bug, thử ngay mảng <b>1 phần tử</b>, <b>2 phần tử (đầu / cuối)</b>, và <b>không tìm thấy</b>.</div>
+</article>
+</section>
+<section class="lesson-part" id="p2"><h2 class="lesson-part-title" data-ja="用語カード" data-step="02" data-vi="Flashcard ôn nhanh">Flashcard ôn nhanh</h2><div class="fc-filter" id="fcFilter"></div><div class="fc-grid" id="fcGrid"></div></section>
+<div class="source"><h3>Nguồn chính thức &amp; Tham khảo đối chiếu · 公式出典</h3><ul><li><a href="https://www.ipa.go.jp/shiken/syllabus/doe3um0000002djj-att/shiken_yougo_ver5_1.pdf" target="_blank" rel="noopener">IPA 試験で使用する用語・プログラム言語など Ver.5.1 (擬似言語仕様 PDF) ↗</a></li><li><a href="https://www.ipa.go.jp/shiken/syllabus/omgdg50000005kpe-att/syllabus_fe_ver9_2.pdf" target="_blank" rel="noopener">IPA 基本情報技術者試験 シラバス Ver.9.2 (PDF) ↗</a></li><li><a href="https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_qs.pdf" target="_blank" rel="noopener">IPA 科目B サンプル問題（20問）セット 問題PDF (2022-12-26) ↗</a></li><li><a href="https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_ans.pdf" target="_blank" rel="noopener">IPA 科目B サンプル問題（20問）セット 解答例PDF ↗</a></li><li><a href="https://www.ipa.go.jp/shiken/mondai-kaiotu/sg_fe/koukai/index.html" target="_blank" rel="noopener">IPA 公開問題一覧（2023〜2026年度） ↗</a></li><li><a href="https://www.fe-siken.com/fekakomon_b.php" target="_blank" rel="noopener">基本情報技術者試験ドットコム — 過去問道場（科目B・全50問） ↗</a></li></ul></div>
+<footer class="lesson-footer"><h2 data-ja="公式問題で演習しよう" data-vi="Thực hành ngay với đề chính thức IPA">Thực hành ngay với đề chính thức IPA</h2><p data-ja="このテーマの IPA 公式サンプル問題に挑戦できます。" data-vi="Các câu hỏi trích từ Đề mẫu chính thức IPA (có đầy đủ nguồn và lời giải trace).">Các câu hỏi trích từ Đề mẫu chính thức IPA (có đầy đủ nguồn và lời giải trace).</p><div class="footer-nav"><a class="btn" href="../index.html" target="_top">← Lộ trình 科目B</a><a class="btn primary" href="b3-test.html">Làm bài tập B3 →</a></div></footer>
+</main>
+<aside class="reading-sidebar"><nav aria-label="Mục lục" class="lesson-toc"><h3 data-ja="目次" data-vi="MỤC LỤC">MỤC LỤC</h3><ul></ul></nav><section class="reading-vocab"><h3 data-ja="重要ポイント" data-vi="Điểm cần nhớ">Điểm cần nhớ</h3><p data-ja="クリックして確認" data-vi="Bấm để xem giải thích">Bấm để xem giải thích</p></section></aside>
+</div>
+<script id="lesson-data" type="application/json">{"number": 3, "cards": [{"cat": "basic", "front": "Vì sao `low ← middle` trong tìm kiếm nhị phân gây lặp vô hạn?", "frontJa": "2分探索で low ← middle とすると無限ループになる理由は？", "back": "Khi `high = low + 1`, `(low + high) ÷ 2` làm tròn xuống đúng bằng `low`, nên `low` không tăng và vòng lặp không bao giờ dừng.", "backJa": "high = low + 1 のとき商が low と等しくなり、探索範囲が縮まらないため。"}], "quiz": []}</script>
+</body></html>

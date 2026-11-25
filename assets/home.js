@@ -95,13 +95,41 @@ function render() {
 }
 function renderSubjectB() {
   const section = $('#subjectB');
-  section.innerHTML = `<div class="b-intro"><div class="eyebrow">${FE.t("PRACTICE IN PARALLEL")}</div><h2>${FE.t("Từ hiểu kiến thức")}<br>${FE.t("đến đọc được chương trình.")}</h2><p>${FE.t("Bắt đầu sau mục tiêu 02, luyện song song với 科目A. Đây là hướng ôn bổ trợ sử dụng bài gốc, không thêm bài hay đổi số thứ tự của danh mục 61 bài.")}</p></div>`;
+  const ja = FE.read("language", "vi") === "ja";
+  section.innerHTML = `<div class="b-intro"><div class="eyebrow">${FE.t("PRACTICE IN PARALLEL")}</div><h2>${FE.t("Từ hiểu kiến thức")}<br>${FE.t("đến đọc được chương trình.")}</h2><p>${ja ? "IPA公式仕様（Ver.5.1）と公式サンプル・公開問題を出典付きで収録しています。B1〜B5で分野別に学び、B6で20問・100分の模擬試験に挑戦できます。" : "Toàn bộ hướng dẫn giả mã và câu hỏi thực hành trích từ tài liệu chính thức của IPA (Ver.5.1 & Đề mẫu 20 câu) có gắn nguồn đối chiếu từng câu. Học theo B1–B5 rồi luyện thi 20 câu · 100 phút ở B6."}</p></div>`;
   ROADMAP.subjectB.forEach((step, index) => {
     const card = document.createElement('section');
     card.className = 'practice-step';
-    card.innerHTML = `<span class="practice-index">B${index + 1}</span><div class="eyebrow">${step.jp}</div><h3>${FE.read("language", "vi") === "ja" ? step.titleJa : step.title}</h3><p>${FE.read("language", "vi") === "ja" ? step.practiceJa : step.practice}</p><div class="practice-gap"><b>${FE.t("CẦN BỔ SUNG")}</b><p>${FE.read("language", "vi") === "ja" ? step.gapJa : step.gap}</p></div><div class="related-lessons"></div><a class="official-link" href="${ROADMAP.sources[3].url}" target="_blank" rel="noopener">${FE.t("Đề mẫu & quy ước IPA ↗")}</a>`;
+    const bLesson = {
+      stt: (step.id || ('B' + (index + 1))).toUpperCase(),
+      topic: ja ? step.titleJa : step.title,
+      theory: step.theory || '',
+      test: step.test || ''
+    };
+    const sourcesHtml = (step.sources || []).map(s => `<a class="official-link" href="${s.url}" target="_blank" rel="noopener">${s.label} ↗</a>`).join('');
+    card.innerHTML = `<span class="practice-index">B${index + 1}</span><div class="eyebrow">${step.jp}</div><h3>${ja ? step.titleJa : step.title}</h3><p>${ja ? step.practiceJa : step.practice}</p><div class="b-actions"></div><div class="practice-gap"><b>${ja ? "収録内容・出典" : "NỘI DUNG CHÍNH THỨC"}</b><p>${ja ? step.gapJa : step.gap}</p></div><div class="related-lessons"></div><div class="b-sources">${sourcesHtml || `<a class="official-link" href="${ROADMAP.sources[3].url}" target="_blank" rel="noopener">${FE.t("Đề mẫu & quy ước IPA ↗")}</a>`}</div>`;
+    const actions = card.querySelector('.b-actions');
+    if (step.theory) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'b-action-btn b-theory-btn';
+      btn.textContent = ja ? '📘 公式ガイド・理論' : '📘 Lý thuyết & Quy ước IPA';
+      btn.onclick = () => openPane(bLesson, 'theory');
+      actions.append(btn);
+    }
+    if (step.test) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'b-action-btn b-test-btn';
+      btn.textContent = step.theory
+        ? (ja ? '✍ 公式問題で演習' : '✍ Luyện tập (Đề IPA)')
+        : (ja ? '⏱ 模擬試験を始める（20問・100分）' : '⏱ Bắt đầu thi thử (20 câu · 100 phút)');
+      btn.onclick = () => openPane(bLesson, 'test');
+      actions.append(btn);
+    }
     step.related.forEach(id => {
       const lesson = DATA.find(l => l.stt === id);
+      if (!lesson) return;
       const button = document.createElement('button');
       button.textContent = `${FE.t("Bài")} ${String(id).padStart(2, '0')} · ${lesson.topic}`;
       button.disabled = !lesson.theory && !lesson.test;
@@ -116,7 +144,7 @@ function openPane(lesson, kind) {
   currentLesson = lesson;
   lastViewedLesson = lesson;
   FE.write('activity:' + lesson.stt, { startedAt: new Date().toISOString() });
-  $('#pPstt').textContent = String(lesson.stt).padStart(2, '0');
+  $('#pPstt').textContent = /^\d+$/.test(String(lesson.stt)) ? String(lesson.stt).padStart(2, '0') : String(lesson.stt);
   $('#pTopic').textContent = lesson.topic;
   $('#tabTheory').hidden = !lesson.theory;
   $('#tabTest').hidden = !lesson.test;

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html data-reading-lang="dual" data-reading-theme="light" lang="vi">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="light dark" name="color-scheme"/>
+<title>B1 · 擬似言語の記述形式とトレース — FE Master</title>
+<link href="../assets/reader.css" rel="stylesheet"/>
+<link href="../assets/theory-layout.css" rel="stylesheet"/>
+<script defer src="../assets/reader.js"></script>
+</head>
+<body>
+<a class="skip-link" data-ja="本文へ" data-vi="Đến nội dung bài học" href="#lesson-content">Đến nội dung bài học</a>
+<header class="topbar"><div aria-label="Tiến độ đọc bài" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-track" data-aria-ja="読了の進捗" data-aria-vi="Tiến độ đọc bài" role="progressbar"><div id="reader-progress"></div></div><div class="top-inner"><div class="top-left"><a class="reading-back" data-ja="← ロードマップへ" data-vi="← Quay lại lộ trình" href="../index.html" target="_top">← Quay lại lộ trình</a><nav aria-label="Breadcrumb" class="breadcrumb"><span>FE</span><span>/</span><span>科目B</span><span>/</span><span>B1</span></nav></div><div class="reading-controls"><label class="sr-only" for="reading-language">Ngôn ngữ</label><select id="reading-language"><option value="dual">Việt + 日本語</option><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select><button aria-pressed="false" id="zen-toggle" type="button">⊡ <span class="zen-label" data-ja="集中" data-vi="Tập trung">Tập trung</span></button><button aria-pressed="false" id="reading-theme" type="button">☾ Tối</button></div></div></header>
+<div class="layout"><main class="reading-main" id="lesson-content">
+<header class="lesson-hero"><span class="lesson-eyebrow" data-ja="科目B · B1 理論ガイド" data-vi="科目B · B1 HƯỚNG DẪN CHÍNH THỨC">科目B · B1 HƯỚNG DẪN CHÍNH THỨC</span><h1><span class="reading-ja" lang="ja">擬似言語の記述形式とトレース</span><span class="reading-vi" lang="vi">Đọc giả mã IPA &amp; Lập bảng trace</span></h1></header>
+<aside aria-label="Ý chính của chặng" class="lesson-recap"><div class="reading-ja" lang="ja"><h2>3つの要点</h2><dl><div><dt>代入と関係演算子</dt><dd>代入は <code>←</code>、等価比較は <code>＝</code>、不等価は <code>≠</code>。</dd></div><div><dt>選択処理</dt><dd><code>if / elseif</code> は上から評価し、最初に真になった処理のみ実行。</dd></div><div><dt>繰返しとトレース</dt><dd>変数の値を1行ずつ表に書き出して境界条件を確認する。</dd></div></dl></div><div class="reading-vi" lang="vi"><h2>Nhớ 3 ý chính · 3つの要点</h2><dl><div><dt>Phép gán & So sánh</dt><dd>Gán dùng <code>←</code>, so sánh bằng dùng <code>＝</code>, khác dùng <code>≠</code>.</dd></div><div><dt>Thứ tự rẽ nhánh</dt><dd><code>if / elseif / else</code> xét từ trên xuống, dừng ở nhánh đúng đầu tiên.</dd></div><div><dt>Vòng lặp & Trace</dt><dd><code>while</code> kiểm tra trước, <code>do..while</code> kiểm tra sau, <code>for</code> biết rõ số lần lặp.</dd></div></dl></div></aside>
+<section class="lesson-part lesson-section" id="p1"><h2 class="lesson-part-title" data-ja="公式ルールと解法ポイント" data-step="01" data-vi="Quy ước chính thức &amp; Cách làm bài">Quy ước chính thức &amp; Cách làm bài</h2>
+<article class="reading-topic" id="topic-01">
+<h3 class="sub" data-dual="01. IPA公式の擬似言語記述形式（Ver.5.1 別紙2） · Quy ước ký hiệu chính thức của IPA" data-ja="01. IPA公式の擬似言語記述形式（Ver.5.1 別紙2）" data-vi="01. Quy ước ký hiệu chính thức của IPA" id="lesson-b1-topic-01">01. IPA公式の擬似言語記述形式（Ver.5.1 別紙2） · Quy ước ký hiệu chính thức của IPA</h3>
+<div class="lang-block">
+<div class="lang-row jp reading-ja" lang="ja"><span class="label">日本語</span><div class="content">IPA公式仕様書<b>Ver.5.1（別紙2）</b>では、基本情報技術者試験の科目Bで使用される擬似言語の記述形式と演算子優先順位が定められています。</div></div>
+<div class="lang-row vn reading-vi" lang="vi"><span class="label">Tiếng Việt</span><div class="content">Tài liệu chính thức <b>「試験で使用する情報技術に関する用語・プログラム言語など」Ver.5.1 (別紙2)</b> quy định chuẩn cú pháp giả mã dùng trong mọi đề thi FE 科目B. Nắm chắc bảng ký hiệu này giúp đọc đề không bị nhầm với C/Java/Python.</div></div>
+</div>
+<pre class="ascii" tabindex="0">○手続名 / ○型名: 関数名(引数)   ← Khai báo thủ tục / hàm
+型名: 変数名                      ← Khai báo biến (整数型, 実数型, 文字列型, 論理型)
+変数名 ← 式                       ← Phép gán (KHÔNG dùng = để gán)
+/* 注釈 */  hoặc  // 注釈          ← Chú thích
+if (条件式) ... elseif ... else ... endif
+while (条件式) ... endwhile       ← Kiểm tra điều kiện trước khi lặp
+do ... while (条件式)              ← Thực hiện ít nhất 1 lần rồi mới kiểm tra
+for (i を 1 から n まで 1 ずつ増やす) ... endfor</pre>
+<div class="callout"><div class="head">Lưu ý khi làm đề 科目B</div>Điểm hay nhầm nhất: <code>=</code> trong giả mã IPA là <b>so sánh bằng</b> (giống <code>==</code> trong C/JS), còn phép gán luôn là <code>←</code>. Phép chia lấy dư viết là <code>mod</code>.</div>
+</article><article class="reading-topic" id="topic-02">
+<h3 class="sub" data-dual="02. 演算子の優先順位とトレース表の作り方 · Thứ tự ưu tiên toán tử &amp; Cách lập bảng Trace" data-ja="02. 演算子の優先順位とトレース表の作り方" data-vi="02. Thứ tự ưu tiên toán tử &amp; Cách lập bảng Trace" id="lesson-b1-topic-02">02. 演算子の優先順位とトレース表の作り方 · Thứ tự ưu tiên toán tử &amp; Cách lập bảng Trace</h3>
+<div class="lang-block">
+<div class="lang-row jp reading-ja" lang="ja"><span class="label">日本語</span><div class="content">演算子の優先度（高→低）：<code>() .</code> → <code>not ＋ －</code> → <code>mod × ÷</code> → <code>＋ －</code> → 関係演算子 → <code>and</code> → <code>or</code>。</div></div>
+<div class="lang-row vn reading-vi" lang="vi"><span class="label">Tiếng Việt</span><div class="content">Thứ tự ưu tiên từ cao xuống thấp theo IPA Ver.5.1: <code>()</code> <code>.</code> → đơn ngôi (<code>not</code> <code>＋</code> <code>－</code>) → nhân chia (<code>mod</code> <code>×</code> <code>÷</code>) → cộng trừ (<code>＋</code> <code>－</code>) → so sánh (<code>≠ ≦ ≧ ＜ ＝ ＞</code>) → <code>and</code> → <code>or</code>.</div></div>
+</div>
+<pre class="ascii" tabindex="0">Ví dụ trace Câu 1 (IPA サンプル問題 問1):
+Dòng lệnh       | x | y | z
+----------------+---+---+---
+Khởi tạo        | 1 | 2 | 3
+x ← y           | 2 | 2 | 3
+y ← z           | 2 | 3 | 3
+z ← x           | 2 | 3 | 2  → Xuất y, z = 3,2</pre>
+<div class="callout"><div class="head">Lưu ý khi làm đề 科目B</div>Luôn kẻ bảng ghi cột từng biến và cập nhật từng dòng — không nhẩm trong đầu với bài có từ 3 biến hoặc vòng lặp trở lên.</div>
+</article>
+</section>
+<section class="lesson-part" id="p2"><h2 class="lesson-part-title" data-ja="用語カード" data-step="02" data-vi="Flashcard ôn nhanh">Flashcard ôn nhanh</h2><div class="fc-filter" id="fcFilter"></div><div class="fc-grid" id="fcGrid"></div></section>
+<div class="source"><h3>Nguồn chính thức &amp; Tham khảo đối chiếu · 公式出典</h3><ul><li><a href="https://www.ipa.go.jp/shiken/syllabus/doe3um0000002djj-att/shiken_yougo_ver5_1.pdf" target="_blank" rel="noopener">IPA 試験で使用する用語・プログラム言語など Ver.5.1 (擬似言語仕様 PDF) ↗</a></li><li><a href="https://www.ipa.go.jp/shiken/syllabus/omgdg50000005kpe-att/syllabus_fe_ver9_2.pdf" target="_blank" rel="noopener">IPA 基本情報技術者試験 シラバス Ver.9.2 (PDF) ↗</a></li><li><a href="https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_qs.pdf" target="_blank" rel="noopener">IPA 科目B サンプル問題（20問）セット 問題PDF (2022-12-26) ↗</a></li><li><a href="https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_ans.pdf" target="_blank" rel="noopener">IPA 科目B サンプル問題（20問）セット 解答例PDF ↗</a></li><li><a href="https://www.ipa.go.jp/shiken/mondai-kaiotu/sg_fe/koukai/index.html" target="_blank" rel="noopener">IPA 公開問題一覧（2023〜2026年度） ↗</a></li><li><a href="https://www.fe-siken.com/fekakomon_b.php" target="_blank" rel="noopener">基本情報技術者試験ドットコム — 過去問道場（科目B・全50問） ↗</a></li></ul></div>
+<footer class="lesson-footer"><h2 data-ja="公式問題で演習しよう" data-vi="Thực hành ngay với đề chính thức IPA">Thực hành ngay với đề chính thức IPA</h2><p data-ja="このテーマの IPA 公式サンプル問題に挑戦できます。" data-vi="Các câu hỏi trích từ Đề mẫu chính thức IPA (có đầy đủ nguồn và lời giải trace).">Các câu hỏi trích từ Đề mẫu chính thức IPA (có đầy đủ nguồn và lời giải trace).</p><div class="footer-nav"><a class="btn" href="../index.html" target="_top">← Lộ trình 科目B</a><a class="btn primary" href="b1-test.html">Làm bài tập B1 →</a></div></footer>
+</main>
+<aside class="reading-sidebar"><nav aria-label="Mục lục" class="lesson-toc"><h3 data-ja="目次" data-vi="MỤC LỤC">MỤC LỤC</h3><ul></ul></nav><section class="reading-vocab"><h3 data-ja="重要ポイント" data-vi="Điểm cần nhớ">Điểm cần nhớ</h3><p data-ja="クリックして確認" data-vi="Bấm để xem giải thích">Bấm để xem giải thích</p></section></aside>
+</div>
+<script id="lesson-data" type="application/json">{"number": 1, "cards": [{"cat": "basic", "front": "Phép gán trong giả mã IPA viết thế nào?", "frontJa": "擬似言語の代入記号は？", "back": "Dùng mũi tên trái <b>←</b> (ví dụ: <code>x ← y</code>). Dấu <code>＝</code> dùng để so sánh bằng.", "backJa": "左矢印 <b>←</b> を使う（<code>＝</code> は比較演算子）。"}, {"cat": "basic", "front": "<code>while</code> và <code>do ... while</code> khác nhau điểm nào?", "frontJa": "while と do〜while の違いは？", "back": "<code>while</code> kiểm tra điều kiện trước (có thể chạy 0 lần); <code>do ... while</code> chạy thân vòng lặp ít nhất 1 lần rồi mới kiểm tra.", "backJa": "while は前判定（0回あり）、do〜while は後判定（最低1回実行）。"}, {"cat": "basic", "front": "Trong <code>and</code> và <code>or</code>, toán tử nào ưu tiên cao hơn?", "frontJa": "and と or はどちらが優先度が高い？", "back": "<code>and</code> ưu tiên cao hơn <code>or</code> (theo IPA Ver.5.1 別紙2).", "backJa": "<b>and</b> の方が or より優先度が高い。"}], "quiz": []}</script>
+</body></html>

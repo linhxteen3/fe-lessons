@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html data-reading-lang="dual" data-reading-theme="light" lang="vi">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="light dark" name="color-scheme"/>
+<title>B5 · 情報セキュリティの事例演習 — FE Master</title>
+<link href="../assets/reader.css" rel="stylesheet"/>
+<link href="../assets/theory-layout.css" rel="stylesheet"/>
+<script defer src="../assets/reader.js"></script>
+</head>
+<body>
+<a class="skip-link" data-ja="本文へ" data-vi="Đến nội dung bài học" href="#lesson-content">Đến nội dung bài học</a>
+<header class="topbar"><div aria-label="Tiến độ đọc bài" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="progress-track" data-aria-ja="読了の進捗" data-aria-vi="Tiến độ đọc bài" role="progressbar"><div id="reader-progress"></div></div><div class="top-inner"><div class="top-left"><a class="reading-back" data-ja="← ロードマップへ" data-vi="← Quay lại lộ trình" href="../index.html" target="_top">← Quay lại lộ trình</a><nav aria-label="Breadcrumb" class="breadcrumb"><span>FE</span><span>/</span><span>科目B</span><span>/</span><span>B5</span></nav></div><div class="reading-controls"><label class="sr-only" for="reading-language">Ngôn ngữ</label><select id="reading-language"><option value="dual">Việt + 日本語</option><option value="vi">Tiếng Việt</option><option value="ja">日本語</option></select><button aria-pressed="false" id="zen-toggle" type="button">⊡ <span class="zen-label" data-ja="集中" data-vi="Tập trung">Tập trung</span></button><button aria-pressed="false" id="reading-theme" type="button">☾ Tối</button></div></div></header>
+<div class="layout"><main class="reading-main" id="lesson-content">
+<header class="lesson-hero"><span class="lesson-eyebrow" data-ja="科目B · B5 理論ガイド" data-vi="科目B · B5 HƯỚNG DẪN CHÍNH THỨC">科目B · B5 HƯỚNG DẪN CHÍNH THỨC</span><h1><span class="reading-ja" lang="ja">情報セキュリティの事例演習</span><span class="reading-vi" lang="vi">Tình huống an toàn thông tin</span></h1></header>
+<aside aria-label="Ý chính của chặng" class="lesson-recap"><div class="reading-ja" lang="ja"><h2>3つの要点</h2><dl><div><dt>クラウド責任共有</dt><dd>PaaSはOS・DBMSまで提供者、Webアプリ脆弱性は利用者/委託先が対応。</dd></div><div><dt>リスク変化の識別</dt><dd>施策導入により「新たに生じる・増加する」リスクだけを選ぶ。</dd></div><div><dt>最小権限と職務分離</dt><dd>編集者と承認者を分離し、必要最小限の権限のみ付与する。</dd></div></dl></div><div class="reading-vi" lang="vi"><h2>Nhớ 3 ý chính · 3つの要点</h2><dl><div><dt>Trách nhiệm chung Cloud</dt><dd>PaaS: nhà cung cấp lo hạ tầng/OS/DBMS; khách hàng/đơn vị phát triển lo ứng dụng & dữ liệu.</dd></div><div><dt>Phân tích rủi ro (BYOD/VPN)</dt><dd>Phân biệt rủi ro <b>mới phát sinh / tăng thêm</b> so với hiện trạng trong đề.</dd></div><div><dt>Quyền tối thiểu & Tách nhiệm vụ</dt><dd>Người sửa cấu hình không được tự phê duyệt; chỉ cấp đúng quyền cần cho vai trò.</dd></div></dl></div></aside>
+<section class="lesson-part lesson-section" id="p1"><h2 class="lesson-part-title" data-ja="公式ルールと解法ポイント" data-step="01" data-vi="Quy ước chính thức &amp; Cách làm bài">Quy ước chính thức &amp; Cách làm bài</h2>
+<article class="reading-topic" id="topic-01">
+<h3 class="sub" data-dual="01. 科目B 情報セキュリティ4問の出題パターン · 4 trụ cột hay ra trong 4 câu Bảo mật 科目B (IPA 問17–問20)" data-ja="01. 科目B 情報セキュリティ4問の出題パターン" data-vi="01. 4 trụ cột hay ra trong 4 câu Bảo mật 科目B (IPA 問17–問20)" id="lesson-b5-topic-01">01. 科目B 情報セキュリティ4問の出題パターン · 4 trụ cột hay ra trong 4 câu Bảo mật 科目B (IPA 問17–問20)</h3>
+<div class="lang-block">
+<div class="lang-row jp reading-ja" lang="ja"><span class="label">日本語</span><div class="content">科目Bの情報セキュリティ4問は、①クラウド・委託の責任分界、②BYOD/VPN導入時のリスク分析、③最小権限のアクセス制御、④内部統制（職務分離）の4パターンが中心です。</div></div>
+<div class="lang-row vn reading-vi" lang="vi"><span class="label">Tiếng Việt</span><div class="content">4 câu cuối (問17–問20) của đề 科目B luôn là tình huống doanh nghiệp thực tế, chiếm 20% số câu nhưng rất dễ ghi điểm chắc nếu đọc kỹ dữ kiện:
+1. **Mô hình trách nhiệm chung & Ủy thác (委託)** (問17): phân định rõ A社 (chủ sở hữu), B社 (nhà cung cấp PaaS/SaaS), C社 (bên phát triển).
+2. **Đánh giá rủi ro khi thay đổi hạ tầng (BYOD / VPN / Remote)** (問18): đối chiếu từng lựa chọn với hiện trạng (図1) để loại các rủi ro không liên quan.
+3. **Kiểm soát truy cập & Quyền tối thiểu (最小権限)** (問19): lập bảng vai trò × (Xem / Nhập / Duyệt).
+4. **Kiểm soát nội bộ & Phân tách nhiệm vụ (職務の分離)** (問20): người thao tác và người kiểm tra log / phê duyệt phải là 2 người khác nhau.</div></div>
+</div>
+<pre class="ascii" tabindex="0">Checklist đọc nhanh tình huống Bảo mật 科目B:
+[1] Ai sở hữu hệ thống? Ai cung cấp Cloud (IaaS/PaaS/SaaS)? Ai được ủy thác?
+[2] Hiện trạng (図1) đã có gì và CHƯA có gì?
+[3] Chính sách (方針) &amp; Yêu cầu (要求) cấm điều gì?
+[4] Đáp án nào giải quyết TRỰC TIẾP đúng chỉ trích (指摘) đang hỏi?</pre>
+<div class="callout"><div class="head">Lưu ý khi làm đề 科目B</div>Cẩn thận bẫy "đáp án nghe rất đúng về bảo mật (như cài EDR, bật MFA) nhưng KHÔNG giải quyết đúng lỗ hổng mà câu hỏi đang hỏi" (như trong IPA 問20).</div>
+</article>
+</section>
+<section class="lesson-part" id="p2"><h2 class="lesson-part-title" data-ja="用語カード" data-step="02" data-vi="Flashcard ôn nhanh">Flashcard ôn nhanh</h2><div class="fc-filter" id="fcFilter"></div><div class="fc-grid" id="fcGrid"></div></section>
+<div class="source"><h3>Nguồn chính thức &amp; Tham khảo đối chiếu · 公式出典</h3><ul><li><a href="https://www.ipa.go.jp/shiken/syllabus/doe3um0000002djj-att/shiken_yougo_ver5_1.pdf" target="_blank" rel="noopener">IPA 試験で使用する用語・プログラム言語など Ver.5.1 (擬似言語仕様 PDF) ↗</a></li><li><a href="https://www.ipa.go.jp/shiken/syllabus/omgdg50000005kpe-att/syllabus_fe_ver9_2.pdf" target="_blank" rel="noopener">IPA 基本情報技術者試験 シラバス Ver.9.2 (PDF) ↗</a></li><li><a href="https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_qs.pdf" target="_blank" rel="noopener">IPA 科目B サンプル問題（20問）セット 問題PDF (2022-12-26) ↗</a></li><li><a href="https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_ans.pdf" target="_blank" rel="noopener">IPA 科目B サンプル問題（20問）セット 解答例PDF ↗</a></li><li><a href="https://www.ipa.go.jp/shiken/mondai-kaiotu/sg_fe/koukai/index.html" target="_blank" rel="noopener">IPA 公開問題一覧（2023〜2026年度） ↗</a></li><li><a href="https://www.fe-siken.com/fekakomon_b.php" target="_blank" rel="noopener">基本情報技術者試験ドットコム — 過去問道場（科目B・全50問） ↗</a></li></ul></div>
+<footer class="lesson-footer"><h2 data-ja="公式問題で演習しよう" data-vi="Thực hành ngay với đề chính thức IPA">Thực hành ngay với đề chính thức IPA</h2><p data-ja="このテーマの IPA 公式サンプル問題に挑戦できます。" data-vi="Các câu hỏi trích từ Đề mẫu chính thức IPA (có đầy đủ nguồn và lời giải trace).">Các câu hỏi trích từ Đề mẫu chính thức IPA (có đầy đủ nguồn và lời giải trace).</p><div class="footer-nav"><a class="btn" href="../index.html" target="_top">← Lộ trình 科目B</a><a class="btn primary" href="b5-test.html">Làm bài tập B5 →</a></div></footer>
+</main>
+<aside class="reading-sidebar"><nav aria-label="Mục lục" class="lesson-toc"><h3 data-ja="目次" data-vi="MỤC LỤC">MỤC LỤC</h3><ul></ul></nav><section class="reading-vocab"><h3 data-ja="重要ポイント" data-vi="Điểm cần nhớ">Điểm cần nhớ</h3><p data-ja="クリックして確認" data-vi="Bấm để xem giải thích">Bấm để xem giải thích</p></section></aside>
+</div>
+<script id="lesson-data" type="application/json">{"number": 5, "cards": [{"cat": "basic", "front": "Trong PaaS, ai chịu trách nhiệm vá lỗ hổng OS/DBMS và ai vá lỗ hổng XSS của Web app?", "frontJa": "PaaSでOS/DBMSの脆弱性とWebアプリのXSSはそれぞれ誰が対処する？", "back": "Nhà cung cấp PaaS vá <b>OS & DBMS</b>; khách hàng (hoặc bên được ủy thác phát triển) vá <b>ứng dụng Web (XSS)</b>.", "backJa": "OS・DBMSはPaaS提供者、WebアプリのXSSは利用者側（または開発委託先）。"}, {"cat": "basic", "front": "Phân tách nhiệm vụ (職務の分離) trong vận hành Firewall là gì?", "frontJa": "FW運用における職務の分離とは？", "back": "Tách riêng người <b>sửa rule</b> và người <b>kiểm tra log + phê duyệt</b>, mỗi bên chỉ có quyền tối thiểu tương ứng.", "backJa": "ルール編集者とログ確認・操作承認者を分け、各々に最小権限のみを付与すること。"}], "quiz": []}</script>
+</body></html>

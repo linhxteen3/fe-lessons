@@ -1242,3 +1242,9 @@ iframe {
 .progress-cat { width:44px; height:44px; border-radius:12px; object-fit:cover; border:1px solid #383838; flex-shrink:0; }
 .empty { display:flex; flex-direction:column; align-items:center; gap:14px; }
 .empty-cat { width:124px; height:124px; border-radius:16px; object-fit:cover; border:1px solid #383838; }
+.b-actions { display:flex; flex-wrap:wrap; gap:10px; margin:16px 0 4px; }
+.b-action-btn { padding:10px 16px; border-radius:10px; font-size:13.5px; font-weight:700; border:1px solid #454545; background:#232323; color:#f5f5f5; transition:background .15s ease, border-color .15s ease; }
+.b-action-btn:hover { background:#2e2e2e; border-color:#a579ef; }
+.b-action-btn.b-test-btn { background:#a579ef; color:#141414; border-color:#a579ef; }
+.b-action-btn.b-test-btn:hover { background:#b994f5; }
+.b-sources { display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:12px; }

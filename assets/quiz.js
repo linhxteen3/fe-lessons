@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   try {
     questions = JSON.parse(document.getElementById('quiz-data').textContent);
     if (!Array.isArray(questions) || !questions.length || questions.some(q =>
-      !Array.isArray(q.opts) || q.opts.length !== 4 || !Number.isInteger(q.ans) || q.ans < 0 || q.ans > 3 ||
+      !Array.isArray(q.opts) || q.opts.length < 2 || q.opts.length > 10 || !Number.isInteger(q.ans) || q.ans < 0 || q.ans >= q.opts.length ||
       !['easy', 'med', 'hard', 'review'].includes(q.d))) throw new Error('Invalid question bank');
   } catch {
     app.textContent = FE.t("Không tải được câu hỏi. Hãy tải lại trang.");
@@ -87,13 +87,51 @@ document.addEventListener('DOMContentLoaded', () => {
     picks.fill(null);
     jump(0);
   };
-  const number = Number(location.pathname.match(/\/(\d+)\.html$/)[1]);
+  const number = (location.pathname.match(/\/([^/]+)\.html$/) || ['', 'quiz'])[1];
   // Reuse the existing Bài 01 attempt format and storage keys for every lesson.
   const saved = FE.read('test:' + number, {});
   if (!FE.read('activity:' + number, null)) FE.write('activity:' + number, { startedAt: new Date().toISOString() });
-  const picks = questions.map((q, i) => Number.isInteger(saved?.picks?.[i]) && saved.picks[i] >= 0 && saved.picks[i] < 4 ? saved.picks[i] : null);
+  const picks = questions.map((q, i) => Number.isInteger(saved?.picks?.[i]) && saved.picks[i] >= 0 && saved.picks[i] < q.opts.length ? saved.picks[i] : null);
   let current = Number.isInteger(saved?.cur) ? Math.max(0, Math.min(total - 1, saved.cur)) : 0;
-  const letters = ['A', 'B', 'C', 'D'];
+  const lettersVi = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+  const lettersJa = ['ア', 'イ', 'ウ', 'エ', 'オ', 'カ', 'キ', 'ク', 'ケ', 'コ'];
+  const optionLetter = (i, q, japanese) => (japanese && (q.opts.length > 4 || q.source)) ? lettersJa[i] : lettersVi[i];
+  const escapeCode = value => String(value || '').replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  const examMinutes = Number(app.dataset.examMinutes || 0);
+  let examRemaining = examMinutes > 0 ? examMinutes * 60 : 0;
+  let examRunning = false;
+  let examInterval = null;
+  const formatExamClock = sec => `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`;
+  let examBar = null;
+  if (examMinutes > 0) {
+    examBar = document.createElement('div');
+    examBar.className = 'quiz-exam-timer';
+    examBar.id = 'quiz-exam-timer';
+    examBar.innerHTML = `<span class="quiz-exam-label">⏱ ${examMinutes} phút · 科目B</span><strong class="quiz-exam-clock" id="quiz-exam-clock">${formatExamClock(examRemaining)}</strong><div class="quiz-exam-btns"><button type="button" id="quiz-exam-toggle">▶ Bắt đầu</button><button type="button" id="quiz-exam-reset">↻ Đặt lại</button></div>`;
+    app.before(examBar);
+    const updateExamClock = () => {
+      const clock = examBar.querySelector('#quiz-exam-clock');
+      const btn = examBar.querySelector('#quiz-exam-toggle');
+      const ja = FE.read('language', 'vi') === 'ja';
+      if (clock) clock.textContent = formatExamClock(examRemaining);
+      examBar.classList.toggle('low', examRemaining <= 600);
+      if (btn) btn.textContent = examRunning ? (ja ? '⏸ 一時停止' : '⏸ Tạm dừng') : (ja ? '▶ 開始' : '▶ Bắt đầu');
+    };
+    const stopExamTimer = () => { clearInterval(examInterval); examInterval = null; examRunning = false; updateExamClock(); };
+    examBar.querySelector('#quiz-exam-toggle').onclick = () => {
+      if (examRunning) { stopExamTimer(); return; }
+      if (examRemaining <= 0) examRemaining = examMinutes * 60;
+      examRunning = true;
+      updateExamClock();
+      examInterval = setInterval(() => {
+        examRemaining = Math.max(0, examRemaining - 1);
+        updateExamClock();
+        if (examRemaining <= 0) { stopExamTimer(); if (!showingResult) showResult(); }
+      }, 1000);
+    };
+    examBar.querySelector('#quiz-exam-reset').onclick = () => { stopExamTimer(); examRemaining = examMinutes * 60; updateExamClock(); };
+    updateExamClock();
+  }
   const levelNames = () => FE.read('language', 'vi') === 'ja'
     ? {easy:'易しい',med:'標準',hard:'難しい',review:'復習'}
     : {easy:'易 Dễ',med:'中 Trung bình',hard:'難 Khó',review:'Ôn tập'};
@@ -126,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   function jump(index) { current = index; save(); render(); }
   function pickAnswer(choice) {
-    if (picks[current] !== null || choice < 0 || choice > 3) return;
+    if (picks[current] !== null || choice < 0 || choice >= questions[current].opts.length) return;
     picks[current] = choice;
     save();
     render();
@@ -151,20 +189,22 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="quiz-question-head"><span class="quiz-number">${FE.t("Câu")} ${current + 1}/${total}</span><span class="quiz-level ${q.d}">${levels[q.d]}</span></div>
         <div class="quiz-question-text">${format(q.q)}</div>
         ${q.jp ? `<div class="quiz-question-jp" lang="ja">${format(q.jp)}</div>` : ''}
+        ${q.code ? `<pre class="quiz-code" lang="ja"><code>${escapeCode(q.code)}</code></pre>` : ''}
         ${q.extra ? `<div class="quiz-extra">${format(q.extra)}</div>` : ''}
         <div class="quiz-options">${q.opts.map((option, i) => `
           <button type="button" class="quiz-option ${answered ? (i === q.ans ? 'correct' : i === picks[current] ? 'wrong' : '') : ''}" data-pick="${i}" aria-pressed="${i === picks[current]}" ${answered ? 'disabled' : ''}>
-            <span class="quiz-letter">${letters[i]}.</span><span>${format(option)}</span>
-            ${answered && i === q.ans ? '<span class="quiz-answer-mark">✓</span>' : answered && i === picks[current] ? '<span class="quiz-answer-mark">✕</span>' : `<kbd class="quiz-kbd" aria-hidden="true">${keyLabel(keys['opt' + i])}</kbd>`}
+            <span class="quiz-letter">${optionLetter(i, q, japanese)}.</span><span>${format(option)}</span>
+            ${answered && i === q.ans ? '<span class="quiz-answer-mark">✓</span>' : answered && i === picks[current] ? '<span class="quiz-answer-mark">✕</span>' : (i < 4 ? `<kbd class="quiz-kbd" aria-hidden="true">${keyLabel(keys['opt' + i])}</kbd>` : (i < 9 ? `<kbd class="quiz-kbd" aria-hidden="true">${i + 1}</kbd>` : '<kbd class="quiz-kbd" aria-hidden="true">0</kbd>'))}
           </button>`).join('')}</div>
-        ${answered ? `<p class="quiz-feedback ${picks[current] === q.ans ? 'quiz-good' : 'quiz-bad'}" role="status">${picks[current] === q.ans ? FE.t("✓ Chính xác!") : FE.t("✕ Chưa đúng.")} ${FE.t("Đáp án đúng:")} ${letters[q.ans]}.</p>
+        ${answered ? `<p class="quiz-feedback ${picks[current] === q.ans ? 'quiz-good' : 'quiz-bad'}" role="status">${picks[current] === q.ans ? FE.t("✓ Chính xác!") : FE.t("✕ Chưa đúng.")} ${FE.t("Đáp án đúng:")} ${optionLetter(q.ans, q, japanese)}.</p>
           <button type="button" id="quiz-explain-toggle" aria-expanded="false" aria-controls="quiz-explanation">${FE.t("📖 Xem giải thích")}</button>
           <div class="quiz-explanation" id="quiz-explanation" hidden>
-            <h3>${FE.t("Đáp án đúng:")} ${letters[q.ans]}</h3>
+            <h3>${FE.t("Đáp án đúng:")} ${optionLetter(q.ans, q, japanese)}</h3>
             ${q.why ? `<div>${format(q.why)}</div>` : ''}
             ${(q.details || []).map(detail => `<p>${format(detail)}</p>`).join('')}
             ${q.ref ? `<p class="quiz-reference">📌 FE Syllabus: ${format(q.ref)}</p>` : ''}
           </div>` : ''}
+        ${q.source ? `<p class="quiz-source">${japanese ? '出典：' : 'Nguồn chính thức: '}${q.sourceUrl ? `<a href="${q.sourceUrl}" target="_blank" rel="noopener">${q.source} ↗</a>` : q.source}</p>` : ''}
         <div class="quiz-actions"><button type="button" id="quiz-prev" ${current === 0 ? 'disabled' : ''}>${FE.t("← Câu trước")}</button><button type="button" class="quiz-primary" id="quiz-next">${current === total - 1 ? FE.t("✓ Nộp bài") : FE.t("Câu tiếp →")}</button></div>
       </section>
       <nav class="quiz-jump-card" aria-label="Điều hướng câu hỏi">
@@ -247,8 +287,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const pressed = normKey(e.key);
     const optIndex = ['opt0', 'opt1', 'opt2', 'opt3'].findIndex(slot => keys[slot] === pressed);
     if (optIndex !== -1) {
-      if (picks[current] === null) { e.preventDefault(); pickAnswer(optIndex); }
+      if (picks[current] === null && optIndex < questions[current].opts.length) { e.preventDefault(); pickAnswer(optIndex); }
       return;
+    }
+    if (questions[current].opts.length > 4) {
+      const extraIndex = pressed === '0' ? 9 : (/^[5-9]$/.test(pressed) ? Number(pressed) - 1 : -1);
+      if (extraIndex !== -1 && extraIndex < questions[current].opts.length && picks[current] === null) {
+        e.preventDefault();
+        pickAnswer(extraIndex);
+        return;
+      }
     }
     if (pressed === keys.prev && current > 0) { e.preventDefault(); jump(current - 1); }
     else if (pressed === keys.next) { e.preventDefault(); current === total - 1 ? showResult() : jump(current + 1); }

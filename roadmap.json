@@ -19,8 +19,16 @@
       "url": "https://www.ipa.go.jp/shiken/syllabus/henkou/2022/20220425.html"
     },
     {
-      "label": "Đề công khai IPA",
+      "label": "Đề công khai IPA (2023–2026)",
       "url": "https://www.ipa.go.jp/shiken/mondai-kaiotu/sg_fe/koukai/index.html"
+    },
+    {
+      "label": "Quy ước giả mã IPA Ver.5.1 (PDF)",
+      "url": "https://www.ipa.go.jp/shiken/syllabus/doe3um0000002djj-att/shiken_yougo_ver5_1.pdf"
+    },
+    {
+      "label": "過去問道場 科目B (fe-siken.com)",
+      "url": "https://www.fe-siken.com/fekakomon_b.php"
     }
   ],
   "stages": [
@@ -198,32 +206,49 @@
   ],
   "subjectB": [
     {
+      "id": "b1",
+      "theory": "mon-b/b1.html",
+      "test": "mon-b/b1-test.html",
       "title": "Đọc giả mã & lập bảng trace",
       "jp": "擬似言語・トレース",
       "related": [
         10,
         4
       ],
-      "practice": "Biến, phép gán, điều kiện, vòng lặp; theo dõi giá trị sau từng lệnh và kiểm tra biên vòng lặp.",
-      "gap": "Có nền tảng flowchart, nhưng chưa có bộ bài luyện riêng theo giả mã IPA. Đọc quy ước và làm đề mẫu IPA trước khi tăng tốc.",
+      "practice": "Biến, phép gán (←), điều kiện, vòng lặp; theo dõi giá trị sau từng lệnh theo đúng quy ước IPA Ver.5.1.",
+      "gap": "Đã tích hợp hướng dẫn quy ước giả mã chính thức IPA Ver.5.1 và 4 câu trích từ Đề mẫu 20 câu IPA (問1, 問2, 問4, 問5).",
       "titleJa": "擬似言語の読解とトレース",
-      "practiceJa": "変数、代入、条件、繰返しの値を一行ずつ追い、ループの境界を確認します。",
-      "gapJa": "フローチャートの基礎はありますが、IPA擬似言語の専用演習は未整備です。規則とサンプル問題から始めます。"
+      "practiceJa": "変数、代入（←）、条件、繰返しの値を一行ずつ追い、IPA仕様Ver.5.1に沿ってトレースします。",
+      "gapJa": "IPA公式仕様Ver.5.1の解説と、サンプル問題（問1・2・4・5）の演習を収録しています。",
+      "sources": [
+        { "label": "IPA 擬似言語仕様 Ver.5.1 (PDF)", "url": "https://www.ipa.go.jp/shiken/syllabus/doe3um0000002djj-att/shiken_yougo_ver5_1.pdf" },
+        { "label": "IPA サンプル20問 PDF", "url": "https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_qs.pdf" }
+      ]
     },
     {
+      "id": "b2",
+      "theory": "mon-b/b2.html",
+      "test": "mon-b/b2-test.html",
       "title": "Mảng, chuỗi & cấu trúc dữ liệu",
       "jp": "配列・文字列・データ構造",
       "related": [
         11,
         7
       ],
-      "practice": "Mảng một/hai chiều, xử lý chuỗi, stack/queue, danh sách liên kết và cây; ghi rõ chỉ số bắt đầu và trạng thái dữ liệu.",
-      "gap": "Các bài hiện có hỗ trợ stack/queue/tree và RPN; cần bổ sung trace mảng/chuỗi và danh sách liên kết theo dạng 科目B.",
+      "practice": "Mảng 1/2 chiều (chỉ số từ 1), xử lý chuỗi, hàng đợi ưu tiên, danh sách liên kết và cây nhị phân.",
+      "gap": "Đã tích hợp hướng dẫn mảng/cấu trúc dữ liệu theo IPA Ver.5.1 và 5 câu chính thức từ Đề mẫu IPA (問3, 問8, 問9, 問10, 問12).",
       "titleJa": "配列・文字列・データ構造",
-      "practiceJa": "一次元・二次元配列、文字列、スタック・キュー、連結リスト、木を扱い、添字とデータの状態を明記します。",
-      "gapJa": "スタック・キュー・木・RPNの教材はあります。科目B形式の配列・文字列・連結リストのトレース演習を追加する必要があります。"
+      "practiceJa": "1始まり配列、文字列、優先度付きキュー、単方向リスト、2分木を扱います。",
+      "gapJa": "IPA公式仕様に基づく解説と、サンプル問題（問3・8・9・10・12）の演習を収録しています。",
+      "sources": [
+        { "label": "IPA 擬似言語仕様 Ver.5.1 (PDF)", "url": "https://www.ipa.go.jp/shiken/syllabus/doe3um0000002djj-att/shiken_yougo_ver5_1.pdf" },
+        { "label": "fe-siken.com 科目B 解説", "url": "https://www.fe-siken.com/kakomon/sample/" }
+      ]
     },
     {
+      "id": "b3",
+      "theory": "mon-b/b3.html",
+      "test": "mon-b/b3-test.html",
       "title": "Hàm, đệ quy & thuật toán",
       "jp": "関数・再帰・アルゴリズム",
       "related": [
@@ -231,13 +256,20 @@
         13,
         14
       ],
-      "practice": "Tham số, giá trị trả về, phạm vi biến, đệ quy; tự trace tìm kiếm/sắp xếp trên dữ liệu nhỏ.",
-      "gap": "Có ví dụ tìm kiếm/sắp xếp và bài 14 về OOP/UML; vẫn cần bổ sung lộ trình luyện hàm/đệ quy và các bài đọc chương trình đầy đủ theo 科目B.",
+      "practice": "Tham số, giá trị trả về, đệ quy, tìm kiếm nhị phân, sắp xếp và phát hiện lỗi điều kiện biên.",
+      "gap": "Đã tích hợp hướng dẫn trace đệ quy/bẫy biên và 3 câu chính thức từ Đề mẫu IPA (問7, 問11, 問13).",
       "titleJa": "関数・再帰・アルゴリズム",
-      "practiceJa": "引数、戻り値、変数のスコープ、再帰を学び、小さなデータで探索・整列を追います。",
-      "gapJa": "探索・整列とレッスン14のOOP・UML教材があります。科目B形式の関数・再帰とプログラム読解の体系的な演習は引き続き必要です。"
+      "practiceJa": "引数、戻り値、再帰、探索・整列の境界値と不具合発見を学びます。",
+      "gapJa": "再帰トレース・境界値チェックの解説と、サンプル問題（問7・11・13）を収録しています。",
+      "sources": [
+        { "label": "IPA シラバス Ver.9.2 (PDF)", "url": "https://www.ipa.go.jp/shiken/syllabus/omgdg50000005kpe-att/syllabus_fe_ver9_2.pdf" },
+        { "label": "IPA サンプル20問 PDF", "url": "https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_qs.pdf" }
+      ]
     },
     {
+      "id": "b4",
+      "theory": "mon-b/b4.html",
+      "test": "mon-b/b4-test.html",
       "title": "Giải quyết vấn đề bằng lập trình",
       "jp": "プログラミングによる問題解決",
       "related": [
@@ -246,13 +278,20 @@
         12,
         13
       ],
-      "practice": "Từ mô tả bài toán, xác định đầu vào/đầu ra, cách lưu dữ liệu và thuật toán; chọn lệnh còn thiếu rồi kiểm chứng bằng trace.",
-      "gap": "Cần bộ bài tình huống riêng; bài trắc nghiệm khái niệm hiện có không thay thế được phần thực hành này.",
+      "practice": "Phân tích bài toán thực tế (đảo bit, thống kê phân vị, cây trò chơi Minimax, mã hóa UTF-8) rồi kiểm chứng bằng trace.",
+      "gap": "Đã tích hợp quy trình giải đề dài 4 bước và 4 câu ứng dụng chính thức từ Đề mẫu IPA (問6, 問14, 問15, 問16).",
       "titleJa": "プログラミングによる問題解決",
-      "practiceJa": "問題文から入出力、データの持ち方、アルゴリズムを決め、不足する命令を選んでトレースで検証します。",
-      "gapJa": "専用の事例演習が必要です。既存の知識確認問題だけではこの実践を代替できません。"
+      "practiceJa": "ビット演算、統計、ゲーム木、UTF-8符号化などの実践課題をトレースで解きます。",
+      "gapJa": "長文アルゴリズムの解法と、サンプル問題（問6・14・15・16）を収録しています。",
+      "sources": [
+        { "label": "IPA サンプル20問 PDF", "url": "https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_qs.pdf" },
+        { "label": "IPA 公開問題（2023〜2026）", "url": "https://www.ipa.go.jp/shiken/mondai-kaiotu/sg_fe/koukai/index.html" }
+      ]
     },
     {
+      "id": "b5",
+      "theory": "mon-b/b5.html",
+      "test": "mon-b/b5-test.html",
       "title": "Tình huống an toàn thông tin",
       "jp": "情報セキュリティ",
       "related": [
@@ -262,21 +301,32 @@
         42,
         43
       ],
-      "practice": "Đọc tình huống về xác thực, phân quyền, nhật ký, lừa đảo, xử lý sự cố và kiểm soát rủi ro; chọn biện pháp theo ngữ cảnh.",
-      "gap": "Bài 39–42 đã có lý thuyết và bài kiểm tra, bài 43 là ôn bảo mật. Đây là nền tảng và câu luyện ngắn; vẫn cần bộ tình huống dài theo định dạng 科目B.",
+      "practice": "Mô hình trách nhiệm chung PaaS, rủi ro BYOD/VPN, bảng phân quyền tối thiểu và phân tách nhiệm vụ vận hành FW.",
+      "gap": "Đã tích hợp khung phân tích 4 trụ cột bảo mật 科目B và đủ 4 câu tình huống chính thức từ Đề mẫu IPA (問17–問20).",
       "titleJa": "情報セキュリティの事例演習",
-      "practiceJa": "認証、権限、ログ、詐欺、インシデント対応、リスク管理の事例を読み、状況に合う対策を選びます。",
-      "gapJa": "39〜42に解説と演習、43に復習を追加しました。基礎と短い設問のため、科目B形式の長文事例演習は引き続き必要です。"
+      "practiceJa": "PaaS責任共有、BYOD/VPNリスク、最小権限、FW職務分離の事例を分析します。",
+      "gapJa": "科目Bセキュリティの分析フレームと、サンプル問題（問17〜20）を収録しています。",
+      "sources": [
+        { "label": "IPA シラバス Ver.9.2 (PDF)", "url": "https://www.ipa.go.jp/shiken/syllabus/omgdg50000005kpe-att/syllabus_fe_ver9_2.pdf" },
+        { "label": "IPA サンプル20問 PDF", "url": "https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_qs.pdf" }
+      ]
     },
     {
-      "title": "Luyện đề 科目B có bấm giờ",
-      "jp": "20問・100分",
+      "id": "b6",
+      "test": "mon-b/b6-exam.html",
+      "title": "Luyện thi 科目B có bấm giờ",
+      "jp": "20問・100分 模擬試験",
       "related": [],
-      "practice": "Luyện theo cấu trúc 16 câu thuật toán/lập trình và 4 câu an toàn thông tin; xem lại trace và lý do sai sau mỗi buổi.",
-      "gap": "Chưa có đề 科目B hoàn chỉnh trong kho. Dùng đề mẫu/đề công khai IPA và bổ sung nguồn luyện đủ 20 câu. Không dùng tỷ lệ đúng của quiz để suy ra điểm IRT.",
-      "titleJa": "時間を計って科目Bを演習",
-      "practiceJa": "アルゴリズム・プログラミング16問と情報セキュリティ4問で練習し、毎回トレースと誤答理由を見直します。",
-      "gapJa": "完全な科目B模試は未収録です。IPAサンプル・公開問題と追加教材で20問を用意します。クイズの正答率からIRT評価点を推定しないでください。"
+      "practice": "Thi thử trọn bộ 20 câu chính thức của IPA (16 câu thuật toán/giả mã + 4 câu an toàn thông tin) với đồng hồ đếm ngược 100 phút.",
+      "gap": "Trích nguyên bản Đề mẫu 20 câu IPA (2022-12-26), kèm link tải trực tiếp 4 bộ Đề công khai 2023–2026 và 過去問道場 科目B (50 câu).",
+      "titleJa": "時間を計って科目Bを模擬試験",
+      "practiceJa": "アルゴリズム16問＋情報セキュリティ4問のIPA公式20問セットを100分タイマーで演習します。",
+      "gapJa": "IPA公式サンプル20問セットを完全収録し、2023〜2026年度公開問題PDF・過去問道場へも接続しています。",
+      "sources": [
+        { "label": "IPA サンプル20問 問題PDF", "url": "https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_qs.pdf" },
+        { "label": "IPA 公開問題（2023〜2026）", "url": "https://www.ipa.go.jp/shiken/mondai-kaiotu/sg_fe/koukai/index.html" },
+        { "label": "過去問道場 科目B (50問)", "url": "https://www.fe-siken.com/fekakomon_b.php" }
+      ]
     }
   ]
 }
