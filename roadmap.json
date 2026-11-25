@@ -216,10 +216,10 @@
         4
       ],
       "practice": "Biến, phép gán (←), điều kiện, vòng lặp; theo dõi giá trị sau từng lệnh theo đúng quy ước IPA Ver.5.1.",
-      "gap": "Đã tích hợp hướng dẫn quy ước giả mã chính thức IPA Ver.5.1 và 4 câu trích từ Đề mẫu 20 câu IPA (問1, 問2, 問4, 問5).",
+      "gap": "Đã tích hợp hướng dẫn quy ước giả mã chính thức IPA Ver.5.1 và 10 câu chính thức IPA (Đề mẫu 2022 & Đề công khai 2023–2025).",
       "titleJa": "擬似言語の読解とトレース",
       "practiceJa": "変数、代入（←）、条件、繰返しの値を一行ずつ追い、IPA仕様Ver.5.1に沿ってトレースします。",
-      "gapJa": "IPA公式仕様Ver.5.1の解説と、サンプル問題（問1・2・4・5）の演習を収録しています。",
+      "gapJa": "IPA公式仕様Ver.5.1の解説と、公式問題10問（サンプル・2023〜2025公開問題）を収録しています。",
       "sources": [
         { "label": "IPA 擬似言語仕様 Ver.5.1 (PDF)", "url": "https://www.ipa.go.jp/shiken/syllabus/doe3um0000002djj-att/shiken_yougo_ver5_1.pdf" },
         { "label": "IPA サンプル20問 PDF", "url": "https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_qs.pdf" }
@@ -236,10 +236,10 @@
         7
       ],
       "practice": "Mảng 1/2 chiều (chỉ số từ 1), xử lý chuỗi, hàng đợi ưu tiên, danh sách liên kết và cây nhị phân.",
-      "gap": "Đã tích hợp hướng dẫn mảng/cấu trúc dữ liệu theo IPA Ver.5.1 và 5 câu chính thức từ Đề mẫu IPA (問3, 問8, 問9, 問10, 問12).",
+      "gap": "Đã tích hợp hướng dẫn mảng/cấu trúc dữ liệu theo IPA Ver.5.1 và 11 câu chính thức IPA (Đề mẫu 2022 & Đề công khai 2024–2026).",
       "titleJa": "配列・文字列・データ構造",
       "practiceJa": "1始まり配列、文字列、優先度付きキュー、単方向リスト、2分木を扱います。",
-      "gapJa": "IPA公式仕様に基づく解説と、サンプル問題（問3・8・9・10・12）の演習を収録しています。",
+      "gapJa": "IPA公式仕様に基づく解説と、公式問題11問（サンプル・2024〜2026公開問題）を収録しています。",
       "sources": [
         { "label": "IPA 擬似言語仕様 Ver.5.1 (PDF)", "url": "https://www.ipa.go.jp/shiken/syllabus/doe3um0000002djj-att/shiken_yougo_ver5_1.pdf" },
         { "label": "fe-siken.com 科目B 解説", "url": "https://www.fe-siken.com/kakomon/sample/" }
@@ -257,10 +257,10 @@
         14
       ],
       "practice": "Tham số, giá trị trả về, đệ quy, tìm kiếm nhị phân, sắp xếp và phát hiện lỗi điều kiện biên.",
-      "gap": "Đã tích hợp hướng dẫn trace đệ quy/bẫy biên và 3 câu chính thức từ Đề mẫu IPA (問7, 問11, 問13).",
+      "gap": "Đã tích hợp hướng dẫn trace đệ quy/bẫy biên và 9 câu chính thức IPA (Đề mẫu 2022 & Đề công khai 2023–2026).",
       "titleJa": "関数・再帰・アルゴリズム",
       "practiceJa": "引数、戻り値、再帰、探索・整列の境界値と不具合発見を学びます。",
-      "gapJa": "再帰トレース・境界値チェックの解説と、サンプル問題（問7・11・13）を収録しています。",
+      "gapJa": "再帰トレース・境界値チェックの解説と、公式問題9問（サンプル・2023〜2026公開問題）を収録しています。",
       "sources": [
         { "label": "IPA シラバス Ver.9.2 (PDF)", "url": "https://www.ipa.go.jp/shiken/syllabus/omgdg50000005kpe-att/syllabus_fe_ver9_2.pdf" },
         { "label": "IPA サンプル20問 PDF", "url": "https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_qs.pdf" }
@@ -279,10 +279,10 @@
         13
       ],
       "practice": "Phân tích bài toán thực tế (đảo bit, thống kê phân vị, cây trò chơi Minimax, mã hóa UTF-8) rồi kiểm chứng bằng trace.",
-      "gap": "Đã tích hợp quy trình giải đề dài 4 bước và 4 câu ứng dụng chính thức từ Đề mẫu IPA (問6, 問14, 問15, 問16).",
+      "gap": "Đã tích hợp quy trình giải đề dài 4 bước và 11 câu ứng dụng chính thức IPA (Đề mẫu 2022 & Đề công khai 2023–2026).",
       "titleJa": "プログラミングによる問題解決",
       "practiceJa": "ビット演算、統計、ゲーム木、UTF-8符号化などの実践課題をトレースで解きます。",
-      "gapJa": "長文アルゴリズムの解法と、サンプル問題（問6・14・15・16）を収録しています。",
+      "gapJa": "長文アルゴリズムの解法と、公式問題11問（サンプル・2023〜2026公開問題）を収録しています。",
       "sources": [
         { "label": "IPA サンプル20問 PDF", "url": "https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_qs.pdf" },
         { "label": "IPA 公開問題（2023〜2026）", "url": "https://www.ipa.go.jp/shiken/mondai-kaiotu/sg_fe/koukai/index.html" }
@@ -302,10 +302,10 @@
         43
       ],
       "practice": "Mô hình trách nhiệm chung PaaS, rủi ro BYOD/VPN, bảng phân quyền tối thiểu và phân tách nhiệm vụ vận hành FW.",
-      "gap": "Đã tích hợp khung phân tích 4 trụ cột bảo mật 科目B và đủ 4 câu tình huống chính thức từ Đề mẫu IPA (問17–問20).",
+      "gap": "Đã tích hợp khung phân tích 4 trụ cột bảo mật 科目B và đủ 9 câu tình huống chính thức IPA (Đề mẫu 2022 & Đề công khai 2023–2026).",
       "titleJa": "情報セキュリティの事例演習",
       "practiceJa": "PaaS責任共有、BYOD/VPNリスク、最小権限、FW職務分離の事例を分析します。",
-      "gapJa": "科目Bセキュリティの分析フレームと、サンプル問題（問17〜20）を収録しています。",
+      "gapJa": "科目Bセキュリティの分析フレームと、公式問題9問（サンプル・2023〜2026公開問題）を収録しています。",
       "sources": [
         { "label": "IPA シラバス Ver.9.2 (PDF)", "url": "https://www.ipa.go.jp/shiken/syllabus/omgdg50000005kpe-att/syllabus_fe_ver9_2.pdf" },
         { "label": "IPA サンプル20問 PDF", "url": "https://www.ipa.go.jp/shiken/syllabus/henkou/2022/gmcbt80000007cfs-att/fe_kamoku_b_set_sample_qs.pdf" }

@@ -136,7 +136,10 @@ document.addEventListener('DOMContentLoaded', () => {
     ? {easy:'易しい',med:'標準',hard:'難しい',review:'復習'}
     : {easy:'易 Dễ',med:'中 Trung bình',hard:'難 Khó',review:'Ôn tập'};
   // The bank is authored HTML from this repository, just like the original lessons.
-  const format = value => String(value || '').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+  const format = value => String(value || '')
+    .replace(/`([^`]+)`/g, '<code class="quiz-inline-code">$1</code>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
   const stats = () => {
     const done = picks.filter(p => p !== null).length;
     const correct = picks.filter((p, i) => p === questions[i].ans).length;

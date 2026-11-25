@@ -44,11 +44,12 @@ test('Subject B: All roadmap files exist and every question cites an official ip
       assert.ok(q.source && q.source.includes('IPA'), `${rel}: every question must cite IPA`);
       assert.match(q.sourceUrl, /^https:\/\/www\.ipa\.go\.jp\//, `${rel}: sourceUrl must point to ipa.go.jp`);
       assert.ok(q.q && q.qJa, `${rel}: every question must have VI and JA text`);
+      assert.ok(!q.q.includes('$') && !String(q.why || '').includes('$'), `${rel}: must not contain raw LaTeX $ delimiters`);
       assert.ok(Array.isArray(q.opts) && q.opts.length >= 2 && q.opts.length <= 10, `${rel}: invalid opts length`);
       assert.ok(Number.isInteger(q.ans) && q.ans >= 0 && q.ans < q.opts.length, `${rel}: invalid ans index`);
     }
   }
-  assert.equal(b1ToB5Count, 20, 'B1–B5 categorized practice should cover all 20 official IPA sample questions');
+  assert.equal(b1ToB5Count, 50, 'B1–B5 categorized practice should cover all 50 official IPA questions (2022–2026)');
 });
 
 test('Subject B: Interactive UI flow (homepage tab, B1 theory/practice, keyboard shortcut, B6 100-min timer)', async () => {
